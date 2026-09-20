@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As-If — a recognition round · Recursive Learning</title>
+<!--
+  As-If — a standalone, dependency-free round played over a recursive.eco grammar.json.
+
+  Pattern copied from recursive-tarot's games (pages/games/*.html): ONE static dark page, no
+  framework, no CDN, no build; card data comes from a grammar.json fetched by a relative `?src=`
+  path, exactly the way `viewers/cards.html?src=../tarot/<slug>/grammar.json` does it there. That
+  is why this works on GitHub Pages with nothing running behind it.
+
+  The rule of the round: you cannot turn a card over until you have written what changes if you
+  hold it as true. The reveal is earned, not clicked. Answers stay in this browser (localStorage)
+  and are never sent anywhere.
+
+  ?src=<path to a grammar.json>   default: the As-If deck in this repo
+  ?id=<recursive.eco grammar id>  offers the app link instead (no public JSON endpoint to fetch)
+-->
+<style>
+  :root{
+    --bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
+    --ink:#e8ecf3; --muted:#8e9aae; --accent:#5ee2b0; --accent-ink:#06281d; --warn:#f0b866;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:dark;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+  .wrap{max-width:780px;margin:0 auto;padding-block:22px 64px;padding-left:16px;padding-right:16px}
+  a{color:var(--accent)}
+  h1{font-size:21px;margin:0 0 2px} h1 .sub{display:block;font-size:13px;font-weight:400;color:var(--muted);margin-top:4px}
+  .lede{color:var(--muted);font-size:13.5px;max-width:70ch;margin:10px 0 18px}
+  .bar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:16px}
+  button{background:var(--accent);color:var(--accent-ink);border:0;border-radius:9px;
+    padding:9px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  button[disabled]{opacity:.42;cursor:not-allowed}
+  .count{font-size:12.5px;color:var(--muted)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px}
+  .cat{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .nm{font-size:25px;font-weight:700;margin:6px 0 4px;line-height:1.2}
+  .tag{color:var(--muted);font-size:14px;margin-bottom:14px}
+  .ask{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:0 10px 10px 0;padding:11px 13px;font-size:14px;margin:14px 0 10px}
+  textarea{width:100%;min-height:104px;background:var(--panel2);color:var(--ink);
+    border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;font-size:14px;resize:vertical}
+  textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .hint{font-size:12px;color:var(--muted);margin:7px 0 0}
+  .sections{margin-top:16px;border-top:1px solid var(--line);padding-top:6px}
+  .sec{margin-top:13px}
+  .sec h3{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 4px;font-weight:600}
+  .sec p{margin:0;font-size:14.5px;white-space:pre-wrap}
+  .mine{margin-top:16px;background:var(--panel2);border:1px dashed var(--line);border-radius:10px;padding:11px 13px}
+  .mine h3{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 5px;font-weight:600}
+  .mine p{margin:0;font-size:14px;white-space:pre-wrap}
+  .msg{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);
+    border-radius:0 12px 12px 0;padding:15px 17px;font-size:14px}
+  .msg code{background:var(--panel2);border-radius:5px;padding:1px 5px;font-size:13px}
+  .msg ol{margin:10px 0 0;padding-left:20px} .msg li{margin:5px 0}
+  footer{margin-top:26px;font-size:12px;color:var(--muted)}
+  @media (max-width:480px){ .nm{font-size:21px} button{flex:1 1 auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>As-If<span class="sub">A recognition round — hold the premise as true, then see what the deck says.</span></h1>
+  <p class="lede">Six premises, one at a time. You cannot turn a card over until you have written
+    what changes if you hold it as true. That is the whole game: the reveal is earned, not clicked.
+    What you write stays in this browser and is sent nowhere.</p>
+
+  <div id="app"><div class="msg">Loading the deck…</div></div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var P = new URLSearchParams(location.search);
+  var DEFAULT_SRC = '../grammars/as-if-recognition-as-an-engineering-premise/grammar.json';
+  var src = P.get('src') || DEFAULT_SRC;
+  var app = document.getElementById('app');
+  var foot = document.getElementById('foot');
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+  // ── not-here panel ────────────────────────────────────────────────────────────
+  function missing(why) {
+    app.innerHTML = '';
+    var m = el('div', 'msg');
+    m.appendChild(el('strong', null, 'No deck to play yet.'));
+    m.appendChild(el('p', null, why));
+    var ol = document.createElement('ol');
+    [
+      'Publish the grammar on recursive.eco (Create → the grammar → Publish). The As-If deck is id 6512b3ec-b12d-49f8-b789-6d28ab19c82e and is private today.',
+      'Add its slug and id to grammars/_eco_ids.json in this repo.',
+      'Run  node scripts/export-grammars.mjs  and commit the new grammars/<slug>/grammar.json.'
+    ].forEach(function (t) { ol.appendChild(el('li', null, t)); });
+    m.appendChild(ol);
+    var p = el('p', null, 'Or point this page at any grammar.json already in the repo: ');
+    var a = el('a', null, '?src=../grammars/kpop-demon-hunters/grammar.json');
+    a.href = '?src=../grammars/kpop-demon-hunters/grammar.json';
+    p.appendChild(a);
+    m.appendChild(p);
+    app.appendChild(m);
+  }
+
+  if (P.get('id') && !P.get('src')) {
+    // There is no public JSON endpoint for a grammar by id — the app serves HTML. Link out.
+    missing('This page reads a grammar.json file. To read grammar ' + P.get('id') + ' as the app renders it, open https://recursive.eco/view.html?id=' + P.get('id') + ' instead.');
+    return;
+  }
+
+  fetch(src).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(start).catch(function (e) {
+    missing('Could not load ' + src + ' (' + e.message + ').');
+  });
+
+  // ── the round ─────────────────────────────────────────────────────────────────
+  function start(g) {
+    var items = Array.isArray(g.items) ? g.items.filter(Boolean) : [];
+    if (!items.length) { missing('“' + (g.name || src) + '” has no items yet.'); return; }
+
+    var key = 'as-if:' + (g.name || src) + ':';
+    var order = items.map(function (_, i) { return i; });
+    for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = order[i]; order[i] = order[j]; order[j] = t; }
+    var at = 0, revealed = false;
+
+    foot.textContent = '';
+    foot.appendChild(document.createTextNode((g.name || 'Deck') + ' · ' + items.length + ' cards · '));
+    var link = el('a', null, 'read it on recursive.eco');
+    link.href = g._recursive_eco_url || 'https://recursive.eco';
+    link.rel = 'noopener';
+    foot.appendChild(link);
+
+    function sectionsOf(it) {
+      var out = [];
+      var s = it.sections;
+      if (s && typeof s === 'object' && !Array.isArray(s)) {
+        Object.keys(s).forEach(function (k) {
+          var v = s[k];
+          if (typeof v === 'string' && v.trim()) out.push([k, v]);
+          else if (v && typeof v === 'object' && typeof v.content === 'string' && v.content.trim()) out.push([v.label || k, v.content]);
+        });
+      }
+      if (!out.length && typeof it.description === 'string' && it.description.trim()) out.push(['Description', it.description]);
+      return out;
+    }
+
+    function render() {
+      var it = items[order[at]];
+      var mine = store(key + (it.id || it.name || at)) || '';
+      app.innerHTML = '';
+
+      var bar = el('div', 'bar');
+      var next = el('button', 'ghost', 'Next card →');
+      var reveal = el('button', null, 'Turn it over');
+      reveal.disabled = revealed || !mine.trim();
+      bar.appendChild(reveal);
+      bar.appendChild(next);
+      bar.appendChild(el('span', 'count', (at + 1) + ' of ' + items.length));
+
+      var card = el('div', 'card');
+      if (it.category) card.appendChild(el('div', 'cat', String(it.category)));
+      card.appendChild(el('div', 'nm', it.name || it.id || 'Untitled'));
+      var tagline = (it.metadata && (it.metadata.tagline || it.metadata.subtitle)) || '';
+      if (tagline) card.appendChild(el('div', 'tag', String(tagline)));
+
+      card.appendChild(el('div', 'ask', 'Hold it as if it were true. What changes — in what you would build, or in what you would stop building?'));
+
+      if (!revealed) {
+        var ta = document.createElement('textarea');
+        ta.value = mine;
+        ta.placeholder = 'Two sentences is enough.';
+        ta.addEventListener('input', function () {
+          store(key + (it.id || it.name || at), ta.value);
+          reveal.disabled = !ta.value.trim();
+        });
+        card.appendChild(ta);
+        card.appendChild(el('p', 'hint', 'Saved in this browser only. The card turns over once there is something here.'));
+      } else {
+        if (mine.trim()) {
+          var box = el('div', 'mine');
+          box.appendChild(el('h3', null, 'What you said'));
+          box.appendChild(el('p', null, mine));
+          card.appendChild(box);
+        }
+        var secs = sectionsOf(it);
+        if (secs.length) {
+          var wrapS = el('div', 'sections');
+          secs.forEach(function (pair) {
+            var s = el('div', 'sec');
+            s.appendChild(el('h3', null, pair[0]));
+            s.appendChild(el('p', null, pair[1]));
+            wrapS.appendChild(s);
+          });
+          card.appendChild(wrapS);
+        } else {
+          card.appendChild(el('p', 'hint', 'This card carries no written sections — only its name. Sometimes that is the card.'));
+        }
+      }
+
+      app.appendChild(bar);
+      app.appendChild(card);
+
+      reveal.addEventListener('click', function () { revealed = true; render(); });
+      next.addEventListener('click', function () { at = (at + 1) % items.length; revealed = false; render(); window.scrollTo(0, 0); });
+    }
+    render();
+  }
+})();
+</script>
+</body>
+</html>
