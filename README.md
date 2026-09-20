@@ -36,16 +36,34 @@ binding it to this repo continues it instead of starting a rival.
 ## What's in here
 
 ```
+index.html                the landing at game.recursive.eco — GENERATED, edit build-site.mjs
+.nojekyll                 without it Jekyll 404s every _-prefixed path (grammars/_eco_ids.json)
+CNAME                     game.recursive.eco
 recursive-eco.json        the channel manifest the app reads (identity, where grammars live, id map)
 grammars/
   _eco_ids.json           slug -> recursive.eco grammar UUID
   PRIVATE.md              the private grammars: name + id only, never contents
   <slug>/grammar.json     one public grammar, exported in the app's own sync shape
-game/                     As-If — a standalone dark static game over a grammar.json
-site/                     the GitHub Pages index (grammars + the game)
-scripts/                  export-grammars.mjs (re-export) · build-site.mjs (rebuild the index)
+game/                     the games: walk.html (The Walk) · index.html (As-If) — hand-written
+site/                     a second copy of the landing, for the GitHub-Actions Pages source
+scripts/                  export-grammars.mjs (re-export) · build-site.mjs (rebuild the landing)
+                          mark.svg (her spiral + icons, inlined into the landing)
 docs/CHANNELS.md          the two-channel model, and what sync needs
 ```
+
+### Where GitHub Pages serves from
+
+`game.recursive.eco` is the **legacy branch build**: source `main`, path `/`. So the published
+root is the **repo root**, not `site/`, and `.github/workflows/pages.yml` does not publish
+anything (it fails on every push; see the comment at the top of that file). Confirm rather than
+assume, any time this matters:
+
+```
+gh api repos/PlayfulProcess/recursive-learning/pages --jq '.build_type, .source, .https_enforced'
+```
+
+`node scripts/build-site.mjs` writes the landing to the repo root **and** to `site/`, so whichever
+source is selected gets the same page.
 
 ### The grammars (public, exported)
 

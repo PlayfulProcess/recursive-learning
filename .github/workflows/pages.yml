@@ -8,8 +8,20 @@ name: Pages
 # name starts with `_` is silently 404'd — which here would be `grammars/_eco_ids.json`, the
 # file the site and the channel importer both point at.
 #
-# Pages must be enabled once by hand (Settings → Pages → Source: GitHub Actions). Until then
-# this workflow fails on the deploy step with "Pages is not enabled"; nothing else breaks.
+# THIS WORKFLOW IS NOT WHAT PUBLISHES THE SITE TODAY, and it fails on every push.
+#
+#   gh api repos/PlayfulProcess/recursive-learning/pages
+#   -> "build_type":"legacy", "source":{"branch":"main","path":"/"}, "cname":"game.recursive.eco"
+#
+# Pages is set to the LEGACY branch build: game.recursive.eco is served by Jekyll straight from
+# the root of `main`, and `actions/deploy-pages` refuses to run while the source is a branch
+# rather than GitHub Actions. So the published root is the repo root — `index.html`, `game/`,
+# `grammars/`, and the root `.nojekyll` that keeps Jekyll from 404ing `grammars/_eco_ids.json`.
+# `scripts/build-site.mjs` writes the landing to BOTH the repo root and `site/` for that reason.
+#
+# It is kept, not deleted, because it is the whole config for the other source: flipping
+# Settings → Pages → Source to "GitHub Actions" makes this the publisher and `site/` the root,
+# with no other change. Until then its red X is expected.
 
 on:
   push:
