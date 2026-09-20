@@ -1,0 +1,10 @@
+# LF in the repo, always. Two reasons, both learned the hard way elsewhere:
+#  - the app's sync compares a proposed grammar.json against the repo file BYTE for BYTE
+#    (isRepoFileInSync); a CRLF checkout would make every file read as drifted forever.
+#  - CRLF turned one CHANGELOG merge into a whole-file conflict and grew it to 17.6 MB.
+* text=auto eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+*.html text eol=lf
+*.mjs  text eol=lf
+*.yml  text eol=lf

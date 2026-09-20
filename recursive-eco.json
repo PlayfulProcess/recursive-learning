@@ -1,0 +1,27 @@
+{
+  "_note": "Channel manifest for recursive.eco. This is the file the app actually reads — `POST /api/channel/import-from-github` fetches `recursive-eco.json` from the repo root (raw first, GitHub-App contents-API fallback, so it works while the repo is PRIVATE) and requires `channel.slug` + `channel.name`. It then reads `grammars.id_map` for the slug→UUID map and takes the folder prefix from `grammars.paths[0]` to hash each `<prefix><slug>/grammar.json` as the drift baseline. There is no `channel.json` in this design; that name is read by nothing. See recursive-eco/docs/future_plan/DESIGN-github-sync-and-contribution.md.",
+  "schema_version": 1,
+  "channel": {
+    "slug": "recursive-learning",
+    "name": "Recursive Learning",
+    "type": "repo",
+    "icon": "🔁",
+    "gradient": "from-slate-50 to-emerald-100 dark:from-slate-950 dark:to-emerald-950",
+    "description": "Recursive eco-improvement: the film, the game, and the grammars about AI and how we learn with it — one channel, bound to its GitHub repo.",
+    "landing_url": null,
+    "hero": {
+      "title": "Recursive Learning",
+      "subtitle": "We're here to do recursive eco-improvement — and to test that hypothesis at the sizes we actually work at.",
+      "body_md": "Recursive self-improvement can fail in several ways, because a thing that improves itself still has to adapt with its environment, or adapt the environment. This channel is where that hypothesis gets tested small: films assembled out of other people's footage, courses that teach the tools, and grammars that hold the questions rather than the answers.\n\nEverything here is a grammar — a sequence you can open, star, fork, and correct. Open one, star it, and it lands on your own channel."
+    }
+  },
+  "grammars": {
+    "paths": ["grammars/*/grammar.json"],
+    "exclude": [],
+    "_exclude_note": "Nothing generated or apparatus-only lives here yet. Private grammars are simply absent — they are indexed by name + id in grammars/PRIVATE.md and appear here only if she publishes them and the export script is re-run.",
+    "id_map": "grammars/_eco_ids.json"
+  },
+  "maintainers": ["pp@playfulprocess.com"],
+  "default_branch": "main",
+  "_source_of_truth_note": "`source_of_truth` is a property of the CHANNEL DOCUMENT in recursive.eco (`document_data.source_of_truth = 'repo'`), not of this file — the importer does not copy it from the manifest today. Declared here as intent; see docs/CHANNELS.md for the three steps that make it true."
+}
