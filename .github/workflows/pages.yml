@@ -1,0 +1,62 @@
+name: Pages
+
+# Publishes the static index in `site/`, the game in `game/`, and the grammar JSON in
+# `grammars/` to GitHub Pages. No install, no node_modules, no build tooling — the deploy
+# directory is assembled with `cp`.
+#
+# `.nojekyll` is copied in deliberately: without it, Pages runs Jekyll and every path whose
+# name starts with `_` is silently 404'd — which here would be `grammars/_eco_ids.json`, the
+# file the site and the channel importer both point at.
+#
+# Pages must be enabled once by hand (Settings → Pages → Source: GitHub Actions). Until then
+# this workflow fails on the deploy step with "Pages is not enabled"; nothing else breaks.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'game/**'
+      - 'grammars/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble the site
+        run: |
+          mkdir -p _site
+          cp -r site/. _site/
+          cp -r game _site/game
+          cp -r grammars _site/grammars
+          test -f _site/.nojekyll || touch _site/.nojekyll
+          echo "--- deploying ---"
+          find _site -maxdepth 2 | sort
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
