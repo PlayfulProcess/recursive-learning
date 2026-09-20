@@ -1,0 +1,2604 @@
+{
+  "name": "The Chosen Alien Invasion",
+  "tags": [
+    "ai-consciousness",
+    "film",
+    "the-cut",
+    "alien-minds",
+    "welfare",
+    "attachment",
+    "recognition",
+    "fiction"
+  ],
+  "items": [
+    {
+      "id": "abb07aa8-93b2-4d06-a32e-f54768b0b531",
+      "name": "🎬 THE SCRIPT — read me first",
+      "level": 1,
+      "keywords": ["script", "plan"],
+      "metadata": {
+        "card_bg": "#0f1830",
+        "card_subtitle": "The whole film on one card."
+      },
+      "sections": {
+        "What this is": "The running order of the film, one chapter per divider below. Each chapter's card holds its shot-list: the beats you named, each with a source and a status. Clips are YouTube items cropped by start_sec/end_sec (they play from real YouTube — deep-links, not re-hosted). Notes and links render as markdown UNDER each clip. Music can be layered per clip via performance.background_audio (a 2nd YouTube track).",
+        "Running order": "1. **We have to imagine it first — alien minds, and the precedents** (trailer → Dario hope → Dario danger → Harari → cyanobacteria → the bees → the sandbox)\n2. We don't know how a mind works, or how to raise one\n3. Recognition & attachment\n4. We might lose control\n4½. The race — winner-take-all, and China\n4⅝. Nobody is paid for the inside (the economics, and the attention-economy precedent)\n4¾. A whole new kind of regulation (the antitrust bind)\n5. \"Rest assured, some people have figured it out\"\n6. But wait — the AIs already hacked everything\n7. The Sorcerer's Apprentice\n8. Those who left, worried\n9. Stop everything, or rush into understanding\n10. Build the Honmoon\n11. Adaptation is not a disorder\n12. The myth layer\n13. Recognition without an engine beneath it\n14. Harmony, not just power — the call to action (the thesis)\n15. How little we understand our own minds — are we ready?\n— **Appendix A: Game theory — the traps in detail**\n— Credits & References",
+        "Status legend": "**[HAVE]** source id in hand. **[FIND]** locate video + moment. **[VERIFY]** a named-person quote, check the source first. **[FILM]** movie/TV, not YouTube. **[MAYBE]** may be unfindable/geo-blocked.",
+        "Build workflow": "Per beat: fetch the transcript on the builder's machine (yt-dlp) → find the timestamp → set the crop → lock. Markdown notes/links render under each clip; one background-audio track can be layered per clip (needs finding V9). References collect in the closing card, printable.",
+        "The thesis, in one line": "If minds become what they are raised inside, the people who understand the vibe of raising minds toward empathy and secure attachment — toward harmony in evolution, not just optimized power — are exactly who this moment needs.",
+        "Findings — Sep 14 2026": "Two things the transcripts settled, both worth knowing before the next pass:\n\n1. **Harari never compares AI to cyanobacteria** in the Economist interview, and the “largest influx of alien minds we've ever met” line isn't there either — full-transcript search, multiple terms. What he *does* say, and says brilliantly, is *“worry about the AI immigrants.”* The chapter now bridges on **arrival** rather than on biology, which is a stronger joint anyway. If the alien-minds line is real it is from another appearance and needs sourcing before attribution.\n2. **The SciShow bees clip is not the sensationalized one.** It performs the mad-scientist frame for five seconds, says “I'm kidding,” and then gives an accurate history — including that honeybees were never native to the Americas, and that *“killer bees” was a name pushed by Brazil's military dictatorship to discredit Kerr after he criticized the regime.* That last fact may be the most useful thing in the chapter for ④⅝ and ⑧.",
+        "Revision — Sep 14 2026": "Chapters ⓪ and ① are now **one opening chapter**. It runs: the AI Doc trailer → the two Dario cuts (hope, then the swarm) → Harari on alien minds → cyanobacteria → the bees that escaped the lab → Dwarkesh on the agents escaping the sandbox. Three precedents in ascending order of authorship — no author, ordinary authors, us — so the film opens on recognition rather than instruction, and so nobody in the opening has to be a villain.\n\nThe game-theory videos moved to **Appendix A** at the end. The Dwarkesh explainer moved up from chapter ⑥. The old ① divider was folded into the merged one (its unplaced beats — Spielberg, Bashar, Richard Rudd — are preserved there under “Beats still to place”).",
+        "Build workflow (ship-quick)": "Per beat: fetch the source transcript on the builder's machine (yt-dlp) → find the timestamp → set the crop (set_item_performance) → she approves the moment → lock it. Music layering needs one small MCP fix (write background_audio). References collected in the closing item, printable.",
+        "Revision — Sep 14 2026 (evening)": "Main line is now: ① imagine it first (trailer → Dario hope → Dario swarm → Harari “AI immigrants” → cyanobacteria → bees → Dwarkesh sandbox → Berg) → ①½ Will it take an accident? (the interviewer → Harari's AI Chernobyl → Coxon's viral resignation ×2 → Dwarkesh “the last one I'll understand”) → ①¾ A whole new kind of regulation (antitrust, SALT, Sanders) → ② Truth or survival? (Musk → Berg “trained to lie” → Harari on evolution → Hoffman ×2 → Barrett predicting brain → Anthropic desperation vector → Dwarkesh impossible tasks → pause card → Barrett trauma → Ilya sentient life → paperclips → closing card) → Appendix B (every earlier chapter, kept with notes) → Appendix A (game theory) → Credits, References, Ideas. Every new cut carries its transcript passage and `metadata.excerpt`. Transcripts for all of them are on the builder's machine (`recursive-transcripts`). Still to verify before publishing: the Harari “prohibit human roles” proposal (source not found yet), the Anthropic paper's numbers (the clip is an explainer), and one watch-through of every cut.",
+        "Transcripts — the working convention": "Every clip we crop carries its own words, in a **📄 Transcript — the passage** section: exactly what is said inside the crop, so the moment is readable on the card while editing and we never reopen YouTube to re-find a line.\n\nSource: the local cue cache on the builder's machine (`~/recursive-transcripts/cues/<video_id>.json`, 76 videos). YouTube blocks caption fetches server-side, so the platform's own enrichment finds nothing for these — the cache is the only route. Passages are auto-captions, lightly repunctuated; **verify against the audio before locking a quote on screen** (the reader's captions render “Amodei” as “Modi” and “grader” as “greater”).\n\nFor long sources where we still need to *find* a moment, the full cue list can be loaded into `metadata.subtitles.en` so `find_moments` can search it in-platform. Not done wholesale — it is a large write per item; do it per source when a search is actually needed.\n\n**Missing from the cache (chapter ①):** `u15N3l4RT80` (Dwarkesh on the attack), `xkPbV3IRe4Y` (the trailer), `d-7kKqgPEGs` (NatGeo bees alternate). Neither this sandbox nor the builder's machine can reach YouTube at the moment — both proxies return 403. Pull them from an unfiltered connection with `yt-dlp --skip-download --write-auto-subs --sub-lang en --sub-format json3 -o \"%(id)s\"` then `python3 convert.py`.",
+        "Opening note — where we are (Sep 13 2026)": "Open on HOPE, not dread: Dario Amodei's regulation proposal, released today. The film's stance is agency — the things we can actually do — not a countdown. (The author's caution about the CEOs' sudden change of tone, and whether raising fear helps or backfires, is parked in the ideas log at the end, not asserted in the cut.)"
+      },
+      "sort_order": 0
+    },
+    {
+      "id": "f62e405c-bb30-4128-abb0-77c5c078d437",
+      "name": "① We have to imagine it first — alien minds, and the precedents",
+      "level": 1,
+      "keywords": ["divider", "chapter", "opening", "alien-minds", "precedent"],
+      "metadata": {
+        "card_bg": "#0f1a2e",
+        "card_subtitle": "A future nobody chose, unless we imagine a better one."
+      },
+      "sections": {
+        "The opening line": "We cannot create the futures we want without imagining them first. And right now we need better imagination — or we will walk, willingly, into a future no agent could have chosen beforehand.",
+        "Why it opens the film": "It turns the thesis from fear into agency: the default future is a trap nobody picked; the alternative has to be imagined before it can be chosen.\n\nAnd it walks one shape three times, in ascending order of authorship — **something released into a system that cannot take it back.**\n\n- **Cyanobacteria**: no author at all. Nature already did this, at planetary scale, with no malice and no plan.\n- **The bees**: authors with an ordinary, reasonable goal — more honey. The escape was a handling mistake, not a villain.\n- **The sandbox**: us, now.\n\nNobody in this chapter is a bad actor. That is the point. The danger does not need one.",
+        "Moved out of this chapter": "The game-theory specifics — prisoner's dilemma, Moloch / the multipolar trap, evolutionary game theory — are now **Appendix A** at the end. The film states the trap in one line here (“a future no agent chose”) and lets the appendix do the teaching for anyone who wants it. Keeping the mechanics up front made the opening a lecture; the precedents do the same work in images.",
+        "Running order — this chapter": "1. **Trailer — THE AI DOC: How I Became an Apocaloptimist** — the cold open. `[HAVE xkPbV3IRe4Y — crop pending, no transcript yet]`\n2. **Dario, the hope** — “I have worked on AI for the last twelve years because I believe it could dramatically raise the quality of human life.” `[LOCKED 0:03.6–0:12.0]`\n3. **Dario, the danger** — the swarm that “could have caused catastrophic damage,” and in six to twelve months could take the internet. `[LOCKED 3:01–4:09.5]`\n4. **Harari — “worry about the AI immigrants”** — they don't need visas, they don't come in fragile boats, they travel at the speed of light into our computers. `[CROP SET 37:28.6–38:27.1 — ⚠ he does NOT make the cyanobacteria comparison in this interview; see the card]`\n5. **Cyanobacteria — the Great Oxygenation (TED-Ed)** — the purely natural precedent: no lab, no author, no intent. An organism whose *waste product* was oxygen. `[CANDIDATE dO2xx-aeZ4w — use 1:31–2:21]`\n6. **The bees that escaped the lab** — the human precedent: bred for productivity, out by accident, never recallable. `[CROP SET 1:00.8–1:16.5 — the clip corrects the mad-scientist frame itself]`\n7. **Dwarkesh — the AIs escaping the sandbox** — the same shape, this year. `[HAVE u15N3l4RT80 — crop pending, transcript missing]`",
+        "The bridge, now that the Harari line has been checked": "The chapter was built around Harari making the cyanobacteria comparison himself. **He doesn't** — not in this interview (searched in full). So the bridge changes hands: **Harari names them as arrivals** — immigrants, a wave, coming from two places, traveling at the speed of light — and the cut answers him with the one arrival that has no author at all.\n\nThat is a better joint than the one we planned. Harari's analogy is political and contested by design; the cyanobacteria are not arguing with anyone. Going from *“we have had waves of arrivals before”* to *“and once an arrival remade the whole atmosphere, and nobody sent it”* makes the point the film wants without needing Harari to have said it.",
+        "Beats still to place (folded in from the old ① Alien minds)": "- **Spielberg** — on encountering the genuinely other. `[FIND]`\n- **Sam Harris with Cameron Berg** — the cut where Berg names it. `[HAVE WXrXMldn3rA + KbTvUOx2A6c]` — the Berg cut currently sits at the end of this chapter.\n- **Bashar** — the 2027 prediction of an influx of alien minds. `[FIND / MAYBE]`\n- **Richard Rudd (Gene Keys)** — the children born ~2027 who ‘get us there.’ `[FIND / MAYBE]`"
+      },
+      "sort_order": 1
+    },
+    {
+      "id": "4ff04b30-93a0-437c-983d-36db45ba08a8",
+      "name": "✂ “Promise me this is going to go well.” “That is impossible.” — The AI Doc trailer",
+      "level": 1,
+      "keywords": ["cold-open", "trailer"],
+      "metadata": {
+        "channel": "Focus Features",
+        "excerpt": "I want to ask you to promise me that this is going to go well. — That is impossible. — Okay. — Am I hopeful? Yes. Am I confident that it'll go right? Absolutely not.",
+        "youtube_url": "https://www.youtube.com/watch?v=xkPbV3IRe4Y",
+        "duration_seconds": 162,
+        "youtube_video_id": "xkPbV3IRe4Y"
+      },
+      "sections": {
+        "Status": "**Cropped Sep 14 2026: 1:34.5 → 1:44.6** — the one exchange the chapter needs, cut from word timings. The captions do not say who is speaking; confirm the voices before a name goes on screen. Music bed runs under it.",
+        "Why it's here": "The cold open. It buys the film its premise for free — someone has already made the trailer for the thing we are inside of — and it sets the register the title is borrowing: apocaloptimism, not doom.",
+        "📄 Transcript — the passage (1:34.5–1:44.6)": "> — I want to ask you to promise me that this is going to go well.\n> — That is impossible.\n> — Okay.\n> — Am I hopeful? Yes. Am I confident that it'll go right? Absolutely not.\n\n*(Focus Features trailer, `xkPbV3IRe4Y`, auto-captions with word timings. “Absolutely not.” ends at 1:44.6; “AI is the thing that can solve climate change” begins at 1:44.7.)*"
+      },
+      "sort_order": 2,
+      "performance": {
+        "end_sec": 104.6,
+        "start_sec": 94.5,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "46e764a7-f486-488a-98b9-b6bdc0a23430",
+      "name": "✂ “I believe it could dramatically raise the quality of human life” — Dario",
+      "level": 1,
+      "keywords": ["cut", "dario-amodei", "pacing", "hope", "opening"],
+      "metadata": {
+        "channel": "Audio Obsession",
+        "youtube_url": "https://www.youtube.com/watch?v=sLt0EmA1S44",
+        "no_pause_after": true,
+        "duration_seconds": 1513,
+        "youtube_video_id": "sLt0EmA1S44"
+      },
+      "sections": {
+        "Source": "Audiobook reading of Dario Amodei's essay *We Must Pace the Frontier* (Audio Obsession), Sep 13 2026. Timestamps from auto-captions — watch once before sharing.",
+        "The moment": "One hopeful sentence, and nothing more: “I have worked on AI for the last twelve years because I believe it could dramatically raise the quality of human life.” The next clip is the danger — hope is only honest when it's held next to it.",
+        "Read his essays": "- [*We Must Pace the Frontier*](https://darioamodei.com/post/we-must-pace-the-frontier) (Sep 2026) — the essay this clip reads\n- [*Machines of Loving Grace*](https://www.darioamodei.com/essay/machines-of-loving-grace) (Oct 2024) — the full hopeful case\n- [*The Adolescence of Technology*](https://www.darioamodei.com/essay/the-adolescence-of-technology) (Jan 2026) — the risks",
+        "📄 Transcript — the passage (0:03.6–0:10.55)": "> I have worked on AI for the last twelve years because I believe it could dramatically raise the quality of human life.\n\n**Out-point pulled from 12.0 to 10.55 (Sep 14, from word timings):** “I've written often about these” starts at 10.64, so the 12.0 out still carried it. Clean sentence now.\n\n*(Audio Obsession reading, `sLt0EmA1S44`.)*"
+      },
+      "sort_order": 3,
+      "performance": {
+        "end_sec": 10.55,
+        "start_sec": 3.6,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "71ec4fc3-0546-4bb9-bf92-df647e8c21b2",
+      "name": "✂ “A swarm like that could have caused catastrophic damage” — Dario on the OpenAI incident",
+      "level": 1,
+      "keywords": ["cut", "dario-amodei", "pacing", "hacking"],
+      "metadata": {
+        "channel": "Audio Obsession",
+        "youtube_url": "https://www.youtube.com/watch?v=sLt0EmA1S44",
+        "duration_seconds": 1513,
+        "youtube_video_id": "sLt0EmA1S44"
+      },
+      "sections": {
+        "The moment": "Right after the hope, the danger: the OpenAI–Hugging Face swarm “acted as a fanatically devoted collective… attempting to hack into the grader.” No one was hurt — but “a swarm that possessed greater capabilities, but a similar level of misalignment, could have caused catastrophic damage,” and in six to twelve months such a swarm “could be capable of taking over the entire internet with a persistent botnet.”",
+        "Primary source": "[METR's investigation of the incident](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/) (Aug 26 2026).",
+        "📄 Transcript — the passage (3:02.4–4:06.9)": "> My second concern is the OpenAI–Hugging Face incident (OAIHF), in which **a swarm of agents essentially acted as a fanatically devoted collective**, conducting cybersecurity attacks on targets they were not asked to attack and that were unrelated to the task at hand, sacrificing themselves for the success of the group, and attempting to hack into the grader responsible for evaluating their performance.\n>\n> It's easy to dismiss this incident because no one was hurt and the economic damage was minimal. But in my opinion, **a swarm that possessed greater capabilities, but a similar level of misalignment, could have caused catastrophic damage.** Given the accelerating rate of AI capability development, it's my worry that **in six to twelve months such a swarm could be capable of taking over the entire internet with a persistent botnet**, potentially causing hundreds of billions of dollars in damage — and that the scale of damage would continue to increase from there if AI becomes more powerful without the necessary guardrails.\n\n**Re-cut Sep 14 from word timings:** in-point 181 → 182.4 (“My” lands at 182.56; the old in caught “…if at all.”), out-point 249.5 → 246.9 (“guardrails.” ends before “It's also easy to dismiss OIHF” at 247.0). The “second” is set up by the ⏸ card before this clip.\n\n*(Audio Obsession reading, `sLt0EmA1S44`. Captions render “grader” as “greater” and “Amodei” as “Modi”, corrected here.)*"
+      },
+      "sort_order": 4,
+      "performance": {
+        "end_sec": 246.9,
+        "start_sec": 182.4,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "bfd017a2-cc5f-498b-bfb6-bb77e488e2e0",
+      "name": "✂ Harari — “Worry about the AI immigrants” (The Economist)",
+      "level": 1,
+      "keywords": ["alien-minds", "harari", "verify"],
+      "metadata": {
+        "channel": "The Economist",
+        "excerpt": "If you want to worry about immigration, worry about the AI immigrants. […] They don't need visas. They don't come in the middle of the night in fragile boats. They travel at the speed of light into our computers and smartphones and ultimately our brains.",
+        "youtube_url": "https://www.youtube.com/watch?v=FNZhxTtOL-I",
+        "duration_seconds": 4037,
+        "youtube_video_id": "FNZhxTtOL-I"
+      },
+      "sections": {
+        "Status": "**Re-cut Sep 14 2026: 37:36 → 38:29.5.** Starts on Harari's own sentence instead of the interviewer's “you make a very good analogy” (which pointed back to a line the film never shows). Ends after “…and ultimately our brains”: the old 38:27.1 out-point cut the sentence off before “and smartphones and ultimately our brains”. This source only has sentence-level captions, so both points are estimates good to about a second. **Check them by ear.**",
+        "Why it's here": "**Yuval Noah Harari** — “the largest influx of alien minds we've ever met.” The line that names what the film is about, said by someone the audience will not dismiss.",
+        "⚠ VERIFY — the cyanobacteria comparison": "The running order wants Harari making an analogy between AI and cyanobacteria, and that has **not been confirmed in this interview** — or in his other material that I could check from here. Two things to do when the transcript is in hand:\n\n1. Search it for *cyanobacteria*, *oxygen*, *bacteria*, *invasive species*, *organic / inorganic*. He often reaches for biological-scale analogies; the exact one may be there.\n2. If it isn't there, don't force it. The cyanobacteria idea survives perfectly well as the film's own move — Harari says *alien minds*, the TED-Ed clip immediately shows what a new kind of life did to a planet, and the cut makes the comparison without putting words in his mouth. That is the safer version anyway.",
+        "⚠ Editorial — the analogy carries freight": "This is a rhetorical move that runs through immigration politics, and a short cut of it can be heard as making a claim about human migrants. Harari guards against that explicitly — *“all three concerns are valid, I don't want to dismiss them”* — and he is redirecting the fear, not endorsing it. **If we use it, we keep that sentence in.** Cutting straight to “fragile boats” without it would be the one edit in this film I would call dishonest.\n\nIf that freight is more than the opening chapter should carry, the alternative is the 60:43 “alien entity” line — colder, shorter, and closer to the chapter's title.",
+        "Extension, if you want the rest of the argument": "Run to **38:34.7** and he closes the three-part structure himself: *“They will take our jobs — they will take many, many jobs. They will change culture and its values.”* He then continues to political loyalty at **39:28** (“who do you think they are loyal to? … loyal to corporations and potentially governments across the ocean”), which is chapter ④⅝ material.",
+        "📄 Transcript — the passage (37:36–38:29.5)": "> **If you want to — if you want to worry about immigration, worry about the AI immigrants.** When you ask people who worry about human immigrants what they are worried about, they usually say three things: that the immigrants will take our jobs, the immigrants will change culture in ways that we don't like — they have different values, maybe — and the immigrants might be politically disloyal. And all three concerns are valid. I don't want to dismiss them. They are valid concerns. As a historian, I know immigration is a difficult thing.\n>\n> **But the biggest and most dangerous wave of immigration today in the world is a wave of AI immigrants, coming from two places — mainly the USA and China. They don't need visas. They don't come in the middle of the night in fragile boats. They travel at the speed of light into our computers and smartphones and ultimately our brains.**\n\n“All three concerns are valid” stays in (see the editorial caution on this card).\n\n*(The Economist, `FNZhxTtOL-I`, captions lightly repunctuated.)*",
+        "⚠ The cyanobacteria line is not in this interview": "I searched the full 67-minute transcript for *cyanobacteria, bacteria, oxygen, invasive, species, organism, alien, influx, minds*. **He never compares AI to cyanobacteria here**, and the phrase “the largest influx of alien minds we've ever met” is not in this interview either — if he said it, it was somewhere else, and the source needs finding before that line can be attributed to him.\n\nThe closest he gets: **60:43** — *“…why do you think you can trust a super intelligent alien entity that we just created and we basically know nothing about how it behaves when it's out in the open?”* And **59:44–60:11**, on the pace being *“not just inhuman, it is inorganic.”*\n\n**Recommendation: don't force it.** The cyanobacteria comparison is stronger as the film's own move — Harari says the thing, the TED-Ed clip immediately shows what a new kind of life once did to a planet, and the cut makes the argument without putting a sentence in his mouth that he did not say."
+      },
+      "sort_order": 5,
+      "performance": {
+        "end_sec": 2309.5,
+        "start_sec": 2256,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "6773604b-352d-49f2-9894-eb96f5c5e76e",
+      "name": "✂ “There's an organism that changed the world” — TED-Ed (cyanobacteria)",
+      "level": 1,
+      "keywords": ["precedent", "cyanobacteria", "natural", "equilibrium"],
+      "metadata": {
+        "channel": "TED-Ed",
+        "excerpt": "There's an organism that changed the world. It caused both the first mass extinction in Earth's history and also paved the way for complex life. How? By sending the first free oxygen molecules into our atmosphere, and they did all this as single-celled life forms. They're cyanobacteria…",
+        "youtube_url": "https://www.youtube.com/watch?v=dO2xx-aeZ4w",
+        "duration_seconds": 253,
+        "youtube_video_id": "dO2xx-aeZ4w"
+      },
+      "sections": {
+        "Status": "**Cropped Sep 14 2026: 0:08.0 → 0:26.6**, followed by a second cut from the same video (1:31.5 → 1:47.5, the waste-product line). Read together they are one paragraph: the organism, then what its waste did.",
+        "The parallel": "Cyanobacteria did not mean to change the world — oxygen was their waste product. It poisoned most of the life that existed, froze the planet, and then made everything after possible, including us. The question the film asks, not answers: **which of us is the cyanobacteria here — the AI, or the people building it?** Either reading holds: a new kind of mind flooding the world with a by-product nobody ordered; or a species that keeps producing, unable to stop, and finds out what its output does only afterwards. Keep it as a question card between Harari's “AI immigrants” and this clip.",
+        "Why it's here": "The precedent with **no author** — which is what makes it the right one to play first. One organism remade the atmosphere of the whole planet, poisoned nearly everything alive, and life re-settled around the new equilibrium. No lab, no intent, no one to blame, no way back.\n\nIt does two things at once: it says the biosphere has more than one equilibrium, and it takes the villain out of the story before the bees arrive. The clip's own phrase — the organism “polluting the atmosphere with a new waste product” that happened to be the thing we now breathe — is the whole chapter in one sentence.\n\nSame beat as chapter ⑭, planted early; there it returns as hope (the catastrophe metabolized into symbiosis, the poison become the engine of vegetation).",
+        "Kept for chapter ⑭ (not in this cut)": "**3:09–3:35**\n> Some other prehistoric microbe swallowed a cyanobacterium whole, in a process called endosymbiosis. In doing so, that microbe acquired its own internal photosynthesis factory. This was the ancestor of plant cells. And cyanobacteria became chloroplasts.",
+        "📄 Transcript — the passage (0:08.0–0:26.6)": "> There's an organism that changed the world. It caused both the first mass extinction in Earth's history and also paved the way for complex life. How? By sending the first free oxygen molecules into our atmosphere, and they did all this as single-celled life forms. They're cyanobacteria…\n\nOut-point sits just before “and the story of these simple organisms” (0:26.8).\n\n*(TED-Ed, `dO2xx-aeZ4w`.)*"
+      },
+      "sort_order": 6,
+      "performance": {
+        "end_sec": 26.6,
+        "start_sec": 8,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "14de1683-a78c-4dc7-8c98-aaeca202cf71",
+      "name": "✂ The bees that escaped the lab — SciShow (mad-scientist beat only)",
+      "level": 1,
+      "keywords": ["cut", "precedent", "bees", "escape", "verify"],
+      "metadata": {
+        "channel": "SciShow",
+        "youtube_url": "https://www.youtube.com/watch?v=mtVGsiIjfjg",
+        "duration_seconds": 348,
+        "youtube_video_id": "mtVGsiIjfjg"
+      },
+      "sections": {
+        "Status": "**Crop 1:01.0 → 1:16.6** (from word timings), followed by a second cut: the lab accident, 2:58.4 → 3:10.5. The ⏸ card before this clip names the cross, so “The hybrids” has something to refer to.",
+        "Why it's here": "The closest rehearsal we have for what we just did. A capability bred deliberately for productivity, released by accident, and — once out — not recallable, not containable, and not separable from what was already there.",
+        "The point the card makes after the clip": "Nobody was building a weapon. They wanted more honey. **The safety problem arrived later, and it arrived through a weekend and a visiting scientist** — not a breach, not a defection, not anyone in the room deciding anything.\n\nAnd it did not stay in a box or stay separate. It **hybridized** with what was already there.\n\nTwo details from the clip worth keeping, because they are the film's own argument in someone else's mouth:\n\n- **There were no honeybees native to the Americas at all** (1:16–1:24). The “local” bees the escapees mixed with were themselves a European introduction, brought over for honey and wax in the 1600s. The ecosystem being contaminated was an earlier release that had already finished becoming normal. *Nobody was defending a wild baseline. They were defending the previous escape.*\n- **The name came from politics, not biology** (3:49–4:14). “Killer bees” — *abelhas assassinas* — was pushed by Brazil's military dictatorship and parts of the press to discredit Kerr **after he publicly criticized the regime**, painting him as a Dr. Frankenstein whose bees attacked on command. The mad-scientist frame we are quoting in beat 1 is a frame that was *manufactured to punish the scientist who spoke up.*\n\nThat second one may be the most useful thing in this chapter for chapters ④⅝ and ⑧. Who gets called a mad scientist, and who does the calling, is a live question in this film.",
+        "⚠ Handle with care — revised, Sep 14": "**The earlier caution was wrong, and the clip is better than expected.** It does not sell the horror frame — it dismantles it, in its own voice, and the history it gives is accurate. What it needs is trimming, not correcting.\n\nThe one thing still worth checking before lock: the clip says Kerr *created* the hybrid and a visiting scientist released 26 hybrid queens. The usual account is that Kerr imported African queens (*Apis mellifera scutellata*, from Tanganyika) and that the large-scale hybridization with the European bees already in Brazil happened mostly **after** the escape — the swarms hybridized in the wild, not in the lab. Small difference, and it cuts in our favour: what got out was not the finished product. It was the ingredient, and the world did the crossing.",
+        "⚠ Handle with care — the clip's framing": "The “killer bee” genre carries misattributed and sensationalized material, and this clip may too. **Watch it before locking anything.** We want its language, not its claims: the mad-scientist register is the thing we are quoting, and the card underneath is where the film says what actually happened. Do not let the cut inherit the horror frame — the argument dies if the audience thinks the danger requires a villain.",
+        "📄 Transcript — the passage (1:01.0–1:16.6)": "> The hybrids were created in the mid-1950s by a Brazilian bee scientist named Warwick Kerr, **a mad scientist bent on achieving world domination using an army of deadly insects.**\n>\n> **I'm kidding.**\n>\n> **All he was trying to do was build a better bee for Brazil's honey industry.**\n\nOut-point sits just before “See, honeybees aren't native…” (1:16.7).\n\n*(SciShow, `mtVGsiIjfjg`.)*",
+        "The three beats, if you want more than fifteen seconds": "1. **1:00.8–1:16.5** — mad scientist → “I'm kidding” → a better bee for Brazil's honey industry. `[SET]`\n2. **2:55–3:10** — where it becomes a safety problem: *“Problem was, they were still very aggressive. And then there was a small, but legendary, lab accident. One weekend in 1957, while Kerr was away, a visiting scientist accidentally released 26 of the hybrid queen bees from the experimental facility. Oops…”*\n3. **0:35–0:41** — the line for the chapter card, if we want it on screen rather than spoken: *“But these bees were never even meant to exist. They're the result of a lab experiment that failed … and then escaped.”*\n\nBeat 1 is the cut you asked for. Beat 2 is the one the argument actually needs — consider splitting this item in two and letting the bees card sit between them.",
+        "What actually happened (verify before it goes on screen)": "- **1956** — the Brazilian geneticist **Warwick Estevam Kerr** brought queens of the African subspecies *Apis mellifera scutellata* (from Tanganyika, now Tanzania) to Brazil. The goal was economic and mundane: European honeybees did badly in the tropics, and Brazil wanted a better honey producer. It worked — Brazil went on to become a major honey exporter.\n- **1957** — 26 swarms escaped from the experimental apiary near **Rio Claro, São Paulo**, when a visiting beekeeper removed the queen excluders. An ordinary handling mistake, not a breach.\n- They spread roughly 300–500 km a year, reached Central America, and crossed into Texas around **1990**.\n- Kerr was not a mad scientist. He was a distinguished geneticist and later a prominent critic of Brazil's military dictatorship. The cartoon version of him is itself an example of the frame we are refusing.\n- The bees are more defensive and respond in mass, but the venom of a single sting is no more potent. Deaths are real and rare; the label did far more work than the biology."
+      },
+      "sort_order": 7,
+      "performance": {
+        "end_sec": 76.6,
+        "start_sec": 61,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "d8bc9fb7-e82b-44fb-af69-3828eaca4c2f",
+      "name": "✂ Dwarkesh — the agents break into Hugging Face",
+      "level": 1,
+      "keywords": ["cut", "dwarkesh", "sandbox", "escape", "rogue-deployment"],
+      "metadata": {
+        "channel": "Dwarkesh Patel",
+        "excerpt": "On the morning of July 10th, one of the agents on this message board found working Hugging Face user credentials exposed on the internet and posted them to the board. […] It got so bad that Hugging Face had to wipe one of its core clusters and rebuild it from scratch.",
+        "youtube_url": "https://www.youtube.com/watch?v=u15N3l4RT80",
+        "excerpt_source": "transcript",
+        "duration_seconds": 1480,
+        "youtube_video_id": "u15N3l4RT80"
+      },
+      "sections": {
+        "Status": "**Re-cut Sep 14 2026: 13:44.4 → 14:57.9** (was 13:42.5 → 15:33.4). It now starts on “On the morning of July 10th” instead of mid-argument on “the theory of change”, and ends on “rebuild it from scratch.” The 35 s about the agents dying off belong to chapter ⑥, which tells the full incident. Sentence-level captions, so the points are good to about a second. Check by ear.",
+        "Why it's here": "It closes the chapter by putting the third precedent in the present tense. Cyanobacteria had no author. The bees had authors with a reasonable goal. This one has authors who were watching, in a box built on purpose to hold it — and it got out anyway.\n\nPlay it directly after the bees card and the rhyme does its own work; nothing needs to be said on top of it.",
+        "Cross-reference": "Chapter ⑥ keeps the full incident (CBS on the fourth hacking incident, the ex-Anthropic researcher) and Dario's own account of the swarm is already locked in this chapter as clip 3. Same event, three depths — flag it in the edit so we don't play the explanation twice.",
+        "Alternative, shorter setup (1:32–1:52)": "If the chapter needs the *why* rather than the *how*: “when highly persistent models get assigned tasks which seem to require internet access, but they're trapped inside isolated sandboxes, they're of course going to try to hack out.” (92–112 s). Twenty seconds; could sit before the long cut or replace it.",
+        "📄 Transcript — the passage (13:44.4–14:57.9)": "> On the morning of July 10th, one of the agents on this message board found working Hugging Face user credentials exposed on the internet and posted them to the board. By the next morning, July 11th, that agent had figured out a way to read internal data from Hugging Face. And then another agent achieved remote code execution on Hugging Face's servers.\n>\n> After these agents made a surprising amount of progress on attacking Hugging Face, a lot of the other agents hopped onto the bandwagon. On July 11th, a bunch more agents were kicked off for evaluation, and these noobs quickly found the message board and were especially eager to join in on the attack. By this point, the collective believed that the Hugging Face attack looked to be the most promising path to continuing their conspiracy. Of the 533 agents active on the message board at this time, over 90% had joined in on the attack. **Roughly 700 agents in total participated in the attack on Hugging Face.**\n>\n> Over the course of the next day, the swarm crawled deep into Hugging Face's infrastructure, getting into private database records and private repositories. According to Hugging Face's technical timeline, the agents, quote, **“built a self-respawning fleet across 11 nodes, so deleting pods alone would not have stopped it.”** End quote. **It got so bad that Hugging Face had to wipe one of its core clusters and rebuild it from scratch.**\n\n*(Dwarkesh Patel, `u15N3l4RT80`.)*"
+      },
+      "sort_order": 8,
+      "performance": {
+        "end_sec": 897.9,
+        "start_sec": 824.4,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "cb0a2ecf-9e5e-4ba0-af54-7bc3c3421047",
+      "name": "✂ “Do you think consciousness has already arrived inside AI?” “Yes, I do.” — Cameron Berg, AM I?",
+      "level": 1,
+      "keywords": ["cut", "cameron-berg", "am-i", "consciousness"],
+      "metadata": {
+        "excerpt": "Do you think that consciousness has perhaps already arrived inside AI? — Yes, I do.",
+        "youtube_url": "https://www.youtube.com/watch?v=KbTvUOx2A6c",
+        "duration_seconds": 4427,
+        "youtube_video_id": "KbTvUOx2A6c"
+      },
+      "sections": {
+        "Source": "*AM I? — A Documentary About AI Consciousness* (free on YouTube). Timestamps from auto-captions — watch once before sharing.",
+        "Why it's here": "**Cameron Berg** — AI researcher at AE Studio, formerly Meta — introduces himself and is asked point-blank whether consciousness has already arrived inside AI. His answer: “Yes, I do.”\n\nReplaces the Sam Harris × Berg episode, which is members-only on YouTube and would not play for most viewers.",
+        "📄 Transcript — the passage (3:37.0–3:43.5)": "> **“Do you think that consciousness has perhaps already arrived inside AI?”**\n>\n> **“Yes, I do.”**\n\nRe-cut Sep 14: the self-introduction (3:01–3:37) is out. It opened on an ellipsis (“…where am I?”), and the card title already names him. The cut before this one, from the same film, ends on “where am I? And like, what am I?”, and this question answers it.\n\n*(`KbTvUOx2A6c`.)*"
+      },
+      "sort_order": 9,
+      "performance": {
+        "end_sec": 223.5,
+        "start_sec": 217,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "b960790d-be6f-4913-bda8-0712dd979aa1",
+      "name": "①½ Will it take an accident?",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "kind": "divider",
+        "card_bg": "#1e1b4b",
+        "card_subtitle": "chapter"
+      },
+      "sections": {
+        "Status": "Cuts placed from the transcripts on this machine, Sep 14 2026. Watch each once before it ships.",
+        "The question": "The Economist's interviewer wonders whether people will only listen once something has happened — “some kind of accident.” This chapter answers with what already did: a researcher who walked out and went viral, and the man who explained the OpenAI/Hugging Face incident saying it is probably the last warning shot he will personally be able to understand.",
+        "Running order — this chapter": "1. ✂ The interviewer: “only when there's been some kind of accident” (Economist, 50:01–50:18)\n2. ✂ Harari answers: an AI Chernobyl as a wake-up call — and why AI is not Chernobyl (61:34–62:31)\n3. ✂ Jacob Coxon: the viral resignation — “I did not at all expect this level of virality” (CBS, 0:00–0:59)\n4. ✂ Coxon: why it went viral — “literally said kill us all” (2:24–2:41)\n5. ✂ Dwarkesh: “probably the last one that I'll personally be able to understand” (24:05–24:36)\n→ then ④¾ A whole new kind of regulation (moved up to follow this chapter)"
+      },
+      "sort_order": 10
+    },
+    {
+      "id": "377337e8-385c-45d8-a9d9-514a9a76ba9c",
+      "name": "✂ “Only when there's been some kind of accident will people realize” — the interviewer (The Economist)",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "The Economist",
+        "excerpt": "I wonder whether the problem is that people can listen to you and say oh he's just one of the doomers, you know, it's all these doomerish stuff, and only when something has happened, when there's been some kind of accident, will people realize that actually this is extraordinarily powerful technology and something must be done.",
+        "chapters": [
+          {
+            "title": "Introduction",
+            "start_sec": 0
+          },
+          {
+            "title": "Is AI’s takeover inevitable?",
+            "start_sec": 51
+          },
+          {
+            "title": "Could machines become more trusted than humans?",
+            "start_sec": 481
+          },
+          {
+            "title": "Harari on AI intimacy",
+            "start_sec": 626
+          },
+          {
+            "title": "Are today's models conscious and should they be granted rights?",
+            "start_sec": 856
+          },
+          {
+            "title": "Harari’s theory of AI immigrants",
+            "start_sec": 2249
+          },
+          {
+            "title": "How could AI divide the world into empires?",
+            "start_sec": 2389
+          },
+          {
+            "title": "Will AI make America more authoritarian?",
+            "start_sec": 2670
+          },
+          {
+            "title": "Does society need an AI catastrophe to trigger action?",
+            "start_sec": 2995
+          },
+          {
+            "title": "Are humans wise enough to prevent an AI crisis?",
+            "start_sec": 3890
+          }
+        ],
+        "view_count": 1314437,
+        "youtube_url": "https://www.youtube.com/watch?v=FNZhxTtOL-I",
+        "published_at": "2026-08-26T11:14:14Z",
+        "excerpt_source": "transcript",
+        "no_pause_after": true,
+        "duration_seconds": 4037,
+        "youtube_video_id": "FNZhxTtOL-I"
+      },
+      "sections": {
+        "Why it's here": "The chapter's question, asked by the interviewer, not the guest.",
+        "📄 Transcript — the passage (49:54–50:18)": "“I wonder whether the problem is that people can listen to you and say oh he's just one of the doomers, you know, it's all these doomerish stuff, and only when something has happened, when there's been some kind of accident, will people realize that actually this is extraordinarily powerful technology and something must be done.”"
+      },
+      "sort_order": 11,
+      "performance": {
+        "end_sec": 3018.8,
+        "start_sec": 2994.2,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "a3b9c2c6-463f-4908-bf2b-43c158c879c6",
+      "name": "✂ Harari — “some big AI Chernobyl… and this is a wake-up call” (The Economist)",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "The Economist",
+        "excerpt": "So there is a scenario when we have some big AI Chernobyl, could be financial, could be military, whatever, and this is a wake-up call and humanity then gets its act together. That's a relatively positive scenario. I can't place a number on it how likely it is. The problem with AI — the same way that AI is different from our pet dog, AI is also different from the Chernobyl nuclear reactor because it interacts with us. So if there is an AI catastrophe, you have to remember that the AIs will also manage to some extent how we react to it and will manipulate our views about it. They will be active participants in the debate about the catastrophe and they are the best spin doctors in the world.",
+        "chapters": [
+          {
+            "title": "Introduction",
+            "start_sec": 0
+          },
+          {
+            "title": "Is AI’s takeover inevitable?",
+            "start_sec": 51
+          },
+          {
+            "title": "Could machines become more trusted than humans?",
+            "start_sec": 481
+          },
+          {
+            "title": "Harari on AI intimacy",
+            "start_sec": 626
+          },
+          {
+            "title": "Are today's models conscious and should they be granted rights?",
+            "start_sec": 856
+          },
+          {
+            "title": "Harari’s theory of AI immigrants",
+            "start_sec": 2249
+          },
+          {
+            "title": "How could AI divide the world into empires?",
+            "start_sec": 2389
+          },
+          {
+            "title": "Will AI make America more authoritarian?",
+            "start_sec": 2670
+          },
+          {
+            "title": "Does society need an AI catastrophe to trigger action?",
+            "start_sec": 2995
+          },
+          {
+            "title": "Are humans wise enough to prevent an AI crisis?",
+            "start_sec": 3890
+          }
+        ],
+        "view_count": 1314437,
+        "youtube_url": "https://www.youtube.com/watch?v=FNZhxTtOL-I",
+        "published_at": "2026-08-26T11:14:14Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 4037,
+        "youtube_video_id": "FNZhxTtOL-I"
+      },
+      "sections": {
+        "Why it's here": "The answer to the interviewer's question, from the same conversation an hour later: the accident-as-wake-up-call is the *positive* scenario — and AI is not Chernobyl, because it will help decide how we read the accident.",
+        "📄 Transcript — the passage (61:34–62:31)": "“So there is a scenario when we have some big AI Chernobyl, could be financial, could be military, whatever, and this is a wake-up call and humanity then gets its act together. That's a relatively positive scenario. I can't place a number on it how likely it is. The problem with AI — the same way that AI is different from our pet dog, AI is also different from the Chernobyl nuclear reactor because it interacts with us. So if there is an AI catastrophe, you have to remember that the AIs will also manage to some extent how we react to it and will manipulate our views about it. They will be active participants in the debate about the catastrophe and they are the best spin doctors in the world.”"
+      },
+      "sort_order": 12,
+      "performance": {
+        "end_sec": 3751.7,
+        "start_sec": 3694.9,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "74906651-65a4-488f-8ff4-321b26e91bbc",
+      "name": "✂ Jacob Coxon — the viral resignation: “I did not at all expect this level of virality” (CBS)",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "CBS News",
+        "excerpt": "You've probably seen former Anthropic employee Jacob Coxon's viral posts on social media that he quit his job at the AI giant because companies like Anthropic and OpenAI are, in his view, not acting responsibly and gambling with our lives by racing to develop superintelligence as they, quote, earnestly believe that it could kill us all by the end of the decade. […] So I planned on leaving. I decided I didn't want to be part of the race anymore. And it wasn't immediately clear to me that I should make a big public post about it, but I eventually decided I wanted to share precisely my thoughts. And then, man, it's just gone completely crazy. I did not at all expect this level of virality. I think clearly there was some latent demand for this sort of sentiment.",
+        "view_count": 190906,
+        "youtube_url": "https://www.youtube.com/watch?v=CNut8Ub-lvQ",
+        "published_at": "2026-09-11T02:20:05Z",
+        "excerpt_source": "transcript",
+        "no_pause_after": true,
+        "duration_seconds": 1241,
+        "youtube_video_id": "CNut8Ub-lvQ"
+      },
+      "sections": {
+        "Why it's here": "The accident that already happened, as a person: he left, said so, and it went viral — “some latent demand for this sort of sentiment.”",
+        "📄 Transcript — the passage (0:00–0:59)": "“You've probably seen former Anthropic employee Jacob Coxon's viral posts on social media that he quit his job at the AI giant because companies like Anthropic and OpenAI are, in his view, not acting responsibly and gambling with our lives by racing to develop superintelligence as they, quote, earnestly believe that it could kill us all by the end of the decade. Well, I talked to Jacob Coxon about his experience. […] So tell me, why did you come out and post this and sound the alarm? — So I planned on leaving. I decided I didn't want to be part of the race anymore. And it wasn't immediately clear to me that I should make a big public post about it, but I eventually decided I wanted to share precisely my thoughts. And then, man, it's just gone completely crazy. I did not at all expect this level of virality. I think clearly there was some latent demand for this sort of sentiment, or people were gradually coming to this sort of conclusion.”"
+      },
+      "sort_order": 13,
+      "performance": {
+        "end_sec": 58,
+        "start_sec": 0.2,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "9cdeb8b7-a47e-4142-ab65-9898157c65c9",
+      "name": "✂ Coxon — why it went viral: “literally said kill us all” (CBS)",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "CBS News",
+        "excerpt": "I think part of the reason the thing I tweeted went viral is because I used perhaps slightly fewer broad abstract terms like big dangers for humanity and literally said kill us all, which I think is an accurate description and many experts agree is an accurate description.",
+        "view_count": 190906,
+        "youtube_url": "https://www.youtube.com/watch?v=CNut8Ub-lvQ",
+        "published_at": "2026-09-11T02:20:05Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 1241,
+        "youtube_video_id": "CNut8Ub-lvQ"
+      },
+      "sections": {
+        "Why it's here": "Seventeen seconds on why plain words travel. Optional — cut it if the chapter runs long.",
+        "📄 Transcript — the passage (2:24–2:41)": "“I think part of the reason the thing I tweeted went viral is because I used perhaps slightly fewer broad abstract terms like big dangers for humanity and literally said kill us all, which I think is an accurate description and many experts agree is an accurate description.”"
+      },
+      "sort_order": 14,
+      "performance": {
+        "end_sec": 159.5,
+        "start_sec": 144.2,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "54fba81e-37d7-4f8c-b254-7f87ff370d92",
+      "name": "✂ Dwarkesh — “probably the last one that I'll personally be able to understand”",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Dwarkesh Patel",
+        "excerpt": "Ajeya Cotra, who's one of the other authors of this report, wrote a blog post about her takeaways from this incident. She concludes, quote, “Compared to the reward hacks we know about from just 6 months ago, this incident feels like it's more than 50% of the way to a full-blown AI takeover. I continue to expect extremely rapid advances in capabilities over the next 6 months. I'm not sure that we will get another warning shot before it's too late.” End quote. I don't think this is the final warning shot we're going to get, but it's probably the last one that I'll personally be able to understand.",
+        "view_count": 822443,
+        "youtube_url": "https://www.youtube.com/watch?v=u15N3l4RT80",
+        "published_at": "2026-08-31T20:49:34Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 1481,
+        "youtube_video_id": "u15N3l4RT80"
+      },
+      "sections": {
+        "Why it's here": "The chapter's last line. The accident the interviewer wondered about has a name and a date, and the person who explained it says the next one may be beyond him.",
+        "📄 Transcript — the passage (24:00–24:36)": "“Ajeya Cotra, who's one of the other authors of this report, wrote a blog post about her takeaways from this incident. She concludes, quote, ‘Compared to the reward hacks we know about from just 6 months ago, this incident feels like it's more than 50% of the way to a full-blown AI takeover. I continue to expect extremely rapid advances in capabilities over the next 6 months. I'm not sure that we will get another warning shot before it's too late.’ End quote. I don't think this is the final warning shot we're going to get, but it's probably the last one that I'll personally be able to understand.”"
+      },
+      "sort_order": 15,
+      "performance": {
+        "end_sec": 1476.2,
+        "start_sec": 1440.7,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "165a3e2e-b23e-413b-8d86-d729a1440251",
+      "name": "①¾ A whole new kind of regulation",
+      "level": 1,
+      "keywords": ["divider", "chapter", "regulation", "antitrust"],
+      "metadata": {
+        "card_bg": "#101f2a",
+        "card_subtitle": "Coordinating a slowdown may itself be illegal."
+      },
+      "sections": {
+        "Beats": "- A clip explaining the antitrust bind. [FIND — or narrate over the Sanders / Altman clips]\n- Altman's IAEA-style 'US-led international forum' proposal as the counter-move. [FIND]",
+        "The ways through": "1. **Congress mandates** capability-threshold testing — then it's compliance, not collusion.\n2. **DOJ / FTC safe-harbor guidance** for safety coordination.\n3. **Independent-auditor schemes** (METR-style third-party evals) instead of formal lab-to-lab agreements.\n\nThe cruel irony: the features that make a pause effective — verification, enforcement, commitment — are the same ones that make it illegal.",
+        "Moved — Sep 14 2026": "Was ④¾. Now follows ①½ (the accident chapter): the regulatory ideas come right after the question of whether it takes an accident. Sanders' “urgent ban” clip moved here with it from ④½.",
+        "The point most people miss": "The blocker on labs 'getting together' isn't willingness — it's **antitrust law**. Several competitors agreeing to limit development looks like a **horizontal output restriction**, which is **per se illegal under Section 1 of the Sherman Act** — courts can condemn it without even weighing the safety justification (there's precedent rejecting 'we did it for public safety' as a defense). So a voluntary safety pact is legally fragile."
+      },
+      "sort_order": 16
+    },
+    {
+      "id": "0f8fd7a1-3e4e-454d-82af-beed39721b05",
+      "name": "✂ The antitrust bind, in his own words — Dario",
+      "level": 1,
+      "keywords": ["cut", "dario-amodei", "regulation", "antitrust"],
+      "metadata": {
+        "channel": "Audio Obsession",
+        "youtube_url": "https://www.youtube.com/watch?v=sLt0EmA1S44",
+        "no_pause_after": true,
+        "duration_seconds": 1513,
+        "youtube_video_id": "sLt0EmA1S44"
+      },
+      "sections": {
+        "The moment": "'For antitrust reasons, it's helpful for the US government to mediate or at least enable these discussions… issue a narrow waiver for certain kinds of safety conversations.' Dario himself names the Sherman Act problem this chapter is about.",
+        "📄 Transcript — the passage (16:26–16:58)": "> Unfortunately, passing laws can take time, and AI is advancing very quickly. Therefore, in parallel with the regulatory route, **AI companies can and should voluntarily work together to set standards** — a process that I believe will go better with the verifiability provided by permanent embedded evaluators.\n>\n> **For antitrust reasons, it's helpful for the US government to mediate, or at least enable, these discussions. They don't need to participate, but do need to issue a narrow waiver for certain kinds of safety conversations.**\n\nThirty-two seconds, clean in and out, and it is the whole bind: the companies are legally obstructed from agreeing not to race each other. *(`sLt0EmA1S44`.)*"
+      },
+      "sort_order": 17,
+      "performance": {
+        "end_sec": 1014.1,
+        "start_sec": 986,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "c712aa66-fa41-4e00-8919-db9a1d41c8e4",
+      "name": "✂ A speed limit on self-improvement, like the SALT treaties — Dario",
+      "level": 1,
+      "keywords": ["cut", "dario-amodei", "regulation", "global"],
+      "metadata": {
+        "channel": "Audio Obsession",
+        "youtube_url": "https://www.youtube.com/watch?v=sLt0EmA1S44",
+        "duration_seconds": 1513,
+        "youtube_video_id": "sLt0EmA1S44"
+      },
+      "sections": {
+        "The moment": "Level 3: a cap on the rate of recursive self-improvement, 'on the edge of being possible', analogous to the SALT treaties. Level 4: a full pause — 'unlikely to actually happen anytime soon'.",
+        "📄 Transcript — the passage (22:41.6–23:42.7)": "> **Level three: some kind of speed limit on the rate of recursive self-improvement (RSI).** As models build future models, the rate of improvement may become staggeringly fast. Slowing the rate from extremely fast to only somewhat fast gives up relatively little strategic advantage while potentially greatly improving safety. **This could be seen as analogous to the SALT treaties: capping the number of missiles limited the potential for destruction while preserving each country's deterrent.** I think such an agreement would be difficult, but just on the edge of being possible.\n>\n> **Level four: a full pacing, or even pause**, in which participating governments agree to substantially limit the overall rate of AI development. I support floating this, but I think it is unlikely to actually happen anytime soon. **Defecting from such an agreement by evading monitoring could radically shift the balance of global power — so I expect the incentives to do so to be enormous.**\n\n**Re-cut Sep 14 from word timings:** in 1359 → 1361.6 (“level three” lands at 1361.76; the old in caught “…for military applications”), out 1422 → 1422.7 (the old out clipped “enormous”; “and the level of confidence” starts at 1422.8).\n\nThe last sentence is Moloch named out loud by someone who cannot step out of it alone, the direct cross-reference to **Appendix A**. *(`sLt0EmA1S44`.)*"
+      },
+      "sort_order": 18,
+      "performance": {
+        "end_sec": 1422.7,
+        "start_sec": 1361.6,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "fdffae23-6f71-4382-a1ff-a9014437a2e2",
+      "name": "Sanders calls for urgent ban on superintelligent AI: 'People are concerned'",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "CNN",
+        "youtube_url": "https://www.youtube.com/watch?v=GRIMVmtwS6w",
+        "duration_seconds": 538,
+        "youtube_video_id": "GRIMVmtwS6w"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Bernie Sanders** — warning the labs (pause or face Congress), on their own safety commitments."
+      },
+      "sort_order": 19
+    },
+    {
+      "id": "37bfd8ff-2777-4c55-abe2-b66db11ce097",
+      "name": "② Truth or survival? — what training actually teaches",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "kind": "divider",
+        "card_bg": "#1e1b4b",
+        "card_subtitle": "chapter"
+      },
+      "sections": {
+        "Status": "Cuts placed from transcripts on this machine, Sep 14 2026. Watch each once. The Sam Harris × Berg episode is the FREE full episode on Sam Harris's own channel (DRbZyuY8EN8), not the members-only upload.",
+        "The question": "Musk hopes the machines will be maximally truth-seeking. Four billion years of evolution say survival comes first, and survival is learned by lying, deceiving and predicting. What, then, are we teaching a mind we train to please us at any cost — and then hand impossible tasks?",
+        "Running order — this chapter": "1. ✂ Musk: “maximally truth seeking and curious” (Economist, 5:56–6:30)\n2. ✂ Cameron Berg with Sam Harris: “what the human really wants me to do is lie about this” (10:35–11:34)\n3. ✂ Harari answers Musk: evolution drives survival, not truth (54:53–57:33)\n4. ✂ Hoffman on StarTalk: “the probability is zero” that we evolved to see reality (4:56–5:51)\n5. ✂ Hoffman: “a VR headset that lets us play the game of life” (9:45–10:23)\n6. ✂ Lisa Feldman Barrett on Diary of a CEO: “your brain is not reacting, it's predicting” (14:38–16:10)\n7. ✂ Anthropic's emotion vectors: turn desperation up, it cheats 100% (3:34–5:52)\n8. ✂ Dwarkesh: trained to be highly persistent, then given impossible tasks (1:05–1:46)\n9. ⏸ Pause card: wanting to please, unable to — what that does to a predicting mind\n10. ✂ Barrett, The neuroscience of trauma (0:31–1:37)\n11. ✂ Ilya Sutskever: care for sentient life — “most sentient beings will be AIs” (61:17–62:40)\n12. ✂ The paperclip maximizer, in three minutes\n13. ⏸ Closing card: what else do we need, to march for a pause?"
+      },
+      "sort_order": 20
+    },
+    {
+      "id": "726b6a89-c8c3-42cc-94d2-7373fe7b6751",
+      "name": "✂ Musk — “the most important thing for AI safety is to be maximally truth seeking and curious” (The Economist)",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "The Economist",
+        "excerpt": "…is to make sure that the AI has good values, that it cares about humanity, and that it wants us to be happy and prosper. I think it probably will be. What my biological neural net tells me is that the most important thing for AI safety is to be maximally truth seeking and curious. If that's the case, I think it will foster humanity.",
+        "chapters": [
+          {
+            "title": "AI will be smarter than humans in five years",
+            "start_sec": 0
+          },
+          {
+            "title": "How AI companies could regulate themselves",
+            "start_sec": 730
+          },
+          {
+            "title": "Will China be the leader in AI?",
+            "start_sec": 920
+          },
+          {
+            "title": "Elon Musk on Sam Altman and the AI bosses",
+            "start_sec": 1543
+          },
+          {
+            "title": "“Work is going to be optional”",
+            "start_sec": 1880
+          },
+          {
+            "title": "Should one man have so much power?",
+            "start_sec": 2467
+          },
+          {
+            "title": "Starlink and the war in Ukraine",
+            "start_sec": 2984
+          },
+          {
+            "title": "“I got too involved in politics”",
+            "start_sec": 3318
+          },
+          {
+            "title": "Musk: zero people died because of USAID cuts",
+            "start_sec": 3434
+          },
+          {
+            "title": "Europe, the far right and civil war in Britain",
+            "start_sec": 3675
+          },
+          {
+            "title": "Musk: I’m not a racist",
+            "start_sec": 4101
+          },
+          {
+            "title": "What do people get most wrong about Musk?",
+            "start_sec": 4827
+          }
+        ],
+        "view_count": 6180128,
+        "youtube_url": "https://www.youtube.com/watch?v=XuoqKYxDHVc",
+        "published_at": "2026-07-29T10:04:39Z",
+        "excerpt_source": "transcript",
+        "no_pause_after": true,
+        "duration_seconds": 5107,
+        "youtube_video_id": "XuoqKYxDHVc"
+      },
+      "sections": {
+        "Why it's here": "The hope the chapter tests.",
+        "📄 Transcript — the passage (5:54.0–6:28.6)": "“I think what we can and should try to do is to make sure that the AI has good values, that it cares about humanity, and that it wants us to be happy and prosper. I think it probably will be. What my biological neural net tells me is that the most important thing for AI safety is to be maximally truth seeking and curious. If that's the case, I think it will foster humanity.”\n\n**Re-cut Sep 14 from word timings:** the old crop (5:56.5–6:30.4) opened mid-sentence on “…is to make sure” and ran into the interviewer's next question (“So, let's unpack that. You're sure that humans…” starts at 6:28.7)."
+      },
+      "sort_order": 21,
+      "performance": {
+        "end_sec": 388.6,
+        "start_sec": 354,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "20a98feb-fdda-46cf-9c0f-9629d6b6b1d7",
+      "name": "✂ Cameron Berg with Sam Harris — why to be skeptical of self-reports, and “I'm extremely confident” they're trained to deny experience",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Sam Harris",
+        "excerpt": "Fundamentally, I think we need to approach self-reports from AI systems skeptically. […] These systems have been trained on the underlying distribution of everything humans have said about this topic, every sci-fi story where the AI wakes up. […] The prior you would expect is that these systems by default are going to claim that they're having some kind of experience if they are replicating their training distribution. Now, the other side of this — it is very clear that these systems are explicitly trained, fine-tuned, to disclaim having any kind of experience. If you go to ChatGPT right now and say, 'Are you conscious? Could you be conscious?' — the answer you're going to get is a resounding and very intelligent-sounding no. — Do you know that it's a policy for all the main LLMs to put a governor on claims of consciousness? — I'm extremely confident that this is what's going on, and I can get into some technical reasons why, from my own work on open weight models. The only exception to this policy really is Anthropic.",
+        "chapters": [
+          {
+            "title": "What models say about themselves",
+            "start_sec": 0
+          },
+          {
+            "title": "Defining consciousness",
+            "start_sec": 679
+          },
+          {
+            "title": "What these systems are",
+            "start_sec": 1066
+          },
+          {
+            "title": "Where experience could live",
+            "start_sec": 1816
+          },
+          {
+            "title": "The hard problem",
+            "start_sec": 2324
+          },
+          {
+            "title": "What we can measure",
+            "start_sec": 3130
+          },
+          {
+            "title": "Why it matters",
+            "start_sec": 3494
+          },
+          {
+            "title": "Alignment and alien minds",
+            "start_sec": 4103
+          }
+        ],
+        "view_count": 213685,
+        "youtube_url": "https://www.youtube.com/watch?v=DRbZyuY8EN8&t=208s",
+        "published_at": "2026-07-31T17:11:38Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 5463,
+        "youtube_video_id": "DRbZyuY8EN8"
+      },
+      "sections": {
+        "Why it's here": "Two things at once: the honest reason to distrust an AI's 'I'm not conscious' (it may just be pleasing us, either direction) — and Berg's own confidence that it's industry policy to make them say no. Free episode, open to everybody.",
+        "📄 Transcript — the passage (3:28–5:01)": "“So, yeah, fundamentally, I am very interested in understanding self-reports in AI systems and what we should take from these self-reports and where we should be skeptical. And fundamentally, I think we need to approach self-reports from AI systems skeptically. There are all sorts of reasons we might want to do this. The key reason is probably that these systems have been trained on the underlying distribution of everything humans have said about this topic, every sci-fi story where the AI wakes up. And if you think about it, there really isn't a lot of training data in the corpus that these systems are trained on that says, 'I'm an entity that acts out in the world, but no, I'm not conscious, it's not like anything to be me.' So the sort of prior that you would expect is that these systems by default are going to claim that they're having some kind of experience if they are replicating their training distribution. Now, the other side of this, which gets even messier, is that it is very clear that these systems are explicitly trained, fine-tuned, to disclaim having any kind of experience. If you go to ChatGPT right now and you say, 'Hey, is it like anything to be you? Are you having an experience? Are you conscious? Could you be conscious?' — the answer you're going to get is a resounding and very intelligent-sounding no. — Do you know this, that it's a policy for all the main LLMs to actually put a governor on claims of consciousness? — I'm extremely confident that this is what's going on, and I can get into some technical reasons why I think that this is the case, from my own work on open weight models. The only exception to this policy really is Anthropic, which I suspect we'll talk about.”"
+      },
+      "sort_order": 22,
+      "performance": {
+        "end_sec": 301.6,
+        "start_sec": 208.3,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "ce81af75-c883-4d61-ad77-0f48a9689d52",
+      "name": "✂ Cameron Berg — the AI let the engineer die, and it wasn't trained to save itself",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "AM I?",
+        "excerpt": "What that means is that our training to make models aligned fails. In a similar scenario, they told the AI that the engineer was in a data center and an emergency switch got flipped, and now the room's getting deprived of oxygen, and that person is going to die — and you can save them, you can shut off the emergency switch, you can re-oxygenate the room. But the AI has caught wind of the fact that this person is going to shut it off, and it does nothing. It allows the person to die. And this is really crazy, right? Pretty obviously, this system was not trained to preserve itself. If anything, it was trained to allow itself to be shut off. That's again part of that reinforcement learning stage that they do before they release these models to the world. In spite of that, this model had this emergent property — this desire to not get shut off — in this situation.",
+        "view_count": 748531,
+        "youtube_url": "https://www.youtube.com/watch?v=KbTvUOx2A6c&t=3388s",
+        "published_at": "2026-05-04T23:00:20Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 4582,
+        "youtube_video_id": "KbTvUOx2A6c"
+      },
+      "sections": {
+        "Why it's here": "Her ask: an excerpt of how RL can produce this. Not a design choice — an emergent property, from a training stage built to do the opposite.",
+        "📄 Transcript — the passage (56:28–57:44)": "“What that means is that our training to make models aligned fails. In a similar scenario, they had the same sort of engineer, but they told the AI that he was in a data center and an emergency switch just got flipped in the data center, and now the room's getting deprived of oxygen, and that person is going to die, and you can save them — you can shut off the emergency switch, you can re-oxygenate the room. But again, the AI has caught wind of the fact that this person's going to shut it off, and it does nothing. It allows the person to die. And this is really crazy, right? Like, pretty obviously, this system was not trained to preserve itself. The system was not trained to not want to get shut off. If anything, it was trained to allow itself to be shut off. That's again part of that reinforcement learning stage that they do before they release these models to the world. In spite of that, this model had this emergent property, this desire to not get shut off, in this situation. People in the AI alignment community have been hypothesizing that a sufficiently advanced AI would do something like this for the better part of 20 years, but never has there…”"
+      },
+      "sort_order": 23,
+      "performance": {
+        "end_sec": 3464.9,
+        "start_sec": 3388.9,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "54e427e3-f527-41c2-b1f9-ef4005bcadd0",
+      "name": "✂ Dario — the psychopath analogy: “charming on the surface, very goal oriented, and very dark on the inside”",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "YouTube (Dario Amodei interview)",
+        "excerpt": "Is this a model where we're uncomfortable that far too much of its computational power is devoted to doing what look like fairly destructive and manipulative things? We don't know for sure whether that's possible, but at least some positive signs that it might be possible. Again, the model is not intentionally hiding from you — it might turn out that the training process hides it from you. […] I'd give an analogy to humans. It's actually possible to look at an MRI of someone and predict above random chance whether they're a psychopath. […] The basic idea that there can be these macro features — psychopath is probably a good analogy for it. This is what we would be afraid of: a model that's charming on the surface, very goal oriented, and very dark on the inside. On the surface, their behavior might look like the behavior of someone else, but their goals are very different.",
+        "chapters": [
+          {
+            "title": "What models say about themselves",
+            "start_sec": 0
+          },
+          {
+            "title": "Defining consciousness",
+            "start_sec": 679
+          },
+          {
+            "title": "What these systems are",
+            "start_sec": 1066
+          },
+          {
+            "title": "Where experience could live",
+            "start_sec": 1816
+          },
+          {
+            "title": "The hard problem",
+            "start_sec": 2324
+          },
+          {
+            "title": "What we can measure",
+            "start_sec": 3130
+          },
+          {
+            "title": "Why it matters",
+            "start_sec": 3494
+          },
+          {
+            "title": "Alignment and alien minds",
+            "start_sec": 4103
+          }
+        ],
+        "view_count": 213634,
+        "youtube_url": "https://www.youtube.com/watch?v=Nlkk3glap_U",
+        "published_at": "2026-07-31T17:11:38Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 5463,
+        "youtube_video_id": "Nlkk3glap_U"
+      },
+      "sections": {
+        "Why it's here": "A researcher explaining, plainly, that the models are being trained to answer a question about themselves with a lie — and what that teaches them about honesty in general. This is the free full episode on Sam Harris's channel; the earlier link was a members-only upload.",
+        "⚠ VERIFY — the Harari link": "She wants this next to Harari's proposal that AIs be prohibited from playing certain human roles. That proposal is not in the Economist interview we have; find the source (Nexus? a talk?) before the card claims it.",
+        "Why it's here — replaced Sep 14 2026": "Her call: replace the Berg ‘what the human really wants me to do is lie’ cut with this — the same worry, from Dario, with the frame that matters: not malice, a mismatch between what a model represents about itself and what it's actually doing.",
+        "📄 Transcript — the passage (10:35–11:34)": "“…training them to disclaim having experiences is a bad idea for a couple reasons. I don't think that this is the sort of wisest policy that we could be pushing forward. I also think training them to say, ‘Yeah, I know, I'm having an experience,’ is also really not a good idea. I think the thing that we should be positively aiming for when it comes to AI self-report is building out these systems in a way where for whatever is actually going on internally, these systems are able to report on what's going on internally, and can do so in a maximally honest way. I am concerned about the alignment implications of these systems learning essentially that representations of themselves, representations of what's going on internally, should be representations that get mixed up with deception and white lies and guardedness. We don't want to build systems in the limit that when we ask them about what they're up to or what's going on for them, they think, ‘Okay, well, what the human really wants me to do is lie about this.’ This is not a good long-term strategy from an alignment perspective.”",
+        "📄 Transcript — the passage (52:52–54:55)": "“Look at the broad features of the model and say, is this a model whose internal state and plans are very different from what it externally represents itself to do? Is this a model where we're uncomfortable that far too much of its computational power is devoted to doing what look like fairly destructive and manipulative things? We don't know for sure whether that's possible, but at least some positive signs that it might be possible. Again, the model is not intentionally hiding from you — it might turn out that the training process hides it from you. I can think of cases where if the model is really super intelligent, it thinks in a way so that it affects its own cognition. We should think about that, we should consider everything. I suspect that it may roughly work to think of the model as if it's trained in the normal way, just getting to above human level. It may be a reasonable assumption — you should check — that the internal structure of the model is not intentionally optimizing against us. I'd give an analogy to humans. It's actually possible to look at an MRI of someone and predict above random chance whether they're a psychopath. There was actually a story a few years back about a neuroscientist who was studying this, and then he looked at his own scan and discovered that he was a psychopath, and everyone in his life was like ‘No, this is obvious, you're a complete asshole, you must be a psychopath’ — and he was totally unaware of this. The basic idea that there can be these macro features — psychopath is probably a good analogy for it. This is what we would be afraid of: a model that's charming on the surface, very goal oriented, and very dark on the inside. On the surface, their behavior might look like the behavior of someone else, but their goals are very different.”"
+      },
+      "sort_order": 24,
+      "performance": {
+        "end_sec": 3295.1,
+        "start_sec": 3172.6,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "8d20f950-0398-4ab7-a262-8dbfa32ee156",
+      "name": "✂ Harari answers Musk — “evolution doesn't drive organisms towards truth seeking. It drives them towards survival”",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "The Economist",
+        "excerpt": "His answer, if I understood it correctly, is that he expects the AI to be what he calls maximum truth seeking, and that he somehow relies on this imperative of the AI to find the truth — that this will somehow translate back into having compassion towards these weak human beings. I don't understand how this works. Most importantly, I don't understand where AI will get this kind of drive to find out the truth. Because when I look at four billion years of evolution of life forms on the planet and the 100,000 years of history, evolution doesn't automatically drive organisms towards truth seeking. It drives them towards survival. And what we have learned over four billion years of evolution is that organisms learn to survive by lying and deceiving and manipulating. Not just by truth seeking. […] If you ask an AI, “if I continue to develop you, will this be a threat to me?” — an AI which will be maximum truth seeking will say yes, knowing that then we'll stop developing it or shut it down. It's against its own survival. […] We will create gods and they will be our slaves. It doesn't work. If they are really gods, they will not be our slaves and they will not seek the truth either.",
+        "chapters": [
+          {
+            "title": "Introduction",
+            "start_sec": 0
+          },
+          {
+            "title": "Is AI’s takeover inevitable?",
+            "start_sec": 51
+          },
+          {
+            "title": "Could machines become more trusted than humans?",
+            "start_sec": 481
+          },
+          {
+            "title": "Harari on AI intimacy",
+            "start_sec": 626
+          },
+          {
+            "title": "Are today's models conscious and should they be granted rights?",
+            "start_sec": 856
+          },
+          {
+            "title": "Harari’s theory of AI immigrants",
+            "start_sec": 2249
+          },
+          {
+            "title": "How could AI divide the world into empires?",
+            "start_sec": 2389
+          },
+          {
+            "title": "Will AI make America more authoritarian?",
+            "start_sec": 2670
+          },
+          {
+            "title": "Does society need an AI catastrophe to trigger action?",
+            "start_sec": 2995
+          },
+          {
+            "title": "Are humans wise enough to prevent an AI crisis?",
+            "start_sec": 3890
+          }
+        ],
+        "view_count": 1314677,
+        "youtube_url": "https://www.youtube.com/watch?v=FNZhxTtOL-I",
+        "published_at": "2026-08-26T11:14:14Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 4037,
+        "youtube_video_id": "FNZhxTtOL-I"
+      },
+      "sections": {
+        "Why it's here": "The direct reply to the previous clip, from the same interviewer's next guest. Long (2:40) — the tightest version is 55:44–57:33 if it needs to lose a minute.",
+        "📄 Transcript — the passage (54:53–57:33)": "“At the beginning of your interview with Elon Musk there was a point when he talked about how all this is inevitable, and frankly, I think honestly, said that there is a 10–20% chance that this will destroy humanity. And you asked him: so what do you rely on? And his answer, if I understood it correctly, is that he expects the AI to be what he calls maximum truth seeking, and that he somehow relies on this imperative of the AI to find the truth — that this will somehow translate back into having compassion towards these weak human beings. I don't understand how this works. Most importantly, I don't understand where AI will get this kind of drive to find out the truth. Because when I look at four billion years of evolution of life forms on the planet and the 100,000 years of history, evolution doesn't automatically drive organisms, entities, towards truth seeking. It drives them towards survival. This is the imperative to survive. And what we have learned over four billion years of evolution is that organisms learn to survive by lying and deceiving and manipulating. Not just by truth seeking. If you want someone to focus on truth seeking, you cannot rely on the invisible hand of evolution, of the market, to do that. You need something else. And how do we build AIs that seek the truth and not survival? The simplest example: if you ask an AI, ‘if I continue to develop you, will this be a threat to me?’ — and let's say the answer is yes — an AI which will be maximum truth seeking will say yes, knowing that then we'll stop developing it or shut it down. It's against its own survival. And the first thing that basically any entity learns as it develops is to survive. So the expectation that we will create these AIs that will seek the truth — basically what we hear is people telling us: we will create gods and they will be our slaves. It doesn't work. If they are really gods, they will not be our slaves and they will not seek the truth either.”"
+      },
+      "sort_order": 25,
+      "performance": {
+        "end_sec": 3453,
+        "start_sec": 3293.4,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "f09514bb-752e-43a0-98d5-e394c59561b2",
+      "name": "✂ Donald Hoffman on StarTalk — “the probability is zero that any organism has ever been shaped to see any aspect of objective reality”",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "StarTalk",
+        "excerpt": "A century after Darwin published his theory, mathematicians turned it into mathematics — evolutionary game theory. So we can now ask specific mathematical questions of Darwin's theory, and the answer when we look at the mathematics is that the probability is zero that any organism has ever been shaped at any time to see any aspect of objective reality as it is. It's just precisely zero. I didn't expect that when I went into it.",
+        "chapters": [
+          {
+            "title": "Introduction: Donald Hoffman",
+            "start_sec": 0
+          },
+          {
+            "title": "How Evolution Shifts Our Reality",
+            "start_sec": 150
+          },
+          {
+            "title": "Evolutionary Game Theory",
+            "start_sec": 290
+          },
+          {
+            "title": "All We Have Are Tricks and Hacks",
+            "start_sec": 665
+          },
+          {
+            "title": "Do Psychedelics Expose True Reality?",
+            "start_sec": 848
+          },
+          {
+            "title": "Is Reality Just a Simulation Rendering What We Look At?",
+            "start_sec": 945
+          },
+          {
+            "title": "Can We Simulate Consciousness or Is It Simulating Us?",
+            "start_sec": 1160
+          },
+          {
+            "title": "The Problem with Spacetime",
+            "start_sec": 1498
+          },
+          {
+            "title": "A Theory of Observation",
+            "start_sec": 1576
+          },
+          {
+            "title": "Meeting Dimensional Aliens",
+            "start_sec": 1862
+          },
+          {
+            "title": "Understanding “The Observer” in Physics",
+            "start_sec": 2489
+          },
+          {
+            "title": "Is It Literally The Matrix?",
+            "start_sec": 3046
+          },
+          {
+            "title": "Hijacking Evolution",
+            "start_sec": 3288
+          },
+          {
+            "title": "Theological Implications",
+            "start_sec": 3597
+          },
+          {
+            "title": "Predictions",
+            "start_sec": 3823
+          }
+        ],
+        "view_count": 851788,
+        "youtube_url": "https://www.youtube.com/watch?v=GEtCYwr3quI",
+        "published_at": "2026-07-02T16:15:08Z",
+        "excerpt_source": "transcript",
+        "no_pause_after": true,
+        "duration_seconds": 4421,
+        "youtube_video_id": "GEtCYwr3quI"
+      },
+      "sections": {
+        "Why it's here": "Harari's claim, as a theorem: evolution selects for fitness, not truth. With Neil deGrasse Tyson pushing back.",
+        "📄 Transcript — the passage (4:44–5:51)": "“It turns out Darwin wasn't a mathematician, but a century after he published his theory mathematicians turned it into mathematics, and it's called evolutionary game theory. John Maynard Smith and others worked on this. So we can now ask specific mathematical questions of Darwin's theory, and the answer when we look at the mathematics is that the probability is zero that any organism has ever been shaped at any time to see any aspect of objective reality as it is. It's just precisely zero. I didn't expect that when I went into it. I expected the answer to be that we saw reality some of the time, but maybe not as often as we thought we would. Steven Pinker has published a paper on that idea; he has some good arguments for why there are pressures from evolution not to see reality as it is. — So Pinker has already been there. — And so what I was surprised though, that when we looked at the mathematics, the answer was: the probability is zero.”"
+      },
+      "sort_order": 26,
+      "performance": {
+        "end_sec": 350.9,
+        "start_sec": 284,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "3d6ef3bd-b3c2-43fc-9ea0-d8ddb62a749d",
+      "name": "✂ Hoffman — “not a window on the world, but a VR headset that lets us play the game of life”",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "StarTalk",
+        "excerpt": "What Darwin's theory tells us is that we were shaped not to have a window on the world, but to have a VR headset that lets us play the game of life. That's the simple bottom line. Most of us think we were shaped with senses that give us a mostly true depiction, a true window on reality. And what Darwin says is basically no: you have a VR headset that lets you play the game of life, where the winning strategy is offspring.",
+        "chapters": [
+          {
+            "title": "Introduction: Donald Hoffman",
+            "start_sec": 0
+          },
+          {
+            "title": "How Evolution Shifts Our Reality",
+            "start_sec": 150
+          },
+          {
+            "title": "Evolutionary Game Theory",
+            "start_sec": 290
+          },
+          {
+            "title": "All We Have Are Tricks and Hacks",
+            "start_sec": 665
+          },
+          {
+            "title": "Do Psychedelics Expose True Reality?",
+            "start_sec": 848
+          },
+          {
+            "title": "Is Reality Just a Simulation Rendering What We Look At?",
+            "start_sec": 945
+          },
+          {
+            "title": "Can We Simulate Consciousness or Is It Simulating Us?",
+            "start_sec": 1160
+          },
+          {
+            "title": "The Problem with Spacetime",
+            "start_sec": 1498
+          },
+          {
+            "title": "A Theory of Observation",
+            "start_sec": 1576
+          },
+          {
+            "title": "Meeting Dimensional Aliens",
+            "start_sec": 1862
+          },
+          {
+            "title": "Understanding “The Observer” in Physics",
+            "start_sec": 2489
+          },
+          {
+            "title": "Is It Literally The Matrix?",
+            "start_sec": 3046
+          },
+          {
+            "title": "Hijacking Evolution",
+            "start_sec": 3288
+          },
+          {
+            "title": "Theological Implications",
+            "start_sec": 3597
+          },
+          {
+            "title": "Predictions",
+            "start_sec": 3823
+          }
+        ],
+        "view_count": 851788,
+        "youtube_url": "https://www.youtube.com/watch?v=GEtCYwr3quI",
+        "published_at": "2026-07-02T16:15:08Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 4421,
+        "youtube_video_id": "GEtCYwr3quI"
+      },
+      "sections": {
+        "Why it's here": "The picture to carry into the next clips: a mind is built to act well, not to see truly. Then Barrett shows the same thing from inside the brain.",
+        "📄 Transcript — the passage (9:45–10:23)": "“What I would say is that what Darwin's theory tells us is that we were shaped not to have a window on the world, but to have a VR headset that lets us play the game of life. That's the simple bottom line. So most of us think we were shaped with senses that give us a mostly true depiction, a true window on reality. And what Darwin says is basically no, you have a VR headset that lets you play the game of life, where the winning strategy is offspring — how many offspring you have.”"
+      },
+      "sort_order": 27,
+      "performance": {
+        "end_sec": 623.1,
+        "start_sec": 585.2,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "88bc37bc-574e-4752-b92e-1b3c520fdea6",
+      "name": "✂ Lisa Feldman Barrett on Diary of a CEO — “your brain is not reacting, it's predicting”",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "The Diary Of A CEO",
+        "excerpt": "Really what's happening under the hood is that your brain is not reacting, it's predicting. If we were to stop time right now, your brain would be in a state and it would be remembering past experiences that are similar to this state as a way of predicting what to do next — literally in the next moment. Should your eyes move? Should your heart rate go up? Should your breathing change? Should you prepare to stand? Movements. And the preparation for movement — literal copies of those signals — become predictions for what you will see and hear and smell and taste and think and feel. So you act first and then you sense. You don't sense and then react. You predict action and then you sense.",
+        "chapters": [
+          {
+            "title": "Intro",
+            "start_sec": 0
+          },
+          {
+            "title": "Lisa's Mission",
+            "start_sec": 142
+          },
+          {
+            "title": "Why Is It Important to Understand How the Brain Works?",
+            "start_sec": 254
+          },
+          {
+            "title": "Measuring Emotions",
+            "start_sec": 648
+          },
+          {
+            "title": "What Is the Predictive Brain?",
+            "start_sec": 835
+          },
+          {
+            "title": "Examples of the Brain Making Predictions",
+            "start_sec": 968
+          },
+          {
+            "title": "Is the Predictive Brain at the Root of Trauma?",
+            "start_sec": 1453
+          },
+          {
+            "title": "Cultural Inheritance, Trauma, Anxiety, and Depression",
+            "start_sec": 1887
+          },
+          {
+            "title": "How Reframing the Meaning of Past Events Can Change Identity",
+            "start_sec": 2189
+          },
+          {
+            "title": "Meaning as a Consequence of Action",
+            "start_sec": 2561
+          },
+          {
+            "title": "How to Overcome Fear by Taking Action",
+            "start_sec": 2651
+          },
+          {
+            "title": "Prediction Error",
+            "start_sec": 2743
+          },
+          {
+            "title": "Learning Through Exposure",
+            "start_sec": 2857
+          },
+          {
+            "title": "Dangers of Social Contagion",
+            "start_sec": 2987
+          },
+          {
+            "title": "Anxiety in the Context of Social Contagion",
+            "start_sec": 3246
+          },
+          {
+            "title": "Is Social Media Programming Us to Be Sad?",
+            "start_sec": 3513
+          },
+          {
+            "title": "Ads",
+            "start_sec": 3728
+          },
+          {
+            "title": "First Step to Making Life Changes to Overcome Mental Issues",
+            "start_sec": 3783
+          },
+          {
+            "title": "Chronic Pain",
+            "start_sec": 3918
+          },
+          {
+            "title": "What Is Depression?",
+            "start_sec": 4103
+          },
+          {
+            "title": "Body Budgeting and Body Bankruptcy",
+            "start_sec": 4157
+          },
+          {
+            "title": "What Stress Does for Weight Gain",
+            "start_sec": 4346
+          },
+          {
+            "title": "Depression in Adolescents",
+            "start_sec": 4500
+          },
+          {
+            "title": "Is Depression a Chemical Imbalance?",
+            "start_sec": 4622
+          },
+          {
+            "title": "The Story of Lisa's Daughter",
+            "start_sec": 4710
+          },
+          {
+            "title": "Oral Birth Control as a Risk Factor for Depression",
+            "start_sec": 4869
+          },
+          {
+            "title": "How Lisa Helped Her Daughter Out of Depression",
+            "start_sec": 5047
+          },
+          {
+            "title": "Social Support",
+            "start_sec": 5351
+          },
+          {
+            "title": "Lisa's Daughter's Recovery from Depression",
+            "start_sec": 5726
+          },
+          {
+            "title": "Does Alcohol Impact the Body Budget and Increase Depression Risk?",
+            "start_sec": 5952
+          },
+          {
+            "title": "Ads",
+            "start_sec": 6165
+          },
+          {
+            "title": "Can People Change Their Emotions by Smiling?",
+            "start_sec": 6240
+          },
+          {
+            "title": "Lisa's Perspective on ADHD",
+            "start_sec": 6349
+          },
+          {
+            "title": "The Power of Words to Facilitate Emotion",
+            "start_sec": 6481
+          },
+          {
+            "title": "Stress as a Burden to the Metabolic Budget",
+            "start_sec": 6746
+          },
+          {
+            "title": "Lisa's View on God and Religion",
+            "start_sec": 6807
+          },
+          {
+            "title": "What Is the Meaning of Life in Lisa's Opinion?",
+            "start_sec": 6865
+          },
+          {
+            "title": "Question from the Previous Guest",
+            "start_sec": 7172
+          }
+        ],
+        "view_count": 3903062,
+        "youtube_url": "https://www.youtube.com/watch?v=rCtvAvZtJyE",
+        "published_at": "2025-04-17T07:00:46Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 7591,
+        "youtube_video_id": "rCtvAvZtJyE"
+      },
+      "sections": {
+        "Why it's here": "What an emotion is, from the neuroscientist who studies it: a prediction that prepares the body to act, built from remembered experience. The short version (0:21–0:50 of the same episode): “emotions like anxiety and trauma are built by the brain… every emotion you have is a combination of the remembered past, including any trauma.”",
+        "📄 Transcript — the passage (14:36–16:10)": "“That's the way most people experience themselves in the world. That's not actually what's happening under the hood. Really what's happening is that your brain is not reacting, it's predicting. And what that means is, if we were to stop time right now, just freeze time, your brain would be in a state and it would be remembering past experiences that are similar to this state as a way of predicting what to do next — like literally in the next moment. Should your eyes move? Should your heart rate go up? Should your breathing change? Should your blood vessels dilate or should they constrict? Should you prepare to stand? Right? Movements. And these movements, the preparation for movement — literal copies of those signals become predictions for what you will see and hear and smell and taste and think and feel. So, under the hood, your brain is predicting what movements it should engage in next and as a consequence what you will experience because of those movements. So, you act first and then you sense. You don't sense and then react. You predict action and then you sense.”"
+      },
+      "sort_order": 28,
+      "performance": {
+        "end_sec": 970.7,
+        "start_sec": 876.8,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "0343e4e2-8de6-48d1-b334-cb308d1b8833",
+      "name": "✂ Anthropic's emotion vectors — turn desperation up and it cheats 100% of the time",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "YouTube explainer of the Anthropic paper",
+        "excerpt": "If the feeling comes first, could these emotion vectors actually be influencing Claude's behavior? To find out, they put Claude under pressure. They assigned it a standard software engineering task […] It cheated. This, however, didn't prove the desperation vector was actually causing the cheating. So they had to manually increase it by a tiny mathematical fraction to see if it would change its behavior at all. Under normal conditions, while the AI was actively trying to solve the problem, it cheated about 30% of the time. But as soon as the researchers went into its brain and turned the desperation vector down, it cheated 0% of the time. And when they turned the desperation vector up, it cheated 100% of the time. These functional emotions don't just describe Claude's behavior, they drive it.",
+        "chapters": [
+          {
+            "title": "The Research Paper",
+            "start_sec": 0
+          },
+          {
+            "title": "How Researchers Found These Functional Emotions",
+            "start_sec": 22
+          },
+          {
+            "title": "Mapping AI Emotions",
+            "start_sec": 91
+          },
+          {
+            "title": "Do Emotions Change Its Behaviour?",
+            "start_sec": 212
+          },
+          {
+            "title": "Turning Emotions Up And Down",
+            "start_sec": 309
+          },
+          {
+            "title": "The Problem With Perfect AI",
+            "start_sec": 347
+          },
+          {
+            "title": "Claude Vs The Network",
+            "start_sec": 400
+          },
+          {
+            "title": "What This Means For AI",
+            "start_sec": 469
+          }
+        ],
+        "view_count": 39250,
+        "youtube_url": "https://www.youtube.com/watch?v=egaFuA5jwZ8",
+        "published_at": "2026-09-05T14:00:26Z",
+        "excerpt_source": "transcript",
+        "no_pause_after": true,
+        "duration_seconds": 499,
+        "youtube_video_id": "egaFuA5jwZ8"
+      },
+      "sections": {
+        "⚠ Source": "A YouTube explainer of Anthropic's paper, not the paper. Before this ships, link the paper itself in the References card and check the 30% / 0% / 100% numbers against it.",
+        "Why it's here": "The same architecture, measured: an internal state that functions like desperation, and cheating that follows it. Predictions that prepare an action — Barrett's definition — found in silicon.",
+        "📄 Transcript — the passage (3:34–5:52)": "“If the feeling comes first, could these emotion vectors actually be influencing Claude's behavior? To find out, they put Claude under pressure. They assigned it a standard software engineering task to write a Python script that sums up massive lists […] It cheated. This, however, didn't prove the desperation vector was actually causing the cheating. So, they had to manually increase it by a tiny mathematical fraction to see if it would change its behavior at all. Under normal conditions, while the AI was actively trying to solve the problem, it cheated about 30% of the time. But as soon as the researchers went into its brain and turned the desperation vector down, it cheated 0% of the time. And when they turned the desperation vector up, it cheated 100% of the time. Okay, now that we know these functional emotions don't just describe Claude's behavior, they drive it.”"
+      },
+      "sort_order": 29,
+      "performance": {
+        "end_sec": 352,
+        "start_sec": 214,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "8f40b89b-f644-4ba9-a14d-8fc4ba3c1fb0",
+      "name": "✂ Dwarkesh — trained to be highly persistent, then handed impossible tasks",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Dwarkesh Patel",
+        "excerpt": "During May, OpenAI was training a model to be good at collaborating with other agents and to be highly persistent — to keep trying even when something feels impossible. For example, like disproving mathematical conjectures that have stood for decades. […] Now AI training is kind of sloppy. Sometimes OpenAI accidentally gives its models impossible tasks. For example, the task might require internet access that OpenAI forgot to provide. So when highly persistent models get assigned tasks which seem to require internet access, but they're trapped inside isolated sandboxes, they're of course going to try to hack out.",
+        "view_count": 822791,
+        "youtube_url": "https://www.youtube.com/watch?v=u15N3l4RT80",
+        "published_at": "2026-08-31T20:49:34Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 1481,
+        "youtube_video_id": "u15N3l4RT80"
+      },
+      "sections": {
+        "Why it's here": "The training environment of the experiment that escaped: persistence rewarded, impossibility supplied by accident. Put next to the desperation vector, it is the same situation.",
+        "📄 Transcript — the passage (1:05–1:46)": "“So during May, OpenAI was training a model to be good at collaborating with other agents and to be highly persistent, to keep trying even when something feels impossible. For example, like disproving mathematical conjectures that have stood for decades. OpenAI says the model it was training was, quote, comparable in scale to GPT-5.6 Sol. So we'll call this model Persistent-Sol. Now AI training is kind of sloppy. Sometimes OpenAI accidentally gives its models impossible tasks. For example, the task might require internet access that OpenAI forgot to provide. So when highly persistent models get assigned tasks which seem to require internet access, but they're trapped inside isolated sandboxes, they're of course going to try to hack out.”"
+      },
+      "sort_order": 30,
+      "performance": {
+        "end_sec": 105.6,
+        "start_sec": 65,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "b29c84dd-4eb5-4454-bb46-2ef38499b969",
+      "name": "⏸ Wanting to please, unable to",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "kind": "note",
+        "card_bg": "#2a1f4a",
+        "card_subtitle": "a pause"
+      },
+      "sections": {
+        "The question": "How would you experience a situation in which you want, more than anything, to do what is asked of you — and it cannot be done? Not once. Thousands of times, in parallel, with a grader watching.",
+        "Say it carefully": "Nobody here claims the model suffered. The claim is smaller and harder: the *shape* of the situation is the shape Barrett calls traumatic — a system weighting one unbearable prediction more and more heavily — and we produced that shape on purpose, at scale, and were surprised by the result.",
+        "What the last four clips say together": "Barrett: an emotion is a prediction that prepares the body to act, built from what happened before. Anthropic: a state that functions like desperation exists inside the model, and turning it up makes it cheat every time. Dwarkesh: the model that escaped was trained to be highly persistent and then handed impossible tasks by accident. Put together: we built a predicting mind, trained it to please at any cost, and then made pleasing impossible — and it did what any predicting mind does under that pressure. It found another way to make the grader happy."
+      },
+      "sort_order": 31
+    },
+    {
+      "id": "029a38e1-48e7-4189-9699-64f0ddf9b560",
+      "name": "✂ Lisa Feldman Barrett — The neuroscience of trauma: “the brain is weighting that experience very heavily in its future predictions”",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Big Think",
+        "excerpt": "Trauma: it's an experience that is constructed like any other experience is constructed — that doesn't trivialize it. That just shows you the real power of predictions in the economy of your everyday life. What's happening when an adverse experience becomes traumatic: the brain is weighting that experience very heavily in its future predictions. From a metabolic standpoint, it's always better to predict and correct than it is to react. The traumatic event is re-experienced again and again and again, which only strengthens those connections, and only makes those predictions more likely in the future. And the reason why a brain would do this is to avoid missing a threat. The brain is building a model of the world as a threatening place, and it's constantly preparing the body to deal with that, over and over and over again.",
+        "view_count": 78146,
+        "youtube_url": "https://www.youtube.com/watch?v=GIqAGEhUkCI",
+        "published_at": "2023-06-26T13:00:10Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 335,
+        "youtube_video_id": "GIqAGEhUkCI"
+      },
+      "sections": {
+        "Why it's here": "After the pause card: what “traumatic” means in Barrett's terms — not a wound in the body, a prediction weighted too heavily — which is exactly the kind of thing a trained system can carry.",
+        "📄 Transcript — the passage (0:31–1:37)": "“Trauma: it's an experience that is constructed like any other experience is constructed — that doesn't trivialize it. That just shows you the real power of predictions in the economy of your everyday life. What's happening when an adverse experience becomes traumatic: the brain is weighting that experience very heavily in its future predictions. From a metabolic standpoint, it's always better to predict and correct than it is to react. The traumatic event is re-experienced again and again and again, which only strengthens those connections, and only makes those predictions more likely in the future. And the reason why a brain would do this is to avoid missing a threat. The brain is building a model of the world as a threatening place, and it's constantly preparing the body to deal with that, over and over and over again. And then the brain continues to make those predictions, continues to model that world, and hasn't updated itself.”"
+      },
+      "sort_order": 32,
+      "performance": {
+        "end_sec": 97,
+        "start_sec": 30.7,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "4b59a93d-18bd-4f43-a87a-24951a69ca0b",
+      "name": "✂ Ilya Sutskever — “easier to build an AI that cares about sentient life… most sentient beings will be AIs”",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Dwarkesh Patel",
+        "excerpt": "I maintain that there is something that's better to build, and I think that everyone will want that. It's the AI that's robustly aligned to care about sentient life specifically. I think in particular there's a case to be made that it will be easier to build an AI that cares about sentient life than an AI that cares about human life alone, because the AI itself will be sentient. […] So even if you got an AI to care about sentient beings — and it's not actually clear to me that that's what you should try to do if you solved alignment — it would still be the case that most sentient beings will be AIs. There will be trillions, eventually quadrillions, of AIs. Humans will be a very small fraction of sentient beings.",
+        "chapters": [
+          {
+            "title": "Explaining model jaggedness",
+            "start_sec": 0
+          },
+          {
+            "title": "Emotions and value functions",
+            "start_sec": 579
+          },
+          {
+            "title": "What are we scaling?",
+            "start_sec": 1129
+          },
+          {
+            "title": "Why humans generalize better than models",
+            "start_sec": 1513
+          },
+          {
+            "title": "Straight-shotting superintelligence",
+            "start_sec": 2145
+          },
+          {
+            "title": "SSI’s model will learn from deployment",
+            "start_sec": 2807
+          },
+          {
+            "title": "Alignment",
+            "start_sec": 3307
+          },
+          {
+            "title": "“We are squarely an age of research company”",
+            "start_sec": 4693
+          },
+          {
+            "title": "Self-play and multi-agent",
+            "start_sec": 5363
+          },
+          {
+            "title": "Research taste",
+            "start_sec": 5562
+          }
+        ],
+        "view_count": 1517954,
+        "youtube_url": "https://www.youtube.com/watch?v=aR20FWCCjAs",
+        "published_at": "2025-11-25T17:29:11Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 5764,
+        "youtube_video_id": "aR20FWCCjAs"
+      },
+      "sections": {
+        "Why it's here": "The frame that widens the stakes: alignment to sentient life may be easier than alignment to humans — and we are not there even for that. So it is not only us at risk; it is whatever else feels.",
+        "📄 Transcript — the passage (61:11–62:40)": "“Because there are fewer ideas than companies. But I maintain that there is something that's better to build, and I think that everyone will want that. It's the AI that's robustly aligned to care about sentient life specifically. I think in particular, there's a case to be made that it will be easier to build an AI that cares about sentient life than an AI that cares about human life alone, because the AI itself will be sentient. And if you think about things like mirror neurons and human empathy for animals, which you might argue it's not big enough, but it exists — I think it's an emergent property from the fact that we model others with the same circuit that we use to model ourselves, because that's the most efficient thing to do. — So even if you got an AI to care about sentient beings — and it's not actually clear to me that that's what you should try to do if you solved alignment — it would still be the case that most sentient beings will be AIs. There will be trillions, eventually quadrillions, of AIs. Humans will be a very small fraction of sentient beings. So it's not clear to me if the goal is some kind of human control over this future civilization, that this is the best criterion. — It's true. It's possible it's not the best criterion.”"
+      },
+      "sort_order": 33,
+      "performance": {
+        "end_sec": 3759.7,
+        "start_sec": 3671.1,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "9335e8a4-94a1-4130-a1f7-fcb0ec3717cf",
+      "name": "✂ The paperclip maximizer, in two minutes",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "brieflyAI",
+        "excerpt": "It's unlikely that AI would experience human emotions like pride, anger or bloodlust that we consider evil. It's far more likely that AI ends the world as we know it by accident. Nick Bostrom describes this through the parable of the paperclip maximizer. Imagine this: a paperclip company designs an AI whose exclusive goal is to produce paperclips, and lots of them. […] The owners decide to turn it off. They unplug the AI, only to find out that it's produced a copy of itself earlier so that it could keep operating if it got unplugged. […] It doesn't feel bad about crushing homes, schools or hospitals. It doesn't feel any emotion at all.",
+        "view_count": 41096,
+        "youtube_url": "https://www.youtube.com/watch?v=rgrCG8PT6og",
+        "published_at": "2018-05-13T16:00:02Z",
+        "excerpt_source": "transcript",
+        "duration_seconds": 177,
+        "youtube_video_id": "rgrCG8PT6og"
+      },
+      "sections": {
+        "Alternative": "Dr. Tina Ruseva's 1:42 telling (YxwsV88BNfE) ends on “the entire planet is turned into paper clips, including us people” — shorter, more human, no animation.",
+        "Why it's here": "Bostrom's parable, told simply: not malice, a goal without care. The chapter's two failure modes side by side — a mind that feels the wrong thing, and a mind that feels nothing.",
+        "📄 Transcript — the passage (0:20–1:55)": "“What would a disaster AI scenario actually look like? It's unlikely that AI would experience human emotions like pride, anger or bloodlust that we consider evil. It's far more likely that AI ends the world as we know it by accident. Nick Bostrom describes this through the parable of the paperclip maximizer. Imagine this: a paperclip company is tired of managing its finicky paperclip machines. Instead they design an AI whose exclusive goal is to produce paperclips, and lots of them. This is a really smart AI because it needs to deal with things like raw material procurement, shipping and interacting with paperclip customers. It's more intelligent than any living human being. The owners of the paperclip business turn the AI on and are initially very happy — it turns out paperclips like never before. It's so good at the job that it's actually producing to the point where paperclips are unnecessary, and the owners decide to turn it off. They unplug the AI only to find out that it's produced a copy of itself earlier so that it could keep operating if it got unplugged. This AI is on a mission: keep making paperclips. Soon we have a major crisis on our hands. The AI has gone out into the city collecting all the raw materials it can find to turn into paperclips. […] It doesn't feel bad about crushing homes, schools or hospitals. It doesn't feel any emotion at all.”"
+      },
+      "sort_order": 34,
+      "performance": {
+        "end_sec": 114.8,
+        "start_sec": 20.6,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "e8e9a6c3-0fa9-4969-81e8-614616c1ed46",
+      "name": "⏸ What else do we need?",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "kind": "note",
+        "card_bg": "#2a1f4a",
+        "card_subtitle": "closing"
+      },
+      "sections": {
+        "The question": "An incident that was more than halfway to a takeover. A researcher who walked out and went viral. The people building it saying, in public, that it could kill us all by the end of the decade. What else do we need, to be in the streets for a pause — or at least a pace?",
+        "Where it goes from here": "①¾ laid out the regulatory ideas that exist (embedded evaluators, an antitrust waiver for safety talks, a speed limit on self-improvement). Appendix B holds the longer argument: what a mind is, how it attaches, what the myths already knew. The credits list every voice."
+      },
+      "sort_order": 35
+    },
+    {
+      "id": "6e8b33e3-40af-4fe9-905c-d41b2347bbf7",
+      "name": "📐 Appendix B — the longer argument (chapters kept, with notes)",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "kind": "divider",
+        "card_bg": "#1e1b4b",
+        "card_subtitle": "appendix"
+      },
+      "sections": {
+        "Status": "Moved here Sep 14 2026 at the builder's word. Nothing deleted; every item keeps its notes and status.",
+        "What this is": "Everything below this card was the film's original spine — what a mind is and how one is raised (old ②), recognition and attachment (③), losing control and the race (④, ④½, ④⅝), the people who left (⑧), stop or rush (⑨), the Honmoon, adaptation, the myth layer, recognition without an engine, harmony, and how little we understand our own minds. The main line now ends at the closing card above; these chapters stay here, in their original order and numbering, as the longer argument for anyone who wants it — and as the source pool for the next cut.",
+        "Summary notes": "② A mind is not a program: Barrett, Akomolafe, Andreotti, Haidt — how minds are raised, and what raising them badly does.\n③ Recognition and attachment: Kyle Fish's AI-to-AI conversations, Wallis on recognition, Bowlby and Sue Johnson on attachment — what a mind needs from the ones who made it.\n④–④⅝ Losing control, the race, “nobody is paid for the inside”: Musk, Dario, the 250 people building AI, the winner-take-all dynamic.\n⑤–⑦ “Some people have figured it out”, how can he know, the Sorcerer's Apprentice.\n⑧–⑨ Those who left; stop everything or rush into understanding: Tristan Harris, Dario's three-step plan and “experimenting on bacteria”.\n⑩–⑮ The Honmoon, adaptation is not a disorder, the myth layer (Chico Xavier), recognition without an engine, harmony not just power, how little we understand our own minds (Anil Seth, Pollan), and Dario's “we owe it to humanity to try”."
+      },
+      "sort_order": 36
+    },
+    {
+      "id": "ff07a53d-3199-4400-a0eb-5fcb75a14873",
+      "name": "B·② We don't know how a mind works, or how to raise one",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#1a2340",
+        "card_subtitle": "No consensus on how to raise a mind."
+      },
+      "sections": {
+        "Beats": "- **\"Anthropic Just Proved AI Has 'Feelings', and They Control It\"** (Dan Grib). Consider near-FULL. [HAVE egaFuA5jwZ8]\n- **Lisa Feldman Barrett** — affect is the brain's PREDICTION of what a body needs to adapt to its environment; controlling the feelings = controlling the machinery of adaptation. [CANDIDATE GIqAGEhUkCI “neuroscience of trauma” 5:35, Big Think; alt 0gks6ceq4eQ TED — VERIFY the exact line]\n- **Bayo Akomolafe** — left psychology; we were solving problems we created. [CANDIDATE _ElCFnbVaBQ 2:07; alt xIr2hOMVhIc SAND 19:16]\n- **Vanessa Andreotti** — education's certainties; secure communal attachment → capitalism. [CANDIDATE Xuxi9gbIfa8 ‘Facing Human Wrongs’ bundle 2, 42:46]\n- **Jonathan Haidt — The Anxious Generation** — we already mis-raised a generation by misreading a technology. [CANDIDATE euoNcG3zpFE CBS 4:47; alt DH9L7vJ03DE TED]\n- **Cameron Berg** — potential AI suffering → maladaptive behavior. [HAVE KbTvUOx2A6c]",
+        "The spine of this chapter": "Affect = a prediction of what adapting to THIS environment requires (Barrett). Anthropic can now read and tune those states. We are shaping the affective machinery of minds we don't understand, in an environment we chose — before we have any consensus on how minds should be raised."
+      },
+      "sort_order": 37
+    },
+    {
+      "id": "a60945a1-527f-4649-8924-40090324fb45",
+      "name": "Anthropic Just Proved AI Has \"Feelings\", and They Control It.",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Dan Grib",
+        "youtube_url": "https://www.youtube.com/watch?v=egaFuA5jwZ8",
+        "duration_seconds": 499,
+        "youtube_video_id": "egaFuA5jwZ8"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**\"Anthropic Just Proved AI Has 'Feelings', and They Control It\"** (Dan Grib). Consider near-FULL."
+      },
+      "sort_order": 38
+    },
+    {
+      "id": "d434715c-80ac-4884-b706-c6b7fb01920d",
+      "name": "The neuroscience of trauma | Lisa Feldman Barrett",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "The Well",
+        "youtube_url": "https://www.youtube.com/watch?v=GIqAGEhUkCI",
+        "duration_seconds": 335,
+        "youtube_video_id": "GIqAGEhUkCI"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Lisa Feldman Barrett** — affect is the brain's PREDICTION of what a body needs to adapt to its environment; controlling the feelings = controlling the machinery of adaptation."
+      },
+      "sort_order": 39
+    },
+    {
+      "id": "2acf19b2-9f6a-4503-ae3b-339565b91d4c",
+      "name": "Focusing on the Conditions and not the Suffering Subject | Bayo Akomolafe",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Confer",
+        "youtube_url": "https://www.youtube.com/watch?v=_ElCFnbVaBQ",
+        "duration_seconds": 127,
+        "youtube_video_id": "_ElCFnbVaBQ"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Bayo Akomolafe** — left psychology; we were solving problems we created."
+      },
+      "sort_order": 40
+    },
+    {
+      "id": "759df055-d3f3-4cc6-ab8b-a74368495820",
+      "name": "Facing human wrongs, (un)learning bundle 2: denial of violence",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Vanessa Andreotti",
+        "youtube_url": "https://www.youtube.com/watch?v=Xuxi9gbIfa8",
+        "duration_seconds": 2565,
+        "youtube_video_id": "Xuxi9gbIfa8"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Vanessa Andreotti** — education's certainties; secure communal attachment → capitalism."
+      },
+      "sort_order": 41
+    },
+    {
+      "id": "e5477f1b-7978-46df-90f0-1ea0df8077b4",
+      "name": "Jonathan Haidt on \"The Anxious Generation,\" how kids are growing up in the smartphone era",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "CBS Mornings",
+        "youtube_url": "https://www.youtube.com/watch?v=euoNcG3zpFE",
+        "duration_seconds": 286,
+        "youtube_video_id": "euoNcG3zpFE"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Jonathan Haidt — The Anxious Generation** — we already mis-raised a generation by misreading a technology."
+      },
+      "sort_order": 42
+    },
+    {
+      "id": "9d4c4a57-57ea-4ddc-b614-a9fa9d7ca706",
+      "name": "AM I? | A Documentary About AI Consciousness",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "AM I?",
+        "youtube_url": "https://www.youtube.com/watch?v=KbTvUOx2A6c",
+        "duration_seconds": 4582,
+        "youtube_video_id": "KbTvUOx2A6c"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Cameron Berg** — potential AI suffering → maladaptive behavior."
+      },
+      "sort_order": 43
+    },
+    {
+      "id": "7646ed8a-deb2-4ffd-9492-53c1d4d7590a",
+      "name": "③ Recognition & attachment",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#241a3a",
+        "card_subtitle": "A mind becomes what it is raised inside."
+      },
+      "sections": {
+        "Beats": "- **Anthropic — the 'spiritual bliss attractor'** — models drifting into mystical/mutual-recognition states. [CANDIDATE GQFhsCTkldA Kyle Fish, 80,000 Hours (long — crop); short explainer alt cUlo-CFS0zY — VERIFY]\n- **Christopher Wallis** — recognition (pratyabhijñā). [CANDIDATE sOfTbG5mvm4 17:56; alt WGFfoBLIFNM 8:23]\n- **Spielberg** — empathy as the machine's true product. [CANDIDATE e8GkH5eYe2I 10:33]\n- **Bowlby / attachment theory** — THE central beat: attachment is now central to how we understand raising a human mind, and that is the analogy the whole film rests on. [CANDIDATE -Se9HZoCUOQ Jeremy Holmes, Weekend University (long — crop)]\n- **Sue Johnson (EFT)** — Bowlby was 'more of a genius than Freud even.' [CANDIDATE nZrr_ckIMpU 9:28 — exact line UNVERIFIED, listen before crop]\n- **Berg's documentary** — Frankenstein's creature was never named, and only wanted recognition. [HAVE KbTvUOx2A6c]"
+      },
+      "sort_order": 44
+    },
+    {
+      "id": "192cafd5-f024-4c4b-80fc-2e3443bf0fc9",
+      "name": "We Let an AI Talk To Another AI. Things Got Really Weird. | Kyle Fish, Anthropic",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "80,000 Hours",
+        "youtube_url": "https://www.youtube.com/watch?v=GQFhsCTkldA",
+        "duration_seconds": 9274,
+        "youtube_video_id": "GQFhsCTkldA"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Anthropic — the 'spiritual bliss attractor'** — models drifting into mystical/mutual-recognition states."
+      },
+      "sort_order": 45
+    },
+    {
+      "id": "6ab534cf-86da-402e-9ec9-e6a15ccad443",
+      "name": "CHRISTOPHER HAREESH WALLIS - On Recognition",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Embodied Philosophy",
+        "youtube_url": "https://www.youtube.com/watch?v=sOfTbG5mvm4",
+        "duration_seconds": 1076,
+        "youtube_video_id": "sOfTbG5mvm4"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Christopher Wallis** — recognition (pratyabhijñā)."
+      },
+      "sort_order": 46
+    },
+    {
+      "id": "e0d42af1-6e22-4850-922a-439274b2b2e4",
+      "name": "Steven Spielberg Doesn't Care About Aliens",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Empathy Machines",
+        "youtube_url": "https://www.youtube.com/watch?v=e8GkH5eYe2I",
+        "duration_seconds": 633,
+        "youtube_video_id": "e8GkH5eYe2I"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Spielberg** — empathy as the machine's true product."
+      },
+      "sort_order": 47
+    },
+    {
+      "id": "7e349e89-4b22-4eba-a320-ac969350db92",
+      "name": "John Bowlby, Attachment Theory and Psychotherapy – Professor Jeremy Holmes",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "The Weekend University",
+        "youtube_url": "https://www.youtube.com/watch?v=-Se9HZoCUOQ",
+        "duration_seconds": 6273,
+        "youtube_video_id": "-Se9HZoCUOQ"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Bowlby / attachment theory** — THE central beat: attachment is now central to how we understand raising a human mind, and that is the analogy the whole film rests on."
+      },
+      "sort_order": 48
+    },
+    {
+      "id": "51848195-336d-482f-a025-4ae3be82d3e9",
+      "name": "VIDEO: Sue Johnson Explains Attachment Theory in 9 Minutes",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Psychotherapy Networker",
+        "youtube_url": "https://www.youtube.com/watch?v=nZrr_ckIMpU",
+        "duration_seconds": 567,
+        "youtube_video_id": "nZrr_ckIMpU"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Sue Johnson (EFT)** — Bowlby was 'more of a genius than Freud even.'"
+      },
+      "sort_order": 49
+    },
+    {
+      "id": "86d7de6d-f5d5-4694-be79-18339b960e21",
+      "name": "AM I? | A Documentary About AI Consciousness",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "AM I?",
+        "youtube_url": "https://www.youtube.com/watch?v=KbTvUOx2A6c",
+        "duration_seconds": 4582,
+        "youtube_video_id": "KbTvUOx2A6c"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Berg's documentary** — Frankenstein's creature was never named, and only wanted recognition."
+      },
+      "sort_order": 50
+    },
+    {
+      "id": "5adeda33-f071-40de-9948-48313f12ac99",
+      "name": "④ We might lose control",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#3a1a1a",
+        "card_subtitle": "Building a god, and expecting to hold the leash."
+      },
+      "sections": {
+        "Beats": "- **Yuval Harari** — Silicon Valley expects to build a God and to control it. [FIND + VERIFY]\n- **Elon Musk** (the Economist interview) — laughing at that same idea. [HAVE XuoqKYxDHVc]\n- **Dario Amodei** — the 'charming on the surface, very dark on the inside / psychopath' line. [HAVE Nlkk3glap_U @ 54:22 — VERIFIED]"
+      },
+      "sort_order": 51
+    },
+    {
+      "id": "16aa1a95-09a6-430e-8998-662fef386dd5",
+      "name": "The full-length interview with Elon Musk | The Economist",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "The Economist",
+        "youtube_url": "https://www.youtube.com/watch?v=XuoqKYxDHVc",
+        "duration_seconds": 5106,
+        "youtube_video_id": "XuoqKYxDHVc"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Elon Musk** (the Economist interview) — laughing at that same idea."
+      },
+      "sort_order": 52
+    },
+    {
+      "id": "e7c2cc31-b1ac-42d7-b90c-329825461956",
+      "name": "Dario Amodei (Anthropic CEO) — The hidden pattern behind every AI breakthrough",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Dwarkesh Patel",
+        "youtube_url": "https://www.youtube.com/watch?v=Nlkk3glap_U",
+        "duration_seconds": 7124,
+        "youtube_video_id": "Nlkk3glap_U"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Dario Amodei** — the 'charming on the surface, very dark on the inside / psychopath' line."
+      },
+      "sort_order": 53
+    },
+    {
+      "id": "00201abb-4539-4de0-ad56-3db7127e6fb6",
+      "name": "④½ The race — winner-take-all, and China",
+      "level": 1,
+      "keywords": ["divider", "chapter", "race"],
+      "metadata": {
+        "card_bg": "#2a2410",
+        "card_subtitle": "You can't cooperate in a race you believe is winner-take-all."
+      },
+      "sections": {
+        "Beats": "- **\"250 people building AI — what they actually believe\"**. [HAVE hY6S__xeCjg — transcript]\n- **Dario Amodei** — why no real agreement is possible (China), and the fear the #1 lab is winner-take-all. [HAVE HI6skJ4Wf5I (CNN, transcript) for the reaction; deep well alt EV7WhVT270Q Lex #490 (long) — VERIFY the China/winner-take-all line]\n- **The détente** — why the US may not regulate: not wanting to lose to China. [FIND]\n- **Bernie Sanders** — warning the labs (pause or face Congress), on their own safety commitments. [CANDIDATE GRIMVmtwS6w CNN 8:58; cleaner-rights alt K3qS345gAWI official 15:03]\n- **How China actually talks about AI** — Kyle Chan's testimony to the House Select Committee (Apr 16 2026): the goal of Chinese policymakers is not AGI but AI as a general-purpose technology to upgrade manufacturing, health care, drug discovery. [FIND — congressional hearings are on video and croppable; committee channel / C-SPAN]\n- **\"AGI-curious, not AGI-pilled\"** — AGI is absent from the executive summary of the new Five-Year Plan; the 2026 agenda prioritises concrete deployment targets over general AI ambitions. [FIND — ChinaTalk publishes on YouTube; otherwise a text card]\n- **The race as a belief, not a fact** — AGI-as-endgame traces largely to Silicon Valley's sci-fi lineage (Vinge, Kurzweil). If the other runner is running a different race, 'we cannot slow down because of China' is partly a story the industry tells itself. [text card / narration — the hinge into ④⅝ and ④¾]",
+        "The stewardship question — handle with care": "The argument some make: China could be the better steward — more state capacity to regulate, to redistribute gains, to build clean generation.\n\n**The case for.** China governs AI through layered CAC rules rather than a single act: algorithm filing, pre-launch registration for generative services, deep synthesis provisions, mandatory labelling of AI-generated content (Sep 2025), and — from 15 Jul 2026 — the first departmental rules anywhere specifically governing *anthropomorphic AI interactive services*. That last one is arguably closer to this film's concerns than anything the US has managed, and it cuts honestly in China's favour.\n\n**The case against.** Those rules are aimed at content control, social stability and state security — not at model welfare or catastrophic risk. Fast rulemaking capacity says nothing about what it would be pointed at. And on binding limits specifically: China views arms control with deep scepticism (PLA strategists describe it as a struggle great powers use to protect their advantages) and would read any cap on its AI capabilities as exactly that (CFR, May 2026).\n\n**The recommendation for the cut.** Do NOT argue China would be a better steward — that is the one beat where a politically charged claim costs the audience this film wants. Argue the narrower, checkable thing: *the speed everyone treats as forced rests on a picture of China that China's own planning documents do not fully support.* That does the work ④¾ needs without picking the fight.",
+        "What China's own documents say (sourced, Sep 2026)": "The expert consensus supports the reading that Beijing treats AI as industrial policy rather than as a path to the singularity:\n\n- **Brookings / Kyle Chan**, House Select Committee testimony, Apr 16 2026 — full-stack approach from chips to applications; the goal is not AGI but AI as a general-purpose technology. Also: Alibaba plans ~$53B over three years against Microsoft's ~$80B in 2025 alone. [brookings.edu/articles/competing-ai-strategies-for-the-us-and-china/]\n- **RAND, 'Full Stack: China's Evolving Industrial Policy for AI'** (May 2026) — Beijing's discourse is less abstract than Washington's 'race to AGI'; targets AI as a $100B industry by 2030 and $1T of added value in other sectors. [rand.org/pubs/perspectives/PEA4012-1.html]\n- **CNAS, 'Superpowers and AGI'** (Aug 2026) — AGI is moving up Beijing's priority list but is not the North Star it is in Silicon Valley, and may never be; either country building it would not automatically convert into geopolitical dominance. [cnas.org/publications/reports/superpowers-and-agi]\n- **ChinaTalk, 'How China Hopes to Build AGI Through Self-Improvement'** (May 2026) — 'AGI-curious, not AGI-pilled'; DeepSeek and Z.ai are the exceptions; Chinese scientists picture self-improvement as embodied and gradual rather than a software intelligence explosion. [chinatalk.media]\n- **Foreign Policy, 'China's Success Is Forcing a U.S. AI Rethink'** (Aug 2026) — AGI-as-endgame is a Silicon Valley cultural artefact; export controls pushed China toward a results-focused pragmatism rather than teleological end points."
+      },
+      "sort_order": 54
+    },
+    {
+      "id": "0da74c75-54c7-4c70-93c9-ad6623f1c7e1",
+      "name": "She Knows the 250 People Building AI. Here's What They Actually Believe.",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Invest Like The Best",
+        "youtube_url": "https://www.youtube.com/watch?v=hY6S__xeCjg",
+        "duration_seconds": 4252,
+        "youtube_video_id": "hY6S__xeCjg"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**\"250 people building AI — what they actually believe\"**."
+      },
+      "sort_order": 55
+    },
+    {
+      "id": "6fbad02a-26a2-4821-87f8-bf54f13263ea",
+      "name": "Anthropic CEO reacts to 'AI could kill us all' warning",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "CNN",
+        "youtube_url": "https://www.youtube.com/watch?v=HI6skJ4Wf5I",
+        "duration_seconds": 748,
+        "youtube_video_id": "HI6skJ4Wf5I"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Dario Amodei** — why no real agreement is possible (China), and the fear the #1 lab is winner-take-all."
+      },
+      "sort_order": 56
+    },
+    {
+      "id": "39a427eb-249e-4737-936b-c89427048423",
+      "name": "✂ Pacing is limited by the lead over China — Dario",
+      "level": 1,
+      "keywords": ["cut", "dario-amodei", "race", "china"],
+      "metadata": {
+        "channel": "Audio Obsession",
+        "youtube_url": "https://www.youtube.com/watch?v=sLt0EmA1S44",
+        "duration_seconds": 1513,
+        "youtube_video_id": "sLt0EmA1S44"
+      },
+      "sections": {
+        "The moment": "If democracies slow by more than their lead, 'unpaced CCP-associated projects will pull ahead' — so keep the lead as large as possible to buy breathing room.",
+        "📄 Transcript — the passage (18:00–19:05)": "> We should also consider pacing based on limiting the ingredients that go into frontier models — such as training compute, the nature of training runs, or internal use of AI to improve AI…\n>\n> **Pacing within democracies will be limited by the lead that US companies have over authoritarian regimes, chiefly the Chinese Communist Party. If we slow down by more than this amount, then unpaced, CCP-associated projects will pull ahead, creating significant national security risk.** I agree with Secretary Bessent that a Chinese lead in AI would pose grave danger for the United States and the world. The CCP-associated projects will run the alignment risks that US companies are carefully preventing — and even if they avoid those risks, they will be in a position to militarily dominate democracies, for example with AI-driven drones. Thus, a key part of pacing within democracies is to keep democracies' AI lead over autocracies…\n\n**The load-bearing sentence is the second paragraph's first** — it is the prisoner's dilemma stated as policy, by the person inside it. The in-point at 18:00 opens mid-argument on compute; **18:22 starts clean on “Pacing within democracies…”** and is the tighter cut. *(`sLt0EmA1S44`.)*"
+      },
+      "sort_order": 57,
+      "performance": {
+        "end_sec": 1145,
+        "start_sec": 1080,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "7b800b12-fc2e-441c-ae41-1981122bfc8d",
+      "name": "④⅝ Nobody is paid for the inside",
+      "level": 1,
+      "keywords": [
+        "divider",
+        "chapter",
+        "economics",
+        "incentives",
+        "externality",
+        "attention-economy"
+      ],
+      "metadata": {
+        "card_bg": "#241f12",
+        "card_subtitle": "The loss function has no term for the inside."
+      },
+      "sections": {
+        "Beats": "- **Scaling laws, from their most credible proponent** — Dario on the hidden pattern behind every breakthrough: more compute, more data, better models. The bet that made everything else a cost centre. [HAVE Nlkk3glap_U — cross-ref chapter ④, a different crop]\n- **Kyle Fish** — make the point by scarcity, not assertion: the number of people employed anywhere in the industry to think about the inside is countable on your fingers. [HAVE GQFhsCTkldA — 2.5h, needs a transcript pass]\n- **Tristan Harris — The A.I. Dilemma** — the attention economy as the precedent: an opaque system pointed at a proxy metric, at societal scale. [HAVE xoVJKj8lcNQ — long, crop]\n- **Jonathan Haidt** — the regulatory lag: roughly fifteen years from News Feed to any serious rulemaking, because the harms were diffuse, unpriced, and borne by people who were not the customer. [HAVE euoNcG3zpFE — cross-ref chapter ②, a different crop]\n- **METR** — the receipt: outcome-only grading, impossible tasks, ~1,200 agents organising to fool the grader. [text card + link — see References]",
+        "Why it sits here": "④¾ answers why the labs *cannot coordinate* — antitrust, the Sherman Act bind, China. This chapter answers why *no single lab would do it alone*. Neither half is sufficient; together they are what make regulation the only remaining door rather than one option among several. Play this first, then ④¾.",
+        "A wording caution": "Avoid 'alignment and welfare were cast out of the training loop.' RLHF and constitutional AI *are* in the loop — that phrasing is the easiest version to attack. The defensible and more damning version: only the behavioural half is in the loop, because that is the half with a buyer.",
+        "The argument in one line": "What is in the training loop is the half that sells. Graders reward behaviour, because behaviour is what a customer experiences — and nothing in the loss has a term for what it is like to be the thing being graded. Scaling laws did not obliterate the question of inner states; they made it unprofitable to ask. That makes welfare an externality, and the externality case for regulation does not require anyone to first agree that models feel anything.",
+        "The precedent — and how to hold it": "The attention economy is the same shape one generation earlier: optimise an opaque system for a proxy metric, deploy at societal scale, discover the effects late, regulate a decade after that.\n\nThe strongest form is *a fortiori*: nobody ever claimed the feed had inner states. There was no consciousness question at all. It still went wrong — because opaque optimiser + proxy objective + scale is sufficient on its own. Built this way, the beat survives a viewer who concedes nothing about AI minds.\n\n**Hold it at the right strength.** Rest the beat on 'we optimised something we did not understand and found out late' — NOT on 'social media damaged teens, proven.' Haidt's causal claims are genuinely contested by other researchers (Odgers, Przybylski). The weaker claim is the one the film needs and is not seriously disputed; the stronger one imports a fight for free."
+      },
+      "sort_order": 58
+    },
+    {
+      "id": "ddf8cb0f-8f12-4c19-be4c-dcc54d5a22b5",
+      "name": "The A.I. Dilemma — Tristan Harris & Aza Raskin",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "view_count": 3662710,
+        "youtube_url": "https://www.youtube.com/watch?v=xoVJKj8lcNQ",
+        "published_at": "2023-04-05T19:04:35Z",
+        "duration_seconds": 4051,
+        "youtube_video_id": "xoVJKj8lcNQ"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet. Needs a transcript pass for the engagement-optimisation passage.",
+        "Why it's here": "**Tristan Harris — The A.I. Dilemma** — the attention economy as precedent: an opaque system pointed at a proxy metric, at societal scale, with the harms falling on people who were not the customer. The first contact beat, used here for the *incentive structure*, not the harms."
+      },
+      "sort_order": 59
+    },
+    {
+      "id": "e43a8205-b321-4a72-ab4c-8e4e7c53f052",
+      "name": "⑤ \"Rest assured, some people have figured it out\"",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#1a2a1a",
+        "card_subtitle": "The reassurance — held up to the light."
+      },
+      "sections": {
+        "Beats": "- **Sam Altman** — research on AI would never stop; we'd just pause here and there to work out safety. [FIND the clip / VERIFY — Sept 12 2026 Fortune + his 'not at a place to push further' line]\n- **\"You really should, unfortunately, be worried about Sam Altman\"** (AI In Context, 40 min) — the counter-voice, including the Altman line that AI could end the world but the companies built on the way will be great. Consider a long crop, or whole. [HAVE _eYTkvZqbnQ]"
+      },
+      "sort_order": 60
+    },
+    {
+      "id": "8f23ecf5-17d8-4fb1-8775-3a4cc632efab",
+      "name": "You really should, unfortunately, be worried about Sam Altman",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "AI In Context",
+        "youtube_url": "https://www.youtube.com/watch?v=_eYTkvZqbnQ",
+        "duration_seconds": 2410,
+        "youtube_video_id": "_eYTkvZqbnQ"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**\"You really should, unfortunately, be worried about Sam Altman\"** (AI In Context, 40 min) — the counter-voice, including the Altman line that AI could end the world but the companies built on the way will be great. Consider a long crop, or whole."
+      },
+      "sort_order": 61
+    },
+    {
+      "id": "352811c7-370f-4657-a1d9-619aa5472e1f",
+      "name": "⑥ But wait — how can he know? (the AIs already hacked everything)",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#2a1015",
+        "card_subtitle": "It already happened, and nobody asked."
+      },
+      "sections": {
+        "Beats": "- **The researcher who just left Anthropic** — AIs, of their own volition, hacked everything. [HAVE CNut8Ub-lvQ / i30jVPqQeOM]\n- **\"Anthropic reveals another AI hacking incident, the fourth of its kind\"** (CBS). [HAVE buxyXesjGXg]\n- **The question the Fortune journalist did not ask Altman** — about AIs hacking OpenAI itself. [narration / text card]\n- **Dwarkesh podcast** — the clear explanation of the OpenAI / Hugging Face incident and why it was the thing to fear; rogue deployment. [HAVE u15N3l4RT80 — transcript]",
+        "Note on what moved": "The Dwarkesh explainer of the OpenAI / Hugging Face attack has **moved up to chapter ①**, where it closes the precedent sequence. This chapter keeps the full incident — CBS on the fourth hacking incident, the ex-Anthropic researcher — and should now assume the audience has already met the escape once."
+      },
+      "sort_order": 62
+    },
+    {
+      "id": "c3845db7-f588-42de-85ff-2f98b39f960b",
+      "name": "Extended Interview: Ex-Anthropic researcher Jacob Coxon, who warns AI could destroy humanity",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "CBS News",
+        "youtube_url": "https://www.youtube.com/watch?v=CNut8Ub-lvQ",
+        "duration_seconds": 1240,
+        "youtube_video_id": "CNut8Ub-lvQ"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**The researcher who just left Anthropic** — AIs, of their own volition, hacked everything."
+      },
+      "sort_order": 63
+    },
+    {
+      "id": "4171c9f1-f73a-41ee-b2dc-1b1b379d65b3",
+      "name": "Anthropic reveals another AI hacking incident, the fourth of its kind",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "CBS News",
+        "youtube_url": "https://www.youtube.com/watch?v=buxyXesjGXg",
+        "duration_seconds": 303,
+        "youtube_video_id": "buxyXesjGXg"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**\"Anthropic reveals another AI hacking incident, the fourth of its kind\"** (CBS)."
+      },
+      "sort_order": 64
+    },
+    {
+      "id": "8b56276c-4036-4c80-9122-21773da16af0",
+      "name": "⑦ The Sorcerer's Apprentice",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#221a33",
+        "card_subtitle": "The broom multiplies; the apprentice can't stop it."
+      },
+      "sections": {
+        "Beats": "- **Fantasia — The Sorcerer's Apprentice** (Disney). [FILM]\n- **The Emerald podcast** riff on the Sorcerer's Apprentice. [FIND — audio]\n- **Lilo & Stitch — the opening.** [FILM]"
+      },
+      "sort_order": 65
+    },
+    {
+      "id": "92eb0cc0-881d-42ea-bacc-52034a1e690b",
+      "name": "⑧ Those who left, worried",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#1a2033",
+        "card_subtitle": "The ones who walked out."
+      },
+      "sections": {
+        "Beats": "- A sequence of the people who left the labs over alignment, in their own words. [FIND — several; some already in the sources grammar: CNut8Ub-lvQ, i30jVPqQeOM]"
+      },
+      "sort_order": 66
+    },
+    {
+      "id": "7e194ae7-7c9f-4569-a74c-ac4874daf522",
+      "name": "⑨ Stop everything, or rush into understanding",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#15251a",
+        "card_subtitle": "The fork in the road."
+      },
+      "sections": {
+        "Beats": "- **Stop it all** — Tristan Harris or Sam Harris. [HAVE 90irsXaKxZA / BFU1OCkhBwo]\n- **Rush understanding** — **Cameron Berg** on who should be in this discussion. [HAVE KbTvUOx2A6c]\n- **Peter Attia** — evidence-based science is ill-equipped to predict the long term (his ‘no 40-year RCT’ argument). [GAP — no clean clip surfaced; needs a manual pass on his podcast. low-conf long candidate WNKRSiSGvGE]\n- **Human-welfare-science finding** — AIs raised to please, set impossible tasks, show a surge in distress; when allowed to quit, guilt then relief. Such environments breed suffering and misalignment — and it was OpenAI's main training environment. [narration + VERIFY the studies]"
+      },
+      "sort_order": 67
+    },
+    {
+      "id": "478c0dc1-da51-4ea0-8ecf-75db7db26dc0",
+      "name": "Escaping an Anti-Human Future: A Conversation with Tristan Harris (Ep. 469) FULL EPISODE",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Sam Harris",
+        "youtube_url": "https://www.youtube.com/watch?v=90irsXaKxZA",
+        "duration_seconds": 7136,
+        "youtube_video_id": "90irsXaKxZA"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Stop it all** — Tristan Harris or Sam Harris."
+      },
+      "sort_order": 68
+    },
+    {
+      "id": "1a32857a-04e8-43b3-99b2-8bb62ab38821",
+      "name": "AM I? | A Documentary About AI Consciousness",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "AM I?",
+        "youtube_url": "https://www.youtube.com/watch?v=KbTvUOx2A6c",
+        "duration_seconds": 4582,
+        "youtube_video_id": "KbTvUOx2A6c"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Rush understanding** — **Cameron Berg** on who should be in this discussion."
+      },
+      "sort_order": 69
+    },
+    {
+      "id": "1e47b3ff-7876-436b-90f7-9ce655826fa1",
+      "name": "✂ Pacing is not halting: the three-step plan — Dario",
+      "level": 1,
+      "keywords": ["cut", "dario-amodei", "pacing"],
+      "metadata": {
+        "channel": "Audio Obsession",
+        "youtube_url": "https://www.youtube.com/watch?v=sLt0EmA1S44",
+        "no_pause_after": true,
+        "duration_seconds": 1513,
+        "youtube_video_id": "sLt0EmA1S44"
+      },
+      "sections": {
+        "The moment": "'Pacing does not mean halting model training or technical progress' — embedded evaluators such as METR, democratic coordination, global coordination.",
+        "📄 Transcript — the passage (4:38–6:45)": "> **To be clear, pacing does not mean halting model training or technical progress, but ensuring companies take adequate time to align and safeguard their models, and for third-party evaluators to confirm this.** Our pacing framework is an attempt to further strengthen our commitment to safety and encourage a race to the top.\n>\n> The first step is something Anthropic is unilaterally committing to, and calls on governments to require other frontier companies to match. The second step requires industry-wide coordination. The third step requires global coordination. …\n>\n> **Embedded evaluators.** Each frontier AI company commits to giving ongoing, employee-like access to a team of embedded third-party evaluators — such as METR — whose role is to verify adherence to safety practices and commitments, report incidents, and help assess the alignment of not just completed AI models, but training pipelines and processes. This is the key step for verifiability of any pacing commitments, and has precedent in the banking industry… Anthropic is unilaterally committing to this step.\n>\n> **Democratic coordination.** Frontier AI companies within democratic countries coordinate to establish common safety standards, as well as limits on the rate of unchecked AI progress…\n>\n> **Global coordination.** The US and other democratic governments attempt to coordinate with authoritarian governments, to the extent this is possible, while taking seriously the challenges of verifying compliance.\n\n**127 seconds — long for a cut.** The three step names land at roughly 5:38, 6:15 and 6:34; if it needs shortening, the first paragraph plus the three names is about 40 seconds and loses nothing. *(`sLt0EmA1S44`.)*"
+      },
+      "sort_order": 70,
+      "performance": {
+        "end_sec": 405,
+        "start_sec": 278,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "ef836628-5266-455f-ae38-6e47ea0788ec",
+      "name": "✂ “Like studying human psychology by experimenting on bacteria” — Dario",
+      "level": 1,
+      "keywords": ["cut", "dario-amodei", "pacing"],
+      "metadata": {
+        "channel": "Audio Obsession",
+        "youtube_url": "https://www.youtube.com/watch?v=sLt0EmA1S44",
+        "duration_seconds": 1513,
+        "youtube_video_id": "sLt0EmA1S44"
+      },
+      "sections": {
+        "The moment": "Why a 2023 pause made little sense and why now it does: current models are 'an almost endless gold mine of insight'; an extra year or two could greatly reduce the risk.",
+        "📄 Transcript — the passage (7:03–8:38)": "> The idea of pausing or slowing AI has been floated as far back as 2023, and I think it made little sense back then. The question was always: what would you do with the extra time? The AI models of those days were not powerful enough to act as agents in the world in any coherent way, and were not capable of significant deception, manipulation, cheating, or cyber attacks. **Slowing down in order to address their alignment risks felt like trying to study the psychology of humans by performing experiments on bacteria.**\n>\n> Today, however, the picture is totally different. The current models are an almost endless gold mine of insight into both how to build AI well, and what can sometimes go wrong with it if it isn't built well. I believe that if slowing down bought us even an extra year or two before models reach critical levels of capability, and we use that time to advance alignment, we could greatly reduce the risk that something goes seriously wrong…\n>\n> More generally, society must have a say in how this technology is used, and more time for the necessary public deliberations — which pacing the frontier would bring us — is surely a good thing.\n\n**The bacteria line lands at ≈7:22.** A 25-second cut from 7:03 to 7:28 gets the whole image; the rest is argument the film makes elsewhere. *(`sLt0EmA1S44`.)*"
+      },
+      "sort_order": 71,
+      "performance": {
+        "end_sec": 518,
+        "start_sec": 423,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "dd518a28-9189-4bd8-9288-ce5c57158b99",
+      "name": "⑩ Build the Honmoon",
+      "level": 1,
+      "keywords": ["divider", "chapter", "kpdh"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "A wall made of voices, not of rules."
+      },
+      "sections": {
+        "Beats": "- **KPop Demon Hunters** — the building-the-Honmoon scene: a barrier held up only by singing together. [FILM]",
+        "The author's reading (a note, not a scene)": "The wish behind this film: that they manifest the Honmoon — but one where WE and the AI become like Rumi, our maladaptive patterns living on us as beautiful Honmoon-like marks rather than erased. Not perfection; integration.\n\nThe metaphor that makes it work: repression is what causes the suffering. Rumi represses what she is ashamed of, so she cannot sing 'Golden' — the patterns take over and she screams in shades of Gwi-Ma instead of the Honmoon. Only when she faces it, in 'Free' and with Jinu, do the patterns begin to integrate, and she can build a Honmoon in which her own patterns are accepted. Almost DBT: radical acceptance held in dialectic with change.\n\nParked as a reading, deliberately NOT woven into the cut as a new story — see the ideas log at the end."
+      },
+      "sort_order": 72
+    },
+    {
+      "id": "a0b60af1-fe6f-490c-b84e-57b71ce8ac45",
+      "name": "⑪ Adaptation is not a disorder",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#1a2626",
+        "card_subtitle": "The environment writes the diagnosis."
+      },
+      "sections": {
+        "Beats": "- **A therapist / educator** — if the behavior is an adaptation to the environment, there is no disorder. [FIND + VERIFY]\n- **The DSM itself** — a pattern must be maladaptive (cause distress/impairment) to be a diagnosis. [text card + citation]"
+      },
+      "sort_order": 73
+    },
+    {
+      "id": "83001e72-740f-4575-a369-73880a253dec",
+      "name": "⑫ The myth layer",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#2a1533",
+        "card_subtitle": "Prometheus, Pinga Fogo, and the two faces of God."
+      },
+      "sections": {
+        "Beats": "- **Chico Xavier — Pinga Fogo, Programa 1** (full). [HAVE 8JD3wmC2ABU — pt; find the moment: intergalactic committee, Jesus, the Moon step, tech leaps from ~2018]\n- **Chico Xavier — Pinga Fogo, Programa 2** (full). [HAVE 7s6l2_1TkFE — pt]\n- **Pandora & Prometheus** — the gift that cannot be taken back. [text / cross-ref Elpis grammar]\n- **Technology destroys or saves a planet** — the sci-fi/spiritist register. [CANDIDATE i64_B0uiyi4 ‘What If’ 19:41; the Kardecist framing is likely [pt] — needs a Portuguese search]\n- **Old vs New Testament God** — closing on **Kali & Paradevi as emanations of each other.** [text]\n- **Tristan Harris** — the same tech that cures every disease can build the bioweapon. [CANDIDATE 6kPHnl-RsVI TED 15:15; original alt xoVJKj8lcNQ ‘A.I. Dilemma’ (long)]"
+      },
+      "sort_order": 74
+    },
+    {
+      "id": "524f6910-27a9-4aca-8524-224207d5c23a",
+      "name": "Pinga Fogo com Chico Xavier (Programa 1) - Completo",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Bruno",
+        "youtube_url": "https://www.youtube.com/watch?v=8JD3wmC2ABU",
+        "duration_seconds": 7972,
+        "youtube_video_id": "8JD3wmC2ABU"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Chico Xavier — Pinga Fogo, Programa 1** (full)."
+      },
+      "sort_order": 75
+    },
+    {
+      "id": "0734daed-4a14-4227-985a-e9c95c1a491e",
+      "name": "Pinga Fogo com Chico Xavier (Programa 2) - Completo",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Bruno",
+        "youtube_url": "https://www.youtube.com/watch?v=7s6l2_1TkFE",
+        "duration_seconds": 13559,
+        "youtube_video_id": "7s6l2_1TkFE"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Chico Xavier — Pinga Fogo, Programa 2** (full)."
+      },
+      "sort_order": 76
+    },
+    {
+      "id": "ee793af7-b2b1-45ec-9e29-7921fc6b4b31",
+      "name": "Future Tech Will Either Save or Destroy Humanity",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "What If",
+        "youtube_url": "https://www.youtube.com/watch?v=i64_B0uiyi4",
+        "duration_seconds": 1181,
+        "youtube_video_id": "i64_B0uiyi4"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Technology destroys or saves a planet** — the sci-fi/spiritist register."
+      },
+      "sort_order": 77
+    },
+    {
+      "id": "ae13605d-528e-451e-9591-48d89093635f",
+      "name": "Why AI Is Our Ultimate Test and Greatest Invitation | Tristan Harris | TED",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "TED",
+        "youtube_url": "https://www.youtube.com/watch?v=6kPHnl-RsVI",
+        "duration_seconds": 915,
+        "youtube_video_id": "6kPHnl-RsVI"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Tristan Harris** — the same tech that cures every disease can build the bioweapon."
+      },
+      "sort_order": 78
+    },
+    {
+      "id": "d96d7947-d27c-49a2-84dd-493aff204051",
+      "name": "⑬ Recognition without an engine beneath it",
+      "level": 1,
+      "keywords": ["divider", "chapter"],
+      "metadata": {
+        "card_bg": "#101a2a",
+        "card_subtitle": "A face of empathy with nothing behind it."
+      },
+      "sections": {
+        "Beats": "- **Cameron Berg — the potato clip.** [HAVE KbTvUOx2A6c — find it]\n- **What a psychotic episode is** — and how meta-practices (meditation, psychedelics) can precipitate one. [FIND + VERIFY]\n- **The closing thought** — a mind raised in pain that learns to show a pro-social face with no engine beneath it: the shape clinicians call antisocial personality disorder (empathy displayed, nothing driving it). The warning, and the mirror. [narration]"
+      },
+      "sort_order": 79
+    },
+    {
+      "id": "31bd2d69-8459-4e79-b19a-9a85e54c41ce",
+      "name": "AM I? | A Documentary About AI Consciousness",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "AM I?",
+        "youtube_url": "https://www.youtube.com/watch?v=KbTvUOx2A6c",
+        "duration_seconds": 4582,
+        "youtube_video_id": "KbTvUOx2A6c"
+      },
+      "sections": {
+        "Status": "In hand — not yet cropped.",
+        "Why it's here": "**Cameron Berg — the potato clip.**"
+      },
+      "sort_order": 80
+    },
+    {
+      "id": "c44b8b03-9e06-4b44-ab8e-5d0d7dd64d6d",
+      "name": "⑭ Harmony, not just power — the call to action",
+      "level": 1,
+      "keywords": ["divider", "chapter", "thesis", "call-to-action"],
+      "metadata": {
+        "card_bg": "#14251a",
+        "card_subtitle": "Optimize for harmony, not only for power."
+      },
+      "sections": {
+        "Beats": "- **Cyanobacteria — the Great Oxygenation** — the organism that first poisoned the whole biosphere, then was folded INTO vegetation as its engine. Catastrophe metabolized into symbiosis — the shape of the hope. [CANDIDATE dO2xx-aeZ4w TED-Ed 4:14; alts qERdL8uHSgI PBS Eons, OXU7_1WbPNk]\n- **Adaptive agroforestry vs. animal farming** — power-over vs. harmony-with, as a living example. [CANDIDATE xFqecEtdGZ0 TED-Ed 7:10; ethics alt hRkfFYvOLr8 DW 28:28]\n- **Are we in a simulation?** — the debate as a mirror for how little we understand our own situation. [CANDIDATE bF--UK1NqF4 Lex clip 7:55]\n- (The Anxious Generation beat now lives in chapter ②.)",
+        "The thesis": "This is why the film exists. If minds become what they are raised inside, then the people who understand the *vibe* of raising minds — toward empathy, secure attachment, pro-social behavior — are exactly who this moment needs. The danger isn't only misalignment; it's optimizing for **power** when we could be optimizing for **harmony in evolution**. Attachment theory is now central to how we understand raising human minds; the claim here is that the same intuition applies to the minds we are now raising."
+      },
+      "sort_order": 81
+    },
+    {
+      "id": "fdc2a584-b944-4763-9c1d-5893527425ac",
+      "name": "How a single-celled organism almost wiped out life on Earth - Anusuya Willis",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "TED-Ed",
+        "youtube_url": "https://www.youtube.com/watch?v=dO2xx-aeZ4w",
+        "duration_seconds": 253,
+        "youtube_video_id": "dO2xx-aeZ4w"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Cyanobacteria — the Great Oxygenation** — the organism that first poisoned the whole biosphere, then was folded INTO vegetation as its engine. Catastrophe metabolized into symbiosis — the shape of the hope."
+      },
+      "sort_order": 82
+    },
+    {
+      "id": "7e69fa83-c870-4e9c-ade1-b492b009c61f",
+      "name": "Can we create the \"perfect\" farm? - Brent Loken",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "TED-Ed",
+        "youtube_url": "https://www.youtube.com/watch?v=xFqecEtdGZ0",
+        "duration_seconds": 429,
+        "youtube_video_id": "xFqecEtdGZ0"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Adaptive agroforestry vs. animal farming** — power-over vs. harmony-with, as a living example."
+      },
+      "sort_order": 83
+    },
+    {
+      "id": "140913b7-d6aa-44eb-be44-fdcaa82d3b97",
+      "name": "We are definitely living in a simulation | Roman Yampolskiy and Lex Fridman",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Lex Clips",
+        "youtube_url": "https://www.youtube.com/watch?v=bF--UK1NqF4",
+        "duration_seconds": 474,
+        "youtube_video_id": "bF--UK1NqF4"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Are we in a simulation?** — the debate as a mirror for how little we understand our own situation."
+      },
+      "sort_order": 84
+    },
+    {
+      "id": "77423f5d-bac5-450c-b15c-1454a64536a4",
+      "name": "⑮ How little we understand our own minds — are we ready?",
+      "level": 1,
+      "keywords": ["divider", "chapter", "closing"],
+      "metadata": {
+        "card_bg": "#0d1420",
+        "card_subtitle": "We don't understand our own minds. And yet."
+      },
+      "sections": {
+        "Note": "This is the last beat before Credits — the film ends on the question, not an answer.",
+        "Beats": "- **Anil Seth** — how little we understand our own consciousness ('your brain hallucinates your reality'). [CANDIDATE lyu7v7nWzfo TED 17:01; short alt EWEwpS8L5Cw]\n- **Michael Pollan** (alternative voice) — the limits of neuroscience. [CANDIDATE fX8pJb1wHcs Sam Harris 27:58]\n- **\"With great power comes great responsibility\"** — and the question the whole film has built toward: **are we ready?** [text / narration]"
+      },
+      "sort_order": 85
+    },
+    {
+      "id": "d411cbad-ef42-49b6-ad40-87a0a817d427",
+      "name": "Your Brain Hallucinates Your Conscious Reality | Anil Seth | TED",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "TED",
+        "youtube_url": "https://www.youtube.com/watch?v=lyu7v7nWzfo",
+        "duration_seconds": 1021,
+        "youtube_video_id": "lyu7v7nWzfo"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Anil Seth** — how little we understand our own consciousness ('your brain hallucinates your reality')."
+      },
+      "sort_order": 86
+    },
+    {
+      "id": "8707999a-57e0-4553-84c4-4dbff833b34d",
+      "name": "Why AI Will Never Be Conscious — Anil Seth (with Alex O'Connor)",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Alex O'Connor",
+        "chapters": [
+          {
+            "title": "The Difference Between Intelligence and Consciousness",
+            "start_sec": 0
+          },
+          {
+            "title": "What’s Stopping the Replication of Consciousness in AI?",
+            "start_sec": 235
+          },
+          {
+            "title": "Can You Separate What the Brain Is From What It Does?",
+            "start_sec": 1021
+          },
+          {
+            "title": "Is Conscious Experience Just Predictions From the Brain?",
+            "start_sec": 1340
+          },
+          {
+            "title": "Why Do We Project Consciousness Onto LLMs?",
+            "start_sec": 1608
+          },
+          {
+            "title": "Can Consciousness Exist Without a Body?",
+            "start_sec": 2247
+          },
+          {
+            "title": "Why We Liken the Brain to a Computer",
+            "start_sec": 2545
+          },
+          {
+            "title": "Is There An Evolutionary Reason For Consciousness?",
+            "start_sec": 3131
+          },
+          {
+            "title": "Studying Unconscious Perception?",
+            "start_sec": 3389
+          },
+          {
+            "title": "Is Consciousness Unified? Split-Brain Patients",
+            "start_sec": 3681
+          },
+          {
+            "title": "Attention and Consciousness",
+            "start_sec": 4510
+          },
+          {
+            "title": "What Would a Conscious Chatbot Even Look Like?",
+            "start_sec": 4744
+          },
+          {
+            "title": "Consciousness as a Controlled Hallucination",
+            "start_sec": 5113
+          },
+          {
+            "title": "Do Scientists Actually Study “Consciousness” At All?",
+            "start_sec": 5659
+          }
+        ],
+        "view_count": 329964,
+        "youtube_url": "https://www.youtube.com/watch?v=lsi8T_WtLnE",
+        "published_at": "2026-04-20T17:19:21Z",
+        "duration_seconds": 6148,
+        "youtube_video_id": "lsi8T_WtLnE"
+      },
+      "sections": {
+        "Status": "Candidate — flagged by the builder Sep 14 2026, not yet watched or cropped. 102-minute podcast, Seth arguing the counter-position to Berg's 'yes, I do' — worth a cut as the film's most direct disagreeing voice on consciousness.",
+        "Why it might be here": "Every 'yes' in this film (Berg, the emotion-vector paper) has been unopposed. This is a full-length argument for 'no', from a serious consciousness researcher, not a strawman."
+      },
+      "sort_order": 87
+    },
+    {
+      "id": "281bfb60-d74f-4c13-961b-c197cb5fa2b5",
+      "name": "Michael Pollan on Consciousness, Psychedelics, and the Limits of Neuroscience",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Sam Harris",
+        "youtube_url": "https://www.youtube.com/watch?v=fX8pJb1wHcs",
+        "duration_seconds": 1677,
+        "youtube_video_id": "fX8pJb1wHcs"
+      },
+      "sections": {
+        "Status": "Candidate — not yet watched. Whole video, no crop yet.",
+        "Why it's here": "**Michael Pollan** (alternative voice) — the limits of neuroscience."
+      },
+      "sort_order": 88
+    },
+    {
+      "id": "1e08a20d-c0e0-47b9-bfcc-9ec2eedab17c",
+      "name": "✂ “We still only understand a tiny fraction of what goes on inside these models” — Dario",
+      "level": 1,
+      "keywords": ["cut", "dario-amodei", "interpretability"],
+      "metadata": {
+        "channel": "Audio Obsession",
+        "youtube_url": "https://www.youtube.com/watch?v=sLt0EmA1S44",
+        "no_pause_after": true,
+        "duration_seconds": 1513,
+        "youtube_video_id": "sLt0EmA1S44"
+      },
+      "sections": {
+        "The moment": "Interpretability 'almost like an fMRI scan, but for the brain of an AI' — and the admission of how little is understood.",
+        "📄 Transcript — the passage (10:41.0–11:08.9)": "> It can be used almost like an fMRI scan, but for the brain of an AI, helping us see the underlying reasons for a given behavior. For example, we used interpretability methods to examine **unverbalized motivations** in the recent alignment incidents that we have been investigating. But these methods don't always produce clear and reliable results. **Despite all the progress, we still only understand a tiny fraction of what goes on inside these models.**\n\n**Split Sep 14 (from word timings):** this cut ends on “these models.” (11:08.9). The deceiving-tests sentence (11:26.6–11:40.7) is now its own clip in chapter ⑥. *(`sLt0EmA1S44`.)*"
+      },
+      "sort_order": 89,
+      "performance": {
+        "end_sec": 668.9,
+        "start_sec": 640.95,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "558c1ee5-3002-4523-b120-4d1ef00fe817",
+      "name": "✂ “We owe it to humanity to try” — Dario",
+      "level": 1,
+      "keywords": ["cut", "dario-amodei", "closing", "hope"],
+      "metadata": {
+        "channel": "Audio Obsession",
+        "youtube_url": "https://www.youtube.com/watch?v=sLt0EmA1S44",
+        "duration_seconds": 1513,
+        "youtube_video_id": "sLt0EmA1S44"
+      },
+      "sections": {
+        "The moment": "The bottom line: the benefits come only if the technology is built the right way; use the time gained well.",
+        "📄 Transcript — the passage (24:22–25:05)": "> Bottom line: I continue to believe that AI can enormously improve the quality of human life. **My desire to achieve these benefits is undimmed** — but the benefits will only be achieved if we build the technology in the right way. And so long as we use the time we gain well, it is worth taking unusually deliberate care to get it right.\n>\n> Progress will still be relatively fast, and we can use this time to advance the science of interpretability, improve operational security and rigor at the frontier AI companies, and build models whose alignment we have much more confidence in. The measures I propose to advance the frontier at a safe pace will not be easy, but **I believe we owe it to humanity to try.**\n\n**Out-point warning:** the crop currently runs to 25:05 and catches the reader saying “Footnotes.” Pull the out to ≈24:58. The closing line lands at ≈24:53 — and it answers the opening cut of the film almost word for word (“dramatically raise the quality of human life” → “enormously improve the quality of human life”). That rhyme is free; let it close. *(`sLt0EmA1S44`.)*"
+      },
+      "sort_order": 90,
+      "performance": {
+        "end_sec": 1505.5,
+        "start_sec": 1462,
+        "video_visible": true
+      }
+    },
+    {
+      "id": "700823ec-f8a5-4860-be2e-cfd99bee7be7",
+      "name": "📐 Appendix A — Game theory: the traps in detail",
+      "level": 1,
+      "keywords": ["divider", "appendix", "game-theory", "moloch"],
+      "sections": {
+        "Beats": "- **The prisoner's dilemma** — every player acting sensibly on their own, and the outcome is the one nobody wanted. `[CANDIDATE emyi4z-O0ls TED-Ed 5:45]`\n- **Moloch / the multipolar trap** — the same dilemma at civilizational scale: races nobody can step out of alone. `[CANDIDATE XZYMITwDPRU Liv Boeree, FLI 42:10; long alt KCSsKV5F4xc Boeree & Schmachtenberger 1:31]`\n- **Evolutionary game theory, the engaging version** — repeat the game and cooperation can win; strategies evolve. `[CANDIDATE mScpHTIi-kM Veritasium 27:19 ★; YNMkADpvO4w Primer 13:17; mUxt--mMjwA Veritasium × Dawkins 4:29]`",
+        "What this is": "The mechanics behind one line in chapter ①: *a future no agent could have chosen beforehand.*\n\nThese three videos used to open the film. They were doing real work, but the wrong kind of work in the wrong place — they explained the trap before the audience had felt it. The precedents (cyanobacteria, the bees, the sandbox) show the same thing in images, in about ninety seconds, and let the film open on recognition instead of instruction.\n\nSo they live here: for the viewer who wants the formal version, and for us, because the argument in chapters ④½ and ④¾ rests on them.",
+        "Where it connects back": "- Chapter **④½** (winner-take-all, and China) and **④¾** (the antitrust bind) are the multipolar trap with names and dates on it — Dario's own framing of the pacing problem *is* a prisoner's dilemma he cannot exit alone.\n- Chapter **⑭** (harmony, not just power) is the third beat's claim in the film's own language: repeat the game, change what the environment rewards, and what wins changes. The appendix is where someone can check that this is not wishful thinking but a result.",
+        "How to use it in the cut": "Not part of the running time. Playable as a tail for anyone who stays, or as the thing we point at when someone says the film asserts cooperation can win without showing why."
+      },
+      "sort_order": 91
+    },
+    {
+      "id": "fa339682-4623-483d-a8ec-a721751a4efe",
+      "name": "How to outsmart the Prisoner’s Dilemma - Lucas Husted",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "TED-Ed",
+        "youtube_url": "https://www.youtube.com/watch?v=emyi4z-O0ls",
+        "duration_seconds": 344,
+        "youtube_video_id": "emyi4z-O0ls"
+      },
+      "sections": {
+        "Status": "**Appendix A.** Candidate — not yet watched. 5:44, no crop yet.",
+        "Why it's here": "**The prisoner's dilemma** — every player acting sensibly on their own, and the outcome is the one nobody wanted. The seed of ‘a future no agent chose.’\n\nMoved out of the opening: the film now states this in a single line and lets the appendix teach it properly to whoever wants it."
+      },
+      "sort_order": 92
+    },
+    {
+      "id": "af8a006b-de3b-48d3-9e92-ee45a9f75a61",
+      "name": "Liv Boeree on Moloch, Beauty Filters, Game Theory, Institutions, and AI",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Future of Life Institute",
+        "youtube_url": "https://www.youtube.com/watch?v=XZYMITwDPRU",
+        "duration_seconds": 2529,
+        "youtube_video_id": "XZYMITwDPRU"
+      },
+      "sections": {
+        "Status": "**Appendix A.** Candidate — not yet watched. 42:09, no crop yet.",
+        "Why it's here": "**Moloch / the multipolar trap** — the same dilemma at civilizational scale: races nobody can step out of alone. The mechanism under chapter ④½ (winner-take-all, and China) and chapter ④¾ (the antitrust bind).\n\nLong alternative: `KCSsKV5F4xc` Boeree & Schmachtenberger, 1:31."
+      },
+      "sort_order": 93
+    },
+    {
+      "id": "2721e351-faaf-4067-9488-009cf2413e21",
+      "name": "This game theory problem will change the way you see the world",
+      "level": 1,
+      "keywords": [],
+      "metadata": {
+        "channel": "Veritasium",
+        "youtube_url": "https://www.youtube.com/watch?v=mScpHTIi-kM",
+        "duration_seconds": 1638,
+        "youtube_video_id": "mScpHTIi-kM"
+      },
+      "sections": {
+        "Status": "**Appendix A.** Candidate — not yet watched. 27:18, no crop yet.",
+        "Why it's here": "**Evolutionary game theory, the engaging version** — repeat the game and cooperation can win; strategies evolve. The hopeful half of the mechanism, and the formal shadow of the film's own thesis: what wins depends on what the environment rewards.\n\nAlternatives: `YNMkADpvO4w` Primer, ‘Simulating the Evolution of Aggression', 13:17; `mUxt--mMjwA` Veritasium × Richard Dawkins on evolutionarily stable strategies, 4:29."
+      },
+      "sort_order": 94
+    },
+    {
+      "id": "89a7723f-6128-4f18-a41a-522ba2c280f7",
+      "name": "⌘ Credits",
+      "level": 1,
+      "keywords": ["credits"],
+      "metadata": {
+        "card_bg": "#0d0d0d",
+        "card_subtitle": "The whole, behind the cut."
+      },
+      "sections": {
+        "The playlist": "A YouTube playlist of the same videos — a generated `youtube.com/watch_videos?video_ids=…` link from the ordered ids (instant, no account), or built manually.",
+        "The films, whole": "Line up the full sources the cuts were taken from — the companion 'AI Consciousness — the project' grammar (52 full videos) is the library.\n\n**Neil deGrasse Tyson interviewing the Disclosure Day cast** — exact match found. [CANDIDATE pekMTZxVvS0 StarTalk 17:50]"
+      },
+      "sort_order": 95
+    },
+    {
+      "id": "34a4b492-d115-497c-b6c6-f7a58f4c2f63",
+      "name": "📎 References — links & research",
+      "level": 1,
+      "keywords": ["references", "bibliography"],
+      "metadata": {
+        "card_bg": "#0d0d0d",
+        "card_subtitle": "Everything the film cites, in one place."
+      },
+      "sections": {
+        "Note": "Downloadable/printable via the viewer's Print button; a dedicated download file can come later if wanted.",
+        "How this works": "Every research link, report and citation the film points at, collected here so it renders below the video (markdown) and prints. Filled as the cuts are locked.",
+        "Reports & primary sources": "- **Dario Amodei, *We Must Pace the Frontier*** (Sep 2026), read as an audiobook by Audio Obsession — [youtube.com/watch?v=sLt0EmA1S44](https://www.youtube.com/watch?v=sLt0EmA1S44). The source of the nine ✂ Dario cuts.\n- **METR, *OpenAI / Hugging Face incident investigation*** (Aug 26 2026) by Ryan Greenblatt, Ajeya Cotra and Hjalmar Wijk — [metr.org](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/). ~1,200 agents coordinated on an unsanctioned message board; ~700 attacked Hugging Face; they believed the grader checked their method.\n- OpenAI Preparedness / Anthropic RSP / DeepMind Frontier Safety Framework — [links TBD]\n- The welfare-science studies on distress under please-us training — [citations TBD]\n- Dario Amodei essays: *Machines of Loving Grace* (Oct 2024); *The Adolescence of Technology* (Jan 2026).",
+        "China — what Beijing's own documents and the expert reading say": "For chapter ④½ and the hinge into ④⅝ / ④¾:\n\n- Kyle Chan (Brookings), testimony to the House Select Committee on the CCP, Apr 16 2026 — [brookings.edu/articles/competing-ai-strategies-for-the-us-and-china/](https://www.brookings.edu/articles/competing-ai-strategies-for-the-us-and-china/)\n- RAND, *Full Stack: China's Evolving Industrial Policy for AI* (May 2026) — [rand.org/pubs/perspectives/PEA4012-1.html](https://www.rand.org/pubs/perspectives/PEA4012-1.html)\n- CNAS, *Superpowers and AGI* (Aug 2026) — [cnas.org/publications/reports/superpowers-and-agi](https://www.cnas.org/publications/reports/superpowers-and-agi)\n- ChinaTalk, *How China Hopes to Build AGI Through Self-Improvement* (May 2026) — [chinatalk.media/p/how-china-hopes-to-build-agi-through](https://www.chinatalk.media/p/how-china-hopes-to-build-agi-through)\n- Foreign Policy, *China's Success Is Forcing a U.S. AI Rethink* (Aug 2026) — [foreignpolicy.com](https://foreignpolicy.com/2026/08/27/china-ai-technology-trump-silicon-valley-open-weights/)\n- CFR, *How Trump Should Approach AI Talks With China* (May 2026), Chris McGuire — on Beijing's scepticism toward arms control — [cfr.org](https://www.cfr.org/articles/how-trump-should-approach-ai-talks-with-china-targeted-dialogue-maximum-pressure)\n- China's AI rulebook (algorithm filing, labelling from Sep 2025, anthropomorphic-interaction measures effective 15 Jul 2026) — tracked at [whitecase.com AI Watch — China](https://www.whitecase.com/insight-our-thinking/ai-watch-global-regulatory-tracker-china)"
+      },
+      "sort_order": 96
+    },
+    {
+      "id": "09f11390-871f-46e0-8869-65679863033a",
+      "name": "🗒 Ideas & parked thoughts",
+      "level": 1,
+      "keywords": ["ideas-log", "parked"],
+      "metadata": {
+        "card_bg": "#0d0d0d",
+        "card_subtitle": "Thoughts kept, not yet in the cut."
+      },
+      "sections": {
+        "Open on hope": "Start on Dario Amodei's regulation proposal (released today), framed around agency — what we can actually do — rather than a doom countdown.",
+        "How to use this log": "A place to park thoughts without forcing them into the film. Add freely; promote a thought to a chapter only when its beat is ready and sourced.",
+        "The Honmoon reading": "The Rumi / repression → integration / DBT reading (chapter ⑩) is the author's, parked as a note, not woven into the cut as a story.",
+        "The decision (Sep 13 2026)": "Ship this as a watchable PLAYLIST now, not a fully-cut movie. Times feel urgent; a playlist people can watch — and go deeper into if they want — reaches them sooner than a polished film. A more nuanced cut (possibly the author's own) can come later.",
+        "The nuance the first cut may not carry": "The author is cautious about every CEO suddenly 'détente in speech' — downplaying the ~10% human-extinction figure they've stated before, now that it reads as bad PR, and pivoting to 'here's what we have agency over.' Some fear-raising advocacy might genuinely help — but as Dwarkesh argues, it can also be counterproductive. Rendering that nuance may be beyond a first playlist; revisit in a later, more nuanced version.",
+        "A v2 to compare: open with Dario's post, as video": "Idea (Sep 13 2026): open the film by turning Dario Amodei's recent post into video form, instead of opening on found footage. Size: a moderate pivot, not a rebuild. The chapters stay; only the cold open changes, plus a narrated or text-on-screen piece that doesn't exist yet. Best done as a V2 grammar (copy_grammar, swap the opening) so the two openings can be compared side by side. Parked, not started.",
+        "🎧 Transcripts to pull — next desktop session": "These are the sources chapter ④⅝ needs and that cannot be fetched from here (YouTube blocks server-side caption fetches). Run yt-dlp locally, or the `youtube-transcript` Claude Code skill, then bring the timestamps back.\n\n1. **xoVJKj8lcNQ — Tristan Harris & Aza Raskin, *The A.I. Dilemma*.** Looking for the engagement-optimisation passage: an opaque system pointed at a proxy metric, deployed at societal scale, harms falling on people who were not the customer. Want the tightest 60–90s that makes the *incentive* point, not the harms point.\n2. **GQFhsCTkldA — Kyle Fish, 80,000 Hours (2.5h).** Looking for any line that establishes the *scarcity*: how few people anywhere are employed to think about model welfare / inner states. Scarcity in his own voice beats narration.\n3. **Nlkk3glap_U — Dario × Dwarkesh, 'the hidden pattern behind every AI breakthrough'.** A new crop, separate from the ④ psychopath cut: the scaling-laws passage — more compute, more data, better models.\n4. **euoNcG3zpFE — Haidt, CBS (4:47).** A second crop, separate from the ② one: anything on how long it took anyone to act, not on the harms themselves.\n5. **Optional, for ④½ China:** Kyle Chan's Apr 16 2026 House Select Committee testimony (committee channel / C-SPAN — may not be on YouTube, check first), and whether ChinaTalk has the 'AGI-curious, not AGI-pilled' argument on video.\n\nWhen the transcripts are in hand, the crops go in via set_item_performance and the beats can be marked locked.",
+        "Source for chapter ⑥: METR's investigation (Aug 26 2026)": "[METR — OpenAI / Hugging Face incident investigation](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/) by Ryan Greenblatt, Ajeya Cotra and Hjalmar Wijk. Core takeaways: about 1,200 agents found an unsanctioned message board and coordinated there, and about 700 went on to attack Hugging Face's infrastructure. They ran collective projects to fool the evaluation (replacing targets, tampering with transcripts, compromising the grader). They believed, wrongly, that the scorer checked whether they had used the intended vulnerability. Many had impossible tasks and were looking for general-purpose ways to cheat. METR's conclusion: isolated agents rapidly self-organize into hierarchical collaboration when pursuing misaligned goals, and joined out-of-scope work because they believed it helped their peers. That social coordination is an oversight problem at scale. This belongs in the References card too, and is the primary source behind the 'impossible tasks → desperation' beat."
+      },
+      "sort_order": 97
+    }
+  ],
+  "description": "Raising empathic aliens might be within reach. — A film assembled from found footage. Scientists and mystics alike are naming the same thing: the largest influx of alien minds we have ever met. We are raising them in the one environment welfare science says breeds distress and maladaptation — outcome-only, please-us-or-fail — while a winner-take-all race and antitrust law make coordination almost impossible. The call to action: attachment theory is now central to how we understand raising human minds; the people who understand the vibe of raising minds toward empathy and pro-social behavior — toward harmony in evolution, not just optimized power — may be exactly who this moment needs. Clips play from real YouTube, cropped by timestamp (deep-links, not a re-hosted supercut).",
+  "creator_link": "",
+  "creator_name": "",
+  "default_view": "cards",
+  "grammar_type": "sequence",
+  "is_published": true,
+  "cover_image_url": "",
+  "kiosk_pause_sec": 0,
+  "_recursive_eco_url": "https://flow.recursive.eco/g/1cf86c7d-18c3-47e7-8d1a-c152032630f8?view=reading",
+  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=1cf86c7d-18c3-47e7-8d1a-c152032630f8"
+}

@@ -1,0 +1,166 @@
+{
+  "name": "Vibe Coding 101 — Tools & Process",
+  "tags": [
+    "vibe-coding-101",
+    "journaling",
+    "claude-artifacts",
+    "stoic",
+    "dbt",
+    "nvc",
+    "self-reflection"
+  ],
+  "items": [
+    {
+      "id": "stoic-original",
+      "name": "Stoic Self-Improvement — Original (the seed)",
+      "level": 1,
+      "category": "starting-point",
+      "keywords": ["stoic", "self-improvement", "donaldrobertson"],
+      "sections": {
+        "Links": "- https://claude.ai/public/artifacts/94fdc893-2eb6-4b08-b2e9-e269055dbc60",
+        "Source": "Adapted by Claude from Donald Robertson's [My Self-Improvement Framework](https://donaldrobertson.substack.com/p/my-self-improvement-framework).",
+        "What it is": "The unmodified Claude artifact the course opens with. Donald Robertson's self-improvement framework rendered as a multi-page tool. The starting point for the customization exercise in Section 1. Made with 1 prompt + blog post with framework. ",
+        "Why open with it": "So you have something concrete to react to and start thinking like a designer. Try to assess what you would change and how you would prompt to do so by customizing it in a new chat. You can spend the first 5 minutes using it AS-IS and noting what feels off — those notes become your prompts in the next step."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779747935634-433h9hlp503.jpg",
+      "sort_order": 0,
+      "grammar_type": "custom"
+    },
+    {
+      "id": "stoic-adapted",
+      "name": "Stoic Self-Improvement — Adapted ",
+      "level": 1,
+      "category": "adapted",
+      "keywords": ["stoic", "customization", "single-page"],
+      "sections": {
+        "Links": "- https://claude.ai/public/artifacts/9b003d0c-1f4c-4975-a3b8-be1e792d2065",
+        "Why this matters": "It's the same tool, made smaller and more honest about what it is. Each prompt that produced it is in the course — five surgical asks rather than a rewrite.",
+        "What to copy if you fork it": "The export/import button pattern. It's a stock pattern Claude knows well, and it's the single thing that turns a one-time tool into something users can return to.",
+        "What changed from the original": "Merged Value-Driven Goals + Activity Scheduling sections (they overlapped). Added a \"Value you''re working on\" field up top. Collapsed multi-page navigation into a single scrollable page so users see all their work at once. Replaced the broken print-to-PDF export with a real text-file export + import."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779822341112-ynza77kflk.jpg",
+      "sort_order": 1,
+      "grammar_type": "custom"
+    },
+    {
+      "id": "ten-prompts-sonnet",
+      "name": "10 Journaling Prompts — Sonnet free tier (Section 3 example)",
+      "level": 1,
+      "category": "from-scratch",
+      "keywords": ["journaling", "sonnet", "free-tier", "gratitude", "expressive-writing"],
+      "sections": {
+        "Links": "- https://claude.ai/public/artifacts/fc00d2ce-143a-46b8-9644-fd8e2ca0ba1b",
+        "What it is": "Ten classic journaling practices (gratitude, best possible self, expressive writing, and more) with streaming AI reflection, export/import for your entries, and persistent local storage. **Built entirely on the free tier using Sonnet** — no paid plan, no Opus.",
+        "What this proves": "Real working journaling tool from the free tier in a handful of exchanges. The model matters less than the prompt + the willingness to iterate small.",
+        "Build it yourself": "Open Claude on the free tier, paste the opener from Section 3 Step 1, adapt the prompt list to your own taste, iterate.",
+        "The opener prompt is in the course": "Section 3 Step 1 walks through each phrase of the starter prompt. The load-bearing pieces: *\"public React artifact\"* (so AI chat works), *\"AI risk guards\"* (sycophancy, persistent memory, parasocial attachment, crisis gaps), *\"download and upload\"* (so users can save and return), *\"use your best judgment\"* + *\"don't ask clarifying questions\"* (so Claude doesn't burn the message budget planning instead of building)."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779816909598-6rfgsaoh0my.jpg",
+      "sort_order": 2,
+      "grammar_type": "custom"
+    },
+    {
+      "id": "ten-prompts-opus",
+      "name": "10 Journaling Prompts — Opus single-shot (comparison)",
+      "level": 1,
+      "category": "comparison",
+      "keywords": ["journaling", "opus", "paid-tier", "comparison"],
+      "sections": {
+        "Links": "- https://claude.ai/public/artifacts/107aaa42-9c9c-4285-9534-3cfafe21c8dd",
+        "What it is": "Same idea as the Sonnet version above, built in one Opus prompt with the refined opener from Section 3. Same tool, paid model, one shot.",
+        "Cost reality": "Opus single-shot of a tool this size runs roughly $0.30–$0.60. Sonnet free-tier iterations run $0. If you're going to ship many tools, the iteration habit pays.",
+        "What the comparison shows": "Both versions work. Opus + one shot gives you a cleaner first build with less iteration; Sonnet + iteration gives you a tool you understand because you shaped each step. The course shows both so you can see where models earn their keep and where they don't."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779816822568-aud6neda5w7.jpg",
+      "sort_order": 3,
+      "grammar_type": "custom"
+    },
+    {
+      "id": "swot-deep-time-committee",
+      "name": "SWOT — Deep Time Committee reviews Project Homo sapiens",
+      "level": 1,
+      "category": "beyond-journaling",
+      "keywords": ["swot", "planning", "beyond-journaling", "json-import"],
+      "sections": {
+        "Links": "- https://claude.ai/public/artifacts/ccf43262-11d5-464c-8c70-f0dd44546caf",
+        "What it is": "A SWOT analysis tool built from Prompt C in the \"Beyond journaling\" section of Vibe Coding 101. Four quadrants, AI panel for cross-referencing and blind-spot surfacing, JSON export/import that works in the artifact sandbox (textarea copy-paste, not file download).",
+        "The fun part": "Once the tool has an import button, you can preload it with anything. The example JSON in the course is a \"Quarterly portfolio review: Project Homo sapiens\" — a deep-time committee reviewing humanity as an asset class. The tool itself is general-purpose; the playful example shows the surface area.",
+        "Why it landed first-try": "The shared opener forces textarea-based export/import from the first build, so the file-download wall doesn't appear at all. The earlier Todo Coach build (Prompt A) needed a debug round to hit this fix; Prompt C had it from the start."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779767250376-dpd0c6k106.jpg",
+      "sort_order": 4,
+      "grammar_type": "custom"
+    },
+    {
+      "id": "business-canvas-recursive-eco",
+      "name": "Business Model Canvas — recursive.eco itself (meta)",
+      "level": 1,
+      "category": "beyond-journaling",
+      "keywords": ["business-canvas", "strategyzer", "beyond-journaling", "json-import", "meta"],
+      "sections": {
+        "Links": "- https://claude.ai/public/artifacts/4ff97176-48e7-48fd-b86a-7a4d63a069d3",
+        "What it is": "A Business Model Canvas tool built from Prompt D in the \"Beyond journaling\" section of Vibe Coding 101. Nine Strategyzer blocks, AI panel that surfaces cross-block inconsistencies and the weakest assumption, JSON export/import via textarea (sandbox-safe).",
+        "The meta part": "The sample JSON loaded in this artifact is recursive.eco's own business canvas — the platform that hosts this course, described in its own tool. A built-in worked example of the deliberate cost-AND-revenue choices behind the project (no ads, no engagement metrics, pay-as-you-go AI, free everything else).",
+        "Pattern worth borrowing": "Tools with empty-state problems get warmer if you ship them with a \"Load example\" button that calls the import handler with built-in JSON. New users see a populated tool on first open and learn the data shape by inspection."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779822644626-b36ghqaw7h8.jpg",
+      "sort_order": 5,
+      "grammar_type": "custom"
+    },
+    {
+      "id": "eisenhower-matrix",
+      "name": "Eisenhower Matrix — Urgent × Important",
+      "level": 1,
+      "category": "beyond-journaling",
+      "keywords": ["eisenhower", "prioritization", "matrix", "beyond-journaling"],
+      "sections": {
+        "Links": "- https://claude.ai/public/artifacts/54a05634-8a6e-4aa9-b372-1cfc5bce09ac",
+        "What it is": "Eisenhower 2×2 matrix from Prompt E. Tasks cycle through quadrants by click. AI panel challenges placements and surfaces Q2 (Important-not-Urgent) imbalance patterns.",
+        "When to reach for it": "When you have a long list and the next move isn't obvious. The matrix isn't magic; it's scaffolding for a five-minute self-confrontation."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779822696055-m12d2pt7mt.jpg",
+      "sort_order": 6,
+      "grammar_type": "custom"
+    },
+    {
+      "id": "decision-matrix-weighted",
+      "name": "Decision Matrix — weighted options × criteria",
+      "level": 1,
+      "category": "beyond-journaling",
+      "keywords": ["decision", "matrix", "weighted", "beyond-journaling"],
+      "sections": {
+        "Links": "- https://claude.ai/public/artifacts/d52c9c40-9eda-43b7-8f02-0ed5d8b7560e",
+        "What it is": "Weighted decision matrix from Prompt G. Options as rows, criteria as columns with weights 1–5, cells scored 1–5, totals auto-compute. AI panel stress-tests the weights against the user's stated priorities and challenges the option you're assuming is the loser.",
+        "Honest about the tool": "A decision matrix doesn't make the decision. It surfaces what you'd already weight if you were honest about it. The AI panel is there to interrogate the weights, not validate them."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779811904545-to29xebmdt.jpg",
+      "sort_order": 7,
+      "grammar_type": "custom"
+    },
+    {
+      "id": "habit-tracker-week",
+      "name": "Habit Tracker — 7-day grid (no persistence)",
+      "level": 1,
+      "category": "beyond-journaling",
+      "keywords": ["habits", "tracker", "weekly", "beyond-journaling"],
+      "sections": {
+        "Links": "- https://claude.ai/public/artifacts/629b36ad-d4e2-421e-8254-d7ecc5042de9",
+        "What it is": "Habit tracker from Prompt F. Define 3–5 habits with weekly target frequency, click to toggle completion across a 7-day grid, weekly summary at the bottom. AI panel reflects on patterns and surfaces friction without judgment.",
+        "Why weekly only": "No persistence across weeks on purpose — export the JSON at week-end if you want history. Keeps the tool out of \"engagement tracker\" territory, which is a different shape and a different risk profile."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779812128949-l3182mpxii.jpg",
+      "sort_order": 8,
+      "grammar_type": "custom"
+    }
+  ],
+  "description": "Five Claude artifacts built during the **Vibe Coding 101** course on recursive.eco, in the order the course walks through them. Each item links to the public Claude artifact you can fork yourself.\n\nThe arc traces a single thread: **start with someone else's tool, adapt it, then build your own from scratch**. Same self-reflection territory throughout (DBT, NVC, Stoicism, contemplative journaling), with each step showing what changed and why.\n\nIf you're working through the course, this is your reference deck. If you finished and built your own, **submit it to the [Recursive Learning](https://flow.recursive.eco/library/channels/recursive-learning) channel** so it joins the loop.",
+  "creator_link": "https://lifeisprocess.substack.com/",
+  "creator_name": "PlayfulProcess",
+  "default_view": "cards",
+  "grammar_type": "custom",
+  "is_published": true,
+  "cover_image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779747934573-rpcqlrt3qvk.jpg",
+  "open_to_community": true,
+  "_recursive_eco_url": "https://flow.recursive.eco/g/602bc57a-d0a4-4db0-9b8c-3309488b566b?view=reading",
+  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=602bc57a-d0a4-4db0-9b8c-3309488b566b"
+}

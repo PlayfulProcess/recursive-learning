@@ -1,0 +1,2681 @@
+{
+  "name": "KPop Demon Hunters",
+  "tags": [
+    "kpop-demon-hunters",
+    "dance",
+    "diy",
+    "crafts",
+    "costumes",
+    "family",
+    "kids",
+    "ejae",
+    "korea",
+    "trivia"
+  ],
+  "items": [
+    {
+      "id": "4a047f00-f280-4911-9a15-02ff3a1d7bda",
+      "name": "💃 Dances",
+      "level": 1,
+      "keywords": ["divider"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Real crews, real streets, real kids — press play and dance along."
+      },
+      "sections": {},
+      "sort_order": 0
+    },
+    {
+      "id": "da233a86-5215-4324-9596-55833f7efbf4",
+      "name": "Golden — BABY WARRIORS (kid crew, Vietnam)",
+      "level": 1,
+      "keywords": ["golden", "huntrix", "kids"],
+      "metadata": {
+        "channel": "Thầy Huy Kid Dance",
+        "youtube_url": "https://youtube.com/watch?v=Glk9piFNBWI",
+        "duration_seconds": 195,
+        "youtube_video_id": "Glk9piFNBWI"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/Glk9piFNBWI/hqdefault.jpg",
+      "sort_order": 1
+    },
+    {
+      "id": "4d362e07-d0ce-414b-9489-cc341ace40fc",
+      "name": "Golden — B-Wild in public",
+      "level": 1,
+      "keywords": ["golden", "huntrix", "one-take"],
+      "metadata": {
+        "channel": "B-Wild Official",
+        "youtube_url": "https://youtube.com/watch?v=BSlfQWpCFco",
+        "duration_seconds": 205,
+        "youtube_video_id": "BSlfQWpCFco"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/BSlfQWpCFco/hqdefault.jpg",
+      "sort_order": 2
+    },
+    {
+      "id": "d3dca781-7912-45f4-b294-3854d92d458b",
+      "name": "Golden — BLACKSI in public (Vietnam)",
+      "keywords": ["golden", "huntrix", "one-take", "vietnam"],
+      "metadata": {
+        "channel": "BlackSi Official",
+        "view_count": 7936959,
+        "youtube_url": "https://youtube.com/watch?v=Jzu6Ido_lfU",
+        "published_at": "2025-07-28T14:30:24Z",
+        "duration_seconds": 202,
+        "youtube_video_id": "Jzu6Ido_lfU"
+      },
+      "sections": {},
+      "sort_order": 3
+    },
+    {
+      "id": "2ef8b903-6376-4a60-a2d2-b529dd93ad2d",
+      "name": "On the ice — Yana Chin",
+      "level": 1,
+      "keywords": ["ice skating", "performance"],
+      "metadata": {
+        "channel": "Yana Chin",
+        "youtube_url": "https://youtube.com/watch?v=hs60LLuyl7M",
+        "duration_seconds": 532,
+        "youtube_video_id": "hs60LLuyl7M"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/hs60LLuyl7M/hqdefault.jpg",
+      "sort_order": 4
+    },
+    {
+      "id": "f7ed270d-8617-48f5-af1f-557f1b532f2f",
+      "name": "Takedown — B-Wild in public",
+      "level": 1,
+      "keywords": ["takedown", "twice", "one-take"],
+      "metadata": {
+        "channel": "B-Wild Official",
+        "youtube_url": "https://youtube.com/watch?v=N9LE_xquwUM",
+        "duration_seconds": 186,
+        "youtube_video_id": "N9LE_xquwUM"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/N9LE_xquwUM/hqdefault.jpg",
+      "sort_order": 5
+    },
+    {
+      "id": "4120f821-4407-43c4-bf54-9cba5e17c37f",
+      "name": "Takedown — BABY WARRIORS (kid crew)",
+      "level": 1,
+      "keywords": ["takedown", "kids"],
+      "metadata": {
+        "channel": "Thầy Huy Kid Dance",
+        "youtube_url": "https://youtube.com/watch?v=2L_SvoDGTQc",
+        "duration_seconds": 179,
+        "youtube_video_id": "2L_SvoDGTQc"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/2L_SvoDGTQc/hqdefault.jpg",
+      "sort_order": 6
+    },
+    {
+      "id": "d9721846-0b2b-4068-859c-9ec4c8ec66bb",
+      "name": "What It Sounds Like — B-Wild in public",
+      "level": 1,
+      "keywords": ["what it sounds like", "huntrix"],
+      "metadata": {
+        "channel": "B-Wild Official",
+        "youtube_url": "https://youtube.com/watch?v=71Vm6VIP_Zk",
+        "duration_seconds": 253,
+        "youtube_video_id": "71Vm6VIP_Zk"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/71Vm6VIP_Zk/hqdefault.jpg",
+      "sort_order": 7
+    },
+    {
+      "id": "e5a0606b-99dc-4ba1-92e7-64cb8b5f3e1c",
+      "name": "What It Sounds Like — PonySquad",
+      "level": 1,
+      "keywords": ["what it sounds like", "dance cover"],
+      "metadata": {
+        "channel": "PONY SQUAD OFFICIAL",
+        "youtube_url": "https://youtube.com/watch?v=aU1vyibHDng",
+        "duration_seconds": 266,
+        "youtube_video_id": "aU1vyibHDng"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/aU1vyibHDng/hqdefault.jpg",
+      "sort_order": 8
+    },
+    {
+      "id": "3179ce2e-4f2f-48d8-999c-6a24f712d146",
+      "name": "Soda Pop — Z-Axis, one take",
+      "level": 1,
+      "keywords": ["soda pop", "saja boys", "one-take"],
+      "metadata": {
+        "channel": "Z-Axis Dance Crew",
+        "youtube_url": "https://youtube.com/watch?v=iYQbCu5U43g",
+        "duration_seconds": 171,
+        "youtube_video_id": "iYQbCu5U43g"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/iYQbCu5U43g/hqdefault.jpg",
+      "sort_order": 9
+    },
+    {
+      "id": "d9e88f40-cbc5-47a4-b8da-38c250813eca",
+      "name": "Soda Pop — REN Studio, Thailand",
+      "level": 1,
+      "keywords": ["soda pop", "saja boys"],
+      "metadata": {
+        "channel": "REN Studio",
+        "youtube_url": "https://youtube.com/watch?v=o5IXudZqGG8",
+        "duration_seconds": 168,
+        "youtube_video_id": "o5IXudZqGG8"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/o5IXudZqGG8/hqdefault.jpg",
+      "sort_order": 10
+    },
+    {
+      "id": "575f68f3-6656-4ff5-8bb1-ebd3dc071fc4",
+      "name": "Your Idol — Z-Axis, one take",
+      "level": 1,
+      "keywords": ["your idol", "saja boys", "one-take"],
+      "metadata": {
+        "channel": "Z-Axis Dance Crew",
+        "youtube_url": "https://youtube.com/watch?v=ruQrCYYDySw",
+        "duration_seconds": 144,
+        "youtube_video_id": "ruQrCYYDySw"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/ruQrCYYDySw/hqdefault.jpg",
+      "sort_order": 11
+    },
+    {
+      "id": "f3edcc71-5f7a-4a68-be9a-96fa76e5ed8a",
+      "name": "🛠 Making & Props",
+      "level": 1,
+      "keywords": ["divider"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Cardboard, clay, resin, and one repainted Barbie — go build something."
+      },
+      "sections": {},
+      "sort_order": 12
+    },
+    {
+      "id": "0a979712-9bda-4bfa-96cc-a3ba1a8e421f",
+      "name": "Zoey's throwing knives",
+      "level": 1,
+      "keywords": ["prop", "zoey", "knives"],
+      "metadata": {
+        "channel": "SideQuestCrafting",
+        "youtube_url": "https://youtube.com/watch?v=udAxwLfJ7lM",
+        "duration_seconds": 1135,
+        "youtube_video_id": "udAxwLfJ7lM"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/udAxwLfJ7lM/hqdefault.jpg",
+      "sort_order": 13
+    },
+    {
+      "id": "abcebc6b-92f9-4f77-91f1-fae868a6ea32",
+      "name": "Mira's polearm, from scratch",
+      "level": 1,
+      "keywords": ["prop", "mira", "polearm"],
+      "metadata": {
+        "channel": "SideQuestCrafting",
+        "youtube_url": "https://youtube.com/watch?v=eQ_NeEWt9Zg",
+        "duration_seconds": 2145,
+        "youtube_video_id": "eQ_NeEWt9Zg"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/eQ_NeEWt9Zg/hqdefault.jpg",
+      "sort_order": 14
+    },
+    {
+      "id": "05bbcc81-9586-4980-beb0-9e20537b510b",
+      "name": "Mira's prop — another way to make it",
+      "level": 1,
+      "keywords": ["prop", "mira", "tutorial"],
+      "metadata": {
+        "channel": "The Insanity Project",
+        "youtube_url": "https://youtube.com/watch?v=SfUgfjZJoMI",
+        "duration_seconds": 740,
+        "youtube_video_id": "SfUgfjZJoMI"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/SfUgfjZJoMI/hqdefault.jpg",
+      "sort_order": 15
+    },
+    {
+      "id": "035d88cf-75f0-41d6-ac83-68ae127ad345",
+      "name": "Zoey's Shin-Kal — a paper sword tutorial",
+      "level": 1,
+      "keywords": ["prop", "zoey", "tutorial"],
+      "metadata": {
+        "channel": "Honey's Crafteria",
+        "youtube_url": "https://youtube.com/watch?v=eNE6RQBrjJs",
+        "duration_seconds": 218,
+        "youtube_video_id": "eNE6RQBrjJs"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/eNE6RQBrjJs/hqdefault.jpg",
+      "sort_order": 16
+    },
+    {
+      "id": "7f0993ba-d53d-4516-a004-7002d2ea1b8a",
+      "name": "A Rumi doll, made by hand",
+      "level": 1,
+      "keywords": ["doll", "rumi", "sculpting"],
+      "metadata": {
+        "channel": "HeXtian",
+        "youtube_url": "https://youtube.com/watch?v=RfKPKQ5Mo40",
+        "duration_seconds": 1602,
+        "youtube_video_id": "RfKPKQ5Mo40"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/RfKPKQ5Mo40/hqdefault.jpg",
+      "sort_order": 17
+    },
+    {
+      "id": "ecff649f-4924-47ad-923d-a94bea5e540c",
+      "name": "A Rumi doll, made golden (part 2)",
+      "level": 1,
+      "keywords": ["doll", "rumi", "sculpting", "golden"],
+      "metadata": {
+        "channel": "HeXtian",
+        "youtube_url": "https://youtube.com/watch?v=ge8TFybiOHA",
+        "duration_seconds": 812,
+        "youtube_video_id": "ge8TFybiOHA"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/ge8TFybiOHA/hqdefault.jpg",
+      "sort_order": 18
+    },
+    {
+      "id": "d3b406d9-5335-42bd-b238-21e6d2667c35",
+      "name": "A Jinu doll, made by hand",
+      "level": 1,
+      "keywords": ["doll", "jinu", "sculpting"],
+      "metadata": {
+        "channel": "HeXtian",
+        "youtube_url": "https://youtube.com/watch?v=uvh74mURl9o",
+        "duration_seconds": 1490,
+        "youtube_video_id": "uvh74mURl9o"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/uvh74mURl9o/hqdefault.jpg",
+      "sort_order": 19
+    },
+    {
+      "id": "f970c7ad-ad5e-46e5-bbae-22807efbd7a7",
+      "name": "A Barbie turned into Rumi",
+      "level": 1,
+      "keywords": ["doll", "rumi", "repaint"],
+      "metadata": {
+        "channel": "Poppen Atelier / Doll Art Studio",
+        "youtube_url": "https://youtube.com/watch?v=rySkm6j0I7Q",
+        "duration_seconds": 2603,
+        "youtube_video_id": "rySkm6j0I7Q"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/rySkm6j0I7Q/hqdefault.jpg",
+      "sort_order": 20
+    },
+    {
+      "id": "ad549fc4-56ab-4720-8104-a880650e6561",
+      "name": "Rumi's sword — a cosplay tutorial",
+      "level": 1,
+      "keywords": ["prop", "rumi", "sword", "tutorial"],
+      "metadata": {
+        "channel": "The Insanity Project",
+        "youtube_url": "https://youtube.com/watch?v=C-2HvK1fm8g",
+        "duration_seconds": 765,
+        "youtube_video_id": "C-2HvK1fm8g"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/C-2HvK1fm8g/hqdefault.jpg",
+      "sort_order": 21
+    },
+    {
+      "id": "481ccfde-7bee-4ce1-8e77-ff6ba3cb8560",
+      "name": "Rumi's sword — full LED build, for beginners",
+      "level": 1,
+      "keywords": ["prop", "rumi", "sword", "led", "tutorial"],
+      "metadata": {
+        "channel": "Lorentz iWood",
+        "youtube_url": "https://youtube.com/watch?v=5yprm1-xKFk",
+        "duration_seconds": 2023,
+        "youtube_video_id": "5yprm1-xKFk"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/5yprm1-xKFk/hqdefault.jpg",
+      "sort_order": 22
+    },
+    {
+      "id": "3f0002cd-f27c-4d07-9187-46905cace531",
+      "name": "Mira's glaive — an LED build tutorial",
+      "level": 1,
+      "keywords": ["prop", "mira", "glaive", "led", "tutorial"],
+      "metadata": {
+        "channel": "Lorentz iWood",
+        "youtube_url": "https://youtube.com/watch?v=ccKQLHyOoVo",
+        "duration_seconds": 1536,
+        "youtube_video_id": "ccKQLHyOoVo"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/ccKQLHyOoVo/hqdefault.jpg",
+      "sort_order": 23
+    },
+    {
+      "id": "973cd4d9-80ba-43bc-a0aa-c20900dd51e2",
+      "name": "All her KPop Demon Hunters customs — a LEGO compilation",
+      "level": 1,
+      "keywords": ["lego", "customs", "compilation"],
+      "metadata": {
+        "note": "ellieV's own custom LEGO builds of the KPop Demon Hunters characters and props — fan-made, not a set you can buy. (The official LEGO set review moved to the Merch & Books playlist on Sep 9 2026.)",
+        "channel": "ellieV",
+        "youtube_url": "https://youtube.com/watch?v=Jw7WZFST8LE",
+        "duration_seconds": 4407,
+        "youtube_video_id": "Jw7WZFST8LE"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/Jw7WZFST8LE/hqdefault.jpg",
+      "sort_order": 24
+    },
+    {
+      "id": "f39a9481-2d66-4d6a-993c-ac538848b474",
+      "name": "The glowing rainbow paint finish — a reel, on Instagram",
+      "keywords": ["prop", "painting", "technique", "instagram", "not-a-video"],
+      "metadata": {
+        "source": "instagram-reel",
+        "card_bg": "#2a1a4a",
+        "channel": "The Insanity Project",
+        "card_subtitle": "No video on this card — it opens Instagram.",
+        "instagram_url": "https://www.instagram.com/reel/DM3dEl8PQXe/"
+      },
+      "sections": {
+        "Made By": "The Insanity Project — instagram.com/reel/DM3dEl8PQXe (the thumbnail here is from their Rumi sword build, because the reel itself lives on Instagram)",
+        "Heads up": "THIS CARD HAS NO VIDEO TO PLAY. It is a link out to Instagram — tap it and it opens there.",
+        "What it shows": "How the ombré rainbow-glow paint was done on all three of this maker's props — Rumi's sword, Mira's glaive, Zoey's daggers. It is the finish you can see on the two build tutorials just above."
+      },
+      "image_url": "https://i.ytimg.com/vi/C-2HvK1fm8g/hqdefault.jpg",
+      "sort_order": 25
+    },
+    {
+      "id": "f63d4bc6-ebec-4e60-967b-188111e0ee2c",
+      "name": "🎬 Fan Films, Covers & Fan Art",
+      "keywords": ["divider"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Costumes, covers, and everything fans made of it — plus one place to pause the movie."
+      },
+      "sections": {},
+      "sort_order": 26
+    },
+    {
+      "id": "6d197713-9348-4f2a-9634-cb0bd8f8538d",
+      "name": "Golden — HUNTR/X cosplay music video",
+      "keywords": ["cosplay", "golden", "huntrix"],
+      "metadata": {
+        "channel": "Vocalaction",
+        "youtube_url": "https://youtube.com/watch?v=FJapoKV9kt0",
+        "duration_seconds": 233,
+        "youtube_video_id": "FJapoKV9kt0"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/FJapoKV9kt0/hqdefault.jpg",
+      "sort_order": 27
+    },
+    {
+      "id": "8e4fe8ca-70b9-4a7b-827a-5fc36c2275ea",
+      "name": "How It's Done — HUNTR/X cosplay music video",
+      "keywords": ["cosplay", "how its done"],
+      "metadata": {
+        "channel": "Vocalaction",
+        "youtube_url": "https://youtube.com/watch?v=hjKQO7L2gzE",
+        "duration_seconds": 203,
+        "youtube_video_id": "hjKQO7L2gzE"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/hjKQO7L2gzE/hqdefault.jpg",
+      "sort_order": 28
+    },
+    {
+      "id": "202f5676-099e-4ce7-aa36-2688c81c518a",
+      "name": "Golden — a whole family films it",
+      "keywords": ["family", "cover", "golden"],
+      "metadata": {
+        "channel": "The Fun Squad",
+        "youtube_url": "https://youtube.com/watch?v=20PlxmdUU6E",
+        "duration_seconds": 229,
+        "youtube_video_id": "20PlxmdUU6E"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/20PlxmdUU6E/hqdefault.jpg",
+      "sort_order": 29
+    },
+    {
+      "id": "99923d44-b0a7-43df-bd1d-532cef81b44a",
+      "name": "Last to leave the circle — Rumi joins the Fun Squad",
+      "keywords": ["family", "game", "rumi"],
+      "metadata": {
+        "channel": "The Fun Squad",
+        "youtube_url": "https://youtube.com/watch?v=792VQdThOZc",
+        "duration_seconds": 1124,
+        "youtube_video_id": "792VQdThOZc"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/792VQdThOZc/hqdefault.jpg",
+      "sort_order": 30
+    },
+    {
+      "id": "3e8cfbf2-277b-4b41-a6b2-b67ad4c7dd5c",
+      "name": "Sneaky jokes with the pause remote — Rumi and Jinu take over",
+      "keywords": ["family", "comedy", "rumi", "jinu"],
+      "metadata": {
+        "channel": "The Fun Squad",
+        "youtube_url": "https://youtube.com/watch?v=AElSdHbIbgY",
+        "duration_seconds": 1034,
+        "youtube_video_id": "AElSdHbIbgY"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/AElSdHbIbgY/hqdefault.jpg",
+      "sort_order": 31
+    },
+    {
+      "id": "511534a7-7c44-45e5-b598-96aea3d62b1e",
+      "name": "The drone show over Seoul",
+      "keywords": ["seoul", "drone-show", "city"],
+      "metadata": {
+        "channel": "서울시 · Seoul",
+        "youtube_url": "https://youtu.be/LTbg4Wps4GE",
+        "duration_seconds": 847,
+        "youtube_video_id": "LTbg4Wps4GE"
+      },
+      "sections": {
+        "What it is": "The city of Seoul flew a drone light show of the whole movie — every song in order, drawn in the sky. The creator's own chapter list is below.",
+        "Creator's Notes": "00:00 카운트다운\n00:11 What It Sounds Like (HUNTR/X)\n02:09 How It's Done (HUNTR/X)\n02:59 Strategy (TWICE)\n03:35 Soda Pop (Saja Boys)\n03:58 Your Idol (Saja Boys)\n04:32 진우에서 저승진우 변신\n05:09 TAKEDOWN (TWICE)\n06:01 미라, 조이\n06:22 FREE (RUMI, JINU)\n07:53 GOLDEN (HUNTR/X)\n08:46 더피와 서씨\n09:26 사랑인가봐 (멜로망스)\n10:22 GOLDEN (HUNTR/X)\n11:30 Love me right (EXO)"
+      },
+      "image_url": "https://i.ytimg.com/vi/LTbg4Wps4GE/mqdefault.jpg",
+      "sort_order": 32
+    },
+    {
+      "id": "fac1c3a9-25bf-422e-950d-5e0a3c3c331c",
+      "name": "How It's Done — live action version",
+      "keywords": ["live action", "cover"],
+      "metadata": {
+        "channel": "Le Gianna",
+        "youtube_url": "https://youtube.com/watch?v=bmc2kKA5dvc",
+        "duration_seconds": 221,
+        "youtube_video_id": "bmc2kKA5dvc"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/bmc2kKA5dvc/hqdefault.jpg",
+      "sort_order": 33
+    },
+    {
+      "id": "3ff04b29-659f-46d4-9f33-daa1210dfddf",
+      "name": "Golden — piano solo",
+      "keywords": ["cover", "piano", "golden"],
+      "metadata": {
+        "channel": "Katherine Cordova",
+        "youtube_url": "https://youtube.com/watch?v=omf-tMbC5IA",
+        "duration_seconds": 238,
+        "youtube_video_id": "omf-tMbC5IA"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/omf-tMbC5IA/hqdefault.jpg",
+      "sort_order": 34
+    },
+    {
+      "id": "a43748d8-6714-4840-8e67-be5ba9d0b681",
+      "name": "Golden — acoustic guitar and vocals",
+      "keywords": ["cover", "guitar", "golden"],
+      "metadata": {
+        "channel": "Jonah Baker",
+        "youtube_url": "https://youtube.com/watch?v=YKi-eKT7Z5I",
+        "duration_seconds": 173,
+        "youtube_video_id": "YKi-eKT7Z5I"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/YKi-eKT7Z5I/hqdefault.jpg",
+      "sort_order": 35
+    },
+    {
+      "id": "58f3cec0-132a-4d07-8dbe-36b7595b2a84",
+      "name": "Golden — an emotional vocal cover",
+      "keywords": ["cover", "vocal", "golden"],
+      "metadata": {
+        "channel": "Emma Heesters",
+        "youtube_url": "https://youtube.com/watch?v=1qwq1UCG9c4",
+        "duration_seconds": 187,
+        "youtube_video_id": "1qwq1UCG9c4"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/1qwq1UCG9c4/hqdefault.jpg",
+      "sort_order": 36
+    },
+    {
+      "id": "077430cf-38c3-45b7-b57d-f9420b4a27d1",
+      "name": "Golden — another gorgeous vocal cover",
+      "keywords": ["cover", "vocal", "golden"],
+      "metadata": {
+        "channel": "Raon",
+        "youtube_url": "https://youtube.com/watch?v=fo7LtWAlpJc",
+        "duration_seconds": 201,
+        "youtube_video_id": "fo7LtWAlpJc"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/fo7LtWAlpJc/hqdefault.jpg",
+      "sort_order": 37
+    },
+    {
+      "id": "a64e11a3-d2a4-41da-ac76-49da94b0409c",
+      "name": "Golden — sung live on the Kelly Clarkson Show",
+      "keywords": ["cover", "vocal", "golden", "tv"],
+      "metadata": {
+        "channel": "The Kelly Clarkson Show",
+        "youtube_url": "https://youtube.com/watch?v=py_P2TI-gNg",
+        "duration_seconds": 161,
+        "youtube_video_id": "py_P2TI-gNg"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/py_P2TI-gNg/hqdefault.jpg",
+      "sort_order": 38
+    },
+    {
+      "id": "b6f9530d-f22c-4717-99c7-898e8afd1cc3",
+      "name": "Your Idol — covered by a real K-pop idol",
+      "keywords": ["cover", "vocal", "your-idol"],
+      "metadata": {
+        "channel": "Official JUNHEE",
+        "youtube_url": "https://youtube.com/watch?v=iqbsfcvuqUQ",
+        "duration_seconds": 200,
+        "youtube_video_id": "iqbsfcvuqUQ"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/iqbsfcvuqUQ/hqdefault.jpg",
+      "sort_order": 39
+    },
+    {
+      "id": "4f758835-5f32-4ab5-8938-19127528109e",
+      "name": "Your Idol — a rock cover",
+      "keywords": ["cover", "rock", "your-idol"],
+      "metadata": {
+        "channel": "Our Last Night",
+        "youtube_url": "https://youtube.com/watch?v=-8Br6e4u6DY",
+        "duration_seconds": 195,
+        "youtube_video_id": "-8Br6e4u6DY"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/-8Br6e4u6DY/hqdefault.jpg",
+      "sort_order": 40
+    },
+    {
+      "id": "f6c9a8e1-96c3-4a87-92bb-ff3edeafb605",
+      "name": "The whole soundtrack, on piano — 36 gentle minutes",
+      "keywords": ["cover", "piano", "album"],
+      "metadata": {
+        "channel": "Minnz Piano",
+        "youtube_url": "https://youtube.com/watch?v=WwSq4KdUuNo",
+        "duration_seconds": 2172,
+        "youtube_video_id": "WwSq4KdUuNo"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/WwSq4KdUuNo/hqdefault.jpg",
+      "sort_order": 41
+    },
+    {
+      "id": "7956e4d0-b4db-42d6-95ef-04fa6a81b99c",
+      "name": "Golden — a girl playing violin on the street",
+      "keywords": ["cover", "violin", "girl-musician", "golden"],
+      "metadata": {
+        "channel": "Karolina Protsenko",
+        "youtube_url": "https://youtube.com/watch?v=DHj88yV1m9w",
+        "duration_seconds": 199,
+        "youtube_video_id": "DHj88yV1m9w"
+      },
+      "sections": {
+        "For You": "SHE SETS UP ON THE SIDEWALK AND PLAYS IT ON VIOLIN. PEOPLE STOP.",
+        "Made By": "Karolina Protsenko — GOLDEN, K-Pop Demon Hunters violin cover"
+      },
+      "image_url": "https://i.ytimg.com/vi/DHj88yV1m9w/hqdefault.jpg",
+      "sort_order": 42
+    },
+    {
+      "id": "092edb8c-8144-4dc2-a1b0-4b2ee75b4449",
+      "name": "Golden — sung by a six-year-old, in a real studio",
+      "keywords": ["cover", "vocal", "kid-singer", "golden"],
+      "metadata": {
+        "channel": "Charlotte",
+        "youtube_url": "https://youtube.com/watch?v=6F3-B0EyWfA",
+        "duration_seconds": 222,
+        "youtube_video_id": "6F3-B0EyWfA"
+      },
+      "sections": {
+        "For You": "SHE SANG IT AT HOME UNTIL HER PARENTS BOOKED A STUDIO. SHE'S SIX.",
+        "Made By": "Charlotte — Charlotte's GOLDEN cover (6 yrs old)"
+      },
+      "image_url": "https://i.ytimg.com/vi/6F3-B0EyWfA/hqdefault.jpg",
+      "sort_order": 43
+    },
+    {
+      "id": "ffc83644-6e4f-4d24-b275-16825ec0b7cc",
+      "name": "Golden — sung by a four-year-old",
+      "keywords": ["cover", "vocal", "kid-singer", "golden"],
+      "metadata": {
+        "channel": "Angelica Nero",
+        "youtube_url": "https://youtube.com/watch?v=05ImRBwMbtU",
+        "duration_seconds": 198,
+        "youtube_video_id": "05ImRBwMbtU"
+      },
+      "sections": {
+        "For You": "FOUR YEARS OLD AND SHE GOES FOR EVERY NOTE.",
+        "Made By": "Angelica Nero — 4 Year Old Sings Golden"
+      },
+      "image_url": "https://i.ytimg.com/vi/05ImRBwMbtU/hqdefault.jpg",
+      "sort_order": 44
+    },
+    {
+      "id": "81137964-9d70-42f2-b4d5-315f85627e32",
+      "name": "A girl drumming to KPop Demon Hunters",
+      "keywords": ["cover", "drums", "girl-musician"],
+      "metadata": {
+        "channel": "Patrick J. Abdo",
+        "youtube_url": "https://youtube.com/watch?v=TRwU3UshPNo",
+        "duration_seconds": 51,
+        "youtube_video_id": "TRwU3UshPNo"
+      },
+      "sections": {
+        "For You": "FULL KIT, FULL SPEED.",
+        "Made By": "Patrick J. Abdo — Kpop Demon Hunters drummer girl cover"
+      },
+      "image_url": "https://i.ytimg.com/vi/TRwU3UshPNo/hqdefault.jpg",
+      "sort_order": 45
+    },
+    {
+      "id": "ea8e26fd-8079-4cf1-a363-c5724da59a08",
+      "name": "Golden — easy guitar chords, if you want to learn it",
+      "keywords": ["tutorial", "guitar", "chords", "golden"],
+      "metadata": {
+        "channel": "Guitar Intensive",
+        "youtube_url": "https://youtube.com/watch?v=Ln6-n2grwh8",
+        "duration_seconds": 201,
+        "youtube_video_id": "Ln6-n2grwh8"
+      },
+      "sections": {
+        "For You": "THE CHORDS, SLOWLY, WITH THE WORDS ON SCREEN. LEARN IT YOURSELF.",
+        "Made By": "Guitar Intensive — Golden, EASY Guitar Tutorial with Chords"
+      },
+      "image_url": "https://i.ytimg.com/vi/Ln6-n2grwh8/hqdefault.jpg",
+      "sort_order": 46
+    },
+    {
+      "id": "0c5aac7f-dc32-4dc1-ba65-9cbe887e053b",
+      "name": "Golden — a guitar play-along with the lyrics",
+      "keywords": ["tutorial", "guitar", "play-along", "golden"],
+      "metadata": {
+        "channel": "Skye C. Hale",
+        "youtube_url": "https://youtube.com/watch?v=1PhESnSGkXg",
+        "duration_seconds": 190,
+        "youtube_video_id": "1PhESnSGkXg"
+      },
+      "sections": {
+        "For You": "PLAY AND SING AT THE SAME TIME. CHORDS SCROLL ABOVE THE WORDS.",
+        "Made By": "Skye C. Hale — Golden, EASY Guitar and Lyrics Play-Along"
+      },
+      "image_url": "https://i.ytimg.com/vi/1PhESnSGkXg/hqdefault.jpg",
+      "sort_order": 47
+    },
+    {
+      "id": "0616a46c-d0e6-43bf-9a96-a17586342517",
+      "name": "⏸ Pause the movie here — \"singing the truth\" (1:28:00)",
+      "keywords": ["movie-companion", "talk-card", "finale", "repair"],
+      "metadata": {
+        "lens": "repair",
+        "time": "1:28:00",
+        "movie": "KPop Demon Hunters",
+        "source": "movie-companion",
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "A talk-card, not a video — pause the film at 1:28:00."
+      },
+      "sections": {
+        "Ask together": "In the end the barrier isn't rebuilt by hiding better — it's rebuilt by singing the truth out loud, patterns showing. Why is the TRUE version stronger than the PERFECT version?",
+        "For the grown-up": "This is the whole repair arc landing at once: rupture (the secret), armor (the hiding), truth (spoken — sung — at last), return (to her friends and the stage), and a restoration that re-equips her: a barrier made of honesty instead of performance, stronger than the original, like Maui's new hook. Closing couch question: what's OUR family's version of singing it instead of hiding it?",
+        "What this card is": "NOT A VIDEO. This is a talk-card from the Movie Companion. Pause KPop Demon Hunters at 1 hour 28 minutes — the finale, where Rumi sings with her patterns showing — and ask the question below. Then press play again."
+      },
+      "sort_order": 48
+    },
+    {
+      "id": "0b40b859-03d4-439c-a4a0-40641084e2e2",
+      "name": "🎤 Meet the Real Voices, Cast & Crew",
+      "keywords": ["divider"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "The singers, the writers, the directors — live on stage, and off the record."
+      },
+      "sections": {},
+      "sort_order": 49
+    },
+    {
+      "id": "0897100a-2b47-4ffa-9abb-a056cbaa38ad",
+      "name": "Golden — HUNTR/X live at the Oscars",
+      "keywords": ["performance", "golden", "oscars", "real-voices"],
+      "metadata": {
+        "view_count": 5129527,
+        "youtube_url": "https://youtube.com/watch?v=Qq-E9cO1_uc",
+        "published_at": "2025-11-30T21:16:25Z",
+        "duration_seconds": 422,
+        "youtube_video_id": "Qq-E9cO1_uc"
+      },
+      "sections": {
+        "Why it is here": "The real voices behind Rumi, Mira and Zoey — HUNTR/X performing \"Golden\" live at the Oscars, in front of the whole room."
+      },
+      "image_url": "https://i.ytimg.com/vi/Qq-E9cO1_uc/hqdefault.jpg",
+      "sort_order": 50
+    },
+    {
+      "id": "c3819364-d64f-47ff-94ea-f16ae79f1a45",
+      "name": "Getting ready for that Oscars night, in custom Dior",
+      "keywords": ["ejae", "oscars", "fashion", "real-voices"],
+      "metadata": {
+        "channel": "Vogue",
+        "youtube_url": "https://youtube.com/watch?v=rjEWoPJVo7Y",
+        "duration_seconds": 488,
+        "youtube_video_id": "rjEWoPJVo7Y"
+      },
+      "sections": {
+        "Why it is here": "The other half of the performance you just watched — the hours before it. The singer behind \"Golden\" gets ready for the red carpet."
+      },
+      "image_url": "https://i.ytimg.com/vi/rjEWoPJVo7Y/hqdefault.jpg",
+      "sort_order": 51
+    },
+    {
+      "id": "cca8c613-149a-4c55-87ce-84d5517af3ad",
+      "name": "How \"Golden\" was written — EJAE and Mark Sonnenblick",
+      "keywords": ["interview", "ejae", "songwriting", "real-voices", "vanity-fair"],
+      "metadata": {
+        "channel": "Vanity Fair",
+        "youtube_url": "https://youtube.com/watch?v=FxEX_GWwE7M",
+        "duration_seconds": 1522,
+        "youtube_video_id": "FxEX_GWwE7M"
+      },
+      "sections": {
+        "Why it is here": "EJAE (the singing voice of Rumi) and co-writer Mark Sonnenblick walk through how the Oscar-winning song actually got built, line by line."
+      },
+      "image_url": "https://i.ytimg.com/vi/FxEX_GWwE7M/hqdefault.jpg",
+      "sort_order": 52
+    },
+    {
+      "id": "b6439e4d-f96f-4901-8e19-4b0496781ea6",
+      "name": "Golden — the first-ever live performance",
+      "keywords": ["performance", "golden", "real-voices"],
+      "metadata": {
+        "channel": "The Tonight Show Starring Jimmy Fallon",
+        "youtube_url": "https://youtube.com/watch?v=8y-ViyUk7Dk",
+        "duration_seconds": 220,
+        "youtube_video_id": "8y-ViyUk7Dk"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/8y-ViyUk7Dk/hqdefault.jpg",
+      "sort_order": 53
+    },
+    {
+      "id": "0c8ad6a6-d1fc-45aa-b7bf-4adad3cae07d",
+      "name": "What It Sounds Like + Golden — live at MAMA, with BABYMONSTER",
+      "keywords": ["performance", "mama-awards", "real-voices"],
+      "metadata": {
+        "channel": "Mnet K-POP",
+        "youtube_url": "https://youtube.com/watch?v=3cVroylPpvg",
+        "duration_seconds": 255,
+        "youtube_video_id": "3cVroylPpvg"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/3cVroylPpvg/hqdefault.jpg",
+      "sort_order": 54
+    },
+    {
+      "id": "a1c98f74-f829-42cf-a792-d0625aa409f3",
+      "name": "How EJAE wrote the songs — the long interview",
+      "keywords": ["interview", "ejae", "songwriting", "long"],
+      "metadata": {
+        "channel": "Daniel Wall and EJAE",
+        "youtube_url": "https://youtube.com/watch?v=dsZCa4FQmkw",
+        "duration_seconds": 6615,
+        "youtube_video_id": "dsZCa4FQmkw"
+      },
+      "sections": {
+        "Heads up": "This one is nearly two hours. It is the deepest thing on the whole list — not a sitting for a single evening."
+      },
+      "image_url": "https://i.ytimg.com/vi/dsZCa4FQmkw/hqdefault.jpg",
+      "sort_order": 55
+    },
+    {
+      "id": "3e91fc50-7501-4ea1-83ba-1e40d148ee68",
+      "name": "EJAE's own single — \"In Another World\"",
+      "keywords": ["ejae", "solo-debut", "official-single"],
+      "metadata": {
+        "channel": "EJAE",
+        "youtube_url": "https://youtube.com/watch?v=fSzpkgeotB8",
+        "duration_seconds": 181,
+        "youtube_video_id": "fSzpkgeotB8"
+      },
+      "sections": {
+        "Why it is here": "She mentions it at the end of the long interview just above — so here it is. EJAE's debut solo single, on her own official channel: the voice behind Rumi, singing as herself."
+      },
+      "image_url": "https://i.ytimg.com/vi/fSzpkgeotB8/hqdefault.jpg",
+      "sort_order": 56
+    },
+    {
+      "id": "9cb9ab6d-aac8-4c1b-9586-6df1710cb191",
+      "name": "The directors and cast break down 'Soda Pop'",
+      "keywords": ["interview", "directors", "behind-the-scenes"],
+      "metadata": {
+        "channel": "Entertainment Weekly",
+        "youtube_url": "https://youtube.com/watch?v=7vQgd9RbTIE",
+        "duration_seconds": 1337,
+        "youtube_video_id": "7vQgd9RbTIE"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/7vQgd9RbTIE/hqdefault.jpg",
+      "sort_order": 57
+    },
+    {
+      "id": "7f9a2e9c-f381-42d0-9bcd-9788684b9f23",
+      "name": "In the recording booth with the voice cast",
+      "keywords": ["interview", "voice-cast", "behind-the-scenes"],
+      "metadata": {
+        "channel": "Still Watching Netflix",
+        "youtube_url": "https://youtube.com/watch?v=OhkG1sSilxE",
+        "duration_seconds": 166,
+        "youtube_video_id": "OhkG1sSilxE"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/OhkG1sSilxE/hqdefault.jpg",
+      "sort_order": 58
+    },
+    {
+      "id": "88f1fc05-7edb-4985-a429-e3b7d686d515",
+      "name": "The whole cast plays Most Likely To",
+      "keywords": ["interview", "cast-game"],
+      "metadata": {
+        "channel": "Variety",
+        "youtube_url": "https://youtube.com/watch?v=BdTo5cIHjV8",
+        "duration_seconds": 713,
+        "youtube_video_id": "BdTo5cIHjV8"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/BdTo5cIHjV8/hqdefault.jpg",
+      "sort_order": 59
+    },
+    {
+      "id": "b7ba899e-ab32-46ee-ad0e-c871099be474",
+      "name": "The vocal cast eats spicy wings and answers everything",
+      "keywords": ["interview", "hot-ones", "cast-game"],
+      "metadata": {
+        "channel": "First We Feast",
+        "youtube_url": "https://youtube.com/watch?v=5DDB_DNWGYE",
+        "duration_seconds": 923,
+        "youtube_video_id": "5DDB_DNWGYE"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/5DDB_DNWGYE/hqdefault.jpg",
+      "sort_order": 60
+    },
+    {
+      "id": "959c3e31-3dd8-4534-b5e2-8caf6fb83d68",
+      "name": "The Creative Force Behind the Film",
+      "keywords": ["directors", "maggie-kang", "chris-appelhans", "interview"],
+      "metadata": {
+        "channel": "Netflix",
+        "youtube_url": "https://youtube.com/watch?v=C2SHW86SWog",
+        "duration_seconds": 333,
+        "youtube_video_id": "C2SHW86SWog"
+      },
+      "sections": {
+        "Why it is here": "Directors Maggie Kang and Chris Appelhans, straight from Netflix, on the original idea that became the movie."
+      },
+      "image_url": "https://i.ytimg.com/vi/C2SHW86SWog/hqdefault.jpg",
+      "sort_order": 61
+    },
+    {
+      "id": "fad8a045-2861-4ed2-8356-c0411574518e",
+      "name": "Behind the Lore, Songs & K-Culture",
+      "keywords": ["directors", "cast", "culture", "songs", "interview"],
+      "metadata": {
+        "channel": "Netflix",
+        "youtube_url": "https://youtube.com/watch?v=UTAKCFPYdOo",
+        "duration_seconds": 307,
+        "youtube_video_id": "UTAKCFPYdOo"
+      },
+      "sections": {
+        "Why it is here": "Directors and cast — Arden Cho, Ji-young Yoo, May Hong, Ahn Hyo-seop — dig into the mythology and the music together."
+      },
+      "image_url": "https://i.ytimg.com/vi/UTAKCFPYdOo/hqdefault.jpg",
+      "sort_order": 62
+    },
+    {
+      "id": "74f15965-7056-4821-8d97-66b811514be2",
+      "name": "Golden — how the choreography actually works",
+      "keywords": ["choreography", "dance-practice", "golden", "behind-the-scenes"],
+      "metadata": {
+        "channel": "B-Wild Official",
+        "youtube_url": "https://youtube.com/watch?v=H_GlEMBthi4",
+        "duration_seconds": 180,
+        "youtube_video_id": "H_GlEMBthi4"
+      },
+      "sections": {
+        "Why it is here": "Choreographer NAIN breaks the steps down with the real B-Wild dancers who perform it — the practice room, not the finished video."
+      },
+      "image_url": "https://i.ytimg.com/vi/H_GlEMBthi4/hqdefault.jpg",
+      "sort_order": 63
+    },
+    {
+      "id": "f9849b22-0e03-4091-86ab-d6be6eb5f1ab",
+      "name": "The directors on what comes next",
+      "keywords": ["directors", "sequel", "interview"],
+      "metadata": {
+        "channel": "Collider",
+        "youtube_url": "https://youtube.com/watch?v=C7jHSbFCrO4",
+        "duration_seconds": 2152,
+        "youtube_video_id": "C7jHSbFCrO4"
+      },
+      "sections": {
+        "Why it is here": "Maggie Kang and Chris Appelhans talk demon designs, Korean mythology, and going \"bolder and bigger\" for the sequel."
+      },
+      "image_url": "https://i.ytimg.com/vi/C7jHSbFCrO4/hqdefault.jpg",
+      "sort_order": 64
+    },
+    {
+      "id": "1cb0ac64-c330-4fa1-845b-5f91035f410e",
+      "name": "🌏 Real Korea — Hair, Dress & Legends",
+      "keywords": ["divider"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "The real hairstyles, braids, dress and legends the movie is drawing from — and how to do Rumi's braid yourself."
+      },
+      "sections": {},
+      "sort_order": 65
+    },
+    {
+      "id": "623ca4ba-327d-4be0-bf9f-f2823ef2d868",
+      "name": "How a Joseon princess was actually dressed and styled",
+      "keywords": ["hair", "history", "joseon", "heritage"],
+      "metadata": {
+        "note": "Replaced the Korean Cultural Centre Nigeria gache tutorial on Sep 9 2026 — builder asked for a more serious source. This is Korea's own National Heritage channel.",
+        "channel": "국가유산채널 (K-Heritage Channel)",
+        "youtube_url": "https://youtube.com/watch?v=BNAY84vjABg",
+        "duration_seconds": 156,
+        "youtube_video_id": "BNAY84vjABg"
+      },
+      "sections": {
+        "Made By": "국가유산채널 (K-Heritage Channel) — The special makeup of the Joseon royal princess",
+        "Why it is here": "From Korea's national heritage channel — the real court styling, hair and face, that the movie's look is built on top of."
+      },
+      "image_url": "https://i.ytimg.com/vi/BNAY84vjABg/hqdefault.jpg",
+      "sort_order": 66
+    },
+    {
+      "id": "ca989c98-3998-4bef-a29c-ee0285f58861",
+      "name": "Hanbok — a proper lesson in Korean dress",
+      "keywords": ["hanbok", "history", "culture", "explained"],
+      "metadata": {
+        "channel": "YouTube KCCLA",
+        "youtube_url": "https://youtube.com/watch?v=L1-TWq1WhiQ",
+        "duration_seconds": 524,
+        "youtube_video_id": "L1-TWq1WhiQ"
+      },
+      "sections": {
+        "Made By": "Korean Cultural Center Los Angeles — Short & Sweet Lessons on Korean History & Culture, Ep.4: Fashion of Korea",
+        "Why it is here": "An official Korean Cultural Center lesson, in English, on what hanbok actually is and how it changed — the clothes under all the costumes on this list."
+      },
+      "image_url": "https://i.ytimg.com/vi/L1-TWq1WhiQ/hqdefault.jpg",
+      "sort_order": 67
+    },
+    {
+      "id": "feeea500-2a0c-41a9-9b26-592b7d7439e8",
+      "name": "Rumi's hair — how to do it",
+      "keywords": ["hair", "rumi", "tutorial", "braid"],
+      "metadata": {
+        "channel": "SweetHearts Hair",
+        "youtube_url": "https://youtube.com/watch?v=p4jA9q0qUqw",
+        "duration_seconds": 429,
+        "youtube_video_id": "p4jA9q0qUqw"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/p4jA9q0qUqw/hqdefault.jpg",
+      "sort_order": 68
+    },
+    {
+      "id": "b8099cbe-f1aa-4c4d-803a-5daff4b50a98",
+      "name": "Rumi's braid — a full step-by-step tutorial",
+      "keywords": ["hair", "rumi", "braid", "tutorial"],
+      "metadata": {
+        "channel": "Mindy McKnight (Cute Girls Hairstyles)",
+        "youtube_url": "https://youtube.com/watch?v=jdLzkPOemxg",
+        "duration_seconds": 638,
+        "youtube_video_id": "jdLzkPOemxg"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/jdLzkPOemxg/hqdefault.jpg",
+      "sort_order": 69
+    },
+    {
+      "id": "76bcc537-d177-4e08-8208-51ace5fc99bf",
+      "name": "Buchaechum — the Korean fan dance",
+      "keywords": ["dance", "buchaechum", "fan-dance"],
+      "metadata": {
+        "channel": "K-Community Festival",
+        "youtube_url": "https://youtube.com/watch?v=uaMl1w38wcc",
+        "duration_seconds": 151,
+        "youtube_video_id": "uaMl1w38wcc"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/uaMl1w38wcc/hqdefault.jpg",
+      "sort_order": 70
+    },
+    {
+      "id": "ba810fb2-41b1-4853-98be-dbd3976db595",
+      "name": "The mythology behind the movie — Saja, Gwi-Ma, Dokkaebi, Honmoon",
+      "keywords": ["mythology", "folklore", "explained"],
+      "metadata": {
+        "channel": "The Lore Labyrinth",
+        "youtube_url": "https://youtube.com/watch?v=2L_ABVBKo98",
+        "duration_seconds": 586,
+        "youtube_video_id": "2L_ABVBKo98"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/2L_ABVBKo98/hqdefault.jpg",
+      "sort_order": 71
+    },
+    {
+      "id": "4c343a72-042d-45e6-9cdc-cc1ea3b39258",
+      "name": "The Korean culture and language, explained by a teacher",
+      "keywords": ["culture", "language", "explained"],
+      "metadata": {
+        "channel": "Talk To Me In Korean",
+        "youtube_url": "https://youtube.com/watch?v=qCmpU3ssip8",
+        "duration_seconds": 556,
+        "youtube_video_id": "qCmpU3ssip8"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/qCmpU3ssip8/hqdefault.jpg",
+      "sort_order": 72
+    },
+    {
+      "id": "3fabdeb1-80c3-4773-a45d-d95895e229a9",
+      "name": "More Korean culture and language, explained by a teacher",
+      "keywords": ["culture", "language", "explained"],
+      "metadata": {
+        "channel": "Talk To Me In Korean",
+        "youtube_url": "https://youtube.com/watch?v=mozwhO1jqh4",
+        "duration_seconds": 953,
+        "youtube_video_id": "mozwhO1jqh4"
+      },
+      "sections": {},
+      "image_url": "https://i.ytimg.com/vi/mozwhO1jqh4/hqdefault.jpg",
+      "sort_order": 73
+    },
+    {
+      "id": "3342e8e0-7f44-4ab5-b07a-984c4ff1365c",
+      "name": "❓ Trivia — Guess the Song",
+      "keywords": ["trivia", "divider"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Read each question, make your guess, then press play — the next video is the answer!"
+      },
+      "sections": {
+        "About": "Seven questions about KPop Demon Hunters. Each answer is one of the movie's real songs — the official video plays right after the question."
+      },
+      "sort_order": 74
+    },
+    {
+      "id": "a9f8ea21-a860-43f4-9178-70841507d4a6",
+      "name": "Q1 — Guess the song!",
+      "keywords": ["trivia", "question"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Which song opens the movie — HUNTR/X fighting demons mid-flight, then landing on stage to finish it in front of their fans?"
+      },
+      "sections": {
+        "Hint": "The title says they know exactly how to do their job.",
+        "Question": "Which song opens the movie — HUNTR/X fighting demons mid-flight, then landing on stage to finish it in front of their fans?"
+      },
+      "sort_order": 75
+    },
+    {
+      "id": "704d07a5-476e-4588-927b-690d1b95876b",
+      "name": "A1: How It's Done — HUNTR/X",
+      "keywords": ["trivia", "answer", "song"],
+      "metadata": {
+        "channel": "Sony Pictures Animation",
+        "youtube_url": "https://youtube.com/watch?v=QGsevnbItdU",
+        "duration_seconds": 184,
+        "youtube_video_id": "QGsevnbItdU"
+      },
+      "sections": {
+        "About": "The answer to Q1 — the official lyric video."
+      },
+      "image_url": "https://i.ytimg.com/vi/QGsevnbItdU/hqdefault.jpg",
+      "sort_order": 76
+    },
+    {
+      "id": "0f90e220-5b5e-4060-b57b-7fa454412d40",
+      "name": "Q2 — Guess the song!",
+      "keywords": ["trivia", "question"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "The Saja Boys introduce themselves with a bright, bubbly song that gets every fan dancing. Which one?"
+      },
+      "sections": {
+        "Hint": "Something fizzy you'd drink on a hot day.",
+        "Question": "The Saja Boys introduce themselves with a bright, bubbly song that gets every fan dancing. Which one?"
+      },
+      "sort_order": 77
+    },
+    {
+      "id": "4316e9bc-a605-4d91-aaaa-474b16708d76",
+      "name": "A2: Soda Pop — Saja Boys",
+      "keywords": ["trivia", "answer", "song"],
+      "metadata": {
+        "channel": "Netflix",
+        "youtube_url": "https://youtube.com/watch?v=hAyPTJFgFEs",
+        "duration_seconds": 180,
+        "youtube_video_id": "hAyPTJFgFEs"
+      },
+      "sections": {
+        "About": "The answer to Q2 — the official lyric video."
+      },
+      "image_url": "https://i.ytimg.com/vi/hAyPTJFgFEs/hqdefault.jpg",
+      "sort_order": 78
+    },
+    {
+      "id": "f44de13e-bcdf-4b8f-8561-551f54842b1e",
+      "name": "Q3 — Guess the song!",
+      "keywords": ["trivia", "question"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Which HUNTR/X song about shining bright and being proud of who you are became a real-world #1 hit?"
+      },
+      "sections": {
+        "Hint": "Precious, sparkly, and the color of a trophy.",
+        "Question": "Which HUNTR/X song about shining bright and being proud of who you are became a real-world #1 hit?"
+      },
+      "sort_order": 79
+    },
+    {
+      "id": "9947c380-c97e-45ed-bb6a-c81fa98ed8c2",
+      "name": "A3: Golden — HUNTR/X",
+      "keywords": ["trivia", "answer", "song"],
+      "metadata": {
+        "channel": "Netflix Family",
+        "youtube_url": "https://youtube.com/watch?v=OwpgvSo_G0g",
+        "duration_seconds": 202,
+        "youtube_video_id": "OwpgvSo_G0g"
+      },
+      "sections": {
+        "About": "The answer to Q3 — the official lyric video."
+      },
+      "image_url": "https://i.ytimg.com/vi/OwpgvSo_G0g/hqdefault.jpg",
+      "sort_order": 80
+    },
+    {
+      "id": "4e62e711-d24d-417a-affc-78c1c38d49f9",
+      "name": "Q4 — Guess the song!",
+      "keywords": ["trivia", "question"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Three members of the real K-pop group TWICE recorded which fierce song for the end credits?"
+      },
+      "sections": {
+        "Hint": "It's what you do to an opponent in a wrestling match.",
+        "Question": "Three members of the real K-pop group TWICE recorded which fierce song for the end credits?"
+      },
+      "sort_order": 81
+    },
+    {
+      "id": "69a7760b-eff7-43e2-b4bd-6c9d350fcff7",
+      "name": "A4: Takedown — TWICE",
+      "keywords": ["trivia", "answer", "song"],
+      "metadata": {
+        "channel": "Netflix Family",
+        "youtube_url": "https://youtube.com/watch?v=l8Dr7vzMSVE",
+        "duration_seconds": 187,
+        "youtube_video_id": "l8Dr7vzMSVE"
+      },
+      "sections": {
+        "About": "The answer to Q4 — the official lyric video, sung by Jeongyeon, Jihyo and Chaeyoung of TWICE."
+      },
+      "image_url": "https://i.ytimg.com/vi/l8Dr7vzMSVE/hqdefault.jpg",
+      "sort_order": 82
+    },
+    {
+      "id": "bbc463a8-eacb-4a1e-abf1-5b004e0ac7fe",
+      "name": "Q5 — Guess the song!",
+      "keywords": ["trivia", "question"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Which hypnotic song do the Saja Boys perform at Namsan Tower to entrance the whole crowd?"
+      },
+      "sections": {
+        "Hint": "It's about the star you look up to.",
+        "Question": "Which hypnotic song do the Saja Boys perform at Namsan Tower to entrance the whole crowd?"
+      },
+      "sort_order": 83
+    },
+    {
+      "id": "6bc1d4b9-636e-4ae5-81c6-035ba1ec31ce",
+      "name": "A5: Your Idol — Saja Boys",
+      "keywords": ["trivia", "answer", "song"],
+      "metadata": {
+        "channel": "Netflix",
+        "youtube_url": "https://youtube.com/watch?v=2FS3JAPTKXs",
+        "duration_seconds": 131,
+        "youtube_video_id": "2FS3JAPTKXs"
+      },
+      "sections": {
+        "About": "The answer to Q5 — the official performance video."
+      },
+      "image_url": "https://i.ytimg.com/vi/2FS3JAPTKXs/hqdefault.jpg",
+      "sort_order": 84
+    },
+    {
+      "id": "be559fc4-8087-4e8d-b9e5-98d8ba78a88c",
+      "name": "Q6 — Guess the song!",
+      "keywords": ["trivia", "question"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "In which duet do Rumi and Jinu dream of breaking loose from what holds them back?"
+      },
+      "sections": {
+        "Hint": "The opposite of trapped.",
+        "Question": "In which duet do Rumi and Jinu dream of breaking loose from what holds them back?"
+      },
+      "sort_order": 85
+    },
+    {
+      "id": "e83cf147-98bf-4dc6-b9f5-37b43d9998f9",
+      "name": "A6: Free — Rumi & Jinu",
+      "keywords": ["trivia", "answer", "song"],
+      "metadata": {
+        "channel": "Netflix Philippines",
+        "youtube_url": "https://youtube.com/watch?v=-ymi6hZahlo",
+        "duration_seconds": 202,
+        "youtube_video_id": "-ymi6hZahlo"
+      },
+      "sections": {
+        "About": "The answer to Q6 — the official music video."
+      },
+      "image_url": "https://i.ytimg.com/vi/-ymi6hZahlo/hqdefault.jpg",
+      "sort_order": 86
+    },
+    {
+      "id": "5445eaea-7ace-4c74-9c57-21d03cd65e9a",
+      "name": "Q7 — Guess the song!",
+      "keywords": ["trivia", "question"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Which song reunites HUNTR/X for the movie's big finale?"
+      },
+      "sections": {
+        "Hint": "The title describes… what something sounds like.",
+        "Question": "Which song reunites HUNTR/X for the movie's big finale?"
+      },
+      "sort_order": 87
+    },
+    {
+      "id": "220a6694-bdec-4d41-8dd9-43b3779c07b0",
+      "name": "A7: What It Sounds Like — HUNTR/X",
+      "keywords": ["trivia", "answer", "song"],
+      "metadata": {
+        "channel": "Netflix Family",
+        "youtube_url": "https://youtube.com/watch?v=Ug_pv5-r1js",
+        "duration_seconds": 346,
+        "youtube_video_id": "Ug_pv5-r1js"
+      },
+      "sections": {
+        "About": "The answer to Q7 — the official song clip."
+      },
+      "image_url": "https://i.ytimg.com/vi/Ug_pv5-r1js/hqdefault.jpg",
+      "sort_order": 88
+    },
+    {
+      "id": "3ad8fb55-bee3-4ba5-a56f-cd478c3e2979",
+      "name": "🎧 EJAE's Demos, and the Finished Songs",
+      "keywords": ["divider", "ejae", "demos"],
+      "metadata": {
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Demo first, finished song second — listen to what changed."
+      },
+      "sections": {
+        "About": "The songs before they were the songs. EJAE recorded rough demos in her own voice first — then the finished version right after each one, so you can hear what changed."
+      },
+      "sort_order": 89
+    },
+    {
+      "id": "7299d358-6565-49f0-8e5a-ad1b0f18d6db",
+      "name": "The early draft of \"Golden\", performed live",
+      "keywords": ["ejae", "demo", "golden", "songwriting"],
+      "metadata": {
+        "channel": "Deadline Hollywood",
+        "youtube_url": "https://youtube.com/watch?v=FchCOVR-85U",
+        "duration_seconds": 713,
+        "youtube_video_id": "FchCOVR-85U"
+      },
+      "sections": {
+        "Made By": "Deadline Hollywood — EJAE & Mark Sonnenblick Perform Early Draft of \"Golden\"",
+        "Why it is here": "EJAE and Mark Sonnenblick sit down and play the EARLY draft of Golden — the version before the version. Start here."
+      },
+      "image_url": "https://i.ytimg.com/vi/FchCOVR-85U/hqdefault.jpg",
+      "sort_order": 90
+    },
+    {
+      "id": "f9bfab1e-02be-4122-af96-fa1baf80b109",
+      "name": "\"Golden\" — the demo, in her own voice",
+      "keywords": ["ejae", "demo", "golden"],
+      "metadata": {
+        "channel": "zena sonic",
+        "fan_upload": true,
+        "youtube_url": "https://youtube.com/watch?v=_eI50oursW8",
+        "duration_seconds": 69,
+        "youtube_video_id": "_eI50oursW8"
+      },
+      "sections": {
+        "Heads up": "A fan re-upload of the demo, not an official channel — it may disappear one day."
+      },
+      "image_url": "https://i.ytimg.com/vi/_eI50oursW8/hqdefault.jpg",
+      "sort_order": 91
+    },
+    {
+      "id": "798e14d9-c6d2-4a5f-b534-6431484aa075",
+      "name": "\"Golden\" — a second demo take",
+      "keywords": ["ejae", "demo", "golden"],
+      "metadata": {
+        "channel": "zena sonic",
+        "fan_upload": true,
+        "youtube_url": "https://youtube.com/watch?v=8DizWvDjH8A",
+        "duration_seconds": 33,
+        "youtube_video_id": "8DizWvDjH8A"
+      },
+      "sections": {
+        "Heads up": "A fan re-upload of the demo, not an official channel — it may disappear one day."
+      },
+      "image_url": "https://i.ytimg.com/vi/8DizWvDjH8A/hqdefault.jpg",
+      "sort_order": 92
+    },
+    {
+      "id": "6eb29ede-7289-4b9c-9734-f499ab2f3d75",
+      "name": "\"Golden\" — the finished song",
+      "keywords": ["official", "golden", "final"],
+      "metadata": {
+        "channel": "Sony Pictures Animation",
+        "youtube_url": "https://youtube.com/watch?v=yebNIHKAC4A",
+        "duration_seconds": 199,
+        "youtube_video_id": "yebNIHKAC4A"
+      },
+      "sections": {
+        "Why it is here": "The one the demos above turned into. Same writer, same voice underneath."
+      },
+      "image_url": "https://i.ytimg.com/vi/yebNIHKAC4A/hqdefault.jpg",
+      "sort_order": 93
+    },
+    {
+      "id": "0e3f2ee8-9aa9-44e5-87b5-92aa94c6d29f",
+      "name": "\"Your Idol\" — EJAE's first demo",
+      "keywords": ["ejae", "demo", "your-idol"],
+      "metadata": {
+        "channel": "Alexandrite Ledger",
+        "fan_upload": true,
+        "youtube_url": "https://youtube.com/watch?v=opNisFzI4Ec",
+        "duration_seconds": 175,
+        "youtube_video_id": "opNisFzI4Ec"
+      },
+      "sections": {
+        "Heads up": "A fan re-upload of the demo, not an official channel — it may disappear one day."
+      },
+      "image_url": "https://i.ytimg.com/vi/opNisFzI4Ec/hqdefault.jpg",
+      "sort_order": 94
+    },
+    {
+      "id": "717552cf-8532-4f0d-979a-bd78671e2c9c",
+      "name": "\"Your Idol\" — the finished song",
+      "keywords": ["official", "your-idol", "final"],
+      "metadata": {
+        "channel": "Netflix",
+        "youtube_url": "https://youtube.com/watch?v=2FS3JAPTKXs",
+        "duration_seconds": 131,
+        "youtube_video_id": "2FS3JAPTKXs"
+      },
+      "sections": {
+        "Why it is here": "What the demo above became, sung by the Saja Boys."
+      },
+      "image_url": "https://i.ytimg.com/vi/2FS3JAPTKXs/hqdefault.jpg",
+      "sort_order": 95
+    },
+    {
+      "id": "1f8fab39-308b-413e-9330-3a4d08f1e2df",
+      "name": "\"What It Sounds Like\" — EJAE's final medley demo",
+      "keywords": ["ejae", "demo", "what-it-sounds-like"],
+      "metadata": {
+        "channel": "Alexandrite Ledger",
+        "fan_upload": true,
+        "youtube_url": "https://youtube.com/watch?v=PfBU5YDtEV0",
+        "duration_seconds": 359,
+        "youtube_video_id": "PfBU5YDtEV0"
+      },
+      "sections": {
+        "Heads up": "A fan re-upload of the demo, not an official channel — it may disappear one day."
+      },
+      "image_url": "https://i.ytimg.com/vi/PfBU5YDtEV0/hqdefault.jpg",
+      "sort_order": 96
+    },
+    {
+      "id": "047c053a-7145-44e2-b187-2f3fc990519f",
+      "name": "\"What It Sounds Like\" — the finished song",
+      "keywords": ["official", "what-it-sounds-like", "final"],
+      "metadata": {
+        "channel": "Netflix Family",
+        "youtube_url": "https://youtube.com/watch?v=Ug_pv5-r1js",
+        "duration_seconds": 346,
+        "youtube_video_id": "Ug_pv5-r1js"
+      },
+      "sections": {
+        "Why it is here": "The finale, as it ended up. The last thing on the list — and the same song the trivia round ends on."
+      },
+      "image_url": "https://i.ytimg.com/vi/Ug_pv5-r1js/hqdefault.jpg",
+      "sort_order": 97
+    },
+    {
+      "id": "aa6ff0f5-23bd-4431-8c80-7a62781d0e23",
+      "name": "Golden (Glowin' Version) — the new single",
+      "keywords": ["golden", "huntrix", "real-voices", "new-release"],
+      "metadata": {
+        "view_count": 467199,
+        "youtube_url": "https://youtu.be/L-SmqT971AE",
+        "published_at": "2026-01-09T05:40:55Z",
+        "duration_seconds": 223,
+        "youtube_video_id": "L-SmqT971AE"
+      },
+      "sections": {
+        "Why it is here": "\"Golden\" grew a new life of its own after the movie — EJAE, AUDREY NUNA and REI AMI came back into the booth for this radiant re-recording, released January 2026."
+      },
+      "image_url": "https://i.ytimg.com/vi/L-SmqT971AE/hqdefault.jpg",
+      "sort_order": 98
+    },
+    {
+      "id": "68eaf2ad-813e-48c4-9e8d-9c13aa94f763",
+      "name": "📚 Appendix — what did not fit: Korean shamanism, minhwa, the knot",
+      "keywords": ["divider", "appendix", "korea", "shamanism", "minhwa", "public-domain"],
+      "metadata": {
+        "kind": "divider",
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Sources and public-domain images, for anyone who wants to go further."
+      },
+      "sections": {
+        "Note": "Everything below this card is source material, not fan-made videos — it is the research block pulled across from a separate film project (HOT POTATO), where the Korean shamanism behind the movie was being read seriously. It holds documentary and lecture clips about gut (굿) and mudang, two recordings of a real gut performed at a shrine in Seoul, a short quote from the Netflix art book about where the ancient-hunters sequence came from, eighteen public-domain minhwa (Korean folk paintings) from Wikimedia Commons with full museum credit, nine public-domain knot and interlace images for anyone curious about where the HUNTR/X emblem and the Honmoon get their shape, and three openly-licensed recordings of Arirang. None of it fits the watch-together spirit of the playlist above — it is here for anyone who wants to go further."
+      },
+      "sort_order": 99
+    },
+    {
+      "id": "2eae047e-6730-468f-9b9a-9e42505a1e48",
+      "name": "The origin — the first hunters, and the Honmoon they sang into being",
+      "keywords": ["honmoon", "origin", "ancient-hunters", "appendix"],
+      "metadata": {
+        "kind": "clip",
+        "status": "candidate",
+        "fan_upload": true,
+        "youtube_url": "https://youtube.com/watch?v=t_mWMGkWm_c",
+        "source_grammar": "HOT POTATO (film research)",
+        "duration_seconds": 94,
+        "youtube_video_id": "t_mWMGkWm_c"
+      },
+      "sections": {
+        "Heads up": "A fan upload of Netflix material, linked as a pointer rather than re-hosted. Unlike the official Netflix clips higher up this playlist, it can vanish without warning.",
+        "Why it is here": "The ancient hunters do not defeat the demons by out-powering them — they sing a barrier into being and then have to keep singing it. A Honmoon is maintained, not won. Carried over from the HOT POTATO film research, where this clip opens the whole Korean-shamanism block."
+      },
+      "image_url": "https://i.ytimg.com/vi/t_mWMGkWm_c/hqdefault.jpg",
+      "sort_order": 100
+    },
+    {
+      "id": "5b897cfb-7f08-4270-a7ee-731c65618047",
+      "name": "Korean Shamanism Explained — ReligionForBreakfast",
+      "keywords": ["shamanism", "mudang", "gut", "explained", "appendix"],
+      "metadata": {
+        "kind": "clip",
+        "status": "candidate",
+        "channel": "ReligionForBreakfast",
+        "chapters": [
+          {
+            "title": "Basic overview",
+            "start_sec": 0
+          },
+          {
+            "title": "What is Shamanism?",
+            "start_sec": 85
+          },
+          {
+            "title": "Shamanic Deities Explained",
+            "start_sec": 346
+          },
+          {
+            "title": "Who are the shamans?",
+            "start_sec": 458
+          },
+          {
+            "title": "Shamanism in Korea's religious landscape",
+            "start_sec": 760
+          },
+          {
+            "title": "Why the stigma?",
+            "start_sec": 865
+          },
+          {
+            "title": "Korean Shamanism in the 21st c.",
+            "start_sec": 1106
+          },
+          {
+            "title": "Sign up for Nebula!",
+            "start_sec": 1297
+          }
+        ],
+        "view_count": 293563,
+        "youtube_url": "https://youtube.com/watch?v=TYZSdLpgHF4",
+        "published_at": "2025-02-20T14:44:26Z",
+        "source_grammar": "HOT POTATO (film research)",
+        "duration_seconds": 1408,
+        "youtube_video_id": "TYZSdLpgHF4"
+      },
+      "sections": {
+        "Still to do": "No crop yet — the two or three minutes that define mudang and gut are the part worth keeping.",
+        "Why it is here": "The plain explainer, first, so nobody is watching a ceremony they cannot read. Academic, calm, no mysticism sold."
+      },
+      "image_url": "https://i.ytimg.com/vi/TYZSdLpgHF4/hqdefault.jpg",
+      "sort_order": 101
+    },
+    {
+      "id": "2c291e1f-08fa-4701-bde8-7955833862b0",
+      "name": "Korean Shamanism (Mugyo): Gods, Rituals & Myths",
+      "keywords": ["shamanism", "mugyo", "history", "explained", "appendix"],
+      "metadata": {
+        "kind": "clip",
+        "status": "candidate",
+        "chapters": [
+          {
+            "title": "Korean Shamanism Intro",
+            "start_sec": 0
+          },
+          {
+            "title": "History of Shamanism",
+            "start_sec": 100
+          },
+          {
+            "title": "What is Korean Shamanism?",
+            "start_sec": 925
+          },
+          {
+            "title": "Gods & Spirits",
+            "start_sec": 1227
+          },
+          {
+            "title": "Types of Shamans",
+            "start_sec": 1494
+          },
+          {
+            "title": "The Ritual (Gut)",
+            "start_sec": 1788
+          },
+          {
+            "title": "Purpose of Rituals",
+            "start_sec": 2105
+          },
+          {
+            "title": "Myths",
+            "start_sec": 2206
+          }
+        ],
+        "view_count": 100952,
+        "youtube_url": "https://youtube.com/watch?v=vcxDzJxNqUw",
+        "published_at": "2022-10-28T11:13:50Z",
+        "source_grammar": "HOT POTATO (film research)",
+        "duration_seconds": 2653,
+        "youtube_video_id": "vcxDzJxNqUw"
+      },
+      "sections": {
+        "Still to do": "No crop yet.",
+        "Why it is here": "The history: who the gods are, where the practice comes from, how long it has been going on. Context for why KPop Demon Hunters could reach for it and find something already there."
+      },
+      "image_url": "https://i.ytimg.com/vi/vcxDzJxNqUw/hqdefault.jpg",
+      "sort_order": 102
+    },
+    {
+      "id": "0b2d4912-cdb3-447b-8cfe-f79847e0a5ab",
+      "name": "Lecture and Korean Shamanic Ritual (Gut) — Helena Soholm, PhD",
+      "keywords": ["shamanism", "gut", "lecture", "ritual", "appendix"],
+      "metadata": {
+        "kind": "clip",
+        "status": "candidate",
+        "view_count": 2646,
+        "youtube_url": "https://youtube.com/watch?v=h67E18lTf-Y",
+        "published_at": "2025-04-01T04:02:48Z",
+        "source_grammar": "HOT POTATO (film research)",
+        "duration_seconds": 6181,
+        "youtube_video_id": "h67E18lTf-Y"
+      },
+      "sections": {
+        "Still to do": "No crop yet. Likely the single most useful of these if the ritual footage is good.",
+        "Why it is here": "Lecture AND ritual in one — the bridge between being told what a gut is and watching one happen."
+      },
+      "image_url": "https://i.ytimg.com/vi/h67E18lTf-Y/hqdefault.jpg",
+      "sort_order": 103
+    },
+    {
+      "id": "2acb5339-0d55-4926-9aed-118fda166b1b",
+      "name": "A real gut ritual at the Eunpyeong-gu Geumseong Shrine, Seoul (1)",
+      "keywords": ["gut", "ritual", "seoul", "shrine", "percussion", "appendix"],
+      "metadata": {
+        "kind": "clip",
+        "status": "candidate",
+        "view_count": 264,
+        "youtube_url": "https://youtube.com/watch?v=2PDkcApY6Oc",
+        "published_at": "2025-06-20T14:20:58Z",
+        "source_grammar": "HOT POTATO (film research)",
+        "duration_seconds": 34,
+        "youtube_video_id": "2PDkcApY6Oc"
+      },
+      "sections": {
+        "Heads up": "The ritual is living religious practice, not folklore. The recording is somebody's ordinary YouTube upload: fine to watch here, not free to reuse as an audio bed.",
+        "Why it is here": "The thing itself, filmed at a still-active shrine in Seoul. Live music, percussion, movement — what the film's ancient-hunters sequence was drawn from."
+      },
+      "image_url": "https://i.ytimg.com/vi/2PDkcApY6Oc/hqdefault.jpg",
+      "sort_order": 104
+    },
+    {
+      "id": "5d582d41-5702-4a08-9dc1-312ce61cb98f",
+      "name": "A real gut ritual at the Eunpyeong-gu Geumseong Shrine, Seoul (2)",
+      "keywords": ["gut", "ritual", "seoul", "shrine", "percussion", "appendix"],
+      "metadata": {
+        "kind": "clip",
+        "status": "candidate",
+        "view_count": 496,
+        "youtube_url": "https://youtube.com/watch?v=aZBA3rQTsH0",
+        "published_at": "2025-06-20T14:19:36Z",
+        "source_grammar": "HOT POTATO (film research)",
+        "duration_seconds": 218,
+        "youtube_video_id": "aZBA3rQTsH0"
+      },
+      "sections": {
+        "Heads up": "Same as the previous card — a living practice, recorded by an ordinary uploader.",
+        "Why it is here": "The companion to the clip above, same shrine, same ceremony continuing."
+      },
+      "image_url": "https://i.ytimg.com/vi/aZBA3rQTsH0/hqdefault.jpg",
+      "sort_order": 105
+    },
+    {
+      "id": "eb169af7-58e2-45e9-8c68-7f83252dfe13",
+      "name": "The Truth About Korean Shamanism — Pythian Priestess",
+      "keywords": ["shamanism", "practitioner", "appendix"],
+      "metadata": {
+        "kind": "clip",
+        "status": "candidate",
+        "chapters": [
+          {
+            "title": "Introduction to Korean Shamanism",
+            "start_sec": 0
+          },
+          {
+            "title": "Guest Introduction: Meet Ang, the Korean Shaman",
+            "start_sec": 10
+          },
+          {
+            "title": "Cultural Background and Early Life",
+            "start_sec": 36
+          },
+          {
+            "title": "The Path to Becoming a Shaman",
+            "start_sec": 159
+          },
+          {
+            "title": "Understanding Korean Gods and Spirits",
+            "start_sec": 261
+          },
+          {
+            "title": "Initiation and Spirit Sickness",
+            "start_sec": 347
+          },
+          {
+            "title": "Daily Life and Responsibilities of a Shaman",
+            "start_sec": 755
+          },
+          {
+            "title": "Tools and Rituals in Korean Shamanism",
+            "start_sec": 909
+          },
+          {
+            "title": "Korean Shamanism in Media",
+            "start_sec": 1432
+          },
+          {
+            "title": "Rituals, Ceremonies, and Services Offered",
+            "start_sec": 1814
+          },
+          {
+            "title": "Conclusion and Final Thoughts",
+            "start_sec": 2035
+          }
+        ],
+        "view_count": 4090,
+        "youtube_url": "https://youtube.com/watch?v=dTCyvWj89D4",
+        "published_at": "2025-11-23T08:36:30Z",
+        "source_grammar": "HOT POTATO (film research)",
+        "duration_seconds": 2112,
+        "youtube_video_id": "dTCyvWj89D4"
+      },
+      "sections": {
+        "Still to do": "Watch for claims that need checking — the title promises more certainty than the topic usually allows.",
+        "Why it is here": "A practitioner's-eye view rather than an academic one. Worth having both registers so the tradition is not only explained from outside it."
+      },
+      "image_url": "https://i.ytimg.com/vi/dTCyvWj89D4/hqdefault.jpg",
+      "sort_order": 106
+    },
+    {
+      "id": "de25a0fd-31f4-4981-8dce-66d8178905e9",
+      "name": "Benebell Wen — Shamanism Meets Taoism: the hidden link across 3,000 years",
+      "keywords": ["shamanism", "taoism", "appendix", "not-korea-specific"],
+      "metadata": {
+        "kind": "clip",
+        "status": "candidate",
+        "channel": "Benebell Wen",
+        "chapters": [
+          {
+            "title": "Opening Narrative Sequence: Remembering the Shaman’s Path",
+            "start_sec": 0
+          },
+          {
+            "title": "Overview & the Objectives of this Lecture",
+            "start_sec": 115
+          },
+          {
+            "title": "Yellow River: Geography through the Historical Eras",
+            "start_sec": 302
+          },
+          {
+            "title": "Pre-Qin Historical Records of the Wu [Note 1]",
+            "start_sec": 478
+          },
+          {
+            "title": "Notes re: The Ancient Wu of Southern China’s Kingdom of Yue [Note 2]; Chicken Bone Divination",
+            "start_sec": 555
+          },
+          {
+            "title": "“Every Clan/Tradition Has a Shaman-Scribe” 家為巫史 (Jiā wèi wū shǐ) from Discourses on the State (國語, Guo Yu), circa 771 BC - 256 BC, found in the chapter \"Discourses on the Kingdom of Yue 楚語.\" [Note 3]",
+            "start_sec": 589
+          },
+          {
+            "title": "Translating “Wu 巫” to English [Note 4]",
+            "start_sec": 642
+          },
+          {
+            "title": "Shamanistic-Historical Traditions Defining Chinese Culture [Note 5]",
+            "start_sec": 682
+          },
+          {
+            "title": "Historical Context of the Wu: Shang and Zhou Dynasty",
+            "start_sec": 700
+          },
+          {
+            "title": "Defining the Wu 巫 (100 AD)",
+            "start_sec": 715
+          },
+          {
+            "title": "Wu Xian 巫咸: Primordial Ancestor of all Wu",
+            "start_sec": 755
+          },
+          {
+            "title": "Defining Divination 筮 (100 AD): Yarrow Stalks + Wu 巫",
+            "start_sec": 808
+          },
+          {
+            "title": "Power of the Shaman’s Incantations; Voice of the Shaman",
+            "start_sec": 831
+          },
+          {
+            "title": "Writing as a Magical Act; From Oracle Bone Divination Charges to Fu Talismans",
+            "start_sec": 914
+          },
+          {
+            "title": "Medicine was the Purview of the Shaman; Wu Peng 巫彭: The Wu as a Healer",
+            "start_sec": 970
+          },
+          {
+            "title": "The Ten Wu (Primordial Shaman Ancestors): Archetypes of the Shaman; Ten Roles of the Shaman",
+            "start_sec": 1040
+          },
+          {
+            "title": "The Ba Gua Eight Trigrams Guides the Scope of Shamanic (& Taoist) Practice",
+            "start_sec": 1133
+          },
+          {
+            "title": "From the Huangdi Neijing (Inner Canons of the Yellow Emperor): The Shaman’s Incantations Heal",
+            "start_sec": 1183
+          },
+          {
+            "title": "Sound Energy Healing as a Key Principle of the Wu 巫",
+            "start_sec": 1245
+          },
+          {
+            "title": "Evolution of Wu Shamanism into Taoist Mysticism & Witchcraft: Imperial China",
+            "start_sec": 1303
+          },
+          {
+            "title": "Wu Shamanism and Taoism during the Han Dynasty (206 BC – 220 AD) [See also 27:04]",
+            "start_sec": 1326
+          },
+          {
+            "title": "The Jin (266 – 410 AD) and Sui (571 – 618 AD)",
+            "start_sec": 1506
+          },
+          {
+            "title": "The Confucian Class System: Gentry, Farmers, Craftsman, Merchants",
+            "start_sec": 1568
+          },
+          {
+            "title": "The Tang (618 – 907 AD) and skipping to the Yuan (1271 – 1368 AD) [Note 6]",
+            "start_sec": 1650
+          },
+          {
+            "title": "Significance of the Big Dipper",
+            "start_sec": 1765
+          },
+          {
+            "title": "Journeying & the North Star: From Shamanic Lo Shu Pacing Rituals to Taoist Big Dipper Pacing Rituals",
+            "start_sec": 1887
+          },
+          {
+            "title": "Shamanic Mythology of Yu the Great [Note 7]",
+            "start_sec": 1958
+          },
+          {
+            "title": "Science of the Great Secrets & Mysteries of the Cosmos Revealed by the Goddess",
+            "start_sec": 1987
+          },
+          {
+            "title": "Shamanic Pacing Rituals in Tianism",
+            "start_sec": 2051
+          },
+          {
+            "title": "Evolution of Pacing Rituals through the Dynasties: Xia & Shang to the Song",
+            "start_sec": 2168
+          },
+          {
+            "title": "Teaser Overview of One Pacing Ritual: Jade Maiden Crossing the Great River (Invoking the Mysterious Lady of the Nine Heavens)",
+            "start_sec": 2327
+          },
+          {
+            "title": "Yue Shamanism to Southern Taoist Magic: The Guan Luo Yin Practice, Descent into the Inner World",
+            "start_sec": 2401
+          },
+          {
+            "title": "Shamanic Astrology: Wu Xian Five Star Divination",
+            "start_sec": 2444
+          },
+          {
+            "title": "The Esoteric Significance of Numbers & Numerology",
+            "start_sec": 2560
+          },
+          {
+            "title": "Lo Shu Shamanic Principles Integrated into Feng Shui; Learn Basic Feng Shui Principles in Under 3 Minutes ;-)",
+            "start_sec": 2585
+          },
+          {
+            "title": "The Lunar-Solar Calendar System, A Metaphysician’s Periodic Table: Archaeological Records from the Shang; Standardized During the Qin; Still Used Today in East Asian Metaphysics",
+            "start_sec": 2720
+          },
+          {
+            "title": "From the Gods of the Wu to the Gods of the Tao",
+            "start_sec": 2853
+          },
+          {
+            "title": "The Goddess of the Mysteries…",
+            "start_sec": 2931
+          },
+          {
+            "title": "Annotating the Opening Sequence: Understanding the Shaman’s Path",
+            "start_sec": 3073
+          },
+          {
+            "title": "Tianism and Tengrism: The Way of Heaven – Fire [Note 8]",
+            "start_sec": 3130
+          },
+          {
+            "title": "Closing Remarks",
+            "start_sec": 3232
+          }
+        ],
+        "view_count": 60109,
+        "youtube_url": "https://youtube.com/watch?v=i4z4HoSyQDw",
+        "published_at": "2025-03-13T15:24:38Z",
+        "source_grammar": "HOT POTATO (film research)",
+        "duration_seconds": 3387,
+        "youtube_video_id": "i4z4HoSyQDw"
+      },
+      "sections": {
+        "Heads up": "Not Korea-specific — included because it is the one other shamanism source in the film's research block. 56 minutes; it needs a real crop before it is useful to anyone.",
+        "Why it is here": "The widest door in this block: the link between shamanic practice and Taoism across three thousand years. It stops the sequence being about one tradition and makes it about a family of practices for living alongside what you cannot dominate."
+      },
+      "image_url": "https://i.ytimg.com/vi/i4z4HoSyQDw/hqdefault.jpg",
+      "sort_order": 107
+    },
+    {
+      "id": "10020b36-56e6-42f2-8c9c-6a10ed94943b",
+      "name": "Gut · 굿 — what the music actually is",
+      "keywords": ["gut", "note", "shamanism", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "A ceremony a community does, and does again."
+      },
+      "sections": {
+        "Note": "A Korean ceremony, still performed: the house gods invited in, what harms sent off. Not a battle — something a community does, and does again. The demons are not defeated. The barrier is kept.",
+        "Where this text comes from": "A title card written for the HOT POTATO film, where it marks the turn from arguing about a problem to carrying a real ceremony underneath the rest of the footage. Reproduced here because it is the shortest honest answer to \"what is a gut, and why does the movie sound like that?\""
+      },
+      "sort_order": 108
+    },
+    {
+      "id": "4cbe8a0e-1b40-4fda-8b83-3c2bd4664709",
+      "name": "Where the ancient hunters came from — an artist remembering his mother, a Korean shaman",
+      "keywords": ["art-book", "won-sul-hyun", "gut", "sam-taegeuk", "note", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "artist": "Won Sul Hyun (visual development artist), quoted by Tracey Miller-Zarneke",
+          "source": "Printed art book — quoted, not reproduced",
+          "edition": "The Art of KPop Demon Hunters (Netflix)",
+          "license": "Copyrighted; one short line quoted with attribution for commentary"
+        },
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "One line from the Netflix art book, quoted with credit."
+      },
+      "sections": {
+        "Note": "The film's opening sequence — the ancient hunters — was drawn by visual development artist Won Sul Hyun from his memories of his mother, a Korean shaman, performing gut. In his own words he was \"witnessing her incredibly charismatic and spiritual performances during Gut\" — ceremonies, he says, filled with live music and driven by Korean percussion. The fiction and the practice are not neighbours: one is made out of the other.",
+        "Source": "The Art of KPop Demon Hunters, written by Tracey Miller-Zarneke (Netflix), Chapter 2 — Ancient Hunters. Film directed by Maggie Kang and Chris Appelhans. One line quoted with attribution for commentary; the book's photographs and artwork are not reproduced anywhere in this playlist.",
+        "The colours": "On the same page, his palette is traced to the sam taegeuk — blue for Sky, red for Earth, yellow for Humanity, the three turning together as one. Character designer Marion Bordeyne worked from Obangsaek, the traditional Korean five colours, weaving armor and hanbok together."
+      },
+      "sort_order": 109
+    },
+    {
+      "id": "53d87c19-df85-4d8f-9ae9-bee290a536d0",
+      "name": "Tiger and Magpie (Hojakdo) — Joseon period",
+      "keywords": ["minhwa", "tiger", "magpie", "hojakdo", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "Joseon period",
+          "artist": "Unknown (Korean)",
+          "museum": "Private collection, Japan",
+          "source": "Wikimedia Commons",
+          "license": "Public domain (PD-old)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Tiger_and_Magpie,_72x59.4_cm,_priviate_collection,_Japan.jpg"
+        }
+      },
+      "sections": {
+        "Why": "The classic minhwa joke: a huge, awkwardly-drawn tiger sits under a pine while a small magpie scolds it from a branch. Folklorists read it as low mocking high — the tiger of power looking ridiculous beside the bird that is not afraid of it."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Tiger_and_Magpie%2C_72x59.4_cm%2C_priviate_collection%2C_Japan.jpg",
+      "sort_order": 110
+    },
+    {
+      "id": "75a2211a-f130-4d92-8829-0d6869e410fe",
+      "name": "Tiger and Magpie — 19th-century hanging scroll",
+      "keywords": ["minhwa", "tiger", "magpie", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "19th century (Joseon)",
+          "artist": "Unknown (Korean)",
+          "museum": "Detroit Institute of Arts, accession 2015.1",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Unknown_(Korean)_-_Tiger_and_Magpie_-_2015.1_-_Detroit_Institute_of_Arts.jpg"
+        }
+      },
+      "sections": {
+        "Why": "The same motif as a tall hanging scroll — the composition reads top to bottom, magpie above, tiger below."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Unknown_%28Korean%29_-_Tiger_and_Magpie_-_2015.1_-_Detroit_Institute_of_Arts.jpg",
+      "sort_order": 111
+    },
+    {
+      "id": "3c747156-5e27-4947-bf80-4ad349a06c3f",
+      "name": "Tiger door painting, Korean Folk Village — folk-style, wood-printed",
+      "keywords": ["minhwa", "tiger", "door", "folk-village", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "Photographed 2005; design is Joseon-period",
+          "artist": "Unknown (folk-style, Joseon-period design); photograph released to the public domain by the photographer",
+          "museum": "Korean Folk Village, Yongin",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Korean.Folk.Village-Minsokchon-04-alt.jpg"
+        }
+      },
+      "sections": {
+        "Why": "The highest-resolution tiger in this set, good for a close crop of the face. Caveat worth keeping: this is a photograph of a wood-printed minhwa on a hanok door at a folk-village museum, not a period antique painting."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Korean.Folk.Village-Minsokchon-04-alt.jpg",
+      "sort_order": 112
+    },
+    {
+      "id": "2412c761-9a89-48b8-be4f-11c23b2dde97",
+      "name": "Jar with tiger and magpie designs — porcelain, c. 1700–1800",
+      "keywords": ["minhwa", "tiger", "magpie", "porcelain", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "c. 1700–1800, Joseon dynasty",
+          "artist": "Unknown (Korean)",
+          "museum": "Asian Art Museum of San Francisco",
+          "source": "Wikimedia Commons",
+          "license": "Public domain (museum photograph released PD)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Jar_with_tiger_and_magpie_designs,_Korea,_Joseon_dynasty,_c._1700-1800,_porcelain,_underglaze_cobalt_-_Asian_Art_Museum_-_San_Francisco,_CA_-_DSC07370.jpg"
+        }
+      },
+      "sections": {
+        "Why": "The same tiger-and-magpie joke in underglaze cobalt on a jar — proof the motif travelled well beyond painting and turns up on the things people actually used."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Jar_with_tiger_and_magpie_designs%2C_Korea%2C_Joseon_dynasty%2C_c._1700-1800%2C_porcelain%2C_underglaze_cobalt_-_Asian_Art_Museum_-_San_Francisco%2C_CA_-_DSC07370.jpg",
+      "sort_order": 113
+    },
+    {
+      "id": "a1560dea-b725-4dd8-a012-8aa3a2162aaa",
+      "name": "Rank badge with a pair of tiger-leopards (hyungbae) — early 19th century",
+      "keywords": ["minhwa", "tiger", "embroidery", "hyungbae", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "Early 19th century",
+          "artist": "Unknown (Korean)",
+          "museum": "Metropolitan Museum of Art, object 267343",
+          "source": "Wikimedia Commons",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%9E%90%EC%88%98_%EC%8C%8D%ED%98%B8%ED%91%9C_%EB%AC%B4%EB%8A%AC_%ED%9D%89%EB%B0%B0-%EC%A1%B0%EC%84%A0-%E5%88%BA%E7%B9%A1%E9%9B%99%E8%99%8E%E8%B1%B9%E6%96%87%E8%83%B8%E8%83%8C-%E6%9C%9D%E9%AE%AE-Rank_badge_with_a_pair_of_tiger-leopards_MET_267343.jpg"
+        }
+      },
+      "sections": {
+        "Why": "The tiger as official insignia, embroidered onto a rank badge — a different flavour of the same animal: not the folk joke, but the tiger of bureaucratic authority."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/%EC%9E%90%EC%88%98_%EC%8C%8D%ED%98%B8%ED%91%9C_%EB%AC%B4%EB%8A%AC_%ED%9D%89%EB%B0%B0-%EC%A1%B0%EC%84%A0-%E5%88%BA%E7%B9%A1%E9%9B%99%E8%99%8E%E8%B1%B9%E6%96%87%E8%83%B8%E8%83%8C-%E6%9C%9D%E9%AE%AE-Rank_badge_with_a_pair_of_tiger-leopards_MET_267343.jpg",
+      "sort_order": 114
+    },
+    {
+      "id": "473d0690-9409-4348-bcaa-7571fbf3c3ab",
+      "name": "Sipjangsaengdo — ten symbols of longevity, by Chae Yong-shin, 1921",
+      "keywords": ["minhwa", "sipjangsaeng", "longevity", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "1921",
+          "artist": "Chae Yong-shin (채용신) — named, unusual for minhwa",
+          "museum": "Not stated on the file page",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B1%84%EC%9A%A9%EC%8B%A0_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84.jpg"
+        }
+      },
+      "sections": {
+        "Why": "Sun, mountains, water, rocks, clouds, pine, the mushroom of immortality, tortoise, crane, deer — ten slow things that last, arranged together on purpose. An extremely wide format, made for reading across rather than at once."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/14/%EC%B1%84%EC%9A%A9%EC%8B%A0_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84.jpg",
+      "sort_order": 115
+    },
+    {
+      "id": "c62d748c-86f5-4e84-b115-ddfc357e25b9",
+      "name": "Sipjangsaengdo folding screen — National Palace Museum, Changdeok 6447",
+      "keywords": ["minhwa", "sipjangsaeng", "longevity", "screen", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "19th – early 20th century",
+          "artist": "Unknown (court workshop)",
+          "museum": "National Palace Museum of Korea, Changdeok collection 6447",
+          "source": "Wikimedia Commons",
+          "license": "Public domain / PD-old / CC-PD-Mark",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B0%BD%EB%8D%956447_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84_%EB%B3%91%ED%92%8D.jpg"
+        }
+      },
+      "sections": {
+        "Why": "The largest and most complete screen in this set — a full multi-panel scan at enormous resolution, with the whole ten-symbol vocabulary present. Also the best example in the appendix of Obangsaek, the five traditional colours, used across a whole surface."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/%EC%B0%BD%EB%8D%956447_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84_%EB%B3%91%ED%92%8D.jpg",
+      "sort_order": 116
+    },
+    {
+      "id": "528f4d49-2c22-477f-90f2-ead08cf32b62",
+      "name": "Jangsaengdo (Longevity) — National Palace Museum, Changdeok 6445",
+      "keywords": ["minhwa", "sipjangsaeng", "longevity", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "19th – early 20th century",
+          "artist": "Unknown (court workshop)",
+          "museum": "National Palace Museum of Korea, Changdeok collection 6445",
+          "source": "Wikimedia Commons",
+          "license": "Public domain / PD-old / CC-PD-Mark",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B0%BD%EB%8D%956445_%EC%9E%A5%EC%83%9D%EB%8F%84.jpg"
+        }
+      },
+      "sections": {
+        "Why": "A second, distinct painting of the same longevity set from the same collection — useful where the screen above would be a repeat."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1c/%EC%B0%BD%EB%8D%956445_%EC%9E%A5%EC%83%9D%EB%8F%84.jpg",
+      "sort_order": 117
+    },
+    {
+      "id": "bcc3a4f4-a0a1-44a2-bc1f-11ef30a4a511",
+      "name": "Deer amid pine trees — from the Ten Symbols of Longevity scrolls, 19th century",
+      "keywords": ["minhwa", "sipjangsaeng", "deer", "pine", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "19th century",
+          "artist": "Unknown (Korean)",
+          "museum": "Metropolitan Museum of Art",
+          "source": "Wikimedia Commons",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%86%8C%EB%82%98%EB%AC%B4_%EC%95%84%EB%9E%98_%EC%82%AC%EC%8A%B4_%EC%A1%B0%EC%84%A0-%E6%9D%BE%E4%B8%8B%E9%9B%99%E9%B9%BF%E5%9C%96_%E6%9C%9D%E9%AE%AE-Deer_amid_pine_trees_MET_Deer_and_Pine_scrolls_Ten_Symbols_of_Longevity.jpg"
+        }
+      },
+      "sections": {
+        "Why": "Two of the ten symbols on their own — deer and pine — in the tighter hanging-scroll format. Where the big screens overwhelm, this one is readable at a glance."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/30/%EC%86%8C%EB%82%98%EB%AC%B4_%EC%95%84%EB%9E%98_%EC%82%AC%EC%8A%B4_%EC%A1%B0%EC%84%A0-%E6%9D%BE%E4%B8%8B%E9%9B%99%E9%B9%BF%E5%9C%96_%E6%9C%9D%E9%AE%AE-Deer_amid_pine_trees_MET_Deer_and_Pine_scrolls_Ten_Symbols_of_Longevity.jpg",
+      "sort_order": 118
+    },
+    {
+      "id": "608aac44-a9a2-45e5-be38-e0975373d650",
+      "name": "Bowl decorated with the ten symbols of longevity — 19th century",
+      "keywords": ["minhwa", "sipjangsaeng", "ceramic", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "19th century",
+          "artist": "Unknown (Korean)",
+          "museum": "Metropolitan Museum of Art",
+          "source": "Wikimedia Commons",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Bowl_decorated_with_ten_symbols_of_longevity_MET_DP702970.jpg"
+        }
+      },
+      "sections": {
+        "Why": "The longevity symbols on a bowl someone ate from — the same everyday travel of a motif as the tiger jar above."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Bowl_decorated_with_ten_symbols_of_longevity_MET_DP702970.jpg",
+      "sort_order": 119
+    },
+    {
+      "id": "fbb990cc-79da-4d1b-81f0-eb754107274a",
+      "name": "Chaekkori — a scholar's bookshelf screen, 19th century",
+      "keywords": ["minhwa", "chaekgeori", "books", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "Joseon dynasty, 19th century",
+          "artist": "Unknown (Korean)",
+          "museum": "Via the Google Art Project; holding museum not stated on the file page",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Korean_-_Chaekkori_-_Google_Art_Project.jpg"
+        }
+      },
+      "sections": {
+        "Why": "Chaekgeori screens are inventories of what a cultivated life keeps close — books, brushes, vases, porcelain. Extreme-wide format and very high detail."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Korean_-_Chaekkori_-_Google_Art_Project.jpg",
+      "sort_order": 120
+    },
+    {
+      "id": "3078e5ab-cab3-4204-88b0-e0eb2e430a50",
+      "name": "Chaekgeori (Bookshelves) — dated 1800",
+      "keywords": ["minhwa", "chaekgeori", "books", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "1800",
+          "artist": "Unknown (Korean)",
+          "museum": "Not stated on the file page",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B1%85%EA%B1%B0%EB%A6%AC.jpg"
+        }
+      },
+      "sections": {
+        "Why": "A cleaner single-panel composition than the wide screens — easier to read if the multi-panel versions are too busy."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/93/%EC%B1%85%EA%B1%B0%EB%A6%AC.jpg",
+      "sort_order": 121
+    },
+    {
+      "id": "e8a84de0-1cff-4f72-91b3-317c5ec8acf6",
+      "name": "Books and Scholars' Possessions (Chaekgeori) — early 20th century",
+      "keywords": ["minhwa", "chaekgeori", "books", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "Early 20th century",
+          "artist": "Unknown (Korean)",
+          "museum": "Metropolitan Museum of Art, accession 2005.385",
+          "source": "Wikimedia Commons",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Books_and_Scholars%27_Possessions_(Chaekgeori),_MET_2005.385.jpg"
+        }
+      },
+      "sections": {
+        "Why": "A later chaekgeori, the genre still going into the twentieth century — the shelves keep filling long after the court stopped commissioning them."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Books_and_Scholars%27_Possessions_%28Chaekgeori%29%2C_MET_2005.385.jpg",
+      "sort_order": 122
+    },
+    {
+      "id": "5aa96189-1453-4f2d-8c08-6c51869dd0f0",
+      "name": "Books and Scholars' Accouterments, by Yi Taek-gyun, 1875",
+      "keywords": [
+        "minhwa",
+        "chaekgeori",
+        "books",
+        "yi-taek-gyun",
+        "public-domain",
+        "appendix",
+        "tiff"
+      ],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "1875",
+          "artist": "Yi Taek-gyun (이택균)",
+          "museum": "Cleveland Museum of Art, accession 2011.37",
+          "source": "Wikimedia Commons",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Yi_Taek-gyun_-_Books_and_Scholars%E2%80%99_Accouterments_-_2011.37_-_Cleveland_Museum_of_Art.tif"
+        },
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "No thumbnail — the Commons file is a TIFF. URL in Source."
+      },
+      "sections": {
+        "Why": "One of the very few chaekgeori screens with a named painter, at 11838×6670 pixels. Listed without a thumbnail on purpose — see Source.",
+        "Source": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Yi_Taek-gyun_-_Books_and_Scholars%E2%80%99_Accouterments_-_2011.37_-_Cleveland_Museum_of_Art.tif — the file is a .tif, which browsers do not render, so it is not set as this card's image. Download it from the Commons file page and convert to JPEG before using it anywhere."
+      },
+      "sort_order": 123
+    },
+    {
+      "id": "29ffd92c-59a7-4475-b757-77062eb408ad",
+      "name": "Chaekkori Screen — Detroit Institute of Arts, 19th–20th century",
+      "keywords": ["minhwa", "chaekgeori", "books", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "19th–20th century",
+          "artist": "Unknown (Korean)",
+          "museum": "Detroit Institute of Arts, accession 2015.67",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Unknown_(Korean)_-_Chaekkori_Screen_-_2015.67_-_Detroit_Institute_of_Arts.jpg"
+        }
+      },
+      "sections": {
+        "Why": "A fifth chaekgeori, for anyone wanting to see how much the genre varies while keeping the same subject."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/24/Unknown_%28Korean%29_-_Chaekkori_Screen_-_2015.67_-_Detroit_Institute_of_Arts.jpg",
+      "sort_order": 124
+    },
+    {
+      "id": "a4627d50-0074-42d1-bc57-5c69b84f5faa",
+      "name": "Irworobongdo — the Sun, Moon and Five Peaks",
+      "keywords": ["minhwa", "irworobongdo", "five-peaks", "throne", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "Not stated on the file page; the genre is a standard Joseon court screen type",
+          "artist": "Unknown (Joseon royal court workshop)",
+          "museum": "Not stated on the file page",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Irworobongdo.jpg"
+        }
+      },
+      "sections": {
+        "Why": "This screen always stood directly behind the king's throne — literally the backdrop a ruler's authority was measured against. The closest thing in Korean court painting to a cosmic order a figure stands in front of, which is roughly what a Honmoon is in the film.",
+        "Heads up": "The only genuine painting of this motif that cleared a public-domain licence at usable resolution. Every palace-interior photograph showing the screen in situ is licensed CC-BY-SA and was rejected."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Irworobongdo.jpg",
+      "sort_order": 125
+    },
+    {
+      "id": "49788188-b4dc-4b3f-996b-1b246494b6e5",
+      "name": "Munjado — eight-panel screen of pictorial characters",
+      "keywords": ["minhwa", "munjado", "virtues", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "19th century (assumed)",
+          "artist": "Unknown (Korean)",
+          "museum": "Not stated on the file page",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Painting_of_Characters_on_Eight-panel_Folding_Screen.jpg"
+        }
+      },
+      "sections": {
+        "Why": "Each panel is a Confucian virtue — filial piety, loyalty, trust, propriety, righteousness, integrity, shame, brotherly love — built out of pictures rather than written as words. The nearest thing in the minhwa canon to a code of values you can hang on a wall."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Painting_of_Characters_on_Eight-panel_Folding_Screen.jpg",
+      "sort_order": 126
+    },
+    {
+      "id": "0caaef3f-3d77-419a-a229-89a993415e09",
+      "name": "Munja-Chaekgeori Screen — characters and books in one, 19th century",
+      "keywords": ["minhwa", "munjado", "chaekgeori", "public-domain", "appendix", "tiff"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "19th century (assumed)",
+          "artist": "Anonymous (Korean)",
+          "museum": "Cleveland Museum of Art, accession 2017.6",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Anonymous_-_Munja-Chaekgeori_Screen_(Character-Books_Screen)_-_2017.6_-_Cleveland_Museum_of_Art.tiff"
+        },
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "No thumbnail — the Commons file is a TIFF. URL in Source."
+      },
+      "sections": {
+        "Why": "A hybrid: the virtue-characters of munjado and the bookshelves of chaekgeori on the same screen. Listed without a thumbnail on purpose — see Source.",
+        "Source": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Anonymous_-_Munja-Chaekgeori_Screen_%28Character-Books_Screen%29_-_2017.6_-_Cleveland_Museum_of_Art.tiff — the file is a .tiff, which browsers do not render, so it is not set as this card's image. Download from the Commons file page and convert before use."
+      },
+      "sort_order": 127
+    },
+    {
+      "id": "6e21bf58-1e58-4bf2-9536-a0a88b42f645",
+      "name": "Where the knot comes from — family resemblance, not descent",
+      "keywords": ["knot", "maedeup", "honmoon", "note", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "Two traditions that never met, arriving at the same shape."
+      },
+      "sections": {
+        "Note": "Family resemblance, not descent. The HUNTR/X emblem and the Honmoon draw on Korean maedeup knotting and the Buddhist endless knot, which reached Korea from India. Other interlace traditions — Islamic girih, Celtic knotwork, Roman guilloche — arrived at the same shape separately. There are only so many ways to draw one unbroken line folding back on itself.",
+        "Heads up": "The maedeup reading of the logo is careful fan and analyst close-reading, not a confirmed studio statement — no on-record quote from the directors or Sony's production design team naming maedeup, dancheong or sam taegeuk as the source was found. This card was written to answer a question about whether the emblem shares a lineage with the woven octagon used in Sufi calligraphic art. It does not: those two traditions never met."
+      },
+      "sort_order": 128
+    },
+    {
+      "id": "5aa1bf23-9194-4db8-bf93-3a40623981fe",
+      "name": "The endless knot — the Tibetan Buddhist form",
+      "keywords": ["knot", "endless-knot", "buddhist", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "artist": "Uploader, released to the public domain",
+          "source": "Wikimedia Commons",
+          "license": "Public domain (PD-self)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Endlessknot.svg"
+        }
+      },
+      "sections": {
+        "Why": "One of Buddhism's Eight Auspicious Symbols, traced to Indus Valley seals around 2500 BC and carried across Tibet, Mongolia, China, Japan and Korea with Buddhism itself. Clean line art, no cultural markers, easy to recolour."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Endlessknot.svg",
+      "sort_order": 129
+    },
+    {
+      "id": "b78ba3b6-09b7-4dcc-b768-2f5cac43e108",
+      "name": "The endless knot — shaded rendering",
+      "keywords": ["knot", "endless-knot", "buddhist", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "artist": "Uploader, released to the public domain",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:EndlessKnot3d.svg"
+        }
+      },
+      "sections": {
+        "Why": "The same symbol drawn with over-and-under shading, so the single unbroken line is actually legible as one line."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/EndlessKnot3d.svg",
+      "sort_order": 130
+    },
+    {
+      "id": "481dec1a-2800-44dc-aaa2-70f8155632b0",
+      "name": "Eight-pointed star (khatam form)",
+      "keywords": ["knot", "octagon", "khatam", "geometry", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "artist": "Unknown uploader",
+          "source": "Wikimedia Commons",
+          "license": "Public domain (simple geometry, ineligible for copyright)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:8-Point-Star_black.svg"
+        }
+      },
+      "sections": {
+        "Why": "The eight-pointed star that underlies a great deal of Islamic geometric design — the frame that a woven interior usually sits inside."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/8-Point-Star_black.svg",
+      "sort_order": 131
+    },
+    {
+      "id": "46d02495-f8ac-41c8-b23a-dacf14d1f481",
+      "name": "Eight-pointed star — construction variants",
+      "keywords": ["knot", "octagon", "geometry", "cc0", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "2011",
+          "artist": "Nevit Dilmen",
+          "source": "Wikimedia Commons",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:8_pointed_star_shapes.svg"
+        }
+      },
+      "sections": {
+        "Why": "Several ways of building the same eight-pointed figure side by side — useful for seeing that the shape is a construction, not a drawing."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/8_pointed_star_shapes.svg",
+      "sort_order": 132
+    },
+    {
+      "id": "79747775-4de2-43eb-b17c-8eaad59d88d2",
+      "name": "Octagon knotwork cross / interlaced octagram",
+      "keywords": ["knot", "octagon", "interlace", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "artist": "Uploader, released to the public domain",
+          "source": "Wikimedia Commons",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Knotwork-cross-(simplest)-or-eightfold-star-(irregular).svg"
+        }
+      },
+      "sections": {
+        "Why": "The closest shape in this set to a woven octagon — one line, over and under, inside an eight-sided frame. The form that keeps reappearing in unrelated traditions."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Knotwork-cross-%28simplest%29-or-eightfold-star-%28irregular%29.svg",
+      "sort_order": 133
+    },
+    {
+      "id": "eea8399c-e79c-466b-b170-03ab83df3868",
+      "name": "Interlaced pentagram strapwork",
+      "keywords": ["knot", "girih", "interlace", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "artist": "Uploader, released to the public domain",
+          "source": "Wikimedia Commons",
+          "license": "Public domain (PD-self)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Pentagrams-interlaced-pattern.svg"
+        }
+      },
+      "sections": {
+        "Why": "Girih (Persian for knot) is continuous knotted strapwork generated from a small set of polygon tiles, attested in the Islamic world from the 9th–12th centuries — its own deep root is Greco-Roman interlace, a third lineage that never touched Buddhist Asia."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Pentagrams-interlaced-pattern.svg",
+      "sort_order": 134
+    },
+    {
+      "id": "8552c364-1f15-4744-a07c-7c04af6a2dfa",
+      "name": "A Beautiful Woman (Miindo), by Shin Yun-bok — wearing a norigae",
+      "keywords": ["knot", "maedeup", "norigae", "joseon", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "Late 18th – early 19th century",
+          "artist": "Shin Yun-bok (신윤복)",
+          "museum": "Via the Google Art Project",
+          "source": "Wikimedia Commons",
+          "license": "Public domain (PD-old-100 / PD-Art)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Shin_Yun-bok_-_A_Beautiful_Woman_-_Google_Art_Project.jpg"
+        }
+      },
+      "sections": {
+        "Why": "The one image in this group that is identifiably Korean and shows an actual knot ornament being worn — a red three-piece norigae, the maedeup knotting tradition the HUNTR/X emblem is read as drawing on. Each of the three leads in the film has her own norigae.",
+        "Heads up": "Every photograph of real maedeup or norigae on Wikimedia Commons is licensed CC-BY-SA, so none qualified for this public-domain set. This painting stands in for them."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Shin_Yun-bok_-_A_Beautiful_Woman_-_Google_Art_Project.jpg",
+      "sort_order": 135
+    },
+    {
+      "id": "20200627-ec94-405c-a499-7521a3d570d4",
+      "name": "Arabesque interlace, the Alhambra — Patio de los Leones",
+      "keywords": ["knot", "interlace", "islamic", "alhambra", "cc0", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "2012",
+          "artist": "Jebulon",
+          "museum": "Alhambra, Granada",
+          "source": "Wikimedia Commons",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Detail_arabesque_Alhambra_Granada_Spain.jpg"
+        }
+      },
+      "sections": {
+        "Why": "Historic Islamic octagonal interlace as actually built — the same logic of one line folding back on itself, five thousand kilometres and an entirely separate lineage away from the endless knot."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Detail_arabesque_Alhambra_Granada_Spain.jpg",
+      "sort_order": 136
+    },
+    {
+      "id": "31311734-38f5-4c93-b54b-0b3270bc91f3",
+      "name": "Geometric wall detail, the Alhambra",
+      "keywords": ["knot", "interlace", "islamic", "alhambra", "cc0", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "2012",
+          "artist": "Jebulon",
+          "museum": "Alhambra, Granada",
+          "source": "Wikimedia Commons",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Alhambra_detail.jpg"
+        }
+      },
+      "sections": {
+        "Why": "A second Alhambra detail — the pattern at wall scale rather than in a frame."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Alhambra_detail.jpg",
+      "sort_order": 137
+    },
+    {
+      "id": "6c93ebfd-86d4-43b1-b7d8-22765eeff6f0",
+      "name": "Arirang — Jindo version (open recording)",
+      "keywords": ["arirang", "folk-song", "audio", "open-licence", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "artist": "Korea Copyright Commission (한국저작권위원)",
+          "source": "Wikimedia Commons, via gongu.copyright.or.kr",
+          "license": "CC BY 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Jindo_Arirang.wav"
+        },
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "An audio file on Wikimedia Commons — link in Source."
+      },
+      "sections": {
+        "Note": "Arirang is the Korean folk song with dozens of regional variants — Jeongseon, Jindo, Miryang, Gyeonggi — inscribed on UNESCO's Intangible Cultural Heritage list by South Korea in 2012 and North Korea in 2014. The refrain, 아리랑 아리랑 아라리요 (Arirang, arirang, arariyo), is closer to a wordless sound of longing than to a sentence: scholars do not agree that \"arirang\" means anything in particular. It is sung by everyone together after each verse, rather than as a leader-and-room exchange.",
+        "Source": "https://upload.wikimedia.org/wikipedia/commons/4/48/Jindo_Arirang.wav — an audio file, not a video. Commons file page: https://commons.wikimedia.org/wiki/File:Jindo_Arirang.wav"
+      },
+      "sort_order": 138
+    },
+    {
+      "id": "769481de-7409-4a05-8a1c-941cbfdb6a80",
+      "name": "Arirang — Miryang version (open recording)",
+      "keywords": ["arirang", "folk-song", "audio", "open-licence", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "artist": "Korea Copyright Commission (한국저작권위원)",
+          "source": "Wikimedia Commons, via gongu.copyright.or.kr",
+          "license": "CC BY 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Miryang_Arirang.wav"
+        },
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "An audio file on Wikimedia Commons — link in Source."
+      },
+      "sections": {
+        "Note": "The Miryang variant — livelier than the Jindo one above, and attached to a local legend. Same refrain.",
+        "Source": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Miryang_Arirang.wav — an audio file, not a video. Commons file page: https://commons.wikimedia.org/wiki/File:Miryang_Arirang.wav"
+      },
+      "sort_order": 139
+    },
+    {
+      "id": "dea6caf2-d99f-444c-a96d-87c87d850174",
+      "name": "Arirang — choral version (public domain)",
+      "keywords": ["arirang", "folk-song", "audio", "public-domain", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "2005",
+          "artist": "The United States Army Chorus",
+          "source": "Wikimedia Commons",
+          "edition": "Songs of the Soldier",
+          "license": "Public domain (US Government work)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Arirang.ogg"
+        },
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "An audio file on Wikimedia Commons — link in Source."
+      },
+      "sections": {
+        "Note": "The best-known Gyeonggi-style melody, sung by a chorus. Fully public domain rather than CC BY, so it carries no attribution requirement at all — though crediting it anyway costs nothing.",
+        "Source": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Arirang.ogg — an audio file, not a video. Commons file page: https://commons.wikimedia.org/wiki/File:Arirang.ogg"
+      },
+      "sort_order": 140
+    },
+    {
+      "id": "cd428e17-61de-41eb-815f-25e863865ed6",
+      "name": "The shamanic songs themselves — why none of them are here",
+      "keywords": ["muga", "note", "licensing", "cultural-care", "appendix"],
+      "metadata": {
+        "kind": "note",
+        "card_bg": "#2a1a4a",
+        "card_subtitle": "A living religion, not folklore free for the taking."
+      },
+      "sections": {
+        "Note": "The songs sung inside a gut are called muga, and they are not folk songs — a mudang sings them, in a ceremony, for someone. Bari-degi tells of the abandoned princess who crosses into the underworld and becomes the permanent guide of the dead rather than death's conqueror. Jindo Ssitgim-gut washes a dead person's han away so the soul can pass on, and is performed for every death in the community, again and again. Binari is a blessing that names what threatens before it asks for what is needed. None of these has a verifiably open recording: a search of Wikimedia Commons, the Korean government's open-content portal and the national archives turned up Arirang and instrumental court music, and no ritual muga.",
+        "Why the card exists": "Korean shamanism (Mugyo) is a living, currently-practised religion with real mudang, not a dead tradition free for the taking. Quoting Arirang is low risk — it is sung by everyone and claimed by no one. Lifting a real mudang's chant out of a real ceremony and looping it as background texture is a different act, and the honest routes are to license a recording properly, to stay with the open Arirang files above, or to borrow the shape of a practice rather than its sung content."
+      },
+      "sort_order": 141
+    }
+  ],
+  "description": "Great KPop Demon Hunters video worth watching together, in one place: dance covers from crews around the world, prop and costume builds to try at home, fan films and musician covers, the real Korean hair, dress and legends behind the movie, a seven-question trivia round, and EJAE's own rough demos paired with the finished songs. No merch, no unboxings, no sales pitches — just fans making things because they love the songs, and the people who actually made it. A pause-and-talk card from the Movie Companion is tucked into the fan-films section. Watch with Papai. (Fan-made videos linked to their creators on YouTube; all credit to the makers.)",
+  "creator_link": "https://lifeisprocess.substack.com/",
+  "creator_name": "PlayfulProcess",
+  "default_view": "cards",
+  "grammar_type": "sequence",
+  "is_published": true,
+  "cover_image_url": "https://i.ytimg.com/vi/Glk9piFNBWI/hqdefault.jpg",
+  "_recursive_eco_url": "https://flow.recursive.eco/g/3f7543af-d5e1-42d0-bc52-c3736d270dce?view=reading",
+  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=3f7543af-d5e1-42d0-bc52-c3736d270dce"
+}

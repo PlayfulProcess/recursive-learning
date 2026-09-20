@@ -1,0 +1,17 @@
+{
+  "_note": "Map: repo grammar slug -> its recursive.eco grammar UUID. Same role as recursive-tarot's `tarot/_eco_ids.json` — `recursive-eco.json` points the channel importer at this file (`grammars.id_map`), and the static site builds per-grammar links from it: read = https://recursive.eco/view.html?id=<id> ; open in the app = https://flow.recursive.eco/g/<id>?view=reading ; fork/edit = https://flow.recursive.eco/create/dashboard/unified/new?id=<id>. UUIDs are stable across publish; a link only resolves for a visitor once that grammar is is_public=true on recursive.eco. Only PUBLIC grammars are listed here — the private ones are indexed, without contents, in grammars/PRIVATE.md.",
+  "_public_as_of": "2026-09-20",
+  "ids": {
+    "hot-potato-the-chosen-alien-invasion": "162eadff-00fc-4c01-87f7-ec1d2d37f438",
+    "kpop-demon-hunters": "3f7543af-d5e1-42d0-bc52-c3736d270dce",
+    "the-chosen-alien-invasion": "1cf86c7d-18c3-47e7-8d1a-c152032630f8",
+    "the-chosen-alien-invasion-star-wars-primitives": "a5a39d3a-5d93-45c9-9347-f844cfbe830e",
+    "the-chosen-alien-invasion-v2": "83668113-006c-4980-850c-5deeaae43221",
+    "vibe-coding-101-tools-and-process": "602bc57a-d0a4-4db0-9b8c-3309488b566b",
+    "vibe-coding-102-audiobook-with-claude-code": "68b4fdf7-2b17-4db3-a183-e74fceb96ad5",
+    "vibe-coding-with-claude-journaling-tools": "0a79720e-9d5a-4f91-bff9-8a9318da79bd",
+    "create-grammars-with-ai": "fe2c3b4e-06f8-4f36-9035-eca044179e90",
+    "create-magic-stories-for-your-kids-with-ai": "2f78e910-25e9-4667-aea8-8e30bf327a88",
+    "the-freedom-paradox": "b00c0001-0000-4000-8000-000000000001"
+  }
+}
