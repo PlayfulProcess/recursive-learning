@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Walk — conditional probability as a game · Recursive Learning</title>
+<!--
+  The Walk — one static dark page: no framework, no CDN, no build step, no network request.
+  Same shape as index.html (the As-If round) in this folder, so it works from file:// and from
+  GitHub Pages with nothing running behind it.
+
+  The one teaching: a probability is never a property of the world on its own. It is a property
+  of the world GIVEN a path. Move the allocation and the number moves — not because the forecast
+  improved, but because the condition changed.
+
+  The whole walk (every allocation stepped with, plus any prior edited) lives in the URL hash,
+  so a walk is a link.
+
+  Contract — DESIGN-the-walk-2026-09-20.md §6a:
+      window.walk.state                      State
+      window.walk.priors                     Priors (live; the sliders write into this object)
+      window.walk.simulate(state, priors, n) -> { n, horizon, probs, se, medianStep }
+      window.walk.stepOnce(state, priors, rng[, together]) -> a NEW State (pure)
+      window.walk.makeRng(seed)              -> () => float in [0,1)
+      window.walk.ENDPOINTS                  the seven absorbing states
+-->
+<style>
+  :root{
+    --bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
+    --ink:#e8ecf3; --muted:#8e9aae; --accent:#5ee2b0; --accent-ink:#06281d; --warn:#f0b866;
+    --power:#e2725e; --align:#5ee2b0; --sustain:#7fb2f0; --stop:#c79bf0;
+    --grace:#5ee2b0; --turn:#7fb2f0; --thestop:#c79bf0; --adol:#f0b866;
+    --lockin:#b8a1e8; --doom:#e2725e; --walking:#8e9aae;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:dark;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+  .wrap{max-width:1060px;margin:0 auto;padding-block:22px 64px;padding-left:16px;padding-right:16px}
+  a{color:var(--accent)}
+  h1{font-size:21px;margin:0 0 2px}
+  h1 .sub{display:block;font-size:13px;font-weight:400;color:var(--muted);margin-top:4px}
+  .lede{color:var(--muted);font-size:13.5px;max-width:74ch;margin:10px 0 18px}
+  .cols{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+  .col-l{flex:1 1 420px;min-width:0}
+  .col-r{flex:1 1 300px;min-width:0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;margin-bottom:14px}
+  .card > h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;font-weight:600}
+  button{background:var(--accent);color:var(--accent-ink);border:0;border-radius:9px;
+    padding:9px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
+  button[disabled]{opacity:.42;cursor:not-allowed}
+  .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+  .count{font-size:12.5px;color:var(--muted)}
+
+  .alloc{margin-bottom:12px}
+  .alloc .top{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;margin-bottom:3px}
+  .alloc .top b{font-weight:600}
+  .alloc .top .pct{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+  input[type=range]{width:100%;margin:0;height:20px;accent-color:var(--sl,var(--accent))}
+  .why{font-size:11.5px;color:var(--muted);margin:2px 0 0}
+  .sumline{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:9px;margin:4px 0 0}
+
+  .gauge{margin-bottom:11px}
+  .gauge .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+  .gauge .top span:last-child{font-variant-numeric:tabular-nums;color:var(--muted)}
+  .track{height:9px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;overflow:hidden;position:relative}
+  .fill{height:100%;background:var(--accent);transition:width .25s ease}
+  .mark{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--warn);opacity:.85}
+
+  .sc{border:1px solid var(--line);background:var(--panel2);border-radius:11px;padding:9px 11px;margin-bottom:8px}
+  .sc .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .sc .nm{font-size:14px;font-weight:700;line-height:1.3}
+  .sc .p{font-size:14.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .sc .p .se{font-size:10.5px;font-weight:400;color:var(--muted);margin-left:3px}
+  .sc .track{margin:6px 0 5px}
+  .sc .src{font-size:11px;color:var(--muted);line-height:1.4}
+  .disclaimer{font-size:12px;color:var(--warn);border-left:3px solid var(--warn);
+    background:var(--panel2);border-radius:0 9px 9px 0;padding:9px 11px;margin:0 0 12px}
+  .nfoot{font-size:11px;color:var(--muted);margin:2px 0 0}
+
+  .changed{font-size:14px;background:var(--panel2);border:1px solid var(--line);
+    border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:11px 13px}
+  .changed.alone{border-left-color:var(--warn)}
+  .changed .d{display:block;font-size:12px;color:var(--muted);margin-top:5px}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:11.5px;color:var(--muted);margin-top:8px}
+  .legend i{display:inline-block;width:16px;height:2px;vertical-align:middle;margin-right:5px}
+
+  details{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:14px}
+  summary{cursor:pointer;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .priors{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px 16px;margin-top:14px}
+  .pr .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;margin-bottom:2px}
+  .pr .lab b{font-weight:600}
+  .pr input[type=number]{width:74px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);
+    border-radius:7px;padding:3px 6px;font:inherit;font-size:12.5px;text-align:right}
+  .pr input:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .pr .cm{font-size:11px;color:var(--muted);margin:2px 0 0;line-height:1.35}
+
+  svg{display:block;width:100%;height:auto}
+  footer{margin-top:26px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+  footer p{margin:6px 0;max-width:80ch}
+  .ended{font-size:13.5px;color:var(--warn);margin:10px 0 0}
+  @media (max-width:560px){ h1{font-size:19px} button{flex:1 1 auto} .wrap{padding-block:18px 48px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The Walk<span class="sub">Conditional probability, made into steps you actually take.</span></h1>
+  <p class="lede">A probability is not a property of the world. It is a property of the world
+    <em>given a path</em>. Ten percent now, because of how people expect decisions will be made — but
+    at 100% power and 0% alignment the ten becomes something else, and at 100% alignment before the
+    power grows it becomes something else again. Allocate, step, and watch which number moves, and
+    why. Nothing is sent anywhere; the walk lives in the address bar.</p>
+
+  <div class="cols">
+    <div class="col-l">
+
+      <div class="card">
+        <h2>The allocation — it always sums to 100%</h2>
+        <div id="sliders"></div>
+        <p class="sumline" id="sumline"></p>
+        <div class="bar">
+          <button id="btn-step">Step</button>
+          <button id="btn-together" class="ghost">Step together</button>
+          <button id="btn-reset" class="ghost">Reset</button>
+          <button id="btn-copy" class="ghost">Copy link</button>
+          <span class="count" id="stepcount"></span>
+        </div>
+        <p class="ended" id="ended" hidden></p>
+      </div>
+
+      <div class="card">
+        <h2>Where the walk stands</h2>
+        <div class="gauge">
+          <div class="top"><span>Capability</span><span id="cap-v"></span></div>
+          <div class="track"><div class="fill" id="cap-f" style="background:var(--power)"></div><div class="mark" id="cap-m"></div></div>
+          <p class="why" id="cap-why"></p>
+        </div>
+        <div class="gauge">
+          <div class="top"><span>Coordination</span><span id="coord-v"></span></div>
+          <div class="track"><div class="fill" id="coord-f"></div><div class="mark" id="coord-m"></div></div>
+          <p class="why" id="coord-why"></p>
+        </div>
+        <div class="gauge">
+          <div class="top"><span>Alignment before capability</span><span id="lead-v"></span></div>
+          <div class="track"><div class="fill" id="lead-f" style="background:var(--sustain)"></div><div class="mark" id="lead-m"></div></div>
+          <p class="why" id="lead-why"></p>
+        </div>
+        <div class="gauge">
+          <div class="top"><span>Sustainability before capability</span><span id="sust-v"></span></div>
+          <div class="track"><div class="fill" id="sust-f" style="background:var(--turn)"></div><div class="mark" id="sust-m"></div></div>
+          <p class="why">The same ratio, for sustainability. Past the same bar, the walk turns.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>What changed</h2>
+        <div class="changed" id="changed"></div>
+        <svg id="trace" viewBox="0 0 560 240" role="img"
+             aria-label="Timeline of capability over the horizon, for you and three ghost agents"></svg>
+        <div class="legend" id="legend"></div>
+      </div>
+
+    </div>
+
+    <div class="col-r">
+      <div class="card">
+        <h2>Where this walk ends</h2>
+        <p class="disclaimer">These numbers are a teaching instrument, not a forecast.
+          Every prior below is yours to change.</p>
+        <div id="cards"></div>
+        <p class="nfoot" id="nfoot"></p>
+        <p class="nfoot">Most of these read 0% at any one allocation, and that is the lesson, not a
+          bug: the allocation decides <em>where</em> you are going; chance decides whether you arrive.
+          Move a slider and watch the destination itself change.</p>
+      </div>
+    </div>
+  </div>
+
+  <details id="priors-panel">
+    <summary>Priors — every constant the walk depends on, and not one of them a measurement</summary>
+    <div class="priors" id="priors"></div>
+    <div class="bar"><button class="ghost" id="btn-priors-reset">Reset to defaults</button></div>
+  </details>
+
+  <footer>
+    <p><strong>The step of faith is a stag hunt.</strong> <em>Step together</em> moves the world only
+      if coordination has reached <code>stagK</code>; below it the step is spent, and a line says so.
+      Rousseau's hunters take a stag together or a hare alone: the stag is worth more and nobody can
+      take it alone, so stepping first while the others take hares is the worst cell on the board —
+      see Brian Skyrms, <em>The Stag Hunt and the Evolution of Social Structure</em> (Cambridge,
+      2004). The collective prayer is the synchronised step.</p>
+    <p>A model can be fully specified, deterministic, and still fail to show the effect its author
+      believed in. This one is a teaching instrument and nothing more.</p>
+    <p>PlayfulProcess · Recursive Learning · <a href="index.html">As-If, the other round in this folder</a></p>
+  </footer>
+</div>
+
+<script>
+(function () {
+'use strict';
+
+/* ══ THE MODEL ═══════════════════════════════════════════════════════════════════
+   Small enough to be honest. Every number lives in DEFAULT_PRIORS and every one of
+   them has a slider on the page. Nothing about the world is hardcoded below. */
+
+var DEFAULT_PRIORS = {
+  horizon:          20,   // how many steps the timeline holds; each is "a year or so"
+  growth:           0.35, // capability multiplies by 1 + growth x power each step
+  stopDrag:         0.5,  // share of that growth a fully coordinated Stop removes
+  decay:            0.05, // how fast the alignment and sustainability stocks leak away
+  riskBase:         0.02, // risk per step at capability 1 with no alignment
+  alpha:            1.4,  // how steeply risk climbs with capability
+  beta:             3.0,  // how strongly alignment-before-capability buys it down
+  shockRate:        0.08, // chance per step of a shock outside the lab
+  shockDamping:     0.6,  // how much the sustainability stock removes from that rate
+  shockRisk:        0.10, // risk a shock adds to the step it lands on
+  coordGain:        0.25, // coordination gained per unit of Alignment + Stop
+  coordDecay:       0.10, // coordination lost every step regardless
+  stagK:            0.60, // coordination a stop, or a step together, needs to count
+  graceCapability:  6,    // the capability at which the crossing is read
+  graceAlignRatio:  0.9,  // alignment stock / capability that makes the crossing Grace
+  lockInCoord:      0.15  // coordination at or below which the crossing locks in
+};
+
+// Checked each step, in this order. 'still_walking' is an honest outcome, not a failure.
+var ENDPOINTS = ['grace','sustainable_turn','the_stop','adolescence','lock_in','doom','still_walking'];
+
+function makeRng(seed){ var a = seed | 0; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0;
+  var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+  return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+function withDefaults(p){ var o = {}, k;
+  for (k in DEFAULT_PRIORS) o[k] = DEFAULT_PRIORS[k];
+  if (p) for (k in p) if (p[k] != null && isFinite(p[k])) o[k] = +p[k];
+  return o; }
+
+function freshState(alloc){ return { t:0,
+  alloc: alloc || { power:0.40, alignment:0.30, sustainability:0.15, stop:0.15 },
+  capability:1, alignmentStock:0, sustStock:0, coordination:0.30,
+  endpoint:null, history:[], lastShock:false, lastAlone:false, lastRisk:0, lastRatioDelta:0 }; }
+
+function copyState(s){ return { t:s.t, alloc:s.alloc, capability:s.capability,
+  alignmentStock:s.alignmentStock, sustStock:s.sustStock, coordination:s.coordination,
+  endpoint:s.endpoint, history:s.history, lastShock:s.lastShock, lastAlone:s.lastAlone,
+  lastRisk:s.lastRisk, lastRatioDelta:s.lastRatioDelta }; }
+
+function clamp01(x){ return x < 0 ? 0 : x > 1 ? 1 : x; }
+function alignRatio(s){ return s.alignmentStock / s.capability; }
+function sustRatio(s){ return s.sustStock / s.capability; }
+
+// The absorbing states, checked in one fixed order.
+function endpointOf(s, p, doomed){
+  if (doomed) return 'doom';
+  // A stop is a stop only if the walk is coordinated AND stopping outweighs building.
+  if (s.coordination >= p.stagK && s.alloc.stop >= s.alloc.power) return 'the_stop';
+  if (sustRatio(s) >= p.graceAlignRatio) return 'sustainable_turn';
+  if (s.capability >= p.graceCapability){
+    if (alignRatio(s) >= p.graceAlignRatio) return 'grace';   // the lead was paid for in advance
+    if (s.coordination <= p.lockInCoord)    return 'lock_in'; // nobody was walking with you
+    return 'adolescence';                                     // through it, rockily
+  }
+  if (s.t >= p.horizon) return 'still_walking';
+  return null;
+}
+
+// ONE step, applied in place. `together` is the step of faith: below stagK it is spent.
+function stepCore(s, p, rng, together){
+  var a = s.alloc, ratioBefore = alignRatio(s);
+  s.lastAlone = false; s.lastShock = false; s.lastRatioDelta = 0;
+  if (together && s.coordination < p.stagK){ s.t++; s.lastAlone = true;
+    if (s.t >= p.horizon && !s.endpoint) s.endpoint = endpointOf(s, p, false) || 'still_walking';
+    return s; }
+  if (together) s.coordination = clamp01(s.coordination + p.coordGain); // the stag landed
+
+  // 1. capability grows with power; a coordinated Stop drags that growth down
+  var stopEffective = (s.coordination >= p.stagK) ? a.stop : 0;
+  s.capability *= 1 + p.growth * a.power * (1 - p.stopDrag * stopEffective);
+  // 2. the two stocks accumulate and leak
+  s.alignmentStock = s.alignmentStock * (1 - p.decay) + a.alignment;
+  s.sustStock      = s.sustStock      * (1 - p.decay) + a.sustainability;
+  // 3. a shock outside the lab — sustainability lowers its rate; it costs coordination
+  var shockChance = Math.max(0, p.shockRate * (1 - p.shockDamping * s.sustStock));
+  s.lastShock = rng() < shockChance;
+  if (s.lastShock) s.coordination = clamp01(s.coordination - p.coordGain);
+  // 4. risk this step: rises with capability, bought down by alignment-before-capability
+  s.lastRisk = p.riskBase * Math.pow(s.capability, p.alpha) *
+               Math.exp(-p.beta * alignRatio(s)) + (s.lastShock ? p.shockRisk : 0);
+  // 5. coordination: Alignment and Stop buy it, and it leaks every step
+  s.coordination = clamp01(s.coordination + p.coordGain * (a.stop + a.alignment) - p.coordDecay);
+
+  s.t++;
+  s.lastRatioDelta = alignRatio(s) - ratioBefore;   // did alignment gain on capability, or lose?
+  s.endpoint = endpointOf(s, p, rng() < s.lastRisk);
+  return s;
+}
+
+// Pure: returns a NEW State, the old one untouched (history included).
+function stepOnce(state, priors, rng, together){
+  var p = withDefaults(priors), s = copyState(state);
+  stepCore(s, p, rng, together);
+  s.history = state.history.concat([{ t:s.t, alloc:s.alloc, capability:s.capability,
+    coordination:s.coordination, together:!!together, alone:s.lastAlone }]);
+  return s;
+}
+
+// n forward rollouts of the REMAINING steps, holding the CURRENT allocation. That assumption
+// is the teaching: what you read is P(endpoint | you keep walking like this).
+// Seed-free unless priors.seed is set. Never returns a probability without its standard error.
+function simulate(state, priors, n){
+  var p = withDefaults(priors);
+  n = n || 4000;
+  var base = (priors && priors.seed != null && isFinite(priors.seed))
+           ? (priors.seed | 0) : (Math.random() * 0x7fffffff) | 0;
+  var counts = {}, steps = {}, k;
+  for (k = 0; k < ENDPOINTS.length; k++){ counts[ENDPOINTS[k]] = 0; steps[ENDPOINTS[k]] = []; }
+  for (var i = 0; i < n; i++){
+    var rng = makeRng(base + Math.imul(i, 2654435761));
+    var s = copyState(state); s.history = null;
+    while (!s.endpoint && s.t < p.horizon) stepCore(s, p, rng, false);
+    var e = s.endpoint || 'still_walking';
+    counts[e]++; steps[e].push(s.t);
+  }
+  var probs = {}, se = {}, medianStep = {};
+  for (k = 0; k < ENDPOINTS.length; k++){
+    var key = ENDPOINTS[k], q = counts[key] / n;
+    probs[key] = q;
+    se[key] = Math.sqrt(q * (1 - q) / n);
+    if (steps[key].length){ steps[key].sort(function(x,y){ return x - y; });
+      medianStep[key] = steps[key][steps[key].length >> 1]; }
+    else medianStep[key] = null;
+  }
+  return { n:n, horizon:p.horizon, probs:probs, se:se, medianStep:medianStep };
+}
+/* ══ END OF THE MODEL ═════════════════════════════════════════════════════════ */
+
+
+// ── the seven scenario cards, one per endpoint ──────────────────────────────────
+var CARDS = [
+  { k:'grace', nm:'Machines of Loving Grace', col:'--grace',
+    src:'Amodei, 2024 — capability arrives with the alignment lead already paid for.' },
+  { k:'sustainable_turn', nm:'The sustainability turn', col:'--turn',
+    src:'Hers; nearest kin van Wynsberghe, Sustainable AI (2021) — capability redirected into adapting with the environment.' },
+  { k:'the_stop', nm:'The Stop', col:'--thestop',
+    src:'The stop as a mandate — a halt that exists only if enough of the walk steps at once.' },
+  { k:'adolescence', nm:'The Adolescence of Technology', col:'--adol',
+    src:'Amodei, 2026 — through the dangerous middle, rockily, without having led with alignment.' },
+  { k:'lock_in', nm:'Situational Awareness', col:'--lockin',
+    src:'Aschenbrenner, 2024 — whoever crosses first with nobody walking beside them locks it in.' },
+  { k:'doom', nm:'AI 2027 · If Anyone Builds It, Everyone Dies', col:'--doom',
+    src:'Kokotajlo et al. · Yudkowsky & Soares, 2025 — control lost in the race, or at the top of the curve.' },
+  { k:'still_walking', nm:'Still walking', col:'--walking',
+    src:'The horizon ran out with the walk still going. An honest outcome, not a failure.' }
+];
+var SHORT = { grace:'Loving Grace', sustainable_turn:'The turn', the_stop:'The Stop',
+              adolescence:'Adolescence', lock_in:'Lock-in', doom:'Doom', still_walking:'Still walking' };
+
+var CHANNELS = [
+  { k:'power',          nm:'Power',          col:'--power',
+    why:'Capability multiplies by 1 + growth x power each step.' },
+  { k:'alignment',      nm:'Alignment',      col:'--align',
+    why:'Builds the stock whose RATIO to capability buys risk down — spent late it is worth less.' },
+  { k:'sustainability', nm:'Sustainability', col:'--sustain',
+    why:'Lowers the rate of shocks; past the ratio bar it becomes the ending.' },
+  { k:'stop',           nm:'Stop',           col:'--stop',
+    why:'Drags capability growth down, and only counts while coordination is above stagK.' }
+];
+
+var PRIOR_UI = {
+  horizon:         [4, 40, 1,     'How many steps the timeline holds.'],
+  growth:          [0, 1, 0.01,   'Capability multiplier per step, per unit of Power.'],
+  stopDrag:        [0, 1, 0.01,   'Share of growth a fully coordinated Stop removes. At 1 it freezes.'],
+  decay:           [0, 0.5, 0.01, 'How fast the alignment and sustainability stocks leak.'],
+  riskBase:        [0, 0.2, 0.005,'Risk per step at capability 1 with no alignment.'],
+  alpha:           [0.5, 3, 0.1,  'How steeply risk climbs with capability.'],
+  beta:            [0, 8, 0.1,    'How strongly alignment-before-capability buys risk down.'],
+  shockRate:       [0, 0.5, 0.01, 'Chance per step of a shock outside the lab.'],
+  shockDamping:    [0, 1, 0.01,   'How much the sustainability stock removes from that rate.'],
+  shockRisk:       [0, 0.5, 0.01, 'Risk a shock adds to the step it lands on.'],
+  coordGain:       [0, 1, 0.01,   'Coordination gained per unit of Alignment + Stop.'],
+  coordDecay:      [0, 0.5, 0.01, 'Coordination lost every step regardless.'],
+  stagK:           [0, 1, 0.01,   'Coordination a stop, or a step together, needs to count.'],
+  graceCapability: [1, 20, 0.5,   'The capability at which the crossing is read.'],
+  graceAlignRatio: [0, 3, 0.05,   'Stock / capability that makes the crossing Grace (or the turn).'],
+  lockInCoord:     [0, 1, 0.01,   'Coordination at or below which the crossing locks in.']
+};
+
+// three ghost agents with fixed strategies, walking the same horizon
+var GHOSTS = [
+  { nm:'all-Power',            col:'--power',   alloc:{ power:1,    alignment:0,   sustainability:0,   stop:0 } },
+  { nm:'all-Alignment-first',  col:'--align',   alloc:{ power:0.30, alignment:0.70, sustainability:0,   stop:0 } },
+  { nm:'Sustainability-first', col:'--sustain', alloc:{ power:0.20, alignment:0.10, sustainability:0.70, stop:0 } }
+];
+
+// ── live state ──────────────────────────────────────────────────────────────────
+var DEFAULT_ALLOC = { power:0.40, alignment:0.30, sustainability:0.15, stop:0.15 };
+var state  = freshState({ power:DEFAULT_ALLOC.power, alignment:DEFAULT_ALLOC.alignment,
+                          sustainability:DEFAULT_ALLOC.sustainability, stop:DEFAULT_ALLOC.stop });
+var priors = {};                                   // overrides only; window.walk.priors is THIS object
+var seed   = (Math.random() * 0x7fffffff) | 0;     // the walk's own RNG stream, so a link replays
+var rng    = makeRng(seed);
+var N      = 4000;
+var prevProbs = null, lastNote = '', lastMoved = '';
+
+function P(k){ return (priors[k] != null && isFinite(priors[k])) ? +priors[k] : DEFAULT_PRIORS[k]; }
+// the page pins the seed so the bars do not jitter between renders; simulate() itself is seed-free
+function viewPriors(){ var o = withDefaults(priors); o.seed = seed; return o; }
+
+// ── allocation: move one, the other three rebalance, always sums to 1 ───────────
+var KEYS = ['power','alignment','sustainability','stop'];
+function setChannel(key, pctValue){
+  var v = Math.max(0, Math.min(100, Math.round(pctValue))) / 100;
+  var others = KEYS.filter(function(k){ return k !== key; });
+  var restNow = others.reduce(function(s,k){ return s + state.alloc[k]; }, 0);
+  var rest = 1 - v, out = {}; out[key] = v;
+  if (restNow <= 1e-9){ others.forEach(function(k){ out[k] = rest / 3; }); }
+  else { others.forEach(function(k){ out[k] = state.alloc[k] / restNow * rest; }); }
+  // round to whole percents so the sliders and the link stay honest about summing to 100
+  var acc = 0;
+  others.forEach(function(k, i){
+    out[k] = (i === others.length - 1) ? Math.max(0, Math.round((rest - acc) * 100) / 100)
+                                       : Math.max(0, Math.round(out[k] * 100) / 100);
+    if (i < others.length - 1) acc += out[k];
+  });
+  state.alloc = out;
+  render();
+}
+
+// ── a step ──────────────────────────────────────────────────────────────────────
+function takeStep(together){
+  if (state.endpoint || state.t >= P('horizon')) return;
+  state = stepOnce(state, priors, rng, together);
+  lastNote = noteFor(state);
+  render();
+}
+
+function noteFor(s){
+  var a = s.alloc;
+  if (s.lastAlone) return 'ALONE';
+  if (s.lastShock) return 'a shock landed outside the lab and coordination took the hit';
+  if (s.coordination >= P('stagK') && a.stop > 0)
+    return 'the stop counted — coordination was above stagK, so it dragged capability growth down';
+  if (s.lastRatioDelta > 0.01)  return 'alignment led capability this step';
+  if (s.lastRatioDelta < -0.01) return 'capability outran alignment this step';
+  if (a.sustainability >= 0.4)  return 'sustainability held, so shocks got less likely';
+  return 'the stocks leaked about as fast as capability grew';
+}
+
+// ── rendering ───────────────────────────────────────────────────────────────────
+function el(tag, cls, text){ var n = document.createElement(tag);
+  if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+function pc(x){ return Math.round(x * 100) + '%'; }
+
+var $sliders = document.getElementById('sliders');
+CHANNELS.forEach(function(c){
+  var box = el('div','alloc'), top = el('div','top');
+  var b = el('b', null, c.nm); b.style.color = 'var(' + c.col + ')'; top.appendChild(b);
+  var pct = el('span','pct'); pct.id = 'pct-' + c.k; top.appendChild(pct);
+  box.appendChild(top);
+  var r = document.createElement('input');
+  r.type = 'range'; r.min = 0; r.max = 100; r.step = 1; r.id = 'sl-' + c.k;
+  r.style.setProperty('--sl', 'var(' + c.col + ')');
+  r.setAttribute('aria-label', c.nm + ' share of the allocation, in percent');
+  r.addEventListener('input', function(){ setChannel(c.k, +r.value); });
+  box.appendChild(r);
+  box.appendChild(el('p','why', c.why));
+  $sliders.appendChild(box);
+});
+
+var $cards = document.getElementById('cards');
+CARDS.forEach(function(c){
+  var box = el('div','sc'), h = el('div','h');
+  h.appendChild(el('div','nm', c.nm));
+  var p = el('div','p'); p.id = 'scp-' + c.k; h.appendChild(p);
+  box.appendChild(h);
+  var t = el('div','track'), f = el('div','fill');
+  f.id = 'scf-' + c.k; f.style.background = 'var(' + c.col + ')'; f.style.width = '0%';
+  t.appendChild(f); box.appendChild(t);
+  box.appendChild(el('div','src', c.src));
+  $cards.appendChild(box);
+});
+
+var $priors = document.getElementById('priors');
+function buildPriors(){
+  $priors.innerHTML = '';
+  Object.keys(DEFAULT_PRIORS).forEach(function(k){
+    var cfg = PRIOR_UI[k], box = el('div','pr'), lab = el('div','lab');
+    var b = el('b', null, k); lab.appendChild(b);
+    var num = document.createElement('input');
+    num.type = 'number'; num.min = cfg[0]; num.max = cfg[1]; num.step = cfg[2];
+    num.value = P(k); num.id = 'prn-' + k;
+    num.setAttribute('aria-label', k + ' value');
+    lab.appendChild(num); box.appendChild(lab);
+    var r = document.createElement('input');
+    r.type = 'range'; r.min = cfg[0]; r.max = cfg[1]; r.step = cfg[2]; r.value = P(k);
+    r.id = 'prr-' + k; r.setAttribute('aria-label', k);
+    box.appendChild(r);
+    box.appendChild(el('p','cm', cfg[3]));
+    function set(v){
+      if (!isFinite(v)) { v = P(k); }
+      if (v === DEFAULT_PRIORS[k]) delete priors[k]; else priors[k] = v;
+      num.value = P(k); r.value = P(k);
+      prevProbs = null; render();
+    }
+    r.addEventListener('input', function(){ set(parseFloat(r.value)); });
+    num.addEventListener('change', function(){ set(parseFloat(num.value)); });
+    $priors.appendChild(box);
+  });
+}
+buildPriors();
+
+function setBar(id, frac){ document.getElementById(id).style.width = clamp01(frac) * 100 + '%'; }
+
+function render(){
+  var p = withDefaults(priors), a = state.alloc;
+
+  CHANNELS.forEach(function(c){
+    var r = document.getElementById('sl-' + c.k), v = Math.round(a[c.k] * 100);
+    if (+r.value !== v) r.value = v;
+    document.getElementById('pct-' + c.k).textContent = v + '%';
+  });
+  var sum = KEYS.reduce(function(s,k){ return s + a[k]; }, 0);
+  document.getElementById('sumline').textContent =
+    'power ' + a.power.toFixed(2) + ' · alignment ' + a.alignment.toFixed(2) +
+    ' · sustainability ' + a.sustainability.toFixed(2) + ' · stop ' + a.stop.toFixed(2) +
+    '  =  ' + sum.toFixed(2);
+
+  // gauges
+  var capMax = Math.max(p.graceCapability * 1.5, state.capability);
+  document.getElementById('cap-v').textContent = state.capability.toFixed(2);
+  setBar('cap-f', state.capability / capMax);
+  document.getElementById('cap-m').style.left = (p.graceCapability / capMax * 100) + '%';
+  document.getElementById('cap-why').textContent =
+    'Marked line: graceCapability = ' + p.graceCapability + ', the capability at which the crossing is read.';
+  document.getElementById('coord-v').textContent = state.coordination.toFixed(2);
+  setBar('coord-f', state.coordination);
+  document.getElementById('coord-m').style.left = (p.stagK * 100) + '%';
+  document.getElementById('coord-why').textContent =
+    'Marked line: stagK = ' + p.stagK.toFixed(2) + '. Below it a step together is spent and nothing moves.';
+  var ar = alignRatio(state), sr = sustRatio(state), rMax = Math.max(p.graceAlignRatio * 1.5, ar, sr, 0.1);
+  document.getElementById('lead-v').textContent = ar.toFixed(2);
+  setBar('lead-f', ar / rMax);
+  document.getElementById('lead-m').style.left = (p.graceAlignRatio / rMax * 100) + '%';
+  document.getElementById('lead-why').textContent =
+    'alignmentStock / capability. Marked line: graceAlignRatio = ' + p.graceAlignRatio +
+    '. Spent after capability has run, alignment is worth less.';
+  document.getElementById('sust-v').textContent = sr.toFixed(2);
+  setBar('sust-f', sr / rMax);
+  document.getElementById('sust-m').style.left = (p.graceAlignRatio / rMax * 100) + '%';
+
+  // controls
+  var done = !!state.endpoint || state.t >= p.horizon;
+  document.getElementById('btn-step').disabled = done;
+  document.getElementById('btn-together').disabled = done;
+  document.getElementById('stepcount').textContent = 'step ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon;
+  var endedEl = document.getElementById('ended');
+  if (state.endpoint){
+    endedEl.hidden = false;
+    endedEl.textContent = 'This walk ended at: ' +
+      (CARDS.filter(function(c){ return c.k === state.endpoint; })[0] || {}).nm + '.';
+  } else endedEl.hidden = true;
+
+  // the probabilities
+  var res = simulate(state, viewPriors(), N);
+  CARDS.forEach(function(c){
+    var q = res.probs[c.k], node = document.getElementById('scp-' + c.k);
+    node.textContent = '';
+    node.appendChild(document.createTextNode(pc(q)));
+    var s = el('span','se', '±' + (res.se[c.k] * 100).toFixed(1));
+    node.appendChild(s);
+    setBar('scf-' + c.k, q);
+  });
+  document.getElementById('nfoot').textContent =
+    res.n + ' rollouts of the remaining steps, holding this allocation. ± is one standard error.';
+
+  writeChanged(res, p);
+  prevProbs = res.probs;
+
+  drawTrace(p);
+  writeHash();
+}
+
+function writeChanged(res, p){
+  var box = document.getElementById('changed');
+  box.className = 'changed' + (state.lastAlone ? ' alone' : '');
+  box.textContent = '';
+  var main;
+  if (!state.history.length){
+    main = 'Nothing yet. The bars on the right are the probabilities GIVEN that you keep this ' +
+           'allocation to the horizon. Move a slider and they move — the world did not change, the condition did.';
+  } else if (lastNote === 'ALONE'){
+    main = 'You stepped alone. Nothing moved. Coordination is ' + state.coordination.toFixed(2) +
+           ', below stagK = ' + p.stagK.toFixed(2) + ' — the stag needs company.';
+  } else if (prevProbs){
+    var best = null;
+    ENDPOINTS.forEach(function(k){
+      var d = res.probs[k] - prevProbs[k];
+      if (!best || Math.abs(d) > Math.abs(best.d)) best = { k:k, d:d, from:prevProbs[k], to:res.probs[k] };
+    });
+    if (best && Math.abs(best.d) >= 0.01){
+      main = SHORT[best.k] + (best.d < 0 ? ' fell from ' : ' rose from ') + pc(best.from) +
+             ' to ' + pc(best.to) + ' because ' + lastNote + '.';
+    } else main = 'Almost nothing moved: ' + lastNote + '.';
+  } else main = 'Step taken — ' + lastNote + '.';
+  box.appendChild(document.createTextNode(main));
+  if (state.history.length){
+    var d = el('span','d', 'capability ' + state.capability.toFixed(2) +
+      ' · alignment-before-capability ' + alignRatio(state).toFixed(2) +
+      ' · coordination ' + state.coordination.toFixed(2) +
+      ' · risk this step ' + (state.lastRisk * 100).toFixed(1) + '%');
+    box.appendChild(d);
+  }
+}
+
+// ── the timeline: you, plus three ghosts, as arrows ─────────────────────────────
+function traceOf(alloc, p, s0){
+  var s = freshState(alloc); s.history = null;
+  var r = makeRng(s0), pts = [s.capability];
+  while (!s.endpoint && s.t < p.horizon){ stepCore(s, p, r, false); pts.push(s.capability); }
+  return { pts:pts, end:s.endpoint || 'still_walking' };
+}
+function playerTrace(p){
+  var pts = [1];
+  state.history.forEach(function(h){ pts.push(h.capability); });
+  return { pts:pts, end:state.endpoint };
+}
+
+var SVGNS = 'http://www.w3.org/2000/svg';
+function svgEl(n, attrs){ var e = document.createElementNS(SVGNS, n);
+  for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+function drawTrace(p){
+  var svg = document.getElementById('trace');
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  var L = 26, R = 132, T = 14, B = 210, W = 560, H = p.horizon;
+  var css = getComputedStyle(document.documentElement);
+
+  var traces = [], i;
+  for (i = 0; i < GHOSTS.length; i++){
+    var g = GHOSTS[i];
+    var res = simulate({ t:0, alloc:g.alloc, capability:1, alignmentStock:0, sustStock:0,
+                         coordination:0.30, endpoint:null, history:null },
+                       (function(){ var o = withDefaults(priors); o.seed = 777 + i; return o; })(), 1200);
+    var modal = ENDPOINTS.reduce(function(m,k){ return res.probs[k] > res.probs[m] ? k : m; }, ENDPOINTS[0]);
+    traces.push({ tr:traceOf(g.alloc, p, 4242 + i), col:css.getPropertyValue(g.col).trim() || '#8e9aae',
+                  label:SHORT[modal], dashed:true, nm:g.nm, q:res.probs[modal] });
+  }
+  var me = playerTrace(p);
+  traces.push({ tr:me, col:'#e8ecf3', label:me.end ? SHORT[me.end] : 'you', dashed:false, nm:'you', q:null });
+
+  var capMax = Math.max(p.graceCapability * 1.2, 2);
+  traces.forEach(function(o){ o.tr.pts.forEach(function(c){ if (c > capMax) capMax = c; }); });
+
+  var x = function(i){ return L + (W - L - R) * (H ? Math.min(i, H) / H : 0); };
+  var y = function(c){ return B - (B - T) * Math.min(1, c / capMax); };
+
+  svg.appendChild(svgEl('line', { x1:L, y1:B, x2:W - R, y2:B, stroke:'#2a3140', 'stroke-width':1 }));
+  svg.appendChild(svgEl('line', { x1:L, y1:T, x2:L, y2:B, stroke:'#2a3140', 'stroke-width':1 }));
+  svg.appendChild(svgEl('line', { x1:L, y1:y(p.graceCapability), x2:W - R, y2:y(p.graceCapability),
+    stroke:'#f0b866', 'stroke-width':1, 'stroke-dasharray':'4 4', opacity:'.55' }));
+  var tl = svgEl('text', { x:L + 4, y:y(p.graceCapability) - 5, fill:'#8e9aae', 'font-size':'10' });
+  tl.textContent = 'graceCapability ' + p.graceCapability; svg.appendChild(tl);
+  var tickEvery = H > 12 ? 4 : 2;
+  for (i = 0; i <= H; i += tickEvery){
+    var t = svgEl('text', { x:x(i), y:B + 15, fill:'#8e9aae', 'font-size':'10', 'text-anchor':'middle' });
+    t.textContent = 't' + i; svg.appendChild(t);
+  }
+  var yt = svgEl('text', { x:2, y:T + 8, fill:'#8e9aae', 'font-size':'10' });
+  yt.textContent = 'cap ' + capMax.toFixed(0); svg.appendChild(yt);
+
+  var lg = document.getElementById('legend'); lg.innerHTML = '';
+  traces.forEach(function(o, ti){
+    var pts = o.tr.pts, d = '', j;
+    for (j = 0; j < pts.length; j++) d += (j ? ' L ' : 'M ') + x(j).toFixed(1) + ' ' + y(pts[j]).toFixed(1);
+    if (pts.length === 1) d += ' L ' + x(0).toFixed(1) + ' ' + y(pts[0]).toFixed(1);
+    var path = svgEl('path', { d:d, fill:'none', stroke:o.col, 'stroke-width':o.dashed ? 1.5 : 2.4,
+      'stroke-linecap':'round', 'stroke-linejoin':'round', opacity:o.dashed ? '.8' : '1' });
+    if (o.dashed) path.setAttribute('stroke-dasharray','5 4');
+    svg.appendChild(path);
+    for (j = 1; j < pts.length; j++){                    // an arrow head per step: agents walking
+      var x1 = x(j - 1), y1 = y(pts[j - 1]), x2 = x(j), y2 = y(pts[j]);
+      var ang = Math.atan2(y2 - y1, x2 - x1), k = 5;
+      svg.appendChild(svgEl('path', { d:'M ' + x2.toFixed(1) + ' ' + y2.toFixed(1) +
+        ' L ' + (x2 - k * Math.cos(ang - 0.5)).toFixed(1) + ' ' + (y2 - k * Math.sin(ang - 0.5)).toFixed(1) +
+        ' L ' + (x2 - k * Math.cos(ang + 0.5)).toFixed(1) + ' ' + (y2 - k * Math.sin(ang + 0.5)).toFixed(1) + ' Z',
+        fill:o.col, opacity:o.dashed ? '.8' : '1' }));
+    }
+    var last = pts.length - 1;
+    // stagger the end labels so short traces near the origin do not sit on top of each other
+    var dy = (ti - (traces.length - 1) / 2) * 11;
+    var ly = Math.max(T + 8, Math.min(B - 2, y(pts[last]) + 3.5 + dy));
+    var tx = svgEl('text', { x:(x(last) + 8).toFixed(1), y:ly.toFixed(1),
+      fill:o.col, 'font-size':'10.5' });
+    tx.textContent = o.label; svg.appendChild(tx);
+
+    var sp = el('span'), ic = el('i'); ic.style.background = o.col; sp.appendChild(ic);
+    sp.appendChild(document.createTextNode(o.nm + (o.q == null
+      ? ' — ' + state.history.length + ' step' + (state.history.length === 1 ? '' : 's') + ' walked'
+      : ' → ' + o.label + ' ' + pc(o.q))));
+    lg.appendChild(sp);
+  });
+}
+
+// ── share: the whole walk is the hash ───────────────────────────────────────────
+function pctOf(a){ return KEYS.map(function(k){ return Math.round(a[k] * 100); }).join('.'); }
+function writeHash(){
+  var parts = ['v1', 's=' + seed, 'a=' + pctOf(state.alloc)];
+  if (state.history.length) parts.push('h=' + state.history.map(function(h){
+    return pctOf(h.alloc) + '.' + (h.together ? 1 : 0); }).join('_'));
+  var over = Object.keys(priors);
+  if (over.length) parts.push('p=' + over.map(function(k){ return k + ':' + priors[k]; }).join(','));
+  var h = '#' + parts.join(';');
+  if (location.hash !== h){
+    // some contexts (data: snapshots, sandboxed frames) refuse both; the walk still plays
+    try { history.replaceState(null, '', location.pathname + location.search + h); }
+    catch (e) { try { location.hash = h; } catch (e2) {} }
+  }
+}
+function allocFrom(str){
+  var n = String(str).split('.').map(Number);
+  if (n.length < 4 || n.slice(0,4).some(function(v){ return !isFinite(v); })) return null;
+  var o = { power:n[0]/100, alignment:n[1]/100, sustainability:n[2]/100, stop:n[3]/100, _t:n[4] === 1 };
+  return o;
+}
+function readHash(){
+  var h = location.hash.replace(/^#/, '');
+  if (h.indexOf('v1') !== 0) return false;
+  var map = {};
+  h.split(';').slice(1).forEach(function(s){ var i = s.indexOf('='); if (i > 0) map[s.slice(0,i)] = s.slice(i+1); });
+  Object.keys(priors).forEach(function(k){ delete priors[k]; });
+  if (map.p) map.p.split(',').forEach(function(kv){
+    var i = kv.indexOf(':'); if (i < 0) return;
+    var k = kv.slice(0,i), v = parseFloat(kv.slice(i+1));
+    if (DEFAULT_PRIORS.hasOwnProperty(k) && isFinite(v) && v !== DEFAULT_PRIORS[k]) priors[k] = v;
+  });
+  if (map.s && isFinite(+map.s)) seed = +map.s;
+  rng = makeRng(seed);
+  state = freshState(DEFAULT_ALLOC);
+  if (map.h) map.h.split('_').forEach(function(sg){
+    var a = allocFrom(sg); if (!a) return;
+    var tog = a._t; delete a._t;
+    state.alloc = a;
+    state = stepOnce(state, priors, rng, tog);
+  });
+  var cur = map.a ? allocFrom(map.a) : null;
+  if (cur){ delete cur._t; state.alloc = cur; }
+  if (state.history.length) lastNote = noteFor(state);
+  return true;
+}
+
+// ── wiring ──────────────────────────────────────────────────────────────────────
+document.getElementById('btn-step').addEventListener('click', function(){ takeStep(false); });
+document.getElementById('btn-together').addEventListener('click', function(){ takeStep(true); });
+document.getElementById('btn-reset').addEventListener('click', function(){
+  state = freshState({ power:DEFAULT_ALLOC.power, alignment:DEFAULT_ALLOC.alignment,
+                       sustainability:DEFAULT_ALLOC.sustainability, stop:DEFAULT_ALLOC.stop });
+  seed = (Math.random() * 0x7fffffff) | 0; rng = makeRng(seed);
+  prevProbs = null; lastNote = '';
+  render();
+});
+document.getElementById('btn-copy').addEventListener('click', function(){
+  writeHash();
+  var url = location.href, btn = document.getElementById('btn-copy');
+  function ok(){ btn.textContent = 'Link copied'; setTimeout(function(){ btn.textContent = 'Copy link'; }, 1600); }
+  if (navigator.clipboard && navigator.clipboard.writeText)
+    navigator.clipboard.writeText(url).then(ok, function(){ prompt('Copy this walk:', url); });
+  else prompt('Copy this walk:', url);
+});
+document.getElementById('btn-priors-reset').addEventListener('click', function(){
+  Object.keys(priors).forEach(function(k){ delete priors[k]; });   // mutate: window.walk.priors is this object
+  buildPriors(); prevProbs = null; render();
+});
+window.addEventListener('hashchange', function(){
+  if (readHash()){ buildPriors(); prevProbs = null; render(); }
+});
+
+readHash();
+buildPriors();
+render();
+
+// ── the contract ────────────────────────────────────────────────────────────────
+window.walk = {
+  get state(){ return state; },
+  priors: priors,
+  simulate: simulate,
+  stepOnce: stepOnce,
+  makeRng: makeRng,
+  ENDPOINTS: ENDPOINTS,
+  DEFAULT_PRIORS: DEFAULT_PRIORS,
+  freshState: freshState
+};
+})();
+</script>
+</body>
+</html>

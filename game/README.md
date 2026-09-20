@@ -1,4 +1,79 @@
-# As-If — the game
+# The games
+
+Two standalone rounds live here. `index.html` is **As-If**; `walk.html` is **The Walk**. Neither has
+a framework, a CDN, a build step, or a network request; both work from GitHub Pages and from a file
+opened straight off disk.
+
+---
+
+# The Walk — conditional probability as a game
+
+`walk.html` is the whole thing, 42 KB. Its one teaching: **a probability is never a property of the
+world on its own — it is a property of the world *given a path*.** "Ten percent" is really
+*P(doom | the path people expect)*, and the condition is usually left unspoken. The Walk makes the
+condition visible and walkable.
+
+## How it plays
+
+- **Four sliders** — Power, Alignment, Sustainability, Stop — always summing to 100%. Move one and
+  the other three rebalance.
+- **Step** advances one step of a 20-step horizon with that allocation. **Step together** is the
+  step of faith: it moves the world only if coordination has reached `stagK`; below it the step is
+  spent and the page says *"You stepped alone. Nothing moved."* That is a stag hunt (Skyrms, 2004),
+  and the footnote says so.
+- **Seven scenario cards** on the right carry a live probability and a standard error, recomputed
+  from 4,000 Monte-Carlo rollouts after every step and every slider move. Each is one absorbing
+  state: Machines of Loving Grace (Amodei 2024) · The sustainability turn (hers; van Wynsberghe
+  2021) · The Stop · The Adolescence of Technology (Amodei 2026) · Situational Awareness
+  (Aschenbrenner 2024) · AI 2027 / If Anyone Builds It, Everyone Dies (Kokotajlo et al.; Yudkowsky &
+  Soares 2025) · Still walking.
+- **What changed** says the biggest move in words after each step, and a timeline SVG draws you and
+  three ghost agents — all-Power, all-Alignment-first, Sustainability-first — as arrows walking the
+  same horizon, so their endpoints compare with yours.
+- **Priors** — every one of the sixteen constants has a slider and a number, with a plain line of
+  gloss and a *Reset to defaults*. Nothing about the world is hardcoded outside that panel.
+
+The whole walk — every allocation stepped with, plus any prior edited — is encoded in the URL hash,
+so **a walk is a link**. *Copy link* hands it over; opening it replays the identical world, because
+the walk's RNG seed rides in the hash too.
+
+## What it reads at the defaults
+
+Holding the default allocation (power .40 · alignment .30 · sustainability .15 · stop .15) to the
+horizon: **Adolescence 67% · Doom 28% · Lock-in 5%**, everything else 0%. Hold 100% Power instead
+and it is **Doom 55% · Lock-in 45%**. Put Stop at 50% and it is **The Stop 94% · Doom 6%**. Same
+world, three numbers — that is the lesson.
+
+Most cards read 0% at any one allocation, and that is the point rather than a bug: **the allocation
+decides where you are going; chance decides whether you arrive.** Move a slider and the destination
+itself changes.
+
+## The contract
+
+The model is ~150 commented lines at the top of the one `<script>`, and it is exported so the page
+can be scripted or reused:
+
+```js
+window.walk.state                       // State { t, alloc, capability, alignmentStock,
+                                        //          sustStock, coordination, endpoint, history }
+window.walk.priors                      // the live overrides object the sliders write into
+window.walk.simulate(state, priors, n)  // -> { n, horizon, probs, se, medianStep }   n = 4000
+window.walk.stepOnce(state, priors, rng[, together])  // pure; returns a NEW State
+window.walk.makeRng(seed)               // mulberry32
+window.walk.ENDPOINTS                   // the seven absorbing states
+```
+
+`simulate` runs the **remaining** steps from the current state, holding the current allocation —
+that assumption is the teaching — and never returns a probability without its standard error beside
+it. 4,000 rollouts take about 20 ms. It is seed-free unless `priors.seed` is set; the page pins a
+seed so the bars do not jitter between renders.
+
+Shape and priors follow `DESIGN-the-walk-2026-09-20.md` §6a. **These numbers are a teaching
+instrument, not a forecast** — the page says so above the cards, and every prior is yours to change.
+
+---
+
+# As-If — the other round
 
 `index.html` is the whole game. One static dark page, no framework, no CDN, no build step — the
 same shape as the recursive-tarot games (`pages/games/madiao.html`, `trionfi.html`,
