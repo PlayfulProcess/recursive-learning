@@ -142,6 +142,14 @@
   /* the Horizon */
   .hz{display:flex;gap:12px;flex-wrap:wrap}
   .seats{font-size:11.5px;color:var(--muted);margin:14px 0 0;display:flex;flex-wrap:wrap;gap:6px 16px}
+  .call{margin:14px 0 0;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
+  .call .lab{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 7px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:12px;font-weight:600}
+  .chip.on{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+  .chip.idk{border-style:dashed}
+  .call .tally{font-size:12px;color:var(--muted);margin:8px 0 0}
+  .call .tally b{color:var(--ink);font-weight:600}
   .seats i{display:inline-block;width:12px;height:2px;vertical-align:middle;margin-right:5px}
 
   /* under the table: your hand */
@@ -271,6 +279,11 @@
       <h2><span class="n">3</span>The Horizon <span class="q">— where this walk ends, if we keep walking like this. Upright is the generous reading of an ending, reversed the cynical one; the coin is the cast's.</span></h2>
       <div class="hz" id="hz"></div>
       <div class="seats" id="seats"></div>
+      <div class="call">
+        <p class="lab">Your call — which ending will this cast reach? Scored for calibration, never staked.</p>
+        <div class="chips" id="chips"></div>
+        <p class="tally" id="tally"></p>
+      </div>
     </section>
   </div>
 
@@ -431,7 +444,7 @@ var DEFAULT_ALLOC = { power:0.40, alignment:0.30, sustainability:0.15, stop:0.15
 function fresh(){ return freshState({ power:DEFAULT_ALLOC.power, alignment:DEFAULT_ALLOC.alignment,
   sustainability:DEFAULT_ALLOC.sustainability, stop:DEFAULT_ALLOC.stop }); }
 var state = fresh(), priors = {}, seed = (Math.random() * 0x7fffffff) | 0, rng = makeRng(seed);
-var N = 4000, prevProbs = null, lastNote = '', reversed = {}, leadShown = null;
+var N = 4000, prevProbs = null, lastNote = '', reversed = {}, leadShown = null, moveInfo = null;
 function P(k){ return (priors[k] != null && isFinite(priors[k])) ? +priors[k] : DEFAULT_PRIORS[k]; }
 function viewPriors(){ var o = withDefaults(priors); o.seed = seed; return o; }
 function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
@@ -445,6 +458,7 @@ function drawOrientation(){ var r = makeRng((seed ^ 0x9e3779b9) | 0); reversed =
 var KEYS = ['power','alignment','sustainability','stop'];
 function setChannel(key, pctValue){
   var v = Math.max(0, Math.min(100, Math.round(pctValue))) / 100;
+  if (Math.round(state.alloc[key] * 100) !== Math.round(v * 100)) moveInfo = { kind:'slide', key:key, from:state.alloc[key], to:v };
   var others = KEYS.filter(function(k){ return k !== key; });
   var restNow = others.reduce(function(s,k){ return s + state.alloc[k]; }, 0);
   var rest = 1 - v, out = {}; out[key] = v;
@@ -461,7 +475,7 @@ function setChannel(key, pctValue){
 function takeStep(together){
   if (state.endpoint || state.t >= P('horizon')) return;
   state = stepOnce(state, priors, rng, together);
-  lastNote = noteFor(state); render();
+  moveInfo = null; lastNote = noteFor(state); render();
 }
 function noteFor(s){
   var a = s.alloc;
@@ -536,14 +550,15 @@ HOUSES.forEach(function(h){
     var r = document.createElement('input'); r.type = 'range'; r.min = cfg[0]; r.max = cfg[1]; r.step = cfg[2]; r.id = 'prr-' + k; r.setAttribute('aria-label', k);
     box.appendChild(r); box.appendChild(el('p','cm', cfg[3]));
     function set(v){ if (!isFinite(v)) v = P(k);
+      if (v !== P(k)) moveInfo = { kind:'inherit', key:k, from:P(k), to:v };
       if (v === DEFAULT_PRIORS[k]) delete priors[k]; else priors[k] = v;
-      prevProbs = null; render(); guideAdvance('inherit'); }
+      render(); guideAdvance('inherit'); }
     r.addEventListener('input', function(){ set(parseFloat(r.value)); });
     num.addEventListener('change', function(){ set(parseFloat(num.value)); });
     prs.appendChild(box);
   });
   var rs = el('button','ghost rs','Reset this card'); rs.type = 'button'; rs.style.fontSize = '11px'; rs.style.padding = '5px 10px';
-  rs.addEventListener('click', function(e){ e.stopPropagation(); h.keys.forEach(function(k){ delete priors[k]; }); prevProbs = null; render(); });
+  rs.addEventListener('click', function(e){ e.stopPropagation(); h.keys.forEach(function(k){ delete priors[k]; }); moveInfo = { kind:'reset', key:h.nm }; render(); });
   sh.back.appendChild(rs);
   sh.back.appendChild(el('p','turn','Tap outside the numbers to turn back.'));
   HOUSE_EL[h.id] = sh; document.getElementById('fan').appendChild(sh.cd);
@@ -625,14 +640,26 @@ function render(){
   leadShown = { k:lead, p:q };
 
   writeChanged(res, p); prevProbs = res.probs;
-  writeSeats(p); writeFictionPrompt(lead, res); writeHash();
+  writeSeats(p); writeFictionPrompt(lead, res); writeCall(); writeHash();
 }
 
 function writeChanged(res, p){
   var box = document.getElementById('changed');
   box.className = 'changed' + (state.lastAlone ? ' alone' : ''); box.textContent = '';
-  var main;
-  if (!state.history.length){
+  var main, best = null;
+  if (prevProbs) ENDPOINTS.forEach(function(k){ var d = res.probs[k] - prevProbs[k];
+    if (!best || Math.abs(d) > Math.abs(best.d)) best = { k:k, d:d, from:prevProbs[k], to:res.probs[k] }; });
+  var moved = best && Math.abs(best.d) >= 0.01 ? SHORT[best.k] + (best.d < 0 ? ' fell from ' : ' rose from ') + pc(best.from) + ' to ' + pc(best.to) : null;
+  if (moveInfo && moveInfo.kind === 'slide'){
+    var ch = CHANNELS.filter(function(c){ return c.k === moveInfo.key; })[0];
+    main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' moved ' + ch.nm + ' from ' + pc(moveInfo.from) + ' to ' + pc(moveInfo.to) +
+           '. The world did not change; the path did.';
+  } else if (moveInfo && moveInfo.kind === 'inherit'){
+    main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' changed ' + moveInfo.key + ' from ' + moveInfo.from + ' to ' + moveInfo.to +
+           '. Same walk, different inheritance' + (moved ? ', different ending.' : '.');
+  } else if (moveInfo && moveInfo.kind === 'reset'){
+    main = (moved ? moved + ' when ' : 'Almost nothing moved when ') + '“' + moveInfo.key + '” went back to its defaults.';
+  } else if (!state.history.length){
     main = 'Nothing walked yet. Each Horizon card reads P(that ending | you keep this allocation to the end). Move a slider and the cards move: the world did not change, the path did.';
   } else if (state.endpoint && state.history[state.history.length - 1].t === state.t){
     main = 'The walk ended here: ' + SHORT[state.endpoint] + '. ' +
@@ -644,12 +671,9 @@ function writeChanged(res, p){
     main = 'You stepped alone. Nothing moved. Coordination is ' + state.coordination.toFixed(2) + ', below the bar of ' + p.stagK.toFixed(2) +
            '. The stag needs company: a step together counts only when enough of the walk takes it at once.';
   } else if (prevProbs){
-    var best = null;
-    ENDPOINTS.forEach(function(k){ var d = res.probs[k] - prevProbs[k];
-      if (!best || Math.abs(d) > Math.abs(best.d)) best = { k:k, d:d, from:prevProbs[k], to:res.probs[k] }; });
-    if (best && Math.abs(best.d) >= 0.01) main = SHORT[best.k] + (best.d < 0 ? ' fell from ' : ' rose from ') + pc(best.from) + ' to ' + pc(best.to) + ' because ' + lastNote + '.';
-    else main = 'Almost nothing moved: ' + lastNote + '.';
+    main = moved ? moved + ' because ' + lastNote + '.' : 'Almost nothing moved: ' + lastNote + '.';
   } else main = 'Step taken — ' + lastNote + '.';
+  moveInfo = null;
   box.appendChild(document.createTextNode(main));
   if (state.history.length) box.appendChild(el('span','d', 'capability ' + state.capability.toFixed(2) + ' · alignment-before-capability ' +
     alignRatio(state).toFixed(2) + ' · coordination ' + state.coordination.toFixed(2) + ' · risk this step ' + (state.lastRisk * 100).toFixed(1) + '%'));
@@ -665,6 +689,28 @@ function writeSeats(p){
     var sp = el('span'); var ic = el('i'); ic.style.background = 'var(' + g.col + ')'; sp.appendChild(ic);
     sp.appendChild(document.createTextNode(g.nm + ' → ' + SHORT[modal] + ' ' + pc(res.probs[modal]))); box.appendChild(sp);
   });
+}
+
+// ── your call: which ending, or I don't know; kept per cast, tallied when the walk ends ──
+var CALLS = CARDS.map(function(c){ return { k:c.k, nm:SHORT[c.k] }; }).concat([{ k:'idk', nm:'I don’t know' }]);
+function callKey(){ return 'walk:call:' + seed; }
+function tallyRead(){ try { return JSON.parse(store('walk:tally') || '{}'); } catch (e) { return {}; } }
+(function(){ var box = document.getElementById('chips');
+  CALLS.forEach(function(c){ var b = el('button','chip' + (c.k === 'idk' ? ' idk' : ''), c.nm); b.type = 'button'; b.id = 'chip-' + c.k;
+    b.addEventListener('click', function(){ if (state.endpoint) return; store(callKey(), c.k); writeCall(); }); box.appendChild(b); });
+})();
+function writeCall(){
+  var mine = store(callKey()) || '';
+  CALLS.forEach(function(c){ var b = document.getElementById('chip-' + c.k); b.classList.toggle('on', c.k === mine); b.disabled = !!state.endpoint && c.k !== mine; });
+  var t = tallyRead(), line = document.getElementById('tally'); line.textContent = '';
+  if (state.endpoint && mine && !t[seed]){ t[seed] = { call:mine, end:state.endpoint }; store('walk:tally', JSON.stringify(t)); }
+  var seeds = Object.keys(t), called = 0, hit = 0, idk = 0;
+  seeds.forEach(function(k){ if (t[k].call === 'idk') idk++; else { called++; if (t[k].call === t[k].end) hit++; } });
+  if (state.endpoint && mine){
+    line.appendChild(el('b', null, mine === 'idk' ? 'You said you did not know' : 'You called ' + SHORT[mine]));
+    line.appendChild(document.createTextNode('; it ended in ' + SHORT[state.endpoint] + '. '));
+  } else if (!mine) line.appendChild(document.createTextNode('No call yet. “I don’t know” is a legal answer, recorded as itself, never scored as a coin flip. '));
+  if (called + idk) line.appendChild(document.createTextNode('Across your casts in this browser: ' + hit + ' of ' + called + ' calls landed' + (idk ? ', ' + idk + ' “I don’t know”' : '') + '. Nobody else sees this.'));
 }
 
 // ── the ending as fiction ────────────────────────────────────────────────────────────────
