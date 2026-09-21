@@ -122,7 +122,7 @@ const html = `<!DOCTYPE html>
     display:grid;gap:7px}
   .door .teaser div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
     font-size:13px;color:var(--muted)}
-  .door .teaser b{color:var(--ink);font-size:14.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .door .teaser b{color:var(--ink);font-size:13.5px;font-weight:700;text-align:right}
   .door .note{margin:14px 0 0;border-top:1px solid var(--line);padding-top:12px;
     font-size:13px;color:var(--warn)}
   .door .go{margin:15px 0 0;font-size:13.5px;font-weight:700;color:var(--accent);
@@ -135,6 +135,14 @@ const html = `<!DOCTYPE html>
   h3{font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);
     margin:0 0 6px;font-weight:600;display:flex;align-items:center;gap:8px}
   .room{color:var(--muted);font-size:13px;max-width:70ch;margin:0 0 15px}
+  details.shelf{border-top:1px solid var(--line);padding-top:14px}
+  details.shelf summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+  details.shelf summary::-webkit-details-marker{display:none}
+  details.shelf summary::before{content:"";width:0;height:0;border:5px solid transparent;border-left:7px solid var(--muted);
+    transform:translateX(3px)}
+  details.shelf[open] summary::before{transform:rotate(90deg) translateY(-3px)}
+  details.shelf summary h3{margin:0}
+  details.shelf .room{margin-top:10px}
   ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
   .g{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 14px}
   .g .t{font-size:15px;font-weight:700;text-decoration:none;line-height:1.3;display:inline-block}
@@ -170,8 +178,9 @@ const html = `<!DOCTYPE html>
         never a property of the world on its own — it is a property of the world <em>given a
         path</em>. Move the allocation and the number moves.</p>
       <div class="teaser">
-        <div><span>Power-first, and Doom comes up</span><b>about 54%</b></div>
-        <div><span>Stop-first, and the Stop comes up</span><b>about 94%</b></div>
+        <div><span>Spend it all on power</span><b>most walks end in Doom</b></div>
+        <div><span>Spend half on stopping, together</span><b>most walks end in the Stop</b></div>
+        <div><span>Same world, same dice</span><b>a different path</b></div>
       </div>
       <p class="go">Take the walk <svg class="i" aria-hidden="true"><use href="#ic-arrow"/></svg></p>
     </a>
@@ -190,13 +199,16 @@ const html = `<!DOCTYPE html>
 
   </div>
 
-  <h3><svg class="i" aria-hidden="true"><use href="#ic-library"/></svg> The grammars in this channel</h3>
-  <p class="room">This repo is one channel of <a href="https://recursive.eco">recursive.eco</a>,
-    held in git. Every grammar below can be opened, starred onto your own channel, forked, or
-    corrected — the JSON is right here.</p>
-  <ul>
+  <details class="shelf">
+    <summary><h3><svg class="i" aria-hidden="true"><use href="#ic-library"/></svg> The grammars behind the games</h3></summary>
+    <p class="room">The games play over grammars — decks, sequences, courses — and this repo is
+      one channel of <a href="https://recursive.eco">recursive.eco</a>, held in git. The film the
+      games belong to is here, and so are the other grammars of the channel. Every one can be
+      opened, starred onto your own channel, forked, or corrected — the JSON is right here.</p>
+    <ul>
 ${cards}
-  </ul>
+    </ul>
+  </details>
 
   <footer>PlayfulProcess &middot; <a href="https://recursive.eco">recursive.eco</a> &middot;
     content CC BY-SA 4.0 &middot; held in git —
