@@ -15,13 +15,21 @@ condition visible and walkable.
 
 ## How it plays
 
+- **The Node** — the card at the top is where the walk stands: the allocation as one strip, the
+  step, capability, coordination, and the most likely ending on this path with its number. On a
+  phone it stays pinned while you drag, so the number moves under your hand. Under it, the last
+  "what changed" line in words.
+- **Your first three steps** — a walkthrough that advances only when you do the thing (drag Power,
+  press Step, read the line). It shows once per browser; the footer brings it back.
+
 - **Four sliders** — Power, Alignment, Sustainability, Stop — always summing to 100%. Move one and
   the other three rebalance.
 - **Step** advances one step of a 20-step horizon with that allocation. **Step together** is the
   step of faith: it moves the world only if coordination has reached `stagK`; below it the step is
   spent and the page says *"You stepped alone. Nothing moved."* That is a stag hunt (Skyrms, 2004),
   and the footnote says so.
-- **Seven scenario cards** on the right carry a live probability and a standard error, recomputed
+- **Seven endpoint cards** (the Horizon) on the right carry plain names — Grace, the sustainable
+  turn, the Stop, Adolescence, Lock-in, Doom, still walking — with the source text under each, and a live probability and a standard error, recomputed
   from 4,000 Monte-Carlo rollouts after every step and every slider move. Each is one absorbing
   state: Machines of Loving Grace (Amodei 2024) · The sustainability turn (hers; van Wynsberghe
   2021) · The Stop · The Adolescence of Technology (Amodei 2026) · Situational Awareness

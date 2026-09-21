@@ -40,9 +40,55 @@
   h1{font-size:21px;margin:0 0 2px}
   h1 .sub{display:block;font-size:13px;font-weight:400;color:var(--muted);margin-top:4px}
   .lede{color:var(--muted);font-size:13.5px;max-width:74ch;margin:10px 0 18px}
-  .cols{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
-  .col-l{flex:1 1 420px;min-width:0}
-  .col-r{flex:1 1 300px;min-width:0}
+  .cols{display:grid;grid-template-columns:1fr;gap:0 18px;align-items:start}
+  .col-l,.col-r,.col-b{min-width:0}
+  @media (min-width:900px){
+    .cols{grid-template-columns:1.35fr 1fr;grid-template-areas:"alloc cards" "rest cards"}
+    .col-l{grid-area:alloc} .col-r{grid-area:cards} .col-b{grid-area:rest}
+  }
+
+  /* The Node — the card we are standing on */
+  .node{padding:13px 16px 12px}
+  .node-row{display:flex;gap:16px;align-items:stretch;flex-wrap:wrap}
+  .node-left{flex:1 1 240px;min-width:0}
+  .strip{display:flex;height:14px;border-radius:7px;overflow:hidden;border:1px solid var(--line);background:var(--panel2)}
+  .strip i{display:block;height:100%;transition:width .25s ease}
+  .node-meta{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .node-meta b{color:var(--ink);font-weight:600}
+  .node-mover{flex:0 1 auto;min-width:150px;border-left:1px solid var(--line);padding-left:16px;display:flex;flex-direction:column;justify-content:center}
+  .mv-lab{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .mv-p{font-size:30px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums;margin-top:2px}
+  .mv-p small{font-size:13px;font-weight:400;color:var(--muted);margin-left:4px}
+  .mv-name{font-size:14px;font-weight:600;margin-top:1px}
+  .mv-was{font-size:12px;color:var(--muted);margin-top:2px;min-height:1.2em}
+  .node-change{font-size:13.5px;margin:10px 0 0;padding-top:9px;border-top:1px solid var(--line);line-height:1.45}
+  .node-change.alone{color:var(--warn)}
+  @media (max-width:899px){
+    .node{position:sticky;top:0;z-index:5;margin-left:-16px;margin-right:-16px;border-radius:0;border-left:0;border-right:0;
+      background:rgba(21,25,34,.96);backdrop-filter:blur(6px)}
+    .node{padding:9px 16px 9px}
+    .node > h2{margin-bottom:8px}
+    .node-row{flex-wrap:nowrap;gap:12px}
+    .node-left{flex:1 1 0}
+    .node-mover{flex:0 0 auto;min-width:0;padding-left:12px}
+    .mv-lab{display:none}
+    .mv-p{font-size:24px;margin-top:0}
+    .mv-name{font-size:13px}
+    .mv-was{font-size:11.5px;min-height:0}
+    .node-meta{font-size:11.5px;margin-top:5px}
+    .node-change{font-size:12.5px;margin-top:7px;padding-top:6px;line-height:1.4}
+  }
+
+  /* the first three steps */
+  .guide{background:var(--panel2);border:1px solid var(--accent);border-radius:12px;padding:12px 14px;margin:0 0 14px}
+  .guide .g-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .guide .g-top a{color:var(--muted);text-decoration:none;letter-spacing:0;text-transform:none;font-weight:400;font-size:12px;cursor:pointer}
+  .guide ol{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:5px}
+  .guide li{font-size:13.5px;color:var(--muted);display:flex;gap:9px;align-items:baseline}
+  .guide li .n{flex:none;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);font-size:11px;display:inline-flex;align-items:center;justify-content:center;color:var(--muted)}
+  .guide li.now{color:var(--ink)} .guide li.now .n{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .guide li.done{opacity:.55} .guide li.done .n{border-color:var(--accent);color:var(--accent)}
+  .replay{font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline;background:none;border:0;padding:0;font-weight:400}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;margin-bottom:14px}
   .card > h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;font-weight:600}
   button{background:var(--accent);color:var(--accent-ink);border:0;border-radius:9px;
@@ -99,7 +145,9 @@
   footer{margin-top:26px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
   footer p{margin:6px 0;max-width:80ch}
   .ended{font-size:13.5px;color:var(--warn);margin:10px 0 0}
-  @media (max-width:560px){ h1{font-size:19px} button{flex:1 1 auto} .wrap{padding-block:18px 48px} }
+  @media (max-width:560px){ h1{font-size:19px} .wrap{padding-block:18px 48px}
+    .bar{display:grid;grid-template-columns:1fr 1fr} .bar .count{grid-column:1 / -1}
+    .sc .nm{font-size:13.5px} }
 </style>
 </head>
 <body>
@@ -110,6 +158,32 @@
     at 100% power and 0% alignment the ten becomes something else, and at 100% alignment before the
     power grows it becomes something else again. Allocate, step, and watch which number moves, and
     why. Nothing is sent anywhere; the walk lives in the address bar.</p>
+
+  <div class="card node" id="node">
+    <h2>The Node — where we stand</h2>
+    <div class="node-row">
+      <div class="node-left">
+        <div class="strip" id="strip" role="img" aria-label="the allocation, as four shares"></div>
+        <div class="node-meta" id="node-meta"></div>
+      </div>
+      <div class="node-mover">
+        <div class="mv-lab">Most likely ending on this path</div>
+        <div class="mv-p" id="mv-p"></div>
+        <div class="mv-name" id="mv-name"></div>
+        <div class="mv-was" id="mv-was"></div>
+      </div>
+    </div>
+    <p class="node-change" id="node-change"></p>
+  </div>
+
+  <div class="guide" id="guide" hidden>
+    <div class="g-top"><span>Your first three steps</span><a id="guide-skip">skip</a></div>
+    <ol>
+      <li id="g1"><span class="n">1</span><span>Drag <b>Power</b> to the right. The big number above moves. The world did not change; the path did.</span></li>
+      <li id="g2"><span class="n">2</span><span>Press <b>Step</b>. That is a year or so, walked with this allocation.</span></li>
+      <li id="g3"><span class="n">3</span><span>Read what changed, in words, under the number. Then keep walking, or move a slider and walk somewhere else.</span></li>
+    </ol>
+  </div>
 
   <div class="cols">
     <div class="col-l">
@@ -127,7 +201,22 @@
         </div>
         <p class="ended" id="ended" hidden></p>
       </div>
+    </div>
 
+    <div class="col-r">
+      <div class="card">
+        <h2>The Horizon — where this walk ends</h2>
+        <p class="disclaimer">These numbers are a teaching instrument, not a forecast.
+          Every prior below is yours to change.</p>
+        <div id="cards"></div>
+        <p class="nfoot" id="nfoot"></p>
+        <p class="nfoot">A card at 0% is not broken: it is <em>not on this path</em>. The allocation
+          decides where you are going; chance decides whether you arrive. Move a slider and the
+          destination itself changes.</p>
+      </div>
+    </div>
+
+    <div class="col-b">
       <div class="card">
         <h2>Where the walk stands</h2>
         <div class="gauge">
@@ -159,20 +248,6 @@
              aria-label="Timeline of capability over the horizon, for you and three ghost agents"></svg>
         <div class="legend" id="legend"></div>
       </div>
-
-    </div>
-
-    <div class="col-r">
-      <div class="card">
-        <h2>Where this walk ends</h2>
-        <p class="disclaimer">These numbers are a teaching instrument, not a forecast.
-          Every prior below is yours to change.</p>
-        <div id="cards"></div>
-        <p class="nfoot" id="nfoot"></p>
-        <p class="nfoot">Most of these read 0% at any one allocation, and that is the lesson, not a
-          bug: the allocation decides <em>where</em> you are going; chance decides whether you arrive.
-          Move a slider and watch the destination itself change.</p>
-      </div>
     </div>
   </div>
 
@@ -191,7 +266,8 @@
       2004). The collective prayer is the synchronised step.</p>
     <p>A model can be fully specified, deterministic, and still fail to show the effect its author
       believed in. This one is a teaching instrument and nothing more.</p>
-    <p>PlayfulProcess · Recursive Learning · <a href="index.html">As-If, the other round in this folder</a></p>
+    <p>PlayfulProcess · Recursive Learning · <a href="index.html">As-If, the other round in this folder</a>
+      · <button class="replay" id="guide-replay" type="button">show the first three steps again</button></p>
   </footer>
 </div>
 
@@ -336,22 +412,22 @@ function simulate(state, priors, n){
 
 // ── the seven scenario cards, one per endpoint ──────────────────────────────────
 var CARDS = [
-  { k:'grace', nm:'Machines of Loving Grace', col:'--grace',
-    src:'Amodei, 2024 — capability arrives with the alignment lead already paid for.' },
-  { k:'sustainable_turn', nm:'The sustainability turn', col:'--turn',
-    src:'Hers; nearest kin van Wynsberghe, Sustainable AI (2021) — capability redirected into adapting with the environment.' },
-  { k:'the_stop', nm:'The Stop', col:'--thestop',
-    src:'The stop as a mandate — a halt that exists only if enough of the walk steps at once.' },
-  { k:'adolescence', nm:'The Adolescence of Technology', col:'--adol',
-    src:'Amodei, 2026 — through the dangerous middle, rockily, without having led with alignment.' },
-  { k:'lock_in', nm:'Situational Awareness', col:'--lockin',
-    src:'Aschenbrenner, 2024 — whoever crosses first with nobody walking beside them locks it in.' },
-  { k:'doom', nm:'AI 2027 · If Anyone Builds It, Everyone Dies', col:'--doom',
-    src:'Kokotajlo et al. · Yudkowsky & Soares, 2025 — control lost in the race, or at the top of the curve.' },
-  { k:'still_walking', nm:'Still walking', col:'--walking',
-    src:'The horizon ran out with the walk still going. An honest outcome, not a failure.' }
+  { k:'grace', nm:'Grace', col:'--grace', txt:'Machines of Loving Grace · Amodei, 2024',
+    src:'Capability arrives with the alignment lead already paid for.' },
+  { k:'sustainable_turn', nm:'The sustainable turn', col:'--turn', txt:'Hers · nearest kin van Wynsberghe, Sustainable AI, 2021',
+    src:'Capability redirected into adapting with the environment.' },
+  { k:'the_stop', nm:'The Stop', col:'--thestop', txt:'Her Stop · PauseAI · A Narrow Path',
+    src:'If we cannot know alignment is possible without building it, that is the reason to stop. A halt exists only if enough of the walk steps at once.' },
+  { k:'adolescence', nm:'Adolescence', col:'--adol', txt:'The Adolescence of Technology · Amodei, 2026',
+    src:'Through the dangerous middle, rockily, without having led with alignment.' },
+  { k:'lock_in', nm:'Lock-in', col:'--lockin', txt:'Situational Awareness · Aschenbrenner, 2024',
+    src:'Whoever crosses first with nobody walking beside them locks it in.' },
+  { k:'doom', nm:'Doom', col:'--doom', txt:'AI 2027 · Kokotajlo et al. — If Anyone Builds It, Everyone Dies · Yudkowsky & Soares, 2025',
+    src:'Control lost in the race, or at the top of the curve.' },
+  { k:'still_walking', nm:'Still walking', col:'--walking', txt:'The horizon ran out',
+    src:'The walk still going when the steps ran out. An honest outcome, not a failure.' }
 ];
-var SHORT = { grace:'Loving Grace', sustainable_turn:'The turn', the_stop:'The Stop',
+var SHORT = { grace:'Grace', sustainable_turn:'The turn', the_stop:'The Stop',
               adolescence:'Adolescence', lock_in:'Lock-in', doom:'Doom', still_walking:'Still walking' };
 
 var CHANNELS = [
@@ -460,11 +536,18 @@ CHANNELS.forEach(function(c){
   r.type = 'range'; r.min = 0; r.max = 100; r.step = 1; r.id = 'sl-' + c.k;
   r.style.setProperty('--sl', 'var(' + c.col + ')');
   r.setAttribute('aria-label', c.nm + ' share of the allocation, in percent');
-  r.addEventListener('input', function(){ setChannel(c.k, +r.value); });
+  r.addEventListener('input', function(){ setChannel(c.k, +r.value); guideAdvance('slide'); });
   box.appendChild(r);
   box.appendChild(el('p','why', c.why));
   $sliders.appendChild(box);
 });
+
+var $strip = document.getElementById('strip');
+CHANNELS.forEach(function(c){
+  var i = document.createElement('i'); i.id = 'st-' + c.k; i.style.background = 'var(' + c.col + ')';
+  i.title = c.nm; $strip.appendChild(i);
+});
+var moverShown = null;   // { k, p } as last drawn on the Node, so "was" survives prior edits
 
 var $cards = document.getElementById('cards');
 CARDS.forEach(function(c){
@@ -475,7 +558,9 @@ CARDS.forEach(function(c){
   var t = el('div','track'), f = el('div','fill');
   f.id = 'scf-' + c.k; f.style.background = 'var(' + c.col + ')'; f.style.width = '0%';
   t.appendChild(f); box.appendChild(t);
-  box.appendChild(el('div','src', c.src));
+  var src = el('div','src'); var tt = el('b', null, c.txt); tt.style.fontWeight = '600';
+  src.appendChild(tt); src.appendChild(document.createTextNode(' — ' + c.src));
+  box.appendChild(src);
   $cards.appendChild(box);
 });
 
@@ -573,10 +658,46 @@ function render(){
     res.n + ' rollouts of the remaining steps, holding this allocation. ± is one standard error.';
 
   writeChanged(res, p);
+  writeNode(res, p);
   prevProbs = res.probs;
 
   drawTrace(p);
   writeHash();
+}
+
+var lastMain = '';
+function writeNode(res, p){
+  var a = state.alloc;
+  CHANNELS.forEach(function(c){ document.getElementById('st-' + c.k).style.width = (a[c.k] * 100) + '%'; });
+  var meta = document.getElementById('node-meta');
+  meta.textContent = '';
+  meta.appendChild(document.createTextNode('step '));
+  meta.appendChild(el('b', null, Math.min(state.t, p.horizon) + ' of ' + p.horizon));
+  meta.appendChild(document.createTextNode(' · capability '));
+  meta.appendChild(el('b', null, state.capability.toFixed(2)));
+  meta.appendChild(document.createTextNode(' · coordination '));
+  meta.appendChild(el('b', null, state.coordination.toFixed(2)));
+  meta.appendChild(document.createTextNode(state.coordination >= p.stagK ? ' — enough to step together' : ' — below stagK ' + p.stagK.toFixed(2)));
+  var top = ENDPOINTS.reduce(function(m,k){ return res.probs[k] > res.probs[m] ? k : m; }, ENDPOINTS[0]);
+  if (state.endpoint) top = state.endpoint;
+  var q = state.endpoint ? 1 : res.probs[top];
+  var card = CARDS.filter(function(c){ return c.k === top; })[0];
+  var pEl = document.getElementById('mv-p');
+  pEl.textContent = ''; pEl.appendChild(document.createTextNode(pc(q)));
+  if (!state.endpoint) pEl.appendChild(el('small', null, '±' + (res.se[top] * 100).toFixed(1)));
+  pEl.style.color = 'var(' + card.col + ')';
+  document.getElementById('mv-name').textContent = state.endpoint ? card.nm + ' — the walk ended here' : card.nm;
+  var was = document.getElementById('mv-was');
+  if (moverShown && moverShown.k === top && Math.abs(moverShown.p - q) >= 0.005)
+    was.textContent = 'was ' + pc(moverShown.p);
+  else if (moverShown && moverShown.k !== top)
+    was.textContent = 'was ' + SHORT[moverShown.k] + ' ' + pc(moverShown.p);
+  else was.textContent = state.history.length ? 'steady' : '';
+  moverShown = { k:top, p:q };
+  var ch = document.getElementById('node-change');
+  ch.className = 'node-change' + (state.lastAlone ? ' alone' : '');
+  ch.textContent = state.history.length ? lastMain :
+    'Nothing walked yet. Move a slider and the number above moves — the world did not change, the path did.';
 }
 
 function writeChanged(res, p){
@@ -585,8 +706,16 @@ function writeChanged(res, p){
   box.textContent = '';
   var main;
   if (!state.history.length){
-    main = 'Nothing yet. The bars on the right are the probabilities GIVEN that you keep this ' +
-           'allocation to the horizon. Move a slider and they move — the world did not change, the condition did.';
+    main = 'Nothing yet. Every card on the Horizon reads P(that ending | you keep this allocation to the horizon). ' +
+           'Move a slider and the cards move — the world did not change, the condition did.';
+  } else if (state.endpoint && state.history[state.history.length - 1].t === state.t){
+    var endCard = CARDS.filter(function(c){ return c.k === state.endpoint; })[0];
+    main = 'The walk ended here: ' + endCard.nm + '. ' +
+      (state.endpoint === 'doom'
+        ? 'Risk this step was ' + (state.lastRisk * 100).toFixed(1) + '% and the die landed on it.'
+        : state.endpoint === 'still_walking' ? 'The horizon ran out with the walk still going.'
+        : 'The crossing was read at capability ' + state.capability.toFixed(2) + ' with coordination ' +
+          state.coordination.toFixed(2) + ' and alignment-before-capability ' + alignRatio(state).toFixed(2) + '.');
   } else if (lastNote === 'ALONE'){
     main = 'You stepped alone. Nothing moved. Coordination is ' + state.coordination.toFixed(2) +
            ', below stagK = ' + p.stagK.toFixed(2) + ' — the stag needs company.';
@@ -602,6 +731,7 @@ function writeChanged(res, p){
     } else main = 'Almost nothing moved: ' + lastNote + '.';
   } else main = 'Step taken — ' + lastNote + '.';
   box.appendChild(document.createTextNode(main));
+  lastMain = main;
   if (state.history.length){
     var d = el('span','d', 'capability ' + state.capability.toFixed(2) +
       ' · alignment-before-capability ' + alignRatio(state).toFixed(2) +
@@ -747,14 +877,37 @@ function readHash(){
   return true;
 }
 
+// ── the first three steps: a walkthrough that advances under the player's own hand ──
+function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+var guide = { at:0, on:false };
+function guideRender(){
+  var g = document.getElementById('guide');
+  g.hidden = !guide.on;
+  [1,2,3].forEach(function(n){
+    var li = document.getElementById('g' + n);
+    li.className = n < guide.at ? 'done' : n === guide.at ? 'now' : '';
+  });
+}
+function guideStart(){ guide.on = true; guide.at = 1; guideRender(); }
+function guideStop(){ guide.on = false; guide.at = 0; store('walk:guide', 'done'); guideRender(); }
+function guideAdvance(ev){           // ev: 'slide' | 'step'
+  if (!guide.on) return;
+  if (guide.at === 1 && ev === 'slide') guide.at = 2;
+  else if (guide.at === 2 && ev === 'step') guide.at = 3;
+  else if (guide.at === 3 && (ev === 'step' || ev === 'slide')) { guideStop(); return; }
+  guideRender();
+}
+document.getElementById('guide-skip').addEventListener('click', guideStop);
+document.getElementById('guide-replay').addEventListener('click', function(){ guideStart(); window.scrollTo({ top:0, behavior:'smooth' }); });
+
 // ── wiring ──────────────────────────────────────────────────────────────────────
-document.getElementById('btn-step').addEventListener('click', function(){ takeStep(false); });
-document.getElementById('btn-together').addEventListener('click', function(){ takeStep(true); });
+document.getElementById('btn-step').addEventListener('click', function(){ takeStep(false); guideAdvance('step'); });
+document.getElementById('btn-together').addEventListener('click', function(){ takeStep(true); guideAdvance('step'); });
 document.getElementById('btn-reset').addEventListener('click', function(){
   state = freshState({ power:DEFAULT_ALLOC.power, alignment:DEFAULT_ALLOC.alignment,
                        sustainability:DEFAULT_ALLOC.sustainability, stop:DEFAULT_ALLOC.stop });
   seed = (Math.random() * 0x7fffffff) | 0; rng = makeRng(seed);
-  prevProbs = null; lastNote = '';
+  prevProbs = null; lastNote = ''; moverShown = null;
   render();
 });
 document.getElementById('btn-copy').addEventListener('click', function(){
@@ -770,12 +923,14 @@ document.getElementById('btn-priors-reset').addEventListener('click', function()
   buildPriors(); prevProbs = null; render();
 });
 window.addEventListener('hashchange', function(){
-  if (readHash()){ buildPriors(); prevProbs = null; render(); }
+  if (readHash()){ buildPriors(); prevProbs = null; moverShown = null; render(); }
 });
 
-readHash();
+var fromLink = readHash();
 buildPriors();
 render();
+// first visit, own walk (not somebody's link): open the walkthrough
+if (!(fromLink && state.history.length) && store('walk:guide') !== 'done') guideStart();
 
 // ── the contract ────────────────────────────────────────────────────────────────
 window.walk = {
