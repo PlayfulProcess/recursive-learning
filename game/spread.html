@@ -156,6 +156,25 @@
   .back .tell{border-top:1px solid var(--line);padding-top:6px;margin-top:4px}
   .back .tell b{color:var(--muted);font-weight:600;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:2px}
   .seatnote{font-size:11.5px;color:var(--muted);margin:10px 0 0;max-width:80ch}
+  .pos.step{flex:1 1 100%;margin-top:18px;border-top:1px solid rgba(255,255,255,.06);padding-top:14px}
+  .steprow{display:flex;gap:10px;flex-wrap:wrap}
+  .steprow .cd{width:calc(var(--cw) * .9)}
+  .steprow .cd.turned:not(.anim){width:min(100%, 440px)}
+  .steprow .face .art{min-height:34%}
+  .steprow .face .nm{font-size:11.5px;line-height:1.15;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .tag{display:inline-block;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border-radius:5px;border:1px solid var(--line);color:var(--muted);margin-top:4px}
+  .tag.take{color:var(--power);border-color:var(--power)} .tag.slack{color:var(--sustain);border-color:var(--sustain)}
+  .tag.ratchet{color:var(--align);border-color:var(--align)} .tag.gift{color:var(--stop);border-color:var(--stop)}
+  .cd.chosen .face{border-color:var(--accent);box-shadow:0 0 0 1px rgba(94,226,176,.35)}
+  .back .fc{margin:6px 0 0;padding:6px 8px;border-radius:7px;background:var(--panel)}
+  .back .fc b{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  .legend4{font-size:11.5px;color:var(--muted);margin:10px 0 0;display:grid;gap:3px;max-width:80ch}
+  .legend4 b{font-weight:600}
+  .asym{margin:12px 0 0}
+  .asym label{display:block;font-size:12.5px;margin-bottom:6px}
+  .asym label b{color:var(--accent)}
+  .asym textarea{min-height:64px}
+  @media (max-width:899px){ .steprow .cd{width:calc((100% - 10px) / 2);aspect-ratio:8/12.6} .steprow .face .sub{display:none} }
   .call{margin:14px 0 0;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
   .call .lab{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 7px}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -259,7 +278,8 @@
     <button id="btn-hour" class="ghost">This hour's table</button>
     <button id="btn-step">Step</button>
     <button id="btn-together" class="ghost">Step together</button>
-    <button id="btn-copy" class="ghost push">Copy the reading</button>
+    <button id="btn-copy" class="ghost push">Copy my casting</button>
+    <a id="btn-send" class="ghost" role="button" hidden target="_blank" rel="noopener" style="display:inline-block;padding:9px 16px;border-radius:9px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:14px">Send it</a>
     <span class="count" id="stepcount"></span>
   </div>
   <p class="hourline" id="hourline" hidden></p>
@@ -308,6 +328,16 @@
       </div>
     </section>
 
+    <section class="pos step" aria-label="Position 5, the Step" id="steppos" hidden>
+      <h2><span class="n">5</span>The Step <span class="q">— what you can do tonight, sized to you. Pick one card. Its kind is on the face: take draws from the river, slack leaves more in it than it draws, ratchet makes memory that tightens on evidence, gift gives regardless. The kind does not judge; the ballot will, later.</span></h2>
+      <div class="steprow" id="steprow"></div>
+      <div class="asym" id="asym" hidden>
+        <label for="asymtext"><b id="asym-lab">The asymmetry</b> — if the coin lands the other way, can you live with having chosen this? Your own words, short enough to say aloud.</label>
+        <textarea id="asymtext" placeholder="One or two sentences."></textarea>
+      </div>
+      <div class="legend4" id="legend4"></div>
+    </section>
+
     <section class="pos table-seats" aria-label="Position 4, the other seats" id="seatpos" hidden>
       <h2><span class="n">4</span>The other seats <span class="q">— the deck's characters, each on a path. Which path each one walks, upright or reversed, is this page's reading of the deck's generous and cynical texts, not the deck's claim. The words on the back of each seat are the deck's own.</span></h2>
       <div class="seatrow" id="seatrow"></div>
@@ -334,7 +364,7 @@
     <h2>The ending, as fiction</h2>
     <p class="prompt" id="fic-prompt"></p>
     <textarea id="fiction" placeholder="A scene, a letter, a news item from that year. Two paragraphs is plenty."></textarea>
-    <p class="hint">Kept in this browser only, keyed to this cast. <em>Copy the reading</em> above puts the link, the shares and this text on your clipboard together.</p>
+    <p class="hint">Kept in this browser only, keyed to this cast. <em>Copy my casting</em> above puts the whole casting on your clipboard: the cards and their faces, your call, your step and its kind, the asymmetry, and this text. <span id="sendhint">A form to send it will be linked here once it exists; until then, paste it to whoever runs the room.</span></p>
   </div>
 
   <div class="credits" id="credits"><h2>The art on the cards</h2><ul id="credit-list"></ul></div>
@@ -878,7 +908,104 @@ function writeSeatCards(p){
     back.appendChild(el('p','turn','Tap to turn back.'));
   });
 }
-fetch(DECK_SRC).then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(buildSeats).catch(function(){ /* no deck on disk: the three strategy seats stay */ });
+fetch(DECK_SRC).then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(g){ try { buildSeats(g); } catch (e) { console.error('seats', e); } try { buildSteps(g); } catch (e) { console.error('steps', e); } })
+  .catch(function(e){ console.warn('no deck on disk; the three strategy seats stay', e); });
+
+// ── the Step: the deck's action cards; the player picks one; the asymmetry is theirs ────
+var FORM_URL = '';   // the Google Form for castings, once she makes it; empty = no Send button
+var TAGS = ['take','slack','ratchet','gift'];
+var TAGLINE = { take:'draws from the river', slack:'leaves more in the river than it draws: use less, decline, wait',
+  ratchet:'makes memory that tightens on evidence: a rule, a record, a named failure condition', gift:'gives regardless of what you hold' };
+var stepEls = {}, actions = [];
+function stepKey(){ return 'walk:step:' + seed; }
+function asymKey(){ return 'walk:asym:' + seed; }
+function tagOf(it){ var k = it.keywords || []; for (var i = 0; i < TAGS.length; i++) if (k.indexOf(TAGS[i]) >= 0) return TAGS[i]; return ''; }
+function buildSteps(g){
+  actions = (g.items || []).filter(function(it){ return it && (it.keywords || []).indexOf('action') >= 0 && !(it.metadata && it.metadata.status === 'parked'); });
+  if (!actions.length) return;
+  var row = document.getElementById('steprow'); row.textContent = '';
+  actions.forEach(function(it){
+    var tag = tagOf(it), reach = (it.metadata && it.metadata.reach) || '';
+    var cd = el('div','cd'); cd.tabIndex = 0; cd.setAttribute('role','button'); cd.setAttribute('aria-pressed','false'); cd.id = 'step-' + it.id;
+    var inn = el('div','cd-in'), face = el('div','face'), back = el('div','back');
+    var art = el('div','art'), img = document.createElement('img'); img.alt = ''; img.decoding = 'async';
+    var file = String(it.image_url || '').split('/').pop();
+    if (file){ img.src = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + file + '?width=320'; img.onerror = function(){ img.onerror = null; img.style.display = 'none'; }; }
+    art.appendChild(img); art.appendChild(el('div','hue')); face.appendChild(art);
+    var cap = el('div','cap'); cap.appendChild(el('div','nm', it.name));
+    var sub = el('div','sub', plain(sectionText(it, 'Who can do this')).split(/[.;]/)[0]); cap.appendChild(sub);
+    if (tag) cap.appendChild(el('span','tag ' + tag, tag)); face.appendChild(cap);
+    back.appendChild(el('h3', null, it.name + (tag ? ' — ' + tag : '')));
+    back.appendChild(el('p','who', 'Who can do this: ' + plain(sectionText(it, 'Who can do this'))));
+    back.appendChild(el('p', null, plain(sectionText(it, 'The move'))));
+    [['If the coin lands well','If the coin lands well'], ['If the coin lands badly','If the coin lands badly']].forEach(function(pair){
+      var t = plain(sectionText(it, pair[0])); if (!t) return; var d = el('div','fc'); d.appendChild(el('b', null, pair[1])); d.appendChild(el('p', null, t)); back.appendChild(d); });
+    var pick = el('button','ghost rs','Take this step'); pick.type = 'button'; pick.style.fontSize = '11px'; pick.style.padding = '5px 10px'; pick.style.marginTop = '8px';
+    pick.addEventListener('click', function(e){ e.stopPropagation(); store(stepKey(), it.id); writeStep(); flip(cd); });
+    back.appendChild(pick);
+    var a = el('a', null, 'this card on recursive.eco'); a.href = 'https://recursive.eco/view.html?id=' + DECK_ID + '&item=' + it.id; a.target = '_blank'; a.rel = 'noopener'; var pa = el('p'); pa.appendChild(a); back.appendChild(pa);
+    back.appendChild(el('p','turn','Tap to turn back.'));
+    inn.appendChild(face); inn.appendChild(back); cd.appendChild(inn);
+    cd.addEventListener('click', function(e){ if (e.target.closest('a,button,textarea')) return; flip(cd); });
+    cd.addEventListener('keydown', function(e){ if (e.target !== cd) return; if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(cd); } });
+    row.appendChild(cd); stepEls[it.id] = { cd:cd, it:it, tag:tag };
+  });
+  var lg = document.getElementById('legend4'); lg.textContent = '';
+  TAGS.forEach(function(t){ var d = el('div'); d.appendChild(el('b', null, t + ': ')); d.appendChild(document.createTextNode(TAGLINE[t] + '.')); lg.appendChild(d); });
+  var l2 = el('div'); l2.appendChild(document.createTextNode('A move that is none of the four is a tell, not a step. The tags are the Value Lab’s; the ballot runs after twenty castings, not before.')); lg.appendChild(l2);
+  document.getElementById('steppos').hidden = false;
+  var cr = document.getElementById('credit-list'), seen = {}; cr.querySelectorAll('a').forEach(function(a){ seen[a.href] = true; });
+  actions.forEach(function(it){ var c = it.metadata && it.metadata.credit; if (!c || !c.source_url || seen[c.source_url]) return; seen[c.source_url] = true;
+    var li = el('li'); var a = el('a', null, [c.edition, c.artist, c.year, c.license].filter(Boolean).join('; ')); a.href = c.source_url; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a); cr.appendChild(li); });
+  writeStep();
+}
+var $asym = document.getElementById('asymtext');
+$asym.addEventListener('input', function(){ store(asymKey(), $asym.value); });
+function chosenStep(){ var id = store(stepKey()) || ''; return stepEls[id] || null; }
+function writeStep(){
+  if (!actions.length) return;
+  var ch = chosenStep();
+  Object.keys(stepEls).forEach(function(id){ stepEls[id].cd.classList.toggle('chosen', !!ch && ch.it.id === id); });
+  var box = document.getElementById('asym'); box.hidden = !ch;
+  if (ch){ document.getElementById('asym-lab').textContent = 'The asymmetry of “' + ch.it.name + '”'; }
+  $asym.value = store(asymKey()) || '';
+}
+
+// ── the casting block: everything a room needs to read this cast (PLAN-as-if-data §2A) ────
+function castingBlock(){
+  var res = simulate(state, viewPriors(), N), lines = [];
+  var lead = state.endpoint || ENDPOINTS.reduce(function(m,k){ return res.probs[k] > res.probs[m] ? k : m; }, ENDPOINTS[0]);
+  var mine = store(callKey()) || '', conf = confRead(), ch = chosenStep();
+  lines.push('AS-IF CASTING · The Walk, a spread · ' + new Date().toISOString());
+  lines.push('deck: ' + DECK_ID + ' · cast (seed): ' + seed + ' · link: ' + location.href);
+  lines.push('');
+  lines.push('THE CAST');
+  lines.push('the node: step ' + state.t + ' of ' + P('horizon') + ' · power ' + pc(state.alloc.power) + ', alignment ' + pc(state.alloc.alignment) + ', sustainability ' + pc(state.alloc.sustainability) + ', stop ' + pc(state.alloc.stop) + ' · capability ' + state.capability.toFixed(2) + ' · coordination ' + state.coordination.toFixed(2));
+  var over = Object.keys(priors); lines.push('the inheritance: ' + (over.length ? over.map(function(k){ return k + ' ' + priors[k]; }).join(', ') : 'the defaults'));
+  lines.push('the horizon: ' + CARDS.map(function(c){ return c.nm + ' ' + pc(state.endpoint ? (c.k === state.endpoint ? 1 : 0) : res.probs[c.k]) + (reversed[c.k] ? ' (reversed)' : ' (upright)'); }).join(' · '));
+  if (deck) lines.push('the seats: ' + Object.keys(seatEls).map(function(id){ var o = seatEls[id]; return o.it.name + ' ' + id + (seatCoin(o.it.name) ? ' reversed' : ' upright'); }).join(' · '));
+  lines.push('');
+  lines.push('THE FORECAST (written before the coin)');
+  lines.push(mine === 'idk' ? 'I don’t know' : mine ? SHORT[mine] + ' at ' + conf + '%' : 'no call');
+  if (state.endpoint) lines.push('it ended in: ' + SHORT[state.endpoint]);
+  lines.push('');
+  lines.push('THE READING');
+  var lc = CARDS.filter(function(c){ return c.k === lead; })[0];
+  lines.push(lc.nm + (reversed[lead] ? ', reversed: ' + lc.rev : ', upright: ' + lc.up));
+  lines.push('');
+  lines.push('THE STEP');
+  if (ch){ lines.push(ch.it.name + ' · kind: ' + (ch.tag || 'untagged') + ' · card ' + ch.it.id);
+    lines.push('if the coin lands well: ' + plain(sectionText(ch.it, 'If the coin lands well')));
+    lines.push('if the coin lands badly: ' + plain(sectionText(ch.it, 'If the coin lands badly')));
+    lines.push('THE ASYMMETRY (mine): ' + ($asym.value.trim() || '(not written)')); }
+  else lines.push('no step taken');
+  lines.push('');
+  lines.push('THE SYNTHESIS');
+  lines.push($fic.value.trim() || '(not written)');
+  lines.push('');
+  lines.push('A teaching instrument, not a forecast. Nothing staked. This casting may be published on recursive.eco under the name I give, or without one.');
+  return lines.join('\n');
+}
 
 // ── the ending as fiction ────────────────────────────────────────────────────────────────
 var $fic = document.getElementById('fiction');
@@ -892,7 +1019,7 @@ function writeFictionPrompt(lead, res){
     box.appendChild(document.createTextNode('. ' + (reversed[lead] ? c.rev : c.up) + ' Hold it as if true: what changes tonight, in what you would build or stop building?')); }
 }
 $fic.addEventListener('input', function(){ store(ficKey(), $fic.value); });
-function loadFiction(){ $fic.value = store(ficKey()) || ''; }
+function loadFiction(){ $fic.value = store(ficKey()) || ''; if (actions.length) writeStep(); }
 
 // ── the hash: identical to walk.html so a link opens in either page ──────────────────────
 function pctOf(a){ return KEYS.map(function(k){ return Math.round(a[k] * 100); }).join('.'); }
@@ -950,6 +1077,14 @@ document.getElementById('btn-step').addEventListener('click', function(){ takeSt
 document.getElementById('btn-together').addEventListener('click', function(){ takeStep(true); guideAdvance('step'); });
 document.getElementById('btn-copy').addEventListener('click', function(){
   writeHash();
+  var text = castingBlock(), btn = document.getElementById('btn-copy');
+  function ok(){ btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy my casting'; }, 1600); }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, function(){ prompt('Copy this casting:', text); });
+  else prompt('Copy this casting:', text);
+});
+if (FORM_URL){ var sb = document.getElementById('btn-send'); sb.href = FORM_URL; sb.hidden = false; document.getElementById('sendhint').textContent = 'Send it opens the form: paste the block there.'; }
+document.getElementById('btn-copy-old') && document.getElementById('btn-copy-old').addEventListener('click', function(){
+  writeHash();
   var res = simulate(state, viewPriors(), N), lines = [];
   lines.push('The Walk — a spread · ' + location.href);
   lines.push('Where we stand: step ' + state.t + ' of ' + P('horizon') + ' · power ' + pc(state.alloc.power) + ', alignment ' + pc(state.alloc.alignment) +
@@ -957,12 +1092,6 @@ document.getElementById('btn-copy').addEventListener('click', function(){
   var over = Object.keys(priors); lines.push('Inherited: ' + (over.length ? over.map(function(k){ return k + ' ' + priors[k]; }).join(', ') : 'the defaults'));
   lines.push('Horizon: ' + CARDS.map(function(c){ return c.nm + ' ' + pc(state.endpoint ? (c.k === state.endpoint ? 1 : 0) : res.probs[c.k]) + (reversed[c.k] ? ' (reversed)' : ''); }).join(' · '));
   if (state.endpoint) lines.push('Ended: ' + SHORT[state.endpoint]);
-  if ($fic.value.trim()) lines.push('', $fic.value.trim());
-  lines.push('', 'A teaching instrument, not a forecast.');
-  var text = lines.join('\n'), btn = document.getElementById('btn-copy');
-  function ok(){ btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy the reading'; }, 1600); }
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, function(){ prompt('Copy this reading:', text); });
-  else prompt('Copy this reading:', text);
 });
 window.addEventListener('hashchange', function(){ if (readHash()){ prevProbs = null; leadShown = null; drawOrientation(); loadFiction(); render(); } });
 

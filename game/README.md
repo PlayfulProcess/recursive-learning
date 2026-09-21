@@ -23,6 +23,15 @@ URL hash, so a link to either opens in the other:
   Commons, fetched as server-side thumbnails (`Special:FilePath?width=480`, never the full scan:
   one of them is 15,000 px wide) and credited at the foot of the page. The upright/reversed lines
   on the endings are the page's own words, hers to edit in `CARDS`.
+- **The Step and the casting (Sep 21).** Position 5 on the spread reads the deck's `action`
+  cards (keywords `action` + one of `take` / `slack` / `ratchet` / `gift`; a card with
+  `metadata.status: "parked"` is skipped): who can do this, the move, both faces of the coin, the
+  kind visible on the face. The player takes one and writes the asymmetry. **Copy my casting**
+  puts the block from `PLAN-as-if-data-and-coordination-2026-09-21.md` §2A on the clipboard: deck
+  id, cast seed and link, the node, the inheritance, the horizon with faces, the seats with faces,
+  the forecast and confidence, the reading, the step with its kind and card id, the two forgiveness
+  lines, the asymmetry, the synthesis, a timestamp and the consent line. `FORM_URL` near the Step
+  code is empty until she makes the form; once set, a **Send it** button opens it.
 - **`walk.html` — the dashboard.** The same walk with the gauges, the timeline and every prior
   as a flat list.
 

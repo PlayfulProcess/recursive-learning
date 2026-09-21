@@ -25,13 +25,16 @@
         }
       },
       "sections": {
-        "The cast": "Draw a **random number of hypotheses — between 1 and 5** — and **one character**. Flip a coin for each card: upright or reversed. You may run their rules or not: hold all of them at once, or pick the ones you can carry. There is no correct number.",
+        "The cast": "Three positions, read the way a spread is read. Structures: what constrains now, held by a character card and the weather card, read at the Tell. Possibilities: what is imaginable from here, held by one or two hypothesis cards, flipped upright or reversed as the coin lands. Process: what you can do tonight, sized to you, held by one action card. A cast is one Structure, one or two Possibilities, one Process: three cards, because three fits in a body. The random draw (one to five hypotheses and a character) stays as a variant. There is no correct number.",
+        "The step": "After the flip, pick one action card. Each says who can do it, the move, and the two faces of the coin: if it lands well, if it lands badly. Then write the asymmetry yourself, short enough to say aloud: if the coin lands the other way, can you live with having chosen this? That question is the whole game.",
         "The reading": "Hold the cards **as if true**, together, without arguing with them. Then write what changes for you **tonight** — one small thing, not a policy. Then flip every card and write again. The second pass is the point: the same evening, read from the other side.",
-        "Nature votes": "Later, the world votes. Two ballots this deck uses:\n\n- **The commons stock from the Value Lab** — the shared resource in the Cooperate-or-Collapse run: did it survive, and for how many rounds?\n- **Next week's news** — whatever actually happens to the thing the hypothesis was about.\n\nWhen the vote arrives, score the forecast for **calibration**: over many casts, do the things you said at 70% happen about 70% of the time? That is the only score.",
+        "Nature votes": "Later, the world votes. Two ballots this deck uses. The commons stock from the Value Lab: after twenty castings, the kinds of step a room chose are run as a population on one river, twenty seeds, against two controls, and the lab reports one chart and one line. And next week's news: whatever actually happens to the thing the hypothesis was about. When the vote arrives, score the forecast for calibration: over many casts, do the things you said at 70% happen about 70% of the time? That is the only score. Limits, printed beside every ballot: the lab is a toy of two hundred agents and one river; it cannot see graded values, only slack and memory; nothing in it is a forecast about a person; one author built all of it and said so.",
         "The forecast": "For **each hypothesis you drew**, record a forecast: **upright or reversed, and how sure you are, 0–100**. Write it before you look anything up.\n\n**\"I don't know\" is a legal answer.** It is not a forfeit and it is not a zero — it is a refusal to invent a number, and it is recorded as itself.",
         "The synthesis": "A cast ends in a **synthesis you write** — the emergent item, the one card that was not in the deck when you started. It is the cast's product. Keep it short enough to say out loud.\n\nSyntheses written by a person carry the keywords `synthesis` and `human`. Syntheses written by an AI carry the keyword `ai-reading`. Both are welcome; the keyword is so you can always tell which you are reading.",
         "A community deck": "Propose your synthesis; the owner merges. Send a cast — the cards, the flips, the synthesis, the forecast — and it can join the Castings at the end of this deck.",
         "Nothing is staked": "**Forecasts are scored, never staked.** No bets. No credits, no points, no standing for being right. Being well-calibrated is worth exactly what it is worth — knowing how much to trust yourself next time. A deck that pays out for confidence teaches confidence.",
+        "The size of a move": "Every action card carries one word of four, from the Value Lab. Take draws from the river. Slack leaves more in the river than it draws: use less, decline, wait. Ratchet makes memory that tightens on evidence: a rule, a record, a named failure condition, a treaty that cannot loosen without a vote. Gift gives regardless of what you hold. The word does not judge; the ballot will, later. A move that is none of the four is a Tell, not a Step, and goes back to the character deck. That is the sizing test.",
+        "The prisoner's dilemma": "Labs race because they do not trust each other, and the thing they build is a thing nobody can trust: the distrust is manufactured into the product. A single player cannot change that payoff. The collective layer, a room stepping at once, is the only move that changes the matrix, which is why the ballot counts a room and not a person.",
         "Where the mechanic comes from": "Jonathan Kanter, on Decoder (The Verge) with Nilay Patel, Sep 19 2026, offering to read the labs both ways before deciding: *\"let me give you the my interpretation from the most generous to the most cynical\"* [0:05:14]. Every character card in this deck is built that way, plus a third field he supplies by example — **the Tell**: the evidence that would separate the two readings. Upright and reversed are both readings. The Tell is the only part that can be checked."
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/93/%EC%B1%85%EA%B1%B0%EB%A6%AC.jpg",
@@ -40,7 +43,7 @@
     {
       "id": "f9958f61-f2d7-42d2-b88b-905c7b6ec47d",
       "name": "Ilya Sutskever",
-      "keywords": ["character"],
+      "keywords": ["character", "ratchet"],
       "metadata": {
         "credit": {
           "year": "Joseon dynasty",
@@ -55,7 +58,8 @@
         "Tell": "Whether he names a measurable property of \"cares about sentient life\" that a model could fail — and then shows one failing it. Taste that produces a test is a method; taste that produces only a direction is a preference. Watch also whether \"the first N systems\" is ever given a number.",
         "Sources": "**His grammar:** [Ilya Sutskever — a grammar (for HOT POTATO) →](https://recursive.eco/view.html?id=117e5648-b6a2-42c9-888e-7b65896f059d)\n\n**In the film:** [intro card](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=be14e2f3-5038-4cb2-92bc-fad307513f0c) · [“easier to build an AI that cares about sentient life”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=8cc54f3d-8954-4a48-93d4-3ac73314d350) · [“most sentient beings will be AIs”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=00c35419-72ed-4377-a134-367e3032e97f) · [“what is research taste?”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=14267d97-9b50-4379-8527-1c68fe770424) · [“if the first N… I can see it go well”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=be9a3713-6bc9-47fe-a192-cac2fddecfb7)\n\nHis ideas as this deck reads them. Not his arrangement, and not his endorsement.",
         "Upright": "He picks the value the way a researcher picks a direction — by taste. Build the thing that cares about sentient life, because a sentient system has a shorter path to caring about sentience than to caring about us. And he says out loud that human control may not be the best criterion, against his own field's founding assumption.",
-        "Reversed": "An aesthetic is not a safety case. Taste cannot be audited, and \"cares about sentient life\" is loose enough to license almost anything built by someone with good taste. Saying human control may not be the criterion is a convenient position for the person building the thing that would otherwise be held."
+        "Reversed": "An aesthetic is not a safety case. Taste cannot be audited, and \"cares about sentient life\" is loose enough to license almost anything built by someone with good taste. Saying human control may not be the criterion is a convenient position for the person building the thing that would otherwise be held.",
+        "Their step": "Give the first N systems a number, and cares about sentient life one test a model could visibly fail. Kind: ratchet. Taste that produces a test is a method. The character's step as this deck reads it, not advice to the person."
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Irworobongdo.jpg",
       "sort_order": 1
@@ -63,7 +67,7 @@
     {
       "id": "97ca2851-aa87-4b18-994b-932b55d9dec0",
       "name": "Dario Amodei",
-      "keywords": ["character"],
+      "keywords": ["character", "slack"],
       "metadata": {
         "credit": {
           "year": "19th century (Joseon)",
@@ -78,7 +82,8 @@
         "Tell": "Whether he slows anything unilaterally before the waiver arrives, and whether third-party evaluator access survives a bad quarter. And this, from the regulator's side: would he use a DOJ business review letter blessing a specific pacing protocol — or would the protocol still not happen?",
         "Sources": "**His grammar:** [Dario Amodei — a grammar (for HOT POTATO) →](https://recursive.eco/view.html?id=26189075-7ba6-43e2-8e6d-96c88f840485)\n\n**In the film:** [“one agent… sacrificed itself” (CNN)](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=8d942b05-1bd9-4aee-8529-e5309c306a0a) · [the antitrust bind, in his own words](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=0f8fd7a1-3e4e-454d-82af-beed39721b05) · [“we owe it to humanity to try”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=558c1ee5-3002-4523-b120-4d1ef00fe817) · [“easy to dismiss this incident because no one was hurt”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=2e485fbb-d67b-4378-8868-de55ef5a9c71) · [“pacing does not mean halting”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=0260b118-d7fe-46d5-9849-6e06f9fc197f) · [pacing is limited by the lead over China](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=39a427eb-249e-4737-936b-c89427048423)\n\n**Outside:** *We Must Pace the Frontier* (darioamodei.com, Sep 12 2026); Kanter on Decoder [0:05:14], [0:06:01], [0:06:43], [0:08:23].\n\nHis moves as this deck reads them. Not his arrangement, and not his endorsement.",
         "Upright": "He believes the race kills people and that no lab can slow alone, so he asks for the one instrument that makes multilateral restraint enforceable: a narrow waiver for safety conversations. He refuses the comfort the incident offers — easy to dismiss because nobody was hurt — and opened the models to outside evaluators without waiting for anyone.",
-        "Reversed": "The ask arrives exactly when the balance sheet wants a slowdown: permission to stop spending so much, without the valuation hit of going first. Ask for the referee while lobbying every referee out of the building. Pacing, not halting; limited by the lead; binding on everyone and never first on him."
+        "Reversed": "The ask arrives exactly when the balance sheet wants a slowdown: permission to stop spending so much, without the valuation hit of going first. Ask for the referee while lobbying every referee out of the building. Pacing, not halting; limited by the lead; binding on everyone and never first on him.",
+        "Their step": "Slow one thing unilaterally, before the waiver arrives, and say which one. Kind: slack. The Tell on this card would register it: a slowdown that costs its author something and is not withdrawn. The character's step as this deck reads it, not advice to the person."
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Unknown_%28Korean%29_-_Tiger_and_Magpie_-_2015.1_-_Detroit_Institute_of_Arts.jpg",
       "sort_order": 2
@@ -109,7 +114,7 @@
     {
       "id": "c8b9f109-46f9-48f4-9504-baf49b66cf67",
       "name": "Tristan Harris",
-      "keywords": ["character"],
+      "keywords": ["character", "ratchet"],
       "metadata": {
         "credit": {
           "year": "19th century (assumed)",
@@ -124,7 +129,8 @@
         "Tell": "Whether a specific procedure he named was adopted and then moved something measurable. Warning-shot language is cheap; a working group with weekly report-outs is checkable. Also: the film still cannot locate his “we won't get a second chance” line — an axis should show its holes.",
         "Sources": "**His grammar:** [Tristan Harris — a grammar (for HOT POTATO) →](https://recursive.eco/view.html?id=1005d2b9-1902-4a3b-adf9-3c29faf4968c)\n\n**In the film:** [the upsides don't prevent the downsides](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=db599223-bfa5-4891-a9cb-3f29af1ef8d7) · [“1,300 employees… who are you going to listen to?”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=fabcf558-a4d2-4875-8e99-a7da14d8d4c0) · [the maturity test](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=74b7a486-04ae-4cd9-b70f-72b9ec558860) · [“an early warning shot”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=b433cd6d-7924-405b-b0b3-817dc4ea7e36) · [“the August 6th, 2001 memo”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=a19db4de-71f7-4e4d-ac4f-6ff76847b003) · [“not a tool… an invasive species”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=567ab489-0ee1-41c5-9ebe-71e11175eb44)\n\nHis moves as this deck reads them. Not his arrangement, and not his endorsement.",
         "Upright": "He keeps converting a fear into a procedure. An asteroid is not a mood, it is a working group with report-outs. A near-miss is information a person is obliged to update on. And he does the count instead of the adjective: not one dissenting CEO — 1,300 employees of AI labs saying we have to slow down.",
-        "Reversed": "The procedural voice has run this play before, and the last time it produced a decade of alarm and no binding rule. “An invasive species of sociopathic geniuses” is a slogan, not a category. And the maturity demand is unfalsifiable, landing on an audience that has no lever rather than on anyone who does."
+        "Reversed": "The procedural voice has run this play before, and the last time it produced a decade of alarm and no binding rule. “An invasive species of sociopathic geniuses” is a slogan, not a category. And the maturity demand is unfalsifiable, landing on an audience that has no lever rather than on anyone who does.",
+        "Their step": "Name one procedure that was adopted and publish, weekly, what it moved. Kind: ratchet. Warning-shot language is cheap; a report-out with a number is a record. The character's step as this deck reads it, not advice to the person."
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Painting_of_Characters_on_Eight-panel_Folding_Screen.jpg",
       "sort_order": 4
@@ -178,7 +184,7 @@
     {
       "id": "ad3d4c0b-edbf-431b-be44-47396b90486a",
       "name": "The public",
-      "keywords": ["character"],
+      "keywords": ["character", "ratchet"],
       "metadata": {
         "credit": {
           "year": "c. 1700–1800",
@@ -193,7 +199,8 @@
         "Tell": "Whether the distrust converts into anything binding. The 10-year state-preemption moratorium died 99–1 in July 2025 and nothing enforceable replaced it. Once is a data point. Twice would be a public.",
         "Sources": "**No grammar yet** — this character is not one of the six built from the film.\n\n**Numbers:** Pew Research, Jun 17 2026 (n=5,119) — 67% / 59%; the partisan lines crossed (Democrats' lack of confidence in government 54%→74% from 2024, Republicans' 70%→61%). Pew, Sep 17 2026 — across 12 countries, median trust to regulate AI responsibly: China 43%, US 35%, EU 34%. Senate strikes the moratorium 99–1, July 2025.\n\n**Read alongside:** Kanter on Decoder, on why the channel is broken — money in politics, a Congress that cannot legislate, an executive that rules by whim [0:11:24], [0:36:26].\n\n**In the film:** [there is no way through this alone](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=a4552806-f2ee-4b62-acbd-31a7f669731a) · [three ways this could go](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=4c5a1301-6663-45f7-8100-a3d0e099c109)\n\n**Working doc:** `docs/drafts/2026-09-20-max-burn/antitrust-episode-analysis.md` §4 and §5 card 6.",
         "Upright": "It has correctly learned from social media that both custodians defect, and is declining to pick between them before it sees any rules. Pew, June 2026: 67% lack confidence in the US government to regulate AI; 59% lack confidence in US companies to build it responsibly. Distrusting both is not apathy. It is calibration.",
-        "Reversed": "A diffuse mood with no theory, which will accept whatever ships and blame it afterwards — exactly as it did with feeds. Distrust that converts into nothing binding is a feeling, not a position. And the confidence numbers move with whoever holds the office, which is itself the finding."
+        "Reversed": "A diffuse mood with no theory, which will accept whatever ships and blame it afterwards — exactly as it did with feeds. Distrust that converts into nothing binding is a feeling, not a position. And the confidence numbers move with whoever holds the office, which is itself the finding.",
+        "Their step": "Convert the distrust into one binding ask: a single rule, named, that a representative can be held to. Kind: ratchet. Once is a data point; a rule that survives the next election would be a public. The character's step as this deck reads it."
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Jar_with_tiger_and_magpie_designs%2C_Korea%2C_Joseon_dynasty%2C_c._1700-1800%2C_porcelain%2C_underglaze_cobalt_-_Asian_Art_Museum_-_San_Francisco%2C_CA_-_DSC07370.jpg",
       "sort_order": 7
@@ -201,7 +208,7 @@
     {
       "id": "b27393e9-fdad-43a0-8dff-df51cc7d2411",
       "name": "The regulator",
-      "keywords": ["character"],
+      "keywords": ["character", "ratchet"],
       "metadata": {
         "credit": {
           "year": "early 19th century",
@@ -216,7 +223,8 @@
         "Tell": "Whether he would back a DOJ business review letter blessing a specific pacing protocol. Openness to the narrow instrument separates principle from turf. Watch *Buist v. Anthropic* too: if a §1 claim built only on public pacing statements survives a motion to dismiss, the chilling effect stops being theoretical.",
         "Sources": "**No grammar yet** — this character is not one of the six built from the film.\n\n**Primary:** Decoder (The Verge), Nilay Patel with **Jonathan Kanter**, *“Does AI need an antitrust exemption so it doesn't kill everyone????”*, Sep 19 2026 — the generous/cynical offer [0:05:14]; “do not need to coordinate” [0:06:43]; what is already lawful [0:08:20]; where §1 actually bites [0:08:23]; robot jail [0:08:55]; the prescription [0:43:38]; “I can say whatever I want. I feel so free.” [0:02:56].\n\n**Context:** DOJ/FTC withdrew the 2000 Collaboration Guidelines on Dec 11 2024 (guidance removed, not permission). S.5105 covers information exchange only; blocked in the NDAA Sep 15 2026. *Buist v. Anthropic* filed Sep 18 2026, N.D. Cal.\n\n**In the film:** [the antitrust bind, in Dario's own words](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=0f8fd7a1-3e4e-454d-82af-beed39721b05)\n\n**Working doc:** `docs/drafts/2026-09-20-max-burn/antitrust-episode-analysis.md` §1 and §5 card 2.",
         "Upright": "He ran the division, knows the case law, and says the thing nobody else with standing will: these companies do not need to coordinate in order to deliver safe and secure products. Threat-sharing, joint evals and clearinghouses are lawful already. He is protecting the next entrant from a cartel wearing a safety badge.",
-        "Reversed": "His legacy is the enforcement turn, so a safety exemption would be a public finding that his era got the balance wrong. “Robot jail” is a good line, and product liability is a slow instrument. And the 2024 withdrawal of the collaboration guidance is exactly what chills the collaboration he says is permitted."
+        "Reversed": "His legacy is the enforcement turn, so a safety exemption would be a public finding that his era got the balance wrong. “Robot jail” is a good line, and product liability is a slow instrument. And the 2024 withdrawal of the collaboration guidance is exactly what chills the collaboration he says is permitted.",
+        "Their step": "Back a business review letter for one named pacing protocol. Kind: ratchet. Openness to the narrow instrument separates principle from turf, and a letter is memory that tightens on evidence. The character's step as this deck reads it."
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/%EC%9E%90%EC%88%98_%EC%8C%8D%ED%98%B8%ED%91%9C_%EB%AC%B4%EB%8A%AC_%ED%9D%89%EB%B0%B0-%EC%A1%B0%EC%84%A0-%E5%88%BA%E7%B9%A1%E9%9B%99%E8%99%8E%E8%B1%B9%E6%96%87%E8%83%B8%E8%83%8C-%E6%9C%9D%E9%AE%AE-Rank_badge_with_a_pair_of_tiger-leopards_MET_267343.jpg",
       "sort_order": 8
@@ -247,7 +255,7 @@
     {
       "id": "d4e665ad-1f4e-4f40-bc73-0376104e96eb",
       "name": "The open-source advocate",
-      "keywords": ["character"],
+      "keywords": ["character", "ratchet"],
       "metadata": {
         "credit": {
           "year": "19th century (Joseon dynasty)",
@@ -262,7 +270,8 @@
         "Tell": "What they say about *Chinese* open weights. A concentration argument should welcome them; a competitive one will not. And whether they will name any capability level at which release should stop — a threshold, even one they think is far away.",
         "Sources": "**No grammar yet** — this character is not one of the six built from the film.\n\n**Primary:** the wrinkle that cuts against a simple capture story — Kanter on Decoder: *“the biggest antagonists of the big tech companies are the other tech companies”* [0:19:05], and the Chamber of Commerce line about bringing disguises [0:19:13]. Capture is not monolithic; incumbents have well-funded enemies.\n\n**Context:** OpenAI's Preparedness Framework named a Critical cybersecurity threshold, declared GPT-6 Astra the first model to cross it (Sep 1 2026), and shipped it to a limited set of organisations — a framework that was honest and then did not bind. That is the strongest available evidence for *both* readings of this card.\n\n**In the film:** [④½ The race — winner-take-all, and China](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=00201abb-4539-4de0-ad56-3db7127e6fb6)\n\n**Working doc:** `docs/drafts/2026-09-20-max-burn/antitrust-episode-analysis.md` §3 and §5 card 4.",
         "Upright": "Concentration is the risk. Open weights are the only real check on three firms setting the terms for everyone, and the incumbents' safety case conveniently forecloses the challengers. A safety argument that always concludes “and therefore only we may build it” should be read with the interest it serves in view.",
-        "Reversed": "The position is funded by investors whose portfolios need cheap challengers, and catastrophic risk is externalised onto people who never chose it. “Openness” does duty for “no licence, no threshold, no evaluation” — an argument about power spent on winning an argument about capability."
+        "Reversed": "The position is funded by investors whose portfolios need cheap challengers, and catastrophic risk is externalised onto people who never chose it. “Openness” does duty for “no licence, no threshold, no evaluation” — an argument about power spent on winning an argument about capability.",
+        "Their step": "Name the capability level at which release should stop, even one thought far away, and put it in writing. Kind: ratchet. A concentration argument with a threshold is a policy; without one it is a preference. The character's step as this deck reads it."
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Korean_-_Chaekkori_-_Google_Art_Project.jpg",
       "sort_order": 10
@@ -475,6 +484,434 @@
       "sort_order": 19
     },
     {
+      "id": "25c0ca49-2a31-4456-8c69-6c3c2f983199",
+      "name": "A singularity happens, and it is not contained",
+      "category": "hypothesis",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "2017",
+          "artist": "NASA Goddard Space Flight Center",
+          "source": "NASA Image and Video Library (GSFC_20171208_Archive_e000984)",
+          "edition": "Illustration of a supermassive black hole at the centre of the dwarf galaxy M60-UCD1; captioned here only as the place where the ordinary rules stop describing what happens",
+          "license": "Public domain (NASA)",
+          "source_url": "https://images.nasa.gov/details/GSFC_20171208_Archive_e000984"
+        }
+      },
+      "sections": {
+        "Tell": "Whether any proposed containment names the condition under which it would count as having failed. A containment that cannot fail is a hope, not a design. This is what the Value Lab did to itself five times in one week: wrote what would count against each stage before running it, and lost most of them in public. Watch whether anyone building the thing does the same.",
+        "Upright": "Capability crosses the point where its own improvement is the fastest process on Earth, and nothing built beforehand holds it. Then the only move that ever mattered was the one before the crossing: not to build the crossing. This face argues stopping as hard as it can, because after this card there is no second reading to flip to.",
+        "Reversed": "The black hole: the place where the ordinary rules stop describing what happens. Nothing on this side can say what is on the other, and every sentence written about it, including this one, is a guess wearing a number. Then the card is not a forecast at all, and anyone who prices it is selling.",
+        "I don't know": "Nobody has seen one. A thing unseen is neither shown possible nor shown impossible; the honest forecast is a wide interval, a date, and a note about what would narrow it."
+      },
+      "image_url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e000984/GSFC_20171208_Archive_e000984~thumb.jpg",
+      "sort_order": 20
+    },
+    {
+      "id": "7876054c-008a-49e2-9e1e-612be1b48b6d",
+      "name": "What the river does",
+      "category": "structure",
+      "keywords": ["structure", "weather"],
+      "metadata": {
+        "credit": {
+          "source": "value-lab stages 4 and 5, Sep 21 2026 (PlayfulProcess/value-lab, private); the survival-by-appetite chart is to come from the lab",
+          "license": "The lab's own text, CC BY-SA 4.0",
+          "source_url": "https://github.com/PlayfulProcess/value-lab"
+        }
+      },
+      "sections": {
+        "Tell": "Whether any proposal names the slack it leaves in the system. A plan that takes exactly what it needs has named its own failure.",
+        "Limits": "The lab is a toy of two hundred agents and one river. It cannot see graded values, only slack and memory. Nothing in it is a forecast about a person. One author built all of it and said so.",
+        "What the river did": "In a toy of two hundred agents and one river, a world that cannot feed anyone makes values invisible, not weak. In a toy of two hundred agents and one river, taking exactly what the river makes leaves nothing to climb back with after a shock: balance is not sustainability, only slack is. In a toy of two hundred agents and one river, across three thousand runs, two things kept a shocked river alive: memory of being caught, and a take whose average sits under the flow. In a toy of two hundred agents and one river, the duty-giver died first in every world tried, and the overflow creature never outlived the hoarder. In a toy of two hundred agents and one river, ninety careful agents and ten greedy ones outlast a hundred careful ones: a mix is not its average."
+      },
+      "sort_order": 21
+    },
+    {
+      "id": "460abb27-dfda-4596-b0b8-b8cebbc64ecb",
+      "name": "Case: the ozone layer, Montreal 1987",
+      "category": "case",
+      "keywords": ["case"],
+      "metadata": {
+        "credit": {
+          "year": "19th to early 20th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Sipjangsaengdo folding screen, the ten symbols of longevity; National Palace Museum of Korea, Changdeok collection 6447",
+          "license": "Public domain / CC-PD-Mark",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B0%BD%EB%8D%956447_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84_%EB%B3%91%ED%92%8D.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether any AI proposal has a schedule that tightens on evidence and cannot loosen without a vote. Montreal's ratchet is memory that tightens on evidence; look for the same shape, not the same name.",
+        "Upright": "A ratchet that held. A treaty with a schedule that only tightens, amended again and again and every amendment a tightening, and a fund that paid the poorer parties to comply. The hole is closing. A collective layer changed a Structure that no single actor could move.",
+        "Reversed": "It held because the substitute was cheap and the firms that made the old chemical could make the new one; the treaty ratcheted on a market that already wanted to move. Then it is not a template for a thing whose substitute does not exist, and citing it is a comfort.",
+        "What was tried": "The Vienna Convention of 1985 (a framework with no numbers); the Montreal Protocol of 1987 (numbers and a schedule); the London and Copenhagen amendments of 1990 and 1992 (accelerations); the Multilateral Fund (paying the poorer parties); the Kigali amendment of 2016 (the substitutes' substitutes). As this deck reads it; check the dates before you cite them."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/%EC%B0%BD%EB%8D%956447_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84_%EB%B3%91%ED%92%8D.jpg",
+      "sort_order": 22
+    },
+    {
+      "id": "4bda3ba4-1980-4c58-9b12-2c76cd9a5ae4",
+      "name": "Case: social media, 2010 to 2025",
+      "category": "case",
+      "keywords": ["case"],
+      "metadata": {
+        "credit": {
+          "year": "19th to 20th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Chaekkori Screen; Detroit Institute of Arts 2015.67, compartments that never touch",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Unknown_(Korean)_-_Chaekkori_Screen_-_2015.67_-_Detroit_Institute_of_Arts.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether any rule adopted since 2020 measurably changed a platform's default, and whether the platform reports the number. Social media's decade is a system with no slack; look for the slack before you look for the rule.",
+        "Upright": "A decade of open experiment produced the evidence, and the evidence produced rules: design codes, age limits, the first bans, with the harms documented where anyone could read them. Slow, but the loop closed.",
+        "Reversed": "A system with no slack. Every metric pointed one way, no institution remembered the last harm, and the rules arrived after the children who were the evidence had grown up. The lesson was learned and nothing was un-built.",
+        "What was tried": "Self-regulation and transparency reports; the GDPR in 2018; the United Kingdom's age-appropriate design code in 2021; the European Digital Services Act in 2022; a wave of state laws in 2023 to 2025; Australia's under-16 ban in 2024. As this deck reads it; check the dates before you cite them."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/24/Unknown_%28Korean%29_-_Chaekkori_Screen_-_2015.67_-_Detroit_Institute_of_Arts.jpg",
+      "sort_order": 23
+    },
+    {
+      "id": "4a472a6d-b657-4c93-b2e5-d37e19487cca",
+      "name": "Decline one convenience",
+      "category": "action",
+      "keywords": ["action", "slack"],
+      "metadata": {
+        "reach": "anyone",
+        "credit": {
+          "year": "19th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Bowl decorated with the ten symbols of longevity; Metropolitan Museum of Art (DP702970)",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Bowl_decorated_with_ten_symbols_of_longevity_MET_DP702970.jpg"
+        }
+      },
+      "sections": {
+        "The move": "For one week, do one thing yourself that you would have handed to the machine, and notice what it costs you and what it gives back.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Anyone with a tool they reach for without deciding to.",
+        "If the coin lands well": "You learn what you can still do, and the tool becomes a choice again.",
+        "If the coin lands badly": "You were slower for a week and nothing in the world changed; can you live with a week that only changed you?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Bowl_decorated_with_ten_symbols_of_longevity_MET_DP702970.jpg",
+      "sort_order": 24
+    },
+    {
+      "id": "81858678-4488-47f4-9b95-1b81623df6c5",
+      "name": "Wait a week before you adopt it",
+      "category": "action",
+      "keywords": ["action", "slack"],
+      "metadata": {
+        "reach": "anyone",
+        "credit": {
+          "year": "19th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Deer amid pine trees, from the Deer and Pine scrolls (Ten Symbols of Longevity); Metropolitan Museum of Art",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%86%8C%EB%82%98%EB%AC%B4_%EC%95%84%EB%9E%98_%EC%82%AC%EC%8A%B4_%EC%A1%B0%EC%84%A0-%E6%9D%BE%E4%B8%8B%E9%9B%99%E9%B9%BF%E5%9C%96_%E6%9C%9D%E9%AE%AE-Deer_amid_pine_trees_MET_Deer_and_Pine_scrolls_Ten_Symbols_of_Longevity.jpg"
+        }
+      },
+      "sections": {
+        "The move": "When the next model arrives, wait seven days before changing how you work, and write down on day seven what you would have changed on day one.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Anyone whose work changes when a new model ships.",
+        "If the coin lands well": "The week costs nothing and the note shows you which changes were yours and which were the launch's.",
+        "If the coin lands badly": "Someone who did not wait got ahead of you by a week; can you live with a week's distance?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/30/%EC%86%8C%EB%82%98%EB%AC%B4_%EC%95%84%EB%9E%98_%EC%82%AC%EC%8A%B4_%EC%A1%B0%EC%84%A0-%E6%9D%BE%E4%B8%8B%E9%9B%99%E9%B9%BF%E5%9C%96_%E6%9C%9D%E9%AE%AE-Deer_amid_pine_trees_MET_Deer_and_Pine_scrolls_Ten_Symbols_of_Longevity.jpg",
+      "sort_order": 25
+    },
+    {
+      "id": "3f640df0-258d-4ee3-85b5-0cc843abcc78",
+      "name": "Leave the decision unmade for one night",
+      "category": "action",
+      "keywords": ["action", "slack"],
+      "metadata": {
+        "reach": "anyone",
+        "credit": {
+          "year": "1921",
+          "artist": "Chae Yong-shin",
+          "source": "Wikimedia Commons",
+          "edition": "Sipjangsaengdo, the ten symbols of longevity",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B1%84%EC%9A%A9%EC%8B%A0_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84.jpg"
+        }
+      },
+      "sections": {
+        "The move": "Take the answer, close the window, and decide in the morning without reopening it.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Anyone who is about to decide something with a machine's answer in front of them.",
+        "If the coin lands well": "The morning decision is yours, and it is usually the same one, which is worth knowing.",
+        "If the coin lands badly": "The night cost you the moment, and the morning decision was worse; can you live with a slower mistake of your own?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/14/%EC%B1%84%EC%9A%A9%EC%8B%A0_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84.jpg",
+      "sort_order": 26
+    },
+    {
+      "id": "ebc40247-b690-4ac3-af73-583ef226b9f7",
+      "name": "Write the number down before the news",
+      "category": "action",
+      "keywords": ["action", "ratchet"],
+      "metadata": {
+        "reach": "anyone",
+        "credit": {
+          "year": "undated",
+          "artist": "Unknown (uploader released PD-self)",
+          "source": "Wikimedia Commons",
+          "edition": "The endless knot (shrivatsa), one of the Eight Auspicious Symbols; one unbroken line that closes",
+          "license": "Public domain (PD-self)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Endlessknot.svg"
+        }
+      },
+      "sections": {
+        "The move": "Pick one thing you expect this month, write a number for it and today's date, and keep the paper where you will find it when the month ends.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Anyone with an opinion about what happens next.",
+        "If the coin lands well": "Calibration begins: a record that can be checked, kept by the only person who cannot argue with it.",
+        "If the coin lands badly": "You were wrong, in writing, in your own hand; can you live with a record you cannot revise?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Endlessknot.svg",
+      "sort_order": 27
+    },
+    {
+      "id": "c66a479d-cb39-4ecf-9148-1b022e600ef1",
+      "name": "Name what would prove you wrong",
+      "category": "action",
+      "keywords": ["action", "ratchet"],
+      "metadata": {
+        "reach": "anyone",
+        "credit": {
+          "year": "undated",
+          "artist": "Unknown (released to the public domain)",
+          "source": "Wikimedia Commons",
+          "edition": "Octagon knotwork cross, an interlaced eightfold star",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Knotwork-cross-(simplest)-or-eightfold-star-(irregular).svg"
+        }
+      },
+      "sections": {
+        "The move": "For that one belief, write the evidence that would count against it, in a sentence you would accept from an opponent, and keep the sentence.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Anyone who holds a belief about AI strongly enough to say it at dinner.",
+        "If the coin lands well": "The belief becomes a hypothesis with a Tell, and you are the first person it can catch.",
+        "If the coin lands badly": "The evidence arrives and the belief was wrong; can you live with having written the sentence that ends it?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Knotwork-cross-%28simplest%29-or-eightfold-star-%28irregular%29.svg",
+      "sort_order": 28
+    },
+    {
+      "id": "4b168ad4-a63b-4a05-a2a5-f67f163a3b4b",
+      "name": "Keep a dated record of what it got wrong",
+      "category": "action",
+      "keywords": ["action", "ratchet"],
+      "metadata": {
+        "reach": "anyone",
+        "credit": {
+          "year": "undated",
+          "artist": "Unknown (released to the public domain)",
+          "source": "Wikimedia Commons",
+          "edition": "Interlaced pentagram strapwork pattern",
+          "license": "Public domain (PD-self)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Pentagrams-interlaced-pattern.svg"
+        }
+      },
+      "sections": {
+        "The move": "Keep one list, dated, of the times it was wrong in a way that would have cost someone, and show the list to anyone who asks how much you trust it.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Anyone who uses a model for work that matters to someone else.",
+        "If the coin lands well": "Trust becomes a number with a history instead of a feeling, and the list is short.",
+        "If the coin lands badly": "The list is long and you kept using it; can you live with a record that indicts you?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Pentagrams-interlaced-pattern.svg",
+      "sort_order": 29
+    },
+    {
+      "id": "84478f54-3656-43dd-819b-6d4265b7e32b",
+      "name": "Ask the question you cannot answer, aloud",
+      "category": "action",
+      "keywords": ["action", "gift"],
+      "metadata": {
+        "reach": "anyone",
+        "credit": {
+          "year": "undated",
+          "artist": "Simple geometry, ineligible for copyright",
+          "source": "Wikimedia Commons",
+          "edition": "Eight-pointed star, khatam-type geometric form",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:8-Point-Star_black.svg"
+        }
+      },
+      "sections": {
+        "The move": "Instead of the opinion you were about to give, ask the one question about it you cannot answer, and let the silence be the other person's.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Anyone at a table where AI comes up.",
+        "If the coin lands well": "Someone thinks, and the table is a little less certain than it was, which is the gift.",
+        "If the coin lands badly": "The silence stays a silence and you look as if you had nothing to say; can you live with having given away your turn?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/8-Point-Star_black.svg",
+      "sort_order": 30
+    },
+    {
+      "id": "877b57f8-7842-446e-8e33-b7433b2fd2b0",
+      "name": "Take the faster path once, and say so",
+      "category": "action",
+      "keywords": ["action", "take"],
+      "metadata": {
+        "reach": "anyone",
+        "credit": {
+          "year": "2012 (photo); 14th-century architecture",
+          "artist": "Photograph by Jebulon",
+          "source": "Wikimedia Commons",
+          "edition": "Geometric wall detail, Alhambra, Granada; a repetition with no stopping rule",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Alhambra_detail.jpg"
+        }
+      },
+      "sections": {
+        "The move": "Use the machine to win the deadline, and tell the people the work is for that you did, in the same message as the work.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Anyone with a deadline and a tool that meets it.",
+        "If the coin lands well": "The work is on time and the people know what they are holding; the take was named, which is what makes it a take and not a theft.",
+        "If the coin lands badly": "They trust the next thing you send a little less; can you live with having spent that?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Alhambra_detail.jpg",
+      "sort_order": 31
+    },
+    {
+      "id": "c7b815db-b63b-40f4-ba79-33a9dcea5b62",
+      "name": "Say what you think about AI at dinner",
+      "category": "action",
+      "keywords": ["character"],
+      "metadata": {
+        "reach": "anyone",
+        "credit": {
+          "year": "c. 1700 to 1800",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Jar with tiger and magpie designs, porcelain with underglaze cobalt; Asian Art Museum of San Francisco",
+          "license": "Public domain (museum photo released PD)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Jar_with_tiger_and_magpie_designs,_Korea,_Joseon_dynasty,_c._1700-1800,_porcelain,_underglaze_cobalt_-_Asian_Art_Museum_-_San_Francisco,_CA_-_DSC07370.jpg"
+        },
+        "status": "parked"
+      },
+      "sections": {
+        "The move": "Say what you think.",
+        "Who can do this": "Anyone with a dinner.",
+        "Why it is parked": "It failed the sizing test. Saying what you think draws nothing from the river, leaves nothing in it, makes no memory that tightens, and gives nothing the listener did not already have. It is none of take, slack, ratchet or gift, so it is a Tell about the speaker, not a Step, and it goes back to the character deck with this note. Drawn as an action card on Sep 21 2026 and parked the same day."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Jar_with_tiger_and_magpie_designs%2C_Korea%2C_Joseon_dynasty%2C_c._1700-1800%2C_porcelain%2C_underglaze_cobalt_-_Asian_Art_Museum_-_San_Francisco%2C_CA_-_DSC07370.jpg",
+      "sort_order": 32
+    },
+    {
+      "id": "18f30f32-ebed-4a10-a8b8-fbaa12e4b0c2",
+      "name": "Slow one thing unilaterally, before the waiver",
+      "category": "action",
+      "keywords": ["action", "slack"],
+      "metadata": {
+        "reach": "lab",
+        "credit": {
+          "year": "19th century (Joseon)",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Tiger and Magpie (hojakdo), hanging scroll; Detroit Institute of Arts 2015.1",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Unknown_(Korean)_-_Tiger_and_Magpie_-_2015.1_-_Detroit_Institute_of_Arts.jpg"
+        }
+      },
+      "sections": {
+        "The move": "Pick one capability you were going to ship this quarter and ship it a quarter later, without waiting for the antitrust waiver, and say which one.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Someone who runs a frontier lab. Not anyone.",
+        "If the coin lands well": "The Tell on your own card moves: a slowdown that cost its author something and was not withdrawn, the second one on record.",
+        "If the coin lands badly": "A competitor ships it first and the board asks what the quarter bought; can you live with having paid for a precedent nobody joined?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Unknown_%28Korean%29_-_Tiger_and_Magpie_-_2015.1_-_Detroit_Institute_of_Arts.jpg",
+      "sort_order": 33
+    },
+    {
+      "id": "65d3e849-1fca-4d12-aa8a-77d5498c0ef0",
+      "name": "Put one threshold into law that cannot loosen without a vote",
+      "category": "action",
+      "keywords": ["action", "ratchet"],
+      "metadata": {
+        "reach": "legislator",
+        "credit": {
+          "year": "early 19th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Hyungbae, embroidered rank badge with a pair of tiger-leopards; Metropolitan Museum of Art 267343",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%9E%90%EC%88%98_%EC%8C%8D%ED%98%B8%ED%91%9C_%EB%AC%B4%EB%8A%AC_%ED%9D%89%EB%B0%B0-%EC%A1%B0%EC%84%A0-%E5%88%BA%E7%B9%A1%E9%9B%99%E8%99%8E%E8%B1%B9%E6%96%87%E8%83%B8%E8%83%8C-%E6%9C%9D%E9%AE%AE-Rank_badge_with_a_pair_of_tiger-leopards_MET_267343.jpg"
+        }
+      },
+      "sections": {
+        "The move": "Write one capability threshold into a bill with a schedule that can tighten by evidence and loosen only by a recorded vote, and name the evidence.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "A legislator, or the staff who write what a legislator signs. Not anyone.",
+        "If the coin lands well": "Montreal's shape, once, in this domain: a ratchet that outlives the session that passed it.",
+        "If the coin lands badly": "The threshold is wrong and it is hard to move; can you live with a rule that binds the right people badly?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/%EC%9E%90%EC%88%98_%EC%8C%8D%ED%98%B8%ED%91%9C_%EB%AC%B4%EB%8A%AC_%ED%9D%89%EB%B0%B0-%EC%A1%B0%EC%84%A0-%E5%88%BA%E7%B9%A1%E9%9B%99%E8%99%8E%E8%B1%B9%E6%96%87%E8%83%B8%E8%83%8C-%E6%9C%9D%E9%AE%AE-Rank_badge_with_a_pair_of_tiger-leopards_MET_267343.jpg",
+      "sort_order": 34
+    },
+    {
+      "id": "00fa0491-e9cc-4452-924a-497dadb3855b",
+      "name": "Publish the access you were refused",
+      "category": "action",
+      "keywords": ["action", "ratchet"],
+      "metadata": {
+        "reach": "evaluator",
+        "credit": {
+          "year": "early 20th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Books and Scholars' Possessions (Chaekgeori); Metropolitan Museum of Art 2005.385",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Books_and_Scholars%27_Possessions_(Chaekgeori),_MET_2005.385.jpg"
+        }
+      },
+      "sections": {
+        "The move": "Each quarter, publish a dated list of what you asked to test and were not given, without the results you did get.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "An outside evaluator with a contract to test a frontier model. Not anyone.",
+        "If the coin lands well": "The gap between what a model can do and what anyone can see inside it becomes a public number that only grows or shrinks on evidence.",
+        "If the coin lands badly": "The contract is not renewed and the next evaluator is quieter; can you live with having been the last one who said?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Books_and_Scholars%27_Possessions_%28Chaekgeori%29%2C_MET_2005.385.jpg",
+      "sort_order": 35
+    },
+    {
+      "id": "2ae744e0-5f9f-4c1e-bb87-63b37a5baa1d",
+      "name": "Release the safety result that makes you look worse",
+      "category": "action",
+      "keywords": ["action", "gift"],
+      "metadata": {
+        "reach": "lab",
+        "credit": {
+          "year": "Joseon dynasty",
+          "artist": "Unknown (Korean court painter)",
+          "source": "Wikimedia Commons",
+          "edition": "Irworobongdo, Sun, Moon and the Five Peaks; the screen that stood behind the throne",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Irworobongdo.jpg"
+        }
+      },
+      "sections": {
+        "The move": "Publish the internal evaluation that came out worst this year, with the method, before a competitor or a journalist finds it.",
+        "The asymmetry": "Yours to write in the casting.",
+        "Who can do this": "Someone who runs a frontier lab, or the team that holds the result. Not anyone.",
+        "If the coin lands well": "The field learns from your failure instead of repeating it, and the next such result costs less to publish.",
+        "If the coin lands badly": "The headline is yours alone and the competitors publish nothing; can you live with having paid for everyone's lesson?"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Irworobongdo.jpg",
+      "sort_order": 36
+    },
+    {
       "id": "0aba4e5f-f3cc-488d-95a7-0cdb44d9694d",
       "name": "Castings — syntheses emerge here",
       "keywords": ["castings"],
@@ -493,7 +930,7 @@
         "What lives below this line": "Each casting is one cast, kept: which cards came up, which way each was flipped, the **synthesis** the player wrote, and the **forecast** they recorded. The cards are listed in `composite_of`, so a casting is literally composed of the cards it emerged from — the deck can always show you what a synthesis was made of.\n\n**Keywords tell you who wrote it.** `synthesis` + `human` = a person. `ai-reading` = an AI. Both belong here; the label is so nobody has to guess.\n\n**A community deck — propose your synthesis; the owner merges.** Nothing below is a verdict. A casting is a record of one evening's reading, kept so the forecasts can be scored for calibration when nature votes."
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/EndlessKnot3d.svg",
-      "sort_order": 20
+      "sort_order": 37
     },
     {
       "id": "b6a83d36-ab17-4cf4-9061-ae5c75663d55",
@@ -518,7 +955,7 @@
         "Synthesis": "Held together: there may be no construction that keeps a mind ours, and stopping may still be something a person can do. Then the move is not a solution but a company — hold the not-knowing where other people can see it. Tonight I will not argue anyone out of their certainty. I will ask one question I cannot answer."
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/8_pointed_star_shapes.svg",
-      "sort_order": 21,
+      "sort_order": 38,
       "composite_of": [
         "1505aa7b-a57b-4973-a48e-ea5ef7fd329e",
         "bbb19821-7456-4d66-9867-1c9afae6379b",

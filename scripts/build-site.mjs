@@ -190,9 +190,9 @@ const html = `<!DOCTYPE html>
     <a class="door" href="game/index.html">
       <span class="top"><svg class="i" aria-hidden="true"><use href="#ic-tarot"/></svg>
         <h2>As-If — HOT POTATO edition</h2></span>
-      <p class="say">Draw a character and a hypothesis, upright or reversed, and hold it as if
-        true. You cannot turn the card over until you have written what changes if it is. The
-        reveal is earned, not clicked.</p>
+      <p class="say">Draw a character, hold it as if it were true, take a step. You cannot turn
+        the card over until you have written what changes if it is. The reveal is earned, not
+        clicked.</p>
       <p class="alt">The deck: <em>As-If — HOT POTATO edition</em>, ten characters and nine
         hypotheses, public on recursive.eco and exported here as JSON.</p>
       <p class="go">Draw a card <svg class="i" aria-hidden="true"><use href="#ic-arrow"/></svg></p>
