@@ -48,6 +48,8 @@
   .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
   .bar .count{font-size:12.5px;color:var(--muted)}
   .bar .push{margin-left:auto}
+  .sendbtn{display:inline-block;padding:9px 16px;border-radius:9px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:14px;text-align:center}
+  .sendbtn[hidden]{display:none}
 
   /* the table */
   .table{background:
@@ -279,7 +281,7 @@
     <button id="btn-step">Step</button>
     <button id="btn-together" class="ghost">Step together</button>
     <button id="btn-copy" class="ghost push">Copy my casting</button>
-    <a id="btn-send" class="ghost" role="button" hidden target="_blank" rel="noopener" style="display:inline-block;padding:9px 16px;border-radius:9px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:14px">Send it</a>
+    <a id="btn-send" class="ghost sendbtn" role="button" hidden target="_blank" rel="noopener">Send it</a>
     <span class="count" id="stepcount"></span>
   </div>
   <p class="hourline" id="hourline" hidden></p>
