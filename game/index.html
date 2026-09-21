@@ -65,9 +65,10 @@
 <body>
 <div class="wrap">
   <h1>As-If<span class="sub">A recognition round — hold the premise as true, then see what the deck says.</span></h1>
-  <p class="lede">Six premises, one at a time. You cannot turn a card over until you have written
-    what changes if you hold it as true. That is the whole game: the reveal is earned, not clicked.
-    What you write stays in this browser and is sent nowhere.</p>
+  <p class="lede">The HOT POTATO deck, one card at a time: ten characters and nine hypotheses, each
+    read upright or reversed. You cannot turn a card over until you have written what changes if
+    you hold it as true. That is the whole game: the reveal is earned, not clicked. What you write
+    stays in this browser and is sent nowhere.</p>
 
   <div id="app"><div class="msg">Loading the deck…</div></div>
 
@@ -78,7 +79,7 @@
 (function () {
   'use strict';
   var P = new URLSearchParams(location.search);
-  var DEFAULT_SRC = '../grammars/as-if-recognition-as-an-engineering-premise/grammar.json';
+  var DEFAULT_SRC = '../grammars/as-if-hot-potato-edition/grammar.json';
   var src = P.get('src') || DEFAULT_SRC;
   var app = document.getElementById('app');
   var foot = document.getElementById('foot');
@@ -99,7 +100,7 @@
     m.appendChild(el('p', null, why));
     var ol = document.createElement('ol');
     [
-      'Publish the grammar on recursive.eco (Create → the grammar → Publish). The As-If deck is id 6512b3ec-b12d-49f8-b789-6d28ab19c82e and is private today.',
+      'Publish the grammar on recursive.eco (Create → the grammar → Publish).',
       'Add its slug and id to grammars/_eco_ids.json in this repo.',
       'Run  node scripts/export-grammars.mjs  and commit the new grammars/<slug>/grammar.json.'
     ].forEach(function (t) { ol.appendChild(el('li', null, t)); });

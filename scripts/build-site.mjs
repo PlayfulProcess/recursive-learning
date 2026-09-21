@@ -125,7 +125,8 @@ const html = `<!DOCTYPE html>
   .door .teaser b{color:var(--ink);font-size:13.5px;font-weight:700;text-align:right}
   .door .note{margin:14px 0 0;border-top:1px solid var(--line);padding-top:12px;
     font-size:13px;color:var(--warn)}
-  .door .alt{margin:6px 0 0;font-size:12px;color:var(--muted)} .door .alt a{color:var(--muted)}
+  .door .alt{margin:6px 0 0;font-size:12px;color:var(--muted)}
+  .also{font-size:12.5px;color:var(--muted);margin:-20px 0 30px}
   .door .go{margin:15px 0 0;font-size:13.5px;font-weight:700;color:var(--accent);
     display:flex;align-items:center;gap:7px}
   .door.shut{border-style:dashed}
@@ -184,22 +185,22 @@ const html = `<!DOCTYPE html>
         <div><span>Same world, same dice</span><b>a different path</b></div>
       </div>
       <p class="go">Cast the table <svg class="i" aria-hidden="true"><use href="#ic-arrow"/></svg></p>
-      <p class="alt">or <a href="game/walk.html">the same walk as a dashboard</a></p>
     </a>
 
-    <a class="door shut" href="game/index.html">
+    <a class="door" href="game/index.html">
       <span class="top"><svg class="i" aria-hidden="true"><use href="#ic-tarot"/></svg>
         <h2>As-If — HOT POTATO edition</h2></span>
       <p class="say">Draw a character and a hypothesis, upright or reversed, and hold it as if
         true. You cannot turn the card over until you have written what changes if it is. The
         reveal is earned, not clicked.</p>
-      <p class="note">The deck it plays over is still a private grammar, so this door opens on an
-        explainer, not a round. It becomes playable the moment the deck is published — nothing
-        else has to change.</p>
-      <p class="go">See what it will be <svg class="i" aria-hidden="true"><use href="#ic-arrow"/></svg></p>
+      <p class="alt">The deck: <em>As-If — HOT POTATO edition</em>, ten characters and nine
+        hypotheses, public on recursive.eco and exported here as JSON.</p>
+      <p class="go">Draw a card <svg class="i" aria-hidden="true"><use href="#ic-arrow"/></svg></p>
     </a>
 
   </div>
+
+  <p class="also">The Walk is also a <a href="game/walk.html">dashboard</a>: the same model with every gauge and prior laid flat.</p>
 
   <details class="shelf">
     <summary><h3><svg class="i" aria-hidden="true"><use href="#ic-library"/></svg> The grammars behind the games</h3></summary>

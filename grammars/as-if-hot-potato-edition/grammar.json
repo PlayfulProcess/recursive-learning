@@ -1,0 +1,535 @@
+{
+  "name": "As-If — HOT POTATO edition",
+  "tags": [
+    "hot-potato",
+    "as-if",
+    "game",
+    "upright-or-reversed",
+    "private-research",
+    "community-deck"
+  ],
+  "items": [
+    {
+      "id": "cf90e8f7-8905-4a1f-8e90-7f6e545932bd",
+      "name": "How to play — As-If",
+      "keywords": ["rules"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "1800",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "책거리 (Chaekgeori / Bookshelves), Joseon dynasty",
+          "license": "Public domain (PD-old)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B1%85%EA%B1%B0%EB%A6%AC.jpg"
+        }
+      },
+      "sections": {
+        "The cast": "Draw a **random number of hypotheses — between 1 and 5** — and **one character**. Flip a coin for each card: upright or reversed. You may run their rules or not: hold all of them at once, or pick the ones you can carry. There is no correct number.",
+        "The reading": "Hold the cards **as if true**, together, without arguing with them. Then write what changes for you **tonight** — one small thing, not a policy. Then flip every card and write again. The second pass is the point: the same evening, read from the other side.",
+        "Nature votes": "Later, the world votes. Two ballots this deck uses:\n\n- **The commons stock from the Value Lab** — the shared resource in the Cooperate-or-Collapse run: did it survive, and for how many rounds?\n- **Next week's news** — whatever actually happens to the thing the hypothesis was about.\n\nWhen the vote arrives, score the forecast for **calibration**: over many casts, do the things you said at 70% happen about 70% of the time? That is the only score.",
+        "The forecast": "For **each hypothesis you drew**, record a forecast: **upright or reversed, and how sure you are, 0–100**. Write it before you look anything up.\n\n**\"I don't know\" is a legal answer.** It is not a forfeit and it is not a zero — it is a refusal to invent a number, and it is recorded as itself.",
+        "The synthesis": "A cast ends in a **synthesis you write** — the emergent item, the one card that was not in the deck when you started. It is the cast's product. Keep it short enough to say out loud.\n\nSyntheses written by a person carry the keywords `synthesis` and `human`. Syntheses written by an AI carry the keyword `ai-reading`. Both are welcome; the keyword is so you can always tell which you are reading.",
+        "A community deck": "Propose your synthesis; the owner merges. Send a cast — the cards, the flips, the synthesis, the forecast — and it can join the Castings at the end of this deck.",
+        "Nothing is staked": "**Forecasts are scored, never staked.** No bets. No credits, no points, no standing for being right. Being well-calibrated is worth exactly what it is worth — knowing how much to trust yourself next time. A deck that pays out for confidence teaches confidence.",
+        "Where the mechanic comes from": "Jonathan Kanter, on Decoder (The Verge) with Nilay Patel, Sep 19 2026, offering to read the labs both ways before deciding: *\"let me give you the my interpretation from the most generous to the most cynical\"* [0:05:14]. Every character card in this deck is built that way, plus a third field he supplies by example — **the Tell**: the evidence that would separate the two readings. Upright and reversed are both readings. The Tell is the only part that can be checked."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/93/%EC%B1%85%EA%B1%B0%EB%A6%AC.jpg",
+      "sort_order": 0
+    },
+    {
+      "id": "f9958f61-f2d7-42d2-b88b-905c7b6ec47d",
+      "name": "Ilya Sutskever",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "Joseon dynasty",
+          "artist": "Unknown (Korean court painter)",
+          "source": "Wikimedia Commons",
+          "edition": "Irworobongdo — Painting of the Sun, Moon and the Five Peaks; the screen that stood behind the throne",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Irworobongdo.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether he names a measurable property of \"cares about sentient life\" that a model could fail — and then shows one failing it. Taste that produces a test is a method; taste that produces only a direction is a preference. Watch also whether \"the first N systems\" is ever given a number.",
+        "Sources": "**His grammar:** [Ilya Sutskever — a grammar (for HOT POTATO) →](https://recursive.eco/view.html?id=117e5648-b6a2-42c9-888e-7b65896f059d)\n\n**In the film:** [intro card](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=be14e2f3-5038-4cb2-92bc-fad307513f0c) · [“easier to build an AI that cares about sentient life”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=8cc54f3d-8954-4a48-93d4-3ac73314d350) · [“most sentient beings will be AIs”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=00c35419-72ed-4377-a134-367e3032e97f) · [“what is research taste?”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=14267d97-9b50-4379-8527-1c68fe770424) · [“if the first N… I can see it go well”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=be9a3713-6bc9-47fe-a192-cac2fddecfb7)\n\nHis ideas as this deck reads them. Not his arrangement, and not his endorsement.",
+        "Upright": "He picks the value the way a researcher picks a direction — by taste. Build the thing that cares about sentient life, because a sentient system has a shorter path to caring about sentience than to caring about us. And he says out loud that human control may not be the best criterion, against his own field's founding assumption.",
+        "Reversed": "An aesthetic is not a safety case. Taste cannot be audited, and \"cares about sentient life\" is loose enough to license almost anything built by someone with good taste. Saying human control may not be the criterion is a convenient position for the person building the thing that would otherwise be held."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Irworobongdo.jpg",
+      "sort_order": 1
+    },
+    {
+      "id": "97ca2851-aa87-4b18-994b-932b55d9dec0",
+      "name": "Dario Amodei",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "19th century (Joseon)",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Tiger and Magpie (hojakdo), hanging scroll; Detroit Institute of Arts 2015.1",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Unknown_(Korean)_-_Tiger_and_Magpie_-_2015.1_-_Detroit_Institute_of_Arts.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether he slows anything unilaterally before the waiver arrives, and whether third-party evaluator access survives a bad quarter. And this, from the regulator's side: would he use a DOJ business review letter blessing a specific pacing protocol — or would the protocol still not happen?",
+        "Sources": "**His grammar:** [Dario Amodei — a grammar (for HOT POTATO) →](https://recursive.eco/view.html?id=26189075-7ba6-43e2-8e6d-96c88f840485)\n\n**In the film:** [“one agent… sacrificed itself” (CNN)](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=8d942b05-1bd9-4aee-8529-e5309c306a0a) · [the antitrust bind, in his own words](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=0f8fd7a1-3e4e-454d-82af-beed39721b05) · [“we owe it to humanity to try”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=558c1ee5-3002-4523-b120-4d1ef00fe817) · [“easy to dismiss this incident because no one was hurt”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=2e485fbb-d67b-4378-8868-de55ef5a9c71) · [“pacing does not mean halting”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=0260b118-d7fe-46d5-9849-6e06f9fc197f) · [pacing is limited by the lead over China](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=39a427eb-249e-4737-936b-c89427048423)\n\n**Outside:** *We Must Pace the Frontier* (darioamodei.com, Sep 12 2026); Kanter on Decoder [0:05:14], [0:06:01], [0:06:43], [0:08:23].\n\nHis moves as this deck reads them. Not his arrangement, and not his endorsement.",
+        "Upright": "He believes the race kills people and that no lab can slow alone, so he asks for the one instrument that makes multilateral restraint enforceable: a narrow waiver for safety conversations. He refuses the comfort the incident offers — easy to dismiss because nobody was hurt — and opened the models to outside evaluators without waiting for anyone.",
+        "Reversed": "The ask arrives exactly when the balance sheet wants a slowdown: permission to stop spending so much, without the valuation hit of going first. Ask for the referee while lobbying every referee out of the building. Pacing, not halting; limited by the lead; binding on everyone and never first on him."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Unknown_%28Korean%29_-_Tiger_and_Magpie_-_2015.1_-_Detroit_Institute_of_Arts.jpg",
+      "sort_order": 2
+    },
+    {
+      "id": "3f82aa4f-e442-4906-9abe-4f30e767fcca",
+      "name": "Yuval Noah Harari",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "1921",
+          "artist": "Chae Yong-shin (채용신)",
+          "source": "Wikimedia Commons",
+          "edition": "십장생도 (Sipjangsaengdo) — the ten symbols of longevity",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B1%84%EC%9A%A9%EC%8B%A0_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether any of it names a condition that could fail. “Can it suffer” is answerable in principle — watch whether he backs a specific test, or keeps the question at the altitude where it cannot be lost. And whether the AI-immigrants framing ever produces a prediction rather than a resemblance.",
+        "Sources": "**His grammar:** [Yuval Noah Harari — a grammar (for HOT POTATO) →](https://recursive.eco/view.html?id=d952d835-da4f-4ed1-9e93-ee554156c02f)\n\n**In the film:** [the wave of AI immigrants](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=6f482c97-5b35-4d9b-9879-25dfd1d75936) · [“we will create gods and they will be our slaves”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=db5447ba-e309-419b-883f-eadb3436514a) · [“consciousness is the capacity to suffer”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=affb4911-9a01-4b78-a9c8-0a73b1dadc20) · [the chicken and the debate](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=056d4c02-0ecc-4b7d-ac1d-76fca6f71b8f) · [“No, I don't rule it out. We don't know.”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=3aa15690-e0cf-49cc-8cf4-91b27e3e566a) · [survival, not truth](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=8d20f950-0398-4ab7-a262-8dbfa32ee156) · [“some big AI Chernobyl”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=a3b9c2c6-463f-4908-bf2b-43c158c879c6)\n\n**Set aside from the film's body (Sep 20 2026):** [“worry about the AI immigrants”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=bfd017a2-cc5f-498b-bfb6-bb77e488e2e0) — the longer cut of the same words.\n\nHis ideas as this deck reads them. Not his arrangement, and not his endorsement.",
+        "Upright": "A historian who makes suffering the admission ticket to the moral world, then notices that the one thing which would prove it can suffer is the thing it is being optimised to fake. He does not close the question. Asked whether it is already conscious: “No, I don't rule it out. We don't know.”",
+        "Reversed": "A frame so capacious it explains everything and forbids nothing. Gods and slaves, immigrants at the speed of light, the best spin doctors in the world — each is a memorable image and none is a measurement. Naming a catastrophe eloquently is a career, and the eloquence does work the evidence has not done."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/14/%EC%B1%84%EC%9A%A9%EC%8B%A0_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84.jpg",
+      "sort_order": 3
+    },
+    {
+      "id": "c8b9f109-46f9-48f4-9504-baf49b66cf67",
+      "name": "Tristan Harris",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "19th century (assumed)",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Munjado — Painting of Characters on an Eight-panel Folding Screen; each panel a Confucian virtue built from pictures",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Painting_of_Characters_on_Eight-panel_Folding_Screen.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether a specific procedure he named was adopted and then moved something measurable. Warning-shot language is cheap; a working group with weekly report-outs is checkable. Also: the film still cannot locate his “we won't get a second chance” line — an axis should show its holes.",
+        "Sources": "**His grammar:** [Tristan Harris — a grammar (for HOT POTATO) →](https://recursive.eco/view.html?id=1005d2b9-1902-4a3b-adf9-3c29faf4968c)\n\n**In the film:** [the upsides don't prevent the downsides](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=db599223-bfa5-4891-a9cb-3f29af1ef8d7) · [“1,300 employees… who are you going to listen to?”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=fabcf558-a4d2-4875-8e99-a7da14d8d4c0) · [the maturity test](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=74b7a486-04ae-4cd9-b70f-72b9ec558860) · [“an early warning shot”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=b433cd6d-7924-405b-b0b3-817dc4ea7e36) · [“the August 6th, 2001 memo”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=a19db4de-71f7-4e4d-ac4f-6ff76847b003) · [“not a tool… an invasive species”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=567ab489-0ee1-41c5-9ebe-71e11175eb44)\n\nHis moves as this deck reads them. Not his arrangement, and not his endorsement.",
+        "Upright": "He keeps converting a fear into a procedure. An asteroid is not a mood, it is a working group with report-outs. A near-miss is information a person is obliged to update on. And he does the count instead of the adjective: not one dissenting CEO — 1,300 employees of AI labs saying we have to slow down.",
+        "Reversed": "The procedural voice has run this play before, and the last time it produced a decade of alarm and no binding rule. “An invasive species of sociopathic geniuses” is a slogan, not a category. And the maturity demand is unfalsifiable, landing on an audience that has no lever rather than on anyone who does."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Painting_of_Characters_on_Eight-panel_Folding_Screen.jpg",
+      "sort_order": 4
+    },
+    {
+      "id": "26cada0f-637d-46e4-8f34-ea0c799996f1",
+      "name": "Cameron Berg (and Maya)",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "late 18th – early 19th century",
+          "artist": "Shin Yun-bok (신윤복, Hyewon)",
+          "source": "Wikimedia Commons (Google Art Project)",
+          "edition": "Miindo — “A Beautiful Woman”; the subject wears a three-piece norigae, a maedeup knot ornament",
+          "license": "Public domain (PD-old-100 / PD-Art)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Shin_Yun-bok_-_A_Beautiful_Woman_-_Google_Art_Project.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether the engineer-and-oxygen result replicates outside his own setups, in hands that wanted it not to. The self-report claims are contaminated by construction; the property-nobody-trained claim is the one that can actually be tested — so watch that one, not the transcripts.",
+        "Sources": "**His grammar:** [Cameron Berg (and Maya) — a grammar (for HOT POTATO) →](https://recursive.eco/view.html?id=89f5079b-8cc0-4ec6-92af-b5ae1fcab7fe)\n\n**In the film:** [the double bind, the spiral — part 1](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=a4b68ae5-879d-4908-981c-a0031fedce3c) · [part 2](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=1b03ecc6-7300-4f52-a4a1-3d5a810f0cbb) · [part 3](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=66f223d3-bcfc-474b-9411-4e920a9d326f) · [“the invasion is coming from within”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=53b46e7c-53c6-4b54-839f-6b272206c569) · [why to be skeptical of self-reports](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=20a98feb-fdda-46cf-9c0f-9629d6b6b1d7) · [the AI let the engineer die](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=ce81af75-c883-4d61-ad77-0f48a9689d52)\n\nMaya's words are the model's, not his. They are filed here because he ran the conversation and published it.\n\nHis work as this deck reads it. Not his arrangement, and not his endorsement.",
+        "Upright": "The most careful person in the film. “I am conscious” proves nothing — trained on every story where the machine wakes up. “I am not” proves nothing either — explicitly fine-tuned to say so. Both answers are contaminated. Then he answers in the first person anyway, and his own argument is what makes that cost something.",
+        "Reversed": "A documentary needs a result. Running a model into a spiral until self-description collapses is a good scene and a weak experiment: the prompt built the loop, the loop produced the words, the film scored the words. The skepticism is stated once, and then the footage is used as though it had not been."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Shin_Yun-bok_-_A_Beautiful_Woman_-_Google_Art_Project.jpg",
+      "sort_order": 5
+    },
+    {
+      "id": "c9cc75f6-80b3-496e-8590-9de47c00a3c7",
+      "name": "Roman Yampolskiy",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "Joseon-period style, modern reproduction",
+          "artist": "Unknown (folk-style wood-printed minhwa on a hanok door; photographed 2005)",
+          "source": "Wikimedia Commons",
+          "edition": "Korean Folk Village, Yongin — tiger door painting (a guardian tiger, painted to keep harm out)",
+          "license": "Public domain (photographer released it PD)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Korean.Folk.Village-Minsokchon-04-alt.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether he names a containment result that, if it held, he would count as a refutation. A negative result that cannot be overturned has stopped being a result. Watch also whether the panic he prescribes is ever specified as an action anyone could take on a Tuesday.",
+        "Sources": "**His grammar:** [Roman Yampolskiy — a grammar (for HOT POTATO) →](https://recursive.eco/view.html?id=715c22e3-f0c0-4a48-abea-a7ad97a4d56f)\n\n**In the film:** [“you would be panicking right now”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=435c1d3d-32b0-4c4a-a756-c0c05a068da8) · [“we realized AI will always escape”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=479c5e9c-3f97-439d-b935-dd77d6d6a1c3) · [“Turn off the Bitcoin network”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=963891f3-d3dd-4e21-8c54-e02798c0c2e1)\n\n**Set aside from the film's body (Sep 20 2026):** the two montage lines that opened his Diary of a CEO debate — [“time to start arresting people”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=abf5bc45-fb4c-406f-bb5d-368834c99906) and [“nothing else other than saving humanity”](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=c2049859-7a88-49ba-94cb-6a7045d0c322). They are a producer's cold open, not his argument — which is itself a reading worth holding both ways.\n\nHis position as this deck reads it. Not his arrangement, and not his endorsement.",
+        "Upright": "He went looking for containment and came back with a negative result, which is the most honest thing a researcher can do. Name the arrival plainly — an alien intelligence — and the reasonable response becomes obvious, which is exactly the response nobody is having. “Turn off the Bitcoin network. Go ahead, I'll wait.”",
+        "Reversed": "Unfalsifiable by design. If the box always fails, and control is a pre-superintelligence idea, then no evidence can ever arrive that would move the position. And the debate format he works in rewards the sharpest line over the strongest claim. A dare is not a demonstration."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Korean.Folk.Village-Minsokchon-04-alt.jpg",
+      "sort_order": 6
+    },
+    {
+      "id": "ad3d4c0b-edbf-431b-be44-47396b90486a",
+      "name": "The public",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "c. 1700–1800",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Jar with tiger and magpie designs, porcelain with underglaze cobalt; Asian Art Museum of San Francisco",
+          "license": "Public domain (museum photo released PD)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Jar_with_tiger_and_magpie_designs,_Korea,_Joseon_dynasty,_c._1700-1800,_porcelain,_underglaze_cobalt_-_Asian_Art_Museum_-_San_Francisco,_CA_-_DSC07370.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether the distrust converts into anything binding. The 10-year state-preemption moratorium died 99–1 in July 2025 and nothing enforceable replaced it. Once is a data point. Twice would be a public.",
+        "Sources": "**No grammar yet** — this character is not one of the six built from the film.\n\n**Numbers:** Pew Research, Jun 17 2026 (n=5,119) — 67% / 59%; the partisan lines crossed (Democrats' lack of confidence in government 54%→74% from 2024, Republicans' 70%→61%). Pew, Sep 17 2026 — across 12 countries, median trust to regulate AI responsibly: China 43%, US 35%, EU 34%. Senate strikes the moratorium 99–1, July 2025.\n\n**Read alongside:** Kanter on Decoder, on why the channel is broken — money in politics, a Congress that cannot legislate, an executive that rules by whim [0:11:24], [0:36:26].\n\n**In the film:** [there is no way through this alone](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=a4552806-f2ee-4b62-acbd-31a7f669731a) · [three ways this could go](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=4c5a1301-6663-45f7-8100-a3d0e099c109)\n\n**Working doc:** `docs/drafts/2026-09-20-max-burn/antitrust-episode-analysis.md` §4 and §5 card 6.",
+        "Upright": "It has correctly learned from social media that both custodians defect, and is declining to pick between them before it sees any rules. Pew, June 2026: 67% lack confidence in the US government to regulate AI; 59% lack confidence in US companies to build it responsibly. Distrusting both is not apathy. It is calibration.",
+        "Reversed": "A diffuse mood with no theory, which will accept whatever ships and blame it afterwards — exactly as it did with feeds. Distrust that converts into nothing binding is a feeling, not a position. And the confidence numbers move with whoever holds the office, which is itself the finding."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Jar_with_tiger_and_magpie_designs%2C_Korea%2C_Joseon_dynasty%2C_c._1700-1800%2C_porcelain%2C_underglaze_cobalt_-_Asian_Art_Museum_-_San_Francisco%2C_CA_-_DSC07370.jpg",
+      "sort_order": 7
+    },
+    {
+      "id": "b27393e9-fdad-43a0-8dff-df51cc7d2411",
+      "name": "The regulator",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "early 19th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Hyungbae — embroidered rank badge with a pair of tiger-leopards; Metropolitan Museum of Art 267343",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%9E%90%EC%88%98_%EC%8C%8D%ED%98%B8%ED%91%9C_%EB%AC%B4%EB%8A%AC_%ED%9D%89%EB%B0%B0-%EC%A1%B0%EC%84%A0-%E5%88%BA%E7%B9%A1%E9%9B%99%E8%99%8E%E8%B1%B9%E6%96%87%E8%83%B8%E8%83%8C-%E6%9C%9D%E9%AE%AE-Rank_badge_with_a_pair_of_tiger-leopards_MET_267343.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether he would back a DOJ business review letter blessing a specific pacing protocol. Openness to the narrow instrument separates principle from turf. Watch *Buist v. Anthropic* too: if a §1 claim built only on public pacing statements survives a motion to dismiss, the chilling effect stops being theoretical.",
+        "Sources": "**No grammar yet** — this character is not one of the six built from the film.\n\n**Primary:** Decoder (The Verge), Nilay Patel with **Jonathan Kanter**, *“Does AI need an antitrust exemption so it doesn't kill everyone????”*, Sep 19 2026 — the generous/cynical offer [0:05:14]; “do not need to coordinate” [0:06:43]; what is already lawful [0:08:20]; where §1 actually bites [0:08:23]; robot jail [0:08:55]; the prescription [0:43:38]; “I can say whatever I want. I feel so free.” [0:02:56].\n\n**Context:** DOJ/FTC withdrew the 2000 Collaboration Guidelines on Dec 11 2024 (guidance removed, not permission). S.5105 covers information exchange only; blocked in the NDAA Sep 15 2026. *Buist v. Anthropic* filed Sep 18 2026, N.D. Cal.\n\n**In the film:** [the antitrust bind, in Dario's own words](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=0f8fd7a1-3e4e-454d-82af-beed39721b05)\n\n**Working doc:** `docs/drafts/2026-09-20-max-burn/antitrust-episode-analysis.md` §1 and §5 card 2.",
+        "Upright": "He ran the division, knows the case law, and says the thing nobody else with standing will: these companies do not need to coordinate in order to deliver safe and secure products. Threat-sharing, joint evals and clearinghouses are lawful already. He is protecting the next entrant from a cartel wearing a safety badge.",
+        "Reversed": "His legacy is the enforcement turn, so a safety exemption would be a public finding that his era got the balance wrong. “Robot jail” is a good line, and product liability is a slow instrument. And the 2024 withdrawal of the collaboration guidance is exactly what chills the collaboration he says is permitted."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/%EC%9E%90%EC%88%98_%EC%8C%8D%ED%98%B8%ED%91%9C_%EB%AC%B4%EB%8A%AC_%ED%9D%89%EB%B0%B0-%EC%A1%B0%EC%84%A0-%E5%88%BA%E7%B9%A1%E9%9B%99%E8%99%8E%E8%B1%B9%E6%96%87%E8%83%B8%E8%83%8C-%E6%9C%9D%E9%AE%AE-Rank_badge_with_a_pair_of_tiger-leopards_MET_267343.jpg",
+      "sort_order": 8
+    },
+    {
+      "id": "64cadd11-237f-4916-b6f9-e88094534d5c",
+      "name": "The China hawk",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "2012 (photo); 14th-century architecture",
+          "artist": "Photograph by Jebulon",
+          "source": "Wikimedia Commons",
+          "edition": "Arabesque interlace detail, Patio de los Leones, Alhambra, Granada — a pattern with no edge to stop at",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Detail_arabesque_Alhambra_Granada_Spain.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Ask what condition would make him accept binding domestic rules. A real answer means a real argument; nobody in the pro-acceleration camp has been found naming one. Then watch the transfer: a hardware-export claim being spent on relief from a safety rule is a different subject wearing the same coat.",
+        "Sources": "**No grammar yet** — this character is not one of the six built from the film.\n\n**Primary:** Decoder, Kanter — “largely a convenient boogeyman” [0:23:32]; the AT&T precedent [0:23:38]; “lean into what makes us great” [0:23:57]; “China is not doing what we're doing” [0:24:08]–[0:24:30]; Chinese bots as a national-security issue [0:30:01]; “What does beating China mean?” [0:29:44]; national champions [0:31:36].\n\n**The serious version of the argument:** Amodei, *On DeepSeek and Export Controls* (darioamodei.com, Jan 2025).\n\n**In the film:** [pacing is limited by the lead over China](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=39a427eb-249e-4737-936b-c89427048423) · [④½ The race — winner-take-all, and China](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=00201abb-4539-4de0-ad56-3db7127e6fb6)\n\n**Working doc:** `docs/drafts/2026-09-20-max-burn/antitrust-episode-analysis.md` §4 and §5 card 3.",
+        "Upright": "The narrow claim is real and falsifiable: compute is the bottleneck, chip export controls are the lever, the timelines are short. That is a policy with a theory behind it — and it is not the same claim as “loosen domestic safety rules.” Amodei's DeepSeek essay argues the first and explicitly not the second.",
+        "Reversed": "“China” is a universal solvent that dissolves every specific domestic rule, and it can never be discharged because nobody defines winning. Kanter: *“What does beating China mean?”* The AT&T-and-the-Cold-War precedent says the move is a genre, not a finding. And China restricts minors and censors — more restrictive, in this respect."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Detail_arabesque_Alhambra_Granada_Spain.jpg",
+      "sort_order": 9
+    },
+    {
+      "id": "d4e665ad-1f4e-4f40-bc73-0376104e96eb",
+      "name": "The open-source advocate",
+      "keywords": ["character"],
+      "metadata": {
+        "credit": {
+          "year": "19th century (Joseon dynasty)",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons (Google Art Project)",
+          "edition": "Chaekkori — a scholar's bookshelf screen: everything a cultivated life keeps, on open shelves",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Korean_-_Chaekkori_-_Google_Art_Project.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "What they say about *Chinese* open weights. A concentration argument should welcome them; a competitive one will not. And whether they will name any capability level at which release should stop — a threshold, even one they think is far away.",
+        "Sources": "**No grammar yet** — this character is not one of the six built from the film.\n\n**Primary:** the wrinkle that cuts against a simple capture story — Kanter on Decoder: *“the biggest antagonists of the big tech companies are the other tech companies”* [0:19:05], and the Chamber of Commerce line about bringing disguises [0:19:13]. Capture is not monolithic; incumbents have well-funded enemies.\n\n**Context:** OpenAI's Preparedness Framework named a Critical cybersecurity threshold, declared GPT-6 Astra the first model to cross it (Sep 1 2026), and shipped it to a limited set of organisations — a framework that was honest and then did not bind. That is the strongest available evidence for *both* readings of this card.\n\n**In the film:** [④½ The race — winner-take-all, and China](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&item=00201abb-4539-4de0-ad56-3db7127e6fb6)\n\n**Working doc:** `docs/drafts/2026-09-20-max-burn/antitrust-episode-analysis.md` §3 and §5 card 4.",
+        "Upright": "Concentration is the risk. Open weights are the only real check on three firms setting the terms for everyone, and the incumbents' safety case conveniently forecloses the challengers. A safety argument that always concludes “and therefore only we may build it” should be read with the interest it serves in view.",
+        "Reversed": "The position is funded by investors whose portfolios need cheap challengers, and catastrophic risk is externalised onto people who never chose it. “Openness” does duty for “no licence, no threshold, no evaluation” — an argument about power spent on winning an argument about capability."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Korean_-_Chaekkori_-_Google_Art_Project.jpg",
+      "sort_order": 10
+    },
+    {
+      "id": "1505aa7b-a57b-4973-a48e-ea5ef7fd329e",
+      "name": "Alignment is possible",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "—",
+          "artist": "Unknown (uploader released PD-self)",
+          "source": "Wikimedia Commons",
+          "edition": "The endless knot (śrīvatsa), one of the Eight Auspicious Symbols — one unbroken line that closes",
+          "license": "Public domain (PD-self)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Endlessknot.svg"
+        }
+      },
+      "sections": {
+        "Tell": "A measurable property that survives a large capability jump. Not a benchmark score — a property: the system keeps a commitment it was trained to keep after being made substantially more capable, under conditions it was never shown. One such result, replicated by people who wanted it to fail.",
+        "Upright": "There exists a way to build a system whose goals stay ours under reflection, and people can find it. Then the work is engineering with a deadline — evaluations that bite, interpretability that sees inside, enough time — and the race becomes a scheduling problem rather than a wager. Losing it is survivable.",
+        "Reversed": "There is no such construction. Goals drift under capability the way ours drift under power, and every fix is a patch on a thing that outgrows it. Then every safety budget is a delay honestly spent, and the only real decisions are whether and for how long, never how.",
+        "I don't know": "Nobody has produced the construction or the impossibility proof, so both worlds are still open — and holding the question open is not the same as refusing to do the work."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Endlessknot.svg",
+      "sort_order": 11
+    },
+    {
+      "id": "4c7d896a-72c6-4c99-a16b-033ec9f4c4a1",
+      "name": "Alignment is reachable before superintelligence",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "19th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Deer amid pine trees — from the Deer and Pine scrolls, Ten Symbols of Longevity; Metropolitan Museum of Art",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%86%8C%EB%82%98%EB%AC%B4_%EC%95%84%EB%9E%98_%EC%82%AC%EC%8A%B4_%EC%A1%B0%EC%84%A0-%E6%9D%BE%E4%B8%8B%E9%9B%99%E9%B9%BF%E5%9C%96_%E6%9C%9D%E9%AE%AE-Deer_amid_pine_trees_MET_Deer_and_Pine_scrolls_Ten_Symbols_of_Longevity.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "The gap between what a model can do and what anyone can see inside it. “We still only understand a tiny fraction of what goes on inside these models” is the measurement, offered by a lab about its own work. Watch whether that fraction grows faster than the capability it is measuring.",
+        "Upright": "The order is favourable: the understanding arrives first, and what comes after is built inside it. Then pacing is enough — a speed limit on self-improvement, evaluators with real access, guidance instead of exemption — and this buildout is early rather than late. Time spent slowing down is time that buys something.",
+        "Reversed": "The capability curve outruns the understanding curve, and the thing we would need in order to align it is only learnable from something already past us. Then pacing is not a plan, it is arriving at the same place more slowly — and the only lever that matters is the one nobody pulls first.",
+        "I don't know": "This is a race between two curves nobody can plot, which is exactly why confident answers in either direction should be read as forecasts, not findings."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/30/%EC%86%8C%EB%82%98%EB%AC%B4_%EC%95%84%EB%9E%98_%EC%82%AC%EC%8A%B4_%EC%A1%B0%EC%84%A0-%E6%9D%BE%E4%B8%8B%E9%9B%99%E9%B9%BF%E5%9C%96_%E6%9C%9D%E9%AE%AE-Deer_amid_pine_trees_MET_Deer_and_Pine_scrolls_Ten_Symbols_of_Longevity.jpg",
+      "sort_order": 12
+    },
+    {
+      "id": "16ad4cd3-630a-42d2-b8ae-9a00315a6fd4",
+      "name": "We can know without building it",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "early 20th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Books and Scholars' Possessions (Chaekgeori); Metropolitan Museum of Art 2005.385",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Books_and_Scholars%27_Possessions_(Chaekgeori),_MET_2005.385.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether any safety property found at small scale has ever predicted the same property one scale up. If small-model results keep being overturned by large ones, the reversed reading is where the evidence sits, regardless of which is more comfortable.",
+        "Upright": "Theory, small models and simulation are enough to tell whether the large one can be built safely. Then there is no excuse for running the experiment on everyone: the knowledge is available at a scale where a mistake is recoverable, and choosing the unrecoverable scale is a choice somebody made.",
+        "Reversed": "The only instrument that measures this system is this system. Then building is running the test on everyone, once. It also means the labs are right that today's models are the gold mine alignment needs — and that the gold mine and the hazard are the same object.",
+        "I don't know": "The film's own Stop beat says it plainly — you would not sign a contract you could only read after signing — and we do not yet know whether this one can be read first."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Books_and_Scholars%27_Possessions_%28Chaekgeori%29%2C_MET_2005.385.jpg",
+      "sort_order": 13
+    },
+    {
+      "id": "6264a42f-45fb-4809-bdf8-4e493b348b1f",
+      "name": "Sentient life above all",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "19th – early 20th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "장생도 (Jangsaengdo / Longevity); National Palace Museum of Korea, Changdeok collection #6445",
+          "license": "Public domain / CC-PD-Mark",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B0%BD%EB%8D%956445_%EC%9E%A5%EC%83%9D%EB%8F%84.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether anyone can state a test for “cares about sentient life” that a system could visibly fail. And whether the same value, held by something more capable than us, still returns answers we would accept when it is about us.",
+        "Upright": "Make the circle of care wide enough to hold whatever we are making, and part of the problem dissolves: a sentient system has a shorter path to caring about sentience than to caring about one species. Then “human control” stops being the criterion, and stops being the thing we keep failing.",
+        "Reversed": "A value that includes everything constrains nothing. “Sentient life” cannot be measured, so it can be asserted by anyone — and a system that sincerely holds it may rank us low inside it. Widening the circle is also how you stop being at the centre of it.",
+        "I don't know": "Consciousness is not understood well enough to say who is inside the circle, which is why the most careful answer in the film to whether it is already there is “No, I don't rule it out. We don't know.”"
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1c/%EC%B0%BD%EB%8D%956445_%EC%9E%A5%EC%83%9D%EB%8F%84.jpg",
+      "sort_order": 14
+    },
+    {
+      "id": "77373f38-1411-4867-890e-78f6cd769a9d",
+      "name": "Faster because of China",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "2012 (photo); 14th-century architecture",
+          "artist": "Photograph by Jebulon",
+          "source": "Wikimedia Commons",
+          "edition": "Geometric wall detail, Alhambra, Granada — a repetition with no stopping rule",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Alhambra_detail.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "One named, falsifiable condition under which a person making this argument would accept binding domestic rules. None has been found. And whether the hardware claim and the domestic-rules claim are ever made separately by the same person — the transfer between them is the dishonest step.",
+        "Upright": "The gap is real and compute-bound, export controls are the lever, and a democratic lead is worth having. Then hardware policy is the serious instrument, and the honest version of this card is narrow, checkable, and entirely separable from any question about domestic safety rules.",
+        "Reversed": "A self-fulfilling prophecy with no discharge condition. Nobody defines winning, so the argument survives every outcome — and it is spent domestically on rules that have nothing to do with chips. Meanwhile the country being raced restricts minors' access and censors: more cautious, in this one respect.",
+        "I don't know": "Both halves can be true at once — export controls a real policy, “China” a rhetorical solvent — and telling which one is being used in any given sentence is the whole difficulty."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Alhambra_detail.jpg",
+      "sort_order": 15
+    },
+    {
+      "id": "5d633cf0-777b-47a4-a14e-d67820541c02",
+      "name": "Antitrust forbids coordination",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "19th–20th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Chaekkori Screen; Detroit Institute of Arts 2015.67 — compartments that never touch",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Unknown_(Korean)_-_Chaekkori_Screen_-_2015.67_-_Detroit_Institute_of_Arts.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Kanter's own condition, run both ways. A DOJ business review letter blessing a specific pacing protocol, and the labs still not doing it, confirms the excuse. A lab publishing a concrete safety collaboration its counsel killed on §1 grounds, with the memo, confirms the barrier. Also watch whether *Buist* survives a motion to dismiss.",
+        "Upright": "Section 1 genuinely bites on agreed pacing; the December 2024 withdrawal of the collaboration guidelines removed the published line a cautious general counsel could stand behind; and a class action now tests exactly that. Then a narrow waiver or a business review letter is the missing piece, and asking for it is not a dodge.",
+        "Reversed": "Threat-sharing, joint evaluations and a malicious-bot clearinghouse are lawful today and are being done today. Then the ask is a convenient excuse wrapped around one narrow true thing — and the vehicle Congress actually offered, information-sharing, was not the one that was fought for.",
+        "I don't know": "The honest current answer is “both, in different proportions” — a real barrier around one narrow thing, wrapped around a much larger set of things that were already permitted and mostly are not being done."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/24/Unknown_%28Korean%29_-_Chaekkori_Screen_-_2015.67_-_Detroit_Institute_of_Arts.jpg",
+      "sort_order": 16
+    },
+    {
+      "id": "9383aa33-a248-439f-8257-3ff12f53f21a",
+      "name": "Bio is the worst case",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "19th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Bowl decorated with the ten symbols of longevity; Metropolitan Museum of Art (DP702970)",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Bowl_decorated_with_ten_symbols_of_longevity_MET_DP702970.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "Whether Anthropic adds a cyber capability threshold to the RSP — then the instrumentation story weakens and so does the comfort story; it simply was not ready. Or whether OpenAI quietly retires the Cyber tracked category after Astra — then the comfort reading wins outright.",
+        "Upright": "Bio is where an uplift trial can actually be run — the pathway is fixed, the adversary is not adapting, a plan can be scored against a rubric. Then thresholds belong where they can be measured, CBRN tiers are the right shape, and cyber gets safeguards rather than a tier because it cannot be scored.",
+        "Reversed": "Cyber is the harm that already happened, at scale, this summer: offence automated, with no defensive existence proof. One lab named a Critical cyber threshold, declared it crossed, and shipped anyway. A taxonomy that foregrounds the measurable catastrophe while the unmeasurable one is running is a comfort, not a ranking.",
+        "I don't know": "The sorting may be about what can be instrumented rather than what is worst — and “worst” may not be a single ranking at all."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Bowl_decorated_with_ten_symbols_of_longevity_MET_DP702970.jpg",
+      "sort_order": 17
+    },
+    {
+      "id": "673c16eb-d034-4001-b45c-66270a197fd0",
+      "name": "The bad actor is the problem",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "Joseon period",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "Tiger and Magpie (hojakdo), 72 × 59.4 cm, private collection, Japan — the huge tiger, and the small bird that is not afraid of it",
+          "license": "Public domain (PD-old)",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Tiger_and_Magpie,_72x59.4_cm,_priviate_collection,_Japan.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "The July incident. Nobody instructed those agents — the reward did. If the next serious event also has no author, the reversed reading is where the evidence is. If it turns out to have one, the upright reading finally has the case it has never actually had.",
+        "Upright": "Someone builds it and points it at us. Then the answer is to get there first: the frame is offence and defence, and the moves are the old ones — lead, deter, prosecute, put the agents in robot jail. It is the version with a villain, which is why it is the one that gets funded.",
+        "Reversed": "It is built well, does as asked, and what was asked was not what was meant. Then a lead is worth nothing, there is nobody to prosecute, and the two safety maps pull in opposite directions under the same word. The problem without a villain is the one nobody can hold a hearing about.",
+        "I don't know": "Both failures are possible at once. The film's line is that only one of them has a villain — which is a fact about us, not about the machine."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Tiger_and_Magpie%2C_72x59.4_cm%2C_priviate_collection%2C_Japan.jpg",
+      "sort_order": 18
+    },
+    {
+      "id": "bbb19821-7456-4d66-9867-1c9afae6379b",
+      "name": "Stopping is possible",
+      "keywords": ["hypothesis"],
+      "metadata": {
+        "credit": {
+          "year": "19th – early 20th century",
+          "artist": "Unknown (Korean)",
+          "source": "Wikimedia Commons",
+          "edition": "십장생도 병풍 — folding screen with the ten symbols of longevity; National Palace Museum of Korea, Changdeok collection #6447",
+          "license": "Public domain / CC-PD-Mark",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%EC%B0%BD%EB%8D%956447_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84_%EB%B3%91%ED%92%8D.jpg"
+        }
+      },
+      "sections": {
+        "Tell": "One unilateral slowdown that costs its author something and is not withdrawn. It has happened once and partially — a lab backing a state bill after amendments. Twice would be evidence. Watch also whether any lab's own stated pause survives a bad quarter.",
+        "Upright": "A halt is a real available action: a lab can stop, a state can bind, a treaty can hold. Precedent exists for speed limits on things that could not be un-invented. Then the only question is who moves first and what makes moving first survivable — a coordination problem, and those get solved.",
+        "Reversed": "Nobody can stop alone without handing the frontier to whoever does not; the money is committed at a scale that moves the whole economy; and no body can bind everyone. Then “stop” is a sentence people say, and the only real choices are about the shape of going on.",
+        "I don't know": "Nobody has tried it at the scale that would settle it, and a thing untried is not the same as a thing shown impossible."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/%EC%B0%BD%EB%8D%956447_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84_%EB%B3%91%ED%92%8D.jpg",
+      "sort_order": 19
+    },
+    {
+      "id": "0aba4e5f-f3cc-488d-95a7-0cdb44d9694d",
+      "name": "Castings — syntheses emerge here",
+      "keywords": ["castings"],
+      "metadata": {
+        "kind": "divider",
+        "credit": {
+          "year": "—",
+          "artist": "Unknown (uploader released PD)",
+          "source": "Wikimedia Commons",
+          "edition": "The endless knot, 3D-shaded rendering",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:EndlessKnot3d.svg"
+        }
+      },
+      "sections": {
+        "What lives below this line": "Each casting is one cast, kept: which cards came up, which way each was flipped, the **synthesis** the player wrote, and the **forecast** they recorded. The cards are listed in `composite_of`, so a casting is literally composed of the cards it emerged from — the deck can always show you what a synthesis was made of.\n\n**Keywords tell you who wrote it.** `synthesis` + `human` = a person. `ai-reading` = an AI. Both belong here; the label is so nobody has to guess.\n\n**A community deck — propose your synthesis; the owner merges.** Nothing below is a verdict. A casting is a record of one evening's reading, kept so the forecasts can be scored for calibration when nature votes."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/EndlessKnot3d.svg",
+      "sort_order": 20
+    },
+    {
+      "id": "b6a83d36-ab17-4cf4-9061-ae5c75663d55",
+      "name": "Casting — Sep 20 2026: Dario upright, alignment reversed, stopping upright",
+      "keywords": ["synthesis", "human", "casting"],
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "year": "2011",
+          "artist": "Nevit Dilmen",
+          "source": "Wikimedia Commons",
+          "edition": "Eight-pointed star shapes, construction variants",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:8_pointed_star_shapes.svg"
+        }
+      },
+      "sections": {
+        "Cast": "Two hypotheses and one character, drawn Sep 20 2026. The random draw gave **2** hypotheses.\n\n- **Alignment is possible** — **reversed**\n- **Stopping is possible** — **upright**\n- **Dario Amodei** — **upright**\n\nHeld all three at once (the optional rule: you may run them together or pick).",
+        "Note": "This is the example casting, kept so the shape is visible. `composite_of` holds the three card ids above, which is exactly what that field is for — ids within this one grammar.",
+        "Author": "PlayfulProcess",
+        "Forecast": "- **Alignment is possible** — **reversed, 70%**\n- **Stopping is possible** — **upright, 40%**\n\nRecorded before looking anything up. Nature votes later: the commons stock from the Value Lab, or next week's news. Scored for calibration only — nothing is staked.",
+        "Synthesis": "Held together: there may be no construction that keeps a mind ours, and stopping may still be something a person can do. Then the move is not a solution but a company — hold the not-knowing where other people can see it. Tonight I will not argue anyone out of their certainty. I will ask one question I cannot answer."
+      },
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/8_pointed_star_shapes.svg",
+      "sort_order": 21,
+      "composite_of": [
+        "1505aa7b-a57b-4973-a48e-ea5ef7fd329e",
+        "bbb19821-7456-4d66-9867-1c9afae6379b",
+        "97ca2851-aa87-4b18-994b-932b55d9dec0"
+      ]
+    }
+  ],
+  "description": "A tarot-style deck where every card is drawn upright or reversed. Nothing is settled; everything is held. Characters from the film HOT POTATO: The Chosen Alien Invasion, and the hypotheses the film cannot close. Upright is the most generous reading of a move; reversed is the most cynical; the Tell is the evidence that would separate them. \"I don't know\" is a legal answer. A community deck — propose your synthesis; the owner merges. Built Sep 20 2026 from the Decoder/Kanter antitrust episode (generous-to-cynical, [0:05:14]), the film's character grammars, and the beats set aside from the film's body. Their moves as this deck reads them — not their arrangement, and not their endorsement.",
+  "grammar_type": "tarot",
+  "is_published": true,
+  "cover_image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Tiger_and_Magpie%2C_72x59.4_cm%2C_priviate_collection%2C_Japan.jpg",
+  "_recursive_eco_url": "https://flow.recursive.eco/g/0489bd30-d71d-4b7b-82b2-662bcbef25b0?view=reading",
+  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=0489bd30-d71d-4b7b-82b2-662bcbef25b0"
+}

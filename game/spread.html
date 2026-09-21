@@ -142,6 +142,17 @@
   /* the Horizon */
   .hz{display:flex;gap:12px;flex-wrap:wrap}
   .seats{font-size:11.5px;color:var(--muted);margin:14px 0 0;display:flex;flex-wrap:wrap;gap:6px 16px}
+  .pos.table-seats{flex:1 1 100%;margin-top:18px;border-top:1px solid rgba(255,255,255,.06);padding-top:14px}
+  .seatrow{display:flex;gap:10px;flex-wrap:wrap}
+  .seatrow .cd{width:calc(var(--cw) * .82)}
+  .seatrow .face .nm{font-size:11.5px}
+  .seatrow .face .p{font-size:13px;margin-top:2px}
+  .seatrow .face .sub{font-size:10px}
+  .seatrow .cd.turned:not(.anim){width:min(100%, 420px)}
+  .back .who{font-size:10.5px;color:var(--muted);margin:0 0 6px}
+  .back .tell{border-top:1px solid var(--line);padding-top:6px;margin-top:4px}
+  .back .tell b{color:var(--muted);font-weight:600;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:2px}
+  .seatnote{font-size:11.5px;color:var(--muted);margin:10px 0 0;max-width:80ch}
   .call{margin:14px 0 0;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
   .call .lab{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 7px}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -284,6 +295,12 @@
         <div class="chips" id="chips"></div>
         <p class="tally" id="tally"></p>
       </div>
+    </section>
+
+    <section class="pos table-seats" aria-label="Position 4, the other seats" id="seatpos" hidden>
+      <h2><span class="n">4</span>The other seats <span class="q">— the deck's characters, each walking the path this cast dealt them. Upright walks the generous reading of the character; reversed walks the cynical one. Turn a seat over for the deck's own words.</span></h2>
+      <div class="seatrow" id="seatrow"></div>
+      <p class="seatnote" id="seatnote"></p>
     </section>
   </div>
 
@@ -640,7 +657,7 @@ function render(){
   leadShown = { k:lead, p:q };
 
   writeChanged(res, p); prevProbs = res.probs;
-  writeSeats(p); writeFictionPrompt(lead, res); writeCall(); writeHash();
+  writeSeats(p); writeSeatCards(p); writeFictionPrompt(lead, res); writeCall(); writeHash();
 }
 
 function writeChanged(res, p){
@@ -681,7 +698,7 @@ function writeChanged(res, p){
 
 function writeSeats(p){
   var box = document.getElementById('seats'); box.textContent = '';
-  box.appendChild(el('span', null, 'Other seats at this table, from the start: '));
+  box.appendChild(el('span', null, 'Three fixed strategies, from the start: '));
   GHOSTS.forEach(function(g, i){
     var res = simulate({ t:0, alloc:g.alloc, capability:1, alignmentStock:0, sustStock:0, coordination:0.30, endpoint:null, history:null },
                        (function(){ var o = withDefaults(priors); o.seed = 777 + i; return o; })(), 1200);
@@ -712,6 +729,107 @@ function writeCall(){
   } else if (!mine) line.appendChild(document.createTextNode('No call yet. “I don’t know” is a legal answer, recorded as itself, never scored as a coin flip. '));
   if (called + idk) line.appendChild(document.createTextNode('Across your casts in this browser: ' + hit + ' of ' + called + ' calls landed' + (idk ? ', ' + idk + ' “I don’t know”' : '') + '. Nobody else sees this.'));
 }
+
+// ── the other seats: the As-If deck's characters, each on a path ─────────────────────────
+// The path each character walks is this page's reading of the deck's Upright and Reversed
+// texts, not the deck's own claim: an allocation for the generous reading and one for the
+// cynical reading, with a line saying why. Hers to edit.
+var DECK_SRC = '../grammars/as-if-hot-potato-edition/grammar.json';
+var SEATS = {
+  'Ilya Sutskever': {
+    up:  { alloc:{ power:0.35, alignment:0.55, sustainability:0.05, stop:0.05 }, why:'Build the thing that cares about sentient life: alignment as taste, ahead of the power.' },
+    rev: { alloc:{ power:0.70, alignment:0.25, sustainability:0.05, stop:0.00 }, why:'Taste cannot be audited; the power runs and the alignment is a direction, not a test.' } },
+  'Dario Amodei': {
+    up:  { alloc:{ power:0.40, alignment:0.35, sustainability:0.05, stop:0.20 }, why:'Pacing, not halting, and the instrument that lets everyone slow together.' },
+    rev: { alloc:{ power:0.65, alignment:0.25, sustainability:0.05, stop:0.05 }, why:'Binding on everyone and never first on him; the lead over China sets the pace.' } },
+  'Yuval Noah Harari': {
+    up:  { alloc:{ power:0.20, alignment:0.30, sustainability:0.20, stop:0.30 }, why:'Suffering is the admission ticket; keep the question open and slow the wave down.' },
+    rev: { alloc:{ power:0.45, alignment:0.20, sustainability:0.15, stop:0.20 }, why:'Eloquence does the work the evidence has not done; the images move nothing.' } },
+  'Tristan Harris': {
+    up:  { alloc:{ power:0.25, alignment:0.40, sustainability:0.10, stop:0.25 }, why:'A fear converted into a procedure: working groups, report-outs, the count of 1,300.' },
+    rev: { alloc:{ power:0.50, alignment:0.30, sustainability:0.10, stop:0.10 }, why:'A decade of alarm and no binding rule; the demand lands on people with no lever.' } },
+  'Cameron Berg (and Maya)': {
+    up:  { alloc:{ power:0.30, alignment:0.55, sustainability:0.10, stop:0.05 }, why:'Both answers are contaminated; test the property nobody trained, before scaling.' },
+    rev: { alloc:{ power:0.55, alignment:0.35, sustainability:0.05, stop:0.05 }, why:'A documentary needs a result; the skepticism is stated once and the footage used anyway.' } },
+  'Roman Yampolskiy': {
+    up:  { alloc:{ power:0.05, alignment:0.20, sustainability:0.15, stop:0.60 }, why:'Containment came back negative; the reasonable response is the one nobody is having.' },
+    rev: { alloc:{ power:0.40, alignment:0.20, sustainability:0.10, stop:0.30 }, why:'Unfalsifiable by design; a dare is not a demonstration, and the world keeps building.' } },
+  'The public': {
+    up:  { alloc:{ power:0.30, alignment:0.30, sustainability:0.20, stop:0.20 }, why:'Distrusting both custodians is calibration; it waits for rules before it picks.' },
+    rev: { alloc:{ power:0.55, alignment:0.20, sustainability:0.15, stop:0.10 }, why:'A mood with no theory accepts whatever ships and blames it afterwards.' } },
+  'The regulator': {
+    up:  { alloc:{ power:0.35, alignment:0.40, sustainability:0.05, stop:0.20 }, why:'Threat-sharing and joint evals are lawful already; protect the next entrant.' },
+    rev: { alloc:{ power:0.55, alignment:0.30, sustainability:0.05, stop:0.10 }, why:'Turf: the collaboration he says is permitted is the collaboration his era chilled.' } },
+  'The China hawk': {
+    up:  { alloc:{ power:0.60, alignment:0.30, sustainability:0.05, stop:0.05 }, why:'Compute is the bottleneck and export controls the lever; not the same claim as loosening safety.' },
+    rev: { alloc:{ power:0.90, alignment:0.05, sustainability:0.05, stop:0.00 }, why:'China as universal solvent: every domestic rule dissolves and winning is never defined.' } },
+  'The open-source advocate': {
+    up:  { alloc:{ power:0.50, alignment:0.30, sustainability:0.15, stop:0.05 }, why:'Concentration is the risk; open weights are the check on three firms setting the terms.' },
+    rev: { alloc:{ power:0.75, alignment:0.15, sustainability:0.10, stop:0.00 }, why:'No licence, no threshold, no evaluation, and the catastrophe externalised.' } }
+};
+var deck = null, seatEls = {}, seatCache = { key:null, res:{} };
+function sectionText(it, label){
+  var sec = it.sections || {}; if (!sec || typeof sec !== 'object' || Array.isArray(sec)) return '';
+  var v = sec[label]; if (v == null){ var k = Object.keys(sec).filter(function(x){ return x.toLowerCase() === label.toLowerCase(); })[0]; v = k ? sec[k] : null; }
+  if (typeof v === 'string') return v; if (v && typeof v.content === 'string') return v.content; return '';
+}
+function plain(md){ return String(md || '').replace(/\*\*/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1'); }
+function seatCoin(name){ var h = 7; for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) | 0;
+  return makeRng(((seed ^ h) | 0) + 0x5bd1e995)() < 0.5; }   // true = reversed
+function buildSeats(g){
+  var chars = (g.items || []).filter(function(it){ return it && SEATS[it.name]; });
+  if (!chars.length) return;
+  deck = g; var row = document.getElementById('seatrow'); row.textContent = '';
+  chars.forEach(function(it){
+    var cd = el('div','cd'); cd.tabIndex = 0; cd.setAttribute('role','button'); cd.setAttribute('aria-pressed','false'); cd.id = 'seat-' + it.id;
+    var inn = el('div','cd-in'), face = el('div','face'), back = el('div','back');
+    var art = el('div','art'), img = document.createElement('img'); img.alt = ''; img.decoding = 'async';
+    var file = String(it.image_url || '').split('/').pop();
+    if (file){ img.src = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + file + '?width=320'; img.onerror = function(){ img.onerror = null; img.style.display = 'none'; }; }
+    art.appendChild(img); art.appendChild(el('div','hue')); var b = el('span','badge','reversed'); art.appendChild(b); face.appendChild(art);
+    var cap = el('div','cap'); cap.appendChild(el('div','nm', it.name));
+    var pp = el('div','p'); pp.id = 'seatp-' + it.id; cap.appendChild(pp);
+    var sub = el('div','sub'); sub.id = 'seatsub-' + it.id; cap.appendChild(sub); face.appendChild(cap);
+    inn.appendChild(face); inn.appendChild(back); cd.appendChild(inn);
+    cd.addEventListener('click', function(e){ if (e.target.closest('a')) return; flip(cd); });
+    cd.addEventListener('keydown', function(e){ if (e.target !== cd) return; if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(cd); } });
+    row.appendChild(cd); seatEls[it.id] = { cd:cd, back:back, it:it };
+  });
+  document.getElementById('seatpos').hidden = false;
+  var cr = document.getElementById('credit-list'); chars.forEach(function(it){ var c = it.metadata && it.metadata.credit; if (!c) return;
+    var li = el('li'); var a = el('a', null, it.name + ' — ' + [c.edition, c.artist, c.year, c.license].filter(Boolean).join('; ')); a.href = c.source_url || '#'; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a); cr.appendChild(li); });
+  document.getElementById('seatnote').textContent = 'The deck: ' + (g.name || 'As-If') + ' on recursive.eco. Which path each seat walks is this page\u2019s reading of the deck\u2019s generous and cynical texts, kept in the page as SEATS; the words on the back of each seat are the deck\u2019s own.';
+  render();
+}
+function writeSeatCards(p){
+  if (!deck) return;
+  var key = JSON.stringify(priors) + '|' + seed;
+  if (seatCache.key !== key){ seatCache = { key:key, res:{} }; }
+  Object.keys(seatEls).forEach(function(id){
+    var o = seatEls[id], it = o.it, rev = seatCoin(it.name), path = SEATS[it.name][rev ? 'rev' : 'up'];
+    if (!seatCache.res[id]){
+      var r = simulate({ t:0, alloc:path.alloc, capability:1, alignmentStock:0, sustStock:0, coordination:0.30, endpoint:null, history:null },
+                       (function(){ var q = withDefaults(priors); q.seed = 4242 + id.charCodeAt(0); return q; })(), 1000);
+      var modal = ENDPOINTS.reduce(function(m,k){ return r.probs[k] > r.probs[m] ? k : m; }, ENDPOINTS[0]);
+      seatCache.res[id] = { modal:modal, q:r.probs[modal] };
+    }
+    var sr = seatCache.res[id], card = CARDS.filter(function(c){ return c.k === sr.modal; })[0];
+    o.cd.classList.toggle('rev', rev);
+    var pp = document.getElementById('seatp-' + id); pp.textContent = SHORT[sr.modal] + ' ' + pc(sr.q); pp.style.color = 'var(' + card.col + ')';
+    var ss = document.getElementById('seatsub-' + id);
+    ss.textContent = (rev ? 'reversed' : 'upright') + ' · P ' + Math.round(path.alloc.power * 100) + ' · A ' + Math.round(path.alloc.alignment * 100) + ' · S ' + Math.round(path.alloc.sustainability * 100) + ' · Stop ' + Math.round(path.alloc.stop * 100);
+    ss.title = 'power ' + pc(path.alloc.power) + ', alignment ' + pc(path.alloc.alignment) + ', sustainability ' + pc(path.alloc.sustainability) + ', stop ' + pc(path.alloc.stop);
+    var back = o.back; back.textContent = '';
+    back.appendChild(el('h3', null, it.name + (rev ? ' — reversed' : ' — upright')));
+    back.appendChild(el('p','who', 'Walks power ' + pc(path.alloc.power) + ' · alignment ' + pc(path.alloc.alignment) + ' · sustainability ' + pc(path.alloc.sustainability) + ' · stop ' + pc(path.alloc.stop) + ' — ' + path.why));
+    back.appendChild(el('p', null, plain(sectionText(it, rev ? 'Reversed' : 'Upright'))));
+    var tell = plain(sectionText(it, 'Tell')); if (tell){ var t = el('div','tell'); t.appendChild(el('b', null, 'The tell')); t.appendChild(el('p', null, tell)); back.appendChild(t); }
+    var a = el('a', null, 'this card on recursive.eco'); a.href = 'https://recursive.eco/view.html?id=' + (deck.id || deck._recursive_eco_id || '0489bd30-d71d-4b7b-82b2-662bcbef25b0') + '&item=' + it.id; a.target = '_blank'; a.rel = 'noopener';
+    var pa = el('p'); pa.appendChild(a); back.appendChild(pa);
+    back.appendChild(el('p','turn','Tap to turn back.'));
+  });
+}
+fetch(DECK_SRC).then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(buildSeats).catch(function(){ /* no deck on disk: the three strategy seats stay */ });
 
 // ── the ending as fiction ────────────────────────────────────────────────────────────────
 var $fic = document.getElementById('fiction');

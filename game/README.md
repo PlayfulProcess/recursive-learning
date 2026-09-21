@@ -121,7 +121,17 @@ The rule is the point. A premise you can reveal without answering is a premise y
 Answers are kept in `localStorage` (per deck, per card), never sent anywhere, and every read and
 write is wrapped so a blocked-storage browser still plays.
 
-## What it needs, in one session
+## The deck it plays
+
+**As-If — HOT POTATO edition**, `0489bd30-d71d-4b7b-82b2-662bcbef25b0`: published Sep 21 2026 and
+exported to [`../grammars/as-if-hot-potato-edition/grammar.json`](../grammars/as-if-hot-potato-edition/grammar.json),
+which is this page's default `?src=`. Ten characters (Upright · Reversed · Tell · Sources) and nine
+hypotheses (with an "I don't know" face). The same ten characters sit at the spread's table as
+*the other seats*: which path each one walks, upright or reversed, is `SEATS` in `spread.html`,
+the page's reading of the deck's texts and hers to edit; the words on the back of each seat are
+the deck's own.
+
+## The earlier plan, kept for the record
 
 The deck it wants is **As-If: Recognition as an Engineering Premise**,
 `6512b3ec-b12d-49f8-b789-6d28ab19c82e`, 6 items — **private on recursive.eco today**, so this repo
