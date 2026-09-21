@@ -1,14 +1,32 @@
 # The games
 
-Two standalone rounds live here. `index.html` is **As-If**; `walk.html` is **The Walk**. Neither has
-a framework, a CDN, a build step, or a network request; both work from GitHub Pages and from a file
-opened straight off disk.
+Two standalone rounds live here. `index.html` is **As-If**; `walk.html` is **The Walk**. Neither has a framework, a CDN or a build step; the only requests are the spread's card art. Both
+work from GitHub Pages and from a file opened straight off disk.
 
 ---
 
 # The Walk — conditional probability as a game
 
-`walk.html` is the whole thing, 42 KB. Its one teaching: **a probability is never a property of the
+Two faces of the same walk share one model (`walk-model.js`, loaded as a plain script) and one
+URL hash, so a link to either opens in the other:
+
+- **`spread.html` — the spread.** Three positions on a table, read the way a tarot spread is
+  read. **1 · The Node**: the card we stand on (allocation strip, step, capability, coordination).
+  **2 · The Inheritance**: the sixteen constants as three cards — *Capability grows with power*,
+  *A shock can end everything*, *Stopping needs company* — turn one over and its numbers are
+  there to change. **3 · The Horizon**: the seven endings, each with its live share, dealt
+  upright or reversed from the cast's seed, art on the face, the source text and a generous or
+  cynical reading on the back. *Cast again* deals a new table (a new seed; the Inheritance stays).
+  Under the table: your hand (the four sliders), *What changed* in words, and **the ending as
+  fiction** — a box to write the likeliest (or the reached) ending as a scene, kept in the
+  browser and included by *Copy the reading*. The art is public-domain minhwa on Wikimedia
+  Commons, fetched as server-side thumbnails (`Special:FilePath?width=480`, never the full scan:
+  one of them is 15,000 px wide) and credited at the foot of the page. The upright/reversed lines
+  on the endings are the page's own words, hers to edit in `CARDS`.
+- **`walk.html` — the dashboard.** The same walk with the gauges, the timeline and every prior
+  as a flat list.
+
+Its one teaching: **a probability is never a property of the
 world on its own — it is a property of the world *given a path*.** "Ten percent" is really
 *P(doom | the path people expect)*, and the condition is usually left unspoken. The Walk makes the
 condition visible and walkable.

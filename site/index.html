@@ -53,6 +53,7 @@
   .door .teaser b{color:var(--ink);font-size:13.5px;font-weight:700;text-align:right}
   .door .note{margin:14px 0 0;border-top:1px solid var(--line);padding-top:12px;
     font-size:13px;color:var(--warn)}
+  .door .alt{margin:6px 0 0;font-size:12px;color:var(--muted)} .door .alt a{color:var(--muted)}
   .door .go{margin:15px 0 0;font-size:13.5px;font-weight:700;color:var(--accent);
     display:flex;align-items:center;gap:7px}
   .door.shut{border-style:dashed}
@@ -99,18 +100,19 @@
 
   <div class="doors">
 
-    <a class="door" href="game/walk.html">
+    <a class="door" href="game/spread.html">
       <span class="top"><svg class="i" aria-hidden="true"><use href="#ic-sequence"/></svg>
         <h2>The Walk</h2></span>
-      <p class="say">Conditional probability, made into steps you actually take. A probability is
-        never a property of the world on its own — it is a property of the world <em>given a
-        path</em>. Move the allocation and the number moves.</p>
+      <p class="say">A spread with three positions: where we stand, what we inherited, where it
+        ends. A probability is never a property of the world on its own — it is a property of the
+        world <em>given a path</em>. Cast the table, move the allocation, and watch which ending moves.</p>
       <div class="teaser">
         <div><span>Spend it all on power</span><b>most walks end in Doom</b></div>
         <div><span>Spend half on stopping, together</span><b>most walks end in the Stop</b></div>
         <div><span>Same world, same dice</span><b>a different path</b></div>
       </div>
-      <p class="go">Take the walk <svg class="i" aria-hidden="true"><use href="#ic-arrow"/></svg></p>
+      <p class="go">Cast the table <svg class="i" aria-hidden="true"><use href="#ic-arrow"/></svg></p>
+      <p class="alt">or <a href="game/walk.html">the same walk as a dashboard</a></p>
     </a>
 
     <a class="door shut" href="game/index.html">
