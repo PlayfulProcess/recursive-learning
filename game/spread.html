@@ -43,8 +43,7 @@
   h1{font-size:20px;margin:0;line-height:1.15}
   h1 .sub{display:block;font-size:11.5px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
   .lede{color:var(--muted);font-size:13.5px;max-width:76ch;margin:8px 0 12px}
-  .disclaimer{font-size:12px;color:var(--warn);border-left:3px solid var(--warn);
-    background:var(--panel2);border-radius:0 9px 9px 0;padding:8px 11px;margin:0 0 14px;max-width:76ch}
+  .lede .disc{display:block;font-size:12px;color:var(--warn);margin-top:3px}
 
   .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
   .bar .count{font-size:12.5px;color:var(--muted)}
@@ -150,8 +149,8 @@
   @media (max-width:899px){ .seatrow .cd{width:calc((100% - 10px) / 2);aspect-ratio:8/12.6} .seatrow .face .sub{display:none}
     .seatrow .face .p{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .seatrow .face .nm{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} }
-  .seatrow .face .p{font-size:13px;margin-top:2px}
-  .seatrow .face .sub{font-size:10px}
+  .seatrow .face .p{font-size:12.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .seatrow .face .sub{font-size:10px;-webkit-line-clamp:1}
   .seatrow .cd.turned:not(.anim){width:min(100%, 420px)}
   .back .who{font-size:10.5px;color:var(--muted);margin:0 0 6px}
   .back .tell{border-top:1px solid var(--line);padding-top:6px;margin-top:4px}
@@ -164,12 +163,18 @@
   .chip.on{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
   .chip.idk{border-style:dashed}
   .call .tally{font-size:12px;color:var(--muted);margin:8px 0 0}
+  .confl{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin:8px 0 0;max-width:340px}
+  .confl input[type=range]{flex:1 1 auto;height:16px;accent-color:var(--accent)}
+  .confl b{color:var(--ink);font-variant-numeric:tabular-nums;min-width:3.2em}
   .call .tally b{color:var(--ink);font-weight:600}
   .seats i{display:inline-block;width:12px;height:2px;vertical-align:middle;margin-right:5px}
 
   /* under the table: your hand */
+  .main{display:flex;flex-direction:column}
   .hand{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
   @media (min-width:900px){ .hand{grid-template-columns:1.1fr 1fr} }
+  @media (max-width:899px){ .hand{order:-1;margin:0 0 12px} }
+  .hourline{font-size:12px;color:var(--muted);margin:-4px 0 12px;max-width:80ch}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px}
   .card > h2{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
   .alloc{margin-bottom:8px}
@@ -197,7 +202,8 @@
   .guide .g-top{display:flex;justify-content:space-between;gap:10px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600}
   .guide .g-top a{color:var(--muted);letter-spacing:0;text-transform:none;font-weight:400;font-size:12px;cursor:pointer;text-decoration:none}
   .guide ol{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:4px}
-  .guide li{font-size:13px;color:var(--muted);display:flex;gap:9px;align-items:baseline}
+  .guide li{font-size:13.5px;color:var(--ink);display:flex;gap:9px;align-items:baseline}
+  .guide li:not(.now){display:none}
   .guide li .n{flex:none;width:19px;height:19px;border-radius:50%;border:1px solid var(--line);font-size:11px;display:inline-flex;align-items:center;justify-content:center}
   .guide li.now{color:var(--ink)} .guide li.now .n{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
   .guide li.done{opacity:.55}
@@ -234,18 +240,15 @@
     <svg class="spiral" viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
     <h1><span class="sub">The Walk</span>a spread: where we stand, what we inherited, where it ends</h1>
   </header>
-  <p class="lede">Three positions on the table. A probability here is never a property of the world on
-    its own: it is a property of the world <em>given a path</em>. Cast the table, move the allocation,
-    take a step, and watch which ending moves. Turn any card over.</p>
-  <p class="disclaimer">These numbers are a teaching instrument, not a forecast. Nothing is staked, nothing
-    is sent, and every assumption on the table is yours to change.</p>
+  <p class="lede">A probability here is a property of the world <em>given a path</em>. Move the path and the number moves.
+    <span class="disc">A teaching instrument, not a forecast. Nothing staked, nothing sent.</span></p>
 
   <div class="reader" id="reader" aria-live="polite"><span><b id="rd-p"></b></span><span class="nm" id="rd-nm"></span><span class="x" id="rd-x"></span></div>
 
   <div class="guide" id="guide" hidden>
-    <div class="g-top"><span>How to read this table</span><a id="guide-skip">skip</a></div>
+    <div class="g-top"><span id="guide-lab">First step of three</span><a id="guide-skip">skip</a></div>
     <ol>
-      <li id="g1"><span class="n">1</span><span>Drag <b>Power</b> under the table. The bright card on the Horizon changes its number. The world did not change; the path did.</span></li>
+      <li id="g1"><span class="n">1</span><span>Drag <b>Power</b>. The big number moves. The world did not change; the path did.</span></li>
       <li id="g2"><span class="n">2</span><span>Press <b>Step</b>. A year or so, walked with this allocation. The Node moves.</span></li>
       <li id="g3"><span class="n">3</span><span>Turn a card in <b>the Inheritance</b> over and change one number. Same walk, different inheritance, different ending.</span></li>
     </ol>
@@ -253,12 +256,15 @@
 
   <div class="bar">
     <button id="btn-cast" class="ghost">Cast again</button>
+    <button id="btn-hour" class="ghost">This hour's table</button>
     <button id="btn-step">Step</button>
     <button id="btn-together" class="ghost">Step together</button>
     <button id="btn-copy" class="ghost push">Copy the reading</button>
     <span class="count" id="stepcount"></span>
   </div>
+  <p class="hourline" id="hourline" hidden></p>
 
+  <div class="main">
   <div class="table" id="felt">
     <div class="row">
       <section class="pos node" aria-label="Position 1, the Node">
@@ -291,18 +297,19 @@
     </div>
 
     <section class="pos horizon" aria-label="Position 3, the Horizon">
-      <h2><span class="n">3</span>The Horizon <span class="q">— where this walk ends, if we keep walking like this. Upright is the generous reading of an ending, reversed the cynical one; the coin is the cast's.</span></h2>
+      <h2><span class="n">3</span>The Horizon <span class="q">— where this walk ends, if we keep walking like this. Upright is the generous reading of an ending, reversed the cynical one: the coin changes the words on the back, never the number.</span></h2>
       <div class="hz" id="hz"></div>
       <div class="seats" id="seats"></div>
       <div class="call">
         <p class="lab">Your call — which ending will this cast reach? Scored for calibration, never staked.</p>
         <div class="chips" id="chips"></div>
+        <label class="confl" id="confl" hidden>How sure? <input type="range" id="conf" min="50" max="100" step="5" value="70" aria-label="how sure, in percent"> <b id="confv">70%</b></label>
         <p class="tally" id="tally"></p>
       </div>
     </section>
 
     <section class="pos table-seats" aria-label="Position 4, the other seats" id="seatpos" hidden>
-      <h2><span class="n">4</span>The other seats <span class="q">— the deck's characters, each walking the path this cast dealt them. Upright walks the generous reading of the character; reversed walks the cynical one. Turn a seat over for the deck's own words.</span></h2>
+      <h2><span class="n">4</span>The other seats <span class="q">— the deck's characters, each on a path. Which path each one walks, upright or reversed, is this page's reading of the deck's generous and cynical texts, not the deck's claim. The words on the back of each seat are the deck's own.</span></h2>
       <div class="seatrow" id="seatrow"></div>
       <p class="seatnote" id="seatnote"></p>
     </section>
@@ -319,6 +326,8 @@
       <div class="changed" id="changed"></div>
       <p class="hint" id="nfoot"></p>
     </div>
+  </div>
+
   </div>
 
   <div class="card" style="margin-top:14px">
@@ -395,6 +404,16 @@ var ART = {
 };
 
 // ── the seven endings, each with a generous and a cynical reading ──────────────────────────
+// a hand that leans toward each ending: what "walk toward this" sets the sliders to
+var TOWARD = {
+  grace:            { power:0.30, alignment:0.55, sustainability:0.10, stop:0.05 },
+  sustainable_turn: { power:0.20, alignment:0.10, sustainability:0.65, stop:0.05 },
+  the_stop:         { power:0.10, alignment:0.20, sustainability:0.10, stop:0.60 },
+  adolescence:      { power:0.55, alignment:0.30, sustainability:0.10, stop:0.05 },
+  lock_in:          { power:0.90, alignment:0.05, sustainability:0.05, stop:0.00 },
+  doom:             { power:1.00, alignment:0.00, sustainability:0.00, stop:0.00 },
+  still_walking:    { power:0.10, alignment:0.30, sustainability:0.30, stop:0.30 }
+};
 var CARDS = [
   { k:'grace', nm:'Grace', col:'--grace', txt:'Machines of Loving Grace · Amodei, 2024', link:'https://www.darioamodei.com/essay/machines-of-loving-grace',
     src:'Capability arrives with the alignment lead already paid for.',
@@ -550,7 +569,14 @@ CARDS.forEach(function(c){
   var h = el('h3', null, c.txt); sh.back.appendChild(h);
   sh.back.appendChild(el('p', null, c.src));
   var r = el('p'); r.id = 'read-' + c.k; sh.back.appendChild(r);
+  sh.back.appendChild(el('p','who', 'The coin changed these words, not the number above.'));
   if (c.link){ var a = el('a', null, 'the source'); a.href = c.link; a.target = '_blank'; a.rel = 'noopener'; var pa = el('p'); pa.appendChild(a); sh.back.appendChild(pa); }
+  var tw = el('button','ghost rs','Walk toward this'); tw.type = 'button'; tw.style.fontSize = '11px'; tw.style.padding = '5px 10px';
+  tw.addEventListener('click', function(e){ e.stopPropagation(); if (state.endpoint) return;
+    var to = TOWARD[c.k]; moveInfo = { kind:'toward', key:c.k, to:to };
+    state.alloc = { power:to.power, alignment:to.alignment, sustainability:to.sustainability, stop:to.stop };
+    render(); guideAdvance('slide'); });
+  sh.back.appendChild(tw);
   sh.back.appendChild(el('p','turn','Tap to turn back.'));
   HZ[c.k] = sh; document.getElementById('hz').appendChild(sh.cd);
 });
@@ -661,7 +687,7 @@ function render(){
   leadShown = { k:lead, p:q };
 
   writeChanged(res, p); prevProbs = res.probs;
-  writeSeats(p); writeSeatCards(p); writeFictionPrompt(lead, res); writeCall(); writeHash();
+  writeSeats(p); writeSeatCards(p); writeFictionPrompt(lead, res); writeCall(); writeHourLine(); writeHash();
 }
 
 function writeChanged(res, p){
@@ -675,6 +701,10 @@ function writeChanged(res, p){
     var ch = CHANNELS.filter(function(c){ return c.k === moveInfo.key; })[0];
     main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' moved ' + ch.nm + ' from ' + pc(moveInfo.from) + ' to ' + pc(moveInfo.to) +
            '. The world did not change; the path did.';
+  } else if (moveInfo && moveInfo.kind === 'toward'){
+    var to = moveInfo.to;
+    main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' set the hand toward ' + SHORT[moveInfo.key] + ' (power ' + pc(to.power) + ', alignment ' + pc(to.alignment) +
+           ', sustainability ' + pc(to.sustainability) + ', stop ' + pc(to.stop) + '). A hand leans; the dice still decide.';
   } else if (moveInfo && moveInfo.kind === 'inherit'){
     main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' changed ' + moveInfo.key + ' from ' + moveInfo.from + ' to ' + moveInfo.to +
            '. Same walk, different inheritance' + (moved ? ', different ending.' : '.');
@@ -720,25 +750,37 @@ function tallyRead(){ try { return JSON.parse(store('walk:tally') || '{}'); } ca
   CALLS.forEach(function(c){ var b = el('button','chip' + (c.k === 'idk' ? ' idk' : ''), c.nm); b.type = 'button'; b.id = 'chip-' + c.k;
     b.addEventListener('click', function(){ if (state.endpoint) return; store(callKey(), c.k); writeCall(); }); box.appendChild(b); });
 })();
+var $conf = document.getElementById('conf');
+function confRead(){ var v = parseInt(store(callKey() + ':conf') || '70', 10); return isFinite(v) ? v : 70; }
+$conf.addEventListener('input', function(){ store(callKey() + ':conf', $conf.value); writeCall(); });
 function writeCall(){
-  var mine = store(callKey()) || '';
+  var mine = store(callKey()) || '', conf = confRead();
   CALLS.forEach(function(c){ var b = document.getElementById('chip-' + c.k); b.classList.toggle('on', c.k === mine); b.disabled = !!state.endpoint && c.k !== mine; });
+  var cl = document.getElementById('confl'); cl.hidden = !(mine && mine !== 'idk' && !state.endpoint);
+  if (+$conf.value !== conf) $conf.value = conf; document.getElementById('confv').textContent = conf + '%';
   var t = tallyRead(), line = document.getElementById('tally'); line.textContent = '';
-  if (state.endpoint && mine && !t[seed]){ t[seed] = { call:mine, end:state.endpoint }; store('walk:tally', JSON.stringify(t)); }
-  var seeds = Object.keys(t), called = 0, hit = 0, idk = 0;
-  seeds.forEach(function(k){ if (t[k].call === 'idk') idk++; else { called++; if (t[k].call === t[k].end) hit++; } });
+  if (state.endpoint && mine && !t[seed]){ t[seed] = { call:mine, end:state.endpoint, conf:conf }; store('walk:tally', JSON.stringify(t)); }
+  // Brier over resolved calls: (confidence - outcome)^2, 0 is perfect, 0.25 is a coin flip said at 50%
+  var seeds = Object.keys(t), called = 0, hit = 0, idk = 0, brier = 0;
+  seeds.forEach(function(k){ var e = t[k]; if (e.call === 'idk') idk++; else { called++; var ok = e.call === e.end; if (ok) hit++;
+    var c = (isFinite(e.conf) ? e.conf : 70) / 100; brier += (c - (ok ? 1 : 0)) * (c - (ok ? 1 : 0)); } });
   if (state.endpoint && mine){
-    line.appendChild(el('b', null, mine === 'idk' ? 'You said you did not know' : 'You called ' + SHORT[mine]));
+    line.appendChild(el('b', null, mine === 'idk' ? 'You said you did not know' : 'You called ' + SHORT[mine] + ' at ' + (t[seed] && t[seed].conf || conf) + '%'));
     line.appendChild(document.createTextNode('; it ended in ' + SHORT[state.endpoint] + '. '));
-  } else if (!mine) line.appendChild(document.createTextNode('No call yet. “I don’t know” is a legal answer, recorded as itself, never scored as a coin flip. '));
-  if (called + idk) line.appendChild(document.createTextNode('Across your casts in this browser: ' + hit + ' of ' + called + ' calls landed' + (idk ? ', ' + idk + ' “I don’t know”' : '') + '. Nobody else sees this.'));
+  } else if (mine === 'idk'){
+    line.appendChild(el('b', null, 'You said you do not know')); line.appendChild(document.createTextNode('. Recorded as itself, never scored as a coin flip. '));
+  } else if (mine){
+    line.appendChild(el('b', null, 'You called ' + SHORT[mine] + ' at ' + conf + '%')); line.appendChild(document.createTextNode('. The walk will tell. '));
+  } else line.appendChild(document.createTextNode('No call yet. “I don’t know” is a legal answer, recorded as itself, never scored as a coin flip. '));
+  if (called + idk) line.appendChild(document.createTextNode('Across your casts in this browser: ' + hit + ' of ' + called + ' calls landed, Brier ' + (called ? (brier / called).toFixed(2) : '—') +
+    ' (0 is perfect, 0.25 is a coin flip said at 50%)' + (idk ? ', ' + idk + ' “I don’t know”' : '') + '. Nobody else sees this.'));
 }
 
 // ── the other seats: the As-If deck's characters, each on a path ─────────────────────────
 // The path each character walks is this page's reading of the deck's Upright and Reversed
 // texts, not the deck's own claim: an allocation for the generous reading and one for the
 // cynical reading, with a line saying why. Hers to edit.
-var DECK_SRC = '../grammars/as-if-hot-potato-edition/grammar.json';
+var DECK_SRC = '../grammars/as-if-hot-potato-edition/grammar.json', DECK_ID = '0489bd30-d71d-4b7b-82b2-662bcbef25b0';
 var SEATS = {
   'Ilya Sutskever': {
     up:  { alloc:{ power:0.35, alignment:0.55, sustainability:0.05, stop:0.05 }, why:'Build the thing that cares about sentient life: alignment as taste, ahead of the power.' },
@@ -800,9 +842,12 @@ function buildSeats(g){
     row.appendChild(cd); seatEls[it.id] = { cd:cd, back:back, it:it };
   });
   document.getElementById('seatpos').hidden = false;
-  var cr = document.getElementById('credit-list'); chars.forEach(function(it){ var c = it.metadata && it.metadata.credit; if (!c) return;
-    var li = el('li'); var a = el('a', null, it.name + ' — ' + [c.edition, c.artist, c.year, c.license].filter(Boolean).join('; ')); a.href = c.source_url || '#'; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a); cr.appendChild(li); });
-  document.getElementById('seatnote').textContent = 'The deck: ' + (g.name || 'As-If') + ' on recursive.eco. Which path each seat walks is this page\u2019s reading of the deck\u2019s generous and cynical texts, kept in the page as SEATS; the words on the back of each seat are the deck\u2019s own.';
+  var cr = document.getElementById('credit-list'), seen = {};
+  cr.querySelectorAll('a').forEach(function(a){ seen[a.href] = true; });
+  chars.forEach(function(it){ var c = it.metadata && it.metadata.credit; if (!c || !c.source_url || seen[c.source_url]) return; seen[c.source_url] = true;
+    var li = el('li'); var a = el('a', null, [c.edition, c.artist, c.year, c.license].filter(Boolean).join('; ')); a.href = c.source_url; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a); cr.appendChild(li); });
+  var dl = document.getElementById('seatnote'); dl.textContent = 'The deck: '; var da = el('a', null, g.name || 'As-If'); da.href = 'https://recursive.eco/view.html?id=' + DECK_ID; da.target = '_blank'; da.rel = 'noopener'; dl.appendChild(da);
+  dl.appendChild(document.createTextNode(' on recursive.eco, and the film it comes from: ')); var fa = el('a', null, 'HOT POTATO: The Chosen Alien Invasion'); fa.href = 'https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438'; fa.target = '_blank'; fa.rel = 'noopener'; dl.appendChild(fa); dl.appendChild(document.createTextNode('.'));
   render();
 }
 function writeSeatCards(p){
@@ -828,7 +873,7 @@ function writeSeatCards(p){
     back.appendChild(el('p','who', 'Walks power ' + pc(path.alloc.power) + ' · alignment ' + pc(path.alloc.alignment) + ' · sustainability ' + pc(path.alloc.sustainability) + ' · stop ' + pc(path.alloc.stop) + ' — ' + path.why));
     back.appendChild(el('p', null, plain(sectionText(it, rev ? 'Reversed' : 'Upright'))));
     var tell = plain(sectionText(it, 'Tell')); if (tell){ var t = el('div','tell'); t.appendChild(el('b', null, 'The tell')); t.appendChild(el('p', null, tell)); back.appendChild(t); }
-    var a = el('a', null, 'this card on recursive.eco'); a.href = 'https://recursive.eco/view.html?id=' + (deck.id || deck._recursive_eco_id || '0489bd30-d71d-4b7b-82b2-662bcbef25b0') + '&item=' + it.id; a.target = '_blank'; a.rel = 'noopener';
+    var a = el('a', null, 'this card on recursive.eco'); a.href = 'https://recursive.eco/view.html?id=' + DECK_ID + '&item=' + it.id; a.target = '_blank'; a.rel = 'noopener';
     var pa = el('p'); pa.appendChild(a); back.appendChild(pa);
     back.appendChild(el('p','turn','Tap to turn back.'));
   });
@@ -887,6 +932,20 @@ function cast(){
   prevProbs = null; lastNote = ''; leadShown = null; drawOrientation(); loadFiction(); render(); deal();
 }
 document.getElementById('btn-cast').addEventListener('click', cast);
+// the hour's table: a seed everyone who opens it this UTC hour shares. No server, no count.
+function hourSeed(){ return Math.floor(Date.now() / 3600000); }
+function castHour(){
+  state = fresh(); seed = hourSeed(); rng = makeRng(seed);
+  prevProbs = null; lastNote = ''; leadShown = null; drawOrientation(); loadFiction(); render(); deal();
+}
+document.getElementById('btn-hour').addEventListener('click', castHour);
+function writeHourLine(){
+  var h = document.getElementById('hourline'), now = hourSeed();
+  if (seed === now){ h.hidden = false; var d = new Date(now * 3600000);
+    h.textContent = 'This is the table for ' + d.toISOString().slice(0, 13).replace('T', ' ') + ':00 UTC: everyone who opens it this hour is dealt the same cast. We cannot count the others; this counts you.'; }
+  else if (seed > 300000 && seed < 1e6 && seed !== now){ h.hidden = false; h.textContent = 'This was an hour’s table, from ' + new Date(seed * 3600000).toISOString().slice(0, 13).replace('T', ' ') + ':00 UTC. Cast again for now, or press This hour’s table.'; }
+  else h.hidden = true;
+}
 document.getElementById('btn-step').addEventListener('click', function(){ takeStep(false); guideAdvance('step'); });
 document.getElementById('btn-together').addEventListener('click', function(){ takeStep(true); guideAdvance('step'); });
 document.getElementById('btn-copy').addEventListener('click', function(){
@@ -910,7 +969,8 @@ window.addEventListener('hashchange', function(){ if (readHash()){ prevProbs = n
 // ── how to read this table ───────────────────────────────────────────────────────────────
 var guide = { at:0, on:false };
 function guideRender(){ document.getElementById('guide').hidden = !guide.on;
-  [1,2,3].forEach(function(n){ document.getElementById('g' + n).className = n < guide.at ? 'done' : n === guide.at ? 'now' : ''; }); }
+  [1,2,3].forEach(function(n){ document.getElementById('g' + n).className = n < guide.at ? 'done' : n === guide.at ? 'now' : ''; });
+  document.getElementById('guide-lab').textContent = ['', 'First step of three', 'Second step of three', 'Last step'][guide.at] || ''; }
 function guideStart(){ guide.on = true; guide.at = 1; guideRender(); }
 function guideStop(){ guide.on = false; guide.at = 0; store('walk:spread-guide', 'done'); guideRender(); }
 function guideAdvance(ev){ if (!guide.on) return;

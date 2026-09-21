@@ -139,7 +139,8 @@
     foot.textContent = '';
     foot.appendChild(document.createTextNode((g.name || 'Deck') + ' · ' + items.length + ' cards · '));
     var link = el('a', null, 'read it on recursive.eco');
-    link.href = g._recursive_eco_url || 'https://recursive.eco';
+    var m = String(g._recursive_eco_url || '').match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+    link.href = m ? 'https://recursive.eco/view.html?id=' + m[0] : 'https://recursive.eco';
     link.rel = 'noopener';
     foot.appendChild(link);
 
