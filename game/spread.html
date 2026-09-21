@@ -145,7 +145,9 @@
   .pos.table-seats{flex:1 1 100%;margin-top:18px;border-top:1px solid rgba(255,255,255,.06);padding-top:14px}
   .seatrow{display:flex;gap:10px;flex-wrap:wrap}
   .seatrow .cd{width:calc(var(--cw) * .82)}
-  .seatrow .face .nm{font-size:11.5px}
+  .seatrow .face .art{min-height:38%}
+  .seatrow .face .nm{font-size:11px;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  @media (max-width:899px){ .seatrow .cd{width:calc((100% - 18px) / 3)} .seatrow .face .sub{display:none} }
   .seatrow .face .p{font-size:13px;margin-top:2px}
   .seatrow .face .sub{font-size:10px}
   .seatrow .cd.turned:not(.anim){width:min(100%, 420px)}
