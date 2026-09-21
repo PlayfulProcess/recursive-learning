@@ -147,7 +147,8 @@
   .seatrow .cd{width:calc(var(--cw) * .82)}
   .seatrow .face .art{min-height:38%}
   .seatrow .face .nm{font-size:11px;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  @media (max-width:899px){ .seatrow .cd{width:calc((100% - 18px) / 3)} .seatrow .face .sub{display:none} }
+  @media (max-width:899px){ .seatrow .cd{width:calc((100% - 10px) / 2);aspect-ratio:8/12.6} .seatrow .face .sub{display:none}
+    .seatrow .face .p{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} }
   .seatrow .face .p{font-size:13px;margin-top:2px}
   .seatrow .face .sub{font-size:10px}
   .seatrow .cd.turned:not(.anim){width:min(100%, 420px)}
