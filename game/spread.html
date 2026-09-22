@@ -135,6 +135,7 @@
   .fan .face .nm{font-size:12px}
   .pr{margin:0 0 7px}
   .pr .lab{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:11px}
+  .pr .lab b{line-height:1.2}
   .pr .lab b{font-weight:600;color:var(--ink)}
   .pr input[type=number]{width:58px;background:var(--panel);color:var(--ink);border:1px solid var(--line);
     border-radius:6px;padding:2px 5px;font:inherit;font-size:11px;text-align:right}
@@ -173,6 +174,7 @@
   .cd .mine{display:none;position:absolute;left:6px;top:6px;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
     background:var(--accent);color:var(--accent-ink);padding:2px 6px;border-radius:5px;font-weight:700}
   .cd.chosen .mine{display:block}
+  .cd.chosen .back{border-color:var(--accent);box-shadow:0 0 0 1px rgba(94,226,176,.35)}
   .back .fc{margin:6px 0 0;padding:6px 8px;border-radius:7px;background:var(--panel)}
   .back .fc b{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
   .legend4{font-size:11.5px;color:var(--muted);margin:10px 0 0;display:grid;gap:3px;max-width:80ch}
@@ -256,7 +258,7 @@
     .reader b{font-size:20px}
     .reader .nm{font-size:13.5px}
     .reader .x{font-size:11px}
-    .reader .line{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .reader .line{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
     .bar{display:grid;grid-template-columns:1fr 1fr} .bar .count{grid-column:1/-1} .bar .push{margin-left:0}
     .bar .link{grid-column:1/-1;justify-self:start}
     h1{font-size:18px}
@@ -300,7 +302,7 @@
     <span class="count" id="stepcount"></span>
     <button class="link" id="btn-hour" type="button">this hour's table</button>
   </div>
-  <p class="aim">A walk is twenty years or an ending, whichever comes first. Then write it as fiction, see how your call did, and cast again. Casting again throws every coin again, for the endings and for the seats.</p>
+  <p class="aim">A walk is twenty years or an ending, whichever comes first. Then write it as fiction, see how your call did, and cast again; casting again throws every coin again, for the endings and for the seats. <em>Walk a year together</em> is the step of faith: it moves the world only if coordination is above the bar, and below it the year is spent for nothing. <em>This hour's table</em> deals the same cast to everyone who opens it this hour.</p>
   <p class="hourline" id="hourline" hidden></p>
 
   <div class="main">
@@ -513,6 +515,14 @@ var CHANNELS = [
 ];
 
 // ── the Inheritance: sixteen constants grouped as three inherited assumptions ─────────────
+var PRIOR_NAME = {
+  horizon:'years in a walk', growth:'how fast power grows capability', stopDrag:'how much a coordinated stop slows it',
+  decay:'how fast the two stocks leak', riskBase:'risk per year at the start', alpha:'how steeply risk climbs with capability',
+  beta:'how strongly alignment buys risk down', shockRate:'chance of a shock each year', shockDamping:'how much sustainability lowers that chance',
+  shockRisk:'risk a shock adds that year', coordGain:'coordination gained from alignment and stop', coordDecay:'coordination lost each year',
+  stagK:'the bar for stepping together', graceCapability:'capability at which the ending is read', graceAlignRatio:'the lead alignment needs for Grace',
+  lockInCoord:'coordination below which it locks in'
+};
 var PRIOR_UI = {
   horizon:         [4, 40, 1,     'How many steps the walk holds.'],
   growth:          [0, 1, 0.01,   'Capability multiplier per step, per unit of Power.'],
@@ -561,10 +571,11 @@ function pc(x){ return Math.round(x * 100) + '%'; }
 function drawOrientation(){ var r = makeRng((seed ^ 0x9e3779b9) | 0); reversed = {};
   ENDPOINTS.forEach(function(k){ reversed[k] = r() < 0.5; }); }
 
-var KEYS = ['power','alignment','sustainability','stop'];
+var KEYS = ['power','alignment','sustainability','stop'], dragFrom = {}, saidRebalance = false;
 function setChannel(key, pctValue){
   var v = Math.max(0, Math.min(100, Math.round(pctValue))) / 100;
-  if (Math.round(state.alloc[key] * 100) !== Math.round(v * 100)) moveInfo = { kind:'slide', key:key, from:state.alloc[key], to:v };
+  var from0 = (dragFrom[key] != null) ? dragFrom[key] : state.alloc[key];
+  if (Math.round(from0 * 100) !== Math.round(v * 100)) moveInfo = { kind:'slide', key:key, from:from0, to:v };
   var others = KEYS.filter(function(k){ return k !== key; });
   var restNow = others.reduce(function(s,k){ return s + state.alloc[k]; }, 0);
   var rest = 1 - v, out = {}; out[key] = v;
@@ -633,7 +644,7 @@ CARDS.forEach(function(c){
   var p = el('div','p'); p.id = 'p-' + c.k; p.style.color = 'var(' + c.col + ')'; sh.cap.appendChild(p);
   var t = el('div','track'), f = el('div','fill'); f.id = 'f-' + c.k; f.style.background = 'var(' + c.col + ')'; f.style.width = '0%'; t.appendChild(f); sh.cap.appendChild(t);
   var sub = el('div','sub'); sub.id = 'sub-' + c.k; sh.cap.appendChild(sub);
-  var h = el('h3', null, c.txt); sh.back.appendChild(h);
+  var h = el('h3', null, c.txt); h.id = 'bh-' + c.k; sh.back.appendChild(h);
   sh.back.appendChild(el('p', null, c.src));
   var r = el('p'); r.id = 'read-' + c.k; sh.back.appendChild(r);
   sh.back.appendChild(el('p','who', 'The coin changed these words, not the number above.'));
@@ -658,7 +669,7 @@ HOUSES.forEach(function(h){
   var prs = el('div','prs'); sh.back.appendChild(prs);
   h.keys.forEach(function(k){
     var cfg = PRIOR_UI[k], box = el('div','pr'), lab = el('div','lab');
-    lab.appendChild(el('b', null, k));
+    var bl = el('b', null, PRIOR_NAME[k] || k); bl.title = k; lab.appendChild(bl);
     var num = document.createElement('input'); num.type = 'number'; num.min = cfg[0]; num.max = cfg[1]; num.step = cfg[2]; num.id = 'prn-' + k;
     num.setAttribute('aria-label', k + ' value'); lab.appendChild(num); box.appendChild(lab);
     var r = document.createElement('input'); r.type = 'range'; r.min = cfg[0]; r.max = cfg[1]; r.step = cfg[2]; r.id = 'prr-' + k; r.setAttribute('aria-label', k);
@@ -686,6 +697,8 @@ CHANNELS.forEach(function(c){
   var pct = el('span','pct'); pct.id = 'pct-' + c.k; top.appendChild(pct); box.appendChild(top);
   var r = document.createElement('input'); r.type = 'range'; r.min = 0; r.max = 100; r.step = 1; r.id = 'sl-' + c.k;
   r.style.setProperty('--sl', 'var(' + c.col + ')'); r.setAttribute('aria-label', c.nm + ' share of the allocation, in percent');
+  ['pointerdown','touchstart','keydown','focus'].forEach(function(ev){ r.addEventListener(ev, function(){ if (dragFrom[c.k] == null) dragFrom[c.k] = state.alloc[c.k]; }); });
+  ['pointerup','touchend','blur','change'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ dragFrom[c.k] = null; }, 0); }); });
   r.addEventListener('input', function(){ setChannel(c.k, +r.value); guideAdvance('slide'); });
   box.appendChild(r); box.appendChild(el('p','why', c.why)); $sliders.appendChild(box);
 });
@@ -735,6 +748,7 @@ function render(){
     document.getElementById('sub-' + c.k).textContent = state.endpoint ? (c.k === state.endpoint ? 'the walk ended here' : '') :
       (q === 0 ? 'not on this path' : reversed[c.k] ? 'reversed' : 'upright');
     document.getElementById('read-' + c.k).textContent = (reversed[c.k] ? 'Reversed: ' : 'Upright: ') + (reversed[c.k] ? c.rev : c.up);
+    document.getElementById('bh-' + c.k).textContent = c.nm + ' \u00b7 ' + pc(q) + (state.endpoint ? '' : ' on this path') + ' \u2014 ' + c.txt;
     var cd = HZ[c.k].cd;
     cd.classList.toggle('rev', !!reversed[c.k]);
     cd.classList.toggle('lead', c.k === lead && !state.endpoint);
@@ -768,18 +782,20 @@ function writeChanged(res, p){
   if (moveInfo && moveInfo.kind === 'slide'){
     var ch = CHANNELS.filter(function(c){ return c.k === moveInfo.key; })[0];
     main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' moved ' + ch.nm + ' from ' + pc(moveInfo.from) + ' to ' + pc(moveInfo.to) +
-           '. The world did not change; the path did.';
+           (saidRebalance ? '' : '; the other three shares shifted to keep the hand at 100%') + '. The world did not change; the path did.';
+    saidRebalance = true;
   } else if (moveInfo && moveInfo.kind === 'toward'){
     var to = moveInfo.to;
     main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' set the hand that favours ' + SHORT[moveInfo.key] + ' most from here (power ' + pc(to.power) + ', alignment ' + pc(to.alignment) +
-           ', sustainability ' + pc(to.sustainability) + ', stop ' + pc(to.stop) + '). It now reads ' + pc(res.probs[moveInfo.key]) + (res.probs[moveInfo.key] < 0.5 ? ': no hand from here makes it likely; a hand leans, the dice still decide.' : '. A hand leans; the dice still decide.');
+           ', sustainability ' + pc(to.sustainability) + ', stop ' + pc(to.stop) + '). It now reads ' + pc(res.probs[moveInfo.key]) + (res.probs[moveInfo.key] < 0.5 ? ': no hand from here makes it likely; a hand leans, the dice still decide.' : '. A hand leans; the dice still decide.') +
+           (to.stop > 0 && state.coordination < p.stagK ? ' Stop counts for nothing while coordination (' + state.coordination.toFixed(2) + ') is below the bar (' + p.stagK.toFixed(2) + '); here it only starves alignment, which is why it favours this ending.' : '');
   } else if (moveInfo && moveInfo.kind === 'inherit'){
-    main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' changed ' + moveInfo.key + ' from ' + moveInfo.from + ' to ' + moveInfo.to +
+    main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' changed ' + (PRIOR_NAME[moveInfo.key] || moveInfo.key) + ' from ' + moveInfo.from + ' to ' + moveInfo.to +
            '. Same walk, different inheritance' + (moved ? ', different ending.' : '.');
   } else if (moveInfo && moveInfo.kind === 'reset'){
     main = (moved ? moved + ' when ' : 'Almost nothing moved when ') + '“' + moveInfo.key + '” went back to its defaults.';
   } else if (!state.history.length){
-    main = 'Nothing walked yet. Each Horizon card reads P(that ending | you keep this allocation to the end). Move a slider and the cards move: the world did not change, the path did.';
+    main = 'Nothing walked yet. Move a slider and the number moves: the world did not change, the path did. Each Horizon card reads the chance of that ending if you keep this hand to the end.';
   } else if (state.endpoint && state.history[state.history.length - 1].t === state.t){
     main = 'The walk ended here: ' + SHORT[state.endpoint] + '. ' +
       (state.endpoint === 'doom' ? 'Risk this step was ' + (state.lastRisk * 100).toFixed(1) + '% and the die landed on it.'
@@ -1013,7 +1029,8 @@ function writeStep(){
   if (!actions.length) return;
   var ch = chosenStep();
   Object.keys(stepEls).forEach(function(id){ var on = !!ch && ch.it.id === id; stepEls[id].cd.classList.toggle('chosen', on);
-    var b = document.getElementById('take-' + id); if (b) b.textContent = on ? 'Chosen: this is your move' : 'This is my move'; });
+    var b = document.getElementById('take-' + id); if (b) b.textContent = on ? 'Chosen: this is your move' : 'This is my move';
+    var h = stepEls[id].cd.querySelector('.back h3'); if (h) h.textContent = stepEls[id].it.name + (stepEls[id].tag ? ' \u2014 ' + stepEls[id].tag : '') + (on ? ' \u00b7 your move' : ''); });
   var box = document.getElementById('asym'); box.hidden = !ch;
   if (ch){ document.getElementById('asym-lab').textContent = 'The asymmetry of “' + ch.it.name + '”'; }
   $asym.value = store(asymKey()) || '';
