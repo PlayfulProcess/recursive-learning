@@ -288,7 +288,7 @@
     .reader .line{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
     .reader .note{font-size:11.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .bar{display:grid;grid-template-columns:1fr 1fr} .bar .count{grid-column:1/-1} .bar .push{margin-left:0}
-    .bar #btn-step{grid-column:1/-1;order:-1;font-size:16px;padding:12px 16px}
+    .bar #btn-step,.bar #btn-cast.primary{grid-column:1/-1;order:-1;font-size:16px;padding:12px 16px}
     .bar .link{grid-column:1/-1;justify-self:start}
     h1{font-size:18px}
   }
@@ -380,7 +380,7 @@
     </section>
 
     <section class="pos step" aria-label="Position 4, the Step" id="steppos" hidden>
-      <h2><span class="n">4</span>The Step <span class="q">— the one move you take tonight, sized to you; choosing it walks nothing. Pick one card. Its kind is on the face: take draws from the river, slack leaves more in it than it draws, ratchet makes memory that tightens on evidence, gift gives regardless. The kind does not judge; the ballot will, later: after twenty castings the Value Lab runs the room's kinds of move as a population on one river and reports which mixes kept it alive.</span></h2>
+      <h2><span class="n">4</span>The Step <span class="q">— the one move you take tonight, sized to you; choosing it walks nothing. Pick one card. Its kind is on the face, and the four kinds are explained under the cards.</span></h2>
       <div class="steprow" id="steprow"></div>
       <div class="asym" id="asym" hidden>
         <label for="asymtext"><b id="asym-lab">The asymmetry</b> — if the coin lands the other way, can you live with having chosen this? Your own words, short enough to say aloud.</label>
@@ -721,6 +721,7 @@ HOUSES.forEach(function(h){
       var from0 = (pFrom != null) ? pFrom : P(k);
       if (v !== from0) moveInfo = { kind:'inherit', key:k, from:from0, to:v };
       if (v === DEFAULT_PRIORS[k]) delete priors[k]; else priors[k] = v;
+      if (state.history.length) replayHistory();
       render(); guideAdvance('inherit'); }
     r.addEventListener('input', function(){ if (pFrom == null) pFrom = P(k); set(parseFloat(r.value)); });
     ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ pFrom = null; }, 0); }); });
@@ -728,7 +729,7 @@ HOUSES.forEach(function(h){
     prs.appendChild(box);
   });
   var rs = el('button','ghost rs','Reset this card'); rs.type = 'button'; rs.style.fontSize = '11px'; rs.style.padding = '5px 10px';
-  rs.addEventListener('click', function(e){ e.stopPropagation(); h.keys.forEach(function(k){ delete priors[k]; }); actionSeq++; moveInfo = { kind:'reset', key:h.nm }; render(); });
+  rs.addEventListener('click', function(e){ e.stopPropagation(); h.keys.forEach(function(k){ delete priors[k]; }); actionSeq++; moveInfo = { kind:'reset', key:h.nm }; if (state.history.length) replayHistory(); render(); });
   sh.back.appendChild(rs);
   sh.back.appendChild(el('p','turn','Turn the card back'));
   HOUSE_EL[h.id] = sh; document.getElementById('fan').appendChild(sh.cd);
@@ -743,6 +744,7 @@ CHANNELS.forEach(function(c){
   var r = document.createElement('input'); r.type = 'range'; r.min = 0; r.max = 100; r.step = 1; r.id = 'sl-' + c.k;
   r.style.setProperty('--sl', 'var(' + c.col + ')'); r.setAttribute('aria-label', c.nm + ' share of the allocation, in percent');
   ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ if (liveN !== N){ liveN = N; renderQueued = false; render(); } dragFrom[c.k] = null; }, 0); }); });
+  ['pointerup','touchend'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ r.blur(); }, 0); }); });
   r.addEventListener('input', function(){ if (dragFrom[c.k] == null) dragFrom[c.k] = state.alloc[c.k]; liveN = 1200; setChannel(c.k, +r.value); guideAdvance('slide'); });
   box.appendChild(r); box.appendChild(el('p','why', c.why)); $sliders.appendChild(box);
 });
@@ -767,10 +769,12 @@ function render(){
     document.getElementById('hs-' + h.id).textContent = changed ? changed + ' of ' + h.keys.length + ' changed by you \u00b7 turn over' : 'turn over to change the numbers'; });
 
   var done = !!state.endpoint || state.t >= p.horizon;
-  document.getElementById('btn-step').disabled = done;
+  document.getElementById('btn-step').disabled = done; document.getElementById('btn-step').hidden = done;
   document.getElementById('btn-step').textContent = done ? 'The walk has ended' : 'Walk a year';
+  document.getElementById('btn-cast').classList.toggle('ghost', !done); document.getElementById('btn-cast').classList.toggle('primary', done);
+  document.getElementById('btn-cast').textContent = done ? 'The walk has ended. Cast again (a new table)' : 'Cast again (a new table)';
   document.getElementById('btn-together').disabled = done; document.getElementById('btn-together').hidden = done;
-  document.getElementById('btn-together').textContent = state.coordination >= p.stagK ? 'Walk together (coordination is above the bar)' : 'Walk together (needs coordination above ' + p.stagK.toFixed(2) + ')';
+  document.getElementById('btn-together').textContent = state.coordination >= p.stagK ? 'Walk together (coordination ' + state.coordination.toFixed(2) + ' is above the bar: it counts)' : 'Walk together (coordination ' + state.coordination.toFixed(2) + ' of ' + p.stagK.toFixed(2) + ': the year would be spent for nothing)';
   CHANNELS.forEach(function(c){ document.getElementById('sl-' + c.k).disabled = done; });
   document.getElementById('stepcount').textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
   var meta = document.getElementById('node-meta'); meta.textContent = '';
@@ -863,7 +867,7 @@ function writeChanged(res, p){
     main = 'Your hand is back where you had it' + (moved ? ': ' + moved.charAt(0).toLowerCase() + moved.slice(1) : '') + '.';
   } else if (moveInfo && moveInfo.kind === 'inherit'){
     main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' changed ' + (PRIOR_NAME[moveInfo.key] || moveInfo.key) + ' from ' + moveInfo.from + ' to ' + moveInfo.to +
-           '. Same walk, different inheritance' + (moved ? ', different ending.' : '.');
+           '. Same walk, different inheritance' + (moved ? ', different ending.' : '.') + (state.history.length ? ' The ' + state.t + ' year' + (state.t === 1 ? '' : 's') + ' already walked were walked again under it' + (state.endpoint ? ', and the walk now ends in ' + SHORT[state.endpoint] + '.' : '.') : '');
   } else if (moveInfo && moveInfo.kind === 'reset'){
     main = (moved ? moved + ' when ' : 'Almost nothing moved when ') + '“' + moveInfo.key + '” went back to its defaults.';
   } else if (!state.history.length){
@@ -1095,7 +1099,7 @@ function buildSteps(g){
   });
   var lg = document.getElementById('legend4'); lg.textContent = '';
   TAGS.forEach(function(t){ var d = el('div'); d.appendChild(el('b', null, t + ': ')); d.appendChild(document.createTextNode(TAGLINE[t] + '.')); lg.appendChild(d); });
-  var l2 = el('div'); l2.appendChild(document.createTextNode('A move that is none of the four is a tell, not a step. The tags are the Value Lab’s; the ballot runs after twenty castings, not before.')); lg.appendChild(l2);
+  var l2 = el('div'); l2.appendChild(document.createTextNode('A move that is none of the four is a tell, not a step. The kind does not judge; the ballot will, later: after twenty castings the Value Lab runs the room’s kinds of move as a population on one river and reports which mixes kept it alive.')); lg.appendChild(l2);
   document.getElementById('steppos').hidden = false;
   var cr = document.getElementById('credit-list'), seen = {}; cr.querySelectorAll('a').forEach(function(a){ seen[a.href] = true; });
   actions.forEach(function(it){ var c = it.metadata && it.metadata.credit; if (!c || !c.source_url || seen[c.source_url]) return; seen[c.source_url] = true;
@@ -1167,6 +1171,15 @@ function writeFictionPrompt(lead, res){
 $fic.addEventListener('input', function(){ store(ficKey(), $fic.value); });
 function loadFiction(){ $fic.value = store(ficKey()) || ''; if (actions.length) writeStep(); }
 
+// ── replay: walk the recorded years again under the current inheritance ─────────────────
+function replayHistory(){
+  var hist = state.history || [], cur = state.alloc;
+  rng = makeRng(seed); state = fresh();
+  for (var i = 0; i < hist.length; i++){ if (state.endpoint) break; state.alloc = hist[i].alloc; state = stepOnce(state, priors, rng, hist[i].together); }
+  state.alloc = cur;
+  if (state.history.length) lastNote = noteFor(state);
+}
+
 // ── the hash: identical to walk.html so a link opens in either page ──────────────────────
 function pctOf(a){ return KEYS.map(function(k){ return Math.round(a[k] * 100); }).join('.'); }
 function writeHash(){
@@ -1196,10 +1209,12 @@ function readHash(){
 }
 
 // ── the cast: a new seed, the table dealt again ──────────────────────────────────────────
+var dealTimer = null;
 function deal(){
   var t = document.getElementById("felt"); t.classList.remove('dealt'); void t.offsetWidth;
   var i = 0; t.querySelectorAll('.cd').forEach(function(cd){ cd.style.animationDelay = (i++ * 55) + 'ms'; cd.classList.remove('turned'); cd.setAttribute('aria-pressed','false'); });
   t.classList.add('dealt');
+  clearTimeout(dealTimer); dealTimer = setTimeout(function(){ t.classList.remove('dealt'); }, 2500);   // whatever happens to the animation, the cards end up visible
 }
 function cast(){
   resumed = false; zerosBefore = 0; actionSeq++; document.getElementById('rd-note').hidden = true; noteCall = ''; noteMove = '';
