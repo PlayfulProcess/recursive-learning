@@ -200,7 +200,7 @@ const html = `<!DOCTYPE html>
 
   </div>
 
-  <p class="also">The Walk is also a <a href="game/walk.html">dashboard</a>: the same model with every gauge and prior laid flat.</p>
+  <p class="also">The Walk is also <a href="game/scroll.html">a story you read down</a>, one year per section with the numbers following you, and a <a href="game/walk.html">dashboard</a> with every gauge and prior laid flat. Same model, same links.</p>
 
   <details class="shelf">
     <summary><h3><svg class="i" aria-hidden="true"><use href="#ic-library"/></svg> The grammars behind the games</h3></summary>

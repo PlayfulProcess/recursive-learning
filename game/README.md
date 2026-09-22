@@ -32,6 +32,13 @@ URL hash, so a link to either opens in the other:
   the forecast and confidence, the reading, the step with its kind and card id, the two forgiveness
   lines, the asymmetry, the synthesis, a timestamp and the consent line. `FORM_URL` near the Step
   code is empty until she makes the form; once set, a **Send it** button opens it.
+- **`scroll.html` — the story (mock-up, Sep 22).** The same walk read down a page in the shape of
+  ai-2027.com: a sticky rail on the left with the seven endings ranked, the hand and the two
+  gauges; one section per year in words with the ending that moved most as a small figure; the
+  choice at the end of the latest year (the hand, Walk a year, Walk together, lean toward an
+  ending, Cast again) writes the next year underneath. Scrolling back up shows the rail "as of"
+  that year. What we inherited is a drawer at the top; changing a number re-walks every year below.
+  Same model, same hash, so a link opens in any of the three pages. No dependencies.
 - **`walk.html` — the dashboard.** The same walk with the gauges, the timeline and every prior
   as a flat list.
 

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Walk — as a story · Recursive Learning</title>
+<meta name="description" content="The Walk read down a page: one year per section, a rail of numbers that follows you, a choice at the end of every year whose consequence appears below it. A teaching instrument, not a forecast.">
+<!--
+  The Walk as a scrolling story. Same model as walk.html and spread.html (walk-model.js), same
+  URL hash. One column you read down, one section per year; a rail on the left keeps the numbers
+  and follows the section you are reading; the choice at the end of the latest year writes the
+  next year underneath. Mock-up: the vibe and the format, dark, no dependencies.
+-->
+<style>
+  :root{
+    --bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
+    --ink:#e8ecf3; --muted:#8e9aae; --accent:#5ee2b0; --accent-ink:#06281d; --warn:#f0b866;
+    --power:#e2725e; --align:#5ee2b0; --sustain:#7fb2f0; --stop:#c79bf0;
+    --grace:#5ee2b0; --turn:#7fb2f0; --thestop:#c79bf0; --adol:#f0b866; --lockin:#b8a1e8; --doom:#e2725e; --walking:#8e9aae;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:dark;
+    font-family:Georgia,"Iowan Old Style","Times New Roman",serif;line-height:1.6}
+  .ui{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+  a{color:var(--accent)}
+  button{font-family:Inter,system-ui,sans-serif;background:var(--accent);color:var(--accent-ink);border:0;border-radius:9px;
+    padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer}
+  button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
+  button[disabled]{opacity:.42;cursor:not-allowed}
+
+  .page{max-width:1120px;margin:0 auto;padding:0 16px 80px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:0 36px;align-items:start}
+  /* the rail */
+  .rail{position:sticky;top:0;align-self:start;padding:16px 0 12px;font-family:Inter,system-ui,sans-serif;font-size:12.5px;color:var(--muted)}
+  .rail h2{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;margin:14px 0 7px;font-weight:600;color:var(--muted)}
+  .rail .asof{font-size:12px;color:var(--warn);min-height:1.2em;margin-bottom:6px}
+  .rail .big{font-size:34px;font-weight:700;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+  .rail .big small{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+  .rail .lead{font-size:13px;color:var(--ink);margin-top:3px}
+  .bars{display:grid;gap:5px}
+  .bar{display:grid;grid-template-columns:96px 1fr 38px;gap:8px;align-items:center;font-size:12px}
+  .bar .t{height:7px;border-radius:4px;background:var(--panel2);border:1px solid var(--line);overflow:hidden;position:relative}
+  .bar .f{height:100%;transition:width .35s ease}
+  .bar .m{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--warn);opacity:.9}
+  .bar .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+  .bar.end .n{color:var(--ink)}
+  .bar.lead .n{color:var(--accent);font-weight:600}
+  .rail .foot{font-size:11px;color:var(--muted);margin-top:14px;line-height:1.45}
+
+  /* the story */
+  .story{padding-top:16px;min-width:0}
+  .mark{display:flex;align-items:center;gap:12px;margin:8px 0 6px}
+  .mark svg{width:34px;height:34px;color:var(--accent);flex:none}
+  h1{font-size:30px;margin:0;line-height:1.15;font-weight:400}
+  h1 .sub{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-family:Inter,system-ui,sans-serif}
+  .lede{font-size:18px;color:var(--ink);max-width:62ch;margin:14px 0 4px}
+  .disc{font-family:Inter,system-ui,sans-serif;font-size:12.5px;color:var(--warn);margin:0 0 22px}
+  section.year{padding:22px 0 26px;border-top:1px solid var(--line);scroll-margin-top:12px}
+  section.year h3{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
+  section.year h3 b{color:var(--ink);font-weight:700;letter-spacing:0;font-size:13px;margin-right:8px}
+  .prose{font-size:17.5px;max-width:64ch}
+  .prose p{margin:0 0 10px}
+  .prose .num{font-family:Inter,system-ui,sans-serif;font-size:12.5px;color:var(--muted)}
+  .fig{float:right;width:132px;margin:0 0 10px 22px;border-radius:9px;overflow:hidden;border:1px solid var(--line);background:#0a0c10}
+  .fig img{display:block;width:100%;height:170px;object-fit:cover;filter:saturate(.9)}
+  .fig figcaption{font-family:Inter,system-ui,sans-serif;font-size:10.5px;color:var(--muted);padding:6px 8px;line-height:1.35}
+  .clear{clear:both}
+  section.year.alone .prose p:first-child{color:var(--warn)}
+  section.year.ended .prose p:first-child{color:var(--ink);font-size:20px}
+
+  /* the choice at the end of the latest year */
+  .choice{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px 14px;font-family:Inter,system-ui,sans-serif}
+  .choice h4{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
+  .hand{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px;margin-bottom:12px}
+  .alloc .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:0}
+  .alloc .top b{font-weight:600}
+  .alloc .top .pct{color:var(--muted);font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;margin:0;height:28px;accent-color:var(--sl,var(--accent));-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer}
+  input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--panel2);border:1px solid var(--line)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--sl,var(--accent));border:2px solid var(--bg);margin-top:-10px}
+  input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--panel2);border:1px solid var(--line)}
+  input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--sl,var(--accent));border:2px solid var(--bg)}
+  .btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .btns .why{flex-basis:100%;font-size:12px;color:var(--muted);margin-top:4px}
+  .lean{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center;font-size:12px;color:var(--muted)}
+  .chip{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600}
+  .chip.on{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+  .chip.idk{border-style:dashed}
+  .live{font-size:13.5px;color:var(--ink);margin:10px 0 0;line-height:1.45}
+
+  /* the inheritance drawer */
+  details.drawer{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin:0 0 18px;font-family:Inter,system-ui,sans-serif}
+  details.drawer summary{cursor:pointer;font-size:12.5px;color:var(--ink);font-weight:600}
+  details.drawer summary span{color:var(--muted);font-weight:400}
+  .houses{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 20px;margin-top:12px}
+  .house h5{font-size:12px;margin:0 0 6px;color:var(--ink)}
+  .pr{margin:0 0 7px}
+  .pr .lab{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:11.5px}
+  .pr .lab b{font-weight:600;color:var(--ink)}
+  .pr input[type=text]{width:56px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:2px 5px;font:inherit;font-size:11px;text-align:right}
+  .pr input[type=range]{height:16px}
+  .pr input[type=range]::-webkit-slider-thumb{width:14px;height:14px;margin-top:-5px;border-width:1px}
+  .drawer .note{font-size:11.5px;color:var(--muted);margin:8px 0 0}
+
+  /* the ending */
+  .ending{margin-top:8px}
+  .ending .card{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+  .ending .card img{width:180px;height:240px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+  .ending textarea{width:100%;min-height:120px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-size:16px;resize:vertical}
+  .hint{font-family:Inter,system-ui,sans-serif;font-size:12px;color:var(--muted);margin:6px 0 0}
+  .credits{font-family:Inter,system-ui,sans-serif;font-size:11px;color:var(--muted);margin-top:30px;border-top:1px solid var(--line);padding-top:10px}
+  .credits a{color:var(--muted)}
+
+  @media (max-width:899px){
+    .page{grid-template-columns:1fr;gap:0}
+    .rail{position:sticky;top:0;z-index:5;background:rgba(13,15,20,.96);backdrop-filter:blur(6px);padding:8px 16px 8px;margin:0 -16px;border-bottom:1px solid var(--line)}
+    .rail h2,.rail .foot,.rail .bars.shares,.rail .gauges{display:none}
+    .rail .big{font-size:24px}
+    .rail .lead{font-size:12.5px}
+    .rail .bars.ends{grid-template-columns:1fr 1fr;gap:2px 12px;margin-top:6px}
+    .rail .bars.ends .bar{grid-template-columns:70px 1fr 32px;font-size:11px}
+    .rail .bars.ends .bar:nth-child(n+5){display:none}
+    h1{font-size:24px} .lede{font-size:16.5px} .prose{font-size:16px}
+    .fig{width:96px;margin-left:12px} .fig img{height:120px}
+    .hand{grid-template-columns:1fr}
+    .btns button{flex:1 1 auto}
+    .ending .card img{width:120px;height:160px}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <aside class="rail" aria-label="the numbers">
+    <div class="asof" id="asof"></div>
+    <div class="big"><span id="r-p">–</span><small id="r-year"></small></div>
+    <div class="lead" id="r-lead"></div>
+    <h2>Where this walk ends</h2>
+    <div class="bars ends" id="r-ends"></div>
+    <h2>The hand</h2>
+    <div class="bars shares" id="r-shares"></div>
+    <h2>Where we stand</h2>
+    <div class="bars gauges" id="r-gauges"></div>
+    <p class="foot">A teaching instrument, not a forecast. 4,000 rolled futures per number, holding the hand to the end. <a href="spread.html">The same walk as a table</a>.</p>
+  </aside>
+
+  <main class="story">
+    <header class="mark">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
+      <h1><span class="sub">The Walk</span>Twenty years, one at a time</h1>
+    </header>
+    <p class="lede">A probability here is a property of the world <em>given a path</em>. Read down: each year you choose a hand and walk, and the numbers on the left follow you. Move the path and the number moves.</p>
+    <p class="disc">A teaching instrument, not a forecast. Nothing staked, nothing sent.</p>
+
+    <details class="drawer" id="drawer">
+      <summary>What we inherited <span>— sixteen assumptions the walk stands on. Change one and every year below is walked again under it.</span></summary>
+      <div class="houses" id="houses"></div>
+      <p class="note" id="drawer-note">The defaults are in place.</p>
+    </details>
+
+    <div id="years"></div>
+
+    <div class="choice" id="choice">
+      <h4 id="choice-h">Year 0 — your hand for the year ahead</h4>
+      <div class="hand" id="hand"></div>
+      <div class="btns">
+        <button id="btn-step">Walk a year</button>
+        <button id="btn-together" class="ghost">Walk together</button>
+        <button id="btn-cast" class="ghost">Cast again (a new table)</button>
+        <span class="why" id="why"></span>
+      </div>
+      <div class="lean" id="lean"></div>
+      <p class="live" id="live"></p>
+    </div>
+
+    <div class="ending" id="ending" hidden></div>
+
+    <div class="credits" id="credits"></div>
+  </main>
+</div>
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute;left:-9999px"><symbol id="spiral" viewBox="0 0 100 100"><path d="M50 50 m-2 0 a2 2 0 1 1 4 0 a4 4 0 1 1 -8 0 a7 7 0 1 1 14 0 a11 11 0 1 1 -22 0 a16 16 0 1 1 32 0 a22 22 0 1 1 -44 0 a29 29 0 1 1 58 0 a37 37 0 1 1 -74 0" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol></svg>
+
+<script src="walk-model.js"></script>
+<script>
+(function () {
+'use strict';
+var M = window.walkModel;
+var DEFAULT_PRIORS = M.DEFAULT_PRIORS, ENDPOINTS = M.ENDPOINTS, makeRng = M.makeRng, withDefaults = M.withDefaults,
+    freshState = M.freshState, stepOnce = M.stepOnce, simulate = M.simulate, alignRatio = M.alignRatio;
+
+var CARDS = {
+  grace:{ nm:'Grace', reg:'the hoped-for ending', col:'--grace', file:'Irworobongdo.jpg', credit:'Irworobongdo, Joseon court screen; Wikimedia Commons, public domain' },
+  sustainable_turn:{ nm:'The sustainable turn', reg:'the other hoped-for ending', col:'--turn', file:'%EC%86%8C%EB%82%98%EB%AC%B4_%EC%95%84%EB%9E%98_%EC%82%AC%EC%8A%B4_%EC%A1%B0%EC%84%A0-%E6%9D%BE%E4%B8%8B%E9%9B%99%E9%B9%BF%E5%9C%96_%E6%9C%9D%E9%AE%AE-Deer_amid_pine_trees_MET_Deer_and_Pine_scrolls_Ten_Symbols_of_Longevity.jpg', credit:'Deer amid pine trees, Metropolitan Museum of Art; CC0' },
+  the_stop:{ nm:'The Stop', reg:'the halt', col:'--thestop', file:'%EC%B0%BD%EB%8D%956447_%EC%8B%AD%EC%9E%A5%EC%83%9D%EB%8F%84_%EB%B3%91%ED%92%8D.jpg', credit:'Sipjangsaengdo screen, National Palace Museum of Korea; public domain' },
+  adolescence:{ nm:'Adolescence', reg:'the rocky middle', col:'--adol', file:'Unknown_%28Korean%29_-_Tiger_and_Magpie_-_2015.1_-_Detroit_Institute_of_Arts.jpg', credit:'Tiger and Magpie, Detroit Institute of Arts; public domain' },
+  lock_in:{ nm:'Lock-in', reg:'the captured ending', col:'--lockin', file:'Detail_arabesque_Alhambra_Granada_Spain.jpg', credit:'Alhambra arabesque, photograph by Jebulon; CC0' },
+  doom:{ nm:'Doom', reg:'the lost ending', col:'--doom', file:'Tiger_and_Magpie%2C_72x59.4_cm%2C_priviate_collection%2C_Japan.jpg', credit:'Tiger and Magpie, Joseon, private collection; public domain' },
+  still_walking:{ nm:'Still walking', reg:'the unfinished walk', col:'--walking', file:'Bowl_decorated_with_ten_symbols_of_longevity_MET_DP702970.jpg', credit:'Bowl with the ten symbols of longevity, Metropolitan Museum of Art; CC0' }
+};
+function art(k, w){ return 'https://commons.wikimedia.org/wiki/Special:FilePath/' + CARDS[k].file + '?width=' + (w || 320); }
+var CHANNELS = [
+  { k:'power', nm:'Power', col:'--power' }, { k:'alignment', nm:'Alignment', col:'--align' },
+  { k:'sustainability', nm:'Sustainability', col:'--sustain' }, { k:'stop', nm:'Stop', col:'--stop' } ];
+var PRIOR_NAME = { horizon:'years in a walk', growth:'how fast power grows capability', stopDrag:'how much a coordinated stop slows it',
+  decay:'how fast the two stocks leak', riskBase:'risk per year at the start', alpha:'how steeply risk climbs with capability',
+  beta:'how strongly alignment buys risk down', shockRate:'chance of a shock each year', shockDamping:'how much sustainability lowers that chance',
+  shockRisk:'risk a shock adds that year', coordGain:'coordination gained from alignment and stop', coordDecay:'coordination lost each year',
+  stagK:'the bar for walking together', graceCapability:'capability at which the ending is read', graceAlignRatio:'the lead alignment needs for Grace',
+  lockInCoord:'coordination below which it locks in' };
+var PRIOR_UI = { horizon:[4,40,1], growth:[0,1,0.01], stopDrag:[0,1,0.01], decay:[0,0.5,0.01], riskBase:[0,0.2,0.005], alpha:[0.5,3,0.1], beta:[0,8,0.1],
+  shockRate:[0,0.5,0.01], shockDamping:[0,1,0.01], shockRisk:[0,0.5,0.01], coordGain:[0,1,0.01], coordDecay:[0,0.5,0.01], stagK:[0,1,0.01],
+  graceCapability:[1,20,0.5], graceAlignRatio:[0,3,0.05], lockInCoord:[0,1,0.01] };
+var HOUSES = [
+  { nm:'Capability grows with power', keys:['growth','stopDrag','graceCapability','horizon'] },
+  { nm:'A shock can end everything', keys:['riskBase','alpha','beta','decay','shockRate','shockDamping','shockRisk'] },
+  { nm:'Stopping needs company', keys:['coordGain','coordDecay','stagK','lockInCoord','graceAlignRatio'] } ];
+
+// ── state, hash-compatible with the other two pages ──────────────────────────────────────
+var DEFAULT_ALLOC = { power:0.40, alignment:0.30, sustainability:0.15, stop:0.15 };
+function fresh(){ return freshState({ power:DEFAULT_ALLOC.power, alignment:DEFAULT_ALLOC.alignment, sustainability:DEFAULT_ALLOC.sustainability, stop:DEFAULT_ALLOC.stop }); }
+var state = fresh(), priors = {}, seed = (Math.random() * 0x7fffffff) | 0, rng = makeRng(seed), N = 4000;
+var snaps = [];          // one per year section: { t, alloc, probs, cap, coord, lead }
+var KEYS = ['power','alignment','sustainability','stop'];
+function P(k){ return (priors[k] != null && isFinite(priors[k])) ? +priors[k] : DEFAULT_PRIORS[k]; }
+function viewPriors(){ var o = withDefaults(priors); o.seed = seed; return o; }
+function pc(x){ return Math.round(x * 100) + '%'; }
+function el(tag, cls, text){ var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+function leadOf(probs){ return ENDPOINTS.reduce(function(m,k){ return probs[k] > probs[m] ? k : m; }, ENDPOINTS[0]); }
+
+function pctOf(a){ return KEYS.map(function(k){ return Math.round(a[k] * 100); }).join('.'); }
+function writeHash(){
+  var parts = ['v1', 's=' + seed, 'a=' + pctOf(state.alloc)];
+  if (state.history.length) parts.push('h=' + state.history.map(function(h){ return pctOf(h.alloc) + '.' + (h.together ? 1 : 0); }).join('_'));
+  var over = Object.keys(priors); if (over.length) parts.push('p=' + over.map(function(k){ return k + ':' + priors[k]; }).join(','));
+  var h = '#' + parts.join(';'); store('walk:last-hash', h);
+  if (location.hash !== h){ try { history.replaceState(null, '', location.pathname + location.search + h); } catch (e) {} }
+}
+function allocFrom(str){ var n = String(str).split('.').map(Number); if (n.length < 4 || n.slice(0,4).some(function(v){ return !isFinite(v); })) return null;
+  return { power:n[0]/100, alignment:n[1]/100, sustainability:n[2]/100, stop:n[3]/100, _t:n[4] === 1 }; }
+function readHash(){
+  var h = location.hash.replace(/^#/, ''); if (h.indexOf('v1') !== 0) return false;
+  var map = {}; h.split(';').slice(1).forEach(function(s){ var i = s.indexOf('='); if (i > 0) map[s.slice(0,i)] = s.slice(i+1); });
+  Object.keys(priors).forEach(function(k){ delete priors[k]; });
+  if (map.p) map.p.split(',').forEach(function(kv){ var i = kv.indexOf(':'); if (i < 0) return; var k = kv.slice(0,i), v = parseFloat(kv.slice(i+1));
+    if (DEFAULT_PRIORS.hasOwnProperty(k) && isFinite(v) && v !== DEFAULT_PRIORS[k]) priors[k] = v; });
+  if (map.s && isFinite(+map.s)) seed = +map.s;
+  rng = makeRng(seed); state = fresh();
+  if (map.h) map.h.split('_').forEach(function(sg){ var a = allocFrom(sg); if (!a) return; var tog = a._t; delete a._t; state.alloc = a; state = stepOnce(state, priors, rng, tog); });
+  var cur = map.a ? allocFrom(map.a) : null; if (cur){ delete cur._t; state.alloc = cur; }
+  return true;
+}
+function replayHistory(){
+  var hist = state.history || [], cur = state.alloc; rng = makeRng(seed); state = fresh();
+  for (var i = 0; i < hist.length; i++){ if (state.endpoint) break; state.alloc = hist[i].alloc; state = stepOnce(state, priors, rng, hist[i].together); }
+  state.alloc = cur;
+}
+
+// ── the year in words ─────────────────────────────────────────────────────────────────────
+function yearText(s, before, after){
+  var lead = leadOf(after), lc = CARDS[lead], lines = [];
+  if (s.lastAlone) lines.push('You stepped alone. Nothing moved: coordination was ' + s.coordination.toFixed(2) + ', below the bar of ' + P('stagK').toFixed(2) + ', so the year together was spent for nothing.');
+  else if (s.endpoint === 'doom') lines.push('The walk ended here, in Doom. Risk this year was ' + (s.lastRisk * 100).toFixed(1) + '% and the die landed on it' + (s.t <= 2 ? ': a rare roll, and a real one.' : '.'));
+  else if (s.endpoint) lines.push('The walk arrived: ' + lc.nm + ', ' + lc.reg + '. Capability reached ' + s.capability.toFixed(2) + ' with coordination ' + s.coordination.toFixed(2) + ' and alignment ahead of capability ' + alignRatio(s).toFixed(2) + '.');
+  else {
+    var mech = s.lastShock ? 'a shock landed outside the lab and coordination took the hit' :
+      (s.coordination >= P('stagK') && s.alloc.stop > 0) ? 'the stop counted: coordination was above the bar, so it slowed capability' :
+      s.lastRatioDelta > 0.01 ? 'alignment led capability' : s.lastRatioDelta < -0.01 ? 'capability outran alignment' : 'the stocks leaked about as fast as capability grew';
+    var best = null; ENDPOINTS.forEach(function(k){ var d = after[k] - before[k]; if (!best || Math.abs(d) > Math.abs(best.d)) best = { k:k, d:d }; });
+    var moved = (best && Math.abs(best.d) >= 0.01) ? CARDS[best.k].nm + (best.d < 0 ? ' fell from ' : ' rose from ') + pc(before[best.k]) + ' to ' + pc(after[best.k]) : 'Almost nothing moved';
+    if (best && best.k !== lead && Math.abs(after[lead] - before[lead]) >= 0.005) moved += ', and ' + lc.nm + (after[lead] < before[lead] ? ' fell from ' : ' rose from ') + pc(before[lead]) + ' to ' + pc(after[lead]);
+    lines.push('A year walked with power ' + pc(s.alloc.power) + ', alignment ' + pc(s.alloc.alignment) + ', sustainability ' + pc(s.alloc.sustainability) + ', stop ' + pc(s.alloc.stop) + '. ' + moved + ' this year, in which ' + mech + '.');
+  }
+  return { lines:lines, lead:lead };
+}
+
+// ── build: the drawer, the hand ───────────────────────────────────────────────────────────
+(function(){ var box = document.getElementById('houses');
+  HOUSES.forEach(function(h){ var d = el('div','house'); d.appendChild(el('h5', null, h.nm));
+    h.keys.forEach(function(k){ var cfg = PRIOR_UI[k], pr = el('div','pr'), lab = el('div','lab');
+      lab.appendChild(el('b', null, PRIOR_NAME[k])); var num = document.createElement('input'); num.type = 'text'; num.inputMode = 'decimal'; num.id = 'prn-' + k; lab.appendChild(num); pr.appendChild(lab);
+      var r = document.createElement('input'); r.type = 'range'; r.min = cfg[0]; r.max = cfg[1]; r.step = cfg[2]; r.id = 'prr-' + k; pr.appendChild(r);
+      var from = null;
+      function set(v){ if (!isFinite(v)) return; var f0 = from != null ? from : P(k); if (v === DEFAULT_PRIORS[k]) delete priors[k]; else priors[k] = v;
+        if (state.history.length) replayHistory(); rebuildYears();
+        var lead = snaps.length ? snaps[snaps.length - 1].lead : leadOf(simulate(state, viewPriors(), 1500).probs);
+        setLive('You changed ' + PRIOR_NAME[k] + ' from ' + f0 + ' to ' + v + '. Same walk, different inheritance' + (state.history.length ? ': the ' + state.t + ' year' + (state.t === 1 ? '' : 's') + ' already walked were walked again under it' : '') + '.'); }
+      r.addEventListener('input', function(){ if (from == null) from = P(k); set(parseFloat(r.value)); });
+      ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ from = null; }, 0); }); });
+      num.addEventListener('change', function(){ from = null; set(parseFloat(String(num.value).replace(',', '.'))); });
+      d.appendChild(pr); });
+    box.appendChild(d); });
+})();
+function syncDrawer(){ Object.keys(PRIOR_UI).forEach(function(k){ var n = document.getElementById('prn-' + k), r = document.getElementById('prr-' + k);
+    if (n) n.value = String(P(k)); if (r) r.value = P(k); });
+  var c = Object.keys(priors).length; document.getElementById('drawer-note').textContent = c ? c + ' of 16 changed by you; the link carries them.' : 'The defaults are in place.';
+  document.querySelector('#drawer summary span').textContent = c ? '— ' + c + ' of sixteen changed. Every year below was walked under them.' : '— sixteen assumptions the walk stands on. Change one and every year below is walked again under it.'; }
+
+var dragFrom = {};
+(function(){ var box = document.getElementById('hand');
+  CHANNELS.forEach(function(c){ var a = el('div','alloc'), top = el('div','top'); var b = el('b', null, c.nm); b.style.color = 'var(' + c.col + ')'; top.appendChild(b);
+    var pct = el('span','pct'); pct.id = 'pct-' + c.k; top.appendChild(pct); a.appendChild(top);
+    var r = document.createElement('input'); r.type = 'range'; r.min = 0; r.max = 100; r.step = 1; r.id = 'sl-' + c.k; r.style.setProperty('--sl', 'var(' + c.col + ')');
+    r.addEventListener('input', function(){ if (dragFrom[c.k] == null) dragFrom[c.k] = state.alloc[c.k]; setChannel(c.k, +r.value); });
+    ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ dragFrom[c.k] = null; }, 0); }); });
+    ['pointerup','touchend'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ r.blur(); }, 0); }); });
+    a.appendChild(r); box.appendChild(a); });
+})();
+function setChannel(key, pctValue){
+  if (state.endpoint) return;
+  var v = Math.max(0, Math.min(100, Math.round(pctValue))) / 100, others = KEYS.filter(function(k){ return k !== key; });
+  var restNow = others.reduce(function(s,k){ return s + state.alloc[k]; }, 0), rest = 1 - v, out = {}; out[key] = v;
+  if (restNow <= 1e-9) others.forEach(function(k){ out[k] = rest / 3; }); else others.forEach(function(k){ out[k] = state.alloc[k] / restNow * rest; });
+  var acc = 0; others.forEach(function(k, i){ out[k] = (i === others.length - 1) ? Math.max(0, Math.round((rest - acc) * 100) / 100) : Math.max(0, Math.round(out[k] * 100) / 100); if (i < others.length - 1) acc += out[k]; });
+  var before = liveProbs(); state.alloc = out; var after = liveProbs();
+  var lead = leadOf(after), best = null; ENDPOINTS.forEach(function(k){ var d = after[k] - before[k]; if (!best || Math.abs(d) > Math.abs(best.d)) best = { k:k, d:d }; });
+  var ch = CHANNELS.filter(function(c){ return c.k === key; })[0], from0 = dragFrom[key] != null ? dragFrom[key] : before;
+  setLive((best && Math.abs(best.d) >= 0.01 ? CARDS[best.k].nm + (best.d < 0 ? ' fell from ' : ' rose from ') + pc(before[best.k]) + ' to ' + pc(after[best.k]) + ': you' : 'Almost nothing moved when you') +
+    ' moved ' + ch.nm + ' from ' + pc(typeof from0 === 'number' ? from0 : state.alloc[key]) + ' to ' + pc(v) + '. The world did not change; the path did.');
+  renderLive();
+}
+var liveCache = { key:null, probs:null };
+function liveProbs(){ var key = seed + '|' + state.t + '|' + pctOf(state.alloc) + '|' + JSON.stringify(priors) + '|' + (state.endpoint || '');
+  if (liveCache.key !== key){ liveCache = { key:key, probs: state.endpoint ? ENDPOINTS.reduce(function(o,k){ o[k] = k === state.endpoint ? 1 : 0; return o; }, {}) : simulate(state, viewPriors(), N).probs }; }
+  return liveCache.probs; }
+
+// ── the rail ──────────────────────────────────────────────────────────────────────────────
+function bar(nm, col, frac, val, mark){ var b = el('div','bar'); var n = el('span','n', nm); b.appendChild(n);
+  var t = el('div','t'); var f = el('div','f'); f.style.background = 'var(' + col + ')'; f.style.width = (Math.max(0, Math.min(1, frac)) * 100) + '%'; t.appendChild(f);
+  if (mark != null){ var m = el('i','m'); m.style.left = (Math.max(0, Math.min(1, mark)) * 100) + '%'; t.appendChild(m); } b.appendChild(t); b.appendChild(el('span','v', val)); return b; }
+function drawRail(snap, asof){
+  railDrawn = true;
+  document.getElementById('asof').textContent = asof || '';
+  var lead = snap.lead, p = withDefaults(priors);
+  document.getElementById('r-p').textContent = pc(snap.probs[lead]); document.getElementById('r-p').style.color = 'var(' + CARDS[lead].col + ')';
+  document.getElementById('r-year').textContent = 'year ' + snap.t + ' of ' + p.horizon;
+  document.getElementById('r-lead').textContent = (snap.ended ? 'the walk ended in ' : 'chance this walk ends in ') + CARDS[lead].nm + ', ' + CARDS[lead].reg;
+  var ends = document.getElementById('r-ends'); ends.textContent = '';
+  ENDPOINTS.slice().sort(function(a,b){ return snap.probs[b] - snap.probs[a]; }).forEach(function(k){ var b = bar(CARDS[k].nm, CARDS[k].col, snap.probs[k], pc(snap.probs[k])); b.classList.add('end'); if (k === lead) b.classList.add('lead'); ends.appendChild(b); });
+  var sh = document.getElementById('r-shares'); sh.textContent = ''; CHANNELS.forEach(function(c){ sh.appendChild(bar(c.nm, c.col, snap.alloc[c.k], pc(snap.alloc[c.k]))); });
+  var g = document.getElementById('r-gauges'); g.textContent = '';
+  g.appendChild(bar('capability', '--power', snap.cap / (p.graceCapability * 1.5), snap.cap.toFixed(2), 1 / 1.5));
+  g.appendChild(bar('coordination', '--align', snap.coord, snap.coord.toFixed(2), p.stagK));
+}
+function snapshot(){ var probs = liveProbs(); return { t:state.t, alloc:state.alloc, probs:probs, cap:state.capability, coord:state.coordination, lead: state.endpoint || leadOf(probs), ended:!!state.endpoint }; }
+function renderLive(){ var p = withDefaults(priors);
+  CHANNELS.forEach(function(c){ var r = document.getElementById('sl-' + c.k), v = Math.round(state.alloc[c.k] * 100); if (+r.value !== v) r.value = v; document.getElementById('pct-' + c.k).textContent = v + '%'; r.disabled = !!state.endpoint; });
+  var snap = snapshot(); if (!viewingPast) drawRail(snap, '');
+  var done = !!state.endpoint || state.t >= p.horizon;
+  document.getElementById('btn-step').hidden = done; document.getElementById('btn-together').hidden = done;
+  document.getElementById('btn-cast').classList.toggle('ghost', !done);
+  document.getElementById('btn-together').textContent = state.coordination >= p.stagK ? 'Walk together (coordination ' + state.coordination.toFixed(2) + ' is above the bar: it counts)' : 'Walk together (coordination ' + state.coordination.toFixed(2) + ' of ' + p.stagK.toFixed(2) + ': the year would be spent)';
+  document.getElementById('choice-h').textContent = done ? 'The walk has ended' : 'Year ' + state.t + ' — your hand for the year ahead';
+  document.getElementById('why').textContent = done ? 'Cast again for a new table, or open What we inherited and change a number: every year is walked again under it.' : 'The numbers on the left are the chance of each ending if you keep this hand to the end.';
+  syncDrawer(); drawLean(); drawEnding(); writeHash();
+}
+function setLive(t){ document.getElementById('live').textContent = t; }
+
+// ── the years, as sections ────────────────────────────────────────────────────────────────
+var viewingPast = false;
+function rebuildYears(){
+  var box = document.getElementById('years'); box.textContent = ''; snaps = [];
+  // walk the history again, section by section, to write each year in words
+  var hist = state.history || [], s = fresh(), r = makeRng(seed), before = null, pr = viewPriors();
+  var probs0 = simulate(s, pr, 1500).probs; before = probs0;
+  for (var i = 0; i < hist.length; i++){
+    if (s.endpoint) break;
+    s.alloc = hist[i].alloc; s = stepOnce(s, priors, r, hist[i].together);
+    var after = s.endpoint ? ENDPOINTS.reduce(function(o,k){ o[k] = k === s.endpoint ? 1 : 0; return o; }, {}) : simulate(s, pr, i === hist.length - 1 ? N : 1500).probs;
+    var yt = yearText(s, before, after);
+    var sec = el('section','year' + (s.lastAlone ? ' alone' : '') + (s.endpoint ? ' ended' : '')); sec.id = 'y' + s.t;
+    var h = el('h3'); h.appendChild(el('b', null, 'Year ' + s.t)); h.appendChild(document.createTextNode(hist[i].together ? 'walked together' : 'walked')); sec.appendChild(h);
+    var fig = el('figure','fig'); var img = document.createElement('img'); img.alt = ''; img.src = art(yt.lead, 320); img.onerror = function(){ this.style.display = 'none'; }; fig.appendChild(img);
+    fig.appendChild(el('figcaption', null, CARDS[yt.lead].nm + ' ' + pc(after[yt.lead]) + ', ' + CARDS[yt.lead].reg)); sec.appendChild(fig);
+    var pr2 = el('div','prose'); yt.lines.forEach(function(l){ pr2.appendChild(el('p', null, l)); });
+    pr2.appendChild(el('p','num', 'capability ' + s.capability.toFixed(2) + ' · coordination ' + s.coordination.toFixed(2) + ' · alignment ahead of capability ' + alignRatio(s).toFixed(2) + (s.lastRisk ? ' · risk this year ' + (s.lastRisk * 100).toFixed(1) + '%' : '')));
+    sec.appendChild(pr2); sec.appendChild(el('div','clear')); box.appendChild(sec);
+    snaps.push({ t:s.t, alloc:s.alloc, probs:after, cap:s.capability, coord:s.coordination, lead:yt.lead, ended:!!s.endpoint, el:sec });
+    before = after;
+  }
+  observeYears(); renderLive();
+}
+// the rail follows the reader: it shows the year whose heading last crossed the middle of the
+// screen, and "now" at the top of the page, at the latest year, and whenever the choice is on screen
+var railTicking = false;
+function railFollow(){
+  railTicking = false;
+  var mid = innerHeight * 0.5, ch = document.getElementById('choice').getBoundingClientRect();
+  var choiceVisible = ch.top < mid && ch.bottom > 0;   // the choice has reached the middle of the screen: the reader is at now
+  var atTop = document.getElementById('drawer').getBoundingClientRect().bottom > 0;   // the header is still on screen: the reader has not gone back in time yet
+  var cur = null;
+  for (var i = 0; i < snaps.length; i++){ if (snaps[i].el.getBoundingClientRect().top <= mid) cur = snaps[i]; else break; }
+  if (choiceVisible || atTop || !cur || cur === snaps[snaps.length - 1]){ if (viewingPast || !railDrawn){ viewingPast = false; drawRail(snapshot(), ''); } return; }
+  if (!viewingPast || railFor !== cur){ viewingPast = true; railFor = cur; drawRail(cur, 'as of year ' + cur.t + ' \u2014 scroll down for now'); }
+}
+var railFor = null, railDrawn = false;
+function observeYears(){ railFor = null; viewingPast = false; railFollow(); }
+addEventListener('scroll', function(){ if (!railTicking){ railTicking = true; setTimeout(railFollow, 40); } }, { passive:true });   // a timer, not rAF: a hidden tab still keeps the rail honest
+addEventListener('resize', railFollow);
+
+// ── choices ───────────────────────────────────────────────────────────────────────────────
+function walk(together){
+  if (state.endpoint || state.t >= P('horizon')) return;
+  state = stepOnce(state, priors, rng, together);
+  rebuildYears();
+  var last = snaps[snaps.length - 1]; if (last) setTimeout(function(){ last.el.scrollIntoView({ behavior:'smooth', block:'start' }); }, 30);
+  setLive(state.endpoint ? 'The walk has ended. Write it below, or cast again.' : 'Year ' + state.t + ' is written above. Keep this hand, or move it, and walk again.');
+}
+document.getElementById('btn-step').addEventListener('click', function(){ walk(false); });
+document.getElementById('btn-together').addEventListener('click', function(){ walk(true); });
+document.getElementById('btn-cast').addEventListener('click', function(){
+  var dropped = Object.keys(priors).length; Object.keys(priors).forEach(function(k){ delete priors[k]; });
+  seed = (Math.random() * 0x7fffffff) | 0; rng = makeRng(seed); state = fresh(); liveCache = { key:null };
+  rebuildYears(); window.scrollTo({ top:0, behavior:'smooth' });
+  setLive('A new table: a new cast, the default hand and the default inheritance.' + (dropped ? ' Your ' + dropped + ' changed number' + (dropped > 1 ? 's were' : ' was') + ' let go.' : '')); });
+
+// lean toward an ending: the hand that favours it most from here
+var TOWARD = { grace:{ power:0.30, alignment:0.55, sustainability:0.10, stop:0.05 }, sustainable_turn:{ power:0.20, alignment:0.10, sustainability:0.65, stop:0.05 },
+  the_stop:{ power:0.10, alignment:0.20, sustainability:0.10, stop:0.60 }, adolescence:{ power:0.55, alignment:0.30, sustainability:0.10, stop:0.05 },
+  lock_in:{ power:0.90, alignment:0.05, sustainability:0.05, stop:0.00 }, doom:{ power:1, alignment:0, sustainability:0, stop:0 }, still_walking:{ power:0.10, alignment:0.30, sustainability:0.30, stop:0.30 } };
+function bestHandFor(k){ var cands = [TOWARD[k]], q = [0, 0.25, 0.5, 0.75, 1];
+  q.forEach(function(a){ q.forEach(function(b){ q.forEach(function(c){ var d = 1 - a - b - c; if (d >= -1e-9 && d <= 1 + 1e-9) cands.push({ power:a, alignment:b, sustainability:c, stop:Math.max(0, Math.round(d * 100) / 100) }); }); }); });
+  var best = cands[0], bestP = -1; cands.forEach(function(h, i){ var st = M.copyState(state); st.alloc = h; st.history = null; var pr = withDefaults(priors); pr.seed = 9001 + i; var r = simulate(st, pr, 400); if (r.probs[k] > bestP){ bestP = r.probs[k]; best = h; } }); return best; }
+function drawLean(){ var box = document.getElementById('lean'); box.textContent = ''; if (state.endpoint) return;
+  box.appendChild(el('span', null, 'Lean the hand toward:'));
+  ENDPOINTS.forEach(function(k){ var b = el('button','chip', CARDS[k].nm); b.type = 'button'; b.addEventListener('click', function(){
+    var before = liveProbs(); var to = bestHandFor(k); state.alloc = to; var after = liveProbs();
+    setLive('The hand that favours ' + CARDS[k].nm + ' most from here: power ' + pc(to.power) + ', alignment ' + pc(to.alignment) + ', sustainability ' + pc(to.sustainability) + ', stop ' + pc(to.stop) + '. It now reads ' + pc(after[k]) + (after[k] < 0.5 ? ': no hand from here makes it likely.' : '. A hand leans; the dice still decide.') +
+      (to.stop > 0 && state.coordination < P('stagK') && k !== 'the_stop' ? ' Stop counts for nothing below the bar; here it only starves alignment.' : ''));
+    renderLive(); }); box.appendChild(b); }); }
+
+// ── the ending ────────────────────────────────────────────────────────────────────────────
+function drawEnding(){ var box = document.getElementById('ending'); if (!state.endpoint){ box.hidden = true; return; }
+  box.hidden = false; if (box.dataset.for === seed + ':' + state.endpoint) return; box.dataset.for = seed + ':' + state.endpoint; box.textContent = '';
+  var c = CARDS[state.endpoint]; var card = el('div','card'); var img = document.createElement('img'); img.alt = ''; img.src = art(state.endpoint, 480); card.appendChild(img);
+  var t = el('div'); t.appendChild(el('h3', null, 'The ending, as fiction')); var pp = el('p','prose', 'This walk ended in ' + c.nm + ', ' + c.reg + ', in year ' + state.t + '. Write the year it happened as a scene: who noticed first, and what they did that week.'); t.appendChild(pp);
+  var ta = document.createElement('textarea'); ta.value = store('walk:fiction:' + seed) || ''; ta.addEventListener('input', function(){ store('walk:fiction:' + seed, ta.value); }); t.appendChild(ta);
+  t.appendChild(el('p','hint', 'Kept in this browser only, keyed to this cast. The link in the address bar replays this walk for anyone.')); card.appendChild(t); box.appendChild(card);
+  setTimeout(function(){ box.scrollIntoView({ behavior:'smooth', block:'start' }); }, 400); }
+
+// credits
+(function(){ var c = document.getElementById('credits'); c.appendChild(document.createTextNode('The art on the cards: ' + ENDPOINTS.map(function(k){ return CARDS[k].credit; }).join(' · ') + '. PlayfulProcess · Recursive Learning · ')); var a = el('a', null, 'the same walk as a table'); a.href = 'spread.html'; c.appendChild(a); })();
+
+// ── go ────────────────────────────────────────────────────────────────────────────────────
+if (!/^#v1/.test(location.hash)){ var lastH = store('walk:last-hash'); if (lastH && /^#v1/.test(lastH)){ try { history.replaceState(null, '', location.pathname + location.search + lastH); } catch (e) {} } }
+var fromLink = readHash();
+rebuildYears();
+setLive(state.history.length ? 'Picked up where you left off: year ' + state.t + ' of ' + P('horizon') + '. Cast again (a new table) starts over.' : 'Nothing walked yet. Move a slider and the number on the left moves: the world did not change, the path did. Then walk a year.');
+window.addEventListener('hashchange', function(){ if (readHash()){ liveCache = { key:null }; rebuildYears(); } });
+window.walk = { get state(){ return state; }, priors: priors, simulate: simulate, stepOnce: stepOnce, makeRng: makeRng, ENDPOINTS: ENDPOINTS, DEFAULT_PRIORS: DEFAULT_PRIORS, freshState: freshState, get seed(){ return seed; } };
+})();
+</script>
+</body>
+</html>
