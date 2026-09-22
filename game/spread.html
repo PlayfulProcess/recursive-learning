@@ -933,10 +933,12 @@ function writeCall(){
   var seeds = Object.keys(t), called = 0, hit = 0, idk = 0, brier = 0;
   seeds.forEach(function(k){ var e = t[k]; if (e.call === 'idk') idk++; else { called++; var ok = e.call === e.end; if (ok) hit++;
     var c = (isFinite(e.conf) ? e.conf : 70) / 100; brier += (c - (ok ? 1 : 0)) * (c - (ok ? 1 : 0)); } });
+  noteCall = !mine ? '' : state.endpoint ? (mine === 'idk' ? 'You said you did not know' : 'You called ' + SHORT[mine]) + '; it ended in ' + SHORT[state.endpoint] + (mine === state.endpoint ? '. It landed.' : '.')
+    : mine === 'idk' ? 'Your call: I don’t know. Recorded as itself, never scored as a coin flip.' : 'Your call: ' + SHORT[mine] + ' at ' + conf + '%. The walk will tell.';
+  writeNote();
   if (state.endpoint && mine){
     line.appendChild(el('b', null, mine === 'idk' ? 'You said you did not know' : 'You called ' + SHORT[mine] + ' at ' + (t[seed] && t[seed].conf || conf) + '%'));
     line.appendChild(document.createTextNode('; it ended in ' + SHORT[state.endpoint] + '. '));
-    noteCall = (mine === 'idk' ? 'You said you did not know' : 'You called ' + SHORT[mine]) + '; it ended in ' + SHORT[state.endpoint] + (mine === state.endpoint ? '. It landed.' : '.'); writeNote();
   } else if (mine === 'idk'){
     line.appendChild(el('b', null, 'You said you do not know')); line.appendChild(document.createTextNode('. Recorded as itself, never scored as a coin flip. '));
   } else if (mine){
@@ -1116,6 +1118,7 @@ function writeStep(){
     var ss = document.getElementById('stepsub-' + id); if (ss) ss.textContent = on ? 'your move for this cast' : plain(sectionText(stepEls[id].it, 'Who can do this')).split(/[.;]/)[0];
     var b = document.getElementById('take-' + id); if (b) b.textContent = on ? 'Chosen: this is your move' : 'This is my move';
     var h = stepEls[id].cd.querySelector('.back h3'); if (h) h.textContent = stepEls[id].it.name + (stepEls[id].tag ? ' \u2014 ' + stepEls[id].tag : '') + (on ? ' \u00b7 your move' : ''); });
+  noteMove = ch ? 'Your move: ' + ch.it.name + (ch.tag ? ', a ' + ch.tag : '') + '. It walks nothing; write its asymmetry in the box under the cards.' : ''; writeNote();
   var box = document.getElementById('asym'); box.hidden = !ch;
   if (ch){ document.getElementById('asym-lab').textContent = 'The asymmetry of “' + ch.it.name + '”'; }
   $asym.value = store(asymKey()) || '';
