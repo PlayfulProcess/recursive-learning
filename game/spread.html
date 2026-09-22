@@ -272,6 +272,7 @@
     .face .art .badge{font-size:8px;padding:1px 4px;right:4px;top:4px;letter-spacing:.05em}
     .face .sub{-webkit-line-clamp:2}
     .fan .face .sub{display:-webkit-box;-webkit-line-clamp:2}
+    .fan .face .art{min-height:30%} .fan .face .nm{font-size:11.5px;line-height:1.15}
     .reader{position:sticky;top:0;z-index:5;margin:0 -16px 10px;padding:7px 16px;gap:4px 10px;border-radius:0;border-left:0;border-right:0;
       background:rgba(21,25,34,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);font-size:12px}
     .reader b{font-size:19px}
@@ -757,11 +758,12 @@ function render(){
 
   var done = !!state.endpoint || state.t >= p.horizon;
   document.getElementById('btn-step').disabled = done;
+  document.getElementById('btn-step').textContent = done ? 'The walk has ended' : 'Walk a year';
   document.getElementById('btn-together').disabled = done;
   CHANNELS.forEach(function(c){ document.getElementById('sl-' + c.k).disabled = done; });
   document.getElementById('stepcount').textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
   var meta = document.getElementById('node-meta'); meta.textContent = '';
-  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['together needs ' + p.stagK.toFixed(2) + ', now ', state.coordination.toFixed(2) + ' (alignment and stop raise it)']]
+  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], (window.innerWidth < 900 ? ['together ', state.coordination.toFixed(2) + ' of ' + p.stagK.toFixed(2)] : ['together needs ' + p.stagK.toFixed(2) + ', now ', state.coordination.toFixed(2) + ' (alignment and stop raise it)'])]
     .forEach(function(pair){ var sp = el('span'); sp.appendChild(document.createTextNode(pair[0])); sp.appendChild(el('b', null, pair[1])); meta.appendChild(sp); });
   document.getElementById('node-back').textContent = 'Right now: capability ' + state.capability.toFixed(2) +
     ' (when it reaches ' + p.graceCapability + ' the walk arrives somewhere and the ending is read), alignment ahead of capability ' + alignRatio(state).toFixed(2) +
@@ -814,7 +816,7 @@ function writeChanged(res, p){
   var zeros = ENDPOINTS.filter(function(k){ return !state.endpoint && res.probs[k] === 0; }).length;
   if (resumed && !moveInfo){
     var lc0 = CARDS.filter(function(c){ return c.k === (state.endpoint || ENDPOINTS.reduce(function(m,k){ return res.probs[k] > res.probs[m] ? k : m; }, ENDPOINTS[0])); })[0];
-    main = 'Picked up where you left off: year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + (state.endpoint ? ', the walk ended in ' + lc0.nm : ', likeliest ending ' + lc0.nm) + '. Cast again (a new table) starts over.';
+    main = 'Picked up where you left off: year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + (state.endpoint ? ', the walk ended in ' + lc0.nm : ', likeliest ending ' + lc0.nm) + '. Cast again (a new table) starts over, with the default inheritance.';
     box.appendChild(document.createTextNode(main));
     var rl0 = document.getElementById('rd-line'); rl0.textContent = main; rl0.className = 'line';
     zerosBefore = zeros; return;
@@ -827,7 +829,11 @@ function writeChanged(res, p){
     moved += (Math.abs(res.probs[leadK] - prevProbs[leadK]) >= 0.005
       ? ' and ' + SHORT[leadK] + (res.probs[leadK] < prevProbs[leadK] ? ' fell from ' : ' rose from ') + pc(prevProbs[leadK]) + ' to ' + pc(res.probs[leadK])
       : ' while ' + SHORT[leadK] + ' held at ' + pc(res.probs[leadK]));
-  if (moveInfo && moveInfo.kind === 'slide'){
+  if (moveInfo && moveInfo.kind === 'slide' && !moved && !state.endpoint && res.probs[leadK] >= 0.97){
+    var ch0 = CHANNELS.filter(function(c){ return c.k === moveInfo.key; })[0];
+    main = 'Nothing moved when you moved ' + ch0.nm + ' from ' + pc(moveInfo.from) + ' to ' + pc(moveInfo.to) + ': with this inheritance, ' + SHORT[leadK] +
+           ' is near certain whatever the hand. Turn over a card in the Inheritance and change a number, or cast again for the default inheritance.';
+  } else if (moveInfo && moveInfo.kind === 'slide'){
     var ch = CHANNELS.filter(function(c){ return c.k === moveInfo.key; })[0];
     main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' moved ' + ch.nm + ' from ' + pc(moveInfo.from) + ' to ' + pc(moveInfo.to) +
            (saidRebalance ? '' : '; the other three shares shifted to keep the hand at 100%') + '. The world did not change; the path did.';
@@ -891,9 +897,8 @@ function tallyRead(){ try { return JSON.parse(store('walk:tally') || '{}'); } ca
 (function(){ var box = document.getElementById('chips');
   CALLS.forEach(function(c){ var b = el('button','chip' + (c.k === 'idk' ? ' idk' : ''), c.nm); b.type = 'button'; b.id = 'chip-' + c.k;
     b.addEventListener('click', function(){ if (state.endpoint) return; store(callKey(), c.k); writeCall();
-      var rn = document.getElementById('rd-note'); rn.hidden = false;
-      rn.textContent = c.k === 'idk' ? 'Your call: I don\u2019t know. Recorded as itself, never scored as a coin flip.'
-        : 'Your call: ' + c.nm + '. Set how sure you are under the chips; the walk will tell.'; }); box.appendChild(b); });
+      noteCall = c.k === 'idk' ? 'Your call: I don\u2019t know. Recorded as itself, never scored as a coin flip.'
+        : 'Your call: ' + c.nm + '. Set how sure you are under the chips; the walk will tell.'; writeNote(); }); box.appendChild(b); });
 })();
 var $conf = document.getElementById('conf');
 function confRead(){ var v = parseInt(store(callKey() + ':conf') || '70', 10); return isFinite(v) ? v : 70; }
@@ -1034,7 +1039,8 @@ var FORM_URL = '';   // the Google Form for castings, once she makes it; empty =
 var TAGS = ['take','slack','ratchet','gift'];
 var TAGLINE = { take:'draws from the river', slack:'leaves more in the river than it draws: use less, decline, wait',
   ratchet:'makes memory that tightens on evidence: a rule, a record, a named failure condition', gift:'gives regardless of what you hold' };
-var stepEls = {}, actions = [];
+var stepEls = {}, actions = [], noteCall = '', noteMove = '';
+function writeNote(){ var rn = document.getElementById('rd-note'); var t = [noteCall, noteMove].filter(Boolean).join(' '); rn.textContent = t; rn.hidden = !t; }
 function stepKey(){ return 'walk:step:' + seed; }
 function asymKey(){ return 'walk:asym:' + seed; }
 function tagOf(it){ var k = it.keywords || []; for (var i = 0; i < TAGS.length; i++) if (k.indexOf(TAGS[i]) >= 0) return TAGS[i]; return ''; }
@@ -1060,8 +1066,7 @@ function buildSteps(g){
       var t = plain(sectionText(it, pair[0])); if (!t) return; var d = el('div','fc'); d.appendChild(el('b', null, pair[1])); d.appendChild(el('p', null, t)); back.appendChild(d); });
     var pick = el('button','ghost rs','This is my move'); pick.type = 'button'; pick.id = 'take-' + it.id; pick.style.fontSize = '11px'; pick.style.padding = '5px 10px'; pick.style.marginTop = '8px';
     pick.addEventListener('click', function(e){ e.stopPropagation(); store(stepKey(), it.id); writeStep(); flip(cd);
-      var rn = document.getElementById('rd-note'); rn.hidden = false;
-      rn.textContent = 'Your move: ' + it.name + (tag ? ', a ' + tag : '') + '. It walks nothing; write its asymmetry in the box under the cards.';
+      noteMove = 'Your move: ' + it.name + (tag ? ', a ' + tag : '') + '. It walks nothing; write its asymmetry in the box under the cards.'; writeNote();
       var ab = document.getElementById('asym'); setTimeout(function(){ ab.scrollIntoView({ behavior:'smooth', block:'center' }); }, 650); });
     back.appendChild(pick);
     back.appendChild(el('p','who', 'Choosing it does not walk a year; it marks this card as the move you take tonight and opens a box for your asymmetry. Kept in this browser; copied into your casting when you copy it.'));
@@ -1181,7 +1186,8 @@ function deal(){
   t.classList.add('dealt');
 }
 function cast(){
-  resumed = false; zerosBefore = 0; actionSeq++; document.getElementById('rd-note').hidden = true;
+  resumed = false; zerosBefore = 0; actionSeq++; document.getElementById('rd-note').hidden = true; noteCall = ''; noteMove = '';
+  Object.keys(priors).forEach(function(k){ delete priors[k]; });   // a new table inherits the defaults again
   state = fresh(); seed = (Math.random() * 0x7fffffff) | 0; rng = makeRng(seed);
   prevProbs = null; lastNote = ''; leadShown = null; drawOrientation(); loadFiction(); render(); deal();
 }
