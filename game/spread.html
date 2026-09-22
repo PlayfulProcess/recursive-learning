@@ -288,6 +288,7 @@
     .reader .line{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
     .reader .note{font-size:11.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .bar{display:grid;grid-template-columns:1fr 1fr} .bar .count{grid-column:1/-1} .bar .push{margin-left:0}
+    .bar #btn-step{grid-column:1/-1;order:-1;font-size:16px;padding:12px 16px}
     .bar .link{grid-column:1/-1;justify-self:start}
     h1{font-size:18px}
   }
@@ -325,7 +326,7 @@
     <button id="btn-cast" class="ghost">Cast again (a new table)</button>
 
     <button id="btn-step">Walk a year</button>
-    <button id="btn-together" class="ghost" title="The step of faith: it moves the world only when coordination is above the bar; below it the year is spent for nothing.">Walk a year together</button>
+    <button id="btn-together" class="ghost" title="The step of faith: it moves the world only when coordination is above the bar; below it the year is spent for nothing.">Walk together (needs coordination above the bar)</button>
     <button id="btn-copy" class="ghost push">Copy my casting</button>
     <a id="btn-send" class="ghost sendbtn" role="button" hidden target="_blank" rel="noopener">Send it</a>
     <span class="count" id="stepcount"></span>
@@ -714,13 +715,16 @@ HOUSES.forEach(function(h){
     num.setAttribute('aria-label', k + ' value'); lab.appendChild(num); box.appendChild(lab);
     var r = document.createElement('input'); r.type = 'range'; r.min = cfg[0]; r.max = cfg[1]; r.step = cfg[2]; r.id = 'prr-' + k; r.setAttribute('aria-label', k);
     box.appendChild(r); box.appendChild(el('p','cm', cfg[3]));
+    var pFrom = null;
     function set(v){ if (!isFinite(v)) v = P(k);
       resumed = false; actionSeq++;
-      if (v !== P(k)) moveInfo = { kind:'inherit', key:k, from:P(k), to:v };
+      var from0 = (pFrom != null) ? pFrom : P(k);
+      if (v !== from0) moveInfo = { kind:'inherit', key:k, from:from0, to:v };
       if (v === DEFAULT_PRIORS[k]) delete priors[k]; else priors[k] = v;
       render(); guideAdvance('inherit'); }
-    r.addEventListener('input', function(){ set(parseFloat(r.value)); });
-    num.addEventListener('change', function(){ set(parseFloat(String(num.value).replace(',', '.'))); });
+    r.addEventListener('input', function(){ if (pFrom == null) pFrom = P(k); set(parseFloat(r.value)); });
+    ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ pFrom = null; }, 0); }); });
+    num.addEventListener('change', function(){ pFrom = null; set(parseFloat(String(num.value).replace(',', '.'))); });
     prs.appendChild(box);
   });
   var rs = el('button','ghost rs','Reset this card'); rs.type = 'button'; rs.style.fontSize = '11px'; rs.style.padding = '5px 10px';
@@ -766,10 +770,11 @@ function render(){
   document.getElementById('btn-step').disabled = done;
   document.getElementById('btn-step').textContent = done ? 'The walk has ended' : 'Walk a year';
   document.getElementById('btn-together').disabled = done; document.getElementById('btn-together').hidden = done;
+  document.getElementById('btn-together').textContent = state.coordination >= p.stagK ? 'Walk together (coordination is above the bar)' : 'Walk together (needs coordination above ' + p.stagK.toFixed(2) + ')';
   CHANNELS.forEach(function(c){ document.getElementById('sl-' + c.k).disabled = done; });
   document.getElementById('stepcount').textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
   var meta = document.getElementById('node-meta'); meta.textContent = '';
-  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], (window.innerWidth < 900 ? ['together ', state.coordination.toFixed(2) + ' of ' + p.stagK.toFixed(2)] : ['together needs ' + p.stagK.toFixed(2) + ', now ', state.coordination.toFixed(2) + ' (alignment and stop raise it)'])]
+  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], (window.innerWidth < 900 ? ['to walk together: ', state.coordination.toFixed(2) + ' of ' + p.stagK.toFixed(2)] : ['to walk together, coordination must reach ' + p.stagK.toFixed(2) + '; now ', state.coordination.toFixed(2) + ' (alignment and stop raise it)'])]
     .forEach(function(pair){ var sp = el('span'); sp.appendChild(document.createTextNode(pair[0])); sp.appendChild(el('b', null, pair[1])); meta.appendChild(sp); });
   document.getElementById('node-back').textContent = 'Right now: capability ' + state.capability.toFixed(2) +
     ' (when it reaches ' + p.graceCapability + ' the walk arrives somewhere and the ending is read), alignment ahead of capability ' + alignRatio(state).toFixed(2) +
