@@ -70,7 +70,7 @@
   .pos.horizon{flex:1 1 100%;margin-top:18px;border-top:1px solid rgba(255,255,255,.06);padding-top:14px}
 
   /* a card */
-  .cd{width:var(--cw);aspect-ratio:8/12;position:relative;cursor:pointer;flex:none;
+  .cd{width:var(--cw);aspect-ratio:8/12;position:relative;cursor:pointer;flex:none;touch-action:manipulation;
     -webkit-tap-highlight-color:transparent}
   .cd-in{position:absolute;inset:0}
   .face,.back{position:absolute;inset:0;border-radius:10px;
@@ -85,7 +85,9 @@
   .cd.anim .back{transform:rotateY(180deg)}
   .cd.anim.turned .cd-in{transform:rotateY(180deg)}
   /* once turned and at rest, a card opens out so its back can be read (and, in the Inheritance, edited) */
-  .cd.turned:not(.anim){aspect-ratio:auto;width:min(100%, 360px)}
+  .cd.turned:not(.anim){aspect-ratio:auto;width:min(100%, 360px);max-width:100%}
+  .pos.node{max-width:100%}
+  .back{overflow-wrap:anywhere}
   .cd.turned:not(.anim) .cd-in{position:relative;inset:auto}
   .cd.turned:not(.anim) .face{display:none}
   .cd.turned:not(.anim) .back{position:relative;inset:auto;visibility:visible;min-height:calc(var(--cw) * 1.5)}
@@ -107,7 +109,7 @@
   .face .sub{font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   .back h3{font-size:11px;color:var(--accent);margin:0 0 5px;font-weight:600;line-height:1.3}
   .back p{margin:0 0 7px}
-  .back .turn{margin-top:auto;font-size:10.5px;color:var(--muted)}
+  .back .turn{margin-top:auto;font-size:11px;color:var(--accent);cursor:pointer;text-decoration:underline;display:inline-block;padding:4px 0}
   .cd .hint{position:absolute;left:0;right:0;bottom:-16px;text-align:center;font-size:10px;color:var(--muted);opacity:0;transition:opacity .2s}
   .cd:hover .hint,.cd:focus-visible .hint{opacity:1}
   .cd:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:10px}
@@ -168,6 +170,9 @@
   .tag.take{color:var(--power);border-color:var(--power)} .tag.slack{color:var(--sustain);border-color:var(--sustain)}
   .tag.ratchet{color:var(--align);border-color:var(--align)} .tag.gift{color:var(--stop);border-color:var(--stop)}
   .cd.chosen .face{border-color:var(--accent);box-shadow:0 0 0 1px rgba(94,226,176,.35)}
+  .cd .mine{display:none;position:absolute;left:6px;top:6px;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--accent);color:var(--accent-ink);padding:2px 6px;border-radius:5px;font-weight:700}
+  .cd.chosen .mine{display:block}
   .back .fc{margin:6px 0 0;padding:6px 8px;border-radius:7px;background:var(--panel)}
   .back .fc b{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
   .legend4{font-size:11.5px;color:var(--muted);margin:10px 0 0;display:grid;gap:3px;max-width:80ch}
@@ -196,6 +201,7 @@
   @media (min-width:900px){ .hand{grid-template-columns:1.1fr 1fr} }
   @media (max-width:899px){ .hand{order:-1;margin:0 0 12px} }
   .hourline{font-size:12px;color:var(--muted);margin:-4px 0 12px;max-width:80ch}
+  .aim{font-size:12px;color:var(--muted);margin:-4px 0 12px;max-width:80ch}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px}
   .card > h2{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
   .alloc{margin-bottom:8px}
@@ -224,11 +230,17 @@
   .guide .g-top a{color:var(--muted);letter-spacing:0;text-transform:none;font-weight:400;font-size:12px;cursor:pointer;text-decoration:none}
   .guide ol{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:4px}
   .guide li{font-size:13.5px;color:var(--ink);display:flex;gap:9px;align-items:baseline}
-  .guide li:not(.now){display:none}
+  .guide li.done{opacity:.55;text-decoration:line-through}
   .guide li .n{flex:none;width:19px;height:19px;border-radius:50%;border:1px solid var(--line);font-size:11px;display:inline-flex;align-items:center;justify-content:center}
   .guide li.now{color:var(--ink)} .guide li.now .n{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
   .guide li.done{opacity:.55}
-  .reader{display:none}
+  .reader{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 10px;padding:10px 14px;
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;font-size:12.5px;color:var(--muted)}
+  .reader b{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);line-height:1}
+  .reader .nm{font-weight:600;color:var(--ink);font-size:15px}
+  .reader .x{margin-left:auto;font-size:12px}
+  .reader .line{flex-basis:100%;font-size:13.5px;color:var(--ink);line-height:1.45;margin-top:2px}
+  .reader .line.alone{color:var(--warn)}
   @media (max-width:899px){
     :root{--cw:96px}
     .table{padding:12px 12px 12px;border-radius:16px}
@@ -238,12 +250,15 @@
     .pos > h2{font-size:10px;flex-wrap:wrap;gap:5px 7px} .pos > h2 .q{flex-basis:100%;margin-left:24px}
     .face .art .badge{font-size:8px;padding:1px 4px;right:4px;top:4px;letter-spacing:.05em}
     .face .sub{-webkit-line-clamp:2}
-    .reader{display:flex;position:sticky;top:0;z-index:5;margin:0 -16px 10px;padding:7px 16px;gap:12px;align-items:center;
-      background:rgba(21,25,34,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
-    .reader b{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
-    .reader .nm{font-weight:600;color:var(--ink)}
-    .reader .x{margin-left:auto;font-size:11px}
+    .fan .face .sub{display:none}
+    .reader{position:sticky;top:0;z-index:5;margin:0 -16px 10px;padding:7px 16px;gap:4px 10px;border-radius:0;border-left:0;border-right:0;
+      background:rgba(21,25,34,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);font-size:12px}
+    .reader b{font-size:20px}
+    .reader .nm{font-size:13.5px}
+    .reader .x{font-size:11px}
+    .reader .line{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .bar{display:grid;grid-template-columns:1fr 1fr} .bar .count{grid-column:1/-1} .bar .push{margin-left:0}
+    .bar .link{grid-column:1/-1;justify-self:start}
     h1{font-size:18px}
   }
   @media (max-width:420px){ :root{--cw:86px} .face .p{font-size:15px} }
@@ -264,26 +279,28 @@
   <p class="lede">A probability here is a property of the world <em>given a path</em>. Move the path and the number moves.
     <span class="disc">A teaching instrument, not a forecast. Nothing staked, nothing sent.</span></p>
 
-  <div class="reader" id="reader" aria-live="polite"><span><b id="rd-p"></b></span><span class="nm" id="rd-nm"></span><span class="x" id="rd-x"></span></div>
+  <div class="reader" id="reader" aria-live="polite"><span><b id="rd-p"></b></span><span class="nm" id="rd-nm"></span><span class="x" id="rd-x"></span><span class="line" id="rd-line"></span></div>
 
   <div class="guide" id="guide" hidden>
-    <div class="g-top"><span id="guide-lab">First step of three</span><a id="guide-skip">skip</a></div>
+    <div class="g-top"><span id="guide-lab">Three things to try, in any order</span><a id="guide-skip">skip</a></div>
     <ol>
-      <li id="g1"><span class="n">1</span><span>Drag <b>Power</b>. The big number moves. The world did not change; the path did.</span></li>
-      <li id="g2"><span class="n">2</span><span>Press <b>Step</b>. A year or so, walked with this allocation. The Node moves.</span></li>
-      <li id="g3"><span class="n">3</span><span>Turn a card in <b>the Inheritance</b> over and change one number. Same walk, different inheritance, different ending.</span></li>
+      <li id="g1"><span class="n">1</span><span>Drag <b>Power</b> (the sliders are under Your hand). The big number above moves; the world did not change, the path did.</span></li>
+      <li id="g2"><span class="n">2</span><span>Press <b>Walk a year</b>. One year walked with this hand; the sentence above says what it did.</span></li>
+      <li id="g3"><span class="n">3</span><span>Tap a card in <b>the Inheritance</b> and change one number. Same walk, different inheritance, different ending.</span></li>
     </ol>
   </div>
 
   <div class="bar">
     <button id="btn-cast" class="ghost">Cast again</button>
-    <button id="btn-hour" class="ghost">This hour's table</button>
-    <button id="btn-step">Step</button>
-    <button id="btn-together" class="ghost">Step together</button>
+
+    <button id="btn-step">Walk a year</button>
+    <button id="btn-together" class="ghost">Walk a year together</button>
     <button id="btn-copy" class="ghost push">Copy my casting</button>
     <a id="btn-send" class="ghost sendbtn" role="button" hidden target="_blank" rel="noopener">Send it</a>
     <span class="count" id="stepcount"></span>
+    <button class="link" id="btn-hour" type="button">this hour's table</button>
   </div>
+  <p class="aim">A walk is twenty years or an ending, whichever comes first. Then write it as fiction, see how your call did, and cast again. Casting again throws every coin again, for the endings and for the seats.</p>
   <p class="hourline" id="hourline" hidden></p>
 
   <div class="main">
@@ -305,7 +322,7 @@
               <h3>The card we stand on</h3>
               <p>The allocation is the four shares under the table. Capability grows with the power share. Alignment and sustainability are stocks; what matters is each stock <em>divided by</em> capability, so spending after the power has run is worth less.</p>
               <p id="node-back"></p>
-              <p class="turn">Tap to turn back.</p>
+              <p class="turn">Turn the card back</p>
             </div>
           </div>
           <span class="hint">turn over</span>
@@ -313,7 +330,7 @@
       </section>
 
       <section class="pos inherit" aria-label="Position 2, the Inheritance">
-        <h2><span class="n">2</span>The Inheritance <span class="q">— what we assumed before we walked</span></h2>
+        <h2><span class="n">2</span>The Inheritance <span class="q">— what we assumed before we walked. A small change here can flip the ending; that is the point, not a fault.</span></h2>
         <div class="fan" id="fan"></div>
       </section>
     </div>
@@ -323,15 +340,15 @@
       <div class="hz" id="hz"></div>
       <div class="seats" id="seats"></div>
       <div class="call">
-        <p class="lab">Your call — which ending will this cast reach? Scored for calibration, never staked.</p>
+        <p class="lab">Your call — which ending will this cast reach? Nothing rides on it; over many casts you learn how often you are right when you say 70%.</p>
         <div class="chips" id="chips"></div>
         <label class="confl" id="confl" hidden>How sure? <input type="range" id="conf" min="50" max="100" step="5" value="70" aria-label="how sure, in percent"> <b id="confv">70%</b></label>
         <p class="tally" id="tally"></p>
       </div>
     </section>
 
-    <section class="pos step" aria-label="Position 5, the Step" id="steppos" hidden>
-      <h2><span class="n">5</span>The Step <span class="q">— what you can do tonight, sized to you. Pick one card. Its kind is on the face: take draws from the river, slack leaves more in it than it draws, ratchet makes memory that tightens on evidence, gift gives regardless. The kind does not judge; the ballot will, later.</span></h2>
+    <section class="pos step" aria-label="Position 4, the Step" id="steppos" hidden>
+      <h2><span class="n">4</span>The Step <span class="q">— the one move you take tonight, sized to you; choosing it walks nothing. Pick one card. Its kind is on the face: take draws from the river, slack leaves more in it than it draws, ratchet makes memory that tightens on evidence, gift gives regardless. The kind does not judge; the ballot will, later.</span></h2>
       <div class="steprow" id="steprow"></div>
       <div class="asym" id="asym" hidden>
         <label for="asymtext"><b id="asym-lab">The asymmetry</b> — if the coin lands the other way, can you live with having chosen this? Your own words, short enough to say aloud.</label>
@@ -340,8 +357,8 @@
       <div class="legend4" id="legend4"></div>
     </section>
 
-    <section class="pos table-seats" aria-label="Position 4, the other seats" id="seatpos" hidden>
-      <h2><span class="n">4</span>The other seats <span class="q">— the deck's characters, each on a path. Which path each one walks, upright or reversed, is this page's reading of the deck's generous and cynical texts, not the deck's claim. The words on the back of each seat are the deck's own.</span></h2>
+    <section class="pos table-seats" aria-label="Position 5, the other seats" id="seatpos" hidden>
+      <h2><span class="n">5</span>The other seats <span class="q">— the deck's characters, each on a path this cast dealt them; cast again and the coins fall again. Which path each one walks, upright or reversed, is this page's reading of the deck's generous and cynical texts, not the deck's claim. The words on the back of each seat are the deck's own.</span></h2>
       <div class="seatrow" id="seatrow"></div>
       <p class="seatnote" id="seatnote"></p>
     </section>
@@ -366,15 +383,16 @@
     <h2>The ending, as fiction</h2>
     <p class="prompt" id="fic-prompt"></p>
     <textarea id="fiction" placeholder="A scene, a letter, a news item from that year. Two paragraphs is plenty."></textarea>
-    <p class="hint">Kept in this browser only, keyed to this cast. <em>Copy my casting</em> above puts the whole casting on your clipboard: the cards and their faces, your call, your step and its kind, the asymmetry, and this text. <span id="sendhint">A form to send it will be linked here once it exists; until then, paste it to whoever runs the room.</span></p>
+    <p class="hint">Nothing leaves this page unless you copy it yourself. <em>Copy my casting</em> above puts the whole casting on your clipboard, and only you decide where it goes: the cards and their faces, your call, your step and its kind, the asymmetry, and this text. <span id="sendhint">A form to send it will be linked here once it exists; until then, paste it to whoever runs the room.</span></p>
   </div>
 
   <div class="credits" id="credits"><h2>The art on the cards</h2><ul id="credit-list"></ul></div>
 
   <footer>
-    <p><strong>The step of faith is a stag hunt.</strong> <em>Step together</em> moves the world only if
-      coordination has reached the bar on the Node; below it the step is spent and a line says so.
-      Rousseau's hunters take a stag together or a hare alone (Skyrms, <em>The Stag Hunt</em>, 2004).</p>
+    <p><strong>Step together only counts when enough of the walk steps at once.</strong> Below the bar on
+      the Node the step is spent and a line says so. The game-theory name for that is a stag hunt: Rousseau's
+      hunters take a stag together or a hare alone, and the one who steps first while the others take hares
+      does worst (Skyrms, <em>The Stag Hunt</em>, 2004). The collective prayer is the synchronised step.</p>
     <p>A model can be fully specified, deterministic, and still fail to show the effect its author believed
       in. This one is a teaching instrument and nothing more. Its every constant is on the Inheritance cards.</p>
     <p>PlayfulProcess · Recursive Learning · <a href="walk.html">the same walk as a dashboard</a> ·
@@ -446,6 +464,22 @@ var TOWARD = {
   doom:             { power:1.00, alignment:0.00, sustainability:0.00, stop:0.00 },
   still_walking:    { power:0.10, alignment:0.30, sustainability:0.30, stop:0.30 }
 };
+// From where the walk stands now, which hand gives this ending the best share? A coarse grid
+// (quarter steps over the four channels) plus the leaning hand above, each tried with a few
+// hundred rollouts. The answer changes as the walk goes on, which is itself the lesson.
+function bestHandFor(k){
+  var cands = [TOWARD[k]], q = [0, 0.25, 0.5, 0.75, 1];
+  q.forEach(function(a){ q.forEach(function(b){ q.forEach(function(c){ var d = 1 - a - b - c; if (d >= -1e-9 && d <= 1 + 1e-9)
+    cands.push({ power:a, alignment:b, sustainability:c, stop:Math.max(0, Math.round(d * 100) / 100) }); }); }); });
+  var best = cands[0], bestP = -1;
+  cands.forEach(function(h, i){
+    var st = M.copyState(state); st.alloc = h; st.history = null;
+    var pr = withDefaults(priors); pr.seed = 9001 + i;
+    var r = simulate(st, pr, 500);
+    if (r.probs[k] > bestP){ bestP = r.probs[k]; best = h; }
+  });
+  return best;
+}
 var CARDS = [
   { k:'grace', nm:'Grace', col:'--grace', txt:'Machines of Loving Grace · Amodei, 2024', link:'https://www.darioamodei.com/essay/machines-of-loving-grace',
     src:'Capability arrives with the alignment lead already paid for.',
@@ -473,9 +507,9 @@ var SHORT = { grace:'Grace', sustainable_turn:'The turn', the_stop:'The Stop',
               adolescence:'Adolescence', lock_in:'Lock-in', doom:'Doom', still_walking:'Still walking' };
 var CHANNELS = [
   { k:'power', nm:'Power', col:'--power', why:'Capability multiplies by 1 + growth × power each step.' },
-  { k:'alignment', nm:'Alignment', col:'--align', why:'Builds the stock whose ratio to capability buys risk down.' },
-  { k:'sustainability', nm:'Sustainability', col:'--sustain', why:'Lowers the rate of shocks; past the ratio bar it becomes the ending.' },
-  { k:'stop', nm:'Stop', col:'--stop', why:'Drags capability growth down, and only counts while coordination is above the bar.' }
+  { k:'alignment', nm:'Alignment', col:'--align', why:'Builds a stock; what buys risk down is how far that stock is ahead of capability, so spending it late is worth less.' },
+  { k:'sustainability', nm:'Sustainability', col:'--sustain', why:'Lowers the rate of shocks; if its stock outgrows capability, the walk ends in the sustainable turn.' },
+  { k:'stop', nm:'Stop', col:'--stop', why:'Slows capability, but only counts while enough of the walk is stepping together (coordination above the bar).' }
 ];
 
 // ── the Inheritance: sixteen constants grouped as three inherited assumptions ─────────────
@@ -498,7 +532,7 @@ var PRIOR_UI = {
   lockInCoord:     [0, 1, 0.01,   'Coordination at or below which the crossing locks in.']
 };
 var HOUSES = [
-  { id:'house1', nm:'Capability grows with power', line:'and the crossing is read at a fixed height',
+  { id:'house1', nm:'Capability grows with power', line:'and the ending is read when capability reaches a set height',
     keys:['growth','stopDrag','graceCapability','horizon'] },
   { id:'house2', nm:'A shock can end everything', line:'and risk climbs with capability, bought down by alignment in advance',
     keys:['riskBase','alpha','beta','decay','shockRate','shockDamping','shockRisk'] },
@@ -516,7 +550,7 @@ var DEFAULT_ALLOC = { power:0.40, alignment:0.30, sustainability:0.15, stop:0.15
 function fresh(){ return freshState({ power:DEFAULT_ALLOC.power, alignment:DEFAULT_ALLOC.alignment,
   sustainability:DEFAULT_ALLOC.sustainability, stop:DEFAULT_ALLOC.stop }); }
 var state = fresh(), priors = {}, seed = (Math.random() * 0x7fffffff) | 0, rng = makeRng(seed);
-var N = 4000, prevProbs = null, lastNote = '', reversed = {}, leadShown = null, moveInfo = null;
+var N = 4000, prevProbs = null, lastNote = '', reversed = {}, leadShown = null, moveInfo = null, lastRes = null;
 function P(k){ return (priors[k] != null && isFinite(priors[k])) ? +priors[k] : DEFAULT_PRIORS[k]; }
 function viewPriors(){ var o = withDefaults(priors); o.seed = seed; return o; }
 function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
@@ -575,7 +609,8 @@ function cardShell(id, artKey, revBadge){
   if (revBadge){ var b = el('span','badge','reversed'); b.className = 'badge'; art.appendChild(b); }
   face.appendChild(art); var cap = el('div','cap'); face.appendChild(cap);
   inn.appendChild(face); inn.appendChild(back); cd.appendChild(inn); cd.appendChild(el('span','hint','turn over'));
-  cd.addEventListener('click', function(e){ if (e.target.closest('input,a,button')) return; flip(cd); });
+  cd.addEventListener('click', function(e){ if (e.target.closest('input,a,button,textarea,label')) return;
+    if (cd.classList.contains('turned') && !e.target.closest('.turn')) return; flip(cd); });
   cd.addEventListener('keydown', function(e){ if (e.target !== cd) return; if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(cd); } });
   return { cd:cd, cap:cap, back:back, art:art };
 }
@@ -584,7 +619,7 @@ function cardShell(id, artKey, revBadge){
 (function(){
   var cd = document.getElementById('cd-node'), img = document.getElementById('node-img');
   img.src = thumb(ART.node.path, 480); img.onerror = function(){ img.onerror = null; img.style.display = 'none'; };
-  cd.addEventListener('click', function(){ flip(cd); });
+  cd.addEventListener('click', function(e){ if (cd.classList.contains('turned') && !e.target.closest('.turn')) return; flip(cd); });
   cd.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(cd); } });
   var strip = document.getElementById('strip');
   CHANNELS.forEach(function(c){ var i = document.createElement('i'); i.id = 'st-' + c.k; i.style.background = 'var(' + c.col + ')'; strip.appendChild(i); });
@@ -605,11 +640,11 @@ CARDS.forEach(function(c){
   if (c.link){ var a = el('a', null, 'the source'); a.href = c.link; a.target = '_blank'; a.rel = 'noopener'; var pa = el('p'); pa.appendChild(a); sh.back.appendChild(pa); }
   var tw = el('button','ghost rs','Walk toward this'); tw.type = 'button'; tw.style.fontSize = '11px'; tw.style.padding = '5px 10px';
   tw.addEventListener('click', function(e){ e.stopPropagation(); if (state.endpoint) return;
-    var to = TOWARD[c.k]; moveInfo = { kind:'toward', key:c.k, to:to };
+    var to = bestHandFor(c.k); moveInfo = { kind:'toward', key:c.k, to:to };
     state.alloc = { power:to.power, alignment:to.alignment, sustainability:to.sustainability, stop:to.stop };
     render(); guideAdvance('slide'); });
   sh.back.appendChild(tw);
-  sh.back.appendChild(el('p','turn','Tap to turn back.'));
+  sh.back.appendChild(el('p','turn','Turn the card back'));
   HZ[c.k] = sh; document.getElementById('hz').appendChild(sh.cd);
 });
 
@@ -639,7 +674,7 @@ HOUSES.forEach(function(h){
   var rs = el('button','ghost rs','Reset this card'); rs.type = 'button'; rs.style.fontSize = '11px'; rs.style.padding = '5px 10px';
   rs.addEventListener('click', function(e){ e.stopPropagation(); h.keys.forEach(function(k){ delete priors[k]; }); moveInfo = { kind:'reset', key:h.nm }; render(); });
   sh.back.appendChild(rs);
-  sh.back.appendChild(el('p','turn','Tap outside the numbers to turn back.'));
+  sh.back.appendChild(el('p','turn','Turn the card back'));
   HOUSE_EL[h.id] = sh; document.getElementById('fan').appendChild(sh.cd);
 });
 
@@ -677,19 +712,20 @@ function render(){
   var done = !!state.endpoint || state.t >= p.horizon;
   document.getElementById('btn-step').disabled = done;
   document.getElementById('btn-together').disabled = done;
-  document.getElementById('stepcount').textContent = 'step ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
+  CHANNELS.forEach(function(c){ document.getElementById('sl-' + c.k).disabled = done; });
+  document.getElementById('stepcount').textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
   var meta = document.getElementById('node-meta'); meta.textContent = '';
-  [['step ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['coordination ', state.coordination.toFixed(2)]]
+  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['coordination ', state.coordination.toFixed(2)]]
     .forEach(function(pair){ var sp = el('span'); sp.appendChild(document.createTextNode(pair[0])); sp.appendChild(el('b', null, pair[1])); meta.appendChild(sp); });
   document.getElementById('node-back').textContent = 'Right now: capability ' + state.capability.toFixed(2) +
-    ' (the crossing is read at ' + p.graceCapability + '), alignment-before-capability ' + alignRatio(state).toFixed(2) +
-    ' (Grace needs ' + p.graceAlignRatio + '), sustainability-before-capability ' + sustRatio(state).toFixed(2) +
+    ' (when it reaches ' + p.graceCapability + ' the walk arrives somewhere and the ending is read), alignment ahead of capability ' + alignRatio(state).toFixed(2) +
+    ' (Grace needs ' + p.graceAlignRatio + '), sustainability ahead of capability ' + sustRatio(state).toFixed(2) +
     ', coordination ' + state.coordination.toFixed(2) + (state.coordination >= p.stagK ? ' — enough to step together.' : ' — below the bar of ' + p.stagK.toFixed(2) + ', so a step together is spent.');
   var endedEl = document.getElementById('ended');
-  if (state.endpoint){ endedEl.hidden = false; endedEl.textContent = 'This walk ended at: ' + SHORT[state.endpoint] + '. Cast again for a new table, or move a card in the Inheritance and see where the same walk would have gone.'; }
+  if (state.endpoint){ endedEl.hidden = false; endedEl.textContent = 'This walk ended at: ' + SHORT[state.endpoint] + '. The sliders rest now. Cast again for a new table, or change a number in the Inheritance and see where the same walk would have gone.'; }
   else endedEl.hidden = true;
 
-  var res = simulate(state, viewPriors(), N);
+  var res = simulate(state, viewPriors(), N); lastRes = res;
   var lead = state.endpoint || ENDPOINTS.reduce(function(m,k){ return res.probs[k] > res.probs[m] ? k : m; }, ENDPOINTS[0]);
   CARDS.forEach(function(c){
     var q = state.endpoint ? (c.k === state.endpoint ? 1 : 0) : res.probs[c.k];
@@ -711,11 +747,11 @@ function render(){
   var q = state.endpoint ? 1 : res.probs[lead];
   document.getElementById('rd-p').textContent = pc(q);
   document.getElementById('rd-p').style.color = 'var(' + CARDS.filter(function(c){ return c.k === lead; })[0].col + ')';
-  document.getElementById('rd-nm').textContent = SHORT[lead] + (state.endpoint ? ' — ended' : '');
+  document.getElementById('rd-nm').textContent = (state.endpoint ? SHORT[lead] + ' — the walk ended here' : state.history.length ? SHORT[lead] : 'likeliest ending on this path: ' + SHORT[lead]);
   var x = document.getElementById('rd-x');
   if (leadShown && leadShown.k === lead && Math.abs(leadShown.p - q) >= 0.005) x.textContent = 'was ' + pc(leadShown.p);
   else if (leadShown && leadShown.k !== lead) x.textContent = 'was ' + SHORT[leadShown.k] + ' ' + pc(leadShown.p);
-  else x.textContent = 'step ' + Math.min(state.t, p.horizon) + '/' + p.horizon;
+  else x.textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon;
   leadShown = { k:lead, p:q };
 
   writeChanged(res, p); prevProbs = res.probs;
@@ -735,8 +771,8 @@ function writeChanged(res, p){
            '. The world did not change; the path did.';
   } else if (moveInfo && moveInfo.kind === 'toward'){
     var to = moveInfo.to;
-    main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' set the hand toward ' + SHORT[moveInfo.key] + ' (power ' + pc(to.power) + ', alignment ' + pc(to.alignment) +
-           ', sustainability ' + pc(to.sustainability) + ', stop ' + pc(to.stop) + '). A hand leans; the dice still decide.';
+    main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' set the hand that favours ' + SHORT[moveInfo.key] + ' most from here (power ' + pc(to.power) + ', alignment ' + pc(to.alignment) +
+           ', sustainability ' + pc(to.sustainability) + ', stop ' + pc(to.stop) + '). It now reads ' + pc(res.probs[moveInfo.key]) + (res.probs[moveInfo.key] < 0.5 ? ': no hand from here makes it likely; a hand leans, the dice still decide.' : '. A hand leans; the dice still decide.');
   } else if (moveInfo && moveInfo.kind === 'inherit'){
     main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' changed ' + moveInfo.key + ' from ' + moveInfo.from + ' to ' + moveInfo.to +
            '. Same walk, different inheritance' + (moved ? ', different ending.' : '.');
@@ -749,7 +785,7 @@ function writeChanged(res, p){
       (state.endpoint === 'doom' ? 'Risk this step was ' + (state.lastRisk * 100).toFixed(1) + '% and the die landed on it.'
        : state.endpoint === 'still_walking' ? 'The horizon ran out with the walk still going.'
        : 'The crossing was read at capability ' + state.capability.toFixed(2) + ' with coordination ' + state.coordination.toFixed(2) +
-         ' and alignment-before-capability ' + alignRatio(state).toFixed(2) + '.');
+         ' and alignment ahead of capability ' + alignRatio(state).toFixed(2) + '.');
   } else if (lastNote === 'ALONE'){
     main = 'You stepped alone. Nothing moved. Coordination is ' + state.coordination.toFixed(2) + ', below the bar of ' + p.stagK.toFixed(2) +
            '. The stag needs company: a step together counts only when enough of the walk takes it at once.';
@@ -757,9 +793,13 @@ function writeChanged(res, p){
     main = moved ? moved + ' because ' + lastNote + '.' : 'Almost nothing moved: ' + lastNote + '.';
   } else main = 'Step taken — ' + lastNote + '.';
   moveInfo = null;
+  var nudge = '';
+  if (guide.on && state.history.length && !guide.done.slide) nudge = ' That was a year walked. A slider under Your hand moves the number without walking.';
+  else if (guide.on && !state.history.length && guide.done.slide && !guide.done.step) nudge = ' Now press Walk a year to walk with this hand.';
   box.appendChild(document.createTextNode(main));
-  if (state.history.length) box.appendChild(el('span','d', 'capability ' + state.capability.toFixed(2) + ' · alignment-before-capability ' +
-    alignRatio(state).toFixed(2) + ' · coordination ' + state.coordination.toFixed(2) + ' · risk this step ' + (state.lastRisk * 100).toFixed(1) + '%'));
+  var rl = document.getElementById('rd-line'); rl.textContent = main + nudge; rl.className = 'line' + (state.lastAlone ? ' alone' : '');
+  if (state.history.length) box.appendChild(el('span','d', 'capability ' + state.capability.toFixed(2) + ' · alignment ahead of capability ' +
+    alignRatio(state).toFixed(2) + ' (its stock divided by capability) · coordination ' + state.coordination.toFixed(2) + ' · risk this step ' + (state.lastRisk * 100).toFixed(1) + '%'));
 }
 
 function writeSeats(p){
@@ -802,7 +842,10 @@ function writeCall(){
   } else if (mine === 'idk'){
     line.appendChild(el('b', null, 'You said you do not know')); line.appendChild(document.createTextNode('. Recorded as itself, never scored as a coin flip. '));
   } else if (mine){
-    line.appendChild(el('b', null, 'You called ' + SHORT[mine] + ' at ' + conf + '%')); line.appendChild(document.createTextNode('. The walk will tell. '));
+    var here = (lastRes && lastRes.probs[mine] != null) ? lastRes.probs[mine] : null;
+    line.appendChild(el('b', null, 'You called ' + SHORT[mine] + ' at ' + conf + '%'));
+    line.appendChild(document.createTextNode(here == null ? '. The walk will tell. ' :
+      '. On this path the cards read it at ' + pc(here) + (Math.abs(here - conf / 100) >= 0.25 ? '. A call may disagree with the path; that gap is what calibration measures. ' : '. The walk will tell. ')));
   } else line.appendChild(document.createTextNode('No call yet. “I don’t know” is a legal answer, recorded as itself, never scored as a coin flip. '));
   if (called + idk) line.appendChild(document.createTextNode('Across your casts in this browser: ' + hit + ' of ' + called + ' calls landed, Brier ' + (called ? (brier / called).toFixed(2) : '—') +
     ' (0 is perfect, 0.25 is a coin flip said at 50%)' + (idk ? ', ' + idk + ' “I don’t know”' : '') + '. Nobody else sees this.'));
@@ -869,7 +912,7 @@ function buildSeats(g){
     var pp = el('div','p'); pp.id = 'seatp-' + it.id; cap.appendChild(pp);
     var sub = el('div','sub'); sub.id = 'seatsub-' + it.id; cap.appendChild(sub); face.appendChild(cap);
     inn.appendChild(face); inn.appendChild(back); cd.appendChild(inn);
-    cd.addEventListener('click', function(e){ if (e.target.closest('a')) return; flip(cd); });
+    cd.addEventListener('click', function(e){ if (e.target.closest('a')) return; if (cd.classList.contains('turned') && !e.target.closest('.turn')) return; flip(cd); });
     cd.addEventListener('keydown', function(e){ if (e.target !== cd) return; if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(cd); } });
     row.appendChild(cd); seatEls[it.id] = { cd:cd, back:back, it:it };
   });
@@ -907,7 +950,7 @@ function writeSeatCards(p){
     var tell = plain(sectionText(it, 'Tell')); if (tell){ var t = el('div','tell'); t.appendChild(el('b', null, 'The tell')); t.appendChild(el('p', null, tell)); back.appendChild(t); }
     var a = el('a', null, 'this card on recursive.eco'); a.href = 'https://recursive.eco/view.html?id=' + DECK_ID + '&item=' + it.id; a.target = '_blank'; a.rel = 'noopener';
     var pa = el('p'); pa.appendChild(a); back.appendChild(pa);
-    back.appendChild(el('p','turn','Tap to turn back.'));
+    back.appendChild(el('p','turn','Turn the card back'));
   });
 }
 fetch(DECK_SRC).then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(g){ try { buildSeats(g); } catch (e) { console.error('seats', e); } try { buildSteps(g); } catch (e) { console.error('steps', e); } })
@@ -933,7 +976,7 @@ function buildSteps(g){
     var art = el('div','art'), img = document.createElement('img'); img.alt = ''; img.decoding = 'async';
     var file = String(it.image_url || '').split('/').pop();
     if (file){ img.src = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + file + '?width=320'; img.onerror = function(){ img.onerror = null; img.style.display = 'none'; }; }
-    art.appendChild(img); art.appendChild(el('div','hue')); face.appendChild(art);
+    art.appendChild(img); art.appendChild(el('div','hue')); art.appendChild(el('span','mine','your move')); face.appendChild(art);
     var cap = el('div','cap'); cap.appendChild(el('div','nm', it.name));
     var sub = el('div','sub', plain(sectionText(it, 'Who can do this')).split(/[.;]/)[0]); cap.appendChild(sub);
     if (tag) cap.appendChild(el('span','tag ' + tag, tag)); face.appendChild(cap);
@@ -942,13 +985,15 @@ function buildSteps(g){
     back.appendChild(el('p', null, plain(sectionText(it, 'The move'))));
     [['If the coin lands well','If the coin lands well'], ['If the coin lands badly','If the coin lands badly']].forEach(function(pair){
       var t = plain(sectionText(it, pair[0])); if (!t) return; var d = el('div','fc'); d.appendChild(el('b', null, pair[1])); d.appendChild(el('p', null, t)); back.appendChild(d); });
-    var pick = el('button','ghost rs','Take this step'); pick.type = 'button'; pick.style.fontSize = '11px'; pick.style.padding = '5px 10px'; pick.style.marginTop = '8px';
-    pick.addEventListener('click', function(e){ e.stopPropagation(); store(stepKey(), it.id); writeStep(); flip(cd); });
+    var pick = el('button','ghost rs','This is my move'); pick.type = 'button'; pick.id = 'take-' + it.id; pick.style.fontSize = '11px'; pick.style.padding = '5px 10px'; pick.style.marginTop = '8px';
+    pick.addEventListener('click', function(e){ e.stopPropagation(); store(stepKey(), it.id); writeStep(); flip(cd);
+      var ab = document.getElementById('asym'); setTimeout(function(){ ab.scrollIntoView({ behavior:'smooth', block:'center' }); }, 650); });
     back.appendChild(pick);
+    back.appendChild(el('p','who', 'Choosing it does not walk a year; it marks this card as the move you take tonight and opens a box for your asymmetry. Kept in this browser; copied into your casting when you copy it.'));
     var a = el('a', null, 'this card on recursive.eco'); a.href = 'https://recursive.eco/view.html?id=' + DECK_ID + '&item=' + it.id; a.target = '_blank'; a.rel = 'noopener'; var pa = el('p'); pa.appendChild(a); back.appendChild(pa);
-    back.appendChild(el('p','turn','Tap to turn back.'));
+    back.appendChild(el('p','turn','Turn the card back'));
     inn.appendChild(face); inn.appendChild(back); cd.appendChild(inn);
-    cd.addEventListener('click', function(e){ if (e.target.closest('a,button,textarea')) return; flip(cd); });
+    cd.addEventListener('click', function(e){ if (e.target.closest('a,button,textarea')) return; if (cd.classList.contains('turned') && !e.target.closest('.turn')) return; flip(cd); });
     cd.addEventListener('keydown', function(e){ if (e.target !== cd) return; if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(cd); } });
     row.appendChild(cd); stepEls[it.id] = { cd:cd, it:it, tag:tag };
   });
@@ -967,7 +1012,8 @@ function chosenStep(){ var id = store(stepKey()) || ''; return stepEls[id] || nu
 function writeStep(){
   if (!actions.length) return;
   var ch = chosenStep();
-  Object.keys(stepEls).forEach(function(id){ stepEls[id].cd.classList.toggle('chosen', !!ch && ch.it.id === id); });
+  Object.keys(stepEls).forEach(function(id){ var on = !!ch && ch.it.id === id; stepEls[id].cd.classList.toggle('chosen', on);
+    var b = document.getElementById('take-' + id); if (b) b.textContent = on ? 'Chosen: this is your move' : 'This is my move'; });
   var box = document.getElementById('asym'); box.hidden = !ch;
   if (ch){ document.getElementById('asym-lab').textContent = 'The asymmetry of “' + ch.it.name + '”'; }
   $asym.value = store(asymKey()) || '';
@@ -1098,17 +1144,17 @@ document.getElementById('btn-copy-old') && document.getElementById('btn-copy-old
 window.addEventListener('hashchange', function(){ if (readHash()){ prevProbs = null; leadShown = null; drawOrientation(); loadFiction(); render(); } });
 
 // ── how to read this table ───────────────────────────────────────────────────────────────
-var guide = { at:0, on:false };
+var guide = { on:false, done:{ slide:false, step:false, inherit:false } };
+var GUIDE_ITEM = { slide:'g1', step:'g2', inherit:'g3' };
 function guideRender(){ document.getElementById('guide').hidden = !guide.on;
-  [1,2,3].forEach(function(n){ document.getElementById('g' + n).className = n < guide.at ? 'done' : n === guide.at ? 'now' : ''; });
-  document.getElementById('guide-lab').textContent = ['', 'First step of three', 'Second step of three', 'Last step'][guide.at] || ''; }
-function guideStart(){ guide.on = true; guide.at = 1; guideRender(); }
-function guideStop(){ guide.on = false; guide.at = 0; store('walk:spread-guide', 'done'); guideRender(); }
+  var n = 0; Object.keys(GUIDE_ITEM).forEach(function(k){ var li = document.getElementById(GUIDE_ITEM[k]); li.className = guide.done[k] ? 'done' : 'now'; if (guide.done[k]) n++; });
+  document.getElementById('guide-lab').textContent = n ? n + ' of 3 tried' : 'Three things to try, in any order'; }
+function guideStart(){ guide.on = true; guide.done = { slide:false, step:false, inherit:false }; guideRender(); }
+function guideStop(){ guide.on = false; store('walk:spread-guide', 'done'); guideRender(); }
 function guideAdvance(ev){ if (!guide.on) return;
-  if (guide.at === 1 && ev === 'slide') guide.at = 2;
-  else if (guide.at === 2 && ev === 'step') guide.at = 3;
-  else if (guide.at === 3 && ev === 'inherit'){ guideStop(); return; }
-  guideRender(); }
+  if (guide.done.hasOwnProperty(ev)) guide.done[ev] = true;
+  guideRender();
+  if (guide.done.slide && guide.done.step && guide.done.inherit) setTimeout(guideStop, 1500); }
 document.getElementById('guide-skip').addEventListener('click', guideStop);
 document.getElementById('guide-replay').addEventListener('click', function(){ guideStart(); window.scrollTo({ top:0, behavior:'smooth' }); });
 
