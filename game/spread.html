@@ -207,7 +207,9 @@
   @media (min-width:900px){ .hand{grid-template-columns:1.1fr 1fr} }
   .hand{order:-1;margin:0 0 14px}
   .hourline{font-size:12px;color:var(--muted);margin:-4px 0 12px;max-width:80ch}
-  .aim{font-size:12px;color:var(--muted);margin:-4px 0 12px;max-width:80ch}
+  .aim{font-size:12px;color:var(--muted);margin:6px 0 0;max-width:80ch}
+  .aimbox{margin:-4px 0 12px;background:transparent;border:0;padding:0}
+  .aimbox summary{font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400;text-decoration:underline;cursor:pointer}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px}
   .card > h2{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
   .alloc{margin-bottom:8px;user-select:none}
@@ -310,7 +312,7 @@
     <span class="count" id="stepcount"></span>
     <button class="link" id="btn-hour" type="button">this hour's table</button>
   </div>
-  <p class="aim">A walk is twenty years or an ending, whichever comes first. Then write it as fiction, see how your call did, and cast again; casting again throws every coin again, for the endings and for the seats. <em>Walk a year together</em> is the step of faith: it moves the world only if coordination is above the bar, and below it the year is spent for nothing. <em>This hour's table</em> deals the same cast to everyone who opens it this hour.</p>
+  <details class="aimbox"><summary>What the buttons do</summary><p class="aim">A walk is twenty years or an ending, whichever comes first. Then write it as fiction, see how your call did, and cast again; casting again throws every coin again, for the endings and for the seats. <em>Walk a year together</em> is the step of faith: it moves the world only if coordination is above the bar, and below it the year is spent for nothing. <em>This hour's table</em> deals the same cast to everyone who opens it this hour.</p></details>
   <p class="hourline" id="hourline" hidden></p>
 
   <div class="main">
@@ -711,7 +713,7 @@ CHANNELS.forEach(function(c){
   var pct = el('span','pct'); pct.id = 'pct-' + c.k; top.appendChild(pct); box.appendChild(top);
   var r = document.createElement('input'); r.type = 'range'; r.min = 0; r.max = 100; r.step = 1; r.id = 'sl-' + c.k;
   r.style.setProperty('--sl', 'var(' + c.col + ')'); r.setAttribute('aria-label', c.nm + ' share of the allocation, in percent');
-  ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ dragFrom[c.k] = null; if (liveN !== N){ liveN = N; render(); } }, 0); }); });
+  ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ if (liveN !== N){ liveN = N; render(); } dragFrom[c.k] = null; }, 0); }); });
   r.addEventListener('input', function(){ if (dragFrom[c.k] == null) dragFrom[c.k] = state.alloc[c.k]; liveN = 1200; setChannel(c.k, +r.value); guideAdvance('slide'); });
   box.appendChild(r); box.appendChild(el('p','why', c.why)); $sliders.appendChild(box);
 });
@@ -733,7 +735,7 @@ function render(){
   Object.keys(PRIOR_UI).forEach(function(k){ var n = document.getElementById('prn-' + k), r = document.getElementById('prr-' + k);
     if (n && parseFloat(String(n.value).replace(',', '.')) !== P(k)) n.value = String(P(k)); if (r && +r.value !== P(k)) r.value = P(k); });
   HOUSES.forEach(function(h){ var changed = h.keys.filter(function(k){ return priors[k] != null; }).length;
-    document.getElementById('hs-' + h.id).textContent = (changed ? changed + ' of ' + h.keys.length + ' changed by you' : h.line) + ' \u00b7 turn over to change the numbers'; });
+    document.getElementById('hs-' + h.id).textContent = changed ? changed + ' of ' + h.keys.length + ' changed by you' : (window.innerWidth < 900 ? 'turn over to change the numbers' : h.line + ' \u00b7 turn over to change the numbers'); });
 
   var done = !!state.endpoint || state.t >= p.horizon;
   document.getElementById('btn-step').disabled = done;
@@ -741,7 +743,7 @@ function render(){
   CHANNELS.forEach(function(c){ document.getElementById('sl-' + c.k).disabled = done; });
   document.getElementById('stepcount').textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
   var meta = document.getElementById('node-meta'); meta.textContent = '';
-  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['coordination ', state.coordination.toFixed(2) + ' of the ' + p.stagK.toFixed(2) + ' needed to walk together']]
+  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['coordination ', state.coordination.toFixed(2) + ' (bar ' + p.stagK.toFixed(2) + ')']]
     .forEach(function(pair){ var sp = el('span'); sp.appendChild(document.createTextNode(pair[0])); sp.appendChild(el('b', null, pair[1])); meta.appendChild(sp); });
   document.getElementById('node-back').textContent = 'Right now: capability ' + state.capability.toFixed(2) +
     ' (when it reaches ' + p.graceCapability + ' the walk arrives somewhere and the ending is read), alignment ahead of capability ' + alignRatio(state).toFixed(2) +
@@ -779,9 +781,9 @@ function render(){
   if (leadShown && leadShown.k === lead && Math.abs(leadShown.p - q) >= 0.005) x.textContent = 'was ' + pc(leadShown.p);
   else if (leadShown && leadShown.k !== lead) x.textContent = 'was ' + SHORT[leadShown.k] + ' ' + pc(leadShown.p);
   else x.textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon;
-  leadShown = { k:lead, p:q };
+  if (liveN === N) leadShown = { k:lead, p:q };
 
-  writeChanged(res, p); prevProbs = res.probs;
+  writeChanged(res, p); if (liveN === N) prevProbs = res.probs;
   writeSeats(p); writeSeatCards(p); writeFictionPrompt(lead, res); writeCall(); writeHourLine(); writeHash();
 }
 
@@ -827,7 +829,7 @@ function writeChanged(res, p){
   } else if (prevProbs){
     main = moved ? moved + ' because ' + lastNote + '.' : 'Almost nothing moved: ' + lastNote + '.';
   } else main = 'Step taken — ' + lastNote + '.';
-  moveInfo = null;
+  if (liveN === N) moveInfo = null;   // a drag frame keeps its move; the release consumes it
   var nudge = '';
   if (guide.on && state.history.length && !guide.done.slide) nudge = ' That was a year walked. A slider under Your hand moves the number without walking.';
   else if (guide.on && !state.history.length && guide.done.slide && !guide.done.step) nudge = ' Now press Walk a year to walk with this hand.';
@@ -1017,7 +1019,7 @@ function buildSteps(g){
     if (file){ img.src = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + file + '?width=320'; img.onerror = function(){ img.onerror = null; img.style.display = 'none'; }; }
     art.appendChild(img); art.appendChild(el('div','hue')); art.appendChild(el('span','mine','your move')); face.appendChild(art);
     var cap = el('div','cap'); cap.appendChild(el('div','nm', it.name));
-    var sub = el('div','sub', plain(sectionText(it, 'Who can do this')).split(/[.;]/)[0]); cap.appendChild(sub);
+    var sub = el('div','sub', plain(sectionText(it, 'Who can do this')).split(/[.;]/)[0]); sub.id = 'stepsub-' + it.id; cap.appendChild(sub);
     if (tag) cap.appendChild(el('span','tag ' + tag, tag)); face.appendChild(cap);
     back.appendChild(el('h3', null, it.name + (tag ? ' — ' + tag : '')));
     back.appendChild(el('p','who', 'Who can do this: ' + plain(sectionText(it, 'Who can do this'))));
@@ -1054,6 +1056,7 @@ function writeStep(){
   if (!actions.length) return;
   var ch = chosenStep();
   Object.keys(stepEls).forEach(function(id){ var on = !!ch && ch.it.id === id; stepEls[id].cd.classList.toggle('chosen', on);
+    var ss = document.getElementById('stepsub-' + id); if (ss) ss.textContent = on ? 'your move for this cast' : plain(sectionText(stepEls[id].it, 'Who can do this')).split(/[.;]/)[0];
     var b = document.getElementById('take-' + id); if (b) b.textContent = on ? 'Chosen: this is your move' : 'This is my move';
     var h = stepEls[id].cd.querySelector('.back h3'); if (h) h.textContent = stepEls[id].it.name + (stepEls[id].tag ? ' \u2014 ' + stepEls[id].tag : '') + (on ? ' \u00b7 your move' : ''); });
   var box = document.getElementById('asym'); box.hidden = !ch;
@@ -1119,6 +1122,7 @@ function writeHash(){
   var over = Object.keys(priors);
   if (over.length) parts.push('p=' + over.map(function(k){ return k + ':' + priors[k]; }).join(','));
   var h = '#' + parts.join(';');
+  store('walk:last-hash', h);
   if (location.hash !== h){ try { history.replaceState(null, '', location.pathname + location.search + h); } catch (e) { try { location.hash = h; } catch (e2) {} } }
 }
 function allocFrom(str){ var n = String(str).split('.').map(Number);
@@ -1204,6 +1208,8 @@ document.getElementById('guide-skip').addEventListener('click', guideStop);
 document.getElementById('guide-replay').addEventListener('click', function(){ guideStart(); window.scrollTo({ top:0, behavior:'smooth' }); });
 
 // ── go ───────────────────────────────────────────────────────────────────────────────────
+// no hash on the URL: pick up where this browser left off, so a reload does not deal a new table
+if (!/^#v1/.test(location.hash)){ var lastH = store('walk:last-hash'); if (lastH && /^#v1/.test(lastH)){ try { history.replaceState(null, '', location.pathname + location.search + lastH); } catch (e) {} } }
 var fromLink = readHash();
 drawOrientation(); loadFiction(); render(); deal();
 if (!(fromLink && state.history.length) && store('walk:spread-guide') !== 'done') guideStart();
