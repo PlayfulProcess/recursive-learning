@@ -205,7 +205,7 @@
   .main{display:flex;flex-direction:column}
   .hand{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
   @media (min-width:900px){ .hand{grid-template-columns:1.1fr 1fr} }
-  @media (max-width:899px){ .hand{order:-1;margin:0 0 12px} }
+  .hand{order:-1;margin:0 0 14px}
   .hourline{font-size:12px;color:var(--muted);margin:-4px 0 12px;max-width:80ch}
   .aim{font-size:12px;color:var(--muted);margin:-4px 0 12px;max-width:80ch}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px}
@@ -258,7 +258,7 @@
     .pos > h2{font-size:10px;flex-wrap:wrap;gap:5px 7px} .pos > h2 .q{flex-basis:100%;margin-left:24px}
     .face .art .badge{font-size:8px;padding:1px 4px;right:4px;top:4px;letter-spacing:.05em}
     .face .sub{-webkit-line-clamp:2}
-    .fan .face .sub{display:none}
+    .fan .face .sub{display:-webkit-box;-webkit-line-clamp:2}
     .reader{position:sticky;top:0;z-index:5;margin:0 -16px 10px;padding:7px 16px;gap:4px 10px;border-radius:0;border-left:0;border-right:0;
       background:rgba(21,25,34,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);font-size:12px}
     .reader b{font-size:19px}
@@ -270,6 +270,7 @@
     .bar .link{grid-column:1/-1;justify-self:start}
     h1{font-size:18px}
   }
+  @media (max-width:480px){ .hz .cd{width:calc((100% - 9px) / 2);aspect-ratio:8/11.5} .hz .cd.turned:not(.anim){width:100%} }
   @media (max-width:420px){ :root{--cw:86px} .face .p{font-size:15px} }
 
   .credits{margin-top:22px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
@@ -300,7 +301,7 @@
   </div>
 
   <div class="bar">
-    <button id="btn-cast" class="ghost">Cast again</button>
+    <button id="btn-cast" class="ghost">Cast again (a new table)</button>
 
     <button id="btn-step">Walk a year</button>
     <button id="btn-together" class="ghost">Walk a year together</button>
@@ -569,7 +570,7 @@ var DEFAULT_ALLOC = { power:0.40, alignment:0.30, sustainability:0.15, stop:0.15
 function fresh(){ return freshState({ power:DEFAULT_ALLOC.power, alignment:DEFAULT_ALLOC.alignment,
   sustainability:DEFAULT_ALLOC.sustainability, stop:DEFAULT_ALLOC.stop }); }
 var state = fresh(), priors = {}, seed = (Math.random() * 0x7fffffff) | 0, rng = makeRng(seed);
-var N = 4000, prevProbs = null, lastNote = '', reversed = {}, leadShown = null, moveInfo = null, lastRes = null;
+var N = 4000, liveN = 4000, renderQueued = false, prevProbs = null, lastNote = '', reversed = {}, leadShown = null, moveInfo = null, lastRes = null;
 function P(k){ return (priors[k] != null && isFinite(priors[k])) ? +priors[k] : DEFAULT_PRIORS[k]; }
 function viewPriors(){ var o = withDefaults(priors); o.seed = seed; return o; }
 function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
@@ -596,7 +597,8 @@ function setChannel(key, pctValue){
                                        : Math.max(0, Math.round(out[k] * 100) / 100);
     if (i < others.length - 1) acc += out[k];
   });
-  state.alloc = out; lastHand = null; render();
+  state.alloc = out; lastHand = null;
+  if (!renderQueued){ renderQueued = true; requestAnimationFrame(function(){ renderQueued = false; render(); }); }
 }
 function takeStep(together){
   if (state.endpoint || state.t >= P('horizon')) return;
@@ -709,8 +711,8 @@ CHANNELS.forEach(function(c){
   var pct = el('span','pct'); pct.id = 'pct-' + c.k; top.appendChild(pct); box.appendChild(top);
   var r = document.createElement('input'); r.type = 'range'; r.min = 0; r.max = 100; r.step = 1; r.id = 'sl-' + c.k;
   r.style.setProperty('--sl', 'var(' + c.col + ')'); r.setAttribute('aria-label', c.nm + ' share of the allocation, in percent');
-  ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ dragFrom[c.k] = null; }, 0); }); });
-  r.addEventListener('input', function(){ if (dragFrom[c.k] == null) dragFrom[c.k] = state.alloc[c.k]; setChannel(c.k, +r.value); guideAdvance('slide'); });
+  ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ dragFrom[c.k] = null; if (liveN !== N){ liveN = N; render(); } }, 0); }); });
+  r.addEventListener('input', function(){ if (dragFrom[c.k] == null) dragFrom[c.k] = state.alloc[c.k]; liveN = 1200; setChannel(c.k, +r.value); guideAdvance('slide'); });
   box.appendChild(r); box.appendChild(el('p','why', c.why)); $sliders.appendChild(box);
 });
 
@@ -731,7 +733,7 @@ function render(){
   Object.keys(PRIOR_UI).forEach(function(k){ var n = document.getElementById('prn-' + k), r = document.getElementById('prr-' + k);
     if (n && parseFloat(String(n.value).replace(',', '.')) !== P(k)) n.value = String(P(k)); if (r && +r.value !== P(k)) r.value = P(k); });
   HOUSES.forEach(function(h){ var changed = h.keys.filter(function(k){ return priors[k] != null; }).length;
-    document.getElementById('hs-' + h.id).textContent = changed ? changed + ' of ' + h.keys.length + ' changed by you' : h.line; });
+    document.getElementById('hs-' + h.id).textContent = (changed ? changed + ' of ' + h.keys.length + ' changed by you' : h.line) + ' \u00b7 turn over to change the numbers'; });
 
   var done = !!state.endpoint || state.t >= p.horizon;
   document.getElementById('btn-step').disabled = done;
@@ -739,7 +741,7 @@ function render(){
   CHANNELS.forEach(function(c){ document.getElementById('sl-' + c.k).disabled = done; });
   document.getElementById('stepcount').textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
   var meta = document.getElementById('node-meta'); meta.textContent = '';
-  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['coordination ', state.coordination.toFixed(2)]]
+  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['coordination ', state.coordination.toFixed(2) + ' of the ' + p.stagK.toFixed(2) + ' needed to walk together']]
     .forEach(function(pair){ var sp = el('span'); sp.appendChild(document.createTextNode(pair[0])); sp.appendChild(el('b', null, pair[1])); meta.appendChild(sp); });
   document.getElementById('node-back').textContent = 'Right now: capability ' + state.capability.toFixed(2) +
     ' (when it reaches ' + p.graceCapability + ' the walk arrives somewhere and the ending is read), alignment ahead of capability ' + alignRatio(state).toFixed(2) +
@@ -749,7 +751,7 @@ function render(){
   if (state.endpoint){ endedEl.hidden = false; endedEl.textContent = 'This walk ended at: ' + SHORT[state.endpoint] + '. The sliders rest now. Cast again for a new table, or change a number in the Inheritance and see where the same walk would have gone.'; }
   else endedEl.hidden = true;
 
-  var res = simulate(state, viewPriors(), N); lastRes = res;
+  var res = simulate(state, viewPriors(), liveN); lastRes = res;
   var lead = state.endpoint || ENDPOINTS.reduce(function(m,k){ return res.probs[k] > res.probs[m] ? k : m; }, ENDPOINTS[0]);
   CARDS.forEach(function(c){
     var q = state.endpoint ? (c.k === state.endpoint ? 1 : 0) : res.probs[c.k];
@@ -757,7 +759,7 @@ function render(){
     if (!state.endpoint) node.appendChild(el('small', null, '±' + (res.se[c.k] * 100).toFixed(1)));
     document.getElementById('f-' + c.k).style.width = (q * 100) + '%';
     document.getElementById('sub-' + c.k).textContent = state.endpoint ? (c.k === state.endpoint ? 'the walk ended here' : '') :
-      (q === 0 ? 'off this path' : reversed[c.k] ? 'reversed' : 'upright');
+      (q === 0 ? 'no way from here' : reversed[c.k] ? 'reversed' : 'upright');
     document.getElementById('read-' + c.k).textContent = (reversed[c.k] ? 'Reversed: ' : 'Upright: ') + (reversed[c.k] ? c.rev : c.up);
     document.getElementById('bh-' + c.k).textContent = c.nm + ' \u00b7 ' + pc(q) + (state.endpoint ? '' : ' on this path') + ' \u2014 ' + c.txt;
     var cd = HZ[c.k].cd;
@@ -766,7 +768,7 @@ function render(){
     cd.classList.toggle('ended', c.k === state.endpoint);
     cd.classList.toggle('dim', q === 0 && !state.endpoint);
   });
-  document.getElementById('nfoot').textContent = res.n + ' rollouts of the remaining steps, holding this allocation. ± is one standard error.';
+  document.getElementById('nfoot').textContent = res.n + ' rollouts of the remaining years, holding this hand' + (res.n < N ? ' (fewer while you drag; the full count on release)' : '') + '. ± is one standard error.';
 
   // the phone reader
   var q = state.endpoint ? 1 : res.probs[lead];
