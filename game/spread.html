@@ -226,7 +226,13 @@
   .alloc .top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:1px}
   .alloc .top b{font-weight:600}
   .alloc .top .pct{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12.5px}
-  .alloc input[type=range]{width:100%;margin:0;height:18px;accent-color:var(--sl,var(--accent))}
+  .alloc input[type=range]{width:100%;margin:0;height:30px;accent-color:var(--sl,var(--accent));-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer}
+  .alloc input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--panel2);border:1px solid var(--line)}
+  .alloc input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--sl,var(--accent));
+    border:2px solid var(--bg);margin-top:-11px;box-shadow:0 0 0 1px var(--line)}
+  .alloc input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--panel2);border:1px solid var(--line)}
+  .alloc input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--sl,var(--accent));border:2px solid var(--bg)}
+  .alloc input[type=range]:disabled{opacity:.45;cursor:not-allowed}
   .alloc .why{font-size:11px;color:var(--muted);margin:1px 0 0}
   .changed{font-size:14px;background:var(--panel2);border:1px solid var(--line);
     border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:10px 12px}
@@ -279,7 +285,7 @@
     .reader .nm{font-size:12.5px;line-height:1.25}
     .reader .x{font-size:11px}
     .reader{padding:6px 16px;gap:2px 8px}
-    .reader .line{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .reader .line{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
     .reader .note{font-size:11.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .bar{display:grid;grid-template-columns:1fr 1fr} .bar .count{grid-column:1/-1} .bar .push{margin-left:0}
     .bar .link{grid-column:1/-1;justify-self:start}
@@ -319,7 +325,7 @@
     <button id="btn-cast" class="ghost">Cast again (a new table)</button>
 
     <button id="btn-step">Walk a year</button>
-    <button id="btn-together" class="ghost">Walk a year together</button>
+    <button id="btn-together" class="ghost" title="The step of faith: it moves the world only when coordination is above the bar; below it the year is spent for nothing.">Walk a year together</button>
     <button id="btn-copy" class="ghost push">Copy my casting</button>
     <a id="btn-send" class="ghost sendbtn" role="button" hidden target="_blank" rel="noopener">Send it</a>
     <span class="count" id="stepcount"></span>
@@ -759,7 +765,7 @@ function render(){
   var done = !!state.endpoint || state.t >= p.horizon;
   document.getElementById('btn-step').disabled = done;
   document.getElementById('btn-step').textContent = done ? 'The walk has ended' : 'Walk a year';
-  document.getElementById('btn-together').disabled = done;
+  document.getElementById('btn-together').disabled = done; document.getElementById('btn-together').hidden = done;
   CHANNELS.forEach(function(c){ document.getElementById('sl-' + c.k).disabled = done; });
   document.getElementById('stepcount').textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
   var meta = document.getElementById('node-meta'); meta.textContent = '';
@@ -798,9 +804,10 @@ function render(){
   document.getElementById('rd-p').style.color = 'var(' + CARDS.filter(function(c){ return c.k === lead; })[0].col + ')';
   document.getElementById('rd-nm').textContent = (state.endpoint ? 'the walk ended in ' + SHORT[lead] + ', ' + REGISTER[lead] : 'chance this walk ends in ' + SHORT[lead] + ', ' + REGISTER[lead]);
   var x = document.getElementById('rd-x');
-  if (leadShown && leadShown.k === lead && Math.abs(leadShown.p - q) >= 0.005) x.textContent = 'was ' + pc(leadShown.p);
+  if (state.endpoint) x.textContent = 'ended in year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon;
+  else if (leadShown && leadShown.k === lead && Math.abs(leadShown.p - q) >= 0.005) x.textContent = 'was ' + pc(leadShown.p);
   else if (leadShown && leadShown.k !== lead) x.textContent = 'was ' + SHORT[leadShown.k] + ' ' + pc(leadShown.p);
-  else x.textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon;
+  else x.textContent = (state.endpoint ? 'ended in year ' : 'year ') + Math.min(state.t, p.horizon) + ' of ' + p.horizon;
   if (liveN === N) leadShown = { k:lead, p:q };
 
   writeChanged(res, p); if (liveN === N) prevProbs = res.probs;
@@ -829,6 +836,7 @@ function writeChanged(res, p){
     moved += (Math.abs(res.probs[leadK] - prevProbs[leadK]) >= 0.005
       ? ' and ' + SHORT[leadK] + (res.probs[leadK] < prevProbs[leadK] ? ' fell from ' : ' rose from ') + pc(prevProbs[leadK]) + ' to ' + pc(res.probs[leadK])
       : ' while ' + SHORT[leadK] + ' held at ' + pc(res.probs[leadK]));
+  if (moveInfo && moveInfo.kind === 'cast'){ /* handled below */ }
   if (moveInfo && moveInfo.kind === 'slide' && !moved && !state.endpoint && res.probs[leadK] >= 0.97){
     var ch0 = CHANNELS.filter(function(c){ return c.k === moveInfo.key; })[0];
     main = 'Nothing moved when you moved ' + ch0.nm + ' from ' + pc(moveInfo.from) + ' to ' + pc(moveInfo.to) + ': with this inheritance, ' + SHORT[leadK] +
@@ -844,6 +852,8 @@ function writeChanged(res, p){
            ', sustainability ' + pc(to.sustainability) + ', stop ' + pc(to.stop) + '). It now reads ' + pc(res.probs[moveInfo.key]) + (res.probs[moveInfo.key] < 0.5 ? ': no hand from here makes it likely; a hand leans, the dice still decide.' : '. A hand leans; the dice still decide.') +
            (moveInfo.key === 'the_stop' ? ' The Stop needs company: coordination (' + state.coordination.toFixed(2) + ') must climb above the bar (' + p.stagK.toFixed(2) + ') first. It climbs each year with the alignment and stop shares, and this hand climbs fastest.'
             : to.stop > 0 && state.coordination < p.stagK ? ' Stop counts for nothing while coordination (' + state.coordination.toFixed(2) + ') is below the bar (' + p.stagK.toFixed(2) + '); here it only starves alignment, which is why it favours this ending.' : '');
+  } else if (moveInfo && moveInfo.kind === 'cast'){
+    main = 'A new table: a new cast, the default hand and the default inheritance.' + (moveInfo.dropped ? ' Your ' + moveInfo.dropped + ' changed number' + (moveInfo.dropped > 1 ? 's' : '') + ' in the Inheritance were let go; the link you copied before still carries them.' : '') + ' Move a slider and the number moves.';
   } else if (moveInfo && moveInfo.kind === 'undo'){
     main = 'Your hand is back where you had it' + (moved ? ': ' + moved.charAt(0).toLowerCase() + moved.slice(1) : '') + '.';
   } else if (moveInfo && moveInfo.kind === 'inherit'){
@@ -855,7 +865,7 @@ function writeChanged(res, p){
     main = 'Nothing walked yet. Move a slider and the number moves: the world did not change, the path did.';
   } else if (state.endpoint && state.history[state.history.length - 1].t === state.t){
     main = 'The walk ended here: ' + SHORT[state.endpoint] + '. ' +
-      (state.endpoint === 'doom' ? 'Risk this step was ' + (state.lastRisk * 100).toFixed(1) + '% and the die landed on it.'
+      (state.endpoint === 'doom' ? 'Risk this year was ' + (state.lastRisk * 100).toFixed(1) + '% and the die landed on it' + (state.t <= 2 ? ': a rare roll, and a real one. Cast again for a new table, or change the inheritance and see where this same walk would have gone.' : '.')
        : state.endpoint === 'still_walking' ? 'The horizon ran out with the walk still going.'
        : 'The crossing was read at capability ' + state.capability.toFixed(2) + ' with coordination ' + state.coordination.toFixed(2) +
          ' and alignment ahead of capability ' + alignRatio(state).toFixed(2) + '.');
@@ -867,9 +877,9 @@ function writeChanged(res, p){
   } else main = 'Step taken — ' + lastNote + '.';
   if (liveN === N) moveInfo = null;   // a drag frame keeps its move; the release consumes it
   var nudge = '';
-  if (zeros >= 4 && zeros > zerosBefore) nudge += ' ' + zeros + ' endings now read 0%: with this hand they cannot happen at all. A hand chooses the destination; chance decides the arrival.';
+  if (zeros >= 4 && zeros > zerosBefore && !(moveInfo && moveInfo.kind === 'cast')) nudge += ' ' + zeros + ' endings now read 0%: not with this hand.';
   if (liveN === N) zerosBefore = zeros;
-  if (guide.on && state.history.length && !guide.done.slide) nudge = ' That was a year walked. A slider under Your hand moves the number without walking.';
+  if (guide.on && state.history.length && !guide.done.slide && !state.endpoint) nudge = ' That was a year walked. A slider under Your hand moves the number without walking.';
   else if (guide.on && !state.history.length && guide.done.slide && !guide.done.step) nudge = ' Now press Walk a year to walk with this hand.';
   box.appendChild(document.createTextNode(main));
   var rl = document.getElementById('rd-line'); rl.textContent = main + nudge; rl.className = 'line' + (state.lastAlone ? ' alone' : '');
@@ -917,6 +927,7 @@ function writeCall(){
   if (state.endpoint && mine){
     line.appendChild(el('b', null, mine === 'idk' ? 'You said you did not know' : 'You called ' + SHORT[mine] + ' at ' + (t[seed] && t[seed].conf || conf) + '%'));
     line.appendChild(document.createTextNode('; it ended in ' + SHORT[state.endpoint] + '. '));
+    noteCall = (mine === 'idk' ? 'You said you did not know' : 'You called ' + SHORT[mine]) + '; it ended in ' + SHORT[state.endpoint] + (mine === state.endpoint ? '. It landed.' : '.'); writeNote();
   } else if (mine === 'idk'){
     line.appendChild(el('b', null, 'You said you do not know')); line.appendChild(document.createTextNode('. Recorded as itself, never scored as a coin flip. '));
   } else if (mine){
@@ -1187,7 +1198,9 @@ function deal(){
 }
 function cast(){
   resumed = false; zerosBefore = 0; actionSeq++; document.getElementById('rd-note').hidden = true; noteCall = ''; noteMove = '';
+  var dropped = Object.keys(priors).length;
   Object.keys(priors).forEach(function(k){ delete priors[k]; });   // a new table inherits the defaults again
+  moveInfo = { kind:'cast', dropped:dropped };
   state = fresh(); seed = (Math.random() * 0x7fffffff) | 0; rng = makeRng(seed);
   prevProbs = null; lastNote = ''; leadShown = null; drawOrientation(); loadFiction(); render(); deal();
 }
