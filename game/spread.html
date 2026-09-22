@@ -130,7 +130,7 @@
   .node .strip{display:flex;height:9px;border-radius:5px;overflow:hidden;border:1px solid var(--line);background:var(--panel2);margin-top:5px}
   .node .strip i{display:block;height:100%}
   .node .meta{font-size:10.5px;color:var(--muted);margin-top:5px;line-height:1.35}
-  .node .meta span{display:block;white-space:nowrap}
+  .node .meta span{display:block}
   .node .meta b{color:var(--ink);font-weight:600}
 
   /* the Inheritance fan */
@@ -187,7 +187,17 @@
   .asym label{display:block;font-size:12.5px;margin-bottom:6px}
   .asym label b{color:var(--accent)}
   .asym textarea{min-height:64px}
-  @media (max-width:899px){ .steprow .cd{width:calc((100% - 10px) / 2);aspect-ratio:8/12.6} .steprow .face .sub{display:none} }
+  @media (max-width:899px){
+    .steprow{flex-direction:column;gap:8px}
+    .steprow .cd{width:100%;aspect-ratio:auto;height:96px}
+    .steprow .cd:not(.turned) .face{flex-direction:row;align-items:stretch}
+    .steprow .cd:not(.turned) .face .art{flex:0 0 64px;min-height:0;width:64px}
+    .steprow .cd:not(.turned) .face .cap{flex:1 1 auto;padding:8px 10px;display:flex;flex-direction:column;justify-content:center}
+    .steprow .face .nm{-webkit-line-clamp:2;font-size:13px}
+    .steprow .face .sub{display:inline;-webkit-line-clamp:1}
+    .steprow .cd:not(.turned) .face .cap .tag{margin:0 0 0 6px;vertical-align:middle}
+    .steprow .cd:not(.turned) .face .cap .nm{margin-bottom:3px}
+    .steprow .cd.turned:not(.anim){height:auto} }
   .call{margin:14px 0 0;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
   .call .lab{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 7px}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -614,8 +624,8 @@ function noteFor(s){
   if (s.lastAlone) return 'ALONE';
   if (s.lastShock) return 'a shock landed outside the lab and coordination took the hit';
   if (s.coordination >= P('stagK') && a.stop > 0) return 'the stop counted: coordination was above the bar, so it dragged capability growth down';
-  if (s.lastRatioDelta > 0.01)  return 'alignment led capability this step';
-  if (s.lastRatioDelta < -0.01) return 'capability outran alignment this step';
+  if (s.lastRatioDelta > 0.01)  return 'alignment led capability this year';
+  if (s.lastRatioDelta < -0.01) return 'capability outran alignment this year';
   if (a.sustainability >= 0.4)  return 'sustainability held, so shocks got less likely';
   return 'the stocks leaked about as fast as capability grew';
 }
@@ -625,8 +635,8 @@ function flip(cd){
   cd.classList.add('anim'); void cd.offsetWidth;
   cd.classList.toggle('turned'); cd.setAttribute('aria-pressed', cd.classList.contains('turned') ? 'true' : 'false');
   clearTimeout(cd._t); cd._t = setTimeout(function(){ cd.classList.remove('anim');
-    if (cd.classList.contains('turned')){ var r = cd.getBoundingClientRect(), top = 120;
-      if (r.top < top || r.bottom > window.innerHeight) cd.scrollIntoView({ behavior:'smooth', block:'start' }); } }, 600);
+    var r = cd.getBoundingClientRect(), top = 120;
+    if (r.top < top || r.bottom > window.innerHeight) cd.scrollIntoView({ behavior:'smooth', block:cd.classList.contains('turned') ? 'start' : 'nearest' }); }, 600);
 }
 function cardShell(id, artKey, revBadge){
   var cd = el('div','cd'); cd.id = id; cd.tabIndex = 0; cd.setAttribute('role','button'); cd.setAttribute('aria-pressed','false');
@@ -684,6 +694,7 @@ HOUSES.forEach(function(h){
   sh.cap.appendChild(el('div','nm', h.nm));
   var s = el('div','sub'); s.id = 'hs-' + h.id; sh.cap.appendChild(s);
   sh.back.appendChild(el('h3', null, h.nm));
+  sh.back.appendChild(el('p','who', h.nm + ', ' + h.line + '.'));
   var prs = el('div','prs'); sh.back.appendChild(prs);
   h.keys.forEach(function(k){
     var cfg = PRIOR_UI[k], box = el('div','pr'), lab = el('div','lab');
@@ -738,7 +749,7 @@ function render(){
   Object.keys(PRIOR_UI).forEach(function(k){ var n = document.getElementById('prn-' + k), r = document.getElementById('prr-' + k);
     if (n && parseFloat(String(n.value).replace(',', '.')) !== P(k)) n.value = String(P(k)); if (r && +r.value !== P(k)) r.value = P(k); });
   HOUSES.forEach(function(h){ var changed = h.keys.filter(function(k){ return priors[k] != null; }).length;
-    document.getElementById('hs-' + h.id).textContent = changed ? changed + ' of ' + h.keys.length + ' changed by you' : (window.innerWidth < 900 ? 'turn over to change the numbers' : h.line + ' \u00b7 turn over to change the numbers'); });
+    document.getElementById('hs-' + h.id).textContent = changed ? changed + ' of ' + h.keys.length + ' changed by you \u00b7 turn over' : 'turn over to change the numbers'; });
 
   var done = !!state.endpoint || state.t >= p.horizon;
   document.getElementById('btn-step').disabled = done;
@@ -746,7 +757,7 @@ function render(){
   CHANNELS.forEach(function(c){ document.getElementById('sl-' + c.k).disabled = done; });
   document.getElementById('stepcount').textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
   var meta = document.getElementById('node-meta'); meta.textContent = '';
-  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['together needs ' + p.stagK.toFixed(2) + '; coordination now ', state.coordination.toFixed(2)]]
+  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['together needs ' + p.stagK.toFixed(2) + ', now ', state.coordination.toFixed(2)]]
     .forEach(function(pair){ var sp = el('span'); sp.appendChild(document.createTextNode(pair[0])); sp.appendChild(el('b', null, pair[1])); meta.appendChild(sp); });
   document.getElementById('node-back').textContent = 'Right now: capability ' + state.capability.toFixed(2) +
     ' (when it reaches ' + p.graceCapability + ' the walk arrives somewhere and the ending is read), alignment ahead of capability ' + alignRatio(state).toFixed(2) +
@@ -764,7 +775,7 @@ function render(){
     if (!state.endpoint) node.appendChild(el('small', null, '±' + (res.se[c.k] * 100).toFixed(1)));
     document.getElementById('f-' + c.k).style.width = (q * 100) + '%';
     document.getElementById('sub-' + c.k).textContent = state.endpoint ? (c.k === state.endpoint ? 'the walk ended here' : '') :
-      (q === 0 ? 'no way from here' : reversed[c.k] ? 'reversed' : 'upright');
+      (q === 0 ? 'not with this hand' : reversed[c.k] ? 'reversed' : 'upright');
     document.getElementById('read-' + c.k).textContent = (reversed[c.k] ? 'Reversed: ' : 'Upright: ') + (reversed[c.k] ? c.rev : c.up);
     document.getElementById('bh-' + c.k).textContent = c.nm + ' \u00b7 ' + pc(q) + (state.endpoint ? '' : ' on this path') + ' \u2014 ' + c.txt;
     var cd = HZ[c.k].cd;
@@ -779,7 +790,7 @@ function render(){
   var q = state.endpoint ? 1 : res.probs[lead];
   document.getElementById('rd-p').textContent = pc(q);
   document.getElementById('rd-p').style.color = 'var(' + CARDS.filter(function(c){ return c.k === lead; })[0].col + ')';
-  document.getElementById('rd-nm').textContent = (state.endpoint ? SHORT[lead] + ', ' + REGISTER[lead] + ' — the walk ended here' : state.history.length ? SHORT[lead] + ', ' + REGISTER[lead] : 'likeliest ending: ' + SHORT[lead] + ', ' + REGISTER[lead]);
+  document.getElementById('rd-nm').textContent = (state.endpoint ? 'the walk ended in ' + SHORT[lead] + ', ' + REGISTER[lead] : 'chance this walk ends in ' + SHORT[lead] + ', ' + REGISTER[lead]);
   var x = document.getElementById('rd-x');
   if (leadShown && leadShown.k === lead && Math.abs(leadShown.p - q) >= 0.005) x.textContent = 'was ' + pc(leadShown.p);
   else if (leadShown && leadShown.k !== lead) x.textContent = 'was ' + SHORT[leadShown.k] + ' ' + pc(leadShown.p);
@@ -839,7 +850,7 @@ function writeChanged(res, p){
     main = 'You stepped alone. Nothing moved. Coordination is ' + state.coordination.toFixed(2) + ', below the bar of ' + p.stagK.toFixed(2) +
            '. A year together counts only when enough of the walk takes it at once. Coordination climbs each year with the alignment and stop shares, leaks a little each year, and jumps when a year together lands.';
   } else if (prevProbs){
-    main = moved ? moved + ' because ' + lastNote + '.' : 'Almost nothing moved: ' + lastNote + '.';
+    main = moved ? moved + ' this year, in which ' + lastNote + '.' : 'Almost nothing moved this year, in which ' + lastNote + '.';
   } else main = 'Step taken — ' + lastNote + '.';
   if (liveN === N) moveInfo = null;   // a drag frame keeps its move; the release consumes it
   var nudge = '';
