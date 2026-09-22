@@ -312,7 +312,7 @@
     <span class="count" id="stepcount"></span>
     <button class="link" id="btn-hour" type="button">this hour's table</button>
   </div>
-  <details class="aimbox"><summary>What the buttons do</summary><p class="aim">A walk is twenty years or an ending, whichever comes first. Then write it as fiction, see how your call did, and cast again; casting again throws every coin again, for the endings and for the seats. <em>Walk a year together</em> is the step of faith: it moves the world only if coordination is above the bar, and below it the year is spent for nothing. <em>This hour's table</em> deals the same cast to everyone who opens it this hour.</p></details>
+  <details class="aimbox"><summary>What the buttons do (together is the step of faith: it counts only when coordination is above the bar)</summary><p class="aim">A walk is twenty years or an ending, whichever comes first. Then write it as fiction, see how your call did, and cast again; casting again throws every coin again, for the endings and for the seats. <em>Walk a year together</em> is the step of faith: it moves the world only if coordination is above the bar, and below it the year is spent for nothing. <em>This hour's table</em> deals the same cast to everyone who opens it this hour.</p></details>
   <p class="hourline" id="hourline" hidden></p>
 
   <div class="main">
@@ -572,7 +572,7 @@ var DEFAULT_ALLOC = { power:0.40, alignment:0.30, sustainability:0.15, stop:0.15
 function fresh(){ return freshState({ power:DEFAULT_ALLOC.power, alignment:DEFAULT_ALLOC.alignment,
   sustainability:DEFAULT_ALLOC.sustainability, stop:DEFAULT_ALLOC.stop }); }
 var state = fresh(), priors = {}, seed = (Math.random() * 0x7fffffff) | 0, rng = makeRng(seed);
-var N = 4000, liveN = 4000, renderQueued = false, prevProbs = null, lastNote = '', reversed = {}, leadShown = null, moveInfo = null, lastRes = null;
+var N = 4000, liveN = 4000, renderQueued = false, resumed = false, zerosBefore = 0, prevProbs = null, lastNote = '', reversed = {}, leadShown = null, moveInfo = null, lastRes = null;
 function P(k){ return (priors[k] != null && isFinite(priors[k])) ? +priors[k] : DEFAULT_PRIORS[k]; }
 function viewPriors(){ var o = withDefaults(priors); o.seed = seed; return o; }
 function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
@@ -586,6 +586,7 @@ function drawOrientation(){ var r = makeRng((seed ^ 0x9e3779b9) | 0); reversed =
 var KEYS = ['power','alignment','sustainability','stop'], dragFrom = {}, saidRebalance = false, lastHand = null;
 function setChannel(key, pctValue){
   var v = Math.max(0, Math.min(100, Math.round(pctValue))) / 100;
+  resumed = false;
   var from0 = (dragFrom[key] != null) ? dragFrom[key] : state.alloc[key];
   if (Math.round(from0 * 100) !== Math.round(v * 100)) moveInfo = { kind:'slide', key:key, from:from0, to:v };
   var others = KEYS.filter(function(k){ return k !== key; });
@@ -603,6 +604,7 @@ function setChannel(key, pctValue){
   if (!renderQueued){ renderQueued = true; requestAnimationFrame(function(){ renderQueued = false; render(); }); }
 }
 function takeStep(together){
+  resumed = false;
   if (state.endpoint || state.t >= P('horizon')) return;
   state = stepOnce(state, priors, rng, together);
   moveInfo = null; lastNote = noteFor(state); render();
@@ -666,7 +668,7 @@ CARDS.forEach(function(c){
   if (c.link){ var a = el('a', null, 'the source'); a.href = c.link; a.target = '_blank'; a.rel = 'noopener'; var pa = el('p'); pa.appendChild(a); sh.back.appendChild(pa); }
   var tw = el('button','ghost rs','Walk toward this (sets your hand)'); tw.type = 'button'; tw.style.fontSize = '11px'; tw.style.padding = '5px 10px';
   tw.addEventListener('click', function(e){ e.stopPropagation(); if (state.endpoint) return;
-    lastHand = state.alloc;
+    lastHand = state.alloc; resumed = false;
     var to = bestHandFor(c.k); moveInfo = { kind:'toward', key:c.k, to:to };
     state.alloc = { power:to.power, alignment:to.alignment, sustainability:to.sustainability, stop:to.stop };
     render(); guideAdvance('slide'); });
@@ -691,6 +693,7 @@ HOUSES.forEach(function(h){
     var r = document.createElement('input'); r.type = 'range'; r.min = cfg[0]; r.max = cfg[1]; r.step = cfg[2]; r.id = 'prr-' + k; r.setAttribute('aria-label', k);
     box.appendChild(r); box.appendChild(el('p','cm', cfg[3]));
     function set(v){ if (!isFinite(v)) v = P(k);
+      resumed = false;
       if (v !== P(k)) moveInfo = { kind:'inherit', key:k, from:P(k), to:v };
       if (v === DEFAULT_PRIORS[k]) delete priors[k]; else priors[k] = v;
       render(); guideAdvance('inherit'); }
@@ -743,7 +746,7 @@ function render(){
   CHANNELS.forEach(function(c){ document.getElementById('sl-' + c.k).disabled = done; });
   document.getElementById('stepcount').textContent = 'year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ' · cast ' + seed;
   var meta = document.getElementById('node-meta'); meta.textContent = '';
-  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['coordination ', state.coordination.toFixed(2) + ' (bar ' + p.stagK.toFixed(2) + ')']]
+  [['year ', Math.min(state.t, p.horizon) + ' of ' + p.horizon], ['capability ', state.capability.toFixed(2)], ['together needs ' + p.stagK.toFixed(2) + '; coordination now ', state.coordination.toFixed(2)]]
     .forEach(function(pair){ var sp = el('span'); sp.appendChild(document.createTextNode(pair[0])); sp.appendChild(el('b', null, pair[1])); meta.appendChild(sp); });
   document.getElementById('node-back').textContent = 'Right now: capability ' + state.capability.toFixed(2) +
     ' (when it reaches ' + p.graceCapability + ' the walk arrives somewhere and the ending is read), alignment ahead of capability ' + alignRatio(state).toFixed(2) +
@@ -791,6 +794,15 @@ function writeChanged(res, p){
   var box = document.getElementById('changed');
   box.className = 'changed' + (state.lastAlone ? ' alone' : ''); box.textContent = '';
   var main, best = null;
+  var zeros = ENDPOINTS.filter(function(k){ return !state.endpoint && res.probs[k] === 0; }).length;
+  if (resumed && !moveInfo){
+    var lc0 = CARDS.filter(function(c){ return c.k === (state.endpoint || ENDPOINTS.reduce(function(m,k){ return res.probs[k] > res.probs[m] ? k : m; }, ENDPOINTS[0])); })[0];
+    main = 'Picked up where this browser left off: year ' + Math.min(state.t, p.horizon) + ' of ' + p.horizon + ', power ' + pc(state.alloc.power) + ', alignment ' + pc(state.alloc.alignment) +
+           ', sustainability ' + pc(state.alloc.sustainability) + ', stop ' + pc(state.alloc.stop) + (state.endpoint ? '; the walk ended in ' + lc0.nm : '; the likeliest ending is ' + lc0.nm) + '. Cast again (a new table) starts over.';
+    box.appendChild(document.createTextNode(main));
+    var rl0 = document.getElementById('rd-line'); rl0.textContent = main; rl0.className = 'line';
+    zerosBefore = zeros; return;
+  }
   if (prevProbs) ENDPOINTS.forEach(function(k){ var d = res.probs[k] - prevProbs[k];
     if (!best || Math.abs(d) > Math.abs(best.d)) best = { k:k, d:d, from:prevProbs[k], to:res.probs[k] }; });
   var moved = best && Math.abs(best.d) >= 0.01 ? SHORT[best.k] + (best.d < 0 ? ' fell from ' : ' rose from ') + pc(best.from) + ' to ' + pc(best.to) : null;
@@ -831,6 +843,8 @@ function writeChanged(res, p){
   } else main = 'Step taken — ' + lastNote + '.';
   if (liveN === N) moveInfo = null;   // a drag frame keeps its move; the release consumes it
   var nudge = '';
+  if (zeros >= 4 && zeros > zerosBefore) nudge += ' ' + zeros + ' endings now read 0%: with this hand they cannot happen at all. A hand chooses the destination; chance decides the arrival.';
+  if (liveN === N) zerosBefore = zeros;
   if (guide.on && state.history.length && !guide.done.slide) nudge = ' That was a year walked. A slider under Your hand moves the number without walking.';
   else if (guide.on && !state.history.length && guide.done.slide && !guide.done.step) nudge = ' Now press Walk a year to walk with this hand.';
   box.appendChild(document.createTextNode(main));
@@ -1149,6 +1163,7 @@ function deal(){
   t.classList.add('dealt');
 }
 function cast(){
+  resumed = false; zerosBefore = 0;
   state = fresh(); seed = (Math.random() * 0x7fffffff) | 0; rng = makeRng(seed);
   prevProbs = null; lastNote = ''; leadShown = null; drawOrientation(); loadFiction(); render(); deal();
 }
@@ -1211,6 +1226,7 @@ document.getElementById('guide-replay').addEventListener('click', function(){ gu
 // no hash on the URL: pick up where this browser left off, so a reload does not deal a new table
 if (!/^#v1/.test(location.hash)){ var lastH = store('walk:last-hash'); if (lastH && /^#v1/.test(lastH)){ try { history.replaceState(null, '', location.pathname + location.search + lastH); } catch (e) {} } }
 var fromLink = readHash();
+resumed = !!(fromLink && (state.history.length || Object.keys(priors).length));
 drawOrientation(); loadFiction(); render(); deal();
 if (!(fromLink && state.history.length) && store('walk:spread-guide') !== 'done') guideStart();
 
