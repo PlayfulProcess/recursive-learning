@@ -113,6 +113,7 @@
   .cd .hint{position:absolute;left:0;right:0;bottom:-16px;text-align:center;font-size:10px;color:var(--muted);opacity:0;transition:opacity .2s}
   .cd:hover .hint,.cd:focus-visible .hint{opacity:1}
   .cd:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:10px}
+  .cd{scroll-margin-top:130px}
   .cd.lead .face{border-color:var(--accent);box-shadow:0 0 0 1px rgba(94,226,176,.35),0 10px 30px -14px rgba(94,226,176,.6)}
   .cd.dim .face{opacity:.55}
   .cd.ended .face{border-color:var(--warn);box-shadow:0 0 0 1px rgba(240,184,102,.5)}
@@ -237,7 +238,9 @@
   .guide li.now{color:var(--ink)} .guide li.now .n{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
   .guide li.done{opacity:.55}
   .reader{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 10px;padding:10px 14px;
-    background:var(--panel);border:1px solid var(--line);border-radius:12px;font-size:12.5px;color:var(--muted)}
+    background:rgba(21,25,34,.97);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;font-size:12.5px;color:var(--muted);
+    position:sticky;top:8px;z-index:5}
+  .reader .link{font-size:12px}
   .reader b{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);line-height:1}
   .reader .nm{font-weight:600;color:var(--ink);font-size:15px}
   .reader .x{margin-left:auto;font-size:12px}
@@ -255,9 +258,10 @@
     .fan .face .sub{display:none}
     .reader{position:sticky;top:0;z-index:5;margin:0 -16px 10px;padding:7px 16px;gap:4px 10px;border-radius:0;border-left:0;border-right:0;
       background:rgba(21,25,34,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);font-size:12px}
-    .reader b{font-size:20px}
-    .reader .nm{font-size:13.5px}
+    .reader b{font-size:19px}
+    .reader .nm{font-size:12.5px;line-height:1.25}
     .reader .x{font-size:11px}
+    .reader{padding:6px 16px;gap:2px 8px}
     .reader .line{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
     .bar{display:grid;grid-template-columns:1fr 1fr} .bar .count{grid-column:1/-1} .bar .push{margin-left:0}
     .bar .link{grid-column:1/-1;justify-self:start}
@@ -281,7 +285,7 @@
   <p class="lede">A probability here is a property of the world <em>given a path</em>. Move the path and the number moves.
     <span class="disc">A teaching instrument, not a forecast. Nothing staked, nothing sent.</span></p>
 
-  <div class="reader" id="reader" aria-live="polite"><span><b id="rd-p"></b></span><span class="nm" id="rd-nm"></span><span class="x" id="rd-x"></span><span class="line" id="rd-line"></span></div>
+  <div class="reader" id="reader" aria-live="polite"><span><b id="rd-p"></b></span><span class="nm" id="rd-nm"></span><span class="x" id="rd-x"></span><span class="line" id="rd-line"></span><button class="link" id="rd-undo" type="button" hidden>put my hand back</button></div>
 
   <div class="guide" id="guide" hidden>
     <div class="g-top"><span id="guide-lab">Three things to try, in any order</span><a id="guide-skip">skip</a></div>
@@ -338,7 +342,7 @@
     </div>
 
     <section class="pos horizon" aria-label="Position 3, the Horizon">
-      <h2><span class="n">3</span>The Horizon <span class="q">— where this walk ends, if we keep walking like this. Upright is the generous reading of an ending, reversed the cynical one: the coin changes the words on the back, never the number.</span></h2>
+      <h2><span class="n">3</span>The Horizon <span class="q">— where this walk ends, if we keep walking like this. Grace and the turn are the hoped-for endings; the Stop is a halt; Adolescence is the rocky middle, survived; Lock-in and Doom are the endings to fear; still walking is unfinished. Upright is the generous reading, reversed the cynical one: the coin changes the words on the back, never the number.</span></h2>
       <div class="hz" id="hz"></div>
       <div class="seats" id="seats"></div>
       <div class="call">
@@ -505,6 +509,8 @@ var CARDS = [
     src:'The walk still going when the steps ran out. An honest outcome, not a failure.',
     up:'The horizon ran out and the walk is still open.', rev:'Still walking because nobody chose; open by default.' }
 ];
+var REGISTER = { grace:'the hoped-for ending', sustainable_turn:'the other hoped-for ending', the_stop:'the halt',
+  adolescence:'the rocky middle', lock_in:'the captured ending', doom:'the lost ending', still_walking:'the unfinished walk' };
 var SHORT = { grace:'Grace', sustainable_turn:'The turn', the_stop:'The Stop',
               adolescence:'Adolescence', lock_in:'Lock-in', doom:'Doom', still_walking:'Still walking' };
 var CHANNELS = [
@@ -571,7 +577,7 @@ function pc(x){ return Math.round(x * 100) + '%'; }
 function drawOrientation(){ var r = makeRng((seed ^ 0x9e3779b9) | 0); reversed = {};
   ENDPOINTS.forEach(function(k){ reversed[k] = r() < 0.5; }); }
 
-var KEYS = ['power','alignment','sustainability','stop'], dragFrom = {}, saidRebalance = false;
+var KEYS = ['power','alignment','sustainability','stop'], dragFrom = {}, saidRebalance = false, lastHand = null;
 function setChannel(key, pctValue){
   var v = Math.max(0, Math.min(100, Math.round(pctValue))) / 100;
   var from0 = (dragFrom[key] != null) ? dragFrom[key] : state.alloc[key];
@@ -587,7 +593,7 @@ function setChannel(key, pctValue){
                                        : Math.max(0, Math.round(out[k] * 100) / 100);
     if (i < others.length - 1) acc += out[k];
   });
-  state.alloc = out; render();
+  state.alloc = out; lastHand = null; render();
 }
 function takeStep(together){
   if (state.endpoint || state.t >= P('horizon')) return;
@@ -609,7 +615,9 @@ function noteFor(s){
 function flip(cd){
   cd.classList.add('anim'); void cd.offsetWidth;
   cd.classList.toggle('turned'); cd.setAttribute('aria-pressed', cd.classList.contains('turned') ? 'true' : 'false');
-  clearTimeout(cd._t); cd._t = setTimeout(function(){ cd.classList.remove('anim'); }, 600);
+  clearTimeout(cd._t); cd._t = setTimeout(function(){ cd.classList.remove('anim');
+    if (cd.classList.contains('turned')){ var r = cd.getBoundingClientRect(), top = 120;
+      if (r.top < top || r.bottom > window.innerHeight) cd.scrollIntoView({ behavior:'smooth', block:'start' }); } }, 600);
 }
 function cardShell(id, artKey, revBadge){
   var cd = el('div','cd'); cd.id = id; cd.tabIndex = 0; cd.setAttribute('role','button'); cd.setAttribute('aria-pressed','false');
@@ -649,8 +657,9 @@ CARDS.forEach(function(c){
   var r = el('p'); r.id = 'read-' + c.k; sh.back.appendChild(r);
   sh.back.appendChild(el('p','who', 'The coin changed these words, not the number above.'));
   if (c.link){ var a = el('a', null, 'the source'); a.href = c.link; a.target = '_blank'; a.rel = 'noopener'; var pa = el('p'); pa.appendChild(a); sh.back.appendChild(pa); }
-  var tw = el('button','ghost rs','Walk toward this'); tw.type = 'button'; tw.style.fontSize = '11px'; tw.style.padding = '5px 10px';
+  var tw = el('button','ghost rs','Walk toward this (sets your hand)'); tw.type = 'button'; tw.style.fontSize = '11px'; tw.style.padding = '5px 10px';
   tw.addEventListener('click', function(e){ e.stopPropagation(); if (state.endpoint) return;
+    lastHand = state.alloc;
     var to = bestHandFor(c.k); moveInfo = { kind:'toward', key:c.k, to:to };
     state.alloc = { power:to.power, alignment:to.alignment, sustainability:to.sustainability, stop:to.stop };
     render(); guideAdvance('slide'); });
@@ -697,9 +706,8 @@ CHANNELS.forEach(function(c){
   var pct = el('span','pct'); pct.id = 'pct-' + c.k; top.appendChild(pct); box.appendChild(top);
   var r = document.createElement('input'); r.type = 'range'; r.min = 0; r.max = 100; r.step = 1; r.id = 'sl-' + c.k;
   r.style.setProperty('--sl', 'var(' + c.col + ')'); r.setAttribute('aria-label', c.nm + ' share of the allocation, in percent');
-  ['pointerdown','touchstart','keydown','focus'].forEach(function(ev){ r.addEventListener(ev, function(){ if (dragFrom[c.k] == null) dragFrom[c.k] = state.alloc[c.k]; }); });
-  ['pointerup','touchend','blur','change'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ dragFrom[c.k] = null; }, 0); }); });
-  r.addEventListener('input', function(){ setChannel(c.k, +r.value); guideAdvance('slide'); });
+  ['change','blur'].forEach(function(ev){ r.addEventListener(ev, function(){ setTimeout(function(){ dragFrom[c.k] = null; }, 0); }); });
+  r.addEventListener('input', function(){ if (dragFrom[c.k] == null) dragFrom[c.k] = state.alloc[c.k]; setChannel(c.k, +r.value); guideAdvance('slide'); });
   box.appendChild(r); box.appendChild(el('p','why', c.why)); $sliders.appendChild(box);
 });
 
@@ -733,7 +741,7 @@ function render(){
   document.getElementById('node-back').textContent = 'Right now: capability ' + state.capability.toFixed(2) +
     ' (when it reaches ' + p.graceCapability + ' the walk arrives somewhere and the ending is read), alignment ahead of capability ' + alignRatio(state).toFixed(2) +
     ' (Grace needs ' + p.graceAlignRatio + '), sustainability ahead of capability ' + sustRatio(state).toFixed(2) +
-    ', coordination ' + state.coordination.toFixed(2) + (state.coordination >= p.stagK ? ' — enough to step together.' : ' — below the bar of ' + p.stagK.toFixed(2) + ', so a step together is spent.');
+    ', coordination ' + state.coordination.toFixed(2) + (state.coordination >= p.stagK ? ' — enough to walk a year together.' : ' — below the bar of ' + p.stagK.toFixed(2) + ', so a year together would be spent for nothing. It climbs each year with the alignment and stop shares, leaks a little each year, and jumps when a year together lands.');
   var endedEl = document.getElementById('ended');
   if (state.endpoint){ endedEl.hidden = false; endedEl.textContent = 'This walk ended at: ' + SHORT[state.endpoint] + '. The sliders rest now. Cast again for a new table, or change a number in the Inheritance and see where the same walk would have gone.'; }
   else endedEl.hidden = true;
@@ -746,7 +754,7 @@ function render(){
     if (!state.endpoint) node.appendChild(el('small', null, '±' + (res.se[c.k] * 100).toFixed(1)));
     document.getElementById('f-' + c.k).style.width = (q * 100) + '%';
     document.getElementById('sub-' + c.k).textContent = state.endpoint ? (c.k === state.endpoint ? 'the walk ended here' : '') :
-      (q === 0 ? 'not on this path' : reversed[c.k] ? 'reversed' : 'upright');
+      (q === 0 ? 'off this path' : reversed[c.k] ? 'reversed' : 'upright');
     document.getElementById('read-' + c.k).textContent = (reversed[c.k] ? 'Reversed: ' : 'Upright: ') + (reversed[c.k] ? c.rev : c.up);
     document.getElementById('bh-' + c.k).textContent = c.nm + ' \u00b7 ' + pc(q) + (state.endpoint ? '' : ' on this path') + ' \u2014 ' + c.txt;
     var cd = HZ[c.k].cd;
@@ -761,7 +769,7 @@ function render(){
   var q = state.endpoint ? 1 : res.probs[lead];
   document.getElementById('rd-p').textContent = pc(q);
   document.getElementById('rd-p').style.color = 'var(' + CARDS.filter(function(c){ return c.k === lead; })[0].col + ')';
-  document.getElementById('rd-nm').textContent = (state.endpoint ? SHORT[lead] + ' — the walk ended here' : state.history.length ? SHORT[lead] : 'likeliest ending on this path: ' + SHORT[lead]);
+  document.getElementById('rd-nm').textContent = (state.endpoint ? SHORT[lead] + ', ' + REGISTER[lead] + ' — the walk ended here' : state.history.length ? SHORT[lead] + ', ' + REGISTER[lead] : 'likeliest ending: ' + SHORT[lead] + ', ' + REGISTER[lead]);
   var x = document.getElementById('rd-x');
   if (leadShown && leadShown.k === lead && Math.abs(leadShown.p - q) >= 0.005) x.textContent = 'was ' + pc(leadShown.p);
   else if (leadShown && leadShown.k !== lead) x.textContent = 'was ' + SHORT[leadShown.k] + ' ' + pc(leadShown.p);
@@ -788,14 +796,17 @@ function writeChanged(res, p){
     var to = moveInfo.to;
     main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' set the hand that favours ' + SHORT[moveInfo.key] + ' most from here (power ' + pc(to.power) + ', alignment ' + pc(to.alignment) +
            ', sustainability ' + pc(to.sustainability) + ', stop ' + pc(to.stop) + '). It now reads ' + pc(res.probs[moveInfo.key]) + (res.probs[moveInfo.key] < 0.5 ? ': no hand from here makes it likely; a hand leans, the dice still decide.' : '. A hand leans; the dice still decide.') +
-           (to.stop > 0 && state.coordination < p.stagK ? ' Stop counts for nothing while coordination (' + state.coordination.toFixed(2) + ') is below the bar (' + p.stagK.toFixed(2) + '); here it only starves alignment, which is why it favours this ending.' : '');
+           (moveInfo.key === 'the_stop' ? ' The Stop needs company: coordination (' + state.coordination.toFixed(2) + ') must climb above the bar (' + p.stagK.toFixed(2) + ') first. It climbs each year with the alignment and stop shares, and this hand climbs fastest.'
+            : to.stop > 0 && state.coordination < p.stagK ? ' Stop counts for nothing while coordination (' + state.coordination.toFixed(2) + ') is below the bar (' + p.stagK.toFixed(2) + '); here it only starves alignment, which is why it favours this ending.' : '');
+  } else if (moveInfo && moveInfo.kind === 'undo'){
+    main = 'Your hand is back where you had it' + (moved ? ': ' + moved.charAt(0).toLowerCase() + moved.slice(1) : '') + '.';
   } else if (moveInfo && moveInfo.kind === 'inherit'){
     main = (moved ? moved + ': you' : 'Almost nothing moved when you') + ' changed ' + (PRIOR_NAME[moveInfo.key] || moveInfo.key) + ' from ' + moveInfo.from + ' to ' + moveInfo.to +
            '. Same walk, different inheritance' + (moved ? ', different ending.' : '.');
   } else if (moveInfo && moveInfo.kind === 'reset'){
     main = (moved ? moved + ' when ' : 'Almost nothing moved when ') + '“' + moveInfo.key + '” went back to its defaults.';
   } else if (!state.history.length){
-    main = 'Nothing walked yet. Move a slider and the number moves: the world did not change, the path did. Each Horizon card reads the chance of that ending if you keep this hand to the end.';
+    main = 'Nothing walked yet. Move a slider and the number moves: the world did not change, the path did.';
   } else if (state.endpoint && state.history[state.history.length - 1].t === state.t){
     main = 'The walk ended here: ' + SHORT[state.endpoint] + '. ' +
       (state.endpoint === 'doom' ? 'Risk this step was ' + (state.lastRisk * 100).toFixed(1) + '% and the die landed on it.'
@@ -804,7 +815,7 @@ function writeChanged(res, p){
          ' and alignment ahead of capability ' + alignRatio(state).toFixed(2) + '.');
   } else if (lastNote === 'ALONE'){
     main = 'You stepped alone. Nothing moved. Coordination is ' + state.coordination.toFixed(2) + ', below the bar of ' + p.stagK.toFixed(2) +
-           '. The stag needs company: a step together counts only when enough of the walk takes it at once.';
+           '. A year together counts only when enough of the walk takes it at once. Coordination climbs each year with the alignment and stop shares, leaks a little each year, and jumps when a year together lands.';
   } else if (prevProbs){
     main = moved ? moved + ' because ' + lastNote + '.' : 'Almost nothing moved: ' + lastNote + '.';
   } else main = 'Step taken — ' + lastNote + '.';
@@ -814,6 +825,7 @@ function writeChanged(res, p){
   else if (guide.on && !state.history.length && guide.done.slide && !guide.done.step) nudge = ' Now press Walk a year to walk with this hand.';
   box.appendChild(document.createTextNode(main));
   var rl = document.getElementById('rd-line'); rl.textContent = main + nudge; rl.className = 'line' + (state.lastAlone ? ' alone' : '');
+  document.getElementById('rd-undo').hidden = !(lastHand && !state.endpoint);
   if (state.history.length) box.appendChild(el('span','d', 'capability ' + state.capability.toFixed(2) + ' · alignment ahead of capability ' +
     alignRatio(state).toFixed(2) + ' (its stock divided by capability) · coordination ' + state.coordination.toFixed(2) + ' · risk this step ' + (state.lastRisk * 100).toFixed(1) + '%'));
 }
@@ -1124,6 +1136,9 @@ function cast(){
   prevProbs = null; lastNote = ''; leadShown = null; drawOrientation(); loadFiction(); render(); deal();
 }
 document.getElementById('btn-cast').addEventListener('click', cast);
+document.getElementById('rd-undo').addEventListener('click', function(){
+  if (!lastHand || state.endpoint) return; var back = lastHand; lastHand = null;
+  moveInfo = { kind:'undo' }; state.alloc = { power:back.power, alignment:back.alignment, sustainability:back.sustainability, stop:back.stop }; render(); });
 // the hour's table: a seed everyone who opens it this UTC hour shares. No server, no count.
 function hourSeed(){ return Math.floor(Date.now() / 3600000); }
 function castHour(){
