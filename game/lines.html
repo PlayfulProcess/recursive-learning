@@ -79,7 +79,10 @@
   .delta{font-family:Inter,system-ui,sans-serif;font-size:13px;color:var(--warn);min-height:1.4em}
   .place{margin:0 0 10px}
   .place .tr{font-size:12.5px;color:var(--muted);font-family:Inter,system-ui,sans-serif}
-  .moves{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 8px}
+  .moves{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 8px}
+  .lastdraw{font:13.5px/1.5 Inter,system-ui,sans-serif;background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:10px 12px;margin:0 0 14px}
+  .lastdraw b{color:var(--ink)}
+  #game.over .table,#game.over #seats{display:none}
   .mv{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 10px;text-align:left;font-weight:600;font-size:13px;line-height:1.3}
   .mv small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:3px}
   .mv.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
@@ -96,6 +99,7 @@
   .seatcard:not(.ready) .st{color:var(--muted)}
   .seatcard .why{display:block;font:italic 12px/1.35 Georgia,serif;color:var(--ink);margin:3px 0}
   .seatcard .rule{display:block;font-size:10.5px}
+  .seatcard .voice{font:normal 10.5px Inter,system-ui,sans-serif;color:var(--muted);display:block}
   .guess{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;margin:0 0 10px;font-family:Inter,system-ui,sans-serif;color:var(--muted)}
   .guess button{padding:6px 10px;font-size:12.5px}
   .guess button.on{border-color:var(--accent);color:var(--accent)}
@@ -183,6 +187,7 @@
         </div>
       </div>
       <div>
+        <div class="lastdraw" id="last" hidden></div>
         <div class="place" id="place"></div>
         <div class="bowl" id="bowl"></div>
         <div class="legend">
@@ -274,7 +279,7 @@ var MOVES = [
   { k:'P', nm:'Push ahead', d:'2 yielding marbles become firm and turning', c:-1 },
   { k:'A', nm:'Steady it', d:'2 turning marbles become still', c:+1 },
   { k:'S', nm:'Hold back', d:'2 firm marbles become yielding', c:0 },
-  { k:'R', nm:'Mend the bowl', d:'2 marbles return toward where it began', c:0 },
+  { k:'R', nm:'Mend the bowl', d:'2 marbles go back toward the bowl you began with, restless ones too', c:0 },
   { k:'T', nm:'Walk together', d:'with 3 of 5 others: every turning marble becomes still. Without them: nothing', c:0 },
   { k:'N', nm:"I don't know", d:'the bowl stays as the path left it', c:0 }
 ];
@@ -473,7 +478,7 @@ function renderGame(){
   document.getElementById('hexname').textContent = t ? t + ' of 6 lines drawn. The first line is at the bottom.' : 'The first line goes at the bottom.';
   var seats = document.getElementById('seats'); seats.innerHTML = '';
   var preview = chosen && phase === 'game' ? applyMove(b, trust, chosen, START[method]).trust : null;
-  seats.appendChild(el('p', 'seats-h', '<b>The five others</b> \u00b7 ' + coord + ' of 5 ready to walk together, ' + BAR + ' needed. Each comes or goes for their own reasons.'));
+  seats.appendChild(el('p', 'seats-h', '<b>The five others</b> \u00b7 ' + coord + ' of 5 ready to walk together, ' + BAR + ' needed. Each comes or goes for their own reasons. A ready card shows its case; one not yet ready shows the case against it (the deck\u2019s upright and reversed readings).'));
   var grid = el('div', 'seat-grid');
   SEATS.forEach(function(x, i){
     var v = trust[i], ready = isReady(v), nv = preview ? preview[i] : v;
@@ -482,7 +487,7 @@ function renderGame(){
     var c = el('div', 'seatcard' + (ready ? ' ready' : '') + (nv !== v ? (nv > v ? ' up' : ' down') : ''));
     c.innerHTML = '<img alt="" loading="lazy" src="' + thumbOf(x.img, 120) + '" onerror="this.style.visibility=\'hidden\'">' +
       '<div><b>' + x.nm + '</b> <span class="st">' + (ready ? 'ready' : 'not yet') + (nv !== v ? (isReady(nv) !== ready ? (isReady(nv) ? ', would come' : ', would leave') : (nv > v ? ', closer' : ', further')) : '') + '</span>' +
-      '<span class="why">' + (ready ? x.up : x.rev) + '</span>' +
+      '<span class="why"><span class="voice">' + (ready ? 'Their case (the card upright):' : 'The case against (the card reversed):') + '</span> ' + (ready ? x.up : x.rev) + '</span>' +
       '<span class="rule">Comes closer with ' + (comes.join(' or ') || 'nothing but trying together') + (goes.length ? '; further with ' + goes.join(' or ') : '') + '.</span></div>';
     grid.appendChild(c);
   });
@@ -501,6 +506,15 @@ function renderGame(){
       (isTurning(st.kind) ? ' <span class="g">A turning line was drawn, so one marble in the bowl turned with it.</span>' : '');
     log.appendChild(el('li', null, txt));
   });
+  document.getElementById('game').classList.toggle('over', phase !== 'game');
+  var lastEl = document.getElementById('last'), ls = played.steps[t - 1];
+  lastEl.hidden = !ls || phase !== 'game';
+  if (ls && phase === 'game'){
+    var gq = guesses[t - 1];
+    lastEl.innerHTML = '<b>Line ' + t + ' drew: ' + kindName(ls.kind) + '.</b> ' +
+      (gq && gq !== 'N' ? 'You guessed ' + (gq === 'F' ? 'firm' : 'yielding') + ', and ' + ((gq === 'F') === isFirm(ls.kind) ? 'it was.' : 'it was not.') + ' ' : '') +
+      (isTurning(ls.kind) ? 'Because the line drawn is turning, one ' + (ls.kind === 9 ? 'firm, turning marble in the bowl has become yielding and still' : 'yielding, turning marble in the bowl has become firm and still') + ': what happened changes the bowl too.' : 'The bowl is as your move left it.');
+  }
   if (phase !== 'game'){ document.getElementById('guess').hidden = true; document.getElementById('place').innerHTML = ''; document.getElementById('moves').innerHTML = ''; document.getElementById('draw').hidden = true; document.getElementById('drawhint').textContent = ''; document.getElementById('odds').textContent = ''; document.getElementById('delta').textContent = ''; renderBowl(document.getElementById('bowl'), b); renderGhost(played); return; }
   var pl = PLACES[t];
   document.getElementById('place').innerHTML = '<p class="kicker">Line ' + (t + 1) + ' of 6</p><h2>' + pl.nm.charAt(0).toUpperCase() + pl.nm.slice(1) + ': ' + pl.ai + '</h2><p class="tr">' + pl.tr + '</p>';
@@ -622,7 +636,8 @@ function renderLesson(played, primary, relating){
     out.appendChild(el('div', 'hcard arrive', hexSVG(l2) + '<div><p class="kicker">Line ' + (li + 1) + ': ' + wm.options[wm.selectedIndex].text + ' instead of ' + MOVES.filter(function(m){ return m.k === moves[li]; })[0].nm + '</p>' +
       '<div class="t">' + h2[0] + '. ' + h2[1] + '<small>' + h2[3] + ' ' + h2[2] + '</small></div>' +
       '<p>' + (same ? (Math.abs(chanceOf(method, alt, l2) - chanceOf(method, moves, lines)) < 1e-12 ? 'Same hexagram, same odds: at that line the bowl was already where this move would leave it, so the path did not really change.' : 'Same hexagram, same turning lines: this time the change did not reach the draw. The odds moved, though: ' + oneIn(chanceOf(method, alt, l2)) + ' instead of ' + oneIn(chanceOf(method, moves, lines)) + ' for this pattern.')
-        : (r2 ? 'Turning into ' + r2[1] + '. ' : 'No line turning. ') + 'Lines that came out differently: ' + (diff.length ? diff.join(', ') : 'none, only whether they turn') + '. The same fall of the marbles met a different bowl.') + '</p></div>'));
+        : (r2 ? 'Turning into ' + r2[1] + '. ' : 'No line turning. ') + (diff.length ? (diff.length === 1 ? 'Line ' + diff[0] + ' came out differently.' : 'Lines ' + diff.slice(0, -1).join(', ') + ' and ' + diff[diff.length - 1] + ' came out differently.') : 'Every line came out the same kind; only which ones turn differs.') + ' The same fall of the marbles met a different bowl.' +
+        (relating && bits(l2, false) === bits(lines, true) ? ' This is the hexagram your own path was turning into.' + (diff.length === 1 ? ' The changed move shifted the odds in the bowl, so the same fall of the marbles landed on the other side: the turning you drew arrived already turned.' : '') : '')) + '</p></div>'));
   };
   // a hundred worlds
   var mine = bits(lines, false);
