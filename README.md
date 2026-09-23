@@ -112,9 +112,13 @@ never writes to recursive.eco, and it drops `ai_personality_prompt` before writi
 
 ## Licensing
 
-Grammar content carries its own `_grammar_commons` block — **CC BY-SA 4.0**, same as the other
-published channels. The small amount of code here (the game, the two scripts) has **no license
-file yet**; that is her call, not one to make on her behalf. Until she picks one, treat the code
-as all-rights-reserved.
+| What | License |
+|------|---------|
+| Code — `game/` (HTML and JS), `scripts/*.mjs`, `site/`, the root `index.html`, `.github/` | Apache-2.0 — [`LICENSE`](LICENSE), [`NOTICE`](NOTICE) |
+| Content — the grammars in `grammars/`, `docs/`, and the design notes in `game/*.md` | CC BY-SA 4.0 for PlayfulProcess's own text — [`LICENSE-CONTENT.txt`](LICENSE-CONTENT.txt). Linked or embedded third-party media (videos, images, quoted sources) keep their own terms |
+| The names "recursive.eco" and "Recursive", and the spiral mark (`scripts/mark.svg`) | Not licensed — see [`TRADEMARKS.md`](TRADEMARKS.md) |
+
+The grammars here are exported from recursive.eco; most do not carry their own
+`_grammar_commons` licence block, so this table is what applies to them.
 
 Author on everything here is **PlayfulProcess**.
