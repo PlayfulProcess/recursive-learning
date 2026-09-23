@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changing Lines · Recursive Learning</title>
+<meta name="description" content="Six lines, one bowl of sixteen marbles. Your choices change what is in the bowl; the bowl decides the odds of every line. At the end, the lines that are turning are drawn to where they lead. A teaching instrument, not a forecast and not a divination.">
+<!--
+  Changing Lines. A game in six draws built on the I Ching's own probability device: the
+  sixteen-marble bowl, whose mix is the yarrow-stalk odds (1 old yin, 5 young yang, 7 young yin,
+  3 old yang). Each line is a stage of an AI future; the player's move changes the marbles before
+  the draw, so the chance of every line is a property of the bowl given the path. At the end the
+  turning lines are flipped one at a time, bottom to top, to the hexagram they lead to (the
+  sequential idea from recursive-iching/docs/DESIGN-path-caster.md). Hexagram texts: James Legge,
+  1882, public domain, read live from iching.recursive.eco (zhouyi-core). No dependencies.
+  Design notes: game/DESIGN-changing-lines.md.
+-->
+<style>
+  :root{
+    --bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
+    --ink:#e8ecf3; --muted:#8e9aae; --accent:#5ee2b0; --accent-ink:#06281d; --warn:#f0b866;
+    --firm:#f0d9a8; --yield:#9fb8d8; --turn:#f08a5e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:dark;
+    font-family:Georgia,"Iowan Old Style","Times New Roman",serif;line-height:1.6}
+  .ui,button,input,textarea,.bowl-note,.legend,.log,.seats,.small{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+  a{color:var(--accent)}
+  button{background:var(--accent);color:var(--accent-ink);border:0;border-radius:9px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer}
+  button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
+  button[disabled]{opacity:.4;cursor:not-allowed}
+  .wrap{max-width:860px;margin:0 auto;padding:12px 16px 90px}
+  .mark{display:flex;align-items:center;gap:12px;margin:10px 0 4px}
+  .mark svg{width:34px;height:34px;color:var(--accent);flex:none}
+  h1{font-size:30px;margin:0;line-height:1.15;font-weight:400}
+  h1 .sub{display:block;font:600 11px/1.4 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  h2{font-size:22px;font-weight:400;margin:0 0 6px}
+  .kicker{font:600 11px/1.4 Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+  .lede{font-size:18px;max-width:62ch;margin:14px 0 4px}
+  .disc{font:12.5px/1.5 Inter,system-ui,sans-serif;color:var(--warn);margin:0 0 20px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin:18px 0}
+  .small{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+  /* the two bowls, at the start */
+  .bowls{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+  .bowlcard{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .bowlcard h4{margin:0 0 6px;font:700 13px/1.3 Inter,system-ui,sans-serif}
+  .reveal{font-size:16px;margin:12px 0 0}
+
+  /* marbles */
+  .bowl{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-width:340px}
+  .bowl.mini{grid-template-columns:repeat(8,1fr);gap:4px;max-width:250px}
+  .mb{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative;transition:transform .25s, box-shadow .25s, background .3s}
+  .mb svg{width:62%;height:62%}
+  .mb.k7{background:#3a3222}.mb.k9{background:#4a2a1e}.mb.k8{background:#1f2a38}.mb.k6{background:#2e2330}
+  .mb.k9,.mb.k6{box-shadow:0 0 0 2px var(--turn) inset}
+  .mb.moved{animation:pulse 1.1s ease 2}
+  .mb.pick{transform:scale(1.35);box-shadow:0 0 0 3px var(--accent),0 0 18px var(--accent);z-index:2}
+  .mb.flick{box-shadow:0 0 0 3px #fff}
+  @keyframes pulse{50%{transform:scale(1.25)}}
+  .legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;font-size:12px;color:var(--muted);margin-top:10px}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .legend i{width:14px;height:14px;border-radius:50%;display:inline-block;flex:none}
+
+  /* the table: hexagram being built + the bowl */
+  .table{display:grid;grid-template-columns:200px minmax(0,1fr);gap:22px;align-items:start}
+  .hex{display:flex;flex-direction:column-reverse;gap:8px;padding:6px 0}
+  .slot{display:grid;grid-template-columns:14px 1fr 14px;gap:8px;align-items:center;font:11px/1.2 Inter,system-ui,sans-serif;color:var(--muted)}
+  .slot .ln{height:16px;position:relative}
+  .slot.empty .ln{border:1px dashed var(--line);border-radius:3px}
+  .slot.now .ln{border-color:var(--accent)}
+  .slot.now .n{color:var(--accent);font-weight:700}
+  .bar{position:absolute;top:0;bottom:0;border-radius:2px}
+  .hexname{font-size:13px;color:var(--muted);margin-top:8px;font-family:Inter,system-ui,sans-serif}
+  .odds{font-size:17px;margin:4px 0 2px}
+  .odds b{font-variant-numeric:tabular-nums}
+  .delta{font-family:Inter,system-ui,sans-serif;font-size:13px;color:var(--warn);min-height:1.4em}
+  .place{margin:0 0 10px}
+  .place .tr{font-size:12.5px;color:var(--muted);font-family:Inter,system-ui,sans-serif}
+  .moves{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 8px}
+  .mv{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 10px;text-align:left;font-weight:600;font-size:13px;line-height:1.3}
+  .mv small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:3px}
+  .mv.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .mv.idk{border-style:dashed}
+  .seats{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted);margin:6px 0 0;flex-wrap:wrap}
+  .seat{width:13px;height:13px;border-radius:50%;border:1px solid var(--muted)}
+  .seat.on{background:var(--accent);border-color:var(--accent)}
+  .ghost-bowl{margin-top:14px}
+  .log{margin:8px 0 0;padding:0;list-style:none;font-size:13.5px}
+  .log li{border-top:1px solid var(--line);padding:9px 0;color:var(--ink)}
+  .log li .g{color:var(--muted)}
+
+  /* the ending */
+  .stack{display:grid;gap:10px;margin:14px 0}
+  .hcard{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:start;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .hcard .t{font-size:17px}
+  .hcard .t small{font:12px Inter,system-ui,sans-serif;color:var(--muted);margin-left:6px}
+  .hcard p{margin:4px 0 0;font-size:14.5px}
+  .hcard.turnstep{border-left:3px solid var(--turn)}
+  .hcard.arrive{border-color:var(--accent)}
+  .worlds{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;max-width:300px}
+  .worlds svg{width:100%;height:auto;display:block;opacity:.55}
+  .worlds svg.same{opacity:1;filter:drop-shadow(0 0 3px var(--accent))}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  textarea{width:100%;min-height:120px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font:15px/1.5 Georgia,serif}
+  table.lk{border-collapse:collapse;font:13.5px Inter,system-ui,sans-serif;width:100%;margin:8px 0}
+  table.lk td{padding:6px 4px;border-top:1px solid var(--line)}
+  table.lk td.v{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .credits{font:11.5px/1.5 Inter,system-ui,sans-serif;color:var(--muted);margin-top:30px;border-top:1px solid var(--line);padding-top:12px}
+  @media (max-width:640px){
+    h1{font-size:25px}
+    .table{grid-template-columns:1fr;gap:10px}
+    .hex-col{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:end}
+    .moves{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .bowls,.two{grid-template-columns:1fr}
+    .panel{padding:14px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
+      <h1><span class="sub">Recursive Learning · a game in six draws</span>Changing Lines</h1></div>
+    <p class="lede">Six lines make a hexagram. Each line is drawn from a bowl of sixteen marbles, and before every draw you change what is in the bowl. <i>The chance of a line is a property of the bowl, and the bowl is the path.</i> At the end, the lines that are turning are drawn on to where they lead.</p>
+    <p class="disc">A teaching instrument, not a forecast and not a divination. Nothing staked, nothing sent. "I don't know" is always a legal move.</p>
+  </header>
+
+  <!-- 0. two bowls -->
+  <section class="panel" id="intro">
+    <p class="kicker">Before the first line</p>
+    <h2>Two bowls, both half firm</h2>
+    <p>In each bowl, 8 of the 16 marbles draw a firm line <svg width="30" height="10" viewBox="0 0 30 10" aria-hidden="true"><rect x="0" y="2" width="30" height="6" rx="1" fill="var(--firm)"/></svg> and 8 draw a yielding one <svg width="30" height="10" viewBox="0 0 30 10" aria-hidden="true"><rect x="0" y="2" width="12" height="6" rx="1" fill="var(--yield)"/><rect x="18" y="2" width="12" height="6" rx="1" fill="var(--yield)"/></svg>. A ringed marble draws a line that is <b>turning</b>: at the end it becomes its opposite.</p>
+    <div class="bowls">
+      <div class="bowlcard"><h4>The yarrow bowl</h4><div class="bowl mini" id="b-yarrow"></div><p class="small">The odds of the old yarrow-stalk count.</p></div>
+      <div class="bowlcard"><h4>The coin bowl</h4><div class="bowl mini" id="b-coins"></div><p class="small">The odds of tossing three coins.</p></div>
+    </div>
+    <p><b>You draw a firm line. In which bowl is it more likely to be turning?</b></p>
+    <div class="row" id="q0">
+      <button class="ghost" data-a="yarrow">The yarrow bowl</button>
+      <button class="ghost" data-a="coins">The coin bowl</button>
+      <button class="ghost" data-a="same">The same in both</button>
+      <button class="ghost" data-a="idk">I don't know</button>
+    </div>
+    <div id="q0-reveal" hidden>
+      <p class="reveal" id="q0-text"></p>
+      <p>Pick the bowl you will walk with. You will change it six times.</p>
+      <div class="row"><button data-m="yarrow" class="pickm">Walk with the yarrow bowl</button><button data-m="coins" class="pickm ghost">Walk with the coin bowl</button></div>
+    </div>
+  </section>
+
+  <!-- 1. the table -->
+  <section class="panel" id="game" hidden>
+    <div class="table">
+      <div class="hex-col">
+        <div class="hex" id="hex"></div>
+        <div>
+          <div class="hexname" id="hexname"></div>
+          <div class="seats" id="seats"></div>
+        </div>
+      </div>
+      <div>
+        <div class="place" id="place"></div>
+        <div class="bowl" id="bowl"></div>
+        <div class="legend">
+          <span><i style="background:#3a3222"></i>firm, stays</span>
+          <span><i style="background:#4a2a1e;box-shadow:0 0 0 2px var(--turn) inset"></i>firm, turning</span>
+          <span><i style="background:#1f2a38"></i>yielding, stays</span>
+          <span><i style="background:#2e2330;box-shadow:0 0 0 2px var(--turn) inset"></i>yielding, turning</span>
+        </div>
+        <p class="odds" id="odds"></p>
+        <p class="delta" id="delta"></p>
+        <div class="moves" id="moves"></div>
+        <div class="row"><button id="draw" disabled>Draw the line</button><span class="small" id="drawhint">Choose a move first. It changes the bowl before you draw.</span></div>
+        <details class="ghost-bowl small"><summary>The bowl if you had never chosen</summary>
+          <p>Same draws, no moves: the other world your path left behind.</p>
+          <div class="bowl mini" id="ghost"></div><p id="ghost-odds"></p></details>
+      </div>
+    </div>
+    <ul class="log" id="log"></ul>
+  </section>
+
+  <!-- 2. the ending -->
+  <section class="panel" id="end" hidden>
+    <p class="kicker">The six lines are drawn</p>
+    <div class="stack" id="stack"></div>
+    <div class="row"><button id="turn">Draw the next turning line</button><span class="small" id="turnhint"></span></div>
+
+    <div id="lesson" hidden>
+      <h2 style="margin-top:22px">How likely was this hexagram?</h2>
+      <p>The same six lines, asked of three different paths. The first column is the chance of this pattern of firm and yielding lines; the second, of these lines turning exactly as they did.</p>
+      <table class="lk" id="lk"></table>
+      <p class="small">With no choices, the two bowls give this hexagram the same chance: both are half firm. They part in the second column, where turning counts. None of these is "the" probability of the hexagram. Each belongs to a path.</p>
+
+      <h2 style="margin-top:22px">Walk the same path a hundred times</h2>
+      <p>Same bowl, same moves, a hundred fresh draws. The lit ones came out the same as yours; orange lines were turning. One of these worlds is the one you drew. It is not a forecast of the others.</p>
+      <div class="two">
+        <div><p class="kicker">Your path</p><div class="worlds" id="w-yours"></div><p class="small" id="w-yours-n"></p></div>
+        <div><p class="kicker">No choices, same bowl</p><div class="worlds" id="w-none"></div><p class="small" id="w-none-n"></p></div>
+      </div>
+
+      <h2 style="margin-top:22px">Tell it as a story</h2>
+      <p class="small" id="fic-q"></p>
+      <textarea id="fiction" placeholder="What happened, line by line, and what is it turning into? It stays in this browser."></textarea>
+      <div class="row" style="margin-top:10px"><button id="copy" class="ghost">Copy my casting</button><button id="again">Cast again</button><span class="small" id="copied"></span></div>
+    </div>
+  </section>
+
+  <p class="credits">Hexagram names and texts: James Legge (tr.), <i>The Yî King</i>, Sacred Books of the East vol. XVI, 1882 and 1899, public domain, read from the <a href="https://iching.recursive.eco">Recursive I Ching</a> (zhouyi-core). The sixteen-marble bowl reproduces the yarrow-stalk odds; the coin bowl the three-coin odds. The reading of the six places as stages of an AI future is this page's own, and so are the moves. The idea of drawing turning lines one at a time to where they lead comes from the Recursive I Ching's path caster. PlayfulProcess, CC BY-SA 4.0. <a href="index.html">Other games</a> · <a href="spread.html">The Walk</a>.</p>
+</div>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px"><symbol id="spiral" viewBox="0 0 100 100"><path d="M50.5 50L50.5 50.01 50.51,50.02 50.51,50.03 50.51,50.04 50.51,50.05 50.52,50.07 50.52,50.08 50.52,50.09 50.52,50.1 50.52,50.11 50.52,50.12 50.52,50.13 50.52,50.15 50.52,50.16 50.52,50.17 50.52,50.18 50.52,50.19 50.52,50.21 50.52,50.22 50.52,50.23 50.52,50.24 50.52,50.26 50.51,50.27 50.51,50.28 50.51,50.29 50.51,50.31 50.5,50.32 50.5,50.33 50.49,50.34 50.49,50.36 50.49,50.37 50.48,50.38 50.48,50.39 50.47,50.41 50.47,50.42 50.46,50.43 50.45,50.44 50.45,50.46 50.44,50.47 50.43,50.48 50.43,50.49 50.42,50.5 50.41,50.52 50.4,50.53 50.39,50.54 50.38,50.55 50.37,50.56 50.36,50.57 50.35,50.59 50.34,50.6 50.33,50.61 50.32,50.62 50.31,50.63 50.3,50.64 50.29,50.65 50.28,50.66 50.27,50.67 50.25,50.68 50.24,50.69 50.23,50.7 50.21,50.71 50.2,50.72 50.19,50.73 50.17,50.73 50.16,50.74 50.14,50.75 50.13,50.76 50.11,50.77 50.1,50.77 50.08,50.78 50.07,50.79 50.05,50.79 50.03,50.8 50.02,50.8 50,50.81 49.98,50.81 49.97,50.82 49.95,50.82 49.93,50.83 49.91,50.83 49.89,50.83 49.88,50.84 49.86,50.84 49.84,50.84 49.82,50.84 49.8,50.85 49.78,50.85 49.76,50.85 49.74,50.85 49.72,50.85 49.71,50.85 49.69,50.85 49.67,50.84 49.65,50.84 49.63,50.84 49.61,50.84 49.59,50.83 49.57,50.83 49.55,50.83 49.53,50.82 49.5,50.82 49.48,50.81 49.46,50.81 49.44,50.8 49.42,50.79 49.4,50.79 49.38,50.78 49.36,50.77 49.34,50.76 49.32,50.75 49.3,50.74 49.28,50.73 49.26,50.72 49.24,50.71 49.22,50.7 49.2,50.69 49.18,50.68 49.16,50.66 49.15,50.65 49.13,50.63 49.11,50.62 49.09,50.61 49.07,50.59 49.05,50.57 49.03,50.56 49.02,50.54 49,50.52 48.98,50.51 48.96,50.49 48.95,50.47 48.93,50.45 48.92,50.43 48.9,50.41 48.88,50.39 48.87,50.37 48.85,50.35 48.84,50.32 48.83,50.3 48.81,50.28 48.8,50.26 48.79,50.23 48.77,50.21 48.76,50.18 48.75,50.16 48.74,50.13 48.73,50.11 48.72,50.08 48.71,50.05 48.7,50.03 48.69,50 48.68,49.97 48.68,49.94 48.67,49.92 48.66,49.89 48.66,49.86 48.65,49.83 48.65,49.8 48.64,49.77 48.64,49.74 48.63,49.71 48.63,49.68 48.63,49.65 48.63,49.62 48.63,49.59 48.63,49.55 48.63,49.52 48.63,49.49 48.63,49.46 48.64,49.43 48.64,49.39 48.64,49.36 48.65,49.33 48.66,49.3 48.66,49.26 48.67,49.23 48.68,49.2 48.69,49.17 48.7,49.13 48.71,49.1 48.72,49.07 48.73,49.03 48.74,49 48.75,48.97 48.77,48.94 48.78,48.9 48.8,48.87 48.81,48.84 48.83,48.81 48.85,48.77 48.87,48.74 48.89,48.71 48.91,48.68 48.93,48.65 48.95,48.62 48.97,48.59 49,48.56 49.02,48.53 49.05,48.5 49.07,48.47 49.1,48.44 49.13,48.41 49.15,48.38 49.18,48.35 49.21,48.33 49.24,48.3 49.27,48.27 49.31,48.25 49.34,48.22 49.37,48.19 49.41,48.17 49.44,48.15 49.48,48.12 49.51,48.1 49.55,48.08 49.59,48.06 49.63,48.04 49.66,48.02 49.7,48 49.74,47.98 49.79,47.96 49.83,47.94 49.87,47.93 49.91,47.91 49.96,47.9 50,47.88 50.04,47.87 50.09,47.86 50.14,47.85 50.18,47.83 50.23,47.82 50.28,47.82 50.32,47.81 50.37,47.8 50.42,47.8 50.47,47.79 50.52,47.79 50.57,47.78 50.62,47.78 50.67,47.78 50.72,47.78 50.77,47.78 50.82,47.79 50.88,47.79 50.93,47.79 50.98,47.8 51.03,47.81 51.08,47.82 51.14,47.82 51.19,47.83 51.24,47.85 51.3,47.86 51.35,47.87 51.4,47.89 51.46,47.91 51.51,47.92 51.56,47.94 51.62,47.96 51.67,47.98 51.72,48.01 51.77,48.03 51.83,48.05 51.88,48.08 51.93,48.11 51.98,48.14 52.03,48.17 52.09,48.2 52.14,48.23 52.19,48.27 52.24,48.3 52.29,48.34 52.34,48.38 52.39,48.42 52.43,48.46 52.48,48.5 52.53,48.54 52.57,48.58 52.62,48.63 52.67,48.68 52.71,48.72 52.75,48.77 52.8,48.82 52.84,48.88 52.88,48.93 52.92,48.98 52.96,49.04 53,49.09 53.04,49.15 53.07,49.21 53.11,49.27 53.14,49.33 53.18,49.39 53.21,49.46 53.24,49.52 53.27,49.59 53.3,49.65 53.33,49.72 53.36,49.79 53.38,49.86 53.4,49.93 53.43,50 53.45,50.07 53.47,50.15 53.49,50.22 53.5,50.29 53.52,50.37 53.53,50.45 53.55,50.52 53.56,50.6 53.57,50.68 53.57,50.76 53.58,50.84 53.59,50.92 53.59,51 53.59,51.08 53.59,51.17 53.59,51.25 53.58,51.33 53.58,51.42 53.57,51.5 53.56,51.58 53.55,51.67 53.54,51.75 53.52,51.84 53.5,51.93 53.48,52.01 53.46,52.1 53.44,52.18 53.42,52.27 53.39,52.36 53.36,52.44 53.33,52.53 53.3,52.61 53.26,52.7 53.23,52.79 53.19,52.87 53.15,52.96 53.1,53.04 53.06,53.12 53.01,53.21 52.96,53.29 52.91,53.37 52.86,53.46 52.81,53.54 52.75,53.62 52.69,53.7 52.63,53.78 52.56,53.86 52.5,53.94 52.43,54.01 52.36,54.09 52.29,54.17 52.22,54.24 52.14,54.31 52.06,54.38 51.98,54.46 51.9,54.53 51.82,54.59 51.73,54.66 51.65,54.73 51.56,54.79 51.47,54.85 51.37,54.91 51.28,54.97 51.18,55.03 51.08,55.09 50.98,55.14 50.88,55.19 50.77,55.24 50.67,55.29 50.56,55.34 50.45,55.39 50.34,55.43 50.23,55.47 50.12,55.51 50,55.55 49.88,55.58 49.76,55.61 49.65,55.64 49.52,55.67 49.4,55.69 49.28,55.72 49.15,55.74 49.03,55.76 48.9,55.77 48.77,55.78 48.64,55.79 48.51,55.8 48.38,55.81 48.25,55.81 48.11,55.81 47.98,55.8 47.84,55.8 47.71,55.79 47.57,55.77 47.44,55.76 47.3,55.74 47.16,55.72 47.02,55.7 46.88,55.67 46.75,55.64 46.61,55.6 46.47,55.57 46.33,55.53 46.19,55.48 46.05,55.44 45.91,55.39 45.77,55.34 45.63,55.28 45.49,55.22 45.36,55.16 45.22,55.09 45.08,55.02 44.94,54.95 44.81,54.88 44.67,54.8 44.54,54.71 44.41,54.63 44.27,54.54 44.14,54.45 44.01,54.35 43.88,54.25 43.76,54.15 43.63,54.04 43.5,53.93 43.38,53.82 43.26,53.71 43.14,53.59 43.02,53.46 42.91,53.34 42.79,53.21 42.68,53.08 42.57,52.94 42.46,52.8 42.35,52.66 42.25,52.52 42.15,52.37 42.05,52.22 41.95,52.07 41.86,51.91 41.77,51.75 41.68,51.59 41.6,51.42 41.51,51.25 41.43,51.08 41.36,50.91 41.29,50.73 41.22,50.55 41.15,50.37 41.09,50.19 41.03,50 40.97,49.81 40.92,49.62 40.87,49.43 40.83,49.23 40.79,49.03 40.75,48.83 40.72,48.63 40.69,48.42 40.66,48.22 40.64,48.01 40.63,47.8 40.61,47.59 40.61,47.38 40.6,47.16 40.6,46.95 40.61,46.73 40.62,46.51 40.64,46.29 40.66,46.07 40.68,45.85 40.71,45.63 40.75,45.41 40.78,45.18 40.83,44.96 40.88,44.73 40.93,44.51 40.99,44.28 41.06,44.06 41.13,43.83 41.2,43.61 41.28,43.38 41.37,43.16 41.46,42.93 41.55,42.71 41.65,42.48 41.76,42.26 41.87,42.04 41.99,41.82 42.11,41.6 42.24,41.38 42.37,41.16 42.51,40.95 42.66,40.73 42.81,40.52 42.96,40.31 43.12,40.1 43.29,39.9 43.46,39.69 43.64,39.49 43.82,39.29 44,39.09 44.2,38.9 44.39,38.71 44.6,38.52 44.81,38.34 45.02,38.15 45.24,37.97 45.46,37.8 45.69,37.63 45.93,37.46 46.16,37.3 46.41,37.14 46.66,36.98 46.91,36.83 47.17,36.68 47.43,36.54 47.7,36.4 47.97,36.27 48.25,36.14 48.53,36.02 48.82,35.9 49.11,35.79 49.4,35.68 49.7,35.58 50,35.48 50.31,35.39 50.62,35.31 50.93,35.23 51.25,35.16 51.57,35.09 51.89,35.03 52.22,34.98 52.55,34.93 52.88,34.89 53.22,34.86 53.56,34.83 53.9,34.81 54.24,34.8 54.59,34.8 54.94,34.8 55.29,34.81 55.64,34.83 56,34.85 56.36,34.88 56.71,34.92 57.07,34.97 57.43,35.03 57.8,35.09 58.16,35.16 58.52,35.24 58.89,35.33 59.25,35.42 59.61,35.53 59.98,35.64 60.34,35.76 60.71,35.89 61.07,36.03 61.44,36.18 61.8,36.33 62.16,36.5 62.52,36.67 62.88,36.85 63.24,37.04 63.59,37.24 63.94,37.44 64.3,37.66 64.65,37.88 64.99,38.12 65.34,38.36 65.68,38.61 66.01,38.87 66.35,39.14 66.68,39.42 67,39.7 67.33,40 67.65,40.3 67.96,40.61 68.27,40.93 68.57,41.26 68.87,41.6 69.17,41.94 69.46,42.3 69.74,42.66 70.02,43.03 70.29,43.41 70.55,43.79 70.81,44.19 71.07,44.59 71.31,45 71.55,45.42 71.78,45.85 72,46.28 72.22,46.72 72.42,47.17 72.62,47.62 72.81,48.08 73,48.55 73.17,49.03 73.33,49.51 73.49,50 73.64,50.5 73.77,51 73.9,51.5 74.02,52.02 74.12,52.54 74.22,53.06 74.3,53.59 74.38,54.12 74.44,54.66 74.5,55.21 74.54,55.76 74.57,56.31 74.59,56.87 74.6,57.43 74.6,57.99 74.58,58.56 74.55,59.13 74.51,59.71 74.46,60.28 74.4,60.86 74.32,61.44 74.23,62.03 74.13,62.61 74.01,63.2 73.88,63.79 73.74,64.38 73.58,64.97 73.42,65.56 73.23,66.15 73.04,66.74 72.83,67.33 72.6,67.92 72.37,68.5 72.12,69.09 71.85,69.67 71.57,70.26 71.28,70.84 70.97,71.42 70.65,71.99 70.32,72.56 69.97,73.13 69.6,73.7 69.23,74.26 68.83,74.81 68.43,75.36 68.01,75.91 67.57,76.45 67.13,76.99 66.66,77.51 66.19,78.04 65.7,78.55 65.19,79.06 64.67,79.56 64.14,80.05 63.6,80.54 63.04,81.02 62.47,81.48 61.88,81.94 61.28,82.39 60.67,82.83 60.04,83.26 59.4,83.68 58.75,84.08 58.09,84.48 57.41,84.87 56.72,85.24 56.02,85.6 55.31,85.95 54.58,86.28 53.85,86.61 53.1,86.91 52.34,87.21 51.57,87.49 50.79,87.76 50,88.01 49.2,88.24 48.39,88.46 47.57,88.67 46.74,88.86 45.9,89.03 45.05,89.19 44.19,89.33 43.33,89.45 42.45,89.55 41.57,89.64 40.69,89.71 39.79,89.76 38.89,89.79 37.98,89.8 37.07,89.8 36.15,89.77 35.23,89.73 34.3,89.66 33.36,89.58 32.42,89.47 31.48,89.35 30.54,89.2 29.59,89.04 28.64,88.85 27.69,88.64 26.74,88.41 25.89,87.99 25.1,87.48 24.32,86.95 23.55,86.41 22.79,85.84 22.05,85.27 21.32,84.67 20.6,84.06 19.89,83.44 19.2,82.8 18.52,82.15 17.85,81.48 17.2,80.8 16.56,80.11 15.94,79.4 15.33,78.68 14.73,77.95 14.16,77.21 13.59,76.45 13.05,75.68 12.52,74.9 12.01,74.11 11.51,73.31 11.03,72.5 10.57,71.68 10.12,70.85 9.69,70.01 9.28,69.16 8.89,68.3 8.52,67.44 8.16,66.57 7.82,65.69 7.5,64.8 7.2,63.91 6.92,63.01 6.66,62.1 6.41,61.19 6.19,60.28 5.98,59.36 5.8,58.43 5.63,57.5 5.48,56.57 5.35,55.64 5.25,54.7 5.16,53.77 5.09,52.83 5.04,51.88 5.01,50.94 5,50 5.01,49.06 5.04,48.12 5.09,47.17 5.16,46.23 5.25,45.3 5.35,44.36 5.48,43.43 5.63,42.5 5.8,41.57 5.98,40.64 6.19,39.72 6.41,38.81 6.66,37.9 6.92,36.99 7.2,36.09 7.5,35.2 7.82,34.31 8.16,33.43 8.52,32.56 8.89,31.7 9.28,30.84 9.69,29.99 10.12,29.15 10.57,28.32 11.03,27.5 11.51,26.69 12.01,25.89 12.52,25.1 13.05,24.32 13.59,23.55 14.16,22.79 14.73,22.05 15.33,21.32 15.94,20.6 16.56,19.89 17.2,19.2 17.85,18.52 18.52,17.85 19.2,17.2 19.89,16.56 20.6,15.94 21.32,15.33 22.05,14.73 22.79,14.16 23.55,13.59 24.32,13.05 25.1,12.52 25.89,12.01 26.69,11.51 27.5,11.03 28.32,10.57 29.15,10.12 29.99,9.69 30.84,9.28 31.7,8.89 32.56,8.52 33.43,8.16 34.31,7.82 35.2,7.5 36.09,7.2 36.99,6.92 37.9,6.66 38.81,6.41 39.72,6.19 40.64,5.98 41.57,5.8 42.5,5.63 43.43,5.48 44.36,5.35 45.3,5.25 46.23,5.16 47.17,5.09 48.12,5.04 49.06,5.01 50,5 50.94,5.01 51.88,5.04 52.83,5.09 53.77,5.16 54.7,5.25 55.64,5.35 56.57,5.48 57.5,5.63 58.43,5.8 59.36,5.98 60.28,6.19 61.19,6.41 62.1,6.66 63.01,6.92 63.91,7.2 64.8,7.5 65.69,7.82 66.57,8.16 67.44,8.52 68.3,8.89 69.16,9.28 70.01,9.69 70.85,10.12 71.68,10.57 72.5,11.03 73.31,11.51 74.11,12.01 74.9,12.52 75.68,13.05 76.45,13.59 77.21,14.16 77.95,14.73 78.68,15.33 79.4,15.94 80.11,16.56 80.8,17.2 81.48,17.85 82.15,18.52 82.8,19.2 83.44,19.89 84.06,20.6 84.67,21.32 85.27,22.05 85.84,22.79 86.41,23.55 86.95,24.32 87.48,25.1 87.99,25.89 88.49,26.69 88.97,27.5 89.43,28.32 89.88,29.15 90.31,29.99 90.72,30.84 91.11,31.7 91.48,32.56 91.84,33.43 92.18,34.31 92.5,35.2 92.8,36.09 93.08,36.99 93.34,37.9 93.59,38.81 93.81,39.72 94.02,40.64 94.2,41.57 94.37,42.5 94.52,43.43 94.65,44.36 94.75,45.3 94.84,46.23 94.91,47.17 94.96,48.12 94.99,49.06 95,50 94.99,50.94 94.96,51.88 94.91,52.83 94.84,53.77 94.75,54.7 94.65,55.64 94.52,56.57 94.37,57.5 94.2,58.43 94.02,59.36 93.81,60.28 93.59,61.19 93.34,62.1 93.08,63.01 92.8,63.91 92.5,64.8 92.18,65.69 91.84,66.57 91.48,67.44 91.11,68.3 90.72,69.16 90.31,70.01 89.88,70.85 89.43,71.68 88.97,72.5 88.49,73.31 87.99,74.11 87.48,74.9 86.95,75.68 86.41,76.45 85.84,77.21 85.27,77.95 84.67,78.68 84.06,79.4 83.44,80.11 82.8,80.8 82.15,81.48 81.48,82.15 80.8,82.8 80.11,83.44 79.4,84.06 78.68,84.67 77.95,85.27 77.21,85.84 76.45,86.41 75.68,86.95 74.9,87.48 74.11,87.99 73.31,88.49 72.5,88.97 71.68,89.43 70.85,89.88 70.01,90.31 69.16,90.72 68.3,91.11 67.44,91.48 66.57,91.84 65.69,92.18 64.8,92.5 63.91,92.8 63.01,93.08 62.1,93.34 61.19,93.59 60.28,93.81 59.36,94.02 58.43,94.2 57.5,94.37 56.57,94.52 55.64,94.65 54.7,94.75 53.77,94.84 52.83,94.91 51.88,94.96 50.94,94.99 50,95 49.06,94.99 48.12,94.96 47.17,94.91 46.23,94.84 45.3,94.75 44.36,94.65 43.43,94.52 42.5,94.37 41.57,94.2 40.64,94.02 39.72,93.81 38.81,93.59 37.9,93.34 36.99,93.08 36.09,92.8 35.2,92.5 34.31,92.18 33.43,91.84 32.56,91.48 31.7,91.11 30.84,90.72 29.99,90.31 29.15,89.88 28.32,89.43 27.5,88.97 26.69,88.49 25.89,87.99" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol></svg>
+
+<script>
+"use strict";
+// ── data ────────────────────────────────────────────────────────────────────────────────
+// [number, name, symbol, chinese, lines bottom-to-top (1 = firm)] from zhouyi-core, checked against
+// every line text's NINE/SIX on Sep 22 2026 (64 of 64 agree).
+var HEX = [[1,"The Creative","䷀","乾","111111"],[2,"The Receptive","䷁","坤","000000"],[3,"Difficulty at the Beginning","䷂","屯","100010"],[4,"Youthful Folly","䷃","蒙","010001"],[5,"Waiting (Nourishment)","䷄","需","111010"],[6,"Conflict","䷅","訟","010111"],[7,"The Army","䷆","師","010000"],[8,"Holding Together [Union]","䷇","比","000010"],[9,"The Taming Power of the Small","䷈","小畜","111011"],[10,"Treading [Conduct]","䷉","履","110111"],[11,"Peace","䷊","泰","111000"],[12,"Standstill [Stagnation]","䷋","否","000111"],[13,"Fellowship with Men","䷌","同人","101111"],[14,"Possession in Great Measure","䷍","大有","111101"],[15,"Modesty","䷎","謙","001000"],[16,"Enthusiasm","䷏","豫","000100"],[17,"Following","䷐","隨","100110"],[18,"Work on what has been spoiled [Decay]","䷑","蠱","011001"],[19,"Approach","䷒","臨","110000"],[20,"Contemplation [View]","䷓","觀","000011"],[21,"Biting Through","䷔","噬嗑","100101"],[22,"Grace","䷕","賁","101001"],[23,"Splitting Apart","䷖","剝","000001"],[24,"Return (The Turning Point)","䷗","復","100000"],[25,"Innocence (The Unexpected)","䷘","無妄","100111"],[26,"The Taming Power of the Great","䷙","大畜","111001"],[27,"The Corners of the Mouth (Providing Nourishment)","䷚","頤","100001"],[28,"Preponderance of the Great","䷛","大過","011110"],[29,"The Abysmal (Water)","䷜","坎","010010"],[30,"The Clinging, Fire","䷝","離","101101"],[31,"Influence (Wooing)","䷞","咸","001110"],[32,"Duration","䷟","恆","011100"],[33,"Retreat","䷠","遯","001111"],[34,"The Power of the Great","䷡","大壯","111100"],[35,"Progress","䷢","晉","000101"],[36,"Darkening of the Light","䷣","明夷","101000"],[37,"The Family [The Clan]","䷤","家人","101011"],[38,"Opposition","䷥","睽","110101"],[39,"Obstruction","䷦","蹇","001010"],[40,"Deliverance","䷧","解","010100"],[41,"Decrease","䷨","損","110001"],[42,"Increase","䷩","益","100011"],[43,"Break-through (Resoluteness)","䷪","夬","111110"],[44,"Coming to Meet","䷫","姤","011111"],[45,"Gathering Together [Massing]","䷬","萃","000110"],[46,"Pushing Upward","䷭","升","011000"],[47,"Oppression (Exhaustion)","䷮","困","010110"],[48,"The Well","䷯","井","011010"],[49,"Revolution (Molting)","䷰","革","101110"],[50,"The Caldron","䷱","鼎","011101"],[51,"The Arousing (Shock, Thunder)","䷲","震","100100"],[52,"Keeping Still, Mountain","䷳","艮","001001"],[53,"Development (Gradual Progress)","䷴","漸","001011"],[54,"The Marrying Maiden","䷵","歸妹","110100"],[55,"Abundance","䷶","豐","101100"],[56,"The Wanderer","䷷","旅","001101"],[57,"The Gentle (The Penetrating, Wind)","䷸","巽","011011"],[58,"The Joyous, Lake","䷹","兌","110110"],[59,"Dispersion [Dissolution]","䷺","渙","010011"],[60,"Limitation","䷻","節","110010"],[61,"Inner Truth","䷼","中孚","110011"],[62,"Preponderance of the Small","䷽","小過","001100"],[63,"After Completion","䷾","既濟","101010"],[64,"Before Completion","䷿","未濟","010101"]];
+var BY_BITS = {}; HEX.forEach(function(h){ BY_BITS[h[4]] = h; });
+var TEXTS = null;   // number -> {Judgment, Line 1..6}, loaded live
+fetch('https://iching.recursive.eco/grammars/zhouyi-core/grammar.json').then(function(r){ return r.json(); }).then(function(g){
+  TEXTS = {}; g.items.forEach(function(it){ TEXTS[it.metadata.number] = it.sections; });
+  if (phase === 'end') renderEnd();
+}).catch(function(){ TEXTS = false; });
+
+// kinds: 6 old yin (yielding, turning) · 7 young yang (firm, stays) · 8 young yin (yielding, stays) · 9 old yang (firm, turning)
+var START = { yarrow:{6:1,7:5,8:7,9:3}, coins:{6:2,7:6,8:6,9:2} };
+var ORDER = [7,9,8,6];
+var PLACES = [
+  { nm:'the ground', ai:'what is being built, inside the labs', tr:'In the tradition the first place is the beginning, still below the surface.' },
+  { nm:'the inner centre', ai:'the people who build it', tr:'The second place is the centre of the lower half: the official, inward and steady.' },
+  { nm:'the crossing', ai:'the release into the world', tr:'The third place is the top of the lower half, where it crosses over; the tradition calls it perilous.' },
+  { nm:'the threshold', ai:'the institutions that meet it', tr:'The fourth place opens the upper half, the minister beside the ruler.' },
+  { nm:'the ruling place', ai:'who holds the power', tr:'The fifth place is the centre of the upper half: the ruler.' },
+  { nm:'the top', ai:'what it becomes past the horizon', tr:'The sixth place is the end, beyond the matter itself.' }
+];
+var MOVES = [
+  { k:'P', nm:'Push ahead', d:'2 yielding marbles become firm and turning', c:-1 },
+  { k:'A', nm:'Steady it', d:'2 turning marbles become still', c:+1 },
+  { k:'S', nm:'Hold back', d:'2 firm marbles become yielding', c:0 },
+  { k:'R', nm:'Mend the bowl', d:'2 marbles return toward where it began', c:0 },
+  { k:'T', nm:'Walk together', d:'with 3 of 5 others: every turning marble becomes still. Without them: nothing', c:0 },
+  { k:'N', nm:"I don't know", d:'the bowl stays as the path left it', c:0 }
+];
+var BAR = 3;
+
+// ── rng ─────────────────────────────────────────────────────────────────────────────────
+function rngFrom(seed){ var a = seed >>> 0; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+// ── the rules, pure ─────────────────────────────────────────────────────────────────────
+function copyB(b){ return {6:b[6],7:b[7],8:b[8],9:b[9]}; }
+function firm(b){ return b[7] + b[9]; }
+function turning(b){ return b[6] + b[9]; }
+function shift(b, from, to, n, moved){ var k = Math.min(n, b[from]); b[from] -= k; b[to] += k; for (var i = 0; i < k; i++) moved.push(to); return n - k; }
+// apply a move; returns {b, coord, moved:[kinds that grew], worked}
+function applyMove(b0, coord, key, start){
+  var b = copyB(b0), moved = [], left, worked = true;
+  if (key === 'P'){ left = shift(b, 8, 9, 2, moved); shift(b, 6, 9, left, moved); coord = Math.max(0, coord - 1); }
+  else if (key === 'A'){ left = shift(b, 9, 7, 2, moved); shift(b, 6, 8, left, moved); coord = Math.min(5, coord + 1); }
+  else if (key === 'S'){ left = shift(b, 7, 8, 2, moved); shift(b, 9, 8, left, moved); }
+  else if (key === 'R'){
+    for (var i = 0; i < 2; i++){
+      var sur = null, def = null;
+      ORDER.forEach(function(k){ var d = b[k] - start[k]; if (d > 0 && (sur === null || d > b[sur] - start[sur])) sur = k; if (d < 0 && (def === null || d < b[def] - start[def])) def = k; });
+      if (sur === null || def === null) break; b[sur]--; b[def]++; moved.push(def);
+    }
+  }
+  else if (key === 'T'){
+    if (coord >= BAR){ shift(b, 9, 7, 16, moved); shift(b, 6, 8, 16, moved); }
+    else { worked = false; coord = Math.min(5, coord + 1); }
+  }
+  return { b:b, coord:coord, moved:moved, worked:worked };
+}
+function listOf(b){ var l = []; ORDER.forEach(function(k){ for (var i = 0; i < b[k]; i++) l.push(k); }); return l; }
+function drawFrom(b, rng){ var l = listOf(b); var i = Math.floor(rng() * l.length); return { kind:l[i], index:i }; }
+// a turning line, once drawn, turns one marble of its kind in the bowl with it
+function afterDraw(b, kind){ var n = copyB(b); if (kind === 9 && n[9] > 0){ n[9]--; n[8]++; } if (kind === 6 && n[6] > 0){ n[6]--; n[7]++; } return n; }
+function isFirm(k){ return k === 7 || k === 9; }
+function isTurning(k){ return k === 6 || k === 9; }
+// play a whole path; draws come from the seed. Used for the live game, the replay and the hundred worlds.
+function playPath(method, moves, seed){
+  var rng = rngFrom(seed), b = copyB(START[method]), coord = 1, lines = [], steps = [];
+  for (var i = 0; i < moves.length; i++){
+    var before = copyB(b), r = applyMove(b, coord, moves[i], START[method]);
+    b = r.b; coord = r.coord;
+    var d = drawFrom(b, rng);
+    steps.push({ move:moves[i], before:before, bowl:copyB(b), moved:r.moved, worked:r.worked, coord:coord, kind:d.kind, index:d.index });
+    lines.push(d.kind); b = afterDraw(b, d.kind);
+  }
+  return { lines:lines, steps:steps, bowl:b, coord:coord };
+}
+// chance of drawing exactly this firm/yielding pattern given a path of moves (bowl updated by the same drawn kinds)
+function chanceOf(method, moves, lines, exact){
+  var b = copyB(START[method]), coord = 1, p = 1;
+  for (var i = 0; i < lines.length; i++){
+    var r = applyMove(b, coord, moves[i], START[method]); b = r.b; coord = r.coord;
+    p *= exact ? b[lines[i]] / 16 : (isFirm(lines[i]) ? firm(b) : 16 - firm(b)) / 16;
+    b = afterDraw(b, lines[i]);
+  }
+  return p;
+}
+function bits(lines, turned){ return lines.map(function(k){ var f = isFirm(k); if (turned && isTurning(k)) f = !f; return f ? '1' : '0'; }).join(''); }
+
+// ── drawing ─────────────────────────────────────────────────────────────────────────────
+var SVGNS = 'http://www.w3.org/2000/svg';
+function lineGlyph(k){
+  var s = '<svg viewBox="0 0 20 20" aria-hidden="true">';
+  var col = isFirm(k) ? 'var(--firm)' : 'var(--yield)';
+  if (isFirm(k)) s += '<rect x="2" y="8" width="16" height="4" rx="1" fill="' + col + '"/>';
+  else s += '<rect x="2" y="8" width="6.5" height="4" rx="1" fill="' + col + '"/><rect x="11.5" y="8" width="6.5" height="4" rx="1" fill="' + col + '"/>';
+  return s + '</svg>';
+}
+function marble(k, extra){ var d = document.createElement('div'); d.className = 'mb k' + k + (extra ? ' ' + extra : ''); d.innerHTML = lineGlyph(k); d.title = kindName(k); return d; }
+function kindName(k){ return { 6:'yielding, turning', 7:'firm, stays', 8:'yielding, stays', 9:'firm, turning' }[k]; }
+function renderBowl(el, b, movedKinds, pickIndex){
+  el.innerHTML = ''; var mk = (movedKinds || []).slice(), i = 0;
+  // the grown marbles are the last of their kind
+  var counts = {}; mk.forEach(function(k){ counts[k] = (counts[k] || 0) + 1; });
+  ORDER.forEach(function(k){ for (var j = 0; j < b[k]; j++){ var grown = counts[k] && j >= b[k] - counts[k]; el.appendChild(marble(k, (grown ? 'moved' : '') + (i === pickIndex ? ' pick' : ''))); i++; } });
+}
+// a hexagram as svg: lines bottom to top, turning lines marked
+function hexSVG(lines, opts){
+  opts = opts || {}; var w = 60, h = 60, gap = 10, lh = 5.4;
+  var s = '<svg viewBox="0 0 ' + w + ' ' + h + '" xmlns="' + SVGNS + '" aria-hidden="true"' + (opts.cls ? ' class="' + opts.cls + '"' : '') + '>';
+  for (var i = 0; i < 6; i++){
+    var y = h - 4 - i * gap - lh, k = lines[i];
+    if (k === undefined){ s += '<rect x="2" y="' + y + '" width="' + (w - 14) + '" height="' + lh + '" rx="1" fill="none" stroke="var(--line)" stroke-dasharray="2 2"/>'; continue; }
+    var f = typeof k === 'boolean' ? k : isFirm(k), col = opts.turncol && isTurning(k) ? 'var(--turn)' : (f ? 'var(--firm)' : 'var(--yield)');
+    if (f) s += '<rect x="2" y="' + y + '" width="' + (w - 14) + '" height="' + lh + '" rx="1" fill="' + col + '"/>';
+    else s += '<rect x="2" y="' + y + '" width="' + ((w - 14) / 2 - 3) + '" height="' + lh + '" rx="1" fill="' + col + '"/><rect x="' + ((w - 14) / 2 + 5) + '" y="' + y + '" width="' + ((w - 14) / 2 - 3) + '" height="' + lh + '" rx="1" fill="' + col + '"/>';
+    if (typeof k === 'number' && isTurning(k) && !opts.plain){
+      if (k === 9) s += '<circle cx="' + (w - 5) + '" cy="' + (y + lh / 2) + '" r="3" fill="none" stroke="var(--turn)" stroke-width="1.6"/>';
+      else s += '<path d="M' + (w - 8) + ' ' + (y - 0.5) + 'l6 6.4M' + (w - 2) + ' ' + (y - 0.5) + 'l-6 6.4" stroke="var(--turn)" stroke-width="1.6"/>';
+    }
+    if (opts.hl === i) s += '<rect x="0" y="' + (y - 2) + '" width="' + w + '" height="' + (lh + 4) + '" rx="2" fill="none" stroke="var(--turn)" stroke-width="1"/>';
+  }
+  return s + '</svg>';
+}
+function el(tag, cls, html){ var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
+function frac(n){ return n + ' in 16'; }
+function oneIn(p){ if (p <= 0) return 'no chance'; var n = 1 / p; return n < 1.5 ? 'almost certain' : 'about 1 in ' + (n < 20 ? n.toFixed(1).replace(/\.0$/, '') : Math.round(n).toLocaleString('en')); }
+
+// ── state ───────────────────────────────────────────────────────────────────────────────
+var method = 'yarrow', seed = 1, moves = [], chosen = null, phase = 'intro', turnedUpTo = 0;
+function readHash(){
+  var m = /^#l1;m=(yarrow|coins);s=(\d+);v=([PASRTN]*)/.exec(location.hash);
+  if (!m) return false; method = m[1]; seed = +m[2]; moves = m[3].split('').slice(0, 6); return true;
+}
+function writeHash(){ history.replaceState(null, '', '#l1;m=' + method + ';s=' + seed + ';v=' + moves.join('')); }
+
+// ── intro ───────────────────────────────────────────────────────────────────────────────
+renderBowl(document.getElementById('b-yarrow'), START.yarrow);
+renderBowl(document.getElementById('b-coins'), START.coins);
+document.querySelectorAll('#q0 button').forEach(function(b){ b.addEventListener('click', function(){
+  var a = b.getAttribute('data-a');
+  var head = { yarrow:'Yes, the yarrow bowl.', coins:'The other way round: the yarrow bowl.', same:'Not the same, though both are half firm.', idk:'That is a fair answer. Here is what the bowls say.' }[a];
+  document.getElementById('q0-text').innerHTML = head + ' In the yarrow bowl, <b>3 of its 8 firm marbles are turning</b>; in the coin bowl, <b>2 of 8</b>. For yielding lines it flips: 1 of 8 against 2 of 8. Same chance of firm, different chance of change. The chance of turning is not a property of a firm line. It belongs to the line given the bowl.';
+  document.getElementById('q0-reveal').hidden = false;
+  document.querySelectorAll('#q0 button').forEach(function(x){ x.classList.toggle('on', x === b); });
+}); });
+document.querySelectorAll('.pickm').forEach(function(b){ b.addEventListener('click', function(){
+  method = b.getAttribute('data-m'); seed = 1 + Math.floor(Math.random() * 999999); moves = []; start();
+}); });
+
+// ── game ────────────────────────────────────────────────────────────────────────────────
+function start(){
+  phase = moves.length >= 6 ? 'end' : 'game'; chosen = null; turnedUpTo = 0;
+  document.getElementById('game').hidden = false;
+  writeHash(); renderGame();
+  if (phase === 'end') showEnd(); else document.getElementById('end').hidden = true;
+  document.getElementById('game').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+function renderMoves(state){
+  var box = document.getElementById('moves'); box.innerHTML = '';
+  MOVES.forEach(function(m){
+    var b = el('button', 'mv' + (m.k === 'N' ? ' idk' : '') + (chosen === m.k ? ' on' : ''), m.nm + '<small>' + m.d + '</small>');
+    if (m.k === 'T') b.innerHTML = m.nm + '<small>' + (state.coord >= BAR ? state.coord + ' of 5 would come: every turning marble becomes still' : 'only ' + state.coord + ' of 5 would come, 3 needed: this line, nothing would change') + '</small>';
+    b.addEventListener('click', function(){ chosen = m.k; renderGame(); });
+    box.appendChild(b);
+  });
+}
+function renderGame(){
+  var played = playPath(method, moves, seed);
+  var t = moves.length, b = played.bowl, coord = played.coord;
+  // the hexagram so far
+  var hex = document.getElementById('hex'); hex.innerHTML = '';
+  for (var i = 0; i < 6; i++){
+    var k = played.lines[i], slot = el('div', 'slot' + (k === undefined ? ' empty' : '') + (i === t && phase === 'game' ? ' now' : ''));
+    slot.appendChild(el('span', 'n', String(i + 1)));
+    var ln = el('div', 'ln');
+    if (k !== undefined){
+      var col = isFirm(k) ? 'var(--firm)' : 'var(--yield)';
+      ln.innerHTML = isFirm(k) ? '<div class="bar" style="left:0;right:0;background:' + col + '"></div>' : '<div class="bar" style="left:0;width:42%;background:' + col + '"></div><div class="bar" style="right:0;width:42%;background:' + col + '"></div>';
+    }
+    slot.appendChild(ln);
+    slot.appendChild(el('span', null, k !== undefined && isTurning(k) ? '<b style="color:var(--turn);font-size:13px" title="turning">' + (k === 9 ? '○' : '×') + '</b>' : ''));
+    hex.appendChild(slot);
+  }
+  document.getElementById('hexname').textContent = t ? t + ' of 6 lines drawn. The first line is at the bottom.' : 'The first line goes at the bottom.';
+  var seats = document.getElementById('seats'); seats.innerHTML = '<span>Others ready to walk together</span>';
+  for (var s = 0; s < 5; s++) seats.appendChild(el('span', 'seat' + (s < coord ? ' on' : '')));
+  seats.appendChild(el('span', null, coord + ' of 5 (needs ' + BAR + ')'));
+  // the log
+  var log = document.getElementById('log'); log.innerHTML = '';
+  played.steps.forEach(function(st, i){
+    var mv = MOVES.filter(function(m){ return m.k === st.move; })[0];
+    var txt = '<b>Line ' + (i + 1) + ', ' + PLACES[i].nm + '.</b> ' + mv.nm + (st.move === 'T' && !st.worked ? ', but not enough came: nothing changed' : '') + '. ' +
+      '<span class="g">Given that, ' + frac(firm(st.bowl)) + ' were firm and ' + frac(turning(st.bowl)) + ' turning.</span> Drawn: ' + kindName(st.kind) + '.' +
+      (isTurning(st.kind) ? ' <span class="g">A turning line was drawn, so one marble in the bowl turned with it.</span>' : '');
+    log.appendChild(el('li', null, txt));
+  });
+  if (phase !== 'game'){ document.getElementById('place').innerHTML = ''; document.getElementById('moves').innerHTML = ''; document.getElementById('draw').hidden = true; document.getElementById('drawhint').textContent = ''; document.getElementById('odds').textContent = ''; document.getElementById('delta').textContent = ''; renderBowl(document.getElementById('bowl'), b); renderGhost(played); return; }
+  var pl = PLACES[t];
+  document.getElementById('place').innerHTML = '<p class="kicker">Line ' + (t + 1) + ' of 6</p><h2>' + pl.nm.charAt(0).toUpperCase() + pl.nm.slice(1) + ': ' + pl.ai + '</h2><p class="tr">' + pl.tr + '</p>';
+  var shown = b, movedKinds = null, note = '';
+  if (chosen){
+    var r = applyMove(b, coord, chosen, START[method]); shown = r.b; movedKinds = r.moved;
+    var df = firm(r.b) - firm(b), dt = turning(r.b) - turning(b);
+    if (chosen === 'N') note = 'You did not choose. The bowl stays as the path left it; that is a path too.';
+    else if (chosen === 'T' && !r.worked) note = 'Not enough others are ready, so nothing changes this line. Trying still counts: one more of them will be ready next time.';
+    else if (chosen === 'T' && !df && !dt) note = 'Enough others came, but no marble is turning: there is nothing to still. Together pays most when the bowl is restless.';
+    else if (!df && !dt) note = 'This move changes nothing in this bowl right now.';
+    else note = 'Your move: firm ' + frac(firm(b)) + ' → ' + frac(firm(r.b)) + ', turning ' + frac(turning(b)) + ' → ' + frac(turning(r.b)) + '. Same draw, different odds.';
+  }
+  renderBowl(document.getElementById('bowl'), shown, movedKinds);
+  document.getElementById('odds').innerHTML = 'Given this path, the next line is firm <b>' + frac(firm(shown)) + '</b> and turning <b>' + frac(turning(shown)) + '</b>.';
+  document.getElementById('delta').textContent = note;
+  renderMoves({ coord:coord });
+  var dr = document.getElementById('draw'); dr.hidden = false; dr.disabled = !chosen;
+  document.getElementById('drawhint').textContent = chosen ? 'Draw one marble from this bowl.' : 'Choose a move first. It changes the bowl before you draw.';
+  renderGhost(played);
+}
+function renderGhost(played){
+  // the ghost uses the same drawn kinds as the real path for its "turned with it" updates
+  var b = copyB(START[method]); played.lines.forEach(function(k){ b = afterDraw(b, k); });
+  renderBowl(document.getElementById('ghost'), b);
+  document.getElementById('ghost-odds').textContent = 'Firm ' + frac(firm(b)) + ', turning ' + frac(turning(b)) + '.';
+}
+document.getElementById('draw').addEventListener('click', function(){
+  if (!chosen) return;
+  var btn = this; btn.disabled = true;
+  var nextMoves = moves.concat([chosen]);
+  var played = playPath(method, nextMoves, seed), st = played.steps[played.steps.length - 1];
+  var bowlEl = document.getElementById('bowl'); renderBowl(bowlEl, st.bowl);
+  var cells = bowlEl.children, n = 0, reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var flick = setInterval(function(){
+    Array.prototype.forEach.call(cells, function(c){ c.classList.remove('flick'); });
+    if (n++ >= (reduce ? 0 : 9)){ clearInterval(flick); cells[st.index].classList.add('pick');
+      setTimeout(function(){ moves = nextMoves; chosen = null; writeHash(); if (moves.length >= 6){ phase = 'end'; renderGame(); showEnd(); } else renderGame(); }, reduce ? 200 : 900);
+      return; }
+    cells[Math.floor(Math.random() * cells.length)].classList.add('flick');
+  }, 80);
+});
+
+// ── the ending: draw the turning lines to where they lead ──────────────────────────────────
+function hexOf(bitsStr){ return BY_BITS[bitsStr]; }
+function textOf(num, key){ return TEXTS && TEXTS[num] ? TEXTS[num][key] : null; }
+function showEnd(){ document.getElementById('end').hidden = false; renderEnd(); setTimeout(function(){ document.getElementById('end').scrollIntoView({ behavior:'smooth', block:'start' }); }, 150); }
+function turningIdx(lines){ var r = []; lines.forEach(function(k, i){ if (isTurning(k)) r.push(i); }); return r; }
+function renderEnd(){
+  var played = playPath(method, moves, seed), lines = played.lines;
+  var ti = turningIdx(lines), stack = document.getElementById('stack'); stack.innerHTML = '';
+  var primary = hexOf(bits(lines, false));
+  var card = el('div', 'hcard', hexSVG(lines) + '<div><div class="t">' + primary[0] + '. ' + primary[1] + '<small>' + primary[3] + ' ' + primary[2] + '</small></div>' +
+    '<p class="small">Where the six lines stand.' + (ti.length ? ' ' + ti.length + ' of them ' + (ti.length === 1 ? 'is' : 'are') + ' turning.' : ' None is turning.') + '</p>' +
+    (textOf(primary[0], 'Judgment') ? '<p>' + textOf(primary[0], 'Judgment') + '</p>' : (TEXTS === false ? '<p class="small">The text could not be loaded; the names still hold.</p>' : '<p class="small">Loading the text…</p>')) + '</div>');
+  stack.appendChild(card);
+  // each turning line, bottom to top, flips one at a time; the line text read is the one being left
+  var cur = lines.map(isFirm);
+  for (var s = 0; s < Math.min(turnedUpTo, ti.length); s++){
+    var li = ti[s], from = hexOf(cur.map(function(f){ return f ? '1' : '0'; }).join(''));
+    cur[li] = !cur[li];
+    var to = hexOf(cur.map(function(f){ return f ? '1' : '0'; }).join('')), last = s === ti.length - 1;
+    var lt = textOf(from[0], 'Line ' + (li + 1));
+    stack.appendChild(el('div', 'hcard turnstep' + (last ? ' arrive' : ''), hexSVG(cur, { hl:li }) +
+      '<div><p class="kicker">Line ' + (li + 1) + ', ' + PLACES[li].nm + ', turns</p>' + (lt ? '<p>' + lt + '</p>' : '') +
+      '<div class="t" style="margin-top:6px">' + (last ? 'It is turning into ' : 'Passing through ') + to[0] + '. ' + to[1] + '<small>' + to[3] + ' ' + to[2] + '</small></div>' +
+      (last && textOf(to[0], 'Judgment') ? '<p>' + textOf(to[0], 'Judgment') + '</p>' : '') + '</div>'));
+  }
+  var tb = document.getElementById('turn'), th = document.getElementById('turnhint');
+  var done = turnedUpTo >= ti.length;
+  tb.hidden = done;
+  th.textContent = done ? (ti.length ? '' : 'No line is turning. The hexagram stands; the tradition reads only its judgment.') : (ti.length - turnedUpTo) + ' turning line' + (ti.length - turnedUpTo === 1 ? '' : 's') + ' left, bottom to top. Each one passes through a real hexagram on the way.';
+  document.getElementById('lesson').hidden = !done;
+  if (done) renderLesson(played, primary, ti.length ? hexOf(bits(lines, true)) : null);
+}
+document.getElementById('turn').addEventListener('click', function(){ turnedUpTo++; renderEnd(); var st = document.getElementById('stack'); st.lastChild.scrollIntoView({ behavior:'smooth', block:'center' }); });
+
+function renderLesson(played, primary, relating){
+  var lines = played.lines, none = moves.map(function(){ return 'N'; }), other = method === 'yarrow' ? 'coins' : 'yarrow';
+  var rows = [
+    ['Your path: the ' + (method === 'yarrow' ? 'yarrow' : 'coin') + ' bowl and your six moves', chanceOf(method, moves, lines), chanceOf(method, moves, lines, true)],
+    ['The same bowl, "I don’t know" six times', chanceOf(method, none, lines), chanceOf(method, none, lines, true)],
+    ['The ' + (other === 'yarrow' ? 'yarrow' : 'coin') + ' bowl, "I don’t know" six times', chanceOf(other, none, lines), chanceOf(other, none, lines, true)]
+  ];
+  var lk = document.getElementById('lk'); lk.innerHTML = '<tr><td class="small">Given</td><td class="v small">this hexagram</td><td class="v small">' + (relating ? 'this hexagram turning into ' + relating[1] : 'this hexagram, with no line turning') + '</td></tr>';
+  rows.forEach(function(r){ var tr = document.createElement('tr'); tr.innerHTML = '<td>' + r[0] + '</td><td class="v">' + oneIn(r[1]) + '</td><td class="v">' + oneIn(r[2]) + '</td>'; lk.appendChild(tr); });
+  // a hundred worlds
+  var mine = bits(lines, false);
+  function worlds(id, mv){
+    var box = document.getElementById(id), same = 0, turned = 0; box.innerHTML = '';
+    for (var i = 0; i < 100; i++){
+      var p = playPath(method, mv, seed * 131 + i + 7), b = bits(p.lines, false);
+      if (b === mine) same++;
+      turned += p.lines.filter(isTurning).length;
+      box.insertAdjacentHTML('beforeend', hexSVG(p.lines, { cls: b === mine ? 'same' : '', plain:true, turncol:true }));
+    }
+    return [same, turned / 100];
+  }
+  var a = worlds('w-yours', moves), n = worlds('w-none', none);
+  function said(r){ return r[0] + ' of 100 came out as ' + primary[1] + '. On average ' + r[1].toFixed(1) + ' of the 6 lines were turning (orange).'; }
+  document.getElementById('w-yours-n').textContent = said(a);
+  document.getElementById('w-none-n').textContent = said(n);
+  var q = 'From ' + primary[1] + (relating ? ' to ' + relating[1] : ', standing') + ': what happened at each of the six places, and what is it turning into?';
+  document.getElementById('fic-q').textContent = q;
+  var key = 'lines:fiction:' + method + ':' + seed + ':' + moves.join('');
+  var ta = document.getElementById('fiction');
+  try { ta.value = localStorage.getItem(key) || ''; } catch (e) {}
+  ta.oninput = function(){ try { localStorage.setItem(key, ta.value); } catch (e) {} };
+  document.getElementById('copy').onclick = function(){
+    var txt = 'Changing Lines, a casting (a teaching instrument, not a forecast)\n' +
+      'Bowl: ' + method + '. Moves: ' + moves.map(function(k, i){ return (i + 1) + ' ' + MOVES.filter(function(m){ return m.k === k; })[0].nm; }).join(', ') + '\n' +
+      'Hexagram: ' + primary[0] + ' ' + primary[1] + (relating ? ', turning into ' + relating[0] + ' ' + relating[1] : ', no line turning') + '\n' +
+      'Chance of this pattern given my path: ' + oneIn(rows[0][1]) + '; given no choices: ' + oneIn(rows[1][1]) + '\n' +
+      (ta.value ? '\n' + ta.value + '\n' : '') + '\n' + location.href;
+    (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(function(){ document.getElementById('copied').textContent = 'Copied.'; }, function(){ window.prompt('Copy this:', txt); });
+  };
+}
+document.getElementById('again').addEventListener('click', function(){
+  moves = []; seed = 1 + Math.floor(Math.random() * 999999); phase = 'intro';
+  document.getElementById('end').hidden = true; document.getElementById('game').hidden = true;
+  history.replaceState(null, '', location.pathname + location.search);
+  document.getElementById('intro').scrollIntoView({ behavior:'smooth' });
+});
+
+// ── a link opens the casting it names ─────────────────────────────────────────────────────
+if (readHash()){
+  document.getElementById('q0-reveal').hidden = false;
+  document.getElementById('q0-text').textContent = 'You opened a casting from a link: the ' + (method === 'yarrow' ? 'yarrow' : 'coin') + ' bowl, ' + moves.length + ' of 6 lines drawn.';
+  start(); if (phase === 'end'){ turnedUpTo = 99; renderEnd(); }
+}
+window.lines = { playPath:playPath, chanceOf:chanceOf, applyMove:applyMove, START:START, HEX:HEX };
+</script>
+</body>
+</html>

@@ -32,6 +32,12 @@ URL hash, so a link to either opens in the other:
   the forecast and confidence, the reading, the step with its kind and card id, the two forgiveness
   lines, the asymmetry, the synthesis, a timestamp and the consent line. `FORM_URL` near the Step
   code is empty until she makes the form; once set, a **Send it** button opens it.
+- **`lines.html` — Changing Lines (prototype, Sep 22).** A second game for the same lesson, built on
+  the I Ching's sixteen-marble bowl (the yarrow odds). Six lines, bottom to top, each a stage of an
+  AI future; before each draw a move changes the marbles, so the chance of every line belongs to the
+  bowl given the path. At the end the turning lines are drawn one at a time to the hexagram they lead
+  to, then the same hexagram is priced under three paths and walked a hundred times. Legge's text
+  (public domain) is read live from iching.recursive.eco. Design and research: `DESIGN-changing-lines.md`.
 - **`scroll.html` — the story (mock-up, Sep 22).** The same walk read down a page in the shape of
   ai-2027.com: a sticky rail on the left with the seven endings ranked, the hand and the two
   gauges; one section per year in words with the ending that moved most as a small figure; the
