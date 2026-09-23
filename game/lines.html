@@ -28,7 +28,8 @@
   a{color:var(--accent)}
   button{background:var(--accent);color:var(--accent-ink);border:0;border-radius:9px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer}
   button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
-  button[disabled]{opacity:.4;cursor:not-allowed}
+  button[disabled]{opacity:1;background:var(--panel2);color:var(--muted);border:1px solid var(--line);cursor:not-allowed}
+  .mv.nil{opacity:.5}
   .wrap{max-width:860px;margin:0 auto;padding:12px 16px 90px}
   .mark{display:flex;align-items:center;gap:12px;margin:10px 0 4px}
   .mark svg{width:34px;height:34px;color:var(--accent);flex:none}
@@ -83,7 +84,7 @@
   .mv small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:3px}
   .mv.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
   .mv.idk{border-style:dashed}
-  .seats{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted);margin:6px 0 0;flex-wrap:wrap}
+  .seats{display:grid;gap:5px;font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.4}
   .seat{width:13px;height:13px;border-radius:50%;border:1px solid var(--muted)}
   .seat.on{background:var(--accent);border-color:var(--accent)}
   .ghost-bowl{margin-top:14px}
@@ -99,7 +100,7 @@
   .hcard p{margin:4px 0 0;font-size:14.5px}
   .hcard.turnstep{border-left:3px solid var(--turn)}
   .hcard.arrive{border-color:var(--accent)}
-  .worlds{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;max-width:300px}
+  .worlds{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;max-width:380px}
   .worlds svg{width:100%;height:auto;display:block;opacity:.55}
   .worlds svg.same{opacity:1;filter:drop-shadow(0 0 3px var(--accent))}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -107,6 +108,12 @@
   table.lk{border-collapse:collapse;font:13.5px Inter,system-ui,sans-serif;width:100%;margin:8px 0}
   table.lk td{padding:6px 4px;border-top:1px solid var(--line)}
   table.lk td.v{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  @media (max-width:640px){
+    table.lk tr{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+    table.lk td{border:0;padding:4px 2px}
+    table.lk td:first-child{grid-column:1/-1;padding-top:8px}
+    table.lk td.v{text-align:left;white-space:normal}
+  }
   .credits{font:11.5px/1.5 Inter,system-ui,sans-serif;color:var(--muted);margin-top:30px;border-top:1px solid var(--line);padding-top:12px}
   @media (max-width:640px){
     h1{font-size:25px}
@@ -123,7 +130,7 @@
   <header>
     <div class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
       <h1><span class="sub">Recursive Learning · a game in six draws</span>Changing Lines</h1></div>
-    <p class="lede">Six lines make a hexagram. Each line is drawn from a bowl of sixteen marbles, and before every draw you change what is in the bowl. <i>The chance of a line is a property of the bowl, and the bowl is the path.</i> At the end, the lines that are turning are drawn on to where they lead.</p>
+    <p class="lede">Six lines make a hexagram, and here each line is a stage of an AI future, from the labs at the bottom to what it becomes at the top. Each line is drawn from a bowl of sixteen marbles, and before every draw you change what is in the bowl. <i>The chance of a line is a property of the bowl, and the bowl is the path.</i> At the end, the lines that are turning are drawn on to where they lead.</p>
     <p class="disc">A teaching instrument, not a forecast and not a divination. Nothing staked, nothing sent. "I don't know" is always a legal move.</p>
   </header>
 
@@ -172,6 +179,7 @@
         <p class="odds" id="odds"></p>
         <p class="delta" id="delta"></p>
         <div class="moves" id="moves"></div>
+        <p class="small" style="margin:0 0 10px">Each name is a move in the AI story; the small print is all it does to the bowl. No move is judged good or bad here.</p>
         <div class="row"><button id="draw" disabled>Draw the line</button><span class="small" id="drawhint">Choose a move first. It changes the bowl before you draw.</span></div>
         <details class="ghost-bowl small"><summary>The bowl if you had never chosen</summary>
           <p>Same draws, no moves: the other world your path left behind.</p>
@@ -191,10 +199,12 @@
       <h2 style="margin-top:22px">How likely was this hexagram?</h2>
       <p>The same six lines, asked of three different paths. The first column is the chance of this pattern of firm and yielding lines; the second, of these lines turning exactly as they did.</p>
       <table class="lk" id="lk"></table>
-      <p class="small">With no choices, the two bowls give this hexagram the same chance: both are half firm. They part in the second column, where turning counts. None of these is "the" probability of the hexagram. Each belongs to a path.</p>
+      <p id="lk-say"></p>
+      <p class="small">With no choices, the two bowls give this hexagram the same chance: both are half firm. They part in the second column, where turning counts.</p>
+      <p style="font-size:19px;margin:10px 0 0"><b>None of these is "the" probability of this hexagram. Each belongs to a path.</b></p>
 
       <h2 style="margin-top:22px">Walk the same path a hundred times</h2>
-      <p>Same bowl, same moves, a hundred fresh draws. The lit ones came out the same as yours; orange lines were turning. One of these worlds is the one you drew. It is not a forecast of the others.</p>
+      <p>Same bowl, same moves, a hundred fresh draws. The lit ones came out the same as yours; orange lines were turning. Each cell uses the same fall of the marbles in both grids, so where two cells differ, only the moves made the difference. One of these worlds is the one you drew. It is not a forecast of the others.</p>
       <div class="two">
         <div><p class="kicker">Your path</p><div class="worlds" id="w-yours"></div><p class="small" id="w-yours-n"></p></div>
         <div><p class="kicker">No choices, same bowl</p><div class="worlds" id="w-none"></div><p class="small" id="w-none-n"></p></div>
@@ -375,7 +385,9 @@ function start(){
 function renderMoves(state){
   var box = document.getElementById('moves'); box.innerHTML = '';
   MOVES.forEach(function(m){
-    var b = el('button', 'mv' + (m.k === 'N' ? ' idk' : '') + (chosen === m.k ? ' on' : ''), m.nm + '<small>' + m.d + '</small>');
+    var r0 = applyMove(state.b, state.coord, m.k, START[method]);
+    var nil = m.k !== 'N' && m.k !== 'T' && firm(r0.b) === firm(state.b) && turning(r0.b) === turning(state.b);
+    var b = el('button', 'mv' + (m.k === 'N' ? ' idk' : '') + (nil ? ' nil' : '') + (chosen === m.k ? ' on' : ''), m.nm + '<small>' + (nil ? 'nothing to change in this bowl now' : m.d) + '</small>');
     if (m.k === 'T') b.innerHTML = m.nm + '<small>' + (state.coord >= BAR ? state.coord + ' of 5 would come: every turning marble becomes still' : 'only ' + state.coord + ' of 5 would come, 3 needed: this line, nothing would change') + '</small>';
     b.addEventListener('click', function(){ chosen = m.k; renderGame(); });
     box.appendChild(b);
@@ -399,14 +411,20 @@ function renderGame(){
     hex.appendChild(slot);
   }
   document.getElementById('hexname').textContent = t ? t + ' of 6 lines drawn. The first line is at the bottom.' : 'The first line goes at the bottom.';
-  var seats = document.getElementById('seats'); seats.innerHTML = '<span>Others ready to walk together</span>';
-  for (var s = 0; s < 5; s++) seats.appendChild(el('span', 'seat' + (s < coord ? ' on' : '')));
-  seats.appendChild(el('span', null, coord + ' of 5 (needs ' + BAR + ')'));
+  var seats = document.getElementById('seats'); seats.innerHTML = '';
+  var dots = el('span', null); dots.style.cssText = 'display:inline-flex;gap:5px;align-items:center;white-space:nowrap';
+  for (var s = 0; s < 5; s++) dots.appendChild(el('span', 'seat' + (s < coord ? ' on' : '')));
+  dots.appendChild(el('span', null, '&nbsp;' + coord + ' of 5 ready'));
+  seats.appendChild(el('span', null, '<b style="color:var(--ink)">Five other labs and governments</b>. Walking together needs ' + BAR + ' of them.'));
+  seats.appendChild(dots);
+  seats.appendChild(el('span', null, 'Steady it brings one closer; Push ahead sends one away; a try that fails still brings one closer.'));
   // the log
   var log = document.getElementById('log'); log.innerHTML = '';
   played.steps.forEach(function(st, i){
     var mv = MOVES.filter(function(m){ return m.k === st.move; })[0];
+    var prevC = i ? played.steps[i - 1].coord : 1;
     var txt = '<b>Line ' + (i + 1) + ', ' + PLACES[i].nm + '.</b> ' + mv.nm + (st.move === 'T' && !st.worked ? ', but not enough came: nothing changed' : '') + '. ' +
+      (st.coord !== prevC ? '<span class="g">Others ready: ' + prevC + ' \u2192 ' + st.coord + '.</span> ' : '') +
       '<span class="g">Given that, ' + frac(firm(st.bowl)) + ' were firm and ' + frac(turning(st.bowl)) + ' turning.</span> Drawn: ' + kindName(st.kind) + '.' +
       (isTurning(st.kind) ? ' <span class="g">A turning line was drawn, so one marble in the bowl turned with it.</span>' : '');
     log.appendChild(el('li', null, txt));
@@ -427,7 +445,7 @@ function renderGame(){
   renderBowl(document.getElementById('bowl'), shown, movedKinds);
   document.getElementById('odds').innerHTML = 'Given this path, the next line is firm <b>' + frac(firm(shown)) + '</b> and turning <b>' + frac(turning(shown)) + '</b>.';
   document.getElementById('delta').textContent = note;
-  renderMoves({ coord:coord });
+  renderMoves({ coord:coord, b:b });
   var dr = document.getElementById('draw'); dr.hidden = false; dr.disabled = !chosen;
   document.getElementById('drawhint').textContent = chosen ? 'Draw one marble from this bowl.' : 'Choose a move first. It changes the bowl before you draw.';
   renderGhost(played);
@@ -448,7 +466,7 @@ document.getElementById('draw').addEventListener('click', function(){
   var flick = setInterval(function(){
     Array.prototype.forEach.call(cells, function(c){ c.classList.remove('flick'); });
     if (n++ >= (reduce ? 0 : 9)){ clearInterval(flick); cells[st.index].classList.add('pick');
-      setTimeout(function(){ moves = nextMoves; chosen = null; writeHash(); if (moves.length >= 6){ phase = 'end'; renderGame(); showEnd(); } else renderGame(); }, reduce ? 200 : 900);
+      setTimeout(function(){ moves = nextMoves; chosen = null; writeHash(); if (moves.length >= 6){ phase = 'end'; renderGame(); showEnd(); } else { renderGame(); if (innerWidth <= 640) document.getElementById('game').scrollIntoView({ behavior:'smooth', block:'start' }); } }, reduce ? 200 : 900);
       return; }
     cells[Math.floor(Math.random() * cells.length)].classList.add('flick');
   }, 80);
@@ -497,6 +515,10 @@ function renderLesson(played, primary, relating){
   ];
   var lk = document.getElementById('lk'); lk.innerHTML = '<tr><td class="small">Given</td><td class="v small">this hexagram</td><td class="v small">' + (relating ? 'this hexagram turning into ' + relating[1] : 'this hexagram, with no line turning') + '</td></tr>';
   rows.forEach(function(r){ var tr = document.createElement('tr'); tr.innerHTML = '<td>' + r[0] + '</td><td class="v">' + oneIn(r[1]) + '</td><td class="v">' + oneIn(r[2]) + '</td>'; lk.appendChild(tr); });
+  var ratio = rows[0][1] / rows[1][1];
+  document.getElementById('lk-say').textContent = moves.every(function(k){ return k === 'N'; }) ? 'You chose "I don\u2019t know" every time, so your path and the no-choice path are the same path.' :
+    Math.abs(ratio - 1) < 0.05 ? 'Your moves left this hexagram about as likely as no choices would have.' :
+    'Your moves made this hexagram ' + (ratio > 1 ? 'more' : 'less') + ' likely than no choices would have: ' + oneIn(rows[0][1]) + ' against ' + oneIn(rows[1][1]) + (ratio > 1 ? '.' : '. You drew it anyway, which is what a small chance means: small, not none.');
   // a hundred worlds
   var mine = bits(lines, false);
   function worlds(id, mv){
