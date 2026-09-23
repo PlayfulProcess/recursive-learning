@@ -84,7 +84,22 @@
   .mv small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:3px}
   .mv.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
   .mv.idk{border-style:dashed}
-  .seats{display:grid;gap:5px;font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.4}
+  .seats{font-size:12px;color:var(--muted);margin:18px 0 6px;line-height:1.4}
+  .seats-h{margin:0 0 8px;font-size:13px}.seats-h b{color:var(--ink)}
+  .seat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+  .seatcard{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;align-items:start;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px;opacity:.72;transition:opacity .3s,border-color .3s}
+  .seatcard.ready{opacity:1;border-color:var(--accent)}
+  .seatcard.up{box-shadow:0 0 0 1px var(--accent) inset}.seatcard.down{box-shadow:0 0 0 1px var(--turn) inset}
+  .seatcard img{width:48px;height:48px;border-radius:50%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+  .seatcard b{color:var(--ink);font-size:12px}
+  .seatcard .st{color:var(--accent);font-size:11px}
+  .seatcard:not(.ready) .st{color:var(--muted)}
+  .seatcard .why{display:block;font:italic 12px/1.35 Georgia,serif;color:var(--ink);margin:3px 0}
+  .seatcard .rule{display:block;font-size:10.5px}
+  .guess{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;margin:0 0 10px;font-family:Inter,system-ui,sans-serif;color:var(--muted)}
+  .guess button{padding:6px 10px;font-size:12.5px}
+  .guess button.on{border-color:var(--accent);color:var(--accent)}
+  @media (max-width:640px){ .seat-grid{grid-template-columns:1fr} }
   .seat{width:13px;height:13px;border-radius:50%;border:1px solid var(--muted)}
   .seat.on{background:var(--accent);border-color:var(--accent)}
   .ghost-bowl{margin-top:14px}
@@ -105,6 +120,7 @@
   .worlds svg.same{opacity:1;filter:drop-shadow(0 0 3px var(--accent))}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
   textarea{width:100%;min-height:120px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font:15px/1.5 Georgia,serif}
+  select{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:13px Inter,system-ui,sans-serif;margin:0 6px}
   table.lk{border-collapse:collapse;font:13.5px Inter,system-ui,sans-serif;width:100%;margin:8px 0}
   table.lk td{padding:6px 4px;border-top:1px solid var(--line)}
   table.lk td.v{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -164,7 +180,6 @@
         <div class="hex" id="hex"></div>
         <div>
           <div class="hexname" id="hexname"></div>
-          <div class="seats" id="seats"></div>
         </div>
       </div>
       <div>
@@ -179,6 +194,7 @@
         <p class="odds" id="odds"></p>
         <p class="delta" id="delta"></p>
         <div class="moves" id="moves"></div>
+        <div class="guess" id="guess" hidden></div>
         <p class="small" style="margin:0 0 10px">Each name is a move in the AI story; the small print is all it does to the bowl. No move is judged good or bad here.</p>
         <div class="row"><button id="draw" disabled>Draw the line</button><span class="small" id="drawhint">Choose a move first. It changes the bowl before you draw.</span></div>
         <details class="ghost-bowl small"><summary>The bowl if you had never chosen</summary>
@@ -186,6 +202,7 @@
           <div class="bowl mini" id="ghost"></div><p id="ghost-odds"></p></details>
       </div>
     </div>
+    <div class="seats" id="seats"></div>
     <ul class="log" id="log"></ul>
   </section>
 
@@ -202,6 +219,13 @@
       <p id="lk-say"></p>
       <p class="small">With no choices, the two bowls give this hexagram the same chance: both are half firm. They part in the second column, where turning counts.</p>
       <p style="font-size:19px;margin:10px 0 0"><b>None of these is "the" probability of this hexagram. Each belongs to a path.</b></p>
+
+      <div id="guesses-say"></div>
+
+      <h2 style="margin-top:22px">What if one line had gone differently?</h2>
+      <p>Change one move and walk it again. The marbles fall the same way at every line; only the bowl you changed is different.</p>
+      <div class="row"><label class="small">Line <select id="wi-line"></select></label><label class="small">instead: <select id="wi-move"></select></label><button id="wi-go" class="ghost">Walk it</button></div>
+      <div id="wi-out" class="stack"></div>
 
       <h2 style="margin-top:22px">Walk the same path a hundred times</h2>
       <p>Same bowl, same moves, a hundred fresh draws. The lit ones came out the same as yours; orange lines were turning. Each cell uses the same fall of the marbles in both grids, so where two cells differ, only the moves made the difference. One of these worlds is the one you drew. It is not a forecast of the others.</p>
@@ -255,6 +279,40 @@ var MOVES = [
   { k:'N', nm:"I don't know", d:'the bowl stays as the path left it', c:0 }
 ];
 var BAR = 3;
+// The five others: seats from the As-If deck (0489bd30). Each has a readiness from -1 to 3 and is
+// ready at 2 or more. What moves them is this page's reading of their Upright and Reversed cards;
+// the lines are the spread's own one-line summaries of those cards.
+var SEATS = [
+  { nm:'Dario Amodei', img:'Unknown_%28Korean%29_-_Tiger_and_Magpie_-_2015.1_-_Detroit_Institute_of_Arts.jpg', t0:2, eff:{P:-1,A:1,S:1,R:0},
+    up:'Pacing, not halting, and the instrument that lets everyone slow together.', rev:'Binding on everyone and never first on him; the lead sets the pace.' },
+  { nm:'Ilya Sutskever', img:'Irworobongdo.jpg', t0:1, eff:{P:-1,A:1,S:0,R:0},
+    up:'Build the thing that cares about sentient life: alignment ahead of the power.', rev:'Taste cannot be audited; the power runs and the alignment is a direction.' },
+  { nm:'The regulator', img:'%EC%9E%90%EC%88%98_%EC%8C%8D%ED%98%B8%ED%91%9C_%EB%AC%B4%EB%8A%AC_%ED%9D%89%EB%B0%B0-%EC%A1%B0%EC%84%A0-%E5%88%BA%E7%B9%A1%E9%9B%99%E8%99%8E%E8%B1%B9%E6%96%87%E8%83%B8%E8%83%8C-%E6%9C%9D%E9%AE%AE-Rank_badge_with_a_pair_of_tiger-leopards_MET_267343.jpg', t0:0, eff:{P:-1,A:1,S:0,R:1},
+    up:'Threat-sharing and joint evaluations are lawful already; protect the next entrant.', rev:'Turf: the collaboration he says is permitted is the one his era chilled.' },
+  { nm:'The China hawk', img:'Detail_arabesque_Alhambra_Granada_Spain.jpg', t0:0, eff:{P:0,A:1,S:-1,R:0},
+    up:'Compute is the bottleneck and export controls the lever; not the same as loosening safety.', rev:'China as universal solvent: every rule dissolves and winning is never defined.' },
+  { nm:'The open-source advocate', img:'Korean_-_Chaekkori_-_Google_Art_Project.jpg', t0:0, eff:{P:0,A:0,S:-1,R:1},
+    up:'Concentration is the risk; open weights are the check on a few firms setting the terms.', rev:'No licence, no threshold, no evaluation, and the catastrophe externalised.' }
+];
+var MOVE_NAME = { P:'Push ahead', A:'Steady it', S:'Hold back', R:'Mend the bowl' };
+function freshTrust(){ return SEATS.map(function(x){ return x.t0; }); }
+function isReady(t){ return t >= 2; }
+function readyCount(trust){ return trust.filter(isReady).length; }
+function readyNames(trust){ return SEATS.filter(function(x, i){ return isReady(trust[i]); }).map(function(x){ return x.nm; }); }
+function moveTrust(trust, key, worked){
+  var t = trust.slice();
+  if (key === 'T'){
+    if (!worked){ // a try that fails brings the nearest one closer
+      var best = -1; t.forEach(function(v, i){ if (!isReady(v) && (best < 0 || v > t[best])) best = i; });
+      if (best >= 0) t[best] = Math.min(3, t[best] + 1);
+    }
+    return t;
+  }
+  SEATS.forEach(function(x, i){ var e = x.eff[key] || 0; t[i] = Math.max(-1, Math.min(3, t[i] + e)); });
+  return t;
+}
+function cap(t){ return t.charAt(0).toUpperCase() + t.slice(1); }
+function thumbOf(file, w){ return 'https://commons.wikimedia.org/wiki/Special:FilePath/' + file + '?width=' + w; }
 
 // ── rng ─────────────────────────────────────────────────────────────────────────────────
 function rngFrom(seed){ var a = seed >>> 0; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -264,11 +322,11 @@ function copyB(b){ return {6:b[6],7:b[7],8:b[8],9:b[9]}; }
 function firm(b){ return b[7] + b[9]; }
 function turning(b){ return b[6] + b[9]; }
 function shift(b, from, to, n, moved){ var k = Math.min(n, b[from]); b[from] -= k; b[to] += k; for (var i = 0; i < k; i++) moved.push(to); return n - k; }
-// apply a move; returns {b, coord, moved:[kinds that grew], worked}
-function applyMove(b0, coord, key, start){
+// apply a move; returns {b, trust, coord, moved:[kinds that grew], worked}
+function applyMove(b0, trust, key, start){
   var b = copyB(b0), moved = [], left, worked = true;
-  if (key === 'P'){ left = shift(b, 8, 9, 2, moved); shift(b, 6, 9, left, moved); coord = Math.max(0, coord - 1); }
-  else if (key === 'A'){ left = shift(b, 9, 7, 2, moved); shift(b, 6, 8, left, moved); coord = Math.min(5, coord + 1); }
+  if (key === 'P'){ left = shift(b, 8, 9, 2, moved); shift(b, 6, 9, left, moved); }
+  else if (key === 'A'){ left = shift(b, 9, 7, 2, moved); shift(b, 6, 8, left, moved); }
   else if (key === 'S'){ left = shift(b, 7, 8, 2, moved); shift(b, 9, 8, left, moved); }
   else if (key === 'R'){
     for (var i = 0; i < 2; i++){
@@ -278,10 +336,11 @@ function applyMove(b0, coord, key, start){
     }
   }
   else if (key === 'T'){
-    if (coord >= BAR){ shift(b, 9, 7, 16, moved); shift(b, 6, 8, 16, moved); }
-    else { worked = false; coord = Math.min(5, coord + 1); }
+    if (readyCount(trust) >= BAR){ shift(b, 9, 7, 16, moved); shift(b, 6, 8, 16, moved); }
+    else worked = false;
   }
-  return { b:b, coord:coord, moved:moved, worked:worked };
+  var t2 = moveTrust(trust, key, worked);
+  return { b:b, trust:t2, coord:readyCount(t2), moved:moved, worked:worked };
 }
 function listOf(b){ var l = []; ORDER.forEach(function(k){ for (var i = 0; i < b[k]; i++) l.push(k); }); return l; }
 function drawFrom(b, rng){ var l = listOf(b); var i = Math.floor(rng() * l.length); return { kind:l[i], index:i }; }
@@ -291,21 +350,21 @@ function isFirm(k){ return k === 7 || k === 9; }
 function isTurning(k){ return k === 6 || k === 9; }
 // play a whole path; draws come from the seed. Used for the live game, the replay and the hundred worlds.
 function playPath(method, moves, seed){
-  var rng = rngFrom(seed), b = copyB(START[method]), coord = 1, lines = [], steps = [];
+  var rng = rngFrom(seed), b = copyB(START[method]), trust = freshTrust(), coord = readyCount(trust), lines = [], steps = [];
   for (var i = 0; i < moves.length; i++){
-    var before = copyB(b), r = applyMove(b, coord, moves[i], START[method]);
-    b = r.b; coord = r.coord;
+    var before = copyB(b), r = applyMove(b, trust, moves[i], START[method]);
+    b = r.b; trust = r.trust; coord = r.coord;
     var d = drawFrom(b, rng);
-    steps.push({ move:moves[i], before:before, bowl:copyB(b), moved:r.moved, worked:r.worked, coord:coord, kind:d.kind, index:d.index });
+    steps.push({ move:moves[i], before:before, bowl:copyB(b), moved:r.moved, worked:r.worked, coord:coord, trust:trust.slice(), kind:d.kind, index:d.index });
     lines.push(d.kind); b = afterDraw(b, d.kind);
   }
-  return { lines:lines, steps:steps, bowl:b, coord:coord };
+  return { lines:lines, steps:steps, bowl:b, coord:coord, trust:trust };
 }
 // chance of drawing exactly this firm/yielding pattern given a path of moves (bowl updated by the same drawn kinds)
 function chanceOf(method, moves, lines, exact){
-  var b = copyB(START[method]), coord = 1, p = 1;
+  var b = copyB(START[method]), trust = freshTrust(), coord = readyCount(trust), p = 1;
   for (var i = 0; i < lines.length; i++){
-    var r = applyMove(b, coord, moves[i], START[method]); b = r.b; coord = r.coord;
+    var r = applyMove(b, trust, moves[i], START[method]); b = r.b; trust = r.trust; coord = r.coord;
     p *= exact ? b[lines[i]] / 16 : (isFirm(lines[i]) ? firm(b) : 16 - firm(b)) / 16;
     b = afterDraw(b, lines[i]);
   }
@@ -353,12 +412,13 @@ function frac(n){ return n + ' in 16'; }
 function oneIn(p){ if (p <= 0) return 'no chance'; var n = 1 / p; return n < 1.5 ? 'almost certain' : 'about 1 in ' + (n < 20 ? n.toFixed(1).replace(/\.0$/, '') : Math.round(n).toLocaleString('en')); }
 
 // ── state ───────────────────────────────────────────────────────────────────────────────
-var method = 'yarrow', seed = 1, moves = [], chosen = null, phase = 'intro', turnedUpTo = 0;
+var method = 'yarrow', seed = 1, moves = [], guesses = [], chosen = null, guess = null, phase = 'intro', turnedUpTo = 0;
 function readHash(){
-  var m = /^#l1;m=(yarrow|coins);s=(\d+);v=([PASRTN]*)/.exec(location.hash);
-  if (!m) return false; method = m[1]; seed = +m[2]; moves = m[3].split('').slice(0, 6); return true;
+  var m = /^#l1;m=(yarrow|coins);s=(\d+);v=([PASRTN]*)(?:;g=([FYN]*))?/.exec(location.hash);
+  if (!m) return false; method = m[1]; seed = +m[2]; moves = m[3].split('').slice(0, 6);
+  guesses = (m[4] || '').split('').slice(0, moves.length); while (guesses.length < moves.length) guesses.push('N'); return true;
 }
-function writeHash(){ history.replaceState(null, '', '#l1;m=' + method + ';s=' + seed + ';v=' + moves.join('')); }
+function writeHash(){ history.replaceState(null, '', '#l1;m=' + method + ';s=' + seed + ';v=' + moves.join('') + (guesses.some(function(g){ return g !== 'N'; }) ? ';g=' + guesses.join('') : '')); }
 
 // ── intro ───────────────────────────────────────────────────────────────────────────────
 renderBowl(document.getElementById('b-yarrow'), START.yarrow);
@@ -371,7 +431,7 @@ document.querySelectorAll('#q0 button').forEach(function(b){ b.addEventListener(
   document.querySelectorAll('#q0 button').forEach(function(x){ x.classList.toggle('on', x === b); });
 }); });
 document.querySelectorAll('.pickm').forEach(function(b){ b.addEventListener('click', function(){
-  method = b.getAttribute('data-m'); seed = 1 + Math.floor(Math.random() * 999999); moves = []; start();
+  method = b.getAttribute('data-m'); seed = 1 + Math.floor(Math.random() * 999999); moves = []; guesses = []; start();
 }); });
 
 // ── game ────────────────────────────────────────────────────────────────────────────────
@@ -385,17 +445,17 @@ function start(){
 function renderMoves(state){
   var box = document.getElementById('moves'); box.innerHTML = '';
   MOVES.forEach(function(m){
-    var r0 = applyMove(state.b, state.coord, m.k, START[method]);
+    var r0 = applyMove(state.b, state.trust, m.k, START[method]);
     var nil = m.k !== 'N' && m.k !== 'T' && firm(r0.b) === firm(state.b) && turning(r0.b) === turning(state.b);
     var b = el('button', 'mv' + (m.k === 'N' ? ' idk' : '') + (nil ? ' nil' : '') + (chosen === m.k ? ' on' : ''), m.nm + '<small>' + (nil ? 'nothing to change in this bowl now' : m.d) + '</small>');
-    if (m.k === 'T') b.innerHTML = m.nm + '<small>' + (state.coord >= BAR ? state.coord + ' of 5 would come: every turning marble becomes still' : 'only ' + state.coord + ' of 5 would come, 3 needed: this line, nothing would change') + '</small>';
+    if (m.k === 'T') b.innerHTML = m.nm + '<small>' + (state.coord >= BAR ? state.coord + ' of 5 would come (' + readyNames(state.trust).join(', ') + '): every turning marble becomes still' : 'only ' + state.coord + ' of 5 would come, 3 needed: this line, nothing would change') + '</small>';
     b.addEventListener('click', function(){ chosen = m.k; renderGame(); });
     box.appendChild(b);
   });
 }
 function renderGame(){
   var played = playPath(method, moves, seed);
-  var t = moves.length, b = played.bowl, coord = played.coord;
+  var t = moves.length, b = played.bowl, coord = played.coord, trust = played.trust;
   // the hexagram so far
   var hex = document.getElementById('hex'); hex.innerHTML = '';
   for (var i = 0; i < 6; i++){
@@ -412,29 +472,41 @@ function renderGame(){
   }
   document.getElementById('hexname').textContent = t ? t + ' of 6 lines drawn. The first line is at the bottom.' : 'The first line goes at the bottom.';
   var seats = document.getElementById('seats'); seats.innerHTML = '';
-  var dots = el('span', null); dots.style.cssText = 'display:inline-flex;gap:5px;align-items:center;white-space:nowrap';
-  for (var s = 0; s < 5; s++) dots.appendChild(el('span', 'seat' + (s < coord ? ' on' : '')));
-  dots.appendChild(el('span', null, '&nbsp;' + coord + ' of 5 ready'));
-  seats.appendChild(el('span', null, '<b style="color:var(--ink)">Five other labs and governments</b>. Walking together needs ' + BAR + ' of them.'));
-  seats.appendChild(dots);
-  seats.appendChild(el('span', null, 'Steady it brings one closer; Push ahead sends one away; a try that fails still brings one closer.'));
+  var preview = chosen && phase === 'game' ? applyMove(b, trust, chosen, START[method]).trust : null;
+  seats.appendChild(el('p', 'seats-h', '<b>The five others</b> \u00b7 ' + coord + ' of 5 ready to walk together, ' + BAR + ' needed. Each comes or goes for their own reasons.'));
+  var grid = el('div', 'seat-grid');
+  SEATS.forEach(function(x, i){
+    var v = trust[i], ready = isReady(v), nv = preview ? preview[i] : v;
+    var comes = Object.keys(x.eff).filter(function(k){ return x.eff[k] > 0; }).map(function(k){ return MOVE_NAME[k]; });
+    var goes = Object.keys(x.eff).filter(function(k){ return x.eff[k] < 0; }).map(function(k){ return MOVE_NAME[k]; });
+    var c = el('div', 'seatcard' + (ready ? ' ready' : '') + (nv !== v ? (nv > v ? ' up' : ' down') : ''));
+    c.innerHTML = '<img alt="" loading="lazy" src="' + thumbOf(x.img, 120) + '" onerror="this.style.visibility=\'hidden\'">' +
+      '<div><b>' + x.nm + '</b> <span class="st">' + (ready ? 'ready' : 'not yet') + (nv !== v ? (isReady(nv) !== ready ? (isReady(nv) ? ', would come' : ', would leave') : (nv > v ? ', closer' : ', further')) : '') + '</span>' +
+      '<span class="why">' + (ready ? x.up : x.rev) + '</span>' +
+      '<span class="rule">Comes closer with ' + (comes.join(' or ') || 'nothing but trying together') + (goes.length ? '; further with ' + goes.join(' or ') : '') + '.</span></div>';
+    grid.appendChild(c);
+  });
+  seats.appendChild(grid);
   // the log
   var log = document.getElementById('log'); log.innerHTML = '';
   played.steps.forEach(function(st, i){
     var mv = MOVES.filter(function(m){ return m.k === st.move; })[0];
-    var prevC = i ? played.steps[i - 1].coord : 1;
+    var prevT = i ? played.steps[i - 1].trust : freshTrust(), prevC = readyCount(prevT);
+    var came = SEATS.filter(function(x, j){ return !isReady(prevT[j]) && isReady(st.trust[j]); }).map(function(x){ return x.nm.replace(/^The /, 'the '); });
+    var left = SEATS.filter(function(x, j){ return isReady(prevT[j]) && !isReady(st.trust[j]); }).map(function(x){ return x.nm.replace(/^The /, 'the '); });
     var txt = '<b>Line ' + (i + 1) + ', ' + PLACES[i].nm + '.</b> ' + mv.nm + (st.move === 'T' && !st.worked ? ', but not enough came: nothing changed' : '') + '. ' +
-      (st.coord !== prevC ? '<span class="g">Others ready: ' + prevC + ' \u2192 ' + st.coord + '.</span> ' : '') +
+      (came.length || left.length ? '<span class="g">' + (came.length ? cap(came.join(' and ')) + ' came. ' : '') + (left.length ? cap(left.join(' and ')) + ' left. ' : '') + 'Ready: ' + prevC + ' \u2192 ' + st.coord + '.</span> ' : '') +
+      (guesses[i] && guesses[i] !== 'N' ? '<span class="g">You guessed ' + (guesses[i] === 'F' ? 'firm' : 'yielding') + ' (the bowl said ' + (guesses[i] === 'F' ? firm(st.bowl) : 16 - firm(st.bowl)) + ' in 16): ' + ((guesses[i] === 'F') === isFirm(st.kind) ? 'it was.' : 'it was not.') + '</span> ' : '') +
       '<span class="g">Given that, ' + frac(firm(st.bowl)) + ' were firm and ' + frac(turning(st.bowl)) + ' turning.</span> Drawn: ' + kindName(st.kind) + '.' +
       (isTurning(st.kind) ? ' <span class="g">A turning line was drawn, so one marble in the bowl turned with it.</span>' : '');
     log.appendChild(el('li', null, txt));
   });
-  if (phase !== 'game'){ document.getElementById('place').innerHTML = ''; document.getElementById('moves').innerHTML = ''; document.getElementById('draw').hidden = true; document.getElementById('drawhint').textContent = ''; document.getElementById('odds').textContent = ''; document.getElementById('delta').textContent = ''; renderBowl(document.getElementById('bowl'), b); renderGhost(played); return; }
+  if (phase !== 'game'){ document.getElementById('guess').hidden = true; document.getElementById('place').innerHTML = ''; document.getElementById('moves').innerHTML = ''; document.getElementById('draw').hidden = true; document.getElementById('drawhint').textContent = ''; document.getElementById('odds').textContent = ''; document.getElementById('delta').textContent = ''; renderBowl(document.getElementById('bowl'), b); renderGhost(played); return; }
   var pl = PLACES[t];
   document.getElementById('place').innerHTML = '<p class="kicker">Line ' + (t + 1) + ' of 6</p><h2>' + pl.nm.charAt(0).toUpperCase() + pl.nm.slice(1) + ': ' + pl.ai + '</h2><p class="tr">' + pl.tr + '</p>';
   var shown = b, movedKinds = null, note = '';
   if (chosen){
-    var r = applyMove(b, coord, chosen, START[method]); shown = r.b; movedKinds = r.moved;
+    var r = applyMove(b, trust, chosen, START[method]); shown = r.b; movedKinds = r.moved;
     var df = firm(r.b) - firm(b), dt = turning(r.b) - turning(b);
     if (chosen === 'N') note = 'You did not choose. The bowl stays as the path left it; that is a path too.';
     else if (chosen === 'T' && !r.worked) note = 'Not enough others are ready, so nothing changes this line. Trying still counts: one more of them will be ready next time.';
@@ -445,9 +517,18 @@ function renderGame(){
   renderBowl(document.getElementById('bowl'), shown, movedKinds);
   document.getElementById('odds').innerHTML = 'Given this path, the next line is firm <b>' + frac(firm(shown)) + '</b> and turning <b>' + frac(turning(shown)) + '</b>.';
   document.getElementById('delta').textContent = note;
-  renderMoves({ coord:coord, b:b });
+  renderMoves({ coord:coord, b:b, trust:trust });
   var dr = document.getElementById('draw'); dr.hidden = false; dr.disabled = !chosen;
   document.getElementById('drawhint').textContent = chosen ? 'Draw one marble from this bowl.' : 'Choose a move first. It changes the bowl before you draw.';
+  var gb = document.getElementById('guess'); gb.hidden = !chosen; gb.innerHTML = '';
+  if (chosen){
+    gb.appendChild(el('span', null, 'Before you draw, a guess, if you like:'));
+    [['F','Firm'],['Y','Yielding'],['N','I don\u2019t know']].forEach(function(o){
+      var gbt = el('button', 'ghost' + ((guess || 'N') === o[0] ? ' on' : ''), o[1]);
+      gbt.addEventListener('click', function(){ guess = o[0]; renderGame(); });
+      gb.appendChild(gbt);
+    });
+  }
   renderGhost(played);
 }
 function renderGhost(played){
@@ -459,14 +540,14 @@ function renderGhost(played){
 document.getElementById('draw').addEventListener('click', function(){
   if (!chosen) return;
   var btn = this; btn.disabled = true;
-  var nextMoves = moves.concat([chosen]);
+  var nextMoves = moves.concat([chosen]), nextGuesses = guesses.concat([guess || 'N']);
   var played = playPath(method, nextMoves, seed), st = played.steps[played.steps.length - 1];
   var bowlEl = document.getElementById('bowl'); renderBowl(bowlEl, st.bowl);
   var cells = bowlEl.children, n = 0, reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var flick = setInterval(function(){
     Array.prototype.forEach.call(cells, function(c){ c.classList.remove('flick'); });
     if (n++ >= (reduce ? 0 : 9)){ clearInterval(flick); cells[st.index].classList.add('pick');
-      setTimeout(function(){ moves = nextMoves; chosen = null; writeHash(); if (moves.length >= 6){ phase = 'end'; renderGame(); showEnd(); } else { renderGame(); if (innerWidth <= 640) document.getElementById('game').scrollIntoView({ behavior:'smooth', block:'start' }); } }, reduce ? 200 : 900);
+      setTimeout(function(){ moves = nextMoves; guesses = nextGuesses; chosen = null; guess = null; writeHash(); if (moves.length >= 6){ phase = 'end'; renderGame(); showEnd(); } else { renderGame(); if (innerWidth <= 640) document.getElementById('game').scrollIntoView({ behavior:'smooth', block:'start' }); } }, reduce ? 200 : 900);
       return; }
     cells[Math.floor(Math.random() * cells.length)].classList.add('flick');
   }, 80);
@@ -519,6 +600,30 @@ function renderLesson(played, primary, relating){
   document.getElementById('lk-say').textContent = moves.every(function(k){ return k === 'N'; }) ? 'You chose "I don\u2019t know" every time, so your path and the no-choice path are the same path.' :
     Math.abs(ratio - 1) < 0.05 ? 'Your moves left this hexagram about as likely as no choices would have.' :
     'Your moves made this hexagram ' + (ratio > 1 ? 'more' : 'less') + ' likely than no choices would have: ' + oneIn(rows[0][1]) + ' against ' + oneIn(rows[1][1]) + (ratio > 1 ? '.' : '. You drew it anyway, which is what a small chance means: small, not none.');
+  // the guesses
+  var gs = document.getElementById('guesses-say'), made = 0, hit = 0, expect = 0;
+  guesses.forEach(function(g, i){ if (g === 'N') return; var st = played.steps[i]; made++;
+    var pf = firm(st.bowl) / 16, pg = g === 'F' ? pf : 1 - pf; expect += pg; if ((g === 'F') === isFirm(st.kind)) hit++; });
+  gs.innerHTML = made ? '<h2 style="margin-top:22px">Your guesses</h2><p>You guessed ' + made + ' of 6 lines and ' + hit + ' came true. Given the bowls you guessed from, about ' + expect.toFixed(1) + ' would come true on average. ' +
+    (Math.abs(hit - expect) < 1 ? 'That is what the odds said, give or take.' : hit > expect ? 'More than the odds said: luck is part of any one path.' : 'Fewer than the odds said: a good guess can still miss.') + ' The other ' + (6 - made) + ' you left as "I don\u2019t know", which is also an answer.</p>'
+    : '<h2 style="margin-top:22px">Your guesses</h2><p>You made no guesses: six times "I don\u2019t know". That is legal, and honest when the bowl is close to even.</p>';
+  // what if one line had gone differently
+  var wl = document.getElementById('wi-line'), wm = document.getElementById('wi-move');
+  wl.innerHTML = moves.map(function(k, i){ return '<option value="' + i + '">' + (i + 1) + ', ' + PLACES[i].nm + ' (you: ' + MOVES.filter(function(m){ return m.k === k; })[0].nm + ')</option>'; }).join('');
+  function fillMoves(){ var cur = moves[+wl.value]; wm.innerHTML = MOVES.filter(function(m){ return m.k !== cur; }).map(function(m){ return '<option value="' + m.k + '">' + m.nm + '</option>'; }).join(''); }
+  wl.onchange = fillMoves; fillMoves();
+  document.getElementById('wi-go').onclick = function(){
+    var li = +wl.value, alt = moves.slice(); alt[li] = wm.value;
+    var p2 = playPath(method, alt, seed), l2 = p2.lines, h2 = hexOf(bits(l2, false)), r2 = l2.some(isTurning) ? hexOf(bits(l2, true)) : null;
+    var same = bits(l2, false) === bits(lines, false) && bits(l2, true) === bits(lines, true);
+    var diff = []; l2.forEach(function(k, i){ if (k !== lines[i]) diff.push(i + 1); });
+    var out = document.getElementById('wi-out');
+    out.innerHTML = '';
+    out.appendChild(el('div', 'hcard arrive', hexSVG(l2) + '<div><p class="kicker">Line ' + (li + 1) + ': ' + wm.options[wm.selectedIndex].text + ' instead of ' + MOVES.filter(function(m){ return m.k === moves[li]; })[0].nm + '</p>' +
+      '<div class="t">' + h2[0] + '. ' + h2[1] + '<small>' + h2[3] + ' ' + h2[2] + '</small></div>' +
+      '<p>' + (same ? (Math.abs(chanceOf(method, alt, l2) - chanceOf(method, moves, lines)) < 1e-12 ? 'Same hexagram, same odds: at that line the bowl was already where this move would leave it, so the path did not really change.' : 'Same hexagram, same turning lines: this time the change did not reach the draw. The odds moved, though: ' + oneIn(chanceOf(method, alt, l2)) + ' instead of ' + oneIn(chanceOf(method, moves, lines)) + ' for this pattern.')
+        : (r2 ? 'Turning into ' + r2[1] + '. ' : 'No line turning. ') + 'Lines that came out differently: ' + (diff.length ? diff.join(', ') : 'none, only whether they turn') + '. The same fall of the marbles met a different bowl.') + '</p></div>'));
+  };
   // a hundred worlds
   var mine = bits(lines, false);
   function worlds(id, mv){
@@ -551,7 +656,7 @@ function renderLesson(played, primary, relating){
   };
 }
 document.getElementById('again').addEventListener('click', function(){
-  moves = []; seed = 1 + Math.floor(Math.random() * 999999); phase = 'intro';
+  moves = []; guesses = []; seed = 1 + Math.floor(Math.random() * 999999); phase = 'intro';
   document.getElementById('end').hidden = true; document.getElementById('game').hidden = true;
   history.replaceState(null, '', location.pathname + location.search);
   document.getElementById('intro').scrollIntoView({ behavior:'smooth' });

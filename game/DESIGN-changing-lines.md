@@ -137,13 +137,31 @@ What this game takes from them, now or next:
 - **A hidden die** (the AI 2027 exercise). A variant where the player does not know which bowl the
   world started from; that teaches updating on evidence, a different lesson, so it stays a variant.
 
-## Next, if the shape holds
+## Round 2 (Sep 23): built from the list above
 
-- The five others as the As-If deck's characters, each deciding to come or not from what the path
-  has done (their Upright and Reversed readings already exist).
+- **The five others are seats from the As-If deck**: Dario Amodei, Ilya Sutskever, the regulator,
+  the China hawk and the open-source advocate. Each has a readiness from -1 to 3 and is ready at 2.
+  They start at 2, 1, 0, 0, 0, so one is ready and walking together takes two good moves to earn,
+  by more than one route (Steady twice, or Mend then Steady). What moves each is this page's reading
+  of their cards, printed on the card: Dario comes with Steady or Hold back and goes with Push;
+  Ilya comes with Steady; the regulator with Steady or Mend; the hawk comes with Steady and goes with
+  Hold back; the open-source advocate comes with Mend and goes with Hold back. Push sends the three
+  cautious ones away. A failed try brings the nearest one closer. A ready seat shows its Upright
+  line, a seat not yet ready its Reversed line (the spread's one-line summaries). Choosing a move
+  previews who would come or leave before you draw, and the log names who came and who left.
+- **A guess before each draw** (from The Evolution of Trust): firm, yielding, or I don't know, one
+  tap, never required. The log says what the bowl said and whether it came true. The ending counts
+  hits against what the odds expected ("about 2.1 would come true on average"), and says that a
+  good guess can still miss. Guesses ride in the link (`;g=FYN...`).
+- **What if one line had gone differently?** (AI 2027's "branch from where you think it went
+  wrong"). Pick a line and another move; the path is walked again with the same fall of the marbles
+  at every line, so any difference is the move's alone. It shows the new hexagram and which lines
+  changed, or, when the change never reached the draw, that the odds still moved.
+
+## Still next
+
 - Correspondence: the tradition pairs places 1–4, 2–5, 3–6. The bowl for line 4 could lean on what
-  line 1 drew, and the page would show both odds side by side: P(line 4 turns) and P(line 4 turns
-  given line 1 turned).
-- A "had you chosen" row at the end: replay with one move swapped.
+  line 1 drew, shown as P(line 4 turns) beside P(line 4 turns given line 1 turned).
 - Zhu Xi's reading rules as a setting beside the path-caster reading.
 - The fiction box feeding the As-If castings form once `FORM_URL` exists.
+- A hidden-bowl variant (you do not know which bowl the world started from): updating on evidence.
