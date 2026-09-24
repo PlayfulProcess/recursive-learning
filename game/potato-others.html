@@ -229,7 +229,7 @@ function joiner(th){ return function(ctx, i){
   var n = othersHeld(ctx, i);
   if (th === 0) return { m:reach('hold', ctx), why: past(ctx) ? 'it holds whatever the others do, and the trust is there' : 'it holds whatever the others do' };
   if (n >= th) return { m:reach('hold', ctx), why: n + ' other' + (n === 1 ? '' : 's') + ' held last year' + (past(ctx) ? ', and the trust is there' : '') };
-  return { m:'toss', why: ctx.last ? 'only ' + n + ' other' + (n === 1 ? '' : 's') + ' held last year; it waits for ' + th : 'nobody has held yet; it waits for ' + th };
+  return { m:'toss', why: ctx.last ? 'only ' + n + ' other' + (n === 1 ? '' : 's') + ' held last year; it waits for ' + th : 'in the first year nobody had held before; it waits for ' + th };
 }; }
 var SEATS = [
   { id:'you', nm:'You', col:'#eee7da', rule:'Your move, each year.' },
@@ -326,18 +326,19 @@ function drawSeat(i, x, y){
   // it will do next; under the name: what it did last year
   var s = SEATS[i], k = W < 560 ? 1 : 1.25, m = busy ? shown[i] : null, last = lastShown[i], cur = busy ? shown : lastShown;
   var dim = anim.end === 'lock_in' && i !== lead() || anim.end === 'doom';
-  if (cur[i] && held(cur[i])){ cx.fillStyle = 'rgba(116,216,180,.18)'; cx.beginPath(); cx.arc(x, y, 16 * k, 0, Math.PI * 2); cx.fill(); }
+  if (cur[i] && held(cur[i])){ cx.fillStyle = 'rgba(116,216,180,.18)'; cx.beginPath(); cx.arc(x, y - 1 * k, 12 * k, 0, Math.PI * 2); cx.fill(); }
   cx.globalAlpha = dim ? 0.35 : 1;
   cx.fillStyle = s.col; cx.beginPath(); cx.arc(x, y - 8 * k, 5.5 * k, 0, Math.PI * 2); cx.fill();
   cx.beginPath(); cx.moveTo(x - 7 * k, y + 9 * k); cx.quadraticCurveTo(x, y - 4 * k, x + 7 * k, y + 9 * k); cx.closePath(); cx.fill();
   // name and lab size under the figure
   cx.textAlign = 'center'; cx.textBaseline = 'top';
   cx.font = (i === 0 ? '700 ' : '600 ') + (W < 560 ? 10.5 : 12) + 'px Inter, system-ui, sans-serif';
-  cx.fillStyle = i === 0 ? '#eee7da' : '#98a1b0'; cx.fillText(s.nm, x, y + 12 * k);
+  var phone = W < 560;
+  cx.fillStyle = last && !busy ? MOVECOL[last] : i === 0 ? '#eee7da' : '#98a1b0'; cx.fillText(s.nm, x, y + 12 * k);
   var mx = Math.max.apply(null, labs), bw = (W < 560 ? 30 : 40) * labs[i] / mx;
   var by = y + 12 * k + (W < 560 ? 14 : 16);
   cx.fillStyle = i === lead() && mx > 1.001 ? '#ffd08a' : 'rgba(152,161,176,.55)'; cx.fillRect(x - bw / 2, by, bw, 3);
-  if (last && !busy){ cx.font = '600 ' + (W < 560 ? 9 : 10.5) + 'px Inter, system-ui, sans-serif'; cx.fillStyle = MOVECOL[last]; cx.fillText(LASTWORD[last], x, by + 6); }
+  if (last && !busy && !phone){ cx.font = '600 ' + (W < 560 ? 9 : 10.5) + 'px Inter, system-ui, sans-serif'; cx.fillStyle = MOVECOL[last]; cx.fillText(LASTWORD[last], x, by + 6); }
   // above: the move once made this year, else the intent
   cx.textBaseline = 'bottom';
   var ty = y - 17 * k;
@@ -392,7 +393,7 @@ function status(html){ statusEl.innerHTML = html; }
 function setScene(n, name){ document.getElementById('scene').innerHTML = '<b>' + n + '</b>' + name; }
 function sceneFor(s){ if (s.endpoint) return ['IV', ENDS[s.endpoint].planted ? 'Together' : 'The end of the walk'];
   if (s.coordination >= P.stagK) return ['IV','Together']; if (s.coordination >= 0.45) return ['III','The turn']; return ['II','Among the labs']; }
-function moveWord(m){ return { toss:'tossed it on', hold:'held it', tog:'reached for hands', start:'kept the starting hand' }[m]; }
+function moveWord(m){ return { toss:'tossed it on', hold:'held it', tog:'reached to hold it together', start:'kept the starting hand' }[m]; }
 
 // ── a year: you move, then each seat after a short pause, then the year is walked ─────────────
 function play(k){
@@ -426,27 +427,27 @@ function finishYear(kinds, whys, slips){
   for (var q = 1; q < N; q++) if (grew[q] > grew[fastest] + 1e-9) fastest = q;
   var cap;
   if (res.together && state.lastAlone) cap = 'Most of the ring reached for hands, but the trust was not there yet. <em>The year was spent.</em>';
-  else if (res.together) cap = 'Held <em class="eco">together</em> by ' + res.reached + ' of ' + N + ': set down on shared ground, it can cool.';
+  else if (res.together) cap = 'Held <em class="eco">together</em> by ' + res.reached + ' of ' + N + ', set down on shared ground' + (heatNow < heatBefore - 1e-6 ? ': <em class="eco">it cooled a little</em>.' : '. The heat still rose a little this year: what was built keeps growing.');
   else if (kinds[0] === 'tog') cap = 'You reached for hands; ' + (res.reached === 1 ? 'nobody else did' : 'only ' + (res.reached - 1) + ' other' + (res.reached === 2 ? '' : 's') + ' did') + '. <em>No step together this year.</em>';
-  else if (held(kinds[0]) && tossers > 0) cap = 'You held; ' + tossers + ' tossed. <em>' + (tossers === 1 ? 'Its lab grew' : 'Their labs grew') + ', and so did the heat.</em>';
-  else if (kinds[0] === 'toss' && holders > 0) cap = 'You tossed while ' + holders + ' held. <em>Your lab grew fastest this year; the heat is everyone’s.</em>';
+  else if (held(kinds[0]) && tossers > 0) cap = 'You held; ' + tossers + ' tossed. <em>' + (tossers === 1 ? 'Its lab grew' : 'Their labs grew') + ' faster than yours' + (heatNow > heatBefore + 1e-6 ? ', and the heat rose.' : '.') + '</em>';
+  else if (kinds[0] === 'toss' && holders > 0) cap = 'You tossed while ' + holders + ' held. <em>Your lab grew faster than theirs; the heat is everyone’s.</em>';
   else if (tossers === N) cap = 'Everyone tossed it on. <em>Every toss adds heat.</em>';
   else cap = holders + ' of ' + N + ' held it this year.';
   var dT = trust(state.coordination) - trustBefore;
   if (!state.endpoint && dT > 0) cap += ' <em class="eco">Trust grew.</em>'; else if (!state.endpoint && dT < 0) cap += ' <em>Trust fell.</em>';
-  if (state.lastShock) cap += ' <em>A shock from outside shook the ring.</em>';
+  if (state.lastShock) cap += ' <em>A shock from outside shook the ring and cost trust.</em>';
   if (state.endpoint) cap = ENDS[state.endpoint].planted ? 'Not AI improving itself. <em class="eco">All of us improving the ground we share.</em>' : ENDS[state.endpoint].nm + '.';
   caption(cap);
   // the log: every move, with its reason
   var li = document.createElement('li'); li.className = res.together && !state.lastAlone ? 'cool' : '';
   li.innerHTML = '<b>Year ' + state.t + '.</b> ' + kinds.map(function(m, i){ return '<b class="mv ' + m + '">' + SEATS[i].nm + '</b> ' + moveWord(m) + (i > 0 ? ' <span class="g">(' + whys[i] + ')</span>' : (whys[0] ? ' <span class="g">(' + whys[0] + ')</span>' : '')); }).join('; ') + '. ' +
     '<span class="g">' + (res.together ? (state.lastAlone ? 'Most reached for hands below the bar, so the year was spent. ' : 'The step together counted. ') : '') +
-    'Heat ' + (heatBefore * 100).toFixed(1) + '% → ' + (heatNow * 100).toFixed(1) + '% a year' + (state.lastShock ? ' (a shock added ' + Math.round(P.shockRisk * 100) + '% this year)' : '') +
+    'Heat ' + (heatBefore * 100).toFixed(1) + '% → ' + (heatNow * 100).toFixed(1) + '% a year' + (state.lastShock ? ' (a shock from outside added ' + Math.round(P.shockRisk * 100) + '% this year and cost trust)' : '') +
     '. Trust ' + trustBefore + ' → ' + trust(state.coordination) + ' of ' + TEN + '. Fastest-growing lab this year: ' + labName(fastest) + '.</span>';
   document.getElementById('log').insertBefore(li, document.getElementById('log').firstChild);
   afterHTML = state.endpoint ? '' : afterLine(res.alloc, res.together, tossers);
   lastShown = shown.slice(); busy = false;
-  status(state.endpoint ? '' : 'Year ' + state.t + ' is walked. Under each name: what it did. Above each seat: what its rule says it will do next year. Your move.');
+  status(state.endpoint ? '' : 'Year ' + state.t + ' is walked. Each name’s colour says what it did (orange tossed, blue held, green together); above each seat, what its rule says it will do next. Your move.');
   render();
   if (state.endpoint) setTimeout(showEnd, reduce ? 200 : 1600);
 }
@@ -513,10 +514,16 @@ function endLine(e, s){
   if (e === 'lock_in') return 'The trust ran out, and one lab ended up holding it: ' + labName(ld) + ', the biggest. It is not burning, but nobody else holds it any more.';
   return ENDS[e].line;
 }
+function bigLine(){
+  var mx = Math.max.apply(null, labs), tops = []; labs.forEach(function(v, i){ if (v >= mx - 1e-9) tops.push(i); });
+  if (tops.length === 1 && tops[0] === 0) return 'Your lab ended the biggest (\u00d7' + labs[0].toFixed(1) + ').';
+  if (tops.indexOf(0) >= 0) return 'Your lab ended tied for the biggest (\u00d7' + labs[0].toFixed(1) + ') with ' + tops.filter(function(i){ return i > 0; }).map(function(i){ return 'the ' + SEATS[i].nm; }).join(', ') + '.';
+  return 'Biggest lab at the end: ' + labName(tops[0]) + (tops.length > 1 ? ' (tied)' : '') + ' (\u00d7' + mx.toFixed(1) + '). Yours: \u00d7' + labs[0].toFixed(1) + '.';
+}
 function showEnd(){
   var e = state.endpoint || 'still_walking', E = ENDS[e], ld = lead();
   document.getElementById('endcard').innerHTML = '<p class="small" style="margin:0">After ' + state.t + ' year' + (state.t === 1 ? '' : 's') + '</p><div class="nm" style="color:' + E.col + '">' + E.nm + '</div><p>' + endLine(e, state) + '</p>' +
-    '<p class="small">Biggest lab at the end: ' + labName(ld) + ' (×' + labs[ld].toFixed(1) + '). Yours: ×' + labs[0].toFixed(1) + '.</p>' +
+    '<p class="small">' + bigLine() + '</p>' +
     (E.planted ? '<p class="small">The ad calls this <i>recursive eco-improvement</i>: not an AI improving itself faster and faster (recursive self-improvement), but people and machines improving the ground they share, year after year.</p>' : '') +
     (E.term ? '<p class="small">On the <a href="spread.html">table</a> and the <a href="walk.html">dashboard</a> this ending is called ' + E.term + '.</p>' : '') +
     '<p class="small">Your way, walked a hundred times with the same ring, is further down the page.</p>';
