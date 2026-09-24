@@ -32,11 +32,21 @@ URL hash, so a link to either opens in the other:
   the forecast and confidence, the reading, the step with its kind and card id, the two forgiveness
   lines, the asymmetry, the synthesis, a timestamp and the consent line. `FORM_URL` near the Step
   code is empty until she makes the form; once set, a **Send it** button opens it.
-- **`potato.html` — Hot Potato, playable (Sep 24).** The recursive.eco hot potato ad as a game, on
-  the Walk's model. Each year: toss it on (heat), hold it (more hands), hold it together (set it
-  down on shared ground; counts only past the 0.60 bar), or I don't know. Heat is the model's risk
-  that year; the ring is its coordination. Planted ends draw the spiral. Walked a hundred times at
-  the end, beside a hundred walks that toss every year. Notes: `DESIGN-potato.md`.
+- **`potato-others.html` — Hot Potato, with others (Sep 24; the default way in).** The same potato
+  with six other seats in the ring, each moving after you, one at a time, by one published rule: a
+  Racer (tosses whenever anyone else held last year; holds once the ring has held it together), a
+  Mirror (holds when at least 2 others held; slips one year in ten), and four joiners who hold from
+  the start or join once 1, 2 or 3 others held. The year's allocation is the average of the seven
+  hands; the step together counts when more than half reach for it and the trust (the model's
+  coordination) is past the bar. Each lab's size is the page's own tally, so tossing grows your lab
+  fastest while the heat is everyone's. Notes: `DESIGN-potato.md`.
+- **`potato.html` — Hot Potato, alone (Sep 24; linked as "play alone, for careful readers").** The
+  recursive.eco hot potato ad as a game, on the Walk's model. Each year: toss it on (heat), hold it
+  (more hands), hold it together (set it down on shared ground; counts only when 6 of 10 people are
+  holding it, the model's 0.60 bar), or I don't know. Heat is the model's risk that year; the ring
+  is its coordination, shown as people. After each move, rough words (rarely, sometimes, often) for
+  every ending if you kept making it. Planted ends draw the spiral. Walked a hundred times at the
+  end, beside a hundred walks that toss every year.
 - **`lines.html` — Changing Lines (prototype, Sep 22).** A second game for the same lesson, built on
   the I Ching's sixteen-marble bowl (the yarrow odds). Six lines, bottom to top, each a stage of an
   AI future; before each draw a move changes the marbles, so the chance of every line belongs to the
