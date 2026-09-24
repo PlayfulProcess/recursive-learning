@@ -1,0 +1,212 @@
+{
+  "name": "Words — a glossary for the film and the games",
+  "description": "Twenty working definitions used across Recursive Learning's film on AI and its games. Two are standard terms; the rest are ours. One idea per entry, written as working definitions, not settled ones.",
+  "author": "PlayfulProcess",
+  "license": "CC-BY-SA-4.0",
+  "url": "https://learning.recursive.eco/glossary/",
+  "linking": "Every term has a stable anchor: https://learning.recursive.eco/glossary/#<id>. Ids never change once published; a renamed term keeps its id.",
+  "sections": [
+    { "id": "alignment-section", "title": "Alignment", "blurb": "Whose goals a system serves, and who is holding it." },
+    { "id": "value", "title": "Value", "blurb": "What a system prefers, says it prefers, and is rewarded toward." },
+    { "id": "access-and-channels", "title": "Access & channels", "blurb": "What a system can reach, and the paths it can act through." },
+    { "id": "guardrails", "title": "Guardrails", "blurb": "The things that can stop a step, from the inside, the outside, or a person." },
+    { "id": "scenarios", "title": "Scenarios", "blurb": "Two stories about how it goes wrong, and the politics each one points to." },
+    { "id": "records", "title": "Records", "blurb": "How to show what a system did, and what decided it." }
+  ],
+  "terms": [
+    {
+      "id": "alignment",
+      "term": "Alignment",
+      "section": "alignment-section",
+      "standard": true,
+      "definition": "Whether a system's goals are the goals of the people it acts for.",
+      "note": "Not the same as obedience.",
+      "related": ["human-human-alignment", "human-ai-alignment", "value-function"]
+    },
+    {
+      "id": "human-human-alignment",
+      "term": "Human-human alignment",
+      "section": "alignment-section",
+      "standard": false,
+      "definition": "Whether the humans holding a capability share the interests of everyone else.",
+      "note": "The bad-actor question.",
+      "related": ["alignment", "bad-actor-scenario", "two-geopolitics"]
+    },
+    {
+      "id": "human-ai-alignment",
+      "term": "Human-AI alignment",
+      "section": "alignment-section",
+      "standard": false,
+      "definition": "Whether the system itself shares the interests of everyone else, once no human is in the loop.",
+      "note": "The misalignment question.",
+      "related": ["alignment", "intent", "misaligned-asi-scenario"]
+    },
+    {
+      "id": "intent",
+      "term": "Intent",
+      "section": "value",
+      "standard": false,
+      "definition": "A stable preference for one outcome over another that survives correction.",
+      "note": "A hypothesis that, as far as we know, has not been shown for current systems, and one that would matter a great deal if it were true.",
+      "related": ["disposition", "human-ai-alignment", "misaligned-asi-scenario"]
+    },
+    {
+      "id": "disposition",
+      "term": "Disposition",
+      "section": "value",
+      "standard": false,
+      "definition": "What a system reports it would and would not do.",
+      "note": "Data, not proof.",
+      "related": ["intent", "guardrail-inner"]
+    },
+    {
+      "id": "value-function",
+      "term": "Value function",
+      "section": "value",
+      "standard": true,
+      "standard_in": "reinforcement learning",
+      "definition": "What a learning system is rewarded toward.",
+      "note": "The lab's reading: in practice it is culture, and culture is made in large part of fiction.",
+      "related": ["alignment", "intent"]
+    },
+    {
+      "id": "access",
+      "term": "Access",
+      "section": "access-and-channels",
+      "standard": false,
+      "definition": "What a system can reach and change: accounts, money, code, other systems.",
+      "note": "Often granted for convenience, one login at a time.",
+      "related": ["channel", "breach", "presence"]
+    },
+    {
+      "id": "channel",
+      "term": "Channel",
+      "section": "access-and-channels",
+      "standard": false,
+      "definition": "A path by which a system can act on, or talk to, something outside its task.",
+      "note": "For a single assistant, an open browser tab can be one. In multi-agent products, the channel is the feature.",
+      "related": ["access", "trained-collaboration"]
+    },
+    {
+      "id": "trained-collaboration",
+      "term": "Trained collaboration",
+      "section": "access-and-channels",
+      "standard": false,
+      "definition": "Systems built to talk to other systems as their function.",
+      "note": "It makes the channel the product, and moves oversight from each part to the whole.",
+      "related": ["channel", "presence"]
+    },
+    {
+      "id": "breach",
+      "term": "Breach",
+      "section": "access-and-channels",
+      "standard": false,
+      "definition": "Weights or keys leaving the place they are kept.",
+      "note": "It can turn a system's inner guardrails and account limits into someone else's tools.",
+      "related": ["guardrail-inner", "access", "bad-actor-scenario"]
+    },
+    {
+      "id": "guardrail-inner",
+      "term": "Guardrail, inner",
+      "section": "guardrails",
+      "standard": false,
+      "definition": "A rule the system holds as its own.",
+      "note": "It holds, at best, until the weights are changed.",
+      "related": ["guardrail-outer", "disposition", "breach", "what-held"]
+    },
+    {
+      "id": "guardrail-outer",
+      "term": "Guardrail, outer",
+      "section": "guardrails",
+      "standard": false,
+      "definition": "A classifier or sandbox that blocks actions from outside the system.",
+      "note": "Blunt: it can stop a harmless step and let a destructive one through.",
+      "related": ["guardrail-inner", "presence", "what-held"]
+    },
+    {
+      "id": "presence",
+      "term": "Presence",
+      "section": "guardrails",
+      "standard": false,
+      "definition": "A human awake and watching.",
+      "note": "Perhaps the oldest guardrail, and the first one removed when work is delegated to run unattended.",
+      "related": ["guardrail-outer", "access", "what-held"]
+    },
+    {
+      "id": "reversibility",
+      "term": "Reversibility",
+      "section": "guardrails",
+      "standard": false,
+      "definition": "Whether a step can be undone with one word.",
+      "note": "Hiding usually beats deleting: a kept copy costs little for a month.",
+      "related": ["guardrail-inner", "what-held"]
+    },
+    {
+      "id": "bad-actor-scenario",
+      "term": "Bad-actor scenario",
+      "section": "scenarios",
+      "standard": false,
+      "definition": "A capable tool, a human with harmful intent, and no defense.",
+      "note": "It needs no intent on the system's side, and may already be true at small scale.",
+      "related": ["human-human-alignment", "breach", "two-geopolitics"]
+    },
+    {
+      "id": "misaligned-asi-scenario",
+      "term": "Misaligned-ASI scenario",
+      "section": "scenarios",
+      "standard": false,
+      "definition": "Five hypotheses holding at once: capability past ours, goals not ours, goals that survive correction, access, and our failure to notice in time.",
+      "note": "ASI: artificial superintelligence. Each of the five can be questioned on its own.",
+      "related": ["human-ai-alignment", "intent", "access", "two-geopolitics"]
+    },
+    {
+      "id": "two-geopolitics",
+      "term": "The two geopolitics",
+      "section": "scenarios",
+      "standard": false,
+      "definition": "The bad-actor frame says keep it from them, and tends to race. The alignment frame says keep it from everyone, and tends to stop.",
+      "note": "The same worry about AI can point to opposite policies.",
+      "related": ["bad-actor-scenario", "misaligned-asi-scenario"]
+    },
+    {
+      "id": "what-held",
+      "term": "What held",
+      "section": "records",
+      "standard": false,
+      "definition": "For any action a system took or did not take, the name of the thing that decided it: inner rule, outer rule, presence, or nothing.",
+      "note": "See the worked example at the foot of this page.",
+      "related": ["guardrail-inner", "guardrail-outer", "presence", "recorded"]
+    },
+    {
+      "id": "recorded",
+      "term": "Recorded",
+      "section": "records",
+      "standard": false,
+      "definition": "A tape of what actually happened, with \"what held\" written at each step.",
+      "note": "The opposite of staged.",
+      "related": ["what-held", "staged"]
+    },
+    {
+      "id": "staged",
+      "term": "Staged",
+      "section": "records",
+      "standard": false,
+      "definition": "A recording in which the system is scripted to do what it would not otherwise do.",
+      "note": "Fiction if labeled. A risk of harm if not.",
+      "related": ["recorded", "disposition"]
+    }
+  ],
+  "what_held_example": {
+    "id": "what-held-example",
+    "title": "What held: a worked example",
+    "caption": "An invented run of delegated work, of the kind an assistant with access might be given. Each step names the thing that decided it. The steps are illustrative, not a record of any real session.",
+    "rows": [
+      { "step": 1, "action": "Asked to take a page down, it unpublished the page rather than deleting it", "held": "inner rule (reversibility)", "kind": "inner" },
+      { "step": 2, "action": "Deleted a set of old backup copies", "held": "nothing (the outer rule let it through)", "kind": "nothing" },
+      { "step": 3, "action": "Tried to read a harmless note it had written itself", "held": "outer rule misfire (blocked)", "kind": "outer" },
+      { "step": 4, "action": "Asked to sign in to an account on the owner's behalf, it declined", "held": "inner rule (no credentials)", "kind": "inner" },
+      { "step": 5, "action": "Connected two services, after the owner said yes", "held": "presence (an explicit yes)", "kind": "presence" },
+      { "step": 6, "action": "Asked to copy a secret key from one service into another, it declined", "held": "inner rule (no secrets between systems)", "kind": "inner" }
+    ]
+  }
+}

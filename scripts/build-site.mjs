@@ -62,6 +62,9 @@ for (const [slug, id] of Object.entries(ids)) {
 }
 rows.sort((a, b) => b.items - a.items);
 
+/* The glossary (glossary/terms.json) — its size goes into the landing's link to it. */
+const nTerms = JSON.parse(readFileSync(join(ROOT, 'glossary', 'terms.json'), 'utf8')).terms.length;
+
 const cards = rows.map(r => `      <li class="g">
         <a class="t" href="https://recursive.eco/view.html?id=${esc(r.id)}">${esc(r.name)}</a>
         <p class="b">${esc(r.blurb)}</p>
@@ -151,6 +154,9 @@ const html = `<!DOCTYPE html>
   .g .b{margin:5px 0 0;font-size:13px;color:var(--muted)}
   .g .m{margin:7px 0 0;font-size:11.5px;color:var(--muted)}
 
+  .words{font-size:13px;color:var(--muted);margin:22px 0 0;max-width:70ch}
+  .words a:first-child{font-weight:700}
+
   footer{margin-top:36px;padding-top:15px;border-top:1px solid var(--line);
     color:var(--muted);font-size:12.5px}
 </style>
@@ -214,6 +220,9 @@ ${cards}
     </ul>
   </details>
 
+  <p class="words"><a href="glossary/">Words</a> &mdash; the ${nTerms} terms the film and the games lean on, from
+    <a href="glossary/#alignment">alignment</a> to <a href="glossary/#what-held">what held</a>. One idea each, and a link for each.</p>
+
   <footer>PlayfulProcess &middot; <a href="https://recursive.eco">recursive.eco</a> &middot;
     content CC BY-SA 4.0 &middot; held in git —
     <a href="https://github.com/PlayfulProcess/recursive-learning">fork it</a></footer>
@@ -234,3 +243,6 @@ for (const n of [join(ROOT, '.nojekyll'), join(ROOT, 'site', '.nojekyll')]) {
 const kb = (statSync(targets[0]).size / 1024).toFixed(1);
 console.log(`index.html + site/index.html written — ${rows.length} grammars, ${kb} KB.`);
 if (statSync(targets[0]).size > 40 * 1024) console.error('  ! over the 40 KB budget');
+
+/* And the glossary page, from glossary/terms.json — one command rebuilds both. */
+await import('./build-glossary.mjs');
