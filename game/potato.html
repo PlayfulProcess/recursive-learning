@@ -70,6 +70,7 @@
   .cells i.need{box-shadow:0 0 0 2px var(--ink)}
   .count{position:absolute;right:14px;top:30px;font:600 11px var(--sans);color:var(--dim);letter-spacing:.04em;text-align:right}
   .count b{color:var(--eco)}
+  @media (max-width:560px){ .count{left:14px;right:auto;text-align:left;font-size:10px} .count .nd{display:block} .count .sep{display:none} }
 
   .yourmove{font:600 12px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:16px 0 0}
   .acts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:8px 0 6px}
@@ -85,6 +86,9 @@
   .act:active{transform:translateY(1px);box-shadow:none}
   .act .ico{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:1px}
   .act[disabled]{opacity:.45;cursor:not-allowed}
+  .act.spent{opacity:.5;filter:saturate(.35);border-style:dashed;box-shadow:none}
+  .act.spent:hover{transform:none;box-shadow:none}
+  .act .why{display:block;font-weight:600;font-size:11.5px;color:var(--ink);margin-top:6px;line-height:1.35}
   button.main{background:var(--eco);color:#06281d;border:0;border-radius:10px;padding:12px 20px;font:700 15px var(--sans);cursor:pointer}
   button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font:600 14px var(--sans);cursor:pointer}
   .log{list-style:none;margin:10px 0 0;padding:0;font-size:13.5px;line-height:1.5}
@@ -106,7 +110,8 @@
   .credits{font-size:11.5px;color:var(--faint);line-height:1.5;border-top:1px solid var(--line);margin-top:34px;padding-top:12px}
   .credits a{color:var(--dim)}
   [hidden]{display:none!important}
-  @media (max-width:760px){ .acts{grid-template-columns:repeat(2,minmax(0,1fr))} .acts .act.idk{grid-column:1/-1} }
+  .acts{grid-auto-rows:1fr}
+  @media (max-width:760px){ .acts{grid-template-columns:repeat(2,minmax(0,1fr))} }
   @media (max-width:560px){ h1{font-size:25px} .meters,.two{grid-template-columns:1fr} .scene{font-size:9.5px} }
 </style>
 </head>
@@ -360,34 +365,48 @@ function play(k){
   if (state.endpoint) setTimeout(showEnd, reduce ? 200 : 1800);
 }
 
+var actsTall = 0;
+window.addEventListener('resize', function(){ actsTall = 0; });
 function render(){
   document.getElementById('year').textContent = 'Year ' + state.t + ' of ' + P.horizon;
   var heat = baseRisk(state); document.getElementById('m-heat').textContent = (heat * 100).toFixed(1) + '%' + (state.lastShock ? ' +' + Math.round(P.shockRisk * 100) + '% shock' : '');
   document.getElementById('f-heat').style.width = Math.min(100, heat / 0.20 * 100) + '%';
   var hn = holding(state.coordination);
   document.getElementById('m-ring').innerHTML = countSay(state.coordination);
-  document.getElementById('count').innerHTML = '<b>' + hn + '</b> of ' + PEOPLE + ' holding · ' + NEED + ' needed';
+  document.getElementById('count').innerHTML = '<b>' + hn + '</b> of ' + PEOPLE + ' holding<span class="nd"><span class="sep"> · </span>' + NEED + ' needed</span>';
   var cells = ''; for (var ci = 0; ci < PEOPLE; ci++) cells += '<i class="' + (ci < hn ? 'on' : '') + (ci === NEED - 1 ? ' need' : '') + '"></i>';
   document.getElementById('cells').innerHTML = cells;
   document.getElementById('why').textContent = state.t === 0 ? 'Year 0: nothing has been thrown yet. The potato is warm, and ' + hn + ' of ' + PEOPLE + ' people are holding it.' :
     'What makes the heat: how much has been built (grown by tossing) against how well it is understood (grown by holding). What brings people into the ring: holding; tossing drives them off, and a few drift away every year. Planting needs ' + NEED + ' of ' + PEOPLE + ' holding and a few years held together.';
-  var box = document.getElementById('acts'); box.innerHTML = '';
-  ACTS.forEach(function(a){
-    var b = document.createElement('button'); b.className = 'act' + (a.cls ? ' ' + a.cls : '') + (a.tog && state.coordination >= P.stagK ? ' ready' : '');
+  // the four cards are made once and only their words change, so nothing moves under a thumb
+  // between years; each card keeps the tallest height it has needed so the grid never shrinks
+  var box = document.getElementById('acts');
+  if (!box.children.length) ACTS.forEach(function(a){
+    var b = document.createElement('button'); b.dataset.k = a.k;
+    b.addEventListener('click', function(){ play(a.k); });
+    box.appendChild(b);
+  });
+  var spentNow = state.coordination < P.stagK;
+  ACTS.forEach(function(a, ai){
+    var b = box.children[ai];
+    var tossSpent = a.k === 'idk' && lastEff(moves.concat(['idk'])).tog && spentNow;
+    b.className = 'act' + (a.cls ? ' ' + a.cls : '') + (a.tog && !spentNow ? ' ready' : '') + ((a.tog || tossSpent) && spentNow ? ' spent' : '');
     var sub;
     var eff = a.k === 'idk' ? lastEff(moves.concat(['idk'])) : a;
     var pv = preview(eff), odds = '<span class="odds">Every year from here like this: planted ' + pv.planted + ', burns ' + pv.burn + ' in 100</span>';
-    if (a.tog) sub = (state.coordination >= P.stagK ? 'the hands are there (' + holding(state.coordination) + ' of ' + PEOPLE + '): it counts. ' : 'only ' + holding(state.coordination) + ' of ' + PEOPLE + ' are holding it, ' + NEED + ' needed: this year would be spent. ') + odds;
+    if (a.tog) sub = (!spentNow ? 'the hands are there (' + holding(state.coordination) + ' of ' + PEOPLE + '): it counts. ' : '<span class="why">Not yet: ' + holding(state.coordination) + ' of ' + PEOPLE + ' are holding it and ' + NEED + ' are needed, so this year would be spent.</span>') + odds;
     else if (a.k === 'idk') sub = (eff.k === 'start' ? 'the hand the walk began with' : 'last year\u2019s move again: ' + eff.nm.toLowerCase()) + '. ' + odds;
     else sub = a.d + '. ' + odds;
     var dot = { toss:'var(--heat)', hold:'var(--agent)', tog:'var(--eco)', idk:'var(--dim)' }[a.k];
     b.innerHTML = '<span class="ico" style="background:' + dot + '"></span>' + a.nm + '<small>' + sub + '</small>';
     b.disabled = !!state.endpoint;
-    box.hidden = !!state.endpoint; document.getElementById('yourmove').hidden = !!state.endpoint;
-    document.getElementById('yourmove').textContent = 'Your move for year ' + (state.t + 1);
-    b.addEventListener('click', function(){ play(a.k); });
-    box.appendChild(b);
+    b.setAttribute('aria-label', a.nm + ((a.tog || tossSpent) && spentNow ? ', would be spent this year' : ''));
   });
+  box.hidden = !!state.endpoint; document.getElementById('yourmove').hidden = !!state.endpoint;
+  document.getElementById('yourmove').textContent = 'Your move for year ' + (state.t + 1);
+  if (!box.hidden){ var tall = 0; Array.prototype.forEach.call(box.children, function(b){ b.style.minHeight = ''; });
+    Array.prototype.forEach.call(box.children, function(b){ tall = Math.max(tall, b.offsetHeight); });
+    actsTall = Math.max(actsTall, tall); Array.prototype.forEach.call(box.children, function(b){ b.style.minHeight = actsTall + 'px'; }); }
 }
 
 // ── the end: a hundred walks ────────────────────────────────────────────────────────────
