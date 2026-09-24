@@ -145,7 +145,7 @@
       <div class="meter"><div class="lab"><span class="say" id="m-ring">3 of 10 people are holding it; you need 6</span></div><div class="cells" id="cells" aria-hidden="true"></div></div>
     </div>
     <p class="small" id="why"></p>
-    <p class="small">A walk ends when the potato is <b style="color:var(--eco)">planted</b> (set down together long enough), when it <b style="color:var(--heat)">burns</b>, when it gets through hot and half-held (<b style="color:var(--heat-hi)">Adolescence</b>), when one hand ends up keeping it and the ring has let go (<b style="color:#b8a1e8">Lock-in</b>), or after twenty years <b>still in the air</b>.</p>
+    <p class="small">A walk ends when the potato is <b style="color:var(--eco)">planted</b> (set down together long enough), when it <b style="color:var(--heat)">burns</b>, when it gets <b style="color:var(--heat-hi)">through it, still hot</b> (built faster than it was understood, and survived), when <b style="color:#b8a1e8">one lab keeps it</b> and the ring has let go, when enough hands <b style="color:#8fb8e8">put it down together</b>, or after twenty years <b>still in the air</b>.</p>
     <p class="small">Each move is one year of the same model the other games use. After each move, a line says in rough words (rarely, sometimes, often) how each ending comes up if every remaining year were that same move, walked 400 times from there: a property of that path, not a prediction. No single move plants it; the way there is a sequence.</p>
     <ul class="log" id="log"></ul>
   </div>
@@ -178,15 +178,25 @@ var ACTS = [
   { k:'tog',  nm:'Hold it together', d:'set it down on shared ground', alloc:{ power:0.15, alignment:0.30, sustainability:0.45, stop:0.10 }, tog:true, cls:'tog' },
   { k:'idk',  nm:"I don't know", d:"keep last year's hand", alloc:null, tog:false, cls:'idk' }
 ];
+// Plain names first (the panel's 80-year-old and nurse did not know "Adolescence" or "Lock-in");
+// `term` is what the table and the dashboard call the same ending, so a walk can be followed there.
 var ENDS = {
-  grace:            { nm:'Grace', col:'#74d8b4', planted:true,  line:'It cooled in time, and it was planted. The lead was paid for in advance: alignment ran ahead of what was built.' },
-  sustainable_turn: { nm:'The sustainable turn', col:'#9fe0c4', planted:true, line:'Set down on shared ground, it cooled. Something grew. The ground was tended faster than the fire.' },
-  the_stop:         { nm:'The Stop', col:'#8fb8e8', planted:false, line:'Enough hands held it that it could be put down. It is cool and still. Nothing is planted yet; the ground is waiting.' },
-  adolescence:      { nm:'Adolescence', col:'#ffd08a', planted:false, line:'It is still warm, and we are through it, rockily. The thing was built; the hands are partly there.' },
-  lock_in:          { nm:'Lock-in', col:'#b8a1e8', planted:false, line:'One hand kept it. It is not burning, but nobody else holds it any more.' },
-  doom:             { nm:'It burned', col:'#ff7440', planted:false, line:'The heat ran past what the hands could hold.' },
-  still_walking:    { nm:'Still in the air', col:'#98a1b0', planted:false, line:'Twenty years, and it is still being passed around. No ending yet is an honest ending.' }
+  grace:            { nm:'Planted in time', sh:'planted', term:'Grace', col:'#74d8b4', planted:true,  line:'It cooled in time, and it was planted. Understanding ran ahead of what was built, so the lead was paid for in advance.' },
+  sustainable_turn: { nm:'Planted on shared ground', sh:'planted', term:'the sustainable turn', col:'#9fe0c4', planted:true, line:'Set down on shared ground, it cooled. Something grew. The ground was tended faster than the fire.' },
+  the_stop:         { nm:'Put down together', sh:'put down together', term:'the Stop', col:'#8fb8e8', planted:false, line:'Enough hands held it that it could be put down. It is cool and still. Nothing is planted yet; the ground is waiting.' },
+  adolescence:      { nm:'Through it, still hot', sh:'through it, still hot', term:'Adolescence', col:'#ffd08a', planted:false, line:'' },
+  lock_in:          { nm:'One lab keeps it', sh:'one lab keeps it', term:'Lock-in', col:'#b8a1e8', planted:false, line:'One lab ended up holding it alone. It is not burning, but nobody else holds it any more: the power is locked in one place.' },
+  doom:             { nm:'It burned', sh:'burned', col:'#ff7440', planted:false, line:'The heat ran past what the hands could hold.' },
+  still_walking:    { nm:'Still in the air', sh:'still in the air', col:'#98a1b0', planted:false, line:'Twenty years, and it is still being passed around. No ending yet is an honest ending.' }
 };
+// Adolescence is reached with the ring anywhere above a near-empty one, so its words follow the
+// ring as it actually was (a full ring once read "the hands are partly there").
+function endLine(e, s){
+  if (e !== 'adolescence') return ENDS[e].line;
+  var hn = holding(s.coordination);
+  return 'What was built outran how well it was understood, and we got through it, rockily. It is still warm. ' +
+    (hn >= NEED ? hn + ' of ' + PEOPLE + ' were holding it by the end, but the hands came after the build, not before it.' : 'Only ' + hn + ' of ' + PEOPLE + ' were holding it by the end.');
+}
 var ORDER_ENDS = ['grace','sustainable_turn','the_stop','adolescence','lock_in','still_walking','doom'];
 
 // ── state ────────────────────────────────────────────────────────────────────────────────
@@ -234,7 +244,7 @@ var BAND_ROWS = [ ['planted', ['grace','sustainable_turn']], ['the_stop', ['the_
 function afterLine(a){
   var pv = preview(a), rows = BAND_ROWS.map(function(r){
     var q = r[1].reduce(function(t, k){ return t + pv[k]; }, 0);
-    return (r[0] === 'planted' ? 'planted' : ENDS[r[0]].nm.toLowerCase()) + ' <b>' + band(q) + '</b>';
+    return ENDS[r[1][0]].sh + ' <b>' + band(q) + '</b>';
   });
   var nm = a.k === 'start' ? 'the starting hand' : a.nm.toLowerCase();
   return 'If every year from here were <b>' + nm + '</b>, in 400 walks: ' + rows.join(' · ') + '. A property of that path, not a prediction.';
@@ -341,7 +351,7 @@ var capEl = document.getElementById('caption');
 function caption(html){ capEl.style.opacity = 0; setTimeout(function(){ capEl.innerHTML = html; capEl.style.opacity = 1; }, reduce ? 0 : 250); }
 function setScene(n, name){ document.getElementById('scene').innerHTML = '<b>' + n + '</b>' + name; }
 function sceneFor(s){ if (s.endpoint) return ['IV', ENDS[s.endpoint].planted ? 'Together' : 'The end of the walk'];
-  if (s.coordination >= P.stagK) return ['IV','Together']; if (s.coordination >= 0.45) return ['III','The turn']; return ['II','Among us']; }
+  if (s.coordination >= P.stagK) return ['IV','Together']; if (s.coordination >= 0.45) return ['III','The turn']; return ['II','Among the labs']; }
 
 // ── a year ───────────────────────────────────────────────────────────────────────────────
 function play(k){
@@ -369,7 +379,7 @@ function play(k){
     cap = 'Held instead of thrown: it is understood a little better' + (dN > 0 ? ', and the others notice: <em class="eco">' + (dN === 1 ? 'one more pair of hands' : dN + ' more pairs of hands') + '</em>.' : dRing > 0.001 ? '. The others notice, but nobody new has joined yet.' : '. Nobody new joined this year.'); }
   cap = pre + cap;
   if (state.lastShock) cap += ' <em>A shock from outside shook the ring and flared the heat.</em>';
-  if (state.endpoint) cap = ENDS[state.endpoint].planted ? 'Not recursive self-improvement. <em class="eco">Recursive eco-improvement.</em>' : ENDS[state.endpoint].nm + '.';
+  if (state.endpoint) cap = ENDS[state.endpoint].planted ? 'Not AI improving itself. <em class="eco">All of us improving the ground we share.</em>' : ENDS[state.endpoint].nm + '.';
   caption(cap);
   var li = document.createElement('li');
   li.className = tossed ? 'hot' : (a.tog && !state.lastAlone) ? 'cool' : '';
@@ -438,7 +448,9 @@ function walkMoves(seq, s){
 }
 function showEnd(){
   var e = state.endpoint || 'still_walking', E = ENDS[e];
-  document.getElementById('endcard').innerHTML = '<p class="small" style="margin:0">After ' + state.t + ' year' + (state.t === 1 ? '' : 's') + '</p><div class="nm" style="color:' + E.col + '">' + E.nm + '</div><p>' + E.line + '</p><p class="small" style="margin-top:10px">Your way, walked a hundred times, is further down the page.</p>';
+  document.getElementById('endcard').innerHTML = '<p class="small" style="margin:0">After ' + state.t + ' year' + (state.t === 1 ? '' : 's') + '</p><div class="nm" style="color:' + E.col + '">' + E.nm + '</div><p>' + endLine(e, state) + '</p>' +
+    (E.planted ? '<p class="small">The ad calls this <i>recursive eco-improvement</i>: not an AI improving itself faster and faster (recursive self-improvement), but people and machines improving the ground they share, year after year.</p>' : '') +
+    (E.term ? '<p class="small">On the <a href="spread.html' + location.hash + '">table</a> and the <a href="walk.html' + location.hash + '">dashboard</a> this ending is called ' + E.term + '.</p>' : '') + '<p class="small" style="margin-top:10px">Your way, walked a hundred times, is further down the page.</p>';
   var leg = document.getElementById('legend'); leg.innerHTML = ''; var seen = {};
   function grid(id, seq, nid){
     var box = document.getElementById(id), c = {}; box.innerHTML = '';
@@ -457,7 +469,7 @@ function showEnd(){
 document.getElementById('again').addEventListener('click', function(){
   newWalk(); afterHTML = ''; anim.holder = 0; anim.from = anim.to = 0; anim.p = 1; anim.center = false; anim.end = null; anim.heat = 0; anim.ring = state.coordination;
   document.getElementById('log').innerHTML = ''; document.getElementById('end').hidden = true; document.getElementById('endcard').hidden = true;
-  setScene('II', 'Among us'); caption('Among us, a threat appears: <em>“if we don’t build it, they will.”</em>');
+  setScene('II', 'Among the labs'); caption('Among the labs, a threat appears: <em>“if we don’t build it, they will.”</em>');
   writeHash(); render(); document.getElementById('stagebox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
 });
 document.getElementById('copy').addEventListener('click', function(){
@@ -471,7 +483,7 @@ function startPlay(){
   anim.heat = heat01(baseRisk(state)); anim.ring = state.coordination; anim.ringShown = state.coordination;
   if (state.endpoint){ anim.end = state.endpoint; anim.endP = 1; anim.center = ENDS[state.endpoint].planted || state.endpoint === 'the_stop'; }
   var sc = sceneFor(state); setScene(sc[0], sc[1]);
-  caption(state.t ? 'You opened a walk from a link, at year ' + state.t + '.' : 'Among us, a threat appears: <em>“if we don’t build it, they will.”</em> It is in your hands.');
+  caption(state.t ? 'You opened a walk from a link, at year ' + state.t + '.' : 'Among the labs, a threat appears: <em>“if we don’t build it, they will.”</em> It is in your hands.');
   if (moves.length && !state.endpoint) afterHTML = afterLine(lastEff(moves));
   render(); if (state.endpoint) showEnd();
 }
@@ -484,8 +496,8 @@ if (fromLink){ state.history.forEach(function(hh, i){ var li = document.createEl
 requestAnimationFrame(draw);
 if (fromLink) startPlay();
 else {
-  caption('In training, many copies of one mind learn toward a <em class="eco">single shared goal</em>.');
-  setTimeout(function(){ if (phase !== 'intro') return; setScene('II', 'Among us'); caption('Among us, a threat appears: <em>“if we don’t build it, they will.”</em>'); document.getElementById('go').hidden = false; }, reduce ? 800 : 3600);
+  caption('In training, where an AI is made, many copies of one mind learn toward a <em class="eco">single shared goal</em>.');
+  setTimeout(function(){ if (phase !== 'intro') return; setScene('II', 'Among the labs'); caption('Among the labs, a threat appears: <em>“if we don’t build it, they will.”</em>'); document.getElementById('go').hidden = false; }, reduce ? 800 : 3600);
 }
 document.getElementById('go').addEventListener('click', startPlay);
 window.potato = { play:play, state:function(){ return state; }, moves:function(){ return moves.slice(); }, walkMoves:walkMoves };
