@@ -32,6 +32,11 @@ URL hash, so a link to either opens in the other:
   the forecast and confidence, the reading, the step with its kind and card id, the two forgiveness
   lines, the asymmetry, the synthesis, a timestamp and the consent line. `FORM_URL` near the Step
   code is empty until she makes the form; once set, a **Send it** button opens it.
+- **`potato.html` — Hot Potato, playable (Sep 24).** The recursive.eco hot potato ad as a game, on
+  the Walk's model. Each year: toss it on (heat), hold it (more hands), hold it together (set it
+  down on shared ground; counts only past the 0.60 bar), or I don't know. Heat is the model's risk
+  that year; the ring is its coordination. Planted ends draw the spiral. Walked a hundred times at
+  the end, beside a hundred walks that toss every year. Notes: `DESIGN-potato.md`.
 - **`lines.html` — Changing Lines (prototype, Sep 22).** A second game for the same lesson, built on
   the I Ching's sixteen-marble bowl (the yarrow odds). Six lines, bottom to top, each a stage of an
   AI future; before each draw a move changes the marbles, so the chance of every line belongs to the
