@@ -76,7 +76,8 @@
   .acts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:8px 0 6px}
   .act{color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:13px 12px 13px;text-align:left;cursor:pointer;font:700 17px/1.2 var(--sans);box-shadow:0 2px 0 rgba(0,0,0,.35);transition:transform .12s,box-shadow .12s,border-color .12s}
   .act small{display:block;font-weight:400;font-size:11.5px;color:var(--dim);margin-top:6px;line-height:1.35}
-  .act .odds{display:block;margin-top:4px;color:var(--ink);font-weight:500}
+  .after{font-size:13px;line-height:1.5;color:var(--dim);margin:4px 0 8px;min-height:3em}
+  .after b{color:var(--ink);font-weight:600}
   .act.toss{background:linear-gradient(180deg,#3a2019,#24140f);border-color:#a8502e}.act.toss:hover{border-color:var(--heat)}
   .act.hold{background:linear-gradient(180deg,#1e2a44,#162036);border-color:#5a78a8}.act.hold:hover{border-color:var(--agent)}
   .act.tog{background:linear-gradient(180deg,#16362d,#10261f);border-color:var(--eco-deep)}.act.tog:hover{border-color:var(--eco)}
@@ -138,13 +139,14 @@
   <div id="play" hidden>
     <p class="yourmove" id="yourmove">Your move</p>
     <div class="acts" id="acts"></div>
+    <p class="after" id="after" aria-live="polite"></p>
     <div class="meters">
       <div class="meter"><div class="lab"><span>Heat: the chance it burns in a year (bar 0 to 20%)</span><b id="m-heat">0%</b></div><div class="track"><div class="fill" id="f-heat" style="width:0;background:linear-gradient(90deg,#8a4a2a,var(--heat),var(--heat-hi))"></div></div></div>
       <div class="meter"><div class="lab"><span class="say" id="m-ring">3 of 10 people are holding it; you need 6</span></div><div class="cells" id="cells" aria-hidden="true"></div></div>
     </div>
     <p class="small" id="why"></p>
     <p class="small">A walk ends when the potato is <b style="color:var(--eco)">planted</b> (set down together long enough), when it <b style="color:var(--heat)">burns</b>, when it gets through hot and half-held (<b style="color:var(--heat-hi)">Adolescence</b>), when one hand ends up keeping it and the ring has let go (<b style="color:#b8a1e8">Lock-in</b>), or after twenty years <b>still in the air</b>.</p>
-    <p class="small">Each move is one year of the same model the other games use. The small print under a move is what would happen if every remaining year were that move, walked 400 times from here: a property of that path, not a prediction. No single move plants it; the way there is a sequence.</p>
+    <p class="small">Each move is one year of the same model the other games use. After each move, a line says in rough words (rarely, sometimes, often) how each ending comes up if every remaining year were that same move, walked 400 times from there: a property of that path, not a prediction. No single move plants it; the way there is a sequence.</p>
     <ul class="log" id="log"></ul>
   </div>
 
@@ -214,17 +216,30 @@ function readHash(){
   return true;
 }
 
-// ── what each move would do: twenty years of it from here, walked 400 times ─────────────────
+// ── after a move: every remaining year like it, walked 400 times, said in rough words ─────────
+// (decision #27: coarse bands, after the move, every ending). Same draws for the same state.
 function preview(a){
-  var planted = 0, burned = 0, n = 400, al = a.alloc || state.alloc;
+  var c = {}, n = 400, al = a.alloc || state.alloc;
   for (var i = 0; i < n; i++){
     var r = M.makeRng(state.t * 1009 + i * 7919 + 1), s = M.copyState(state); s.alloc = al; s.history = null;
     while (!s.endpoint && s.t < P.horizon) M.stepCore(s, P, r, a.tog);
-    var e = s.endpoint || 'still_walking';
-    if (e === 'grace' || e === 'sustainable_turn') planted++; if (e === 'doom') burned++;
+    var e = s.endpoint || 'still_walking'; c[e] = (c[e] || 0) + 1;
   }
-  return { planted: Math.round(100 * planted / n), burn: Math.round(100 * burned / n) };
+  var out = {}; M.ENDPOINTS.forEach(function(k){ out[k] = (c[k] || 0) / n; });
+  return out;
 }
+function band(q){ return q === 0 ? 'almost never' : q < 0.05 ? 'rarely' : q < 0.25 ? 'sometimes' : q < 0.6 ? 'often' : 'most times'; }
+var BAND_ROWS = [ ['planted', ['grace','sustainable_turn']], ['the_stop', ['the_stop']], ['adolescence', ['adolescence']],
+  ['lock_in', ['lock_in']], ['doom', ['doom']], ['still_walking', ['still_walking']] ];
+function afterLine(a){
+  var pv = preview(a), rows = BAND_ROWS.map(function(r){
+    var q = r[1].reduce(function(t, k){ return t + pv[k]; }, 0);
+    return (r[0] === 'planted' ? 'planted' : ENDS[r[0]].nm.toLowerCase()) + ' <b>' + band(q) + '</b>';
+  });
+  var nm = a.k === 'start' ? 'the starting hand' : a.nm.toLowerCase();
+  return 'If every year from here were <b>' + nm + '</b>, in 400 walks: ' + rows.join(' · ') + '. A property of that path, not a prediction.';
+}
+var afterHTML = '';
 // the heat: the model's yearly risk without this year's shock, i.e. what was built against how
 // well it is understood. Shocks are shown apart, as a flare for one year.
 function baseRisk(s){ return P.riskBase * Math.pow(s.capability, P.alpha) * Math.exp(-P.beta * M.alignRatio(s)); }
@@ -335,6 +350,7 @@ function play(k){
   state.alloc = a.alloc;
   state = M.stepOnce(state, {}, rng, a.tog);
   moves.push(k);
+  afterHTML = state.endpoint ? '' : afterLine(a);
   var heatNow = baseRisk(state);
   // the stage
   var tossed = a.k === 'toss';
@@ -389,21 +405,22 @@ function render(){
   var spentNow = state.coordination < P.stagK;
   ACTS.forEach(function(a, ai){
     var b = box.children[ai];
-    var tossSpent = a.k === 'idk' && lastEff(moves.concat(['idk'])).tog && spentNow;
-    b.className = 'act' + (a.cls ? ' ' + a.cls : '') + (a.tog && !spentNow ? ' ready' : '') + ((a.tog || tossSpent) && spentNow ? ' spent' : '');
+    var idkSpent = a.k === 'idk' && lastEff(moves.concat(['idk'])).tog && spentNow;
+    b.className = 'act' + (a.cls ? ' ' + a.cls : '') + (a.tog && !spentNow ? ' ready' : '') + ((a.tog || idkSpent) && spentNow ? ' spent' : '');
     var sub;
     var eff = a.k === 'idk' ? lastEff(moves.concat(['idk'])) : a;
-    var pv = preview(eff), odds = '<span class="odds">Every year from here like this: planted ' + pv.planted + ', burns ' + pv.burn + ' in 100</span>';
-    if (a.tog) sub = (!spentNow ? 'the hands are there (' + holding(state.coordination) + ' of ' + PEOPLE + '): it counts. ' : '<span class="why">Not yet: ' + holding(state.coordination) + ' of ' + PEOPLE + ' are holding it and ' + NEED + ' are needed, so this year would be spent.</span>') + odds;
-    else if (a.k === 'idk') sub = (eff.k === 'start' ? 'the hand the walk began with' : 'last year\u2019s move again: ' + eff.nm.toLowerCase()) + '. ' + odds;
-    else sub = a.d + '. ' + odds;
+    if (a.tog) sub = (!spentNow ? 'the hands are there (' + holding(state.coordination) + ' of ' + PEOPLE + '): it counts. ' : '<span class="why">Not yet: ' + holding(state.coordination) + ' of ' + PEOPLE + ' are holding it and ' + NEED + ' are needed, so this year would be spent.</span>');
+    else if (a.k === 'idk') sub = (eff.k === 'start' ? 'the hand the walk began with' : 'last year\u2019s move again: ' + eff.nm.toLowerCase()) + '. ';
+    else sub = a.d + '. ';
     var dot = { toss:'var(--heat)', hold:'var(--agent)', tog:'var(--eco)', idk:'var(--dim)' }[a.k];
     b.innerHTML = '<span class="ico" style="background:' + dot + '"></span>' + a.nm + '<small>' + sub + '</small>';
     b.disabled = !!state.endpoint;
-    b.setAttribute('aria-label', a.nm + ((a.tog || tossSpent) && spentNow ? ', would be spent this year' : ''));
+    b.setAttribute('aria-label', a.nm + ((a.tog || idkSpent) && spentNow ? ', would be spent this year' : ''));
   });
   box.hidden = !!state.endpoint; document.getElementById('yourmove').hidden = !!state.endpoint;
   document.getElementById('yourmove').textContent = 'Your move for year ' + (state.t + 1);
+  var af = document.getElementById('after'); af.hidden = !!state.endpoint;
+  af.innerHTML = afterHTML || 'After your move, a line here says how each ending tends to come up if you kept making it.';
   if (!box.hidden){ var tall = 0; Array.prototype.forEach.call(box.children, function(b){ b.style.minHeight = ''; });
     Array.prototype.forEach.call(box.children, function(b){ tall = Math.max(tall, b.offsetHeight); });
     actsTall = Math.max(actsTall, tall); Array.prototype.forEach.call(box.children, function(b){ b.style.minHeight = actsTall + 'px'; }); }
@@ -438,7 +455,7 @@ function showEnd(){
   document.getElementById('stagebox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' });
 }
 document.getElementById('again').addEventListener('click', function(){
-  newWalk(); anim.holder = 0; anim.from = anim.to = 0; anim.p = 1; anim.center = false; anim.end = null; anim.heat = 0; anim.ring = state.coordination;
+  newWalk(); afterHTML = ''; anim.holder = 0; anim.from = anim.to = 0; anim.p = 1; anim.center = false; anim.end = null; anim.heat = 0; anim.ring = state.coordination;
   document.getElementById('log').innerHTML = ''; document.getElementById('end').hidden = true; document.getElementById('endcard').hidden = true;
   setScene('II', 'Among us'); caption('Among us, a threat appears: <em>“if we don’t build it, they will.”</em>');
   writeHash(); render(); document.getElementById('stagebox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
@@ -455,6 +472,7 @@ function startPlay(){
   if (state.endpoint){ anim.end = state.endpoint; anim.endP = 1; anim.center = ENDS[state.endpoint].planted || state.endpoint === 'the_stop'; }
   var sc = sceneFor(state); setScene(sc[0], sc[1]);
   caption(state.t ? 'You opened a walk from a link, at year ' + state.t + '.' : 'Among us, a threat appears: <em>“if we don’t build it, they will.”</em> It is in your hands.');
+  if (moves.length && !state.endpoint) afterHTML = afterLine(lastEff(moves));
   render(); if (state.endpoint) showEnd();
 }
 window.addEventListener('resize', sizeStage);
