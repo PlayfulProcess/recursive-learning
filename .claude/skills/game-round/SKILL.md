@@ -53,7 +53,7 @@ that order, and every round is seen before it is described.
   version has. A `Cache-Control: no-cache` poll passes minutes earlier than the edge actually
   serves the new copy to browsers, and the query string does not defeat the edge cache; two
   playtesters played the old page because of this. Then report
-  with the live links: `https://game.recursive.eco/game/spread.html`, `/game/index.html`, `/`,
+  with the live links: `https://learning.recursive.eco/game/spread.html`, `/game/index.html`, `/`,
   and the deck `https://recursive.eco/view.html?id=0489bd30-d71d-4b7b-82b2-662bcbef25b0`.
 - End with a phone checklist: tap X → expect Y, five to seven lines.
 

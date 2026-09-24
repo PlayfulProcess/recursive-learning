@@ -1,6 +1,6 @@
 # Hot Potato, playable — design notes (Sep 24 2026)
 
-Page: `game/potato.html`. Live: https://game.recursive.eco/game/potato.html
+Page: `game/potato.html`. Live: https://learning.recursive.eco/game/potato.html
 
 The sequel to the 64-second recursive.eco ad (`recursive-eco/apps/landing/ads/hot-potato.html`,
 on the branch `claude/prayer-for-the-loop` when this was written). Same four scenes (I In
