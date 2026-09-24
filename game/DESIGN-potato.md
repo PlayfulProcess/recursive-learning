@@ -1,6 +1,7 @@
 # Hot Potato, playable — design notes (Sep 24 2026)
 
-Page: `game/potato.html`. Live: https://learning.recursive.eco/game/potato.html
+Pages: `game/potato-others.html` (with others, the default) and `game/potato.html` (alone). Live:
+https://learning.recursive.eco/game/potato-others.html and https://learning.recursive.eco/game/potato.html
 
 The sequel to the 64-second recursive.eco ad (`recursive-eco/apps/landing/ads/hot-potato.html`,
 on the branch `claude/prayer-for-the-loop` when this was written). Same four scenes (I In
@@ -59,11 +60,71 @@ is a temptation, and the game does not yet make it one. Next step below.
 - Previews use the same draws for the same state, so the numbers do not change between visits.
 - The "designed but not built" line about recursion left the page; it lives here.
 
+## Round 3, after the panel (Sep 24, lab chat)
+
+Five personas played round 2 (the handoff's "Playtest panel"). Fixed on the solo page:
+
+- The first line names AI: "The AI race is a hot potato: each lab builds faster because the others
+  might. Can you get everyone to hold it instead?"
+- The ring as people: "3 of 10 people are holding it; you need 6". The count is
+  floor(coordination x 10), guarded so it never lands across the bar from the model; ten people
+  because the bar (0.60) is exactly 6 of 10 and 4.8 of 8 is not a count. The holders are lit.
+- The ending's verdict sits right under the ring.
+- Hold it together is dimmed, with one line saying why, while it would be spent. It stays pressable:
+  reaching too early and losing the year is part of the lesson (and the model's rule, decision #28).
+- The move cards are made once and keep their tallest height, so nothing moves between years;
+  phones get a 2 x 2 grid with no empty cell.
+- Decision #27 (hers): the small print "planted N, burns M in 100" is gone from the cards. After
+  each move one line gives every ending in rough words (almost never / rarely / sometimes / often /
+  most times; cut at 0, 5, 25 and 60 in 100) if every remaining year were that move.
+- Plain words: endings are Planted in time, Planted on shared ground, Put down together, Through it
+  still hot, One lab keeps it, It burned, Still in the air, with the table's name on the end card.
+  Adolescence's line follows the ring as it was (it said "partly there" with a full ring). Scene II
+  is "Among the labs". Recursive eco-improvement gets one line.
+- The table and the dashboard say the endings' names are borrowed labels, not those authors' odds.
+
+## With others (`potato-others.html`, Sep 24; decision #26: beside the solo game, and the default)
+
+Six seats sit in the ring with you, each moving after you, one at a time (0.7 s apart), by one rule
+written on the page. The model file is unchanged; the page does three things around it:
+
+- **The year's allocation is the ring's:** the average of the seven hands.
+- **The step together** is taken when more than half the ring reaches for it, and the model counts
+  it only past the bar (else the year is spent, as before). Seats reach for hands only when they
+  would hold and the trust (coordination) is past the bar, so below the bar you reach alone and
+  nothing is spent: your hand just goes to shared ground.
+- **Each lab's size** is a tally the page keeps: a seat's lab grows by 1 + growth x its own power
+  share each year. Tossing grows your own lab fastest; the heat stays the model's, shared. That is
+  the temptation the solo game lacked.
+
+The seats: **Racer** (tosses whenever anyone else held last year; holds when nobody did; holds once
+the ring has held it together, "a toss would be seen"), **Mirror** (holds when at least 2 others held
+last year; one year in ten it slips), **Starter** (holds from the start), **Neighbour**, **Cautious**
+and **Late** (join once 1, 2, 3 others held). Above each seat, the one word its rule gives for next
+year; under its name, what it did; every move and its reason in the log.
+
+Measured over 1,000 walks (seeds 1 to 1,000, seat slips on their own random stream):
+
+| Your way | Planted | Burned | Through it, still hot | One lab keeps it | Still in the air | Your lab the biggest |
+|---|---|---|---|---|---|---|
+| Toss it on every year | 0 | 269 | 691 | 40 | 0 | 1000 |
+| Hold it every year | 0 | 156 | 309 | 0 | 535 | 0 |
+| Hold it, then together once trust is at 6 | 395 | 146 | 286 | 0 | 173 | 0 |
+| Toss whenever most of the ring held | 0 | 225 | 762 | 13 | 0 | 451 |
+| Hold five years, then toss | 0 | 235 | 753 | 12 | 0 | 459 |
+
+With best play the trust reached the bar in 807 walks in 1,000, in year 8 at the median.
+
+**A design choice for her to check:** the Racer's "a toss would be seen" clause. Without it (a
+Racer that tosses whenever anyone held, forever), the same ring planted 0 in 1,000 walks with each of
+the five sequences above: in this model the Racer's extra building pushes capability to the crossing before
+the shared ground can catch up. With it, holding it together works as a weak form of verification.
+Whether that is the right story, or whether a verify move should carry it instead, is hers.
+
 ## Next
 
-- **The temptation.** A rival that tosses when you hold: each year you do not toss, a chance that
-  another lab does, adding capability you did not choose. It needs a model change (a rival term),
-  so it goes through the Walk's design doc first, not this page.
+- **The temptation, in the model.** The "with others" page makes tossing pay at the page level (the
+  lab tally). A rival or lead term in the model itself is decision #28 (model v2).
 - **Why "recursive".** What one walk plants becomes what the next table inherits: a sustainable
   turn lowers the next walk's `shockRate` and raises its `coordGain`; a burn does the reverse.
   Walk after walk, the spiral grows or frays. The spread's Inheritance position already edits
