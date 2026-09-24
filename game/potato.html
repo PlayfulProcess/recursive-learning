@@ -93,6 +93,7 @@
   .log li.hot b{color:var(--heat-hi)} .log li.cool b{color:var(--eco)}
 
   .endcard{background:var(--lift);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px}
+  .endcard.verdict{margin-top:12px}
   .endcard .nm{font:300 26px/1.2 var(--serif)}
   .endcard p{font:300 17px/1.5 var(--serif);margin:8px 0 0}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:24px}
@@ -127,6 +128,7 @@
     <p class="caption" id="caption"></p>
     <button class="main intro-go" id="go" hidden>Now you hold it</button>
   </div>
+  <div class="endcard verdict" id="endcard" hidden></div>
 
   <div id="play" hidden>
     <p class="yourmove" id="yourmove">Your move</p>
@@ -142,7 +144,6 @@
   </div>
 
   <section id="end" hidden>
-    <div class="endcard" id="endcard"></div>
     <h2>Walk your way a hundred times</h2>
     <p class="small">Your own sequence of moves, from the same start, with a hundred different years of luck. Beside it, a hundred walks that toss it on every year. One of these is the walk you had. None of them is a forecast.</p>
     <div class="legend" id="legend"></div>
@@ -401,7 +402,7 @@ function walkMoves(seq, s){
 }
 function showEnd(){
   var e = state.endpoint || 'still_walking', E = ENDS[e];
-  document.getElementById('endcard').innerHTML = '<p class="small" style="margin:0">After ' + state.t + ' year' + (state.t === 1 ? '' : 's') + '</p><div class="nm" style="color:' + E.col + '">' + E.nm + '</div><p>' + E.line + '</p>';
+  document.getElementById('endcard').innerHTML = '<p class="small" style="margin:0">After ' + state.t + ' year' + (state.t === 1 ? '' : 's') + '</p><div class="nm" style="color:' + E.col + '">' + E.nm + '</div><p>' + E.line + '</p><p class="small" style="margin-top:10px">Your way, walked a hundred times, is further down the page.</p>';
   var leg = document.getElementById('legend'); leg.innerHTML = ''; var seen = {};
   function grid(id, seq, nid){
     var box = document.getElementById(id), c = {}; box.innerHTML = '';
@@ -413,12 +414,13 @@ function showEnd(){
   }
   grid('g-yours', moves, 'n-yours'); grid('g-toss', [], 'n-toss');
   ORDER_ENDS.forEach(function(k){ if (seen[k]) leg.insertAdjacentHTML('beforeend', '<span><i style="background:' + ENDS[k].col + '"></i>' + ENDS[k].nm + '</span>'); });
+  document.getElementById('endcard').hidden = false;
   document.getElementById('end').hidden = false;
-  document.getElementById('end').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' });
+  document.getElementById('stagebox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' });
 }
 document.getElementById('again').addEventListener('click', function(){
   newWalk(); anim.holder = 0; anim.from = anim.to = 0; anim.p = 1; anim.center = false; anim.end = null; anim.heat = 0; anim.ring = state.coordination;
-  document.getElementById('log').innerHTML = ''; document.getElementById('end').hidden = true;
+  document.getElementById('log').innerHTML = ''; document.getElementById('end').hidden = true; document.getElementById('endcard').hidden = true;
   setScene('II', 'Among us'); caption('Among us, a threat appears: <em>“if we don’t build it, they will.”</em>');
   writeHash(); render(); document.getElementById('stagebox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
 });
