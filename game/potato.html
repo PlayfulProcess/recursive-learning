@@ -11,7 +11,8 @@
   recursive-eco: apps/landing/ads/hot-potato.html), with the same four scenes and palette, and
   the Walk's model underneath (walk-model.js, unchanged). Every turn is one year of that model:
     heat of the potato   = the model's risk that year (s.lastRisk)
-    hands in the ring    = the model's coordination, with the stag-hunt bar at stagK (0.60)
+    hands in the ring    = the model's coordination, with the stag-hunt bar at stagK (0.60), shown
+                           as people: ten in the ring, floor(coordination x 10) holding, 6 needed
     Toss it on           = a year spent mostly on power
     Hold it              = a year spent mostly on alignment
     Hold it together     = the step together, spent on shared ground (mostly sustainability): it
@@ -62,6 +63,13 @@
   .fill{height:100%;border-radius:6px;transition:width .5s ease}
   .bar-mark{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
   .bar-mark span{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--ink);white-space:nowrap}
+  .meter .lab .say b{color:var(--eco)}
+  .cells{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:8px}
+  .cells i{height:12px;border-radius:4px;background:#0d1320;border:1px solid var(--line);position:relative}
+  .cells i.on{background:var(--eco);border-color:var(--eco)}
+  .cells i.need{box-shadow:0 0 0 2px var(--ink)}
+  .count{position:absolute;right:14px;top:30px;font:600 11px var(--sans);color:var(--dim);letter-spacing:.04em;text-align:right}
+  .count b{color:var(--eco)}
 
   .yourmove{font:600 12px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:16px 0 0}
   .acts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:8px 0 6px}
@@ -115,6 +123,7 @@
     <canvas id="stage" width="900" height="460" aria-label="The ring of agents and the potato"></canvas>
     <div class="scene" id="scene"><b>I</b>In training</div>
     <div class="year" id="year"></div>
+    <div class="count" id="count"></div>
     <p class="caption" id="caption"></p>
     <button class="main intro-go" id="go" hidden>Now you hold it</button>
   </div>
@@ -124,7 +133,7 @@
     <div class="acts" id="acts"></div>
     <div class="meters">
       <div class="meter"><div class="lab"><span>Heat: the chance it burns in a year (bar 0 to 20%)</span><b id="m-heat">0%</b></div><div class="track"><div class="fill" id="f-heat" style="width:0;background:linear-gradient(90deg,#8a4a2a,var(--heat),var(--heat-hi))"></div></div></div>
-      <div class="meter"><div class="lab"><span>Hands in the ring</span><b id="m-ring">0.30</b></div><div class="track"><div class="fill" id="f-ring" style="width:30%;background:var(--eco)"></div><div class="bar-mark" style="left:60%"><span>needed to hold it together: 0.60</span></div></div></div>
+      <div class="meter"><div class="lab"><span class="say" id="m-ring">3 of 10 people are holding it; you need 6</span></div><div class="cells" id="cells" aria-hidden="true"></div></div>
     </div>
     <p class="small" id="why"></p>
     <p class="small">A walk ends when the potato is <b style="color:var(--eco)">planted</b> (set down together long enough), when it <b style="color:var(--heat)">burns</b>, when it gets through hot and half-held (<b style="color:var(--heat-hi)">Adolescence</b>), when one hand ends up keeping it and the ring has let go (<b style="color:#b8a1e8">Lock-in</b>), or after twenty years <b>still in the air</b>.</p>
@@ -215,11 +224,17 @@ function preview(a){
 function baseRisk(s){ return P.riskBase * Math.pow(s.capability, P.alpha) * Math.exp(-P.beta * M.alignRatio(s)); }
 // the glow on the stage uses a square root so small heats still show
 function heat01(r){ return Math.max(0, Math.min(1, Math.sqrt(r / 0.08))); }
+// the ring as people: ten in the ring; the model's coordination x 10, rounded down, are holding it.
+// The bar (stagK 0.60) is exactly 6 of 10. The guard keeps the count on the model's side of the bar
+// even where floating point would round across it.
+var PEOPLE = 10, NEED = Math.round(P.stagK * PEOPLE);
+function holding(c){ var n = Math.floor(c * PEOPLE + 1e-9); return c >= P.stagK ? Math.max(n, NEED) : Math.min(n, NEED - 1); }
+function countSay(c){ return '<b>' + holding(c) + '</b> of ' + PEOPLE + ' people are holding it; you need <b>' + NEED + '</b>'; }
 
 // ── the stage ────────────────────────────────────────────────────────────────────────────
 var cv = document.getElementById('stage'), cx = cv.getContext('2d');
-var W = 900, H = 460, N = 8, DPR = 1;
-var COLS = ['#cfe2ff','#ffc9d9','#ffe0a8','#bde8d6','#d9c9ff','#ffd2b8','#c6e4ff','#e8f2b0'];
+var W = 900, H = 460, N = 10, DPR = 1;
+var COLS = ['#cfe2ff','#ffc9d9','#ffe0a8','#bde8d6','#d9c9ff','#ffd2b8','#c6e4ff','#e8f2b0','#f2c9ff','#c9f0ff'];
 var anim = { holder:0, from:0, to:0, p:1, heat:0, heatShown:0, ring:0.30, ringShown:0.30, center:false, centerP:0, end:null, endP:0, t0:performance.now(), stars:[] };
 var spiral = new Path2D(document.getElementById('spiral-path').getAttribute('d'));
 var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -236,9 +251,10 @@ function lerp(a, b, t){ return a + (b - a) * t; }
 function heatColor(h){ // soil -> heat -> heat-hi
   var c1 = [90,64,48], c2 = [255,116,64], c3 = [255,208,138], c = h < 0.6 ? [c1, c2, h / 0.6] : [c2, c3, (h - 0.6) / 0.4];
   var r = c[0].map(function(v, i){ return Math.round(lerp(v, c[1][i], Math.min(1, c[2]))); }); return 'rgb(' + r.join(',') + ')'; }
-function drawAgent(x, y, col, dim){
+function drawAgent(x, y, col, dim, lit){
   var k = Math.max(1, Math.min(1.6, ringR() / 110));
-  cx.globalAlpha = dim ? 0.35 : 1;
+  if (lit){ cx.fillStyle = 'rgba(116,216,180,.22)'; cx.beginPath(); cx.arc(x, y, 15 * k, 0, Math.PI * 2); cx.fill(); }
+  cx.globalAlpha = dim ? 0.3 : 1;
   cx.fillStyle = col; cx.beginPath(); cx.arc(x, y - 9 * k, 5.5 * k, 0, Math.PI * 2); cx.fill();
   cx.beginPath(); cx.moveTo(x - 7 * k, y + 9 * k); cx.quadraticCurveTo(x, y - 5 * k, x + 7 * k, y + 9 * k); cx.closePath(); cx.fill();
   cx.globalAlpha = 1;
@@ -257,16 +273,19 @@ function draw(now){
   // the shared ground
   var gA = 0.25 + 0.6 * anim.centerP;
   cx.fillStyle = 'rgba(90,64,48,' + gA + ')'; cx.beginPath(); cx.ellipse(cxm, cym + 10, R * 0.34, R * 0.12, 0, 0, Math.PI * 2); cx.fill();
-  // hands: joined links between neighbours
-  var joined = Math.round(anim.ringShown * N);
+  // hands: the people holding it (the model's coordination as a count) join hands with their
+  // neighbours; the seat that would make it enough is ringed until someone is there
+  var held = phase === 'intro' ? holding(0.30) : holding(anim.ring);
   for (var i = 0; i < N; i++){
-    var a = agentPos(i, tt), b = agentPos((i + 1) % N, tt);
-    cx.strokeStyle = i < joined ? 'rgba(116,216,180,.85)' : 'rgba(152,161,176,.18)';
-    cx.lineWidth = i < joined ? 2.2 : 1; cx.setLineDash(i < joined ? [] : [3, 5]);
+    var a = agentPos(i, tt), b = agentPos((i + 1) % N, tt), on = (i < held - 1) || (held === N);
+    cx.strokeStyle = on ? 'rgba(116,216,180,.85)' : 'rgba(152,161,176,.18)';
+    cx.lineWidth = on ? 2.2 : 1; cx.setLineDash(on ? [] : [3, 5]);
     cx.beginPath(); cx.moveTo(a[0], a[1]); cx.lineTo(b[0], b[1]); cx.stroke();
-    if (i < joined){ var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; cx.fillStyle = '#74d8b4'; cx.beginPath(); cx.arc(mx, my, 2.6, 0, Math.PI * 2); cx.fill(); }
+    if (on){ var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; cx.fillStyle = '#74d8b4'; cx.beginPath(); cx.arc(mx, my, 2.6, 0, Math.PI * 2); cx.fill(); }
   }
   cx.setLineDash([]);
+  if (held < NEED && !ended){ var nq = agentPos(NEED - 1, tt), kk = Math.max(1, Math.min(1.6, ringR() / 110));
+    cx.strokeStyle = 'rgba(238,231,218,.55)'; cx.setLineDash([2, 3]); cx.lineWidth = 1.2; cx.beginPath(); cx.arc(nq[0], nq[1], 17 * kk, 0, Math.PI * 2); cx.stroke(); cx.setLineDash([]); }
   // the planted spiral
   if (planted){
     cx.save(); cx.translate(cxm - R * 0.9, cym - R * 0.9 * 0.82); cx.scale(R * 1.8 / 90, R * 1.8 * 0.82 / 90); cx.translate(-5, -5);
@@ -274,7 +293,7 @@ function draw(now){
     cx.setLineDash([900 * anim.endP, 2000]); cx.stroke(spiral); cx.restore(); cx.setLineDash([]);
   }
   // agents
-  for (var j = 0; j < N; j++){ var q = agentPos(j, tt); drawAgent(q[0], q[1], COLS[j], dimOthers && j !== anim.holder); }
+  for (var j = 0; j < N; j++){ var q = agentPos(j, tt); drawAgent(q[0], q[1], COLS[j], (dimOthers && j !== anim.holder) || (!dimOthers && j >= held), !dimOthers && j < held); }
   if (phase === 'intro') { requestAnimationFrame(draw); return; }
   // the potato: in a hand, in the air, or on the ground
   var A = agentPos(anim.from, tt), B = agentPos(anim.to, tt), e = anim.p < 1 ? (1 - Math.cos(anim.p * Math.PI)) / 2 : 1;
@@ -324,7 +343,8 @@ function play(k){
   if (a.tog && state.lastAlone) cap = 'You reached for hands, and not enough were there. <em>The year was spent.</em>';
   else if (a.tog) cap = 'Held <em class="eco">together</em> and set down on shared ground, it can cool. <em class="eco">Something can grow.</em>';
   else if (tossed) cap = heatNow > heatBefore + 1e-6 ? 'Each grabs it, points at another, throws it on. <em>Every toss adds heat.</em>' : 'Thrown on. The heat held this year, but what was built keeps growing.';
-  else cap = 'Held instead of thrown: it is understood a little better' + (dRing > 0.001 ? ', and the others notice: <em class="eco">more hands</em>.' : '. The ring did not grow this year.');
+  else { var dN = holding(state.coordination) - holding(before.coordination);
+    cap = 'Held instead of thrown: it is understood a little better' + (dN > 0 ? ', and the others notice: <em class="eco">' + (dN === 1 ? 'one more pair of hands' : dN + ' more pairs of hands') + '</em>.' : dRing > 0.001 ? '. The others notice, but nobody new has joined yet.' : '. Nobody new joined this year.'); }
   cap = pre + cap;
   if (state.lastShock) cap += ' <em>A shock from outside shook the ring and flared the heat.</em>';
   if (state.endpoint) cap = ENDS[state.endpoint].planted ? 'Not recursive self-improvement. <em class="eco">Recursive eco-improvement.</em>' : ENDS[state.endpoint].nm + '.';
@@ -332,8 +352,8 @@ function play(k){
   var li = document.createElement('li');
   li.className = tossed ? 'hot' : (a.tog && !state.lastAlone) ? 'cool' : '';
   li.innerHTML = '<b>Year ' + state.t + '. ' + (k === 'idk' ? 'I don\u2019t know: ' + (a.k === 'start' ? 'the starting hand' : a.nm + ' again') : a.nm) + '.</b> ' +
-    (a.tog && state.lastAlone ? '<span class="g">Hands in the ring were ' + before.coordination.toFixed(2) + ', below the 0.60 needed, so the step together could not count and the year passed with nothing done.</span>'
-      : '<span class="g">Heat: ' + (heatBefore * 100).toFixed(1) + '% \u2192 ' + risk + '% a year.' + (state.lastShock ? ' A shock from outside added ' + Math.round(P.shockRisk * 100) + '% for this year only and cost some hands.' : '') + ' Hands in the ring: ' + before.coordination.toFixed(2) + ' \u2192 ' + state.coordination.toFixed(2) + '.</span>');
+    (a.tog && state.lastAlone ? '<span class="g">Only ' + holding(before.coordination) + ' of ' + PEOPLE + ' were holding it and ' + NEED + ' were needed, so the step together could not count and the year passed with nothing done.</span>'
+      : '<span class="g">Heat: ' + (heatBefore * 100).toFixed(1) + '% \u2192 ' + risk + '% a year.' + (state.lastShock ? ' A shock from outside added ' + Math.round(P.shockRisk * 100) + '% for this year only and cost some hands.' : '') + ' People holding it: ' + holding(before.coordination) + ' \u2192 ' + holding(state.coordination) + ' of ' + PEOPLE + '.</span>');
   document.getElementById('log').insertBefore(li, document.getElementById('log').firstChild);
   writeHash(); render();
   if (state.endpoint) setTimeout(showEnd, reduce ? 200 : 1800);
@@ -343,17 +363,20 @@ function render(){
   document.getElementById('year').textContent = 'Year ' + state.t + ' of ' + P.horizon;
   var heat = baseRisk(state); document.getElementById('m-heat').textContent = (heat * 100).toFixed(1) + '%' + (state.lastShock ? ' +' + Math.round(P.shockRisk * 100) + '% shock' : '');
   document.getElementById('f-heat').style.width = Math.min(100, heat / 0.20 * 100) + '%';
-  document.getElementById('m-ring').textContent = state.coordination.toFixed(2);
-  document.getElementById('f-ring').style.width = (state.coordination * 100) + '%';
-  document.getElementById('why').textContent = state.t === 0 ? 'Year 0: nothing has been thrown yet. The potato is warm, and 0.30 of the hands are there.' :
-    'What makes the heat: how much has been built (grown by tossing) against how well it is understood (grown by holding). What fills the ring: holding; tossing empties it, and it leaks a little every year. Planting needs the ring past 0.60 and a few years held together.';
+  var hn = holding(state.coordination);
+  document.getElementById('m-ring').innerHTML = countSay(state.coordination);
+  document.getElementById('count').innerHTML = '<b>' + hn + '</b> of ' + PEOPLE + ' holding · ' + NEED + ' needed';
+  var cells = ''; for (var ci = 0; ci < PEOPLE; ci++) cells += '<i class="' + (ci < hn ? 'on' : '') + (ci === NEED - 1 ? ' need' : '') + '"></i>';
+  document.getElementById('cells').innerHTML = cells;
+  document.getElementById('why').textContent = state.t === 0 ? 'Year 0: nothing has been thrown yet. The potato is warm, and ' + hn + ' of ' + PEOPLE + ' people are holding it.' :
+    'What makes the heat: how much has been built (grown by tossing) against how well it is understood (grown by holding). What brings people into the ring: holding; tossing drives them off, and a few drift away every year. Planting needs ' + NEED + ' of ' + PEOPLE + ' holding and a few years held together.';
   var box = document.getElementById('acts'); box.innerHTML = '';
   ACTS.forEach(function(a){
     var b = document.createElement('button'); b.className = 'act' + (a.cls ? ' ' + a.cls : '') + (a.tog && state.coordination >= P.stagK ? ' ready' : '');
     var sub;
     var eff = a.k === 'idk' ? lastEff(moves.concat(['idk'])) : a;
     var pv = preview(eff), odds = '<span class="odds">Every year from here like this: planted ' + pv.planted + ', burns ' + pv.burn + ' in 100</span>';
-    if (a.tog) sub = (state.coordination >= P.stagK ? 'the hands are there (' + state.coordination.toFixed(2) + '): it counts. ' : 'only ' + state.coordination.toFixed(2) + ' of the 0.60 needed: this year would be spent. ') + odds;
+    if (a.tog) sub = (state.coordination >= P.stagK ? 'the hands are there (' + holding(state.coordination) + ' of ' + PEOPLE + '): it counts. ' : 'only ' + holding(state.coordination) + ' of ' + PEOPLE + ' are holding it, ' + NEED + ' needed: this year would be spent. ') + odds;
     else if (a.k === 'idk') sub = (eff.k === 'start' ? 'the hand the walk began with' : 'last year\u2019s move again: ' + eff.nm.toLowerCase()) + '. ' + odds;
     else sub = a.d + '. ' + odds;
     var dot = { toss:'var(--heat)', hold:'var(--agent)', tog:'var(--eco)', idk:'var(--dim)' }[a.k];
@@ -418,7 +441,7 @@ sizeStage();
 var fromLink = readHash();
 if (!fromLink) newWalk();
 // replay the log for a walk opened from a link
-if (fromLink){ state.history.forEach(function(hh, i){ var li = document.createElement('li'); li.innerHTML = '<b>Year ' + hh.t + '. ' + (actOf(moves[i]) ? actOf(moves[i]).nm : 'Your own hand') + '.</b> <span class="g">Hands in the ring after it: ' + hh.coordination.toFixed(2) + '.</span>'; document.getElementById('log').insertBefore(li, document.getElementById('log').firstChild); }); }
+if (fromLink){ state.history.forEach(function(hh, i){ var li = document.createElement('li'); li.innerHTML = '<b>Year ' + hh.t + '. ' + (actOf(moves[i]) ? actOf(moves[i]).nm : 'Your own hand') + '.</b> <span class="g">People holding it after it: ' + holding(hh.coordination) + ' of ' + PEOPLE + '.</span>'; document.getElementById('log').insertBefore(li, document.getElementById('log').firstChild); }); }
 requestAnimationFrame(draw);
 if (fromLink) startPlay();
 else {
