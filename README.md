@@ -49,6 +49,7 @@ binding it to this repo continues it instead of starting a rival.
 
 ```
 index.html                a copy of the landing for the branch build — GENERATED, edit build-site.mjs
+404.html                  a copy of the not-found page for the branch build — GENERATED, same
 .nojekyll                 without it Jekyll 404s every _-prefixed path (grammars/_eco_ids.json)
 CNAME                     learning.recursive.eco (read only by a branch build; see below)
 recursive-eco.json        the channel manifest the app reads (identity, where grammars live, id map)
@@ -56,20 +57,26 @@ grammars/
   _eco_ids.json           slug -> recursive.eco grammar UUID
   PRIVATE.md              the private grammars: name + id only, never contents
   <slug>/grammar.json     one public grammar, exported in the app's own sync shape
-game/                     the games: potato-others.html (Hot Potato, with others; potato.html alone)
-                          · walk.html (The Walk) · index.html (As-If) — hand-written
+game/                     the games, hand-written: spread.html · scroll.html · walk.html (The Walk
+                          as a table, a story, a dashboard; walk-model.js is their shared model)
+                          · index.html (As-If) · lines.html (Changing Lines) · potato-others.html
+                          (Hot Potato, with others; potato.html alone) · DESIGN-*.md (design notes)
 glossary/                 Words: terms.json (the canonical definitions) + index.html (GENERATED)
-site/                     the landing the Pages workflow publishes at learning.recursive.eco
-scripts/                  export-grammars.mjs (re-export) · build-site.mjs (rebuild the landing
-                          and the glossary) · build-glossary.mjs (the glossary alone)
-                          mark.svg (her spiral + icons, inlined into the landing)
+shared/nav.js             the one navigation: sections, the list of games, the site header and
+                          footer, the skip link. See "Navigation" below
+site/                     what the Pages workflow publishes at learning.recursive.eco: the landing
+                          and 404.html (both GENERATED)
+scripts/                  export-grammars.mjs (re-export) · build-site.mjs (rebuild the landing,
+                          404.html and the glossary) · build-glossary.mjs (the glossary alone)
+                          · check-links.mjs (the deploy's link check) · mark.svg (her spiral +
+                          icons, inlined into the landing)
 docs/CHANNELS.md          the two-channel model, and what sync needs
 ```
 
 ### Where GitHub Pages serves from
 
 The site is **https://learning.recursive.eco**, published by the **Pages workflow**
-(`.github/workflows/pages.yml`): its root is `site/`, with `game/`, `glossary/` and `grammars/` copied beside it.
+(`.github/workflows/pages.yml`): its root is `site/`, with `game/`, `glossary/`, `shared/` and `grammars/` copied beside it.
 Until Sep 24 2026 it was the legacy branch build at `game.recursive.eco`, which now answers 404
 ("Site not found"). Confirm rather than assume, any time this matters:
 
@@ -79,6 +86,23 @@ gh api repos/PlayfulProcess/recursive-learning/pages --jq '.build_type, .source,
 
 `node scripts/build-site.mjs` writes the landing to `site/` **and** to the repo root, so if the
 source is ever switched back to the branch build it gets the same page.
+
+### Navigation (every page, one file)
+
+Every page carries the same header (the spiral and "Recursive Learning" linking home, then Games
+and Words, the current one marked), a "Skip to content" link, and the same footer listing every
+game and section. All of it comes from [`shared/nav.js`](shared/nav.js):
+
+- **A new hand-written page** gets it with one line, the first thing inside `<body>`:
+  `<script src="../shared/nav.js"></script>` (from a folder one down; `shared/nav.js` from the
+  root), and `id="main"` on its content wrapper.
+- **A new game or section**: one entry in `SITE.games` or `SITE.sections` in that file, then
+  `node scripts/build-site.mjs`, which renders the same header, footer and list of games into the
+  landing, the glossary and `404.html`. A section is added only once its folder exists and
+  `pages.yml` copies it.
+- **The deploy checks the links.** `node scripts/check-links.mjs _site --repo .` runs in the Pages
+  workflow and fails it on any internal link to a missing page, or on a folder with pages that the
+  workflow forgot to copy. Run it locally with `node scripts/check-links.mjs .`.
 
 ### Words (the glossary)
 
@@ -136,9 +160,9 @@ never writes to recursive.eco, and it drops `ai_personality_prompt` before writi
 
 | What | License |
 |------|---------|
-| Code — `game/` (HTML and JS), `scripts/*.mjs`, `site/`, the root `index.html`, `.github/` | Apache-2.0 — [`LICENSE`](LICENSE), [`NOTICE`](NOTICE) |
+| Code — `game/` (HTML and JS), `shared/nav.js`, `scripts/*.mjs`, `site/`, the root `index.html` and `404.html`, `.github/` | Apache-2.0 — [`LICENSE`](LICENSE), [`NOTICE`](NOTICE) |
 | Content — the grammars in `grammars/`, `docs/`, `glossary/terms.json`, and the design notes in `game/*.md` | CC BY-SA 4.0 for PlayfulProcess's own text — [`LICENSE-CONTENT.txt`](LICENSE-CONTENT.txt). Linked or embedded third-party media (videos, images, quoted sources) keep their own terms |
-| The names "recursive.eco" and "Recursive", and the spiral mark (`scripts/mark.svg`) | Not licensed — see [`TRADEMARKS.md`](TRADEMARKS.md) |
+| The names "recursive.eco" and "Recursive", and the spiral mark (`scripts/mark.svg`, and its copy in `shared/nav.js`) | Not licensed — see [`TRADEMARKS.md`](TRADEMARKS.md) |
 
 The grammars here are exported from recursive.eco; most do not carry their own
 `_grammar_commons` licence block, so this table is what applies to them.

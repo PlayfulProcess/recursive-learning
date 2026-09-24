@@ -1,8 +1,14 @@
 name: Pages
 
-# Publishes the static index in `site/`, the game in `game/`, the glossary in `glossary/`, and the
-# grammar JSON in `grammars/` to GitHub Pages. No install, no node_modules, no build tooling — the deploy
-# directory is assembled with `cp`.
+# Publishes the static index in `site/` (with 404.html), the game in `game/`, the glossary in
+# `glossary/`, the shared navigation in `shared/` and the grammar JSON in `grammars/` to GitHub
+# Pages. No install, no node_modules, no build tooling — the deploy directory is assembled with `cp`,
+# then checked by `node scripts/check-links.mjs` (node is already on the runner; no dependencies).
+#
+# A NEW TOP-LEVEL FOLDER (explainers/, lab/, map/) must be added to the `cp` lines AND to
+# on.push.paths below. If it is not, the link check fails this job before anything is deployed,
+# naming the folder: that is the guard against a repeat of /glossary/, merged but 404ing because
+# this file did not copy it.
 #
 # `.nojekyll` is copied in deliberately: without it, Pages runs Jekyll and every path whose
 # name starts with `_` is silently 404'd — which here would be `grammars/_eco_ids.json`, the
@@ -14,7 +20,7 @@ name: Pages
 #   -> "build_type":"workflow", "cname":"learning.recursive.eco", https certificate approved
 #
 # and the last three runs of this workflow succeeded. So the published root is `site/`, with
-# `game/`, `glossary/` and `grammars/` copied beside it. The custom domain lives in Settings -> Pages; an
+# `game/`, `glossary/`, `shared/` and `grammars/` copied beside it. The custom domain lives in Settings -> Pages; an
 # Actions deploy does not read the root `CNAME` file, which is kept (holding the same name) for
 # the branch build, if the source is ever switched back. Before Sep 24 the source was the legacy
 # branch build at game.recursive.eco, which now answers 404 ("Site not found").
@@ -27,6 +33,8 @@ on:
       - 'game/**'
       - 'grammars/**'
       - 'glossary/**'
+      - 'shared/**'
+      - 'scripts/check-links.mjs'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -52,9 +60,15 @@ jobs:
           cp -r game _site/game
           cp -r grammars _site/grammars
           cp -r glossary _site/glossary
+          cp -r shared _site/shared
           test -f _site/.nojekyll || touch _site/.nojekyll
           echo "--- deploying ---"
           find _site -maxdepth 2 | sort
+
+      # Every internal link on every page must land on a file in _site (and every folder of the
+      # repo that holds pages must have been copied). Fails the deploy, not the visitor.
+      - name: Check every internal link
+        run: node scripts/check-links.mjs _site --repo .
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
