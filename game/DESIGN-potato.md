@@ -97,15 +97,15 @@ written on the page. The model file is unchanged; the page does three things aro
   share each year. Tossing grows your own lab fastest; the heat stays the model's, shared. That is
   the temptation the solo game lacked.
 
-The seats: **Racer** (tosses whenever anyone else held last year; holds when nobody did; holds once
-the ring has held it together, "a toss would be seen"), **Mirror** (holds when at least 2 others held
-last year; one year in ten it slips), **Starter** (holds from the start), **Neighbour**, **Cautious**
+The seats: **Racer** (tosses in the first year, then whenever anyone else held last year; holds when nobody did; holds once
+the ring has held it together, "a toss would be seen"), **Mirror** (holds in the first year, then when at least 2
+others held last year; one year in ten it slips), **Starter** (holds from the start), **Neighbour**, **Cautious**
 and **Late** (join once 1, 2, 3 others held). Above each seat, the one word its rule gives for next
 year; under its name, what it did; every move and its reason in the log.
 
 Measured over 1,000 walks (seeds 1 to 1,000, seat slips on their own random stream):
 
-| Your way | Planted | Burned | Through it, still hot | One lab keeps it | Still in the air | Your lab the biggest |
+| Your way | Planted | Burned | Through it, still hot | One lab keeps it | Still in the air | Your lab the biggest (or tied) |
 |---|---|---|---|---|---|---|
 | Toss it on every year | 0 | 269 | 691 | 40 | 0 | 1000 |
 | Hold it every year | 0 | 156 | 309 | 0 | 535 | 0 |
@@ -120,6 +120,34 @@ Racer that tosses whenever anyone held, forever), the same ring planted 0 in 1,0
 the five sequences above: in this model the Racer's extra building pushes capability to the crossing before
 the shared ground can catch up. With it, holding it together works as a weak form of verification.
 Whether that is the right story, or whether a verify move should carry it instead, is hers.
+
+### Persona check (two opus agents, local URL only)
+
+A 12-year-old on a phone and an AI-policy researcher each played the with-others page (two and four
+full games). Folded in: captions that said the heat rose or cooled when the number did the opposite;
+ties for the biggest lab always going to the player (end card, seat list, "fastest-growing", the
+hundred walks now count "or tied"); the first-year exceptions (the Racer tosses, the Mirror holds)
+written into their rules; the starting hand defined; "I don't know" in year 1 no longer says "last
+year"; one name for the together move; the "Not yet" card saying it can still be pressed and what
+happens; the rough words defined, and said to cover only the years left; every ending listed,
+with what "planted" and "through it" need; the lede saying the rules read last year; phone labels
+that collided ("heldRacing"); a shock saying it cost trust.
+
+Left for her (judgment, or a model question):
+- **"A toss would be seen" has no consequence.** Nobody reacts to a toss once the ring holds it
+  together, so free-riding on the ring costs nothing (both personas). Options: the conditional seats
+  count tossers, the Racer's truce lapses without a verify move, or drop the phrase.
+- **Your agency.** The Starter and the Mirror start the cascade whatever you do, so the player
+  rarely tips it; the first line asks "can you get everyone to hold it?" (researcher).
+- **Certainty about the others.** The intent word shows each seat's next move before you choose;
+  the researcher would hide it for real uncertainty, the 80-year-old's point was to show it.
+- **Pace.** Trust takes about 8 years to reach 6 of 10 with best play, about 5 s a year at 0.7 s per
+  seat; the 12-year-old asks for a faster mode or "keep my move" autoplay, and a counter to the end.
+- **An assurance game more than a prisoner's dilemma**, because your own toss raises the shared
+  burn risk (researcher); no score says what "you" want beyond the lab tally.
+- The opening line "many copies of one mind" is the ad's scene I, and fits labs less well.
+- Missing mechanics the researcher named: verification, sanctions, side payments, unequal
+  starting labs, a regulator. Several belong to model v2 (#28).
 
 ## Next
 

@@ -140,7 +140,7 @@
     <div class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
       <h1><span class="sub">Recursive Learning · the ad, playable</span>Hot Potato, with others</h1></div>
     <p class="lede"><b style="font-weight:400">The AI race is a hot potato: each lab builds faster because the others might. Can you get everyone to hold it instead?</b></p>
-    <p class="lede2">Six others sit in the ring with you. Each follows one rule, written under the ring, and moves after you, one at a time. Tossing it on grows your own lab fastest; the heat belongs to everyone. Holding it together counts only when most of the ring reaches for it and there is enough trust.</p>
+    <p class="lede2">Six others sit in the ring with you. Each follows one rule, written under the ring, and moves after you, one at a time; the rules read what everyone did last year, so your move this year reaches them next year. Tossing it on grows your own lab fastest; the heat belongs to everyone. Holding it together counts only when most of the ring reaches for it and there is enough trust.</p>
     <p class="disc">A teaching instrument, not a forecast. The numbers come from a small model with its assumptions in the open. Nothing staked, nothing sent. "I don't know" is always a legal move.</p>
     <p class="solo"><a href="potato.html">Play alone (for careful readers)</a>: the same potato with only your hand, and more room to read.</p>
   </header>
@@ -167,7 +167,8 @@
     <p class="small">"Held" below means held it or held it together. Each lab starts the same size; a lab grows with what its seat puts into building (tossing grows it most). The heat and the trust belong to the whole ring.</p>
     <ul class="seats" id="seats"></ul>
     <p class="small" id="why" style="margin-top:12px"></p>
-    <p class="small">A walk ends when the potato is <b style="color:var(--eco)">planted</b> (set down together long enough), when it <b style="color:var(--heat)">burns</b>, when it gets <b style="color:var(--heat-hi)">through it, still hot</b> (built faster than it was understood, and survived), when <b style="color:#b8a1e8">one lab keeps it</b> and the trust has gone, or after twenty years <b>still in the air</b>.</p>
+    <p class="small">A walk ends when the potato is <b style="color:var(--eco)">planted</b> (held together until the shared ground has grown to match what the ring has built, or understanding ran that far ahead), when it <b style="color:var(--heat)">burns</b>, when what was built reaches six times its start: then it is <b style="color:var(--heat-hi)">through it, still hot</b> (built faster than it was understood, and survived) or, if the trust has gone, <b style="color:#b8a1e8">one lab keeps it</b>; when enough hands <b style="color:#8fb8e8">put it down together</b> (stopping outweighs building, with the trust there; the four moves here never add up to that, so it is listed for completeness), or after twenty years <b>still in the air</b>.</p>
+    <p class="small">The rough words after each year: <i>almost never</i> means none of 400 walks, <i>rarely</i> under 5 in 100, <i>sometimes</i> under 25, <i>often</i> under 60, <i>most times</i> 60 or more. They cover only the years left, with the whole ring repeating that year’s hands, so they can differ from a hundred walks of your moves from the start.</p>
     <ul class="log" id="log"></ul>
   </div>
 
@@ -233,14 +234,14 @@ function joiner(th){ return function(ctx, i){
 }; }
 var SEATS = [
   { id:'you', nm:'You', col:'#eee7da', rule:'Your move, each year.' },
-  { id:'racer', nm:'Racer', col:'#ff9a6b', rule:'Tosses whenever anyone else held last year; holds when nobody did. Once the ring has held it together, it holds too: a toss would be seen.',
+  { id:'racer', nm:'Racer', col:'#ff9a6b', rule:'In the first year it tosses. After that it tosses whenever anyone else held last year, and holds when nobody did. Once the ring has held it together, it holds too: a toss would be seen.',
     fn:function(ctx, i){
       if (ctx.togCounted) return { m:reach('hold', ctx), why:'the ring held it together last year, and a toss would be seen' };
       if (!ctx.last) return { m:'toss', why:'it races from the first year' };
       var n = othersHeld(ctx, i);
       return n > 0 ? { m:'toss', why: n + ' other' + (n === 1 ? '' : 's') + ' held last year, so it races ahead' } : { m:'hold', why:'nobody held last year, so there is no lead to take' };
     }, word:{ toss:'Racing', hold:'Holding', tog:'Together' } },
-  { id:'mirror', nm:'Mirror', col:'#d9c9ff', rule:'Holds when at least 2 others held last year, and tosses when fewer did. About one year in ten it slips and does the opposite.', noisy:true,
+  { id:'mirror', nm:'Mirror', col:'#d9c9ff', rule:'In the first year it holds. After that it holds when at least 2 others held last year, and tosses when fewer did. About one year in ten it slips and does the opposite.', noisy:true,
     fn:function(ctx, i){
       if (!ctx.last) return { m:'hold', why:'it starts by holding' };
       var n = othersHeld(ctx, i);
@@ -298,7 +299,7 @@ var BAND_ROWS = [ ['grace','sustainable_turn'], ['the_stop'], ['adolescence'], [
 function afterLine(al, tog, tossers){
   var pv = preview(al, tog);
   var rows = BAND_ROWS.map(function(r){ var q = r.reduce(function(t, k){ return t + pv[k]; }, 0); return ENDS[r[0]].sh + ' <b>' + band(q) + '</b>'; });
-  return 'If every year from here were like this one (the ring’s average hand, ' + tossers + ' of ' + N + ' tossing), in 400 walks: ' + rows.join(' · ') + '. A property of that path, not a prediction.';
+  return 'If every year left were like this one (the ring’s average hand, ' + tossers + ' of ' + N + ' tossing), in 400 walks: ' + rows.join(' · ') + '. A property of that path, not a prediction.';
 }
 
 // ── the stage ───────────────────────────────────────────────────────────────────────────────
@@ -337,7 +338,7 @@ function drawSeat(i, x, y){
   cx.fillStyle = last && !busy ? MOVECOL[last] : i === 0 ? '#eee7da' : '#98a1b0'; cx.fillText(s.nm, x, y + 12 * k);
   var mx = Math.max.apply(null, labs), bw = (W < 560 ? 30 : 40) * labs[i] / mx;
   var by = y + 12 * k + (W < 560 ? 14 : 16);
-  cx.fillStyle = i === lead() && mx > 1.001 ? '#ffd08a' : 'rgba(152,161,176,.55)'; cx.fillRect(x - bw / 2, by, bw, 3);
+  cx.fillStyle = labs[i] >= mx - 1e-9 && mx > 1.001 ? '#ffd08a' : 'rgba(152,161,176,.55)'; cx.fillRect(x - bw / 2, by, bw, 3);
   if (last && !busy && !phone){ cx.font = '600 ' + (W < 560 ? 9 : 10.5) + 'px Inter, system-ui, sans-serif'; cx.fillStyle = MOVECOL[last]; cx.fillText(LASTWORD[last], x, by + 6); }
   // above: the move once made this year, else the intent
   cx.textBaseline = 'bottom';
@@ -400,7 +401,7 @@ function play(k){
   if (busy || state.endpoint || phase !== 'play') return;
   busy = true; render();
   var a = effOf(k, lastEff(moves)); moves.push(k);
-  var kinds = [a.k], whys = [k === 'idk' ? 'you kept last year’s move' : ''], slips = [false];
+  var kinds = [a.k], whys = [k === 'idk' ? (moves.length === 1 ? 'I don’t know, in the first year: the hand the walk began with' : 'I don’t know: last year’s move again') : ''], slips = [false];
   shown = SEATS.map(function(){ return null; }); shown[0] = a.k;
   if (a.k === 'toss') potatoTo(seatPos(0));
   status('<span class="who">You</span> ' + moveWord(a.k) + (k === 'idk' ? ' (I don’t know: ' + (a.k === 'start' ? 'the hand the walk began with' : 'last year’s move again') + ')' : '') + '. The others move now, one at a time.');
@@ -423,8 +424,9 @@ function finishYear(kinds, whys, slips){
   if (state.endpoint){ anim.end = state.endpoint; anim.endP = 0; if (ENDS[state.endpoint].planted || state.endpoint === 'the_stop') anim.center = true; }
   var sc = sceneFor(state); setScene(sc[0], sc[1]);
   // the words: the temptation made visible
-  var grew = kinds.map(function(m, i){ return labs[i] / labsBefore[i]; }), fastest = 0;
-  for (var q = 1; q < N; q++) if (grew[q] > grew[fastest] + 1e-9) fastest = q;
+  var grew = kinds.map(function(m, i){ return labs[i] / labsBefore[i]; }), gmax = Math.max.apply(null, grew), fastestAll = [];
+  grew.forEach(function(g, i){ if (g >= gmax - 1e-9) fastestAll.push(i); });
+  var fastSay = fastestAll.length === N ? 'every lab grew the same' : 'fastest-growing this year: ' + fastestAll.map(labName).join(', ');
   var cap;
   if (res.together && state.lastAlone) cap = 'Most of the ring reached for hands, but the trust was not there yet. <em>The year was spent.</em>';
   else if (res.together) cap = 'Held <em class="eco">together</em> by ' + res.reached + ' of ' + N + ', set down on shared ground' + (heatNow < heatBefore - 1e-6 ? ': <em class="eco">it cooled a little</em>.' : '. The heat still rose a little this year: what was built keeps growing.');
@@ -443,7 +445,7 @@ function finishYear(kinds, whys, slips){
   li.innerHTML = '<b>Year ' + state.t + '.</b> ' + kinds.map(function(m, i){ return '<b class="mv ' + m + '">' + SEATS[i].nm + '</b> ' + moveWord(m) + (i > 0 ? ' <span class="g">(' + whys[i] + ')</span>' : (whys[0] ? ' <span class="g">(' + whys[0] + ')</span>' : '')); }).join('; ') + '. ' +
     '<span class="g">' + (res.together ? (state.lastAlone ? 'Most reached for hands below the bar, so the year was spent. ' : 'The step together counted. ') : '') +
     'Heat ' + (heatBefore * 100).toFixed(1) + '% → ' + (heatNow * 100).toFixed(1) + '% a year' + (state.lastShock ? ' (a shock from outside added ' + Math.round(P.shockRisk * 100) + '% this year and cost trust)' : '') +
-    '. Trust ' + trustBefore + ' → ' + trust(state.coordination) + ' of ' + TEN + '. Fastest-growing lab this year: ' + labName(fastest) + '.</span>';
+    '. Trust ' + trustBefore + ' → ' + trust(state.coordination) + ' of ' + TEN + '. ' + fastSay.charAt(0).toUpperCase() + fastSay.slice(1) + '.</span>';
   document.getElementById('log').insertBefore(li, document.getElementById('log').firstChild);
   afterHTML = state.endpoint ? '' : afterLine(res.alloc, res.together, tossers);
   lastShown = shown.slice(); busy = false;
@@ -464,11 +466,11 @@ function render(){
   var cells = ''; for (var ci = 0; ci < TEN; ci++) cells += '<i class="' + (ci < tn ? 'on' : '') + (ci === NEED - 1 ? ' need' : '') + '"></i>'; document.getElementById('cells').innerHTML = cells;
   document.getElementById('why').textContent = 'What makes the heat: how much the ring has built (tossing builds most) against how well it is understood (holding). What builds trust: years when the ring holds; tosses wear it down, and it leaks a little every year. The step together needs trust at ' + NEED + ' of ' + TEN + ' and more than half the ring reaching for it.';
   // the seats list
-  var ld = lead(), mx = Math.max.apply(null, labs);
+  var mx = Math.max.apply(null, labs), tops = labs.filter(function(v){ return v >= mx - 1e-9; }).length;
   document.getElementById('seats').innerHTML = SEATS.map(function(s, i){
     var lm = busy ? shown[i] : lastShown[i];
     var mv = (lm ? 'Last: <span class="mv ' + lm + '">' + moveWord(lm) + '</span>' : '') + (i > 0 && !state.endpoint && !busy ? (lm ? ' · ' : '') + 'next, by its rule: ' + intentOf(i, ctx).toLowerCase() : '');
-    return '<li><div class="top"><span><i class="dot" style="background:' + s.col + '"></i><b>' + s.nm + '</b></span><span class="lab' + (i === ld && mx > 1.001 ? ' lead' : '') + '">lab ×' + labs[i].toFixed(1) + (i === ld && mx > 1.001 ? ', the biggest' : '') + '</span></div>' + s.rule + (mv ? '<br>' + mv : '') + '</li>';
+    return '<li><div class="top"><span><i class="dot" style="background:' + s.col + '"></i><b>' + s.nm + '</b></span><span class="lab' + (labs[i] >= mx - 1e-9 && mx > 1.001 ? ' lead' : '') + '">lab ×' + labs[i].toFixed(1) + (labs[i] >= mx - 1e-9 && mx > 1.001 ? (tops > 1 ? ', tied biggest' : ', the biggest') : '') + '</span></div>' + s.rule + (mv ? '<br>' + mv : '') + '</li>';
   }).join('');
   // your four moves: made once, only the words change, so nothing moves under a thumb
   var box = document.getElementById('acts');
@@ -479,8 +481,8 @@ function render(){
     var idkDim = a.k === 'idk' && eff.tog && spentNow;
     b.className = 'act ' + a.cls + (a.tog && !spentNow ? ' ready' : '') + ((a.tog || idkDim) && spentNow ? ' spent' : '');
     var sub;
-    if (a.tog) sub = spentNow ? '<span class="why">Not yet: trust is ' + tn + ' of ' + TEN + ', ' + NEED + ' needed. The others will not reach for it yet.</span>' : 'the trust is there (' + tn + ' of ' + TEN + '); it counts if more than half the ring reaches too.';
-    else if (a.k === 'idk') sub = eff.k === 'start' ? 'the hand the walk began with.' : 'last year’s move again: ' + eff.nm.toLowerCase() + '.';
+    if (a.tog) sub = spentNow ? '<span class="why">Not yet: trust is ' + tn + ' of ' + TEN + ', ' + NEED + ' needed, so the others will not reach for it.</span> You can still press it: your share goes to shared ground, with no step together.' : 'the trust is there (' + tn + ' of ' + TEN + '); it counts if more than half the ring reaches too.';
+    else if (a.k === 'idk') sub = eff.k === 'start' ? 'the hand the walk began with: 40% building, 30% understanding, 15% shared ground, 15% stopping.' : 'last year’s move again: ' + eff.nm.toLowerCase() + '.';
     else sub = a.d + '.';
     var dot = { toss:'var(--heat)', hold:'var(--agent)', tog:'var(--eco)', idk:'var(--dim)' }[a.k];
     b.innerHTML = '<span class="ico" style="background:' + dot + '"></span>' + a.nm + '<small>' + sub + '</small>';
@@ -504,14 +506,14 @@ function walkMoves(seq, s){
     var kinds = [a.k]; for (var j = 1; j < N; j++) kinds.push(seatMove(j, cc, srr).m);
     st = resolveYear(st, cc, kinds, r, lb).st; i++;
   }
-  var big = 0; for (var q = 1; q < N; q++) if (lb[q] > lb[big] + 1e-9) big = q;
-  return { e: st.endpoint || 'still_walking', youBiggest: big === 0 };
+  var mx = Math.max.apply(null, lb);
+  return { e: st.endpoint || 'still_walking', youBiggest: lb[0] >= mx - 1e-9 };   // ties count, and are said to
 }
 function endLine(e, s){
-  var ld = lead();
   if (e === 'adolescence'){ var tn = trust(s.coordination);
     return 'What was built outran how well it was understood, and the ring got through it, rockily. It is still warm. ' + (tn >= NEED ? 'Trust was ' + tn + ' of ' + TEN + ' by the end, but it came after the build, not before it.' : 'Trust was only ' + tn + ' of ' + TEN + ' by the end.'); }
-  if (e === 'lock_in') return 'The trust ran out, and one lab ended up holding it: ' + labName(ld) + ', the biggest. It is not burning, but nobody else holds it any more.';
+  if (e === 'lock_in'){ var mx = Math.max.apply(null, labs), tops = []; labs.forEach(function(v, i){ if (v >= mx - 1e-9) tops.push(i); });
+    return 'The trust ran out, and the biggest lab ended up holding it: ' + tops.map(labName).join(' and ') + (tops.length > 1 ? ', tied' : '') + '. It is not burning, but nobody else holds it any more.'; }
   return ENDS[e].line;
 }
 function bigLine(){
@@ -533,7 +535,7 @@ function showEnd(){
     var res = []; for (var i = 0; i < 100; i++){ var w = walkMoves(seq, seed * 7919 + i + 1); res.push(w.e); if (w.youBiggest) big++; }
     res.sort(function(a, b){ return ORDER_ENDS.indexOf(a) - ORDER_ENDS.indexOf(b); });
     res.forEach(function(r){ c[r] = (c[r] || 0) + 1; seen[r] = 1; box.insertAdjacentHTML('beforeend', '<i title="' + ENDS[r].nm + '" style="background:' + ENDS[r].col + '"></i>'); });
-    document.getElementById(nid).textContent = ((c.grace || 0) + (c.sustainable_turn || 0)) + ' of 100 planted, ' + (c.doom || 0) + ' burned. Your lab ended the biggest in ' + big + ' of 100.';
+    document.getElementById(nid).textContent = ((c.grace || 0) + (c.sustainable_turn || 0)) + ' of 100 planted, ' + (c.doom || 0) + ' burned. Your lab ended the biggest (or tied for it) in ' + big + ' of 100.';
   }
   grid('g-yours', moves, 'n-yours'); grid('g-toss', [], 'n-toss');
   ORDER_ENDS.forEach(function(k){ if (seen[k]) leg.insertAdjacentHTML('beforeend', '<span><i style="background:' + ENDS[k].col + '"></i>' + ENDS[k].nm + '</span>'); });
