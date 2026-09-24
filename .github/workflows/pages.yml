@@ -1,27 +1,23 @@
 name: Pages
 
-# Publishes the static index in `site/`, the game in `game/`, and the grammar JSON in
-# `grammars/` to GitHub Pages. No install, no node_modules, no build tooling — the deploy
+# Publishes the static index in `site/`, the game in `game/`, the glossary in `glossary/`, and the
+# grammar JSON in `grammars/` to GitHub Pages. No install, no node_modules, no build tooling — the deploy
 # directory is assembled with `cp`.
 #
 # `.nojekyll` is copied in deliberately: without it, Pages runs Jekyll and every path whose
 # name starts with `_` is silently 404'd — which here would be `grammars/_eco_ids.json`, the
 # file the site and the channel importer both point at.
 #
-# THIS WORKFLOW IS NOT WHAT PUBLISHES THE SITE TODAY, and it fails on every push.
+# THIS WORKFLOW IS WHAT PUBLISHES THE SITE (since Sep 24 2026). Checked on Sep 24:
 #
 #   gh api repos/PlayfulProcess/recursive-learning/pages
-#   -> "build_type":"legacy", "source":{"branch":"main","path":"/"}, "cname":"game.recursive.eco"
+#   -> "build_type":"workflow", "cname":"learning.recursive.eco", https certificate approved
 #
-# Pages is set to the LEGACY branch build: game.recursive.eco is served by Jekyll straight from
-# the root of `main`, and `actions/deploy-pages` refuses to run while the source is a branch
-# rather than GitHub Actions. So the published root is the repo root — `index.html`, `game/`,
-# `grammars/`, and the root `.nojekyll` that keeps Jekyll from 404ing `grammars/_eco_ids.json`.
-# `scripts/build-site.mjs` writes the landing to BOTH the repo root and `site/` for that reason.
-#
-# It is kept, not deleted, because it is the whole config for the other source: flipping
-# Settings → Pages → Source to "GitHub Actions" makes this the publisher and `site/` the root,
-# with no other change. Until then its red X is expected.
+# and the last three runs of this workflow succeeded. So the published root is `site/`, with
+# `game/`, `glossary/` and `grammars/` copied beside it. The custom domain lives in Settings -> Pages; an
+# Actions deploy does not read the root `CNAME` file, which is kept (holding the same name) for
+# the branch build, if the source is ever switched back. Before Sep 24 the source was the legacy
+# branch build at game.recursive.eco, which now answers 404 ("Site not found").
 
 on:
   push:
@@ -30,6 +26,7 @@ on:
       - 'site/**'
       - 'game/**'
       - 'grammars/**'
+      - 'glossary/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -54,6 +51,7 @@ jobs:
           cp -r site/. _site/
           cp -r game _site/game
           cp -r grammars _site/grammars
+          cp -r glossary _site/glossary
           test -f _site/.nojekyll || touch _site/.nojekyll
           echo "--- deploying ---"
           find _site -maxdepth 2 | sort

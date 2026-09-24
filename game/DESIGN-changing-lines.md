@@ -1,7 +1,7 @@
 # Changing Lines — design (Sep 22 2026)
 
 A second game for the same lesson as The Walk, built on the I Ching's own probability device.
-Page: `game/lines.html`. Live: https://game.recursive.eco/game/lines.html
+Page: `game/lines.html`. Live: https://learning.recursive.eco/game/lines.html
 
 ## The objective, unchanged
 
