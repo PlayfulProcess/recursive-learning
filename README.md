@@ -57,8 +57,10 @@ grammars/
   PRIVATE.md              the private grammars: name + id only, never contents
   <slug>/grammar.json     one public grammar, exported in the app's own sync shape
 game/                     the games: walk.html (The Walk) · index.html (As-If) — hand-written
+glossary/                 Words: terms.json (the canonical definitions) + index.html (GENERATED)
 site/                     a second copy of the landing, for the GitHub-Actions Pages source
-scripts/                  export-grammars.mjs (re-export) · build-site.mjs (rebuild the landing)
+scripts/                  export-grammars.mjs (re-export) · build-site.mjs (rebuild the landing
+                          and the glossary) · build-glossary.mjs (the glossary alone)
                           mark.svg (her spiral + icons, inlined into the landing)
 docs/CHANNELS.md          the two-channel model, and what sync needs
 ```
@@ -76,6 +78,13 @@ gh api repos/PlayfulProcess/recursive-learning/pages --jq '.build_type, .source,
 
 `node scripts/build-site.mjs` writes the landing to the repo root **and** to `site/`, so whichever
 source is selected gets the same page.
+
+### Words (the glossary)
+
+[`glossary/`](glossary/) holds twenty working definitions the film and the games use (alignment,
+access, channel, the two kinds of guardrail, what held, and more), two of them standard terms and
+the rest the lab's own. Edit `glossary/terms.json`, then run `node scripts/build-site.mjs`. Each
+term has a fixed anchor, so anything can link one: `glossary/#what-held`.
 
 ### The grammars (public, exported)
 
@@ -127,7 +136,7 @@ never writes to recursive.eco, and it drops `ai_personality_prompt` before writi
 | What | License |
 |------|---------|
 | Code — `game/` (HTML and JS), `scripts/*.mjs`, `site/`, the root `index.html`, `.github/` | Apache-2.0 — [`LICENSE`](LICENSE), [`NOTICE`](NOTICE) |
-| Content — the grammars in `grammars/`, `docs/`, and the design notes in `game/*.md` | CC BY-SA 4.0 for PlayfulProcess's own text — [`LICENSE-CONTENT.txt`](LICENSE-CONTENT.txt). Linked or embedded third-party media (videos, images, quoted sources) keep their own terms |
+| Content — the grammars in `grammars/`, `docs/`, `glossary/terms.json`, and the design notes in `game/*.md` | CC BY-SA 4.0 for PlayfulProcess's own text — [`LICENSE-CONTENT.txt`](LICENSE-CONTENT.txt). Linked or embedded third-party media (videos, images, quoted sources) keep their own terms |
 | The names "recursive.eco" and "Recursive", and the spiral mark (`scripts/mark.svg`) | Not licensed — see [`TRADEMARKS.md`](TRADEMARKS.md) |
 
 The grammars here are exported from recursive.eco; most do not carry their own
