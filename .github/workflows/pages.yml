@@ -1,7 +1,7 @@
 name: Pages
 
-# Publishes the static index in `site/`, the game in `game/`, and the grammar JSON in
-# `grammars/` to GitHub Pages. No install, no node_modules, no build tooling — the deploy
+# Publishes the static index in `site/`, the game in `game/`, the glossary in `glossary/`, and the
+# grammar JSON in `grammars/` to GitHub Pages. No install, no node_modules, no build tooling — the deploy
 # directory is assembled with `cp`.
 #
 # `.nojekyll` is copied in deliberately: without it, Pages runs Jekyll and every path whose
@@ -14,7 +14,7 @@ name: Pages
 #   -> "build_type":"workflow", "cname":"learning.recursive.eco", https certificate approved
 #
 # and the last three runs of this workflow succeeded. So the published root is `site/`, with
-# `game/` and `grammars/` copied beside it. The custom domain lives in Settings -> Pages; an
+# `game/`, `glossary/` and `grammars/` copied beside it. The custom domain lives in Settings -> Pages; an
 # Actions deploy does not read the root `CNAME` file, which is kept (holding the same name) for
 # the branch build, if the source is ever switched back. Before Sep 24 the source was the legacy
 # branch build at game.recursive.eco, which now answers 404 ("Site not found").
@@ -26,6 +26,7 @@ on:
       - 'site/**'
       - 'game/**'
       - 'grammars/**'
+      - 'glossary/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -50,6 +51,7 @@ jobs:
           cp -r site/. _site/
           cp -r game _site/game
           cp -r grammars _site/grammars
+          cp -r glossary _site/glossary
           test -f _site/.nojekyll || touch _site/.nojekyll
           echo "--- deploying ---"
           find _site -maxdepth 2 | sort

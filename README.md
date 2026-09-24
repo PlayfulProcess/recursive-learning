@@ -69,7 +69,7 @@ docs/CHANNELS.md          the two-channel model, and what sync needs
 ### Where GitHub Pages serves from
 
 The site is **https://learning.recursive.eco**, published by the **Pages workflow**
-(`.github/workflows/pages.yml`): its root is `site/`, with `game/` and `grammars/` copied beside it.
+(`.github/workflows/pages.yml`): its root is `site/`, with `game/`, `glossary/` and `grammars/` copied beside it.
 Until Sep 24 2026 it was the legacy branch build at `game.recursive.eco`, which now answers 404
 ("Site not found"). Confirm rather than assume, any time this matters:
 
