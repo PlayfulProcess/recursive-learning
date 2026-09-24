@@ -63,14 +63,19 @@
   .bar-mark{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
   .bar-mark span{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--ink);white-space:nowrap}
 
-  .acts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:12px 0 6px}
-  .act{background:var(--lift);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 10px 11px;text-align:left;cursor:pointer;font:600 14px/1.25 var(--sans)}
-  .act small{display:block;font-weight:400;font-size:11.5px;color:var(--dim);margin-top:4px;line-height:1.35}
-  .act .odds{color:var(--ink);font-weight:500}
-  .act.toss{border-color:#6b3a28}.act.toss:hover{border-color:var(--heat)}
-  .act.tog{border-color:var(--eco-deep)}.act.tog:hover{border-color:var(--eco)}
-  .act.idk{border-style:dashed}
-  .act:hover{background:var(--lift2)}
+  .yourmove{font:600 12px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:16px 0 0}
+  .acts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:8px 0 6px}
+  .act{color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:13px 12px 13px;text-align:left;cursor:pointer;font:700 17px/1.2 var(--sans);box-shadow:0 2px 0 rgba(0,0,0,.35);transition:transform .12s,box-shadow .12s,border-color .12s}
+  .act small{display:block;font-weight:400;font-size:11.5px;color:var(--dim);margin-top:6px;line-height:1.35}
+  .act .odds{display:block;margin-top:4px;color:var(--ink);font-weight:500}
+  .act.toss{background:linear-gradient(180deg,#3a2019,#24140f);border-color:#a8502e}.act.toss:hover{border-color:var(--heat)}
+  .act.hold{background:linear-gradient(180deg,#1e2a44,#162036);border-color:#5a78a8}.act.hold:hover{border-color:var(--agent)}
+  .act.tog{background:linear-gradient(180deg,#16362d,#10261f);border-color:var(--eco-deep)}.act.tog:hover{border-color:var(--eco)}
+  .act.tog.ready{border-color:var(--eco);box-shadow:0 0 0 3px rgba(116,216,180,.25),0 2px 0 rgba(0,0,0,.35)}
+  .act.idk{background:var(--lift);border-style:dashed}
+  .act:hover{transform:translateY(-1px);box-shadow:0 4px 0 rgba(0,0,0,.35)}
+  .act:active{transform:translateY(1px);box-shadow:none}
+  .act .ico{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:1px}
   .act[disabled]{opacity:.45;cursor:not-allowed}
   button.main{background:var(--eco);color:#06281d;border:0;border-radius:10px;padding:12px 20px;font:700 15px var(--sans);cursor:pointer}
   button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font:600 14px var(--sans);cursor:pointer}
@@ -114,6 +119,7 @@
   </div>
 
   <div id="play" hidden>
+    <p class="yourmove" id="yourmove">Your move</p>
     <div class="acts" id="acts"></div>
     <div class="meters">
       <div class="meter"><div class="lab"><span>Heat: the chance it burns in a year (bar 0 to 20%)</span><b id="m-heat">0%</b></div><div class="track"><div class="fill" id="f-heat" style="width:0;background:linear-gradient(90deg,#8a4a2a,var(--heat),var(--heat-hi))"></div></div></div>
@@ -150,7 +156,7 @@ var M = window.walkModel, P = M.withDefaults({});
 var KEYS = ['power','alignment','sustainability','stop'];
 var ACTS = [
   { k:'toss', nm:'Toss it on', d:'a year on building more', alloc:{ power:0.70, alignment:0.10, sustainability:0.10, stop:0.10 }, tog:false, cls:'toss' },
-  { k:'hold', nm:'Hold it', d:'a year on understanding it; the others notice', alloc:{ power:0.25, alignment:0.50, sustainability:0.10, stop:0.15 }, tog:false },
+  { k:'hold', nm:'Hold it', d:'a year on understanding it; the others notice', alloc:{ power:0.25, alignment:0.50, sustainability:0.10, stop:0.15 }, tog:false, cls:'hold' },
   { k:'tog',  nm:'Hold it together', d:'set it down on shared ground', alloc:{ power:0.15, alignment:0.30, sustainability:0.45, stop:0.10 }, tog:true, cls:'tog' },
   { k:'idk',  nm:"I don't know", d:"keep last year's hand", alloc:null, tog:false, cls:'idk' }
 ];
@@ -218,7 +224,7 @@ var spiral = new Path2D(document.getElementById('spiral-path').getAttribute('d')
 var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 function sizeStage(){
   var w = cv.parentNode.clientWidth; DPR = Math.min(2, window.devicePixelRatio || 1);
-  W = w; H = Math.max(270, Math.min(480, Math.round(w * 0.56)));
+  W = w; H = Math.max(270, Math.min(Math.round(innerHeight * 0.5), 420, Math.round(w * 0.56)));
   cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); cv.style.height = H + 'px';
   cx.setTransform(DPR, 0, 0, DPR, 0, 0);
   if (!anim.stars.length) for (var i = 0; i < 90; i++) anim.stars.push([Math.random(), Math.random(), Math.random()]);
@@ -342,16 +348,18 @@ function render(){
     'What makes the heat: how much has been built (grown by tossing) against how well it is understood (grown by holding). What fills the ring: holding; tossing empties it, and it leaks a little every year. Planting needs the ring past 0.60 and a few years held together.';
   var box = document.getElementById('acts'); box.innerHTML = '';
   ACTS.forEach(function(a){
-    var b = document.createElement('button'); b.className = 'act' + (a.cls ? ' ' + a.cls : '');
+    var b = document.createElement('button'); b.className = 'act' + (a.cls ? ' ' + a.cls : '') + (a.tog && state.coordination >= P.stagK ? ' ready' : '');
     var sub;
     var eff = a.k === 'idk' ? lastEff(moves.concat(['idk'])) : a;
     var pv = preview(eff), odds = '<span class="odds">Every year from here like this: planted ' + pv.planted + ', burns ' + pv.burn + ' in 100</span>';
     if (a.tog) sub = (state.coordination >= P.stagK ? 'the hands are there (' + state.coordination.toFixed(2) + '): it counts. ' : 'only ' + state.coordination.toFixed(2) + ' of the 0.60 needed: this year would be spent. ') + odds;
     else if (a.k === 'idk') sub = (eff.k === 'start' ? 'the hand the walk began with' : 'last year\u2019s move again: ' + eff.nm.toLowerCase()) + '. ' + odds;
     else sub = a.d + '. ' + odds;
-    b.innerHTML = a.nm + '<small>' + sub + '</small>';
+    var dot = { toss:'var(--heat)', hold:'var(--agent)', tog:'var(--eco)', idk:'var(--dim)' }[a.k];
+    b.innerHTML = '<span class="ico" style="background:' + dot + '"></span>' + a.nm + '<small>' + sub + '</small>';
     b.disabled = !!state.endpoint;
-    box.hidden = !!state.endpoint;
+    box.hidden = !!state.endpoint; document.getElementById('yourmove').hidden = !!state.endpoint;
+    document.getElementById('yourmove').textContent = 'Your move for year ' + (state.t + 1);
     b.addEventListener('click', function(){ play(a.k); });
     box.appendChild(b);
   });
