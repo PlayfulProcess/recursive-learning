@@ -44,6 +44,21 @@ years; the way to planting is a sequence: hold until the ring is there, then hol
 Honest limit: in this version tossing never pays. The ad's line "if we don't build it, they will"
 is a temptation, and the game does not yet make it one. Next step below.
 
+## Round 2, after the first stranger (Sep 24)
+
+- "I don't know" now repeats last year's move exactly, the step together included (year 1: the
+  starting hand). Before, after a failed step together it replayed the shared-ground hand without
+  the hands, which could plant the potato with nobody holding it.
+- The heat is the model's yearly risk without the shock term (what was built against how well it is
+  understood), so it rises with every toss and falls only as understanding catches up. A shock is
+  shown apart, as a one-year flare; the log says what it added. The bar is linear, 0 to 20%.
+- Captions say what happened: "more hands" only when the ring grew; "every toss adds heat" only
+  when it did.
+- How a walk can end is said before it ends; the moves fold away at the end.
+- Phones: the moves sit right under the stage; the ring sits higher so the caption clears it.
+- Previews use the same draws for the same state, so the numbers do not change between visits.
+- The "designed but not built" line about recursion left the page; it lives here.
+
 ## Next
 
 - **The temptation.** A rival that tosses when you hold: each year you do not toss, a chance that
