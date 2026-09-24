@@ -27,6 +27,7 @@ on:
       - 'game/**'
       - 'grammars/**'
       - 'glossary/**'
+      - 'glossary/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -51,6 +52,7 @@ jobs:
           cp -r site/. _site/
           cp -r game _site/game
           cp -r grammars _site/grammars
+          cp -r glossary _site/glossary
           cp -r glossary _site/glossary
           test -f _site/.nojekyll || touch _site/.nojekyll
           echo "--- deploying ---"
