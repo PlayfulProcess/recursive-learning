@@ -571,7 +571,7 @@ function renderCard() {
   d2.appendChild(ul2);
   card.appendChild(d2);
   if (p.channel_url) {
-    const a = h('a', null, p.channel_label || 'Person channel'); a.href = p.channel_url;
+    const a = h('a', null, p.channel_label || 'Person grammar'); a.href = p.channel_url;
     const pp = h('p', 'web-only'); pp.appendChild(a); card.appendChild(pp);
   }
   box.appendChild(card);

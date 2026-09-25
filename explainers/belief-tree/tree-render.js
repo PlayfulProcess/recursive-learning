@@ -53,6 +53,9 @@
  * quotes[] {id, text, verbatim, wording?, speaker_confirmed?, context?, checked_against, video_id,
  * start_sec, end_sec, source_label, url}, channel_url, channel_label? (link text). Editor notes (cautions, how each quote was
  * checked, film item ids) are kept out of this public repo, in the private recursive-transcripts repo.
+ * channel_url points to the person GRAMMAR (that person's playlist of appearances on recursive.eco), not
+ * to a channel; the field keeps its name because the Lab's adapter reads it. The page's default link
+ * text is "Person grammar" when channel_label is absent.
  *
  * Events dispatched on `el`:
  *   belieftree:select   detail { node } | { person }   a node or a person chip was tapped (or Enter/Space)
