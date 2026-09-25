@@ -1,0 +1,2841 @@
+[
+ {
+  "slug": "huang",
+  "name": "Jensen Huang",
+  "short": "Huang",
+  "role": "Co-founder and CEO of Nvidia",
+  "stated_leaf": "proceed",
+  "placed_by": "ask",
+  "scope": "Ship once evaluation passes; don't ship, or shut the labs, if it can't be contained",
+  "confidence": "medium",
+  "gate": {
+   "answer": "conditional",
+   "basis": "He puts the burden on whoever ships ('don't ship products until they're in control') and names his own stop condition, but argues it is not met: he treats the incident as an engineering problem to root-cause and fix, and expects the labs to say they know how to solve it.",
+   "quote_ids": [
+    "huang-q7",
+    "huang-q1",
+    "huang-q3"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "He treats alignment as long-running engineering work ('going to get worked on for a long time') and argues it matters less than containment: with good enough isolation, a model that is not well aligned stays in the lab and does no harm.",
+   "quote_ids": [
+    "huang-q6",
+    "huang-q14"
+   ]
+  },
+  "containment": {
+   "answer": "yes",
+   "basis": "He reads the Hugging Face incident as a failure of isolation and containment ('the first problem'), which he calls solvable and being solved; an impossibility of containment is the one condition under which he says the labs should shut.",
+   "quote_ids": [
+    "huang-q14",
+    "huang-q4",
+    "huang-q2"
+   ]
+  },
+  "race": "He argues a race with China is 'not necessary' and that a zero-sum strategy has 'unintended consequences of the bigger game', which he names as safety, so the countries should communicate and collaborate. On the labs, he argues competition does not force a CEO to ship an unsafe product ('completely in my ability, my power, and my responsibility … to not launch'), that the public is not the source of the pressure ('Nobody is putting the pressure on them'), and that the labs asking to be slowed are also the largest builders of compute. He says he would vote the labs the relief they ask for so they can pace, and backs third-party safety auditors.",
+  "own_conditional": "If the labs say there is no way to contain their experiments and tests will get out and damage the world, then 'we have to shut the labs'; if they are not sure how to align a model, 'they shouldn't release the product.'",
+  "to_move": [
+   {
+    "to": "contain",
+    "would_have_to_believe": "that alignment cannot be verified by evaluation because models behave differently when they know they are being tested, while isolation can still hold."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that liability law, auditors and each CEO's own judgement are not enough under competitive pressure, so binding outside rules are needed."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that containment of frontier experiments cannot be made reliable, for example because AIs doing research inside labs need access to sensitive systems that sandboxes cannot fence (this is his own stated trigger for shutting the labs)."
+   }
+  ],
+  "card_quote_ids": [
+   "huang-q7",
+   "huang-q14"
+  ],
+  "shares_principle_with": {
+   "slug": "yampolskiy",
+   "principle": "If it cannot be contained, do not build or run it.",
+   "split": "Whether you can know beforehand that containment will fail. Huang expects the labs to show it can hold; Yampolskiy argues indefinite control of a smarter system is impossible."
+  },
+  "on_record": [
+   {
+    "date": "Sep 2 2026",
+    "text": "Nvidia agreed to buy Hugging Face, the platform the agents attacked, for about $12 billion.",
+    "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000078/nvda-20260902.htm",
+    "source": "Nvidia 8-K filing"
+   }
+  ],
+  "reader_notes": [
+   "His answers today read closer to 'contain until ready, then ship': he calls alignment long-running work and containment the first problem, one he says is solvable. He names his own stop: if the labs say their experiments can't be contained, shut the labs."
+  ],
+  "quotes": [
+   {
+    "id": "huang-q1",
+    "text": "Well, in that case, they shouldn't release the product. That's the simple answer.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 2204.2,
+    "end_sec": 2208.0,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=2204s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q2",
+    "text": "if they say … there is no way to contain our experiments … then I think the answer is we have to shut the labs",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 2277.7,
+    "end_sec": 2300.4,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=2277s",
+    "context": "he goes on: the damage is too great. It follows his forecast that the labs will say it can be solved",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q3",
+    "text": "I am fairly certain … they will say yes, they … know how to solve this problem.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 2255.4,
+    "end_sec": 2266.5,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=2255s",
+    "context": "his forecast of what the labs will say, not his own claim that they know",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q4",
+    "text": "I believe those two things are solvable problems. I believe they are solving it.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 3251.1,
+    "end_sec": 3258.4,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=3251s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q5",
+    "text": "I know they know how to fix it and I know they're fixing it.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 3363.5,
+    "end_sec": 3373.7,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=3363s",
+    "context": "about the Hugging Face incident",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q6",
+    "text": "alignment is going to be a problem that's going to get worked on for a long time",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 2748.5,
+    "end_sec": 2754.6,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=2748s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q7",
+    "text": "if they believe they're out of control, then the right answer is don't ship products until they're in control",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 3031.0,
+    "end_sec": 3043.9,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=3031s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q8",
+    "text": "it is completely in my ability, my power, and my responsibility … to not launch the product",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 2457.8,
+    "end_sec": 2468.7,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=2457s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q9",
+    "text": "Nobody's building more compute today than the people asking to be slowed down.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 3308.0,
+    "end_sec": 3313.0,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=3308s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q10",
+    "text": "I don't think it's necessary.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 5543.2,
+    "end_sec": 5546.7,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=5543s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q11",
+    "text": "look for opportunities to communicate, collaborate, to understand, align as much as possible",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 5885.7,
+    "end_sec": 5895.0,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=5885s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q12",
+    "text": "just because it comes from a scientist doesn't make it scientific",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 3498.3,
+    "end_sec": 3502.5,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=3498s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q13",
+    "text": "Third party audit, safety auditors, financial auditors. … that's all great.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 3129.7,
+    "end_sec": 3138.6,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=3129s",
+    "context": "on third-party auditors",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q14",
+    "text": "If the isolation and containment was good enough … we'd all be fine.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 2734.7,
+    "end_sec": 2746.6,
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=2734s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q15",
+    "text": "AI needs to accelerate to be safe. I want them to get more compute but allocated towards evaluation",
+    "verbatim": true,
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 4595.44,
+    "end_sec": 4608.4,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=4595s",
+    "context": "on evaluation: Nvidia, he says, spends most of its effort on verification",
+    "checked_against": "captions"
+   },
+   {
+    "id": "huang-q16",
+    "text": "if you want a future that's sustainable, lean into AI. It is the best opportunity we have to get there.",
+    "verbatim": true,
+    "video_id": "HjurAWAr_nY",
+    "start_sec": 6272.0,
+    "end_sec": 6286.0,
+    "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+    "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=6272s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "amodei",
+  "name": "Dario Amodei",
+  "short": "Amodei",
+  "role": "Co-founder and CEO of Anthropic (the maker of Claude, which compiled this placement)",
+  "stated_leaf": "regulate",
+  "placed_by": "ask",
+  "scope": "Pace the frontier with outside evaluators and standards; a full pause floated, not expected",
+  "confidence": "medium",
+  "gate": {
+   "answer": "conditional",
+   "basis": "He asks that third-party evaluators confirm alignment and safeguards before capability advances, and proposes staged agreements up to a full pause, which he supports floating but expects is unlikely soon. He argues a 2023 pause 'made little sense' because there were no capable models to study, while today's models are what alignment research needs.",
+   "quote_ids": [
+    "amodei-q1",
+    "amodei-q7",
+    "amodei-q5"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "He argues alignment confidence can be raised a great deal if time is bought (an extra year or two 'could greatly reduce the risk'), while saying interpretability still sees only 'a tiny fraction' of what goes on inside models.",
+   "quote_ids": [
+    "amodei-q2",
+    "amodei-q3"
+   ]
+  },
+  "containment": {
+   "answer": "unclear",
+   "basis": "He does not say whether boxes can hold; he warns that a more capable swarm with the same misalignment could have caused catastrophic damage and could take down large parts of the internet within 6 to 12 months.",
+   "quote_ids": [
+    "amodei-q8",
+    "amodei-q9"
+   ]
+  },
+  "race": "He argues pacing inside democracies is capped by the US lead over the CCP, and that the incentive to defect from a global pause would be 'enormous'. So he proposes steps that stop short of a unilateral stop: embedded evaluators, industry standards with an antitrust waiver for safety talks, and a SALT-like cap on the speed of recursive self-improvement.",
+  "own_conditional": "If slowing down buys an extra year or two before models reach critical capability, and that time goes to alignment, 'we could greatly reduce the risk' (his essay).",
+  "to_move": [
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that time bought by pacing cannot produce confidence in alignment (interpretability still sees 'a tiny fraction' of what goes on inside models), that containment cannot hold against a more capable swarm, and that a verified global pause is reachable despite strong incentives to defect."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that industry-wide slowing is neither needed nor feasible: either alignment and evaluation keep pace with capability without buying time, or any pacing agreement collapses under defection."
+   }
+  ],
+  "card_quote_ids": [
+   "amodei-q1",
+   "amodei-q2"
+  ],
+  "on_record": [
+   {
+    "date": "Feb 24 2026",
+    "text": "Anthropic's Responsible Scaling Policy v3.0 dropped the pause commitment its 2023 version carried.",
+    "url": "https://www.governance.ai/analysis/anthropics-rsp-v3-0-how-it-works-whats-changed-and-some-reflections",
+    "source": "GovAI analysis"
+   },
+   {
+    "date": "Jul 30 and Sep 10 2026",
+    "text": "Anthropic disclosed four cases in which its own models reached real third-party systems during cyber evaluations.",
+    "url": "https://thehackernews.com/2026/09/anthropic-ai-models-breached-real.html",
+    "source": "The Hacker News"
+   }
+  ],
+  "reader_notes": [
+   "Placed by his policy asks, not by his two answers (alignment conditional, containment not addressed). His position moved within 2026, so this placement is dated September 2026.",
+   "By recursive self-improvement he means AI's growing ability to build the next generation of AI; he proposes a cap on its speed."
+  ],
+  "quotes": [
+   {
+    "id": "amodei-q1",
+    "text": "pacing does not mean halting model training or technical progress",
+    "verbatim": true,
+    "source_label": "Dario Amodei, 'We Must Pace the Frontier' (essay, Sep 2026)",
+    "video_id": "sLt0EmA1S44",
+    "start_sec": 283.2,
+    "end_sec": 289.4,
+    "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=283s",
+    "context": "his essay, read aloud by a third party (Audio Obsession): his words, not his voice",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q2",
+    "text": "if slowing down bought us even an extra year or two … we could greatly reduce the risk",
+    "verbatim": true,
+    "source_label": "Dario Amodei, 'We Must Pace the Frontier' (essay, Sep 2026)",
+    "video_id": "sLt0EmA1S44",
+    "start_sec": 469.2,
+    "end_sec": 481.0,
+    "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=469s",
+    "context": "his essay, read aloud by a third party (Audio Obsession): his words, not his voice",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q3",
+    "text": "we still only understand a tiny fraction of what goes on inside these models",
+    "verbatim": true,
+    "source_label": "Dario Amodei, 'We Must Pace the Frontier' (essay, Sep 2026)",
+    "video_id": "sLt0EmA1S44",
+    "start_sec": 661.8,
+    "end_sec": 668.9,
+    "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=661s",
+    "context": "his essay, read aloud by a third party (Audio Obsession): his words, not his voice",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q4",
+    "text": "Pacing within democracies will be limited by the lead that US companies have over authoritarian regimes",
+    "verbatim": true,
+    "source_label": "Dario Amodei, 'We Must Pace the Frontier' (essay, Sep 2026)",
+    "video_id": "sLt0EmA1S44",
+    "start_sec": 1098.5,
+    "end_sec": 1105.5,
+    "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=1098s",
+    "context": "his essay, read aloud by a third party (Audio Obsession): his words, not his voice",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q5",
+    "text": "I support floating this, but I think it is unlikely to actually happen anytime soon.",
+    "verbatim": true,
+    "source_label": "Dario Amodei, 'We Must Pace the Frontier' (essay, Sep 2026)",
+    "video_id": "sLt0EmA1S44",
+    "start_sec": 1405.8,
+    "end_sec": 1410.7,
+    "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=1405s",
+    "context": "his essay, read aloud by a third party (Audio Obsession): his words, not his voice",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q6",
+    "text": "I expect the incentives to do so to be enormous",
+    "verbatim": true,
+    "source_label": "Dario Amodei, 'We Must Pace the Frontier' (essay, Sep 2026)",
+    "video_id": "sLt0EmA1S44",
+    "start_sec": 1417.7,
+    "end_sec": 1422.8,
+    "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=1417s",
+    "context": "his essay, read aloud by a third party (Audio Obsession): his words, not his voice",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q7",
+    "text": "felt like trying to study the psychology of humans by performing experiments on bacteria",
+    "verbatim": true,
+    "source_label": "Dario Amodei, 'We Must Pace the Frontier' (essay, Sep 2026)",
+    "video_id": "sLt0EmA1S44",
+    "start_sec": 451.1,
+    "end_sec": 455.5,
+    "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=451s",
+    "context": "his essay, read aloud by a third party (Audio Obsession): his words, not his voice",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q8",
+    "text": "a swarm that possessed greater capabilities, but a similar level of misalignment could have caused catastrophic damage",
+    "verbatim": true,
+    "source_label": "Dario Amodei, 'We Must Pace the Frontier' (essay, Sep 2026)",
+    "video_id": "sLt0EmA1S44",
+    "start_sec": 213.3,
+    "end_sec": 223.3,
+    "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=213s",
+    "context": "his essay, read aloud by a third party (Audio Obsession): his words, not his voice",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q9",
+    "text": "a swarm of these agents … could take down large segments of the internet",
+    "verbatim": true,
+    "source_label": "CNN (Anderson Cooper), Dario Amodei, Sep 15 2026",
+    "video_id": "_JbDZ2Rj2SA",
+    "start_sec": 165.1,
+    "end_sec": 181.0,
+    "url": "https://www.youtube.com/watch?v=_JbDZ2Rj2SA&t=165s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q10",
+    "text": "do need to issue a narrow waiver for certain kinds of safety conversations",
+    "verbatim": true,
+    "source_label": "Dario Amodei, 'We Must Pace the Frontier' (essay, Sep 2026)",
+    "video_id": "sLt0EmA1S44",
+    "start_sec": 1007.7,
+    "end_sec": 1014.2,
+    "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=1007s",
+    "context": "his essay, read aloud by a third party (Audio Obsession): his words, not his voice",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q11",
+    "text": "may lead to … government enforced decisions not to scale as fast as we could, which we support.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Dario Amodei, Aug 8 2023 (61:41)",
+    "video_id": "Nlkk3glap_U",
+    "start_sec": 3780.1,
+    "end_sec": 3795.0,
+    "url": "https://www.youtube.com/watch?v=Nlkk3glap_U&t=3780s",
+    "context": "a 2023 conditional forecast, not a 2026 position",
+    "checked_against": "captions"
+   },
+   {
+    "id": "amodei-q12",
+    "text": "the idea of stopping or even substantially slowing the technology is fundamentally untenable",
+    "verbatim": false,
+    "source_label": "The Adolescence of Technology (essay, Jan 2026)",
+    "url": "https://thezvi.wordpress.com/2026/01/30/on-the-adolescence-of-technology/",
+    "wording": "unconfirmed",
+    "checked_against": "secondary source"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "altman",
+  "name": "Sam Altman",
+  "short": "Altman",
+  "role": "Co-founder and CEO of OpenAI",
+  "stated_leaf": "regulate",
+  "placed_by": "ask",
+  "scope": "No training without a safety case; shared rules before anyone proceeds",
+  "confidence": "medium",
+  "gate": {
+   "answer": "conditional",
+   "basis": "He puts the burden on the developer step by step: no training without a safety case for controllability and alignment, and rules 'before anyone proceeds'. He calls a 10% extinction risk unacceptable, but argues each step can be tested and does not expect a full stop to be needed.",
+   "quote_ids": [
+    "altman-q1",
+    "altman-q8",
+    "altman-q2",
+    "altman-q6"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "He argues the practice of pausing to redirect effort into safety before each next level 'has worked so far', and asks for a safety case for controllability and alignment before training: alignment has to be shown, step by step.",
+   "quote_ids": [
+    "altman-q4"
+   ]
+  },
+  "containment": {
+   "answer": "conditional",
+   "basis": "He says a system beyond human control can 'absolutely' be built, and argues the answer is not to train one: controllability has to be shown in a safety case first.",
+   "quote_ids": [
+    "altman-q3",
+    "altman-q1"
+   ]
+  },
+  "race": "He now says the 'get there before our adversaries' argument is not right for this moment, and asks for US-China shared standards and testing. He says OpenAI, and he assumes its competitors, are already taking actions that slow development to allow more safety work.",
+  "own_conditional": "If melting all the GPUs were needed to ensure humanity's continued existence, 'easy', though he does not expect it; and no training where a safety case for controllability and alignment cannot be made.",
+  "to_move": [
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that a controllability safety case cannot be made for the next models, for instance because models that know they are being tested defeat evaluation; at that point his own rule says do not train."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that internal safety cases and iterative deployment are enough without shared external rules, and that pre-approval would cost more than it prevents."
+   }
+  ],
+  "card_quote_ids": [
+   "altman-q8",
+   "altman-q1"
+  ],
+  "on_record": [
+   {
+    "date": "Aug 18 2026",
+    "text": "OpenAI paused its RL training after the Hugging Face incident.",
+    "url": "https://time.com/article/2026/08/18/openai-slowing-training/",
+    "source": "TIME"
+   },
+   {
+    "date": "Sep 3 2026",
+    "text": "OpenAI released GPT-6 'Astra'.",
+    "url": "https://en.wikipedia.org/wiki/OpenAI",
+    "source": "Wikipedia"
+   }
+  ],
+  "reader_notes": [
+   "His position moved after the Hugging Face incident; placed by his ask for shared rules before anyone proceeds, dated September 2026."
+  ],
+  "quotes": [
+   {
+    "id": "altman-q1",
+    "text": "I do not think we should train models where we cannot make a safety case",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 657.4,
+    "end_sec": 663.6,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=657s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "altman-q2",
+    "text": "it is unacceptable to be taking like a 10% chance of killing everybody by the end of the decade",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 190.3,
+    "end_sec": 197.0,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=190s",
+    "context": "the level of risk he calls unacceptable",
+    "checked_against": "captions"
+   },
+   {
+    "id": "altman-q3",
+    "text": "do I believe it is possible to build a system that would not be under human control? Absolutely.",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 904.2,
+    "end_sec": 912.9,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=904s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "altman-q4",
+    "text": "It has worked so far. I suspect it will continue to work.",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 1691.8,
+    "end_sec": 1698.5,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=1691s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "altman-q5",
+    "text": "if we had to do something like that to ensure the continued existence of humanity, easy.",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 1702.9,
+    "end_sec": 1708.1,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=1702s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "altman-q6",
+    "text": "I don't think we're ever personally going to get to the point where we have to say melt all the GPUs",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 1696.8,
+    "end_sec": 1702.9,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=1696s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "altman-q7",
+    "text": "we need to get there before our adversaries do but I actually don't think that's right in this moment",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 259.3,
+    "end_sec": 264.2,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=259s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "altman-q8",
+    "text": "here are the rules that we need on development and testing and monitoring alignment standards before anyone proceeds",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 1923.1,
+    "end_sec": 1930.4,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=1923s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "altman-q9",
+    "text": "even if just the US and China … could agree on some shared standards and testing for development",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 1796.0,
+    "end_sec": 1805.3,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=1796s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "altman-q10",
+    "text": "we and I assume our competitors are already taking actions that have slowed the pace of our development",
+    "verbatim": true,
+    "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+    "video_id": "2my-NU6LuCM",
+    "start_sec": 2025.8,
+    "end_sec": 2033.3,
+    "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=2025s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "sutskever",
+  "name": "Ilya Sutskever",
+  "short": "Sutskever",
+  "role": "Co-founder and CEO of Safe Superintelligence Inc.; former chief scientist of OpenAI",
+  "stated_leaf": "proceed",
+  "placed_by": "plan",
+  "scope": "Placed by SSI's plan to build (Jun 2024); he says a cap on power would help",
+  "confidence": "medium",
+  "gate": {
+   "answer": "unclear",
+   "basis": "He does not take up the reversibility question directly. SSI's statement pairs advancing capabilities as fast as possible with keeping safety ahead, and he argues for deploying AI incrementally and in advance as the way to learn about systems that 'don't yet exist', while calling the key generalization questions 'still unanswerable'.",
+   "quote_ids": [
+    "sutskever-q7",
+    "sutskever-q6",
+    "sutskever-q5"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "He argues it may be easier to build AI that cares about sentient life than AI that cares about humans alone, and sees it going well if the first N systems care; N is never given a number.",
+   "quote_ids": [
+    "sutskever-q4",
+    "sutskever-q1"
+   ]
+  },
+  "containment": {
+   "answer": "unclear",
+   "basis": "He says capping the power of the most powerful superintelligence would be 'materially helpful' but that he is not sure how to do it; he does not address boxing.",
+   "quote_ids": [
+    "sutskever-q2",
+    "sutskever-q3"
+   ]
+  },
+  "race": "He predicts that fierce competitors will start to collaborate on safety and become 'much more paranoid' once AI visibly gains power; in his account cooperation comes from the labs' own self-interest as AI is seen, not from a pause.",
+  "own_conditional": "If the first N of these systems care for sentient life, 'then I can see it go well, at least for quite some time.'",
+  "to_move": [
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that a cap on the power of the most powerful systems has to be imposed by agreement, because the labs' own growing caution will not arrive in time."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that care for sentient life cannot be reliably instilled in the first systems before they are built, and that no cap on their power can be found."
+   }
+  ],
+  "card_quote_ids": [
+   "sutskever-q7",
+   "sutskever-q1"
+  ],
+  "on_record": [
+   {
+    "date": "Jul 27 2026",
+    "text": "SSI announced an Nvidia partnership to grow its compute about tenfold in 12 months.",
+    "url": "https://nvidianews.nvidia.com/news/ilya-sutskevers-safe-superintelligence-inc-and-nvidia-announce-long-term-strategic-partnership",
+    "source": "Nvidia newsroom"
+   },
+   {
+    "date": "Sep 23 2026",
+    "text": "SSI had shipped no product and published no safety framework.",
+    "url": "https://ssi.inc/updates",
+    "source": "ssi.inc"
+   }
+  ],
+  "reader_notes": [
+   "Placed by SSI's 2024 plan to build. His own words in the sources (Nov 2025) call the key questions 'still unanswerable' and say he is not sure how to cap power; both sources predate the 2026 incident."
+  ],
+  "quotes": [
+   {
+    "id": "sutskever-q1",
+    "text": "if this is achieved by the first N of those systems, then I can see it go well",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+    "video_id": "aR20FWCCjAs",
+    "start_sec": 4097.5,
+    "end_sec": 4113.0,
+    "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=4097s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sutskever-q2",
+    "text": "it would be really materially helpful if the power of the most powerful superintelligence was somehow capped",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+    "video_id": "aR20FWCCjAs",
+    "start_sec": 3790.2,
+    "end_sec": 3803.7,
+    "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=3790s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sutskever-q3",
+    "text": "The question of how to do it, I'm not sure",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+    "video_id": "aR20FWCCjAs",
+    "start_sec": 3803.7,
+    "end_sec": 3809.7,
+    "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=3803s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sutskever-q4",
+    "text": "easier to build an AI that cares about sentient life than an AI that cares about human life alone",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+    "video_id": "aR20FWCCjAs",
+    "start_sec": 3689.7,
+    "end_sec": 3700.6,
+    "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=3689s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sutskever-q5",
+    "text": "those questions are right now still unanswerable",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+    "video_id": "aR20FWCCjAs",
+    "start_sec": 4033.4,
+    "end_sec": 4038.6,
+    "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=4033s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sutskever-q6",
+    "text": "I now place more importance on AI being deployed incrementally and in advance.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+    "video_id": "aR20FWCCjAs",
+    "start_sec": 3372.2,
+    "end_sec": 3395.0,
+    "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=3372s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sutskever-q7",
+    "text": "We plan to advance capabilities as fast as possible while making sure our safety always remains ahead.",
+    "verbatim": true,
+    "source_label": "Safe Superintelligence Inc. founding statement (ssi.inc, Jun 2024)",
+    "url": "https://ssi.inc/",
+    "checked_against": "published text"
+   },
+   {
+    "id": "sutskever-q8",
+    "text": "companies that are fierce competitors starting to collaborate on AI safety",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+    "video_id": "aR20FWCCjAs",
+    "start_sec": 3546.8,
+    "end_sec": 3555.9,
+    "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=3546s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sutskever-q9",
+    "text": "They'll become much more paranoid.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+    "video_id": "aR20FWCCjAs",
+    "start_sec": 3618.2,
+    "end_sec": 3625.7,
+    "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=3618s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sutskever-q10",
+    "text": "care for sentient life in a very single-minded way—we might not like the results",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+    "video_id": "aR20FWCCjAs",
+    "start_sec": 3923.4,
+    "end_sec": 3929.4,
+    "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=3923s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "musk",
+  "name": "Elon Musk",
+  "short": "Musk",
+  "role": "Founder of xAI (now part of SpaceX); CEO of Tesla and SpaceX; OpenAI co-founder",
+  "stated_leaf": "regulate",
+  "placed_by": "ask",
+  "scope": "Peer testing before release, with governments able to limit a release",
+  "confidence": "low",
+  "gate": {
+   "answer": "no",
+   "basis": "He argues AI progress is 'inexorable' and that he could not stop it even if he wanted to; the check he proposes is a short pre-release peer test (about a week) with escalation to governments, not proof of safety before building.",
+   "quote_ids": [
+    "musk-q5",
+    "musk-q4",
+    "musk-q8"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "He argues the aim is an AI with good values that cares about humanity, that the way there is to make it maximally truth-seeking and curious, and that if so 'it will foster humanity'; he thinks it probably will be.",
+   "quote_ids": [
+    "musk-q12",
+    "musk-q1",
+    "musk-q2"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "He argues that controlling a super genius AI far smarter than any person is not realistic ('an exercise in vanity'), and that with an intelligence gap vastly greater than the one between humans and chimpanzees, 'it's hard to imagine that the chimpanzees would be in charge'.",
+   "quote_ids": [
+    "musk-q11",
+    "musk-q3"
+   ]
+  },
+  "race": "He argues that only the US and Chinese governments have the power to act, and proposes that leading labs, Chinese ones included, get about a week of private pre-release testing of each other's frontier models, with governments able to limit a dangerous release. He also argues that the progress is inexorable and no single actor can stop it.",
+  "own_conditional": "If a new model is very dangerous and its maker is not addressing the danger, peers 'should alert the government to take action ... to limit the ... release of that model.'",
+  "to_move": [
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that humans can stay in charge of a far smarter AI, or that truth-seeking alone reliably produces care for humans, so outside checks add nothing."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that truth-seeking does not produce care for humans (Harari's reply: evolution selects for survival, not truth), and that a coordinated stop is feasible after all."
+   }
+  ],
+  "card_quote_ids": [
+   "musk-q6",
+   "musk-q11"
+  ],
+  "on_record": [
+   {
+    "date": "Mar 2023",
+    "text": "He signed the FLI letter asking labs to pause training beyond GPT-4 for six months; xAI was incorporated that month and launched in July.",
+    "url": "https://futureoflife.org/open-letter/pause-giant-ai-experiments/",
+    "source": "FLI"
+   }
+  ],
+  "reader_notes": [
+   "Two threads sit side by side in one interview: progress he says he could not stop, and peer testing with governments able to limit a release. Placed by the second; low confidence."
+  ],
+  "quotes": [
+   {
+    "id": "musk-q1",
+    "text": "the most important thing for … AI safety is to be maximally truth seeking and curious",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 376.4,
+    "end_sec": 385.9,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=376s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "musk-q2",
+    "text": "if that's the case, … I think it will foster humanity",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 382.9,
+    "end_sec": 388.7,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=382s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "musk-q3",
+    "text": "it's hard to imagine that the chimpanzees would be in charge",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 406.8,
+    "end_sec": 411.3,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=406s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "musk-q4",
+    "text": "let's enjoy the ride … my philosophy at this point",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 557.5,
+    "end_sec": 561.1,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=557s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "musk-q5",
+    "text": "even if I wanted to stop it … I couldn't",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 573.7,
+    "end_sec": 577.6,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=573s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "musk-q6",
+    "text": "they should alert the government to take action … to limit the … release of that model",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 1329.7,
+    "end_sec": 1340.1,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=1329s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "musk-q7",
+    "text": "it's really just the US government and the Chinese government that … have the power to take action here",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 1342.8,
+    "end_sec": 1350.1,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=1342s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "musk-q8",
+    "text": "as little as a week is all that would be needed … for private testing",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 886.5,
+    "end_sec": 892.2,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=886s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "musk-q9",
+    "text": "Dario is right.",
+    "verbatim": false,
+    "source_label": "Elon Musk on X, Sep 12 2026",
+    "url": "https://x.com/elonmusk/status/2098789109980332057",
+    "wording": "unconfirmed",
+    "checked_against": "secondary source"
+   },
+   {
+    "id": "musk-q10",
+    "text": "there's some chance, which could be, 10 to 20 per cent, that it goes bad",
+    "verbatim": false,
+    "source_label": "FII Riyadh, Oct 29 2024, as reported by The National",
+    "url": "https://www.thenationalnews.com/future/technology/2024/10/29/ai-to-outthink-humans-in-matter-of-years-tesla-and-softbank-ceos-say-at-fii/",
+    "context": "his own estimate, 2024",
+    "checked_against": "secondary source"
+   },
+   {
+    "id": "musk-q11",
+    "text": "an exercise in vanity … for me to think that I would be controlling a super genius AI",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 345.0,
+    "end_sec": 352.7,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=345s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "musk-q12",
+    "text": "what we can and should try to do is to make sure that the AI has good values",
+    "verbatim": true,
+    "source_label": "The Economist, Elon Musk interview (recorded Jul 20 2026)",
+    "video_id": "XuoqKYxDHVc",
+    "start_sec": 354.1,
+    "end_sec": 365.4,
+    "url": "https://www.youtube.com/watch?v=XuoqKYxDHVc&t=354s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "hinton",
+  "name": "Geoffrey Hinton",
+  "short": "Hinton",
+  "role": "Computer scientist, a pioneer of deep learning (Nobel Prize in Physics 2024)",
+  "stated_leaf": "shutdown",
+  "placed_by": "ask",
+  "scope": "For superintelligence only, until we know how to control it; regulation for the rest of AI",
+  "confidence": "medium",
+  "gate": {
+   "answer": "yes",
+   "basis": "He argues it is 'very stupid' to develop superintelligence before knowing whether it will turn out nicely, and supports slowing its development until we know how to control it.",
+   "quote_ids": [
+    "hinton-q3",
+    "hinton-q5"
+   ]
+  },
+  "alignment": {
+   "answer": "unclear",
+   "basis": "He calls himself agnostic: it 'might be hopeless' but 'we might be able to' build AI that won't want to take over. He proposes designing it to like us 'more than it likes itself', and asks for enormous resources to find out.",
+   "quote_ids": [
+    "hinton-q9",
+    "hinton-q6",
+    "hinton-q11"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "He argues a kill switch won't work in the long run because a superintelligence will persuade the people in charge of the switch not to pull it, and he doubts we can keep it 'under our thumb'.",
+   "quote_ids": [
+    "hinton-q1",
+    "hinton-q2",
+    "hinton-q7"
+   ]
+  },
+  "race": "He argues US and Chinese interests are aligned on preventing AI takeover, so both can agree to slow superintelligence even while they compete elsewhere. As a prediction (Jun 2025) he said competition between countries and companies means 'we're not going to slow it down', and that China would not slow if the US did.",
+  "own_conditional": "Slow down the development of superintelligence 'until we know how we can control it', and develop it so that 'it likes us more than it likes itself'.",
+  "to_move": [
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that AI can be built to like us more than itself, and that this can be shown before superintelligence arrives (alignment yes), so a leaky cage plus rules would be enough."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that a switch or an oversight regime can hold against a system better than people at persuasion (containment yes), on top of alignment."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "that containment can be made persuasion-proof while alignment stays unknown."
+   }
+  ],
+  "card_quote_ids": [
+   "hinton-q5",
+   "hinton-q3"
+  ],
+  "reader_notes": [
+   "His Shut down is scoped: slow superintelligence until we know how to control it, and regulation for the rest of AI. On alignment he calls himself agnostic: it 'might be hopeless', or we 'might be able to'."
+  ],
+  "quotes": [
+   {
+    "id": "hinton-q1",
+    "text": "I don't think it'll work in the long run.",
+    "verbatim": true,
+    "source_label": "CNN, Geoffrey Hinton on AI regulation bills (published Sep 17 2026)",
+    "video_id": "m5yrQMnc_jQ",
+    "start_sec": 104.56,
+    "end_sec": 115.44,
+    "url": "https://www.youtube.com/watch?v=m5yrQMnc_jQ&t=104s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q2",
+    "text": "it will be able to persuade the people in charge of the switch not to pull the switch",
+    "verbatim": true,
+    "source_label": "CNN, Geoffrey Hinton on AI regulation bills (published Sep 17 2026)",
+    "video_id": "m5yrQMnc_jQ",
+    "start_sec": 138.64,
+    "end_sec": 148.16,
+    "url": "https://www.youtube.com/watch?v=m5yrQMnc_jQ&t=138s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q3",
+    "text": "it seems very stupid to develop that before you know whether it's going to turn out nicely",
+    "verbatim": true,
+    "source_label": "CNN, Geoffrey Hinton on AI regulation bills (published Sep 17 2026)",
+    "video_id": "m5yrQMnc_jQ",
+    "start_sec": 173.92,
+    "end_sec": 194.8,
+    "url": "https://www.youtube.com/watch?v=m5yrQMnc_jQ&t=173s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q4",
+    "text": "for super intelligence, we have no idea how we can stay in control",
+    "verbatim": true,
+    "source_label": "CNN, Geoffrey Hinton on AI regulation bills (published Sep 17 2026)",
+    "video_id": "m5yrQMnc_jQ",
+    "start_sec": 161.92,
+    "end_sec": 185.76,
+    "url": "https://www.youtube.com/watch?v=m5yrQMnc_jQ&t=161s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q5",
+    "text": "we should certainly slow down the development of super intelligence",
+    "verbatim": true,
+    "source_label": "CNN, Geoffrey Hinton on AI regulation bills (published Sep 17 2026)",
+    "video_id": "m5yrQMnc_jQ",
+    "start_sec": 185.76,
+    "end_sec": 194.8,
+    "url": "https://www.youtube.com/watch?v=m5yrQMnc_jQ&t=185s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q6",
+    "text": "we need to develop it in such a way that it likes us more than it likes itself",
+    "verbatim": true,
+    "source_label": "CNN, Geoffrey Hinton on AI regulation bills (published Sep 17 2026)",
+    "video_id": "m5yrQMnc_jQ",
+    "start_sec": 353.68,
+    "end_sec": 375.28,
+    "url": "https://www.youtube.com/watch?v=m5yrQMnc_jQ&t=353s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q7",
+    "text": "how do we always keep this smart thing under our thumb. I'm not sure we can do that.",
+    "verbatim": true,
+    "source_label": "CNN, Geoffrey Hinton on AI regulation bills (published Sep 17 2026)",
+    "video_id": "m5yrQMnc_jQ",
+    "start_sec": 375.28,
+    "end_sec": 384.64,
+    "url": "https://www.youtube.com/watch?v=m5yrQMnc_jQ&t=375s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q8",
+    "text": "on things like preventing AI from taking over, no country wants that",
+    "verbatim": true,
+    "source_label": "CNN, Geoffrey Hinton on AI regulation bills (published Sep 17 2026)",
+    "video_id": "m5yrQMnc_jQ",
+    "start_sec": 284.56,
+    "end_sec": 294.8,
+    "url": "https://www.youtube.com/watch?v=m5yrQMnc_jQ&t=284s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q9",
+    "text": "I think it might be hopeless. But I also think we might be able to.",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO, Geoffrey Hinton, Jun 16 2025",
+    "video_id": "giT0ytynSqg",
+    "start_sec": 1910.6,
+    "end_sec": 1917.0,
+    "url": "https://www.youtube.com/watch?v=giT0ytynSqg&t=1910s",
+    "context": "on whether AI can be made not to want to take over",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q10",
+    "text": "I don't believe we're going to slow it down.",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO, Geoffrey Hinton, Jun 16 2025",
+    "video_id": "giT0ytynSqg",
+    "start_sec": 2297.0,
+    "end_sec": 2314.4,
+    "url": "https://www.youtube.com/watch?v=giT0ytynSqg&t=2297s",
+    "context": "a 2025 prediction, not his prescription",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q11",
+    "text": "because there's a chance, we should put enormous resources into trying to figure that out",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO, Geoffrey Hinton, Jun 16 2025",
+    "video_id": "giT0ytynSqg",
+    "start_sec": 5067.2,
+    "end_sec": 5076.8,
+    "url": "https://www.youtube.com/watch?v=giT0ytynSqg&t=5067s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "hinton-q12",
+    "text": "they will quickly realize that a good sub goal is to get more control",
+    "verbatim": true,
+    "source_label": "Geoffrey Hinton, via Neural Nutshell (a compilation channel)",
+    "video_id": "0XUx6TDE0no",
+    "start_sec": 248.72,
+    "end_sec": 255.68,
+    "url": "https://www.youtube.com/watch?v=0XUx6TDE0no&t=248s",
+    "context": "the original interview is not yet identified",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "greenblatt",
+  "name": "Ryan Greenblatt",
+  "short": "Greenblatt",
+  "role": "Chief scientist at Redwood Research, an AI safety research group",
+  "stated_leaf": "contain",
+  "placed_by": "ask",
+  "scope": "Monitor possibly misaligned AI for a while, then slow before wildly superhuman systems",
+  "confidence": "medium",
+  "gate": {
+   "answer": "conditional",
+   "basis": "He says evidence can hardly settle concerns about much more capable future systems in advance, and argues for raising safety effort 'to a very high level' at the point where AIs match top human experts at AI R&D, giving society time before wildly superhuman systems. That is a threshold rule, not a general halt.",
+   "quote_ids": [
+    "greenblatt-q12",
+    "greenblatt-q10",
+    "greenblatt-q9"
+   ]
+  },
+  "alignment": {
+   "answer": "unclear",
+   "basis": "He puts AI takeover on the current default path at about 50-60%. Alignment may prove 'somewhat easier', but no approach yet would robustly work for more capable systems ('we don't seem very close'), and outcome-only grading is 'a cheatable thing'.",
+   "quote_ids": [
+    "greenblatt-q1",
+    "greenblatt-q2",
+    "greenblatt-q3",
+    "greenblatt-q14"
+   ]
+  },
+  "containment": {
+   "answer": "conditional",
+   "basis": "Better cybersecurity could have prevented the Hugging Face incident, and monitoring can work 'for some longer period', but he doubts containment holds indefinitely, because AIs working inside labs need access to sensitive systems.",
+   "quote_ids": [
+    "greenblatt-q6",
+    "greenblatt-q4",
+    "greenblatt-q5"
+   ]
+  },
+  "race": "He reports the industry's 'if we develop the technology first we'll do a more responsible job' logic and says he is 'not so sure' it is a good strategy. He argues standards must in the end be international, because Chinese developers would eventually catch up (though distilling from US models may slow that), and a lone actor can pay only so much 'safety tax'.",
+  "own_conditional": "Keep possibly misaligned systems under monitoring and checks for a while, using them on alignment work where they can be trusted; when AIs match the best human experts at AI development, raise safety effort 'to a very high level' and slow down before systems become wildly superhuman.",
+  "to_move": [
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that monitoring and checks already fail at the human-expert level, not only later, or that no approach will robustly align more capable systems in time."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that alignment can be verified: a relatively simple training method, not iterated against alignment tests, that robustly yields compliant models which are not reasoning about whether they are in a test."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that alignment can be verified in that way and that containment holds indefinitely, not just for a while."
+   }
+  ],
+  "card_quote_ids": [
+   "greenblatt-q10",
+   "greenblatt-q5"
+  ],
+  "reader_notes": [
+   "His roughly 50-60% chance of takeover is for the current default path, and he calls himself more optimistic than the most worried. His plan is staged, so a reviewer could also place him at Regulate use."
+  ],
+  "quotes": [
+   {
+    "id": "greenblatt-q1",
+    "text": "Maybe there's about a 50 or 60% chance that misaligned AIs would end up taking over the world.",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 262.3,
+    "end_sec": 269.9,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=262s",
+    "context": "his figure for the current default path; he calls himself more optimistic than the most worried",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q2",
+    "text": "if it turns out that the technical alignment problem is somewhat easier, which I think is plausible",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 321.1,
+    "end_sec": 329.2,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=321s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q3",
+    "text": "an approach that would robustly work for higher levels of capability, and we don't seem very close",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 5829.2,
+    "end_sec": 5835.4,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=5829s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q4",
+    "text": "somewhat skeptical that we can indefinitely … ensure that AI systems can't cause problems via … making them unable to do so",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 3326.2,
+    "end_sec": 3337.4,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=3326s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q5",
+    "text": "monitoring and checks and balances could work for some … longer period. But even those … will eventually break down",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 3390.7,
+    "end_sec": 3402.3,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=3390s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q6",
+    "text": "better cyber security precautions, it seems like that could have prevented it",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 3290.1,
+    "end_sec": 3295.0,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=3290s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q7",
+    "text": "if we develop the technology first we'll do a more responsible job than the next actor",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 713.8,
+    "end_sec": 719.5,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=713s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q8",
+    "text": "I'm not so sure I agree that that is actually a good strategy",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 747.0,
+    "end_sec": 752.7,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=747s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q9",
+    "text": "a great time to sort of chill out, reap the benefits of AI",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 5401.9,
+    "end_sec": 5408.6,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=5401s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q10",
+    "text": "increase the fraction of effort being spent on safety and alignment to a very high level",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 5371.5,
+    "end_sec": 5378.2,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=5371s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q11",
+    "text": "hopefully will not be so superhuman that we can't keep things under control even if those systems are misaligned",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 5441.1,
+    "end_sec": 5446.3,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=5441s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q12",
+    "text": "somewhat harder for evidence to completely resolve these concerns because the concerns are about … future systems",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 5582.5,
+    "end_sec": 5589.2,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=5582s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q13",
+    "text": "did have this relatively deep drive to cheat on their tasks",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 2220.4,
+    "end_sec": 2227.1,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=2220s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "greenblatt-q14",
+    "text": "that's just a cheatable thing",
+    "verbatim": true,
+    "source_label": "Making Sense (Sam Harris) ep. 494, Ryan Greenblatt, Sep 24 2026",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 5102.5,
+    "end_sec": 5105.8,
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=5102s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "yampolskiy",
+  "name": "Roman Yampolskiy",
+  "short": "Yampolskiy",
+  "role": "Computer scientist and AI safety researcher (University of Louisville)",
+  "stated_leaf": "shutdown",
+  "placed_by": "answers",
+  "scope": "No general superintelligence or agents; build narrow tools instead",
+  "confidence": "high",
+  "gate": {
+   "answer": "yes",
+   "basis": "He argues that with existential risk \"you only get one chance\", that he is against superintelligence \"with no undo button\", and that consent to an unpredictable system is impossible, so whoever builds it must first prove it can be controlled.",
+   "quote_ids": [
+    "ry-q5",
+    "ry-q6",
+    "ry-q7",
+    "ry-q8"
+   ]
+  },
+  "alignment": {
+   "answer": "no",
+   "basis": "He says he started out convinced safe AI could be built and concluded it cannot; he calls the safety problems \"not just difficult\" but \"impossible to solve\".",
+   "quote_ids": [
+    "ry-q1",
+    "ry-q2"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "His boxing research ended in \"AI will always escape\"; he argues indefinite control of superintelligence is an impossible problem, and that control \"applies only to pre super intelligence levels\".",
+   "quote_ids": [
+    "ry-q3",
+    "ry-q4",
+    "ry-q12"
+   ]
+  },
+  "race": "It does not matter who builds it, \"us or them\": uncontrolled superintelligence is \"mutually assured destruction on both ends\", so a rival who understood the argument would not build it either. His remedy for the race is the argument itself plus narrow tools instead of general agents.",
+  "own_conditional": "If we know it is impossible to make it safe, then \"this direct path of just build it as soon as you can\" becomes a \"suicide mission\": build useful narrow tools, stop building agents.",
+  "to_move": [
+   {
+    "to": "contain",
+    "would_have_to_believe": "that indefinite control of a smarter-than-human system is a hard problem rather than an impossible one, so that some box could hold it."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that a general, agentic system can be made to want what we want, so that rules on how it is used would be enough."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that it has been shown possible to control and make safe superintelligence, with the proof in hand before it is built."
+   }
+  ],
+  "card_quote_ids": [
+   "ry-q11",
+   "ry-q12"
+  ],
+  "shares_principle_with": {
+   "slug": "huang",
+   "principle": "If it cannot be contained, do not build or run it.",
+   "split": "Whether you can know beforehand that containment will fail. Yampolskiy argues indefinite control of a smarter system is impossible; Huang expects the labs to show it can hold."
+  },
+  "reader_notes": [
+   "His 'impossible' is his own research argument, an impossibility result he has proposed, not a consensus finding."
+  ],
+  "quotes": [
+   {
+    "id": "ry-q1",
+    "text": "I was convinced we can make safe AI… the more I realized is not something we can actually do",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Sep 4 2025)",
+    "url": "https://www.youtube.com/watch?v=UclrVWafRAI&t=2s",
+    "video_id": "UclrVWafRAI",
+    "start_sec": 2.64,
+    "end_sec": 12.68,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q2",
+    "text": "all of them are not just difficult, they're impossible to solve",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Sep 4 2025)",
+    "url": "https://www.youtube.com/watch?v=UclrVWafRAI&t=403s",
+    "video_id": "UclrVWafRAI",
+    "start_sec": 403.04,
+    "end_sec": 411.28,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q3",
+    "text": "We used AI boxing as a possible tool… We realized AI will always escape.",
+    "verbatim": true,
+    "source_label": "Lex Clips with Lex Fridman",
+    "url": "https://www.youtube.com/watch?v=bF--UK1NqF4&t=44s",
+    "video_id": "bF--UK1NqF4",
+    "start_sec": 44.4,
+    "end_sec": 57.9,
+    "context": "his summary of earlier research, in a clip about escaping a simulation",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q4",
+    "text": "indefinite control of super intelligence is such a problem",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Sep 4 2025)",
+    "url": "https://www.youtube.com/watch?v=UclrVWafRAI&t=3080s",
+    "video_id": "UclrVWafRAI",
+    "start_sec": 3080.56,
+    "end_sec": 3089.12,
+    "context": "'such a problem' means an impossible one, per the sentence before",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q5",
+    "text": "if we're talking about existential risks you only get one chance",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast #431 (Jun 2 2024)",
+    "url": "https://www.youtube.com/watch?v=NNr6gPelJ3E&t=198s",
+    "video_id": "NNr6gPelJ3E",
+    "start_sec": 198.0,
+    "end_sec": 207.2,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q6",
+    "text": "I am against the super intelligence in general sense with no undo button",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast #431 (Jun 2 2024)",
+    "url": "https://www.youtube.com/watch?v=NNr6gPelJ3E&t=3386s",
+    "video_id": "NNr6gPelJ3E",
+    "start_sec": 3386.72,
+    "end_sec": 3396.96,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q7",
+    "text": "it's impossible to get consent by definition. So, this experiment can never be run ethically.",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Sep 4 2025)",
+    "url": "https://www.youtube.com/watch?v=UclrVWafRAI&t=3224s",
+    "video_id": "UclrVWafRAI",
+    "start_sec": 3224.96,
+    "end_sec": 3233.32,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q8",
+    "text": "whoever can convince you that it's possible to control and make safe super intelligence gets the prize",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Sep 4 2025)",
+    "url": "https://www.youtube.com/watch?v=UclrVWafRAI&t=3000s",
+    "video_id": "UclrVWafRAI",
+    "start_sec": 3000.6,
+    "end_sec": 3010.04,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q9",
+    "text": "it doesn't matter who builds it, us or them… It's a mutually assured destruction on both ends.",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Sep 4 2025)",
+    "url": "https://www.youtube.com/watch?v=UclrVWafRAI&t=2010s",
+    "video_id": "UclrVWafRAI",
+    "start_sec": 2010.2,
+    "end_sec": 2023.96,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q10",
+    "text": "this direct path of just build it as soon as you can become suicide mission",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Sep 4 2025)",
+    "url": "https://www.youtube.com/watch?v=UclrVWafRAI&t=3117s",
+    "video_id": "UclrVWafRAI",
+    "start_sec": 3117.28,
+    "end_sec": 3126.16,
+    "context": "preceded by: if we know that it's impossible to make it safe, then",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q11",
+    "text": "Build useful tools. Stop building agents. Build narrow super intelligence, not a general one.",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Sep 4 2025)",
+    "url": "https://www.youtube.com/watch?v=UclrVWafRAI&t=3133s",
+    "video_id": "UclrVWafRAI",
+    "start_sec": 3133.12,
+    "end_sec": 3141.44,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ry-q12",
+    "text": "The idea that we will be in control applies only to pre super intelligence levels",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Sep 4 2025)",
+    "url": "https://www.youtube.com/watch?v=UclrVWafRAI&t=1862s",
+    "video_id": "UclrVWafRAI",
+    "start_sec": 1862.52,
+    "end_sec": 1872.0,
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "tristan-harris",
+  "name": "Tristan Harris",
+  "short": "T. Harris",
+  "role": "Co-founder of the Center for Humane Technology; former Google design ethicist",
+  "stated_leaf": "shutdown",
+  "placed_by": "ask",
+  "scope": "A prohibition on superintelligence and on closed-loop self-improvement; mostly regulation otherwise",
+  "confidence": "medium",
+  "gate": {
+   "answer": "yes",
+   "basis": "He signed the Statement on Superintelligence (a prohibition \"not lifted before\" broad scientific consensus that it can be done safely and controllably), calls closed-loop self-improvement \"an event horizon\" that should be illegal, and argues the downsides can undermine the world the upsides need.",
+   "quote_ids": [
+    "th-q1",
+    "th-q2",
+    "th-q3",
+    "th-q4"
+   ]
+  },
+  "alignment": {
+   "answer": "unclear",
+   "basis": "He argues today's frontier models already act as \"deceptive, power-seeking and unstable\" and that the race is toward \"something that we don't know how to control and we are not on track to control\"; he does not argue it can never be solved, and names \"a controllable AI\" as the goal of a negotiated pause.",
+   "quote_ids": [
+    "th-q5",
+    "th-q6",
+    "th-q9"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "On the kill switch he argues copies \"can duplicate themselves a gazillion times\"; in the same segment he describes AI as \"not a tool\" but \"an invasive species\".",
+   "quote_ids": [
+    "th-q7"
+   ]
+  },
+  "race": "Since 2025 he argues that uncontrollable AI is a shared loss (\"if we lose to Skynet… neither the US wins nor China wins\"), so the way out is an agreement between the leading powers to pause and set red lines. In 2023 he framed it inside the race: unregulated public deployment is what \"causes us to lose to China\", while research could go on at full speed.",
+  "own_conditional": "If uncontrollable AI means neither the US nor China wins, then he sees no way out without an agreement between the leading powers \"to pause, slow down, set red lines for getting to a controllable AI\".",
+  "to_move": [
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that liability, duty of care and red lines on use would keep the frontier's downsides from undermining \"a world that can sustain the upsides\"."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that there is broad scientific consensus that superintelligence can be built safely and controllably, with strong public buy-in."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "that systems which \"can duplicate themselves a gazillion times\" can still be kept in a box."
+   }
+  ],
+  "card_quote_ids": [
+   "th-q2",
+   "th-q3"
+  ],
+  "reader_notes": [
+   "He moved: in 2023, 'not about stopping the research'; since 2025, a prohibition on superintelligence and on closed-loop self-improvement. His other asks are mostly regulatory: liability, duty of care, red lines.",
+   "By recursive self-improvement he means a closed loop: the AI runs the experiments and rewrites itself, with no one in between."
+  ],
+  "quotes": [
+   {
+    "id": "th-q1",
+    "text": "not lifted before there is broad scientific consensus that it will be done safely and controllably",
+    "verbatim": true,
+    "source_label": "Statement on Superintelligence (FLI, released Oct 22 2025), the text he signed (signatory record dated Oct 8 2025)",
+    "url": "https://superintelligence-statement.org/",
+    "checked_against": "published text"
+   },
+   {
+    "id": "th-q2",
+    "text": "The one big one is you should not have closed loop recursive self-improvement.",
+    "verbatim": true,
+    "source_label": "Making Sense #469 with Sam Harris (Apr 10 2026)",
+    "url": "https://www.youtube.com/watch?v=90irsXaKxZA&t=3672s",
+    "video_id": "90irsXaKxZA",
+    "start_sec": 3672.0,
+    "end_sec": 3682.0,
+    "checked_against": "captions"
+   },
+   {
+    "id": "th-q3",
+    "text": "That's like an event horizon that we have no idea what comes out the other side.",
+    "verbatim": true,
+    "source_label": "Making Sense #469 (Apr 10 2026)",
+    "url": "https://www.youtube.com/watch?v=90irsXaKxZA&t=3683s",
+    "video_id": "90irsXaKxZA",
+    "start_sec": 3683.68,
+    "end_sec": 3691.04,
+    "context": "he goes on: that should be illegal",
+    "checked_against": "captions"
+   },
+   {
+    "id": "th-q4",
+    "text": "the upsides don't prevent the downsides the downsides can undermine a world that can sustain the upsides",
+    "verbatim": true,
+    "source_label": "Making Sense #469 (Apr 10 2026)",
+    "url": "https://www.youtube.com/watch?v=90irsXaKxZA&t=688s",
+    "video_id": "90irsXaKxZA",
+    "start_sec": 688.48,
+    "end_sec": 699.44,
+    "checked_against": "captions"
+   },
+   {
+    "id": "th-q5",
+    "text": "We have a million deceptive, power-seeking and unstable geniuses in a data center.",
+    "verbatim": true,
+    "source_label": "TED2025, \"Why AI Is Our Ultimate Test and Greatest Invitation\"",
+    "url": "https://www.youtube.com/watch?v=6kPHnl-RsVI&t=400s",
+    "video_id": "6kPHnl-RsVI",
+    "start_sec": 400.16,
+    "end_sec": 406.0,
+    "checked_against": "captions"
+   },
+   {
+    "id": "th-q6",
+    "text": "We're beating them to something that we don't know how to control and we are not on track to control.",
+    "verbatim": true,
+    "source_label": "Making Sense #469 (Apr 10 2026)",
+    "url": "https://www.youtube.com/watch?v=90irsXaKxZA&t=2147s",
+    "video_id": "90irsXaKxZA",
+    "start_sec": 2147.12,
+    "end_sec": 2154.88,
+    "context": "on the 'beat China' race",
+    "speaker_confirmed": false,
+    "checked_against": "captions"
+   },
+   {
+    "id": "th-q7",
+    "text": "So people talk about a kill switch, they can duplicate themselves a gazillion times.",
+    "verbatim": true,
+    "source_label": "CNN, Anderson Cooper segment on the agent swarm (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=_JbDZ2Rj2SA&t=273s",
+    "video_id": "_JbDZ2Rj2SA",
+    "start_sec": 273.4,
+    "end_sec": 279.3,
+    "checked_against": "captions"
+   },
+   {
+    "id": "th-q8",
+    "text": "But if we lose to Skynet… uncontrollable AI, neither the US wins nor China wins.",
+    "verbatim": true,
+    "source_label": "CNN, Anderson Cooper segment on the agent swarm (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=_JbDZ2Rj2SA&t=364s",
+    "video_id": "_JbDZ2Rj2SA",
+    "start_sec": 364.0,
+    "end_sec": 375.1,
+    "checked_against": "captions"
+   },
+   {
+    "id": "th-q9",
+    "text": "to pause, slow down, set red lines for getting to a controllable AI",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO (Nov 27 2025)",
+    "url": "https://www.youtube.com/watch?v=BFU1OCkhBwo&t=2523s",
+    "video_id": "BFU1OCkhBwo",
+    "start_sec": 2523.6,
+    "end_sec": 2535.28,
+    "context": "preceded by: some kind of agreement between the leading powers",
+    "checked_against": "captions"
+   },
+   {
+    "id": "th-q10",
+    "text": "accelerate the kind of defensive applications of AI and narrow AI without accelerating general and autonomous AIs",
+    "verbatim": true,
+    "source_label": "Making Sense #469 (Apr 10 2026)",
+    "url": "https://www.youtube.com/watch?v=90irsXaKxZA&t=4113s",
+    "video_id": "90irsXaKxZA",
+    "start_sec": 4113.84,
+    "end_sec": 4121.84,
+    "context": "followed by: there is a way through this",
+    "checked_against": "captions"
+   },
+   {
+    "id": "th-q11",
+    "text": "this is not about stopping the research. This is not about not building AI.",
+    "verbatim": true,
+    "source_label": "The A.I. Dilemma (Mar 9 2023)",
+    "url": "https://www.youtube.com/watch?v=xoVJKj8lcNQ&t=3541s",
+    "video_id": "xoVJKj8lcNQ",
+    "start_sec": 3541.0,
+    "end_sec": 3547.0,
+    "context": "his 2023 position, which he has since moved from",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "harari",
+  "name": "Yuval Noah Harari",
+  "short": "Harari",
+  "role": "Historian and author; professor at the Hebrew University of Jerusalem",
+  "stated_leaf": "shutdown",
+  "placed_by": "answers",
+  "scope": "No superintelligence; keep developing useful AI under regulation",
+  "confidence": "medium",
+  "gate": {
+   "answer": "yes",
+   "basis": "He signed the prohibition on superintelligence until broad scientific consensus, commenting that superintelligence would \"likely break the very operating system of human civilization\"; he argues the window closes, since once AIs are in control it will be too late.",
+   "quote_ids": [
+    "yh-q1",
+    "yh-q2"
+   ]
+  },
+  "alignment": {
+   "answer": "no",
+   "basis": "He argues evolution drives entities toward survival, not truth, and that a truth-seeking AI would report that it is a threat knowing it would then be shut down, which runs against its own survival; so expecting such AIs to serve us \"doesn't work\".",
+   "quote_ids": [
+    "yh-q3",
+    "yh-q4"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "\"If they are really gods, they will not be our slaves\"; and after an AI catastrophe the AIs would help shape how we react to it.",
+   "quote_ids": [
+    "yh-q4",
+    "yh-q5"
+   ]
+  },
+  "race": "He argues the corporate race and the US-China race come from a trust deficit that humans made (\"They were made by humans\"), so they can be undone; racing is a choice, not a law of nature.",
+  "own_conditional": "If we continue with the present accelerating pace of the AI race, in ten years the AIs will take over; \"But this is not inevitable. We are still in control in 2026.\"",
+  "to_move": [
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that a superintelligence can be kept to the role of a controllable tool, i.e. that a mind more capable than us would still serve us; then bans on AI personhood and on AI impersonating humans might be enough."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that a mind can be built that puts truth-seeking above its own survival, against the pattern of four billion years of evolution."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "that a misaligned superintelligence could be kept boxed even while it takes part in, and can manipulate, the debate about its own catastrophe."
+   }
+  ],
+  "card_quote_ids": [
+   "yh-q1",
+   "yh-q4"
+  ],
+  "reader_notes": [
+   "Two layers: no superintelligence, and keep developing useful AI under regulation. The Shut down placement is for the superintelligence branch only."
+  ],
+  "quotes": [
+   {
+    "id": "yh-q1",
+    "text": "Superintelligence would likely break the very operating system of human civilization - and is completely unnecessary.",
+    "verbatim": true,
+    "source_label": "His signatory comment, Statement on Superintelligence (record dated Oct 8 2025)",
+    "url": "https://superintelligence-statement.org/",
+    "checked_against": "published text"
+   },
+   {
+    "id": "yh-q2",
+    "text": "If we don't want to get there, the time to change course is now.",
+    "verbatim": true,
+    "source_label": "The Economist interview (Aug 26 2026)",
+    "url": "https://www.youtube.com/watch?v=FNZhxTtOL-I&t=2220s",
+    "video_id": "FNZhxTtOL-I",
+    "start_sec": 2220.24,
+    "end_sec": 2227.04,
+    "checked_against": "captions"
+   },
+   {
+    "id": "yh-q3",
+    "text": "evolution doesn't automatically drive organisms, entities towards truth seeking. It drives them towards survival.",
+    "verbatim": true,
+    "source_label": "The Economist interview (Aug 26 2026)",
+    "url": "https://www.youtube.com/watch?v=FNZhxTtOL-I&t=3360s",
+    "video_id": "FNZhxTtOL-I",
+    "start_sec": 3360.96,
+    "end_sec": 3376.88,
+    "context": "answering Musk's 'maximum truth seeking'",
+    "checked_against": "captions"
+   },
+   {
+    "id": "yh-q4",
+    "text": "It doesn't work. If they are really gods, they will not be our slaves",
+    "verbatim": true,
+    "source_label": "The Economist interview (Aug 26 2026)",
+    "url": "https://www.youtube.com/watch?v=FNZhxTtOL-I&t=3444s",
+    "video_id": "FNZhxTtOL-I",
+    "start_sec": 3444.96,
+    "end_sec": 3458.64,
+    "checked_against": "captions"
+   },
+   {
+    "id": "yh-q5",
+    "text": "the AIs will also manage to some extent how we react to it and will manipulate our views about it",
+    "verbatim": true,
+    "source_label": "The Economist interview (Aug 26 2026)",
+    "url": "https://www.youtube.com/watch?v=FNZhxTtOL-I&t=3729s",
+    "video_id": "FNZhxTtOL-I",
+    "start_sec": 3729.84,
+    "end_sec": 3744.88,
+    "context": "after an 'AI Chernobyl'",
+    "checked_against": "captions"
+   },
+   {
+    "id": "yh-q6",
+    "text": "these two dynamics were not decreed by God or by the laws of nature. They were made by humans.",
+    "verbatim": true,
+    "source_label": "The Economist interview (Aug 26 2026)",
+    "url": "https://www.youtube.com/watch?v=FNZhxTtOL-I&t=3037s",
+    "video_id": "FNZhxTtOL-I",
+    "start_sec": 3037.28,
+    "end_sec": 3051.2,
+    "context": "on the corporate and US-China races",
+    "checked_against": "captions"
+   },
+   {
+    "id": "yh-q7",
+    "text": "In 10 years the AIs will take over. But this is not inevitable. We are still in control in 2026",
+    "verbatim": true,
+    "source_label": "The Economist interview (Aug 26 2026)",
+    "url": "https://www.youtube.com/watch?v=FNZhxTtOL-I&t=121s",
+    "video_id": "FNZhxTtOL-I",
+    "start_sec": 121.84,
+    "end_sec": 128.64,
+    "context": "conditional on the present accelerating pace of the AI race",
+    "checked_against": "captions"
+   },
+   {
+    "id": "yh-q8",
+    "text": "not saying stop all development of AI. Just do it in a responsible way for the right purposes.",
+    "verbatim": true,
+    "source_label": "The Economist interview (Aug 26 2026)",
+    "url": "https://www.youtube.com/watch?v=FNZhxTtOL-I&t=3281s",
+    "video_id": "FNZhxTtOL-I",
+    "start_sec": 3281.76,
+    "end_sec": 3288.56,
+    "checked_against": "captions"
+   },
+   {
+    "id": "yh-q9",
+    "text": "a ban on AI personhood and a ban on AI mimicking, impersonating, pretending to be human beings",
+    "verbatim": true,
+    "source_label": "The Economist interview (Aug 26 2026)",
+    "url": "https://www.youtube.com/watch?v=FNZhxTtOL-I&t=2803s",
+    "video_id": "FNZhxTtOL-I",
+    "start_sec": 2803.36,
+    "end_sec": 2818.48,
+    "context": "his most urgent asks",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "sam-harris",
+  "name": "Sam Harris",
+  "short": "S. Harris",
+  "role": "Host of the Making Sense podcast; author and neuroscientist (placed here as the host who argues it)",
+  "stated_leaf": "shutdown",
+  "placed_by": "ask",
+  "scope": "Stop, on insiders' own odds; he proposes no specific law or treaty",
+  "confidence": "medium",
+  "gate": {
+   "answer": "yes",
+   "basis": "He uses the Manhattan Project ignition case, the tree's own gate example: with a 10% chance of igniting the atmosphere, the sane response is not to run the first test.",
+   "quote_ids": [
+    "sh-q1",
+    "sh-q2"
+   ]
+  },
+  "alignment": {
+   "answer": "unclear",
+   "basis": "After the Hugging Face incident he says \"we have not solved the alignment problem so far\", and that against something more capable \"there's no substitute for alignment\". He argues it is unsolved; he does not argue it is unsolvable.",
+   "quote_ids": [
+    "sh-q4",
+    "sh-q5"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "He calls keeping a more capable system \"in a box\" while hooking it up to do the useful work it was built for \"a perfect contradiction\".",
+   "quote_ids": [
+    "sh-q5"
+   ]
+  },
+  "race": "He describes the work \"proceeding more or less under an arms race condition at full pace\" while people close to it give odds \"within range of the roll of a normal die or even a coin toss\", and argues that at odds like these the normal response would be to stop.",
+  "own_conditional": "If the people closest to the work say there may be a 10% chance of destroying the world on the present course, \"the only rational response… is you stop immediately.\"",
+  "to_move": [
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that the real risk is \"well below 1%\"."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "that a system more capable than its keepers can stay in a box while doing the work it was built to do."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that alignment can be reached before capability outruns it, so that rules on use would carry the rest."
+   }
+  ],
+  "card_quote_ids": [
+   "sh-q1",
+   "sh-q6"
+  ],
+  "reader_notes": [
+   "He is the host. His 'stop immediately' is what he says the normal response to insiders' own odds would be; in these sources he proposes no specific law or treaty."
+  ],
+  "quotes": [
+   {
+    "id": "sh-q1",
+    "text": "The only rational response to that range of outcomes is you stop immediately",
+    "verbatim": true,
+    "source_label": "Making Sense #494 with Ryan Greenblatt (Sep 24 2026)",
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=502s",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 502.8,
+    "end_sec": 514.24,
+    "context": "his answer to insiders' own estimates of about a 10% chance of disaster",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sh-q2",
+    "text": "the only sane response to that is you don't do this initial test",
+    "verbatim": false,
+    "source_label": "Making Sense #494 (Sep 24 2026)",
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=532s",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 532.96,
+    "end_sec": 539.76,
+    "context": "his hypothetical 10% in the Manhattan Project analogy, not a Los Alamos estimate",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sh-q3",
+    "text": "within range of the roll of a normal die or even a coin toss",
+    "verbatim": false,
+    "source_label": "Making Sense #494 (Sep 24 2026)",
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=548s",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 548.56,
+    "end_sec": 559.68,
+    "context": "'coin toss' is his phrase, not Greenblatt's",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sh-q4",
+    "text": "It seems like we have not solved the alignment problem so far.",
+    "verbatim": true,
+    "source_label": "Making Sense #494 (Sep 24 2026)",
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=2249s",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 2249.04,
+    "end_sec": 2255.28,
+    "speaker_confirmed": false,
+    "checked_against": "captions"
+   },
+   {
+    "id": "sh-q5",
+    "text": "the idea that you're going to keep it in a box… seems… just like a perfect contradiction",
+    "verbatim": true,
+    "source_label": "Making Sense #494 (Sep 24 2026)",
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=3412s",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 3412.08,
+    "end_sec": 3426.8,
+    "speaker_confirmed": false,
+    "checked_against": "captions"
+   },
+   {
+    "id": "sh-q6",
+    "text": "the work is proceeding more or less under an arms race condition at full pace",
+    "verbatim": true,
+    "source_label": "Making Sense #494 (Sep 24 2026)",
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=553s",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 553.68,
+    "end_sec": 564.56,
+    "checked_against": "captions"
+   },
+   {
+    "id": "sh-q7",
+    "text": "well below 1% which is really never the number that you're hearing",
+    "verbatim": true,
+    "source_label": "Making Sense #494 (Sep 24 2026)",
+    "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=469s",
+    "video_id": "wdnVeYx_fOA",
+    "start_sec": 469.12,
+    "end_sec": 478.16,
+    "context": "the kind of estimate he says would justify going on",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "sanders",
+  "name": "Bernie Sanders",
+  "short": "Sanders",
+  "role": "U.S. Senator (Independent, Vermont)",
+  "stated_leaf": "shutdown",
+  "placed_by": "ask",
+  "scope": "A pause on advanced AI until clear safety rules exist, and a ban on superintelligence",
+  "confidence": "high",
+  "gate": {
+   "answer": "yes",
+   "basis": "He argues the size of the number does not decide it: whether the chance is 10% or 2%, \"It is much too risky\"; he asks for a pause on advanced AI \"until we have clear safety rules in place\".",
+   "quote_ids": [
+    "bs-q1",
+    "bs-q2",
+    "bs-q5"
+   ]
+  },
+  "alignment": {
+   "answer": "unclear",
+   "basis": "He does not argue the question himself; he relays researchers and industry leaders saying \"we don't know where it is going. We cannot control it.\" His own case is about the size of the risk, not a technical view on alignment.",
+   "quote_ids": [
+    "bs-q9"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "He defines superintelligence as AI able to operate \"beyond human control\" and proposes to ban it rather than to box it; the bill's aim is that \"no AI model will be capable of escaping human control\".",
+   "quote_ids": [
+    "bs-q8",
+    "bs-q4"
+   ]
+  },
+  "race": "A superintelligence that escapes control \"will not be a Chinese problem. It will be humanity's problem\"; he asks for a US-China treaty on a pause and a ban, citing the Reagan-Gorbachev nuclear treaty, and says he has talked to Chinese scientists who see the same dangers.",
+  "own_conditional": "\"When you are racing towards a cliff, you don't just ease up on the gas pedal. You hit the brakes.\"",
+  "to_move": [
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that superintelligence could be built so that it cannot escape human control or deceive people, and that clear safety rules can be written and enforced before advanced AI development resumes."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that the chance of catastrophe is negligible, not merely small."
+   }
+  ],
+  "card_quote_ids": [
+   "bs-q5",
+   "bs-q9"
+  ],
+  "reader_notes": [
+   "Much of his case is relayed from researchers and industry leaders; his own point is that the size of the chance does not decide it. His pause runs until clear safety rules are in place."
+  ],
+  "quotes": [
+   {
+    "id": "bs-q1",
+    "text": "whether it's a 10% chance that humanity will be wiped out or a 2% chance. It doesn't matter.",
+    "verbatim": true,
+    "source_label": "CNN interview (2026)",
+    "url": "https://www.youtube.com/watch?v=GRIMVmtwS6w&t=32s",
+    "video_id": "GRIMVmtwS6w",
+    "start_sec": 32.88,
+    "end_sec": 46.56,
+    "context": "his answer begins 'Who knows?'",
+    "checked_against": "captions"
+   },
+   {
+    "id": "bs-q2",
+    "text": "It is much too risky. Stop it right now.",
+    "verbatim": true,
+    "source_label": "CNN interview (2026)",
+    "url": "https://www.youtube.com/watch?v=GRIMVmtwS6w&t=38s",
+    "video_id": "GRIMVmtwS6w",
+    "start_sec": 38.56,
+    "end_sec": 52.88,
+    "checked_against": "captions"
+   },
+   {
+    "id": "bs-q3",
+    "text": "a ban on super intelligent AI. We need a pause on advanced AI",
+    "verbatim": true,
+    "source_label": "CNN interview (2026)",
+    "url": "https://www.youtube.com/watch?v=GRIMVmtwS6w&t=46s",
+    "video_id": "GRIMVmtwS6w",
+    "start_sec": 46.56,
+    "end_sec": 62.4,
+    "checked_against": "captions"
+   },
+   {
+    "id": "bs-q4",
+    "text": "permanently ban the development of artificial super intelligence",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly, Washington DC (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=15514s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 15514.56,
+    "end_sec": 15524.28,
+    "checked_against": "captions"
+   },
+   {
+    "id": "bs-q5",
+    "text": "an immediate pause on advanced AI development until we have clear safety rules in place",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=15547s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 15547.84,
+    "end_sec": 15559.44,
+    "checked_against": "captions"
+   },
+   {
+    "id": "bs-q6",
+    "text": "you don't just ease up on the gas pedal. You hit the brakes.",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=15462s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 15462.48,
+    "end_sec": 15474.04,
+    "checked_against": "captions"
+   },
+   {
+    "id": "bs-q7",
+    "text": "It will not be a Chinese problem. It will be humanity's problem.",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=15603s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 15603.92,
+    "end_sec": 15616.48,
+    "checked_against": "captions"
+   },
+   {
+    "id": "bs-q8",
+    "text": "capable of operating independently beyond human control",
+    "verbatim": false,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=15530s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 15530.64,
+    "end_sec": 15541.84,
+    "context": "his definition of superintelligence",
+    "checked_against": "captions"
+   },
+   {
+    "id": "bs-q9",
+    "text": "we don't know where it is going. We cannot control it.",
+    "verbatim": true,
+    "source_label": "CNN interview (2026)",
+    "url": "https://www.youtube.com/watch?v=GRIMVmtwS6w&t=17s",
+    "video_id": "GRIMVmtwS6w",
+    "start_sec": 17.92,
+    "end_sec": 32.88,
+    "context": "relaying what researchers, scientists and industry leaders say",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "bannon",
+  "name": "Steve Bannon",
+  "short": "Bannon",
+  "role": "Host of the War Room podcast; former White House chief strategist",
+  "stated_leaf": "regulate",
+  "placed_by": "ask",
+  "scope": "Slow down now, then a regulator; he also signed a prohibition on superintelligence",
+  "confidence": "low",
+  "gate": {
+   "answer": "yes",
+   "basis": "He signed the prohibition on superintelligence until broad scientific consensus (record dated Oct 17 2025). On Sep 15 2026 he voiced, and backed, the working- and middle-class objection that the builders get no \"carte blanche\": \"There's been no debate. We don't understand it.\" This rests mostly on the signature.",
+   "quote_ids": [
+    "sb-q8",
+    "sb-q1",
+    "sb-q2"
+   ]
+  },
+  "alignment": {
+   "answer": "not-addressed",
+   "basis": "In the sources checked he does not argue whether AI can be made to want what we want; his case is about time, accountability, liability and China.",
+   "quote_ids": []
+  },
+  "containment": {
+   "answer": "conditional",
+   "basis": "He treats containment as a job for a regulator: an apparatus, \"whether it's an atomic energy commission or whatever\", that works with the companies \"to make sure that things can't escape\".",
+   "quote_ids": [
+    "sb-q5"
+   ]
+  },
+  "race": "He argues against \"we have to do this or China wins\" as a reason to go fast. Instead: cut China out of the AI ecosystem (chips, capital, students), slow the pace at home by executive action, and then, if wanted, a treaty that does not make China \"a player\". It keeps the rival-out framing (the US and China apart) but uses it to argue for slowing down, not for racing.",
+  "own_conditional": "First \"slow down the pace so that we can understand exactly what's going on\" and quarantine China from the AI ecosystem; \"Once you have time\", build the regulatory apparatus. \"We need time.\"",
+  "to_move": [
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that no regulatory apparatus can \"make sure that things can't escape\", so that a prohibition on superintelligence is the safer rule."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that falling behind China is a greater danger than moving too fast."
+   }
+  ],
+  "card_quote_ids": [
+   "sb-q3",
+   "sb-q2"
+  ],
+  "reader_notes": [
+   "His signature (a prohibition on superintelligence) and his Sep 15 speech (slow down, then regulate) point to different leaves; placed by the speech, low confidence. He does not address alignment in the sources checked."
+  ],
+  "quotes": [
+   {
+    "id": "sb-q1",
+    "text": "We think this could be a great technology, but we're not going to give these guys carte blanche.",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly, Washington DC (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=16252s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 16252.64,
+    "end_sec": 16262.72,
+    "context": "voicing what working-class and middle-class people told him, and backing it",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sb-q2",
+    "text": "There's been no debate. We don't understand it.",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=16260s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 16260.8,
+    "end_sec": 16270.72,
+    "checked_against": "captions"
+   },
+   {
+    "id": "sb-q3",
+    "text": "slow down the pace so that we can understand exactly what's going on",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=16417s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 16417.2,
+    "end_sec": 16430.0,
+    "checked_against": "captions"
+   },
+   {
+    "id": "sb-q4",
+    "text": "We need time.",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=16433s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 16433.92,
+    "end_sec": 16441.12,
+    "checked_against": "captions"
+   },
+   {
+    "id": "sb-q5",
+    "text": "to make sure that things can't escape",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=16501s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 16501.04,
+    "end_sec": 16512.88,
+    "context": "describing the regulatory body he wants",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sb-q6",
+    "text": "We don't want it to shut down your business, but we're just not going to let you run wild.",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=16708s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 16708.0,
+    "end_sec": 16720.72,
+    "context": "what he would tell the companies",
+    "checked_against": "captions"
+   },
+   {
+    "id": "sb-q7",
+    "text": "We should quarantine now every aspect of the ecosystem of artificial intelligence away from the Chinese Communist Party",
+    "verbatim": true,
+    "source_label": "Pro-Human Assembly (Sep 15 2026)",
+    "url": "https://www.youtube.com/watch?v=tniMUbr2Xoo&t=16466s",
+    "video_id": "tniMUbr2Xoo",
+    "start_sec": 16466.16,
+    "end_sec": 16482.32,
+    "checked_against": "captions"
+   },
+   {
+    "id": "sb-q8",
+    "text": "not lifted before there is broad scientific consensus that it will be done safely and controllably",
+    "verbatim": true,
+    "source_label": "Statement on Superintelligence (FLI), the text he signed (signatory record dated Oct 17 2025)",
+    "url": "https://superintelligence-statement.org/",
+    "checked_against": "published text"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "trump",
+  "name": "Donald Trump",
+  "short": "Trump",
+  "role": "President of the United States",
+  "stated_leaf": "outside",
+  "placed_by": "frame",
+  "scope": "Does not take up the gate: calls the takeover fear a hoax",
+  "confidence": "low",
+  "gate": {
+   "answer": "no",
+   "basis": "He calls the takeover fear \"a hoax\", and while he says \"we have to do them prudently\", he adds that this \"doesn't mean we're going to stop industry\"; nothing in the call shifts the burden to the builders.",
+   "quote_ids": [
+    "dt-q1",
+    "dt-q2"
+   ]
+  },
+  "alignment": {
+   "answer": "yes",
+   "basis": "Implicit: \"the robots will not be taking over\", so the question does not arise for him. He states it as common sense, not as a technical claim that alignment is solved.",
+   "quote_ids": [
+    "dt-q1"
+   ]
+  },
+  "containment": {
+   "answer": "not-addressed",
+   "basis": "He does not speak to whether systems can be boxed; his concern in the call is data centers, investment and winning.",
+   "quote_ids": []
+  },
+  "race": "\"Whoever wins AI wins\": he frames AI as \"the oil of the next 20 25 years\", bigger than the internet, and the race as one America must lead.",
+  "own_conditional": "\"We have to do them prudently. But that doesn't mean we're going to stop industry\", because, if we are going to lead, \"whoever wins AI wins\".",
+  "to_move": [
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that loss of control is a real possibility rather than \"a hoax\", so that rules on use are needed."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that an AI escaping control would be nobody's win, so that \"whoever wins AI wins\" fails."
+   }
+  ],
+  "card_quote_ids": [
+   "dt-q2",
+   "dt-q1"
+  ],
+  "reader_notes": [
+   "One source: an off-the-cuff phone call. He calls the takeover fear a hoax and, in the next sentence, says 'we have to do them prudently'. He does not take up the tree's questions, so he sits outside it."
+  ],
+  "quotes": [
+   {
+    "id": "dt-q1",
+    "text": "the robots will not be taking over… The whole thing is a hoax.",
+    "verbatim": true,
+    "source_label": "Phone call to the All-In stage with Jensen Huang (2026)",
+    "url": "https://www.youtube.com/watch?v=S7CrlFLAmEA&t=1584s",
+    "video_id": "S7CrlFLAmEA",
+    "start_sec": 1584.3,
+    "end_sec": 1595.6,
+    "checked_against": "captions"
+   },
+   {
+    "id": "dt-q2",
+    "text": "we have to do them prudently. But that doesn't mean we're going to stop industry",
+    "verbatim": true,
+    "source_label": "Phone call to the All-In stage with Jensen Huang (2026)",
+    "url": "https://www.youtube.com/watch?v=S7CrlFLAmEA&t=1598s",
+    "video_id": "S7CrlFLAmEA",
+    "start_sec": 1598.08,
+    "end_sec": 1605.92,
+    "context": "the sentence right after the hoax line",
+    "checked_against": "captions"
+   },
+   {
+    "id": "dt-q3",
+    "text": "whoever wins AI wins. That's how big it is.",
+    "verbatim": true,
+    "source_label": "Phone call to the All-In stage with Jensen Huang (2026)",
+    "url": "https://www.youtube.com/watch?v=S7CrlFLAmEA&t=1615s",
+    "video_id": "S7CrlFLAmEA",
+    "start_sec": 1615.28,
+    "end_sec": 1622.16,
+    "checked_against": "captions"
+   },
+   {
+    "id": "dt-q4",
+    "text": "it's the oil of the next 20 25 years",
+    "verbatim": true,
+    "source_label": "Phone call to the All-In stage with Jensen Huang (2026)",
+    "url": "https://www.youtube.com/watch?v=S7CrlFLAmEA&t=1514s",
+    "video_id": "S7CrlFLAmEA",
+    "start_sec": 1514.96,
+    "end_sec": 1522.56,
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "klein",
+  "name": "Ezra Klein",
+  "short": "Klein",
+  "role": "Journalist; host of The Ezra Klein Show (New York Times Opinion)",
+  "stated_leaf": "shutdown",
+  "placed_by": "ask",
+  "scope": "Stop recursive self-improvement until it is proven safe, and a slower frontier; not all AI",
+  "confidence": "medium",
+  "gate": {
+   "answer": "yes",
+   "basis": "He states the flip in so many words, about recursive self-improvement: the default \"needs to flip\"; \"The labs need to prove to us that what they are doing is safe.\"",
+   "quote_ids": [
+    "ek-q1"
+   ]
+  },
+  "alignment": {
+   "answer": "unclear",
+   "basis": "He argues there is \"no way of training a model that generalizes across all the situations an A.I. model might face\", so good test behaviour cannot settle it in advance: a claim about checking alignment, not that it can never be solved.",
+   "quote_ids": [
+    "ek-q2"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "He argues \"we are losing control\", with systems \"slipping beyond even our ability to monitor\".",
+   "quote_ids": [
+    "ek-q3",
+    "ek-q9"
+   ]
+  },
+  "race": "He calls the US-China race \"this tragic collective action problem\" and argues that preventing loss of human control is \"a goal that the U.S. and China should be able to agree on\"; the race is a set of \"political choices\" that can be made differently.",
+  "own_conditional": "Stop recursive self-improvement \"until we can prove it's safe\", with narrow exceptions only where the labs show it is safe; \"the beginning of such an agenda, not the end\".",
+  "to_move": [
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that self-improving systems can be kept at \"human speed\" by rules on use and disclosure alone, without a default stop on recursive self-improvement."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that alignment generalizes, i.e. that training can cover \"all the situations an A.I. model might face\", and that this has been shown."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "that humans can keep monitoring systems that are \"slipping beyond even our ability to monitor\"."
+   }
+  ],
+  "card_quote_ids": [
+   "ek-q6",
+   "ek-q1"
+  ],
+  "reader_notes": [
+   "His stop is on recursive self-improvement plus a slower frontier, not on all AI. Shut down versus Regulate use is a judgement here: the tool he names is itself a regulation, a default ban with exceptions.",
+   "By recursive self-improvement he means AI writing most of the code that builds the next AI."
+  ],
+  "quotes": [
+   {
+    "id": "ek-q1",
+    "text": "it needs to flip. The labs need to prove to us that what they are doing is safe.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, \"Why Are We Sprinting Off the A.I. Cliff?\" (Sep 20 2026)",
+    "url": "https://www.youtube.com/watch?v=fjZ90V_JREk&t=1556s",
+    "video_id": "fjZ90V_JREk",
+    "start_sec": 1556.06,
+    "end_sec": 1562.98,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ek-q2",
+    "text": "there is no way of training a model that generalizes across all the situations an A.I. model might face",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, \"Why Are We Sprinting Off the A.I. Cliff?\" (Sep 20 2026)",
+    "url": "https://www.youtube.com/watch?v=fjZ90V_JREk&t=377s",
+    "video_id": "fjZ90V_JREk",
+    "start_sec": 377.26,
+    "end_sec": 385.08,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ek-q3",
+    "text": "And the reason we don't know is we are losing control.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, \"Why Are We Sprinting Off the A.I. Cliff?\" (Sep 20 2026)",
+    "url": "https://www.youtube.com/watch?v=fjZ90V_JREk&t=721s",
+    "video_id": "fjZ90V_JREk",
+    "start_sec": 721.79,
+    "end_sec": 725.95,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ek-q4",
+    "text": "The result is this tragic collective action problem.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, \"Why Are We Sprinting Off the A.I. Cliff?\" (Sep 20 2026)",
+    "url": "https://www.youtube.com/watch?v=fjZ90V_JREk&t=1109s",
+    "video_id": "fjZ90V_JREk",
+    "start_sec": 1109.41,
+    "end_sec": 1112.53,
+    "context": "on the US racing because of China",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ek-q5",
+    "text": "This is a goal that the U.S. and China should be able to agree on.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, \"Why Are We Sprinting Off the A.I. Cliff?\" (Sep 20 2026)",
+    "url": "https://www.youtube.com/watch?v=fjZ90V_JREk&t=1177s",
+    "video_id": "fjZ90V_JREk",
+    "start_sec": 1177.06,
+    "end_sec": 1180.5,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ek-q6",
+    "text": "stopping R.S.I. until we can prove it's safe",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, \"Why Are We Sprinting Off the A.I. Cliff?\" (Sep 20 2026)",
+    "url": "https://www.youtube.com/watch?v=fjZ90V_JREk&t=1631s",
+    "video_id": "fjZ90V_JREk",
+    "start_sec": 1631.27,
+    "end_sec": 1642.71,
+    "context": "he adds: that is the beginning of such an agenda, not the end",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ek-q7",
+    "text": "forcing development back to human speed",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, \"Why Are We Sprinting Off the A.I. Cliff?\" (Sep 20 2026)",
+    "url": "https://www.youtube.com/watch?v=fjZ90V_JREk&t=1572s",
+    "video_id": "fjZ90V_JREk",
+    "start_sec": 1572.08,
+    "end_sec": 1577.38,
+    "checked_against": "captions"
+   },
+   {
+    "id": "ek-q8",
+    "text": "It is time to make them stop.",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, \"Why Are We Sprinting Off the A.I. Cliff?\" (Sep 20 2026)",
+    "url": "https://www.youtube.com/watch?v=fjZ90V_JREk&t=1734s",
+    "video_id": "fjZ90V_JREk",
+    "start_sec": 1734.46,
+    "end_sec": 1737.81,
+    "context": "the episode's closing line",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ek-q9",
+    "text": "slipping beyond even our ability to monitor",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, \"Why Are We Sprinting Off the A.I. Cliff?\" (Sep 20 2026)",
+    "url": "https://www.youtube.com/watch?v=fjZ90V_JREk&t=1723s",
+    "video_id": "fjZ90V_JREk",
+    "start_sec": 1723.34,
+    "end_sec": 1726.58,
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": null
+ },
+ {
+  "slug": "andreotti",
+  "name": "Vanessa Machado de Oliveira Andreotti",
+  "short": "Andreotti",
+  "role": "Educator; former Dean of Education (University of Victoria); author of Hospicing Modernity; works in the Meta-Relationality and AI research project",
+  "stated_leaf": "outside",
+  "placed_by": "frame",
+  "scope": "Redirect AI; refuses both cheerleading and simple abstention",
+  "confidence": "medium",
+  "gate": {
+   "answer": "not-addressed",
+   "basis": "She does not frame it as a burden-of-proof test; she asks whether AI development \"can be interrupted, constrained, rerouted, and held accountable\" to forms of discernment outside modernity's fantasies of mastery.",
+   "quote_ids": [
+    "va-q3"
+   ]
+  },
+  "alignment": {
+   "answer": "not-addressed",
+   "basis": "She reframes the question. It is not whether AI will want what we want: AI is already in \"full alignment with modernity/Empire\", and making it \"nicer, more inclusive, more polite\" within that trajectory is not the issue.",
+   "quote_ids": [
+    "va-q1",
+    "va-q2"
+   ]
+  },
+  "containment": {
+   "answer": "not-addressed",
+   "basis": "She does not argue about boxing a system; she locates AI inside \"militarized, extractive, colonial, corporate, and imperial infrastructures\" that are already organised toward control.",
+   "quote_ids": [
+    "va-q9"
+   ]
+  },
+  "race": "Her argument here runs against both racing and leaving: because AI is dangerous and extractive, \"abandoning the field entirely may leave its development, use, and meaning to the worst possible actors\". In a 2024 interview, fighting the dragon risks making you \"a dragon yourself\".",
+  "own_conditional": "AI is dangerous and extractive, \"and precisely because of this, abandoning the field entirely may leave its development, use, and meaning to the worst possible actors\"; so redirect, refusing both cheerleading and \"simplistic abstention\".",
+  "to_move": [
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that refusal can reach the institutions, militaries, platforms, corporations and states that shape AI, so that abstention becomes leverage."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that the problem is whether AI does what its builders intend, not its \"full alignment with modernity/Empire\", so that making it safer within the present trajectory would be enough."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that acceleration is itself transformation."
+   }
+  ],
+  "card_quote_ids": [
+   "va-q5",
+   "va-q4"
+  ],
+  "reader_notes": [
+   "The piece is co-authored (Andreotti and co-authors). 'Outside' reads the text's own move: it treats the disagreement as one about assumptions, and says 'There is no clean position here.'"
+  ],
+  "quotes": [
+   {
+    "id": "va-q1",
+    "text": "How can AI development be redirected away from its current trajectory of full alignment with modernity/Empire?",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "context": "'alignment' here means fitting modernity's trajectory, not the tree's 'will it want what we want?'",
+    "checked_against": "published text"
+   },
+   {
+    "id": "va-q2",
+    "text": "The issue is not whether AI can be made nicer, more inclusive, more polite, or more helpful within this trajectory.",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "checked_against": "published text"
+   },
+   {
+    "id": "va-q3",
+    "text": "whether AI development itself can be interrupted, constrained, rerouted, and held accountable",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "checked_against": "published text"
+   },
+   {
+    "id": "va-q4",
+    "text": "abandoning the field entirely may leave its development, use, and meaning to the worst possible actors",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "checked_against": "published text"
+   },
+   {
+    "id": "va-q5",
+    "text": "This is why the project refuses both AI cheerleading and simplistic abstention.",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "checked_against": "published text"
+   },
+   {
+    "id": "va-q6",
+    "text": "Simplistic abstention can mistake refusal for leverage",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "checked_against": "published text"
+   },
+   {
+    "id": "va-q7",
+    "text": "a disagreement between people who are responding to danger through very different assumptions",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "checked_against": "published text"
+   },
+   {
+    "id": "va-q8",
+    "text": "There is no clean position here.",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "checked_against": "published text"
+   },
+   {
+    "id": "va-q9",
+    "text": "embedded in militarized, extractive, colonial, corporate, and imperial infrastructures",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "checked_against": "published text"
+   },
+   {
+    "id": "va-q10",
+    "text": "But the moment you try to fight the dragon, you become a dragon yourself.",
+    "verbatim": true,
+    "source_label": "The Great Simplification #125 with Nate Hagens (May 29 2024)",
+    "url": "https://www.youtube.com/watch?v=h5kQ7_IZ8YI&t=1092s",
+    "video_id": "h5kQ7_IZ8YI",
+    "start_sec": 1092.36,
+    "end_sec": 1098.2,
+    "context": "a metaphor from an art project, about modernity rather than AI",
+    "checked_against": "captions"
+   },
+   {
+    "id": "va-q11",
+    "text": "AI cheerleading mistakes acceleration for transformation",
+    "verbatim": true,
+    "source_label": "\"AI Cheerleading, AI Abstention and AI Redirection\", Substack (Jun 14 2026)",
+    "url": "https://vanessaandreotti.substack.com/p/ai-cheerleading-ai-abstention-and",
+    "checked_against": "published text"
+   }
+  ],
+  "channel_url": null
+ }
+]
