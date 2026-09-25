@@ -121,7 +121,43 @@ button.primary:hover{opacity:.9}
 .row .quote a{text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line)}
 .row .quote a:hover{border-bottom-color:var(--ink)}
 .row .quote a.idea{color:var(--link);border-bottom:1px dashed var(--link)}
-.row .src{display:inline-block;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin:0 0 4px}
+.rowhead{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin:0 0 4px}
+.rowhead:empty{display:none}
+.rank{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 6px;border-radius:99px;
+  background:var(--glow);color:var(--panel);font-weight:700;font-size:16px;font-variant-numeric:tabular-nums}
+.score{font-size:16px;font-weight:600}
+.score .n{font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums}
+.score.b-low{font-weight:400;color:var(--muted)}
+.row .src{display:inline-block;font-size:16px;letter-spacing:.04em;color:var(--faint)}
+.row .kw{margin:6px 0 0;font-size:16px;color:var(--ink)}
+.row .kwl{font-size:16px;color:var(--faint);margin-right:6px}
+.lowhead{list-style:none;margin:6px 0 -2px}
+.lowhead h3{font-size:17px;margin:0;color:var(--muted)}
+.host{color:var(--muted)}
+.verdict{margin:10px 0 0;padding:10px 12px;border-radius:12px;border:1px solid var(--glow);background:var(--panel);
+  display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.verdict[hidden]{display:none}
+.verdict p{margin:0;flex:1 1 240px}
+.readbtn{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.verdictlong{margin:0 0 10px}
+.clip{margin:10px 0 0}
+.closeclip{margin:6px 0 0}
+.keybox,.lanekey{margin:10px 0 0;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:0 12px}
+.keybox[hidden],.lanekey[hidden]{display:none}
+.keybox summary,.lanekey summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:600}
+.key{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px;font-size:16px}
+.key li{display:flex;gap:10px;align-items:flex-start}
+.key svg{width:24px;height:24px;flex:none;margin-top:1px}
+.k-person{fill:var(--s0);stroke:var(--panel);stroke-width:2}
+.k-ring{fill:none;stroke:var(--ink);stroke-width:1}
+.k-idea{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}
+.k-line{stroke:var(--glow);stroke-width:1.5;fill:none}
+.k-dash{stroke:var(--glow);stroke-width:1.5;fill:none;stroke-dasharray:4 3}
+.k-lit{fill:var(--glow);stroke:var(--glow);stroke-width:1}
+.k-low{fill:none;stroke:var(--glow);stroke-width:2}
+.k-text{stroke:var(--muted);stroke-width:2;fill:none}
+#lanelist{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px;font-size:16px}
+#lanelist .sw{display:inline-block;vertical-align:-1px;margin-right:6px}
 .row .noq{margin:0;color:var(--muted);font-size:16px}
 .row .meta{margin:6px 0 0;font-size:16px;color:var(--muted)}
 .row .close{font-weight:600;color:var(--ink)}
@@ -134,8 +170,6 @@ button.primary:hover{opacity:.9}
 .tag.person::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c,var(--dot-other));margin-right:6px}
 .tag.idea{border-style:dashed}
 .player{margin:10px 0 0;aspect-ratio:16/9;width:100%;border:0;border-radius:10px;background:#000}
-details.anyway{margin:10px 0 0}
-details.anyway summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
 .empty{color:var(--muted);margin:0}
 .panelhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin:0 0 8px}
 .panelhead h2{margin:0}

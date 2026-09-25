@@ -10,10 +10,10 @@ never writes transcript text into map/: passage text lives only in the private w
 (default: <system temp>/map-work), which is deleted at the end unless --keep-work is given.
 
 What gets shipped (map/data/): positions, times, tags, int8 vectors, neighbours, a capped set
-of short labelled snippets. check.py then fails the build on any breach of the snippet rules.
+of short labelled snippets, and up to five key words per passage (an index of terms, not a quote). check.py then fails the build on any breach of the snippet rules.
 
 Steps: chunk -> embed -> tag -> project -> cluster -> nodes -> nn -> questions -> snippets
-       -> export -> (check.py) -> cleanup
+       -> key words -> export -> (check.py) -> cleanup
 """
 import argparse, gzip, html, json, math, os, re, shutil, subprocess, sys, tempfile, time
 from collections import Counter, defaultdict
@@ -25,7 +25,8 @@ MAP = os.path.dirname(HERE)
 DATA = os.path.join(MAP, 'data')
 MODEL_DIR = os.path.join(MAP, 'model', 'Xenova', 'all-MiniLM-L6-v2')
 
-CHUNKER_VERSION = 'c2'            # bump when chunk boundaries change: invalidates the embedding cache
+CHUNKER_VERSION = 'c3'            # bump when chunk text or boundaries change: invalidates the embedding cache
+                                  # c3 (Sep 25): speaker labels removed, speaker turns kept for cutting quotes
 PY_MODEL = 'sentence-transformers/all-MiniLM-L6-v2'
 WEB_MODEL = 'Xenova/all-MiniLM-L6-v2'
 WEB_MODEL_FILES = ['config.json', 'tokenizer.json', 'tokenizer_config.json', 'onnx/model_quantized.onnx']
@@ -34,10 +35,12 @@ NYT_SHOWS = {'pod_ezra', 'pod_ezra_klein'}          # The Ezra Klein Show is a N
 SHOW_ALIAS = {'pod_making_sense': 'pod_ms', 'pod_ezra_klein': 'pod_ezra'}
 SNIP_CAP, SNIP_CAP_NYT = 20, 15
 PALETTE_SLOTS = 6                 # categorical slots the page has colours for (see map.css)
+# Names for the draft terms' lanes, written from what each lane holds in terms.json (the page lists every
+# idea in each lane): 'scaling' holds compute, chips and China as well as scaling laws, 'rsi' holds AGI.
 LANE_LABELS = {
-    'safety': 'Safety and risk', 'scaling': 'Scaling', 'rsi': 'Self-improvement', 'neuro': 'Brain-inspired',
-    'rl': 'Reinforcement learning', 'neurosym': 'Neuro-symbolic', 'world': 'World models',
-    'openended': 'Open-endedness', 'multi': 'Many agents',
+    'safety': 'Safety and risk', 'scaling': 'Compute, chips and scaling', 'rsi': 'AGI and self-improvement',
+    'neuro': 'Generalization and mind', 'rl': 'Agents and reasoning', 'neurosym': 'Neuro-symbolic',
+    'world': 'World models', 'openended': 'Open-endedness', 'multi': 'Many agents',
 }
 
 
@@ -79,57 +82,81 @@ def fix_mojibake(s):
 
 # ---------------------------------------------------------------- 1. chunk
 TAG_RE = re.compile(r'\[[^\]]{1,40}\]|\([A-Za-z ]{3,20}\)')     # [Music], [Applause], (laughter)
-SENT_END = re.compile(r'[.?!]["\')\]]?$')
+SENT_END = re.compile('[.?!]["\')\\]”]?$')
+TURN = '␞'                   # stands for a change of speaker while cleaning; never shipped
+# "Rob Wiblin: ..." at the start of a cue or after a sentence end (80,000 Hours style speaker labels)
+LABEL_RE = re.compile('(?:^|(?<=[.?!…"”)]\\s))([A-Z][a-z]+(?: [A-Z][a-z\'’-]+){1,2}):\\s')
 
 
-def clean(t):
-    t = html.unescape(t or '').replace('\n', ' ')
+def speaker_labels(cues):
+    """Names used as speaker labels in this caption file (seen at least 3 times)."""
+    c = Counter()
+    for x in cues:
+        for m in LABEL_RE.finditer(html.unescape(x.get('text') or '')):
+            c[m.group(1)] += 1
+    return {k for k, n in c.items() if n >= 3}
+
+
+def clean(t, labels=()):
+    """Caption text -> words, with TURN where the captions mark a new speaker:
+    '>>' (automatic captions), a leading '- ' (some creator captions), or a known speaker label (removed)."""
+    t = html.unescape(t or '').replace(chr(10), ' ')
     t = TAG_RE.sub(' ', t)
-    t = t.replace('>>', ' ')
-    t = re.sub(r'(^|\s)-\s+', r'\1', t)            # leading "- " speaker-change dashes
+    t = t.replace('>>', f' {TURN} ')
+    t = re.sub(r'^\s*-\s+', f'{TURN} ', t)
+    t = re.sub(r'(^|\s)-\s+', lambda m: m.group(1), t)            # other stray dashes
+    if labels:
+        t = LABEL_RE.sub(lambda m: f' {TURN} ' if m.group(1) in labels else m.group(0), t)
     return re.sub(r'\s+', ' ', t).strip()
 
 
-def chunk(cues):
-    """-> [{t0, t1, text, words, marks:[[word_index, cue_start]]}] ; aim 70 words, stop at 90, prefer a full stop."""
-    out, cur, wc = [], [], 0
-
-    def flush():
-        nonlocal cur, wc
-        if not cur:
-            return
-        words, marks = [], []
-        for c in cur:
-            marks.append([len(words), round(c['start'], 1)])
-            words += c['t'].split()
-        out.append({'t0': round(cur[0]['start'], 1), 't1': round(cur[-1]['end'], 1),
-                    'text': ' '.join(words), 'words': len(words), 'marks': marks})
-        cur, wc = [], 0
-
+def prep_cues(cues, labels):
+    """-> [{start, end, words, turns}] ; turns = indexes (in words) where a new speaker starts."""
+    out, pending = [], False
     for c in cues:
-        t = clean(c.get('text'))
-        if not t:
-            continue
-        n = len(t.split())
+        words, turns = [], []
+        for tok in clean(c.get('text'), labels).split():
+            if tok == TURN:
+                pending = True
+                continue
+            if pending:
+                turns.append(len(words))
+                pending = False
+            words.append(tok)
+        if words:
+            out.append({'start': float(c['start']), 'end': float(c['end']), 'words': words, 'turns': turns})
+    return out
+
+
+def chunk(cues):
+    """prepped cues -> [{t0, t1, text, words, marks:[[word_index, cue_start]], turns:[word_index]}] ;
+    aim 70 words, stop at 90, prefer a full stop."""
+    groups, cur, wc = [], [], 0
+    for c in cues:
+        n = len(c['words'])
         if cur and wc + n > MAX_W and wc >= MIN_W:
-            flush()
-        cur.append({'start': float(c['start']), 'end': float(c['end']), 't': t})
+            groups.append(cur)
+            cur, wc = [], 0
+        cur.append(c)
         wc += n
         dur = cur[-1]['end'] - cur[0]['start']
-        if (wc >= TARGET_W and SENT_END.search(t)) or wc >= MAX_W or (dur >= MAX_S and wc >= MIN_W):
-            flush()
+        if (wc >= TARGET_W and SENT_END.search(c['words'][-1])) or wc >= MAX_W or (dur >= MAX_S and wc >= MIN_W):
+            groups.append(cur)
+            cur, wc = [], 0
     if cur:
-        if out and wc < MIN_W // 2:           # merge a short tail into the previous passage
-            last = out.pop()
-            words = last['text'].split()
-            for c in cur:
-                last['marks'].append([len(words), round(c['start'], 1)])
-                words += c['t'].split()
-            last.update(text=' '.join(words), words=len(words), t1=round(cur[-1]['end'], 1))
-            out.append(last)
-            cur = []
+        if groups and wc < MIN_W // 2:        # merge a short tail into the previous passage
+            groups[-1] += cur
         else:
-            flush()
+            groups.append(cur)
+    out = []
+    for g in groups:
+        words, marks, turns = [], [], []
+        for c in g:
+            marks.append([len(words), round(c['start'], 1)])
+            turns += [len(words) + k for k in c['turns']]
+            words += c['words']
+        out.append({'t0': round(g[0]['start'], 1), 't1': round(g[-1]['end'], 1), 'text': ' '.join(words),
+                    'words': len(words), 'marks': marks, 'turns': [k for k in turns if k > 0]})
     return out
 
 
@@ -241,43 +268,173 @@ def median_xy(ix, XY):
     return int(m[0]), int(m[1])
 
 
+def peak_xy(ix, XY, R=450, cap=2000):
+    """Where a set of passages is densest: the median of the points within R of the point with the most
+    neighbours within R (a mode, not a median of everything, which can land in empty space)."""
+    ix = np.asarray(ix, dtype=int)
+    if not len(ix):
+        return None, None
+    pts = XY[ix].astype(np.float64)
+    ref = pts
+    if len(pts) > cap:
+        ref = pts[np.random.default_rng(42).choice(len(pts), cap, replace=False)]
+    cnt = np.zeros(len(ref), int)
+    for a in range(0, len(ref), 512):
+        d2 = ((ref[a:a + 512, None, :] - pts[None, :, :]) ** 2).sum(-1)
+        cnt[a:a + 512] = (d2 <= R * R).sum(1)
+    k = int(np.argmax(cnt))
+    near = pts[((pts - ref[k]) ** 2).sum(1) <= R * R]
+    m = np.median(near, 0)
+    return int(m[0]), int(m[1])
+
+
+def own_share(x, y, ix, XY, R=450):
+    """Share of all passages within R of (x, y) that belong to this set: how well the node sits in its own dots."""
+    if x is None:
+        return None
+    near = np.where(((XY - np.array([x, y])) ** 2).sum(1) <= R * R)[0]
+    if not len(near):
+        return 0.0
+    return round(float(np.isin(near, np.asarray(ix, dtype=int)).mean()), 2)
+
+
 # ---------------------------------------------------------------- 9. snippets
-def cut_snippet(p, cap, rx, prefer_idea=None):
-    """A short window of the cleaned passage: 15-cap words around an idea match, else the first whole sentence."""
+def windows(p, cap, marked):
+    """Candidate quote windows [(lo, hi)] of a passage: whole sentences inside one speaker's turn, at most cap words.
+    Where an episode's captions never mark a change of speaker, a window stays inside one sentence, since a
+    change of speaker almost always falls between sentences. A sentence longer than cap gives sliding windows."""
     words = p['text'].split()
     n = len(words)
-    starts = [0] + [i + 1 for i, w in enumerate(words[:-1]) if SENT_END.search(w)]
-    order = ([prefer_idea] if prefer_idea is not None else []) + [i for i in p['ideas'] if i != prefer_idea]
-    lo = None
-    for ii in order:
-        m = rx[ii].search(p['text'])
-        if m:
-            wi = len(p['text'][:m.start()].split())
-            # start at a sentence start if one is within 8 words before the match, else 5 words before it
-            cands = [s for s in starts if wi - 8 <= s <= wi]
-            lo = cands[0] if cands else max(0, wi - 5)
-            lo = min(lo, max(0, n - cap))
-            break
-    if lo is None:
-        firsts = [s for s in starts if s < n - 5]
-        lo = firsts[1] if (len(firsts) > 1 and words[0][:1].islower() and firsts[1] < 30) else 0
-    hi = min(n, lo + cap)
-    # prefer ending at a sentence end inside the window when it leaves at least 12 words
-    ends = [i + 1 for i in range(lo, hi) if SENT_END.search(words[i]) and i + 1 - lo >= 12]
-    if ends:
-        hi = ends[-1]
+    sent = sorted({0} | {i + 1 for i, w in enumerate(words[:-1]) if SENT_END.search(w)})
+    cuts = sorted({0, n} | set(p['turns']) | (set() if marked else set(sent)))
+    out = []
+    for a, b in zip(cuts, cuts[1:]):
+        ss = [s for s in sent if a <= s < b]
+        if not ss or ss[0] != a:
+            ss = [a] + ss
+        ends = ss[1:] + [b]
+        for k in range(len(ss)):
+            lo = ss[k]
+            for m in range(k, len(ss)):
+                hi = ends[m]
+                if hi - lo > cap:
+                    break
+                if hi - lo >= 5:
+                    out.append((lo, hi))
+            if ends[k] - lo > cap:
+                for s in list(range(lo, ends[k] - cap + 1, 4)) + [ends[k] - cap]:
+                    out.append((s, s + cap))
+    return words, sent, sorted(set(out))
+
+
+def window_text(words, lo, hi, starts):
     seg = words[lo:hi]
     text = ' '.join(seg)
     if lo not in starts or not seg[0][:1].isupper():
         text = '…' + text
     if not SENT_END.search(seg[-1]):
         text = text + '…'
-    # time of the cue holding the first kept word
+    return text
+
+
+def pick_window(p, cap, marked, target_vec, embed, must=None):
+    """The window closest (by the model) to target_vec; with must (a regex), only windows it matches, if any.
+    -> (text, n_words, cue_time) or None."""
+    words, sent, cands = windows(p, cap, marked)
+    starts = set(sent) | set(p['turns'])
+    if not cands:
+        return None
+    if must is not None:
+        hit = [c for c in cands if must.search(' '.join(words[c[0]:c[1]]))]
+        cands = hit or cands
+    texts = [' '.join(words[lo:hi]) for lo, hi in cands]
+    V = embed(texts)
+    best, bs = None, -9
+    for (lo, hi), v in zip(cands, V):
+        s = float(v @ target_vec)
+        whole = lo in starts and SENT_END.search(words[hi - 1])
+        s += 0.03 if whole else 0
+        s -= 0.08 if hi - lo < 8 else 0
+        if s > bs:
+            best, bs = (lo, hi), s
+    lo, hi = best
     t = p['t0']
     for wi, ts in p['marks']:
         if wi <= lo:
             t = ts
-    return text, len(seg), t
+    return window_text(words, lo, hi, starts), hi - lo, t
+
+
+def word_spans(text, rx):
+    """Idea-word spans in a snippet, widened to whole words (a pattern can stop mid-word: 'superintelligen')."""
+    spans = []
+    for ii, r in enumerate(rx):
+        for m in r.finditer(text):
+            a, b = m.start(), m.end()
+            while a > 0 and text[a - 1].isalnum():
+                a -= 1
+            while b < len(text) and (text[b].isalnum() or (text[b] in "-'’" and b + 1 < len(text) and text[b + 1].isalnum())):
+                b += 1
+            spans.append([a, b, ii])
+    spans.sort()
+    keep, last = [], -1
+    for s in spans:
+        if s[0] >= last:
+            keep.append(s)
+            last = s[1]
+    return keep
+
+
+# ---------------------------------------------------------------- key words (every passage)
+FILLER = set('''uh um uhm hmm mm yeah yep yes like know think going gonna wanna really just thing things kind sort mean
+actually lot lots right okay ok want say said says got get gets getting way ways stuff maybe pretty basically sure
+don't doesn't didn't it's that's there's what's i'm you're we're they're he's she's i've you've we've they've i'd you'd
+we'd they'd it'll i'll you'll we'll they'll can't won't isn't aren't wasn't weren't let's let need make makes made
+look looking good great bit little probably definitely obviously literally exactly question questions talk talking
+point time times today guess feel tell told come comes coming goes went doing does did able different important
+interesting true whatever something anything everything nothing someone somebody anybody everybody thank thanks
+okay yeah course kinda gotta lemme hey oh ah wow cool totally absolutely certainly clearly quite fact case sense
+start started use used using try trying tried understand saying says believe idea ideas world years year long
+end ends turn turns happen happens happened happening ones one two three big huge'''.split())
+
+
+def key_words(P, k=5):
+    """-> (vocab, [[term index] x <=k per passage]) : the passage's most distinctive words and two-word phrases
+    by tf-idf over this set of passages. An index of terms, not a quote."""
+    from sklearn.feature_extraction.text import TfidfVectorizer, ENGLISH_STOP_WORDS
+    stop = set(ENGLISH_STOP_WORDS) | FILLER
+    tok_re = re.compile(r"[a-z][a-z'-]*[a-z]")
+
+    def analyse(text):
+        toks = [re.sub(r"'s$", '', t) for t in tok_re.findall(text.lower().replace('’', "'"))]
+        ok = [t if (len(t) >= 3 and t not in stop and not t.startswith("'")) else None for t in toks]
+        grams = [t for t in ok if t]
+        grams += [f'{a} {b}' for a, b in zip(ok, ok[1:]) if a and b and a != b]
+        return grams
+
+    vec = TfidfVectorizer(analyzer=analyse, min_df=2, max_df=0.12, sublinear_tf=True)
+    M = vec.fit_transform([p['text'] for p in P]).tocsr()
+    names = vec.get_feature_names_out()
+    vocab, vid, out = [], {}, []
+    for r in range(M.shape[0]):
+        row = M.getrow(r)
+        order = np.argsort(-row.data)
+        chosen = []
+        for j in order:
+            t = names[row.indices[j]]
+            if any(t in c.split(' ') or c in t.split(' ') for c in chosen if ' ' in c or ' ' in t):
+                continue
+            chosen.append(t)
+            if len(chosen) == k:
+                break
+        ids = []
+        for t in chosen:
+            if t not in vid:
+                vid[t] = len(vocab)
+                vocab.append(t)
+            ids.append(vid[t])
+        out.append(ids)
+    return vocab, out
 
 
 # ---------------------------------------------------------------- main
@@ -317,6 +474,7 @@ def main():
     if cfg.get('episodes') and os.path.exists(cfg['episodes']):
         for e in json.load(open(cfg['episodes'], encoding='utf-8')):
             ep_meta.setdefault(e['video_id'], e)
+    extra = json.load(open(os.path.join(HERE, 'episodes-extra.json'), encoding='utf-8'))['episodes']
     gl_path = os.path.join(os.path.dirname(MAP), 'glossary', 'terms.json')
     glossary = set()
     if os.path.exists(gl_path):
@@ -341,15 +499,27 @@ def main():
 
     # ---- 1. chunk (private)
     t0 = time.time()
-    P, ep_words = [], []
+    P, ep_words, ep_marked, ep_caps = [], [], [], []
     for ei, (m, cp) in enumerate(rows):
         cues = json.load(open(cp, encoding='utf-8'))
-        ch = chunk(cues)
+        raw = ' '.join(c.get('text') or '' for c in cues)
+        labels = speaker_labels(cues)
+        pc = prep_cues(cues, labels)
+        ch = chunk(pc)
         for c in ch:
             c['ep'] = ei
             c['vid'] = m['video_id']
             P.append(c)
         ep_words.append(sum(c['words'] for c in ch))
+        ep_marked.append(any(c['turns'] for c in pc))
+        # caption kind: checked by hand in episodes-extra.json; otherwise a guess from the text ('>>' and no
+        # curly quotes = automatic captions), shipped as a guess so the page says "caption", not which kind
+        kind = extra.get(m['video_id'], {}).get('captions')
+        if not kind:
+            kind = 'auto?' if ('>>' in raw and '’' not in raw) else 'creator?'
+        ep_caps.append(kind)
+        log(f'   {m["video_id"]}: {len(ch)} passages, captions {kind}, speaker turns '
+            f'{"marked" if ep_marked[-1] else "not marked"}{", labels " + ", ".join(sorted(labels)) if labels else ""}')
     N = len(P)
     with open(os.path.join(args.work, 'passages.jsonl'), 'w', encoding='utf-8') as f:
         for p in P:
@@ -387,15 +557,25 @@ def main():
 
     # ---- 4. project
     t0 = time.time()
-    XY = project(D)
+    # UMAP and KMeans are repeatable but slow on a busy CPU; a kept work dir (--keep-work) caches them, keyed
+    # by the exact int8 vectors, so a re-run that only changes quotes or key words skips them
+    import hashlib
+    vkey = hashlib.sha1(Q.tobytes() + S.tobytes()).hexdigest()[:16]
+    lay_path = os.path.join(args.work, f'layout-{vkey}.npz')
+    lay = np.load(lay_path) if os.path.exists(lay_path) else None
+    XY = lay['XY'] if lay is not None else project(D)
     log(f'4 project: UMAP cosine n15 d0.1 seed42 single-thread ({time.time() - t0:.1f}s)')
 
     # ---- 5. cluster
     t0 = time.time()
     from sklearn.cluster import KMeans
     k = round(math.sqrt(N / 5)) if args.k == 'auto' else int(args.k)
-    km = KMeans(n_clusters=k, n_init=4, random_state=42).fit(D)
-    C = km.labels_
+    if lay is not None and 'C' in lay and len(lay['cen']) == k:
+        C, centers = lay['C'], lay['cen']
+    else:
+        km = KMeans(n_clusters=k, n_init=4, random_state=42).fit(D)
+        C, centers = km.labels_, km.cluster_centers_
+        np.savez(lay_path, XY=XY, C=C, cen=centers)
     # person of a passage = first guest of its episode
     people_ids = []
     for m, _ in rows:
@@ -412,42 +592,48 @@ def main():
         cn = Counter(i for j in ix for i in P[j]['ideas'])
         lab = [i for i, h in cn.most_common() if h >= 8 and (h / len(ix)) / base_rate[i] >= 2][:3]
         pc = Counter(p_person[ix].tolist()).most_common(1)[0]
-        x, y = median_xy(ix, XY)
+        x, y = peak_xy(ix, XY)
         clusters.append({'x': x, 'y': y, 'n': int(len(ix)), 'label': lab,
                          'mostly': {'person': int(pc[0]), 'share': round(pc[1] / len(ix), 2)}})
-        cen = km.cluster_centers_[c] / np.linalg.norm(km.cluster_centers_[c])
+        cen = centers[c] / np.linalg.norm(centers[c])
         exemplar_of_cluster.append(int(ix[np.argmax(D[ix] @ cen)]))
     log(f'5 cluster: k={k}; {sum(1 for c in clusters if c["label"])} labelled by idea terms, '
         f'{sum(1 for c in clusters if not c["label"])} "mixed talk"  ({time.time() - t0:.1f}s)')
 
     # ---- 6. nodes
+    # a node sits where its passages are densest (peak_xy); 'own' = share of the dots around it that are its own
     person_n = Counter(p_person.tolist())
     people = []
     for pi, pid in enumerate(people_ids):
         ix = np.array([j for j, p in enumerate(P) if pi in ep_people[p['ep']]])
-        x, y = median_xy(ix, XY)
+        x, y = peak_xy(ix, XY)
         node = wnodes.get(pid, {})
         people.append({'id': pid, 'name': node.get('name') or pid.replace('_', ' ').title(),
-                       'colour': None, 'x': x, 'y': y, 'n': int(len(ix)), 'channel': None})
+                       'colour': None, 'x': x, 'y': y, 'n': int(len(ix)), 'channel': None,
+                       'own': own_share(x, y, ix, XY)})
     # colour slots go to the people with the most passages (by first guest), the rest stay grey
     for slot, (pi, _) in enumerate(sorted(person_n.items(), key=lambda kv: -kv[1])[:PALETTE_SLOTS]):
         people[pi]['colour'] = slot
     ideas, IV = [], np.zeros((len(terms), 384), np.float32)
     for ii, t in enumerate(terms):
         ix = np.array([j for j, p in enumerate(P) if ii in p['ideas']], dtype=int)
-        x, y = median_xy(ix, XY) if len(ix) >= 8 else (None, None)
+        x, y = peak_xy(ix, XY) if len(ix) >= 8 else (None, None)
         if len(ix) >= 3:
             v = D[ix].mean(0)
             IV[ii] = v / np.linalg.norm(v)
         ideas.append({'id': t['id'], 'label': t['label'], 'lane': t['lane'], 'layer': t.get('layer'),
                       'precision': t.get('precision'), 'x': x, 'y': y, 'n': int(len(ix)),
-                      'glossary': t['id'] in glossary})
+                      'glossary': t['id'] in glossary, 'own': own_share(x, y, ix, XY)})
     IQ, IS = quantize(IV)
     IS[np.abs(IV).max(1) == 0] = 0
-    lane_n = Counter(terms[p['ideas'][0]]['lane'] for p in P if p['ideas'])
+    # a lane counts every passage with any of its idea words (a passage can count in more than one lane);
+    # the page colours a passage by the lane holding most of its idea words (ties: the first found)
+    lane_n = Counter(l for p in P for l in dict.fromkeys(terms[i]['lane'] for i in p['ideas']))
     lanes = [{'id': l, 'label': LANE_LABELS.get(l, l), 'n': n, 'colour': ci if ci < PALETTE_SLOTS else None}
              for ci, (l, n) in enumerate(lane_n.most_common())]
-    log(f'6 nodes: {len(people)} people, {sum(1 for i in ideas if i["x"] is not None)} idea nodes (>= 8 passages), lanes {[(l["id"], l["n"]) for l in lanes]}')
+    log(f'6 nodes: {len(people)} people (own share {[p["own"] for p in people]}), '
+        f'{sum(1 for i in ideas if i["x"] is not None)} idea nodes (>= 8 passages), '
+        f'own share {sorted((i["own"], i["id"]) for i in ideas if i["x"] is not None)}; lanes {[(l["id"], l["n"]) for l in lanes]}')
 
     # ---- 7. nn
     t0 = time.time()
@@ -460,7 +646,7 @@ def main():
     if tok is None:
         tok, mod = load_py_model(args.work, args.keep_model)
     QE = embed_texts([q['text'] for q in qdoc['questions']], tok, mod)
-    questions, dropped = [], []
+    questions, dropped, qvecs = [], [], []
     hits_log = open(os.path.join(args.work, 'question-hits.txt'), 'w', encoding='utf-8')
     for q, v in zip(qdoc['questions'], QE):
         if q.get('skip'):
@@ -479,6 +665,7 @@ def main():
         questions.append({'id': q['id'], 'text': q['text'],
                           'top': [[int(j), round(float(sc[j]), 3)] for j in top],
                           'ideas': itop})
+        qvecs.append(v)
     hits_log.close()
     log(f'8 questions: kept {len(questions)}, dropped {dropped}; best scores '
         f'{[q["top"][0][1] for q in questions]}  (hits for private reading: {os.path.join(args.work, "question-hits.txt")})')
@@ -487,37 +674,34 @@ def main():
     shows_raw = [m['show'] for m, _ in rows]
     budget = [int(args.snippet_share * w) for w in ep_words]
     used = [0] * len(rows)
-    order = []                                # (passage, preferred idea), in priority order
-    for q in questions:
-        order += [(j, None) for j, _ in q['top']]
-    order += [(j, None) for j in exemplar_of_cluster]
+    # Each quote is the window of its passage closest (by the model) to why it was picked: the question for a
+    # question's top 12, the passage's own vector for a cluster exemplar, the idea for an idea exemplar (and
+    # then it must contain the idea word). A window never crosses a marked change of speaker.
+    order = []                                # (passage, target vector, must-match regex), in priority order
+    for q, v in zip(questions, qvecs):
+        order += [(j, v, None) for j, _ in q['top']]
+    order += [(j, D[j] / (np.linalg.norm(D[j]) or 1), None) for j in exemplar_of_cluster]
     for ii in range(len(terms)):
         ix = [j for j, p in enumerate(P) if ii in p['ideas']]
         if ix and IS[ii] > 0:
             best = sorted(ix, key=lambda j: -float(D[j] @ IV[ii]))[:3]
-            order += [(j, ii) for j in best]
+            order += [(j, IV[ii], rx[ii]) for j in best]
+    emb = lambda texts: embed_texts(texts, tok, mod)
     snippets, skipped = {}, 0
-    for j, pref in order:
+    for j, target, must in order:
         if str(j) in snippets:
             continue
         p = P[j]
         cap = SNIP_CAP_NYT if shows_raw[p['ep']] in NYT_SHOWS else SNIP_CAP
-        text, nw, ts = cut_snippet(p, cap, rx, pref)
+        got = pick_window(p, cap, ep_marked[p['ep']], target, emb, must)
+        if not got:
+            continue
+        text, nw, ts = got
         if used[p['ep']] + nw > budget[p['ep']]:
             skipped += 1
             continue
         used[p['ep']] += nw
-        spans = []
-        for ii, r in enumerate(rx):
-            for m in r.finditer(text):
-                spans.append([m.start(), m.end(), ii])
-        spans.sort()
-        keep, last = [], -1
-        for s in spans:
-            if s[0] >= last:
-                keep.append(s)
-                last = s[1]
-        snippets[str(j)] = {'t': text, 's': int(ts), 'm': keep}
+        snippets[str(j)] = {'t': text, 's': int(ts), 'm': word_spans(text, rx)}
     total_snip = sum(used)
     log(f'9 snippets: {len(snippets)} kept, {skipped} skipped by the per-episode cap; {total_snip:,} of '
         f'{sum(ep_words):,} words ({100 * total_snip / sum(ep_words):.2f}%); worst episode '
@@ -532,10 +716,17 @@ def main():
     episodes = []
     for ei, (m, _) in enumerate(rows):
         em = ep_meta.get(m['video_id'], {})
+        xe = extra.get(m['video_id'], {})
         episodes.append({'vid': m['video_id'], 'show': SHOW_ALIAS.get(m['show'], m['show']),
-                         'date': m.get('date'), 'title': fix_mojibake(em.get('episode') or m.get('title')),
-                         'people': ep_people[ei], 'url': em.get('episode_url'),
+                         'date': m.get('date'),
+                         'title': fix_mojibake(xe.get('title') or em.get('episode') or m.get('title')),
+                         'people': ep_people[ei], 'url': xe.get('url') or em.get('episode_url'),
+                         'captions': ep_caps[ei], 'turns': ep_marked[ei],
                          'n': sum(1 for p in P if p['ep'] == ei), 'words': ep_words[ei]})
+    # key words for every passage (an index of terms, not a quote): a vocabulary + indexes per passage
+    t0 = time.time()
+    kw_vocab, kw = key_words(P)
+    log(f'   key words: {len(kw_vocab):,} terms, {sum(len(a) for a in kw) / N:.1f} per passage  ({time.time() - t0:.1f}s)')
     index = {
         'v': 1,
         'shows': shows, 'people': people, 'episodes': episodes, 'lanes': lanes, 'ideas': ideas,
@@ -550,6 +741,7 @@ def main():
                                      ensure_ascii=False, separators=(',', ':'))
     wj('index.json', index)
     wj('snippets.json', snippets)
+    wj('words.json', {'note': 'key words per passage, picked by tf-idf; an index, not a quote', 'vocab': kw_vocab, 'p': kw})
     NN.astype('<u2').tofile(os.path.join(DATA, 'nn.u16.bin'))
     Q.tofile(os.path.join(DATA, 'vectors.i8.bin'))
     S.astype('<f4').tofile(os.path.join(DATA, 'scale.f32.bin'))

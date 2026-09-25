@@ -25,29 +25,49 @@ The canonical terms file is on the private `recursive-transcripts` repo, branch 
 
 ## Steps
 
-1. **chunk**: caption cues -> cleaned passages (strip `>>`, leading `- `, `[Music]`-style tags). Aim 70 words,
-   stop at 90, prefer a full stop. Passage text goes only to the private work dir.
+1. **chunk**: caption cues -> cleaned passages (strip `[Music]`-style tags). Aim 70 words, stop at 90, prefer a full
+   stop. A change of speaker is kept as a position, never as text: `>>` (automatic captions), a leading `- ` (Lex's
+   captions), or a speaker label such as `Rob Wiblin:` (80,000 Hours; a name seen 3+ times before a colon), which is
+   also removed from the text. Passage text goes only to the private work dir. Chunker `c3` (Sep 25).
 2. **embed**: sentence-transformers/all-MiniLM-L6-v2, mean pool + L2, stored int8 with a per-row scale.
    The cache is the shipped data: a passage whose (video, start, end) and chunker version match is not re-embedded.
 3. **tag**: the terms' regexes over the cleaned text -> idea ids per passage (in order of first match).
 4. **project**: UMAP, cosine, 15 neighbours, min_dist 0.1, seed 42, single thread (repeatable). Scaled into a square.
 5. **cluster**: KMeans on the vectors, k = round(sqrt(N/5)). Label = idea terms with lift >= 2 and >= 8 hits,
    plus the share from the top person's episodes. No such term: "mixed talk".
-6. **nodes**: person and idea 2-D medians (ideas with >= 8 passages); idea vector = normalised mean of its passages.
+6. **nodes**: a person or idea node sits at the densest spot of its passages (the point with the most of its own
+   passages within 4.5% of the map, then the median of those), not the median of all of them, which can land in
+   empty space. `own` = the share of all dots near the node that are its own (logged; shipped for reference).
+   Idea vector = normalised mean of its passages. Lanes count every passage with any of their idea words.
 7. **nn**: 6 nearest neighbours per passage (cosine).
 8. **questions**: embeds `questions.json`, keeps the top 12; drops a question whose best score is < 0.5.
    The hits are written to the work dir (`question-hits.txt`) for a private read before shipping.
 9. **snippets**: only for the top 12 of each question, one exemplar per cluster, and up to 3 exemplars per idea.
-   At most 20 words (15 for The Ezra Klein Show, a New York Times show), at most 2% of each episode's caption words.
-10. **export**, then `check.py`, then the work dir (passage text, the 88 MB Python model) is deleted.
+   Each quote is the window of whole sentences (or of a long sentence) that the model scores closest to why the
+   passage was picked: the question, the passage itself, or the idea (and then it must hold the idea word). A window
+   never crosses a marked change of speaker; where an episode's captions mark none (Dwarkesh), a window stays inside
+   one sentence. At most 20 words (15 for The Ezra Klein Show, a New York Times show), at most 2% of each episode's
+   caption words. Idea-word links are widened to whole words.
+10. **key words**: every passage gets up to 5 words or two-word phrases by tf-idf over all passages (fillers and
+   stop words removed, min 2 passages, max 12%). An index of terms, not a quote: `data/words.json`.
+11. **export**, then `check.py`, then the work dir (passage text, the 88 MB Python model) is deleted.
+    With `--keep-work` the work dir also keeps the UMAP layout and KMeans clusters, keyed by the exact int8
+    vectors, so a re-run that only changes quotes or key words skips them (on a busy CPU they took 15 minutes).
+    Delete the work dir by hand when done: it holds passage text.
+
+Episode facts the private manifest gets wrong or lacks live in `episodes-extra.json` (committed): the caption kind
+(`creator` or `auto`, checked on each watch page's caption track list), and the real title and episode page for
+the two episodes whose manifest titles were placeholders. An episode missing from it gets a guessed kind
+(`auto?` / `creator?`), and the page then says just "caption".
 
 The browser model (`map/model/Xenova/all-MiniLM-L6-v2/`, q8 ONNX, 23 MB, Apache-2.0) is fetched once
 from Hugging Face on the first build and then served from this site.
 
 ## Checks that fail the build
 
-Snippet over its cap; a New York Times show over 15 words; an episode over its snippet share; any string in
-`data/` over 25 words; an absolute path or this machine's account name anywhere in `map/`; a passage with no
+Snippet over its cap; a New York Times show over 15 words; an episode over its snippet share; a snippet with caption
+markup or a speaker label; an idea link that stops mid-word; an episode with no caption kind; a key word longer than
+two words or more than 5 per passage; any string in `data/` over 25 words; an absolute path or this machine's account name anywhere in `map/`; a passage with no
 video id + time; a file over its size budget.
 
 ## Colours
@@ -63,6 +83,7 @@ list is the text version of the map.
 
 `parity.html` (serve the repo root, open `/map/build/parity.html`) embeds the suggested questions in the
 browser with the shipped q8 model and compares its top 10 with the Python build's. Target: overlap >= 0.9.
+Sep 25 (chunker c3): top-10 overlap 0.929, top-1 the same for 7 of 7.
 
 ## Scale
 

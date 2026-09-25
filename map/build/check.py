@@ -4,9 +4,10 @@
     python map/build/check.py
 
 Fails if: a snippet is over its cap (20 words; 15 for New York Times shows); an episode's snippets
-go over their share of its caption words; any string in data/ is over 25 words; an absolute path
-or this machine's account name appears anywhere in map/; a passage has no video id + time; or a
-file is over its size budget.
+go over their share of its caption words; a snippet keeps caption markup or a speaker label; an idea
+link stops mid-word; an episode has no caption kind; the key words are longer than two-word terms
+or more than 5 per passage; any string in data/ is over 25 words; an absolute path or this machine's
+account name appears anywhere in map/; a passage has no video id + time; or a file is over its size budget.
 """
 import getpass, gzip, json, os, re, subprocess, sys
 
@@ -39,6 +40,7 @@ def walk_strings(o, path='$'):
 idx = json.load(open(os.path.join(DATA, 'index.json'), encoding='utf-8'))
 snips = json.load(open(os.path.join(DATA, 'snippets.json'), encoding='utf-8'))
 info = json.load(open(os.path.join(DATA, 'build-info.json'), encoding='utf-8'))
+kw = json.load(open(os.path.join(DATA, 'words.json'), encoding='utf-8'))
 P, E = idx['passages'], idx['episodes']
 N = len(P['ep'])
 share = info.get('snippet_share', 0.02)
@@ -67,13 +69,29 @@ for k, s in snips.items():
         fail(f'NYT snippet {k} over 15 words')
     if re.search(r'>>|\[[A-Za-z ]+\]', s['t']):
         fail(f'snippet {k} still carries caption markup')
+    if re.search(r'(?:^|[.?!…] )[A-Z][a-z]+ [A-Z][a-z]+: ', s['t'].lstrip('…')):
+        fail(f'snippet {k} still carries a speaker label: {s["t"][:60]!r}')
+    for a, b, _ in s['m']:
+        if (a > 0 and s['t'][a - 1].isalnum()) or (b < len(s['t']) and s['t'][b].isalnum()):
+            fail(f'snippet {k} has an idea link that stops mid-word')
     used[P['ep'][i]] += n
+for e in E:
+    if e.get('captions') not in ('creator', 'auto', 'creator?', 'auto?'):
+        fail(f'episode {e["vid"]} has no caption kind')
 for e, u in zip(E, used):
     if u > share * e['words'] + 1e-9:
         fail(f'episode {e["vid"]} snippets {u} words > {share:.0%} of {e["words"]}')
 
+# ---- key words: an index of short terms, never a phrase that could be a quote
+if len(kw['p']) != N:
+    fail(f'words.json has {len(kw["p"])} rows, expected {N}')
+if any(len(t.split()) > 2 for t in kw['vocab']):
+    fail('words.json has a term longer than two words')
+if any(len(a) > 5 or any(not (0 <= i < len(kw['vocab'])) for i in a) for a in kw['p']):
+    fail('words.json has more than 5 terms for a passage, or a bad index')
+
 # ---- no long strings anywhere in data/
-for name, doc in (('index.json', idx), ('snippets.json', snips), ('build-info.json', info)):
+for name, doc in (('index.json', idx), ('snippets.json', snips), ('build-info.json', info), ('words.json', kw)):
     for path, s in walk_strings(doc):
         if words(s) > 25:
             fail(f'{name} {path} is {words(s)} words (> 25)')
@@ -115,13 +133,14 @@ def gz(p):
 budget = {                       # file: (measure, limit)
     'data/index.json': (gz, 20_000 + 12 * N),
     'data/snippets.json': (gz, 10_000 + 5 * N),
+    'data/words.json': (gz, 20_000 + 20 * N),
     'data/nn.u16.bin': (os.path.getsize, 12 * N),
     'data/vectors.i8.bin': (os.path.getsize, 384 * N),
     'data/scale.f32.bin': (os.path.getsize, 4 * N),
     'data/build-info.json': (os.path.getsize, 4_000),
     'index.html': (gz, 12_000),
     'map.css': (gz, 8_000),
-    'map.js': (gz, 25_000),
+    'map.js': (gz, 30_000),
     'search.js': (gz, 8_000),
     'model/Xenova/all-MiniLM-L6-v2/onnx/model_quantized.onnx': (os.path.getsize, 24_000_000),
 }
