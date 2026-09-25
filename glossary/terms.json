@@ -65,7 +65,7 @@
       "section": "value",
       "standard": true,
       "standard_in": "reinforcement learning",
-      "definition": "What a learning system is rewarded toward.",
+      "definition": "An estimate of how much future reward a learning system can expect from a given state, or from taking a given action in it. Not the same as the reward function, which is what the system is rewarded for; the value function is its learned guess about how much of that reward lies ahead.",
       "note": "The lab's reading: in practice it is culture, and culture is made in large part of fiction.",
       "related": ["alignment", "intent"]
     },
