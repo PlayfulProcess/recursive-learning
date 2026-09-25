@@ -70,8 +70,8 @@
  },
  "n_passed": 5,
  "code_url": "https://github.com/PlayfulProcess/recursive-learning/tree/eaa80eb92c22357c5a960166ec883442033c8827/lab/model-affect",
- "results_url": "https://github.com/PlayfulProcess/recursive-learning/blob/b8ba86f0d806e9df55526bac2072d4b63a3fe79d/lab/model-affect/results.md",
- "lab_url": "https://github.com/PlayfulProcess/recursive-learning/tree/b8ba86f0d806e9df55526bac2072d4b63a3fe79d/lab/model-affect",
+ "results_url": "https://github.com/PlayfulProcess/recursive-learning/blob/c64f80c02e935f766c567f44e71dc32839f54031/lab/model-affect/results.md",
+ "lab_url": "https://github.com/PlayfulProcess/recursive-learning/tree/c64f80c02e935f766c567f44e71dc32839f54031/lab/model-affect",
  "runs": [
   {
    "id": "egg",
