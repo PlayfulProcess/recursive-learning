@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../theme.css?v=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About &amp; method · Recursive Eco-Improvement</title>
+<meta name="description" content="How this site is put together: practice and record kept apart, arguments rather than people, sources described from their own pages, and what it means that it was built with Claude.">
+<meta property="og:title" content="About &amp; method · Recursive Eco-Improvement">
+<meta property="og:description" content="Practice and record kept apart, arguments rather than people, sources described from their own pages, and the licences.">
+<link rel="icon" type="image/svg+xml" href="../spiral.svg">
+<link rel="stylesheet" href="../style.css?v=1">
+<!-- DRAFT for PlayfulProcess's edit (Sep 24 2026). Every paragraph below was written by an agent
+     and is short on purpose; change the words freely. The ids #method, #contribute and #licences
+     are linked from the footer, the caster and the home page. -->
+<style>
+  .wrap{max-width:760px}
+  .page{padding:34px 0 20px}
+  .page h1{font-family:var(--serif-display);font-weight:600;font-size:clamp(30px,4.4vw,42px);line-height:1.08;margin:0 0 6px}
+  .page .kicker{margin:0 0 10px}
+  .page .draft{font-family:var(--sans);font-size:12.5px;color:var(--mut);margin:0 0 26px}
+  .page h2{font-family:var(--serif-display);font-weight:600;font-size:23px;margin:38px 0 8px;color:var(--ink)}
+  .page p,.page li{font-size:17px;line-height:1.66;color:var(--ink-soft)}
+  .page p strong,.page li strong{color:var(--ink)}
+  .page ul{padding-left:1.2em}
+  .page li{margin:.35em 0}
+  .wings{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0 4px}
+  .wing{background:var(--surface);border:1px solid var(--line-soft);border-radius:10px;padding:16px 18px}
+  .wing .lab{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .wing p{font-size:15.5px;margin:0}
+  table.lic{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14px;margin:10px 0}
+  table.lic th,table.lic td{border-top:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top;color:var(--ink-soft)}
+  table.lic th{color:var(--ink);font-weight:600;width:38%}
+</style>
+</head>
+<body>
+<script src="../site-header.js?v=1"></script>
+<site-header active="home"></site-header>
+
+<main class="wrap" id="main">
+<article class="page">
+  <p class="kicker">About &amp; method</p>
+  <h1>How this site is put together</h1>
+  <p class="draft">A draft, open to correction. The title, Recursive Eco-Improvement, is a working title.</p>
+
+  <p>The idea being explored: a thing that improves itself still has to adapt with its environment, or
+    change that environment, so improvement that ignores the ground it stands on tends to stall. The
+    site does not set out to show that. It keeps the words, the sources and a few small games side by side,
+    so the idea can be tested at the sizes we actually work at.</p>
+
+  <h2 id="wings">Two wings: practice and record</h2>
+  <div class="wings">
+    <div class="wing"><div class="lab">Practice</div>
+      <p>Words you can draw as cards, the As-If deck, the games, the films and courses, and the Ideas
+        draft. These are readings and exercises, held as open questions rather than claims.</p></div>
+    <div class="wing"><div class="lab">Record</div>
+      <p>Podcasts, papers, people and institutions: dated, attributed, and linked to their own pages.
+        What a source says is kept apart from what we make of it.</p></div>
+  </div>
+  <p>The two are cross-linked with one small pill (“Open in …”), and a practice claim is not shown as
+    a historical one.</p>
+
+  <h2 id="method">Method</h2>
+  <ul>
+    <li><strong>Arguments, not people.</strong> People and institutions are listed by what they have
+      published and where they appear, not ranked and not labelled by stance.</li>
+    <li><strong>Described from their own pages.</strong> Each institution is paraphrased from its own
+      site, with the domain and the date it was checked. Listing is not endorsement.</li>
+    <li><strong>Counts come from auto-captions.</strong> Where the site counts how often a term comes
+      up in an episode, the count is from automatic captions, and the speaker is unknown. Episodes
+      that are members-only are listed without counts.</li>
+    <li><strong>Confidence is marked.</strong> Sources carry a confidence level, and anything we could
+      not check says so.</li>
+    <li><strong>No AI-generated images.</strong> Pictures are public-domain works with their credits,
+      or the plain line covers drawn from the spiral mark.</li>
+    <li><strong>Built with Claude.</strong> Much of the code and many first drafts were written with
+      Claude, an AI model made by Anthropic. Anthropic is one of the companies this material discusses,
+      so that is a possible conflict of interest; read the Anthropic-related sources with that in mind,
+      and please report anything that looks tilted.</li>
+  </ul>
+
+  <h2 id="contribute">Contribute</h2>
+  <p>Everything is plain files on <a href="https://github.com/PlayfulProcess/recursive-learning">GitHub</a>.
+    A correction to a word lives in <code>glossary/terms.json</code>; a new spread for the caster can be
+    proposed from the Spread Caster’s “Contribute a spread” button, which opens a prefilled file for a
+    pull request. An issue is welcome too: say what looks wrong and where you saw it.</p>
+
+  <h2 id="licences">Licences</h2>
+  <table class="lic">
+    <tr><th>Code (the site, the viewers, the scripts)</th><td>Apache-2.0: <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/LICENSE">LICENSE</a>, <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/NOTICE">NOTICE</a>. The viewers are ported from <a href="https://github.com/PlayfulProcess/recursive-tarot">recursive-tarot</a>.</td></tr>
+    <tr><th>Content (the grammars, the words, the map data)</th><td>CC BY-SA 4.0 for PlayfulProcess’s own text: <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/LICENSE-CONTENT.txt">LICENSE-CONTENT.txt</a>. Linked or embedded third-party media keep their own terms.</td></tr>
+    <tr><th>The names and the spiral mark</th><td>Not licensed: <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/TRADEMARKS.md">TRADEMARKS.md</a>.</td></tr>
+  </table>
+</article>
+</main>
+
+<script src="../site-footer.js?v=1"></script>
+<site-footer></site-footer>
+</body>
+</html>

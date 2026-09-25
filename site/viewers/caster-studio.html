@@ -1,0 +1,1510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../theme.css?v=5">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spread Caster · Recursive Eco-Improvement</title>
+<!--
+  Self-contained tarot caster for GitHub Pages. No backend.
+  - Pick a DECK (one historical deck, or All Decks = the cross-deck meta) and a SPREAD
+    (well-known layouts from spreads.json, incl. the Celtic Cross, or build a Custom one).
+  - Cast draws one card per position onto a board laid out by each position's x/y; drag to
+    rearrange. Set an intention first via the voices carousel (voices.json).
+  - Save the cast locally, contribute a spread on GitHub, or open it in recursive.eco's Journal
+    (this page draws; recursive.eco interprets with AI, renders Oracle cards, keeps a Journal).
+-->
+<style>
+  :root {            --cw:clamp(54px,8vw,82px);
+    --serif-display:"Fraunces",Georgia,serif; --serif-body:"Fraunces",Georgia,serif; --sans:Inter,system-ui,-apple-system,sans-serif; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; min-height:100%; background:var(--bg); color:var(--ink);
+    font-family:var(--serif-body); }
+  a { color:#177d56; }
+  .wrap { max-width:1080px; margin:0 auto; padding:22px 18px 60px; }
+  h1 { font-family:var(--serif-display); font-size:30px; margin:0 0 4px; font-weight:600; }
+  .sub { color:var(--muted); font-size:14px; margin:0 0 18px; }
+
+  /* voices carousel — set your intention before casting */
+  .intention { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:0 0 16px; }
+  .intention h2 { font-family:var(--sans); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
+  .intention .creed { font-size:13.5px; color:#4a4439; line-height:1.55; margin:0 0 8px; }
+  .intention ul.principles { margin:0; padding-left:18px; color:var(--muted); font-size:12.5px; line-height:1.55; }
+  .voices { display:flex; gap:10px; overflow-x:auto; padding:6px 2px 8px; margin-top:12px; scrollbar-width:thin; }
+  .voice { flex:0 0 auto; min-width:104px; max-width:122px; background:#faf8f3; border:1px solid var(--line);
+    border-radius:12px; padding:10px; cursor:pointer; text-align:center; transition:border-color .15s, transform .1s; }
+  .voice:hover { transform:translateY(-2px); }
+  .voice.on { border-color:var(--vc,var(--accent)); box-shadow:0 0 0 1px var(--vc,var(--accent)); }
+  .voice .g { font-size:24px; line-height:1; color:var(--accent); }
+  .voice .vn { font-family:var(--serif-display); font-size:15px; font-weight:600; color:#221f1a; margin-top:6px; }
+  .voice .vt { font-size:10.5px; color:var(--muted); }
+  .voice-detail { margin-top:10px; font-size:13px; color:#4a4439; line-height:1.55; border-top:1px solid var(--line); padding-top:10px; display:none; }
+  .voice-detail.on { display:block; }
+  .voice-detail .vd-name { font-weight:700; }
+
+  .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .field { display:flex; flex-direction:column; gap:5px; }
+  .field label { font-size:12px; color:var(--muted); }
+  select, input[type=text] { background:#faf8f3; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:14px; font-family:inherit; }
+  select { min-width:200px; }
+  input#question { min-width:240px; }
+  .checkbox { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); }
+  button { background:var(--accent); color:#fff; border:none; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:600; cursor:pointer; }
+  button.ghost { background:#efeadf; color:#4a4439; }
+  button:disabled { opacity:.5; cursor:default; }
+  #reshuffle { display:none !important; } /* Cast & Re-cast are the same action — Cast re-casts on repeat clicks */
+  .deckmeta { color:var(--muted); font-size:12px; margin-top:8px; }
+  .spreadmeta { color:var(--muted); font-size:12px; }
+
+  /* the board — positions placed by x/y fraction */
+  .board { position:relative; width:100%; aspect-ratio:16/13; margin-top:20px; border:1px solid var(--line);
+    border-radius:16px; overflow:hidden; background:radial-gradient(circle at 50% 45%, #ffffff 0%, #f1ece1 100%);
+    box-shadow:inset 0 0 60px rgba(60,45,20,.05); touch-action:none; }
+  @media (max-width:640px){ .board { aspect-ratio:3/4; } }
+  .slot { position:absolute; transform:translate(-50%,-50%); width:var(--cw); cursor:grab; user-select:none; touch-action:none; }
+  .slot.dragging { cursor:grabbing; opacity:.92; z-index:10; }
+  /* Position text is NEVER truncated — the whole label and the whole meaning stay readable.
+     The number badge sits INLINE before the label, its own flex cell, so it can never overlap the
+     label's first characters — it used to be absolutely positioned at the slot's top-left corner,
+     which collided with wide/wrapped labels (e.g. "Structures · Perceiver" in 3×3 grid spreads;
+     builder-reported Jul 28 2026: "S(3)ructures" — the badge sitting on top of the first letters). */
+  .slot .phead { display:flex; align-items:flex-start; justify-content:center; gap:5px; margin-bottom:3px;
+    width:calc(var(--cw) * 1.9); margin-left:calc(var(--cw) * -0.45); }
+  .slot .num { flex:0 0 auto; width:16px; height:16px; margin-top:1px; border-radius:50%;
+    background:var(--accent); color:#fff; font-size:9.5px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .slot .plabel { flex:1 1 auto; min-width:0; font-size:10.5px; font-weight:700; color:#177d56; text-align:center; line-height:1.25;
+    white-space:normal; overflow-wrap:break-word; }
+  .slot .card { width:100%; aspect-ratio:3/5; border-radius:8px; border:1px dashed #cfc8ba; background:#faf8f3;
+    display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  /* An EMPTY position shows its meaning in full: wider box, auto height, no clipping. */
+  .slot .card:not(.filled) { aspect-ratio:auto; min-height:calc(var(--cw) * 5 / 3); height:auto; overflow:visible;
+    width:calc(var(--cw) * 1.9); margin-left:calc(var(--cw) * -0.45); padding:6px 5px; }
+  .slot .card.filled { border-style:solid; }
+  .slot .card img { width:100%; height:100%; object-fit:contain; }
+  .slot .card .ph { color:#8a8273; font-size:11px; text-align:center; padding:0; line-height:1.35;
+    white-space:normal; overflow-wrap:break-word; }
+  .slot .cname { font-size:10.5px; color:#4a4439; text-align:center; margin-top:3px; line-height:1.25;
+    white-space:normal; overflow-wrap:anywhere;
+    width:calc(var(--cw) * 1.9); margin-left:calc(var(--cw) * -0.45); }
+  .slot .cdeck { font-size:9.5px; color:var(--muted); text-align:center; line-height:1.25;
+    white-space:normal; overflow-wrap:break-word;
+    width:calc(var(--cw) * 1.9); margin-left:calc(var(--cw) * -0.45); }
+  .slot .rev { color:#177d56; font-size:9px; text-align:center; }
+
+  /* multi-select (shift-click) — the selected positions move together, ctrl/⌘-drag copies them */
+  .slot.sel .card { outline:2px solid #177d56; outline-offset:2px; }
+  .slot.sel .num { background:#6d4ab6; }
+
+  /* aggregate headers — a row/column meaning declared ONCE for the whole row or column
+     (spread.axes), so position names can stay short instead of repeating the axis in every cell */
+  .axhead { position:absolute; font-family:var(--sans); font-size:10px; font-weight:700; letter-spacing:.08em;
+    text-transform:uppercase; color:#177d56; line-height:1.3; pointer-events:none; z-index:2;
+    white-space:normal; overflow-wrap:break-word; }
+  .axhead.col { transform:translate(-50%,0); top:2.5%; width:calc(var(--cw) * 2.2); text-align:center; }
+  .axhead.row { transform:translate(0,-50%); left:0; padding-left:8px; width:13%; min-width:74px; text-align:left; }
+  .axhead .axm { display:block; font-weight:400; font-size:9.5px; letter-spacing:0; text-transform:none;
+    color:var(--muted); margin-top:2px; }
+  .axesbar { display:none; gap:14px; flex-wrap:wrap; margin-top:12px; }
+  .axesbar.on { display:flex; }
+  .axesbar .axfield { flex:1 1 260px; display:flex; flex-direction:column; gap:5px; min-width:0; }
+  .axesbar .axfield label { font-size:12px; color:var(--muted); }
+  .axesbar .axfield input { width:100%; }
+  .empty { color:var(--muted); font-size:14px; text-align:center; padding:40px 0; }
+
+  /* custom spread editor (shown only for Custom) */
+  .custombar { display:none; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap; }
+  .custombar.on { display:flex; }
+  .clist { display:none; flex-direction:column; gap:8px; margin-top:12px; }
+  .clist.on { display:flex; }
+  .clist .row { display:flex; gap:10px; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px; }
+  .clist .row .rn { width:22px; height:22px; flex:0 0 22px; border-radius:50%; background:var(--accent); color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .clist .row .ff { flex:1; display:flex; flex-direction:column; gap:5px; }
+  .clist .row .ff input { width:100%; }
+  .clist .row .del { background:#efeadf; color:#8a8273; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:12px; }
+
+  /* save / contribute */
+  .export { margin-top:24px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; display:none; }
+  .export.on { display:block; }
+  .export h2 { font-family:var(--serif-display); font-size:21px; font-weight:600; margin:0 0 4px; }
+  .export p { color:var(--muted); font-size:13px; margin:0 0 12px; line-height:1.5; }
+  .export .journal-cta { display:block; width:100%; text-align:center; padding:14px 18px; font-size:16px; font-weight:700;
+    background:linear-gradient(135deg,#1b9566,#177d56); border-radius:10px; color:#fff; text-decoration:none; margin-bottom:12px;
+    box-shadow:0 4px 18px rgba(23,125,86,.35); }
+  .export .journal-cta:hover { box-shadow:0 6px 24px rgba(23,125,86,.5); }
+  .export .btnrow { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .export .btnrow a.btn, .export .btnrow button { background:#efeadf; color:#4a4439; border:none; border-radius:8px; padding:9px 14px; font-size:13px; font-weight:600; text-decoration:none; cursor:pointer; display:inline-flex; align-items:center; }
+  textarea#json { width:100%; height:130px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px; resize:vertical;
+    background:#faf8f3; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px; }
+  .note { font-size:11px; color:var(--muted); border-top:1px solid var(--line); margin-top:28px; padding-top:14px; }
+
+  /* card detail modal */
+  .cdm-backdrop { position:fixed; inset:0; background:rgba(60,45,20,.4); z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(4px); }
+  .cdm-box { background:#ffffff; border:1px solid #cfc8ba; border-radius:16px; max-width:540px; width:100%; max-height:88vh; overflow-y:auto; position:relative; }
+  .cdm-header { display:flex; align-items:flex-start; gap:14px; padding:18px 18px 14px; border-bottom:1px solid #d8d2c6; }
+  .cdm-img { width:72px; flex-shrink:0; border-radius:8px; border:1px solid #d8d2c6; background:#faf8f3; }
+  .cdm-close { position:absolute; top:12px; right:14px; background:none; border:none; color:#8a8273; font-size:20px; cursor:pointer; }
+  .cdm-pos { font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:#177d56; font-weight:700; }
+  .cdm-name { font-family:var(--serif-display); font-size:21px; font-weight:600; color:#221f1a; margin:4px 0 2px; }
+  .cdm-deck { font-size:12px; color:#6b6457; }
+  .cdm-actions { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .cdm-actions a { font-size:12px; font-weight:600; background:#e9f5ef; border:1px solid #cfc8ba; color:#177d56; border-radius:8px; padding:6px 11px; text-decoration:none; }
+  .cdm-body { padding:16px 18px 20px; }
+  .cdm-section { margin-bottom:14px; }
+  .cdm-sec-label { font-size:10.5px; text-transform:uppercase; letter-spacing:.11em; color:#8a8273; font-weight:700; margin-bottom:5px; }
+  .cdm-sec-text { font-size:13.5px; color:#4a4439; line-height:1.6; }
+  .cdm-loading { text-align:center; color:#8a8273; font-size:13px; padding:30px 0; }
+  .cdm-keywords { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  .cdm-tag { padding:3px 10px; background:#e9f5ef; color:#177d56; border-radius:9999px; font-size:11.5px; }
+  /* Resolved source-card content (meta-grammar reference resolution, reference-resolve.js) —
+     additive panel after the drawn card's own content, set off with a plum accent so it's
+     clear this content lives on the source deck. */
+  .cdm-ref-panel { margin-top:6px; padding-top:14px; border-top:1px dashed rgba(196,167,255,.4); }
+  .cdm-ref-label { font-size:10.5px; text-transform:uppercase; letter-spacing:.11em; color:#6d4ab6; font-weight:700; margin-bottom:8px; }
+  .cdm-ref-link { display:inline-block; margin-top:4px; font-size:12.5px; color:#6d4ab6; text-decoration:underline; }
+  .cdm-tag.cdm-ref-tag { background:rgba(109,74,182,.12); color:#6d4ab6; }
+  footer.site { padding:18px; border-top:1px solid var(--line); color:#6b6457; font-size:12px; text-align:center; }
+
+  /* Spread Studio — aligned control rows, wide question, always-visible action bar */
+  .controls { flex-direction:column; align-items:stretch; gap:14px; }
+  .crow { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; }
+  .crow .field label, .qfield label { font-size:12px; color:var(--muted); }
+  .spread-inline { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .qfield { display:flex; flex-direction:column; gap:5px; }
+  .qfield textarea { width:100%; min-height:3.1em; background:#faf8f3; color:var(--ink);
+    border:1px solid var(--line); border-radius:8px; padding:9px 11px; font-size:14px;
+    font-family:inherit; line-height:1.45; resize:vertical; }
+  /* One compact, touch-first action row: casting actions (Cast · Clear casting · Clear all) first,
+     a subtle divider, then the spread create/edit actions (Add position · Save as new · Update
+     spread — moved out of the icon toolbar so each control exists in exactly one place), then the
+     ⓘ tips toggle. Wraps gracefully at 375px — the divider hides rather than orphaning onto its
+     own line. */
+  .actionbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:14px; }
+  .actionbar .abarsep { width:1px; align-self:stretch; background:var(--line); margin:0 2px; }
+  @media (max-width:480px){ .actionbar .abarsep { display:none; } }
+  /* Helper prose — collapsed behind the ⓘ toggle by default (was always-visible prose in the
+     action row + a separate dismissible drag-hint banner; both folded in here Jul 2026). */
+  .helperpanel { margin-top:10px; padding:12px 14px; background:var(--panel); border:1px solid var(--line);
+    border-radius:10px; color:var(--muted); font-size:12.5px; line-height:1.55; }
+  .helperpanel p { margin:0 0 8px; }
+  .helperpanel p:last-child { margin-bottom:0; }
+  .helperpanel strong { color:#177d56; font-weight:700; }
+  #helpToggle[aria-expanded="true"] { background:#e6dfcf; color:#177d56; border-color:#d9cfb8; }
+  /* ephemeral toast — the "Interpret with AI" fallback path when the embed hasn't acked yet */
+  .rt-toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(12px);
+    background:#221f1a; color:#fff; font-size:13px; line-height:1.4; padding:10px 16px; border-radius:9px;
+    box-shadow:0 10px 30px -8px rgba(0,0,0,.5); max-width:min(92vw,420px); text-align:center; z-index:2000;
+    opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; }
+  .rt-toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
+  /* model hint — shown only when the assistant would answer on a lightweight model */
+  .modelhint { display:none; align-items:flex-start; gap:10px; font-size:12.5px; line-height:1.55;
+    color:#4a4439; background:#e9f5ef; border:1px solid #e6d9b8; border-radius:10px;
+    padding:10px 12px; margin:0 0 16px; }
+  .modelhint.on { display:flex; }
+  .modelhint strong { color:#177d56; }
+  .modelhint button { background:none; border:none; color:#8a8273; font-size:14px; line-height:1;
+    cursor:pointer; padding:2px 4px; margin-left:auto; flex:0 0 auto; }
+  .modelhint button:hover { color:#177d56; }
+  /* Deck & Spread as two equal, aligned columns; their selects line up regardless of the icon buttons */
+  .crow .field { flex:1 1 260px; min-width:0; }
+  .crow .field select { width:100%; min-width:0; }
+  .fieldhead { display:flex; align-items:center; justify-content:space-between; gap:8px; height:30px; }
+  .io-btns { display:inline-flex; gap:6px; }
+  .iconbtn { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; padding:0;
+    background:#efeadf; color:#4a4439; border:1px solid var(--line); border-radius:8px; cursor:pointer; }
+  .iconbtn:hover { background:#e6dfcf; color:#177d56; border-color:#d9cfb8; }
+  .iconbtn svg { width:16px; height:16px; }
+  .iconbtn.primary { background:#177d56; color:#fff; border-color:#177d56; }
+  .iconbtn.primary:hover { background:#1b9566; color:#fff; border-color:#1b9566; }
+  /* Studio header — the working spread's NAME (always visible, always editable) on the left and
+     the spread toolbar on the right, mirroring the recursive.eco Create editor's title + toolbar. */
+  .studiohead { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .studiohead .namewrap { flex:1 1 320px; min-width:0; display:flex; flex-direction:column; gap:5px; }
+  .studiohead .namewrap label { font-size:12px; color:var(--muted); }
+  input#spreadName { width:100%; background:#faf8f3; color:var(--ink); border:1px solid var(--line);
+    border-radius:8px; padding:9px 11px; font-family:var(--serif-display); font-size:18px; font-weight:600; }
+  input#spreadName::placeholder { font-weight:400; color:#a49b89; }
+  .studiohead .io-btns { align-self:flex-end; padding-bottom:1px; }
+  .toolsep { width:1px; align-self:stretch; background:var(--line); margin:0 2px; }
+  /* reversal probability — same shape as the recursive.eco oracle caster */
+  .revfield { display:flex; flex-direction:column; gap:6px; max-width:560px; }
+  .revfield > label { font-size:12px; color:var(--muted); }
+  .revfield > label strong { color:#177d56; font-weight:700; }
+  .revrow { display:flex; align-items:center; gap:12px; }
+  .revrow input[type=range] { flex:1; accent-color:#177d56; height:4px; cursor:pointer; }
+  .revpct { min-width:40px; text-align:right; font-size:12px; font-weight:700; color:#4a4439; }
+  .revhint { font-size:12px; color:var(--muted); }
+  /* cast card — hug the image's own frame like the cards viewer (no letterbox gap) */
+  .slot .card.filled { aspect-ratio:auto; border:none; background:none; overflow:visible; }
+  .slot .card.filled img { display:block; width:100%; height:auto; border:1px solid var(--line);
+    border-radius:6px; background:#faf8f3; box-shadow:0 6px 16px -9px rgba(60,45,20,.5); cursor:zoom-in; }
+
+  /* hover preview — a quick large look at a cast card without clicking (desktop only), like the Explorer */
+  #hovprev { position:fixed; display:none; pointer-events:none; z-index:80; }
+  #hovprev img { height:min(64vh,440px); width:auto; border-radius:8px; background:#f4f1ea;
+    border:1px solid #e3ddd0; box-shadow:0 18px 50px -12px rgba(20,12,4,.55); display:block; }
+  @media (hover:none){ #hovprev{ display:none!important; } }
+</style>
+</head>
+<body data-assistant-context="spread-builder">
+<script src="../site-header.js?v=47"></script>
+<script src="reference-resolve.js?v=2"></script>
+<script src="../icons.js"></script>
+<!-- Oracle Ribbon: the rolling frame under the casting board. Default-on since Aug 8 2026;
+     see oracle-ribbon.js and TAROT-REVAMP-PLAN-2026-08-07.md Phase 5. -->
+<script src="oracle-ribbon.js?v=4"></script>
+<site-header active="play"></site-header>
+
+<div class="wrap">
+  <h1>Spread Caster <span style="font-size:13px;font-weight:400;color:var(--muted);">— build · cast · send</span></h1>
+  <p class="sub">Build a spread from scratch (or start from a preset) and cast the cards into it.<span data-flow> Send the whole reading to <a href="https://flow.recursive.eco/" target="_blank" rel="noopener">recursive.eco</a> for an AI interpretation. This page draws; recursive.eco interprets and keeps a Journal.</span></p>
+
+  <div class="modelhint" id="modelHint">
+    <span id="modelHintText"></span>
+    <button id="modelHintX" type="button" aria-label="Dismiss">✕</button>
+  </div>
+
+  <div class="intention" id="intention" style="display:none">
+    <h2 id="intentionTitle">Before you cast</h2>
+    <p class="creed" id="intentionCreed"></p>
+    <ul class="principles" id="intentionPrinciples"></ul>
+    <p id="intentionNote" style="margin:8px 0 0;font-size:11.5px;color:#6b6457;font-style:italic;line-height:1.5"></p>
+    <div class="voices" id="voices" aria-label="Reading orientations — tap one to hear how it reads"></div>
+    <div class="voice-detail" id="voiceDetail"></div>
+  </div>
+
+  <div class="controls">
+    <!-- Title + toolbar on one line, the same shape as the recursive.eco Create editor: the name of
+         the spread you are editing is ALWAYS visible and always editable, and every spread action
+         (add · download · upload · update · save) sits in one icon row to its right. -->
+    <div class="studiohead">
+      <div class="namewrap">
+        <label for="spreadName">Spread name</label>
+        <input type="text" id="spreadName" placeholder="Untitled spread" autocomplete="off"
+               title="The name of the spread you are editing — used everywhere it is saved, exported or sent">
+      </div>
+      <!-- Import/export only — Add position, Save as new and Update spread moved into the single
+           action row (below, with the casting buttons) Jul 2026, so each control lives in exactly
+           ONE place instead of a toolbar icon + a row duplicate. NOTE: import is the arrow pointing
+           DOWN into the tray and export the arrow pointing UP out of it. -->
+      <span class="io-btns" id="spreadTools">
+        <label class="iconbtn" id="importLabel" title="Import — load a spread (layout) or a full reading (layout + cards) exported here" aria-label="Import spread or reading">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+        </label>
+        <button type="button" class="iconbtn" id="exportSpread" title="Export spread — save just this layout (positions, labels &amp; meanings; no cards)" aria-label="Export spread">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </button>
+      </span>
+    </div>
+    <div class="crow">
+      <div class="field">
+        <div class="fieldhead"><label for="deck">Deck</label></div>
+        <select id="deck"><option>Loading decks…</option></select>
+        <div class="deckmeta" id="deckmeta"></div>
+      </div>
+      <div class="field">
+        <div class="fieldhead"><label for="spread">Spread</label></div>
+        <select id="spread"><option>Loading…</option></select>
+        <div class="spreadmeta" id="spreadmeta"></div>
+      </div>
+    </div>
+    <div class="axesbar" id="axesbar">
+      <div class="axfield">
+        <label for="colLabels">Column headers (across the top) — comma-separated, optional</label>
+        <input type="text" id="colLabels" placeholder="Structures, Process, Possibilities">
+      </div>
+      <div class="axfield">
+        <label for="rowLabels">Row headers (down the left) — comma-separated, optional</label>
+        <input type="text" id="rowLabels" placeholder="Perceived, Self, Perceiver">
+      </div>
+    </div>
+    <div class="revfield" style="display:none">
+      <label for="revProb">Reversal probability: <strong id="revPct">0%</strong></label>
+      <div class="revrow">
+        <input type="range" id="revProb" min="0" max="100" step="5" value="0">
+        <span class="revpct" id="revPctEnd">0%</span>
+      </div>
+      <div class="revhint">Chance that each card appears reversed — like the recursive.eco oracle caster.</div>
+    </div>
+    <div class="qfield">
+      <label for="question">Your question (optional)</label>
+      <textarea id="question" rows="2" placeholder="What is this situation made of?"></textarea>
+    </div>
+  </div>
+
+  <div class="actionbar">
+    <button id="cast" disabled>Cast</button>
+    <button id="clearCasting" class="ghost">Clear casting</button>
+    <button id="clearAll" class="ghost">Clear all</button>
+    <button id="reshuffle" class="ghost" style="display:none">Re-cast</button>
+    <span class="abarsep" aria-hidden="true"></span>
+    <button type="button" id="addPos" class="ghost">+ Add position</button>
+    <button type="button" id="saveAsNew" class="ghost" style="display:none">Save as new</button>
+    <button type="button" id="updateSpread" style="display:none" title="Changes apply only in this browser tab — this is a static site with no save API. Export the spread (or Contribute it on GitHub) to keep it.">Update spread</button>
+    <button type="button" class="iconbtn" id="helpToggle" title="Show tips" aria-label="Show tips" aria-expanded="false" aria-controls="helperPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    </button>
+  </div>
+  <div id="helperPanel" class="helperpanel" hidden>
+    <p>Drag positions on the board to arrange them; edit labels &amp; meanings in the list below. <strong>Cast</strong> draws a card into every position; <strong>Clear casting</strong> keeps the layout while <strong>Clear all</strong> wipes it too. <strong>Add position</strong>, <strong>Save as new</strong> and <strong>Update spread</strong> build and save the spread itself; the icons beside the spread name download or upload a spread file.</p>
+    <p>An automatically laid-out spread has no meaningful geometry — drag any card on the board to arrange it. <strong>Shift-click</strong> to select several positions and move them together; hold <strong>Ctrl</strong> (⌘) while dragging to copy them.</p>
+  </div>
+  <div id="board" class="board"></div>
+  <div id="hovprev"><img alt=""></div>
+  <div class="clist" id="clist"></div>
+
+  <div class="export" id="export">
+    <h2 id="exportTitle">Interpret the reading</h2>
+    <p data-flow>Send this cast to the recursive.eco assistant — right here on this page — for an AI interpretation, provenance, and a Journal entry.</p>
+    <button type="button" id="interpretAI" class="journal-cta" data-flow>Interpret with AI</button>
+    <div class="btnrow">
+      <a id="journalLink" data-flow class="btn" href="https://flow.recursive.eco/" target="_blank" rel="noopener" title="Open the full reading in recursive.eco in a new tab">Cast in recursive.eco ↗</a>
+      <button id="downloadJson" title="Save this full reading — layout + the cards you cast — as a .json you can re-import later">⤓ Save reading (.json)</button>
+      <a id="contributeLink" class="btn" href="https://github.com/PlayfulProcess/recursive-learning/new/main?filename=glossary/proposed-spreads/my-spread.json" target="_blank" rel="noopener" title="Add your spread to the shared library via a GitHub pull request">↗ Contribute a spread on GitHub</a>
+      <a class="btn" href="../pages/about.html#contribute" title="How to contribute a spread or a correction">How to contribute →</a>
+      <button id="copyJson" class="ghost">Copy JSON</button>
+    </div>
+    <textarea id="json" readonly></textarea>
+  </div>
+
+  <div class="note">
+    Data: this repo's <code>grammars/all-decks/grammar.json</code> (the castable pool) and <code>viewers/spreads.json</code> (layouts, generated from <code>glossary/spreads.src.json</code>). Cross-deck casts sample the whole pool; single-deck casts sample one deck. Content is CC BY-SA 4.0. Click any card for its full entry.
+  </div>
+
+  <div id="cardDetailModal" class="cdm-backdrop" style="display:none" role="dialog" aria-modal="true">
+    <div class="cdm-box">
+      <button class="cdm-close" id="cdmClose" aria-label="Close">✕</button>
+      <div class="cdm-header">
+        <img id="cdmImg" class="cdm-img" src="" alt="" style="display:none">
+        <div>
+          <div id="cdmPos" class="cdm-pos"></div>
+          <div id="cdmName" class="cdm-name"></div>
+          <div id="cdmDeck" class="cdm-deck"></div>
+          <div id="cdmActions" class="cdm-actions"></div>
+        </div>
+      </div>
+      <div class="cdm-body" id="cdmBody"><div class="cdm-loading">Loading card details…</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="site">Open data, CC BY-SA 4.0 · <a href="https://github.com/PlayfulProcess/recursive-learning" target="_blank" rel="noopener">recursive-tarot</a> · companion to <a href="https://recursive.eco" target="_blank" rel="noopener">recursive.eco</a></footer>
+
+<script>
+const META_URL = '../grammars/all-decks/grammar.json';
+const ALL = '__all__';
+const FLOW = 'https://flow.recursive.eco';
+// The recursive.eco panels: My spreads, the model hint, Interpret with AI and Cast in recursive.eco.
+// OFF in v1 (this site has no sign-in, and auth-widget.js is a stub). Flip to true to bring every
+// one of them back; each is gated below, none was deleted.
+const FLOW_ON = false;
+
+let leaves = [], byDeck = {}, deckLabels = {};
+let spreadsById = {};        // id -> BUILT-IN spread def (spreads.json)
+let mySpreadsById = {};      // 'my:<i>' -> the signed-in user's saved spread (contract) from recursive.eco
+let positions = [];          // active positions [{label,meaning,x,y, card?}]
+let curSpreadId = 'spp';   // Studio opens on the Structures · Process · Possibilities spread
+let ecoIds = null;           // slug -> recursive.eco deck UUID
+let lastCast = null;
+let seq = 0;
+// The working spread's IDENTITY. Its name used to live only in #spreadmeta, where it collided with
+// the description and was wiped by Clear all / Import — so an assistant-built spread ("Nature's
+// Negotiation") showed up in the builder as an anonymous "Custom". Name and description are now two
+// separate pieces of state, and the name is a visible, editable field (#spreadName).
+let spreadName = '';
+let spreadDesc = '';
+// Aggregate headers — a meaning declared ONCE for a whole row or column instead of repeated in
+// every cell name. { rows:[{label,meaning}], cols:[{label,meaning}] }; empty = renders exactly as before.
+let axes = { rows: [], cols: [] };
+// Shift-click multi-select — a Set of position ids that drag together (and ctrl/⌘-drag copies).
+const selected = new Set();
+
+// ── the spread contract (pinned; the flow app builds against exactly this) ──
+// base64url(UTF-8 JSON) of { v:1, name, positions:[{label, meaning?, x?, y?}], axes? }.
+// x/y are 0–1 canvas fractions; unknown extra fields are tolerated on read.
+// axes (optional, added Jul 2026) declares row/column meanings ONCE for a grid spread:
+//   axes: { rows:[{label,meaning?}], cols:[{label,meaning?}] }   (plain strings are accepted too)
+// so a 3×3 need not repeat "Structures/Process/Possibilities × Perceived/Self/Perceiver" in all
+// nine position names. Spreads without axes render exactly as they always have.
+function b64urlEncode(str){ return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,''); }
+function b64urlDecode(str){ return decodeURIComponent(escape(atob(String(str).replace(/-/g,'+').replace(/_/g,'/')))); }
+
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// Minimal markdown for card text: **bold**, `code`, [text](url), bare URLs, line breaks.
+// Card sections used to render through esc() alone, so every research/source link in them
+// showed as literal "[label](https://…)" instead of something you can click.
+const mdLite = s => {
+  let t = esc(s);
+  t = t.replace(/(^|\s)(https?:\/\/[^\s<>"']+)/g, (m, pre, url) => {
+    const tl = url.match(/[).,;:!?]+$/); const tail = tl ? tl[0] : '';
+    if (tail) url = url.slice(0, -tail.length);
+    return `${pre}<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>${tail}`;
+  });
+  t = t.replace(/\[([^\]]+)\]\(\s*(?:<a href="([^"]+)"[^>]*>[^<]*<\/a>|([^)\s]+))\s*\)/g,
+    (m, text, wrapped, plain) => `<a href="${wrapped || plain || ''}" target="_blank" rel="noopener noreferrer">${text}</a>`);
+  return t.replace(/`([^`]+)`/g, '<code>$1</code>')
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+          .replace(/\n/g, '<br>');
+};
+// Cross-deck (All Decks) cast names arrive as "Name — Deck" (or "rank — Name — Deck"). The deck is
+// shown separately in .cdeck, so strip a trailing " — <deck>" so the label reads cleanly under the card.
+const shortCardName = (nm, deck) => { let s = String(nm||'');
+  if (deck) { const d = String(deck).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); s = s.replace(new RegExp('\\s*[—–-]\\s*'+d+'\\s*$'), ''); }
+  return s.trim(); };
+const $ = id => document.getElementById(id);
+
+// ── init ──
+(async function init(){
+  let meta;
+  try { meta = await (await fetch(META_URL)).json(); }
+  catch(e){ $('board').innerHTML = '<div class="empty">Could not load the deck index. Serve the repo so '+META_URL+' is reachable.</div>'; return; }
+
+  (meta._decks || []).forEach(d => { deckLabels[d.slug] = d.label; });
+  leaves = (meta.items || []).filter(i => !i.composite_of && i.metadata && i.metadata.source_deck && i.metadata.castable);
+  leaves.forEach(c => { (byDeck[c.metadata.source_deck] ||= []).push(c); });
+
+  // Deck dropdown — All Decks first, then each deck (>=3 castable) in chronological order.
+  const dsel = $('deck'); dsel.innerHTML = '';
+  const optAll = document.createElement('option'); optAll.value = ALL;
+  optAll.textContent = `All Decks — cross-deck draw (${leaves.length} cards)`; dsel.appendChild(optAll);
+  const _yr = d => { const m = String(d.date || d.era || '').match(/\d{4}/); return m ? +m[0] : 9999; };
+  [...(meta._decks || [])]
+    .sort((a,b) => (a.era_sort ?? 99) - (b.era_sort ?? 99) || _yr(a) - _yr(b) || (a.label||'').localeCompare(b.label||''))
+    .forEach(d => { const n = (byDeck[d.slug]||[]).length; if (n < 3) return;
+      const o = document.createElement('option'); o.value = d.slug;
+      o.textContent = `${d.label} · ${d.date || d.era || ''} (${n})`; dsel.appendChild(o); });
+
+  // ?src= : tree-viewer's "Get a Reading" button (via the caster.html redirect stub) hands over
+  // the grammar.json the visitor was just looking at, so the deck context isn't silently dropped.
+  // This page has no separate ?deck= param — resolve ?src= to a deck option above by matching the
+  // slug embedded in the standard ../grammars/<slug>/grammar.json src path.
+  const srcParam = new URLSearchParams(location.search).get('src') || '';
+  if (srcParam) {
+    const srcOpt = [...dsel.options].find(o => o.value && o.value !== ALL && srcParam.includes('/' + o.value + '/'));
+    if (srcOpt) dsel.value = srcOpt.value;
+  }
+
+  // Spread dropdown — from spreads.json, plus Custom.
+  let sdoc; try { sdoc = await (await fetch('spreads.json')).json(); } catch(e){ sdoc = { spreads: [] }; }
+  const ssel = $('spread'); ssel.innerHTML = '';
+  (sdoc.spreads || []).forEach(s => { spreadsById[s.id] = s;
+    const o = document.createElement('option'); o.value = s.id; o.textContent = s.name; ssel.appendChild(o); });
+  const oc = document.createElement('option'); oc.value = 'custom'; oc.textContent = 'Custom (build your own)'; ssel.appendChild(oc);
+  // ?spread= : a known preset id, OR a base64url spread-contract JSON handed over from the
+  // flow app's "Fine-tune in the builder" links. Same loader the eco-spread postMessage uses.
+  const spParam = new URLSearchParams(location.search).get('spread');
+  let loadedFromParam = false;
+  if (spParam && spreadsById[spParam]) { curSpreadId = spParam; }
+  else if (spParam) {
+    try {
+      const obj = JSON.parse(b64urlDecode(spParam));
+      if (loadSpreadContract(obj)) loadedFromParam = true;
+    } catch(_){ /* malformed param → fall through to default */ }
+  }
+  if (!spreadsById[curSpreadId] && curSpreadId !== 'custom') curSpreadId = spreadsById['spp'] ? 'spp' : ((sdoc.spreads[0] && sdoc.spreads[0].id) || 'custom');
+  ssel.value = curSpreadId;
+
+  $('cast').disabled = false;
+  if (loadedFromParam) { curSpreadId='custom'; $('spread').value='custom'; setCustomMode(true); renderBoard(); renderCustomList(); }
+  else setSpread(curSpreadId);
+  updateDeckMeta();
+  dsel.addEventListener('change', updateDeckMeta);
+  ssel.addEventListener('change', e => setSpread(e.target.value));
+  $('cast').addEventListener('click', cast);
+  $('reshuffle').addEventListener('click', cast);
+  $('revProb').addEventListener('input', e => { const v = e.target.value + '%'; $('revPct').textContent = v; $('revPctEnd').textContent = v; });
+  $('addPos').addEventListener('click', () => {
+    if (curSpreadId !== 'custom') { curSpreadId = 'custom'; $('spread').value = 'custom'; setCustomMode(true); }
+    const n = positions.length;
+    addPosition('Position ' + (n+1), '', 0.5 + ((n%3)-1)*0.18, 0.4 + Math.floor(n/3)*0.22); });
+  // Clear casting — drop the drawn cards but KEEP the spread (layout/labels/meanings).
+  $('clearCasting').addEventListener('click', clearCasting);
+  // Clear all — wipe everything, including the layout, the name and the axes.
+  $('clearAll').addEventListener('click', () => {
+    positions = []; selected.clear(); axes = { rows:[], cols:[] }; syncAxesInputs();
+    curSpreadId = 'custom'; $('spread').value = 'custom'; setCustomMode(true);
+    setSpreadIdentity('', '');
+    $('reshuffle').style.display = 'none'; $('export').classList.remove('on');
+    renderBoard(); renderCustomList(); syncJson(); });
+  $('copyJson').addEventListener('click', copyJson);
+  $('downloadJson').addEventListener('click', downloadJson);
+  $('exportSpread').addEventListener('click', exportSpread);
+  $('importFile').addEventListener('change', onImport);
+  $('updateSpread').addEventListener('click', updateSpreadGeometry);
+  $('saveAsNew').addEventListener('click', saveAsNewSpread);
+  // The spread NAME is a first-class, always-visible field: typing in it renames the working spread
+  // everywhere it is written (contract, export filename, cast JSON, the dropdown's Custom entry).
+  $('spreadName').addEventListener('input', e => { spreadName = e.target.value; labelCustomOption(); syncJson(); });
+  // Aggregate row/column headers — comma-separated, applied to the whole row/column at once.
+  $('colLabels').addEventListener('input', e => { axes.cols = parseAxisInput(e.target.value); renderBoard(); syncJson(); });
+  $('rowLabels').addEventListener('input', e => { axes.rows = parseAxisInput(e.target.value); renderBoard(); syncJson(); });
+  // Helper prose — collapsed behind the ⓘ toggle, default hidden (folded the old always-visible
+  // action-row hint + the separate dismissible drag-hint banner into this one panel, Jul 2026).
+  $('helpToggle').addEventListener('click', () => {
+    const panel = $('helperPanel'); panel.hidden = !panel.hidden;
+    $('helpToggle').setAttribute('aria-expanded', panel.hidden ? 'false' : 'true');
+  });
+  $('interpretAI').addEventListener('click', interpretWithAI);
+  if (!FLOW_ON) {
+    document.querySelectorAll('[data-flow]').forEach(el => { el.style.display = 'none'; });
+    $('exportTitle').textContent = 'Keep the reading';
+  }
+
+  // Board-level keyboard: Esc clears the selection, Delete/Backspace removes the selected positions.
+  document.addEventListener('keydown', onBoardKey);
+
+  loadVoices();
+  if (FLOW_ON) loadMySpreads();   // pull the signed-in user's saved spreads into the dropdown (silent if signed out)
+  if (FLOW_ON) checkAssistantModel();   // hint (never a block) when the assistant is on a lightweight model
+  // preload the deck-id map (for the per-card "View on recursive.eco" links)
+  try { ecoIds = await (await fetch('../grammars/_eco_ids.json')).json(); } catch(_){ ecoIds = { ids:{} }; }
+})();
+
+function currentPool(){ const v = $('deck').value; return v === ALL ? leaves : (byDeck[v] || []); }
+function updateDeckMeta(){ const v = $('deck').value;
+  $('deckmeta').textContent = v === ALL ? 'A cross-deck draw samples every castable deck at once.' : `${(byDeck[v]||[]).length} castable cards in this deck.`; }
+
+// ── the working spread's identity ──
+// NAME and DESCRIPTION are separate. The name goes in the always-visible #spreadName field (and
+// into the Custom option's label so the dropdown itself says what you're editing); the description
+// stays in the small #spreadmeta line. Before Jul 2026 both shared #spreadmeta, so an imported or
+// assistant-built spread's name was silently overwritten by its description — or wiped entirely.
+function setSpreadIdentity(name, desc){
+  spreadName = String(name==null?'':name);
+  spreadDesc = String(desc==null?'':desc);
+  const inp = $('spreadName'); if (inp) inp.value = spreadName;
+  const meta = $('spreadmeta'); if (meta) meta.textContent = spreadDesc;
+  labelCustomOption();
+}
+// Keep the Custom option reading as "you're editing this," WITHOUT repeating the name — the name
+// already has exactly one authoritative, visible home: the #spreadName field above. Before Jul 28
+// 2026 this wrote the name into the option text too ("Nature's Negotiation (3×3) (editing)" with a pencil glyph),
+// so it showed twice on screen at once (builder screenshot, Jul 28 2026).
+function labelCustomOption(){
+  const oc = $('spread') && $('spread').querySelector('option[value="custom"]');
+  if (!oc) return;
+  const n = (spreadName||'').trim();
+  oc.textContent = n ? 'Custom (editing)' : 'Custom (build your own)';
+}
+// Custom mode shows the per-position editor list AND the row/column header fields.
+function setCustomMode(on){
+  $('clist').classList.toggle('on', !!on);
+  $('axesbar').classList.toggle('on', !!on);
+}
+
+function setSpread(id){
+  curSpreadId = id;
+  selected.clear();
+  // A "My spread" (the signed-in user's saved spread pulled from recursive.eco) — apply it like a
+  // built-in (load its positions onto the board, ready to cast), but it stays UPDATABLE (it's not
+  // in spreadsById, so isBuiltinPreset() is false → the Update button shows).
+  const my = mySpreadsById[id];
+  if (my) {
+    setCustomMode(false);
+    positions = placePositions(my.positions, my);   // grid-aware; tolerant of missing x/y otherwise
+    axes = normalizeAxes(my); syncAxesInputs();
+    setSpreadIdentity(my.name || 'My spread', '');
+    $('reshuffle').style.display = 'none';
+    $('export').classList.remove('on');
+    renderBoard(); renderCustomList();
+    return;
+  }
+  const custom = id === 'custom';
+  setCustomMode(custom);
+  if (custom) {
+    // Switching to Custom keeps whatever is on the board — you're forking it into your own spread,
+    // so the name stays with you (and stays editable) instead of vanishing.
+    if (!positions.length) { setSpreadIdentity(spreadName, ''); addPosition('Position 1','',0.5,0.5); return; }
+    setSpreadIdentity(spreadName, '');
+  } else {
+    const s = spreadsById[id]; positions = placePositions(s ? s.positions : [], s);   // grid-aware
+    axes = normalizeAxes(s); syncAxesInputs();
+    setSpreadIdentity(s ? (s.name||'') : '', s ? (s.description || '') : '');
+  }
+  $('reshuffle').style.display = 'none';
+  $('export').classList.remove('on');
+  renderBoard(); renderCustomList();
+}
+
+// ── aggregate headers (axes) ──
+// Accepts { axes:{rows,cols} } or the flat { row_labels, col_labels } form; entries may be plain
+// strings or { label, meaning }. Returns { rows:[{label,meaning}], cols:[…] } — empty when absent,
+// which renders exactly as spreads always have.
+function normalizeAxisList(list){
+  if (!Array.isArray(list)) return [];
+  return list.map(a => typeof a === 'string'
+      ? { label:a.trim(), meaning:'' }
+      : (a && typeof a === 'object' ? { label:String(a.label||'').trim(), meaning:String(a.meaning||'') } : null))
+    .filter(a => a && a.label);
+}
+function normalizeAxes(obj){
+  if (!obj || typeof obj !== 'object') return { rows:[], cols:[] };
+  const ax = obj.axes && typeof obj.axes === 'object' ? obj.axes : {};
+  return {
+    rows: normalizeAxisList(ax.rows || obj.row_labels),
+    cols: normalizeAxisList(ax.cols || obj.col_labels),
+  };
+}
+function parseAxisInput(v){
+  return String(v||'').split(',').map(s=>s.trim()).filter(Boolean).map(label=>({ label, meaning:'' }));
+}
+function syncAxesInputs(){
+  const c = $('colLabels'), r = $('rowLabels');
+  if (c) c.value = axes.cols.map(a=>a.label).join(', ');
+  if (r) r.value = axes.rows.map(a=>a.label).join(', ');
+}
+function hasAxes(){ return (axes.cols && axes.cols.length) || (axes.rows && axes.rows.length); }
+// Where each header sits: reuse the distinct x (or y) values the positions already occupy, so the
+// headers line up with the actual grid. If the counts don't match, space them evenly instead.
+function axisTicks(kind, n){
+  if (n <= 0) return [];
+  // Cluster the positions' x (or y) with a tolerance, so a hand-nudged grid still lines up.
+  const vals = positions.map(p => (kind==='col' ? p.x : p.y)).sort((a,b)=>a-b);
+  const groups = [];
+  vals.forEach(v => {
+    const g = groups[groups.length-1];
+    if (g && v - g[g.length-1] <= 0.07) g.push(v); else groups.push([v]);
+  });
+  if (groups.length === n) return groups.map(g => g.reduce((a,b)=>a+b,0)/g.length);
+  const out = []; for (let i=0;i<n;i++) out.push((i+1)/(n+1));   // not a grid → space them evenly
+  return out;
+}
+function renderAxes(board){
+  if (!hasAxes()) return;
+  axisTicks('col', axes.cols.length).forEach((x,i) => {
+    const a = axes.cols[i]; const el = document.createElement('div');
+    el.className = 'axhead col'; el.style.left = (x*100)+'%';
+    el.innerHTML = esc(a.label) + (a.meaning ? `<span class="axm">${esc(a.meaning)}</span>` : '');
+    board.appendChild(el);
+  });
+  axisTicks('row', axes.rows.length).forEach((y,i) => {
+    const a = axes.rows[i]; const el = document.createElement('div');
+    el.className = 'axhead row'; el.style.top = (y*100)+'%';
+    el.innerHTML = esc(a.label) + (a.meaning ? `<span class="axm">${esc(a.meaning)}</span>` : '');
+    board.appendChild(el);
+  });
+}
+
+function addPosition(label, meaning, x, y){
+  positions.push({ id:'p'+(++seq), label, meaning, x: x==null?0.5:x, y: y==null?0.5:y });
+  renderBoard(); renderCustomList(); syncJson();
+}
+
+// ── deterministic layout — no more center pile ──
+// When a spread arrives without x/y (AI-built, bare import, older contract), lay the positions
+// out by count instead of stacking them at 0.5/0.5. x/y are the same 0–1 canvas fractions the
+// board already uses. Positions that DO carry x/y are kept untouched (see placePositions).
+function layoutTemplate(n){
+  if (n <= 0) return [];
+  if (n <= 4) { const t=[]; for(let i=0;i<n;i++) t.push({ x:(i+1)/(n+1), y:0.5 }); return t; }       // equidistant horizontal row
+  if (n === 5) return [ {x:0.5,y:0.5},{x:0.5,y:0.22},{x:0.5,y:0.78},{x:0.22,y:0.5},{x:0.78,y:0.5} ]; // cross: center, above, below, left, right
+  if (n === 10) return [                                                                              // classic Celtic Cross
+    {x:0.30,y:0.50}, // 1 present
+    {x:0.44,y:0.50}, // 2 crossing (offset so it's draggable, not stacked on 1)
+    {x:0.30,y:0.78}, // 3 foundation (below)
+    {x:0.16,y:0.50}, // 4 past (left)
+    {x:0.30,y:0.22}, // 5 crown (above)
+    {x:0.58,y:0.50}, // 6 future (right)
+    {x:0.82,y:0.80}, // 7 staff, bottom
+    {x:0.82,y:0.60}, // 8
+    {x:0.82,y:0.40}, // 9
+    {x:0.82,y:0.20}, // 10 staff, top
+  ];
+  // any other count → an evenly spaced grid with margins
+  const cols = Math.ceil(Math.sqrt(n)), rows = Math.ceil(n/cols);
+  const t = [];
+  for (let i=0;i<n;i++){ const c=i%cols, r=Math.floor(i/cols); t.push({ x:(c+1)/(cols+1), y:(r+1)/(rows+1) }); }
+  return t;
+}
+// ── grid detection — a 3×3 (or R×C) spread should look like a grid, not a scattered arrow ──
+// A spread is confidently grid-shaped when EITHER:
+//  (a) it declares axes (rows/cols) whose product matches the position count, or
+//  (b) every position label splits on a shared "Row · Col" (or "Row - Col" / "Row: Col")
+//      separator into a consistent set of row labels × column labels.
+// Either signal is strong enough that we OVERRIDE any stored x/y with a real grid — a spread
+// built by the assistant may carry x/y that trace an arrow/diagonal (assistant-side layout has
+// no grid awareness), and that stored geometry is exactly the bug: axes/label structure is a
+// stronger source of truth for "this is a grid" than whatever x/y happened to be saved.
+// A bare perfect-square count with NEITHER signal is only used as a fallback template (see
+// layoutTemplate) when x/y is missing — we don't clobber a deliberately-dragged 4-card diamond
+// just because 4 is a perfect square.
+const GRID_LABEL_SEPS = [' · ', ' - ', ' – ', ' — ', ': '];
+function detectGrid(rawPositions, axesObj){
+  const arr = rawPositions || [];
+  const n = arr.length;
+  if (n < 4) return null;
+  const ax = normalizeAxes(axesObj || {});
+  if (ax.rows.length > 1 && ax.cols.length > 1 && ax.rows.length * ax.cols.length === n) {
+    return { rows: ax.rows.length, cols: ax.cols.length,
+      rowOrder: ax.rows.map(a=>a.label), colOrder: ax.cols.map(a=>a.label), sep: null };
+  }
+  for (const sep of GRID_LABEL_SEPS) {
+    const parts = arr.map(p => (p && p.label!=null) ? String(p.label).split(sep) : null);
+    if (!parts.every(pp => pp && pp.length === 2 && pp[0].trim() && pp[1].trim())) continue;
+    const rowOrder = [], colOrder = [];
+    parts.forEach(pp => { const r=pp[0].trim(), c=pp[1].trim();
+      if (!rowOrder.includes(r)) rowOrder.push(r); if (!colOrder.includes(c)) colOrder.push(c); });
+    if (rowOrder.length > 1 && colOrder.length > 1 && rowOrder.length * colOrder.length === n) {
+      return { rows: rowOrder.length, cols: colOrder.length, rowOrder, colOrder, sep };
+    }
+  }
+  return null;
+}
+// Which grid cell a given raw position belongs to. Prefers parsing its own "Row · Col" label
+// against the detected row/col order (so a scrambled position order still lands correctly);
+// falls back to row-major (i-th position → row i/cols, col i%cols) when the label can't be parsed
+// (e.g. axes-based detection with plain per-position labels that don't repeat the axis names).
+function gridCellFor(p, i, grid){
+  if (grid.rowOrder && grid.colOrder && p && p.label!=null) {
+    // If detection already pinned the separator (label-prefix path), trust only that one;
+    // otherwise (axes-based detection) try every known separator against the axis label sets —
+    // the position's own label is a stronger placement signal than array order, since a
+    // scattered/arrow spread's positions may not be listed in row-major order at all.
+    const seps = grid.sep ? [grid.sep] : GRID_LABEL_SEPS;
+    const lbl = String(p.label);
+    for (const sep of seps) {
+      const parts = lbl.split(sep);
+      if (parts.length !== 2) continue;
+      const r = grid.rowOrder.indexOf(parts[0].trim()), c = grid.colOrder.indexOf(parts[1].trim());
+      if (r >= 0 && c >= 0) return { row:r, col:c };
+    }
+  }
+  return { row: Math.floor(i / grid.cols), col: i % grid.cols };
+}
+function gridXY(row, col, grid){ return { x:(col+1)/(grid.cols+1), y:(row+1)/(grid.rows+1) }; }
+// Map raw contract/import positions onto working positions.
+//  - Confidently grid-shaped (axes or label-prefix, see detectGrid) → ALWAYS laid out as a real
+//    grid, aligned with the axis headers; any stored x/y is replaced (the arrow bug).
+//  - Otherwise: a position missing x/y gets a slot from layoutTemplate; positions that already
+//    carry x/y keep them exactly (unchanged behaviour for non-grid spreads).
+function placePositions(raw, axesObj){
+  const arr = (raw||[]).slice(0,15);
+  const grid = detectGrid(arr, axesObj);
+  if (grid) {
+    return arr.map((p,i) => {
+      const cell = gridCellFor(p, i, grid);
+      const xy = gridXY(cell.row, cell.col, grid);
+      return { id:'p'+(++seq), label:(p&&p.label)||'', meaning:(p&&p.meaning)||'', x:xy.x, y:xy.y };
+    });
+  }
+  const needsLayout = arr.some(p => !p || p.x==null || p.y==null);
+  const tpl = needsLayout ? layoutTemplate(arr.length) : null;
+  return arr.map((p,i) => {
+    const hasXY = p && p.x!=null && p.y!=null;
+    const xy = hasXY ? { x:+p.x, y:+p.y } : ((tpl && tpl[i]) || { x:0.5, y:0.5 });
+    return { id:'p'+(++seq), label:(p&&p.label)||'', meaning:(p&&p.meaning)||'', x:xy.x, y:xy.y };
+  });
+}
+
+// Is the current working spread a BUILT-IN preset (spreads.json)? Those are the only ones that
+// are NOT updatable — they're shared library layouts, so editing them makes a new spread instead.
+// Custom-built, ?spread=-loaded, imported, and "My spreads" working spreads ARE updatable.
+function isBuiltinPreset(){ return curSpreadId !== 'custom' && !!spreadsById[curSpreadId]; }
+
+// Show/hide the save affordances. "Update spread" rewrites the working spread's dragged geometry
+// (custom / loaded / My-spread — NOT a shared built-in preset); "Save as new" turns the current
+// arrangement into a fresh named spread. (Was backwards before Jul 16 2026: Update showed only for
+// built-in presets and hid for the user's own custom spreads — the exact opposite of what's useful.)
+function updateSaveAffordances(){
+  const has = positions.length > 0;
+  const us = $('updateSpread'), sn = $('saveAsNew');
+  if (us) us.style.display = (has && !isBuiltinPreset()) ? 'inline-flex' : 'none';
+  if (sn) sn.style.display = has ? 'inline-flex' : 'none';
+}
+
+function renderBoard(){
+  const board = $('board'); board.innerHTML = '';
+  if (!positions.length) { board.innerHTML = '<div class="empty">Add a position to begin.</div>'; updateSaveAffordances(); return; }
+  renderAxes(board);
+  positions.forEach((p, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'slot' + (selected.has(p.id) ? ' sel' : '');
+    slot.dataset.i = i; slot.dataset.pid = p.id;
+    slot.style.left = (p.x*100)+'%'; slot.style.top = (p.y*100)+'%';
+    const c = p.card;
+    // The position's meaning renders IN FULL — it used to be cut at 60 characters ("…where the
+    // movement o"), which is exactly the text a builder needs to read while laying a spread out.
+    const cardInner = c
+      ? (c.image_url ? `<img src="${esc(c.image_url)}" alt="${esc(c.name)}" style="${c.reversed?'transform:rotate(180deg);':''}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:'?'}))">` : '<div class="ph">' + esc(shortCardName(c.name, c.deck)) + '</div>')
+      : `<div class="ph">${esc(p.meaning||'') || '—'}</div>`;
+    slot.innerHTML = `<div class="phead"><span class="num">${i+1}</span><span class="plabel" title="${esc(p.meaning||'')}">${esc(p.label)}</span></div>`
+      + `<div class="card${c?' filled':''}">${cardInner}</div>`
+      + (c ? `<div class="cname">${esc(shortCardName(c.name, c.deck))}</div><div class="cdeck">${esc(c.deck||'')}</div>${c.reversed?'<div class="rev">reversed</div>':''}` : '');
+    attachSlot(slot, p, i);
+    board.appendChild(slot);
+  });
+  updateSaveAffordances();
+}
+
+// ── board editing: drag · shift-click multi-select · ctrl/⌘-drag copy ──
+// Shift-click toggles a position in the selection. Dragging any selected position moves the whole
+// selection together. Holding Ctrl/⌘/Alt while dragging leaves the originals where they were and
+// drops COPIES at the new place (a geometric duplicate), keeping labels and meanings.
+function slotEl(pid){ return $('board').querySelector('.slot[data-pid="'+pid+'"]'); }
+function clearSelection(){ if(!selected.size) return; selected.clear();
+  $('board').querySelectorAll('.slot.sel').forEach(s=>s.classList.remove('sel')); }
+function toggleSelect(p){
+  if (selected.has(p.id)) selected.delete(p.id); else selected.add(p.id);
+  const el = slotEl(p.id); if (el) el.classList.toggle('sel', selected.has(p.id));
+}
+function onBoardKey(e){
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName)||'')) return;
+  if (e.key === 'Escape') { clearSelection(); return; }
+  if ((e.key === 'Delete' || e.key === 'Backspace') && selected.size) {
+    e.preventDefault();
+    positions = positions.filter(p => !selected.has(p.id));
+    selected.clear(); renderBoard(); renderCustomList(); syncJson();
+  }
+}
+function attachSlot(slot, p, i){
+  let dragging=false, moved=false, sx=0, sy=0, group=null, start=null, dup=false;
+  slot.addEventListener('pointerdown', ev => {
+    if (ev.shiftKey) { ev.preventDefault(); toggleSelect(p); return; }   // shift-click = select, never drag
+    if (!selected.has(p.id)) clearSelection();                            // dragging outside the selection resets it
+    group = (selected.size > 1 && selected.has(p.id)) ? positions.filter(q => selected.has(q.id)) : [p];
+    start = group.map(q => ({ q, x:q.x, y:q.y }));
+    dup = !!(ev.ctrlKey || ev.metaKey || ev.altKey);
+    dragging=true; moved=false; sx=ev.clientX; sy=ev.clientY;
+    slot.setPointerCapture(ev.pointerId); slot.classList.add('dragging'); });
+  slot.addEventListener('pointermove', ev => { if(!dragging) return;
+    if (Math.abs(ev.clientX-sx)>4 || Math.abs(ev.clientY-sy)>4) moved=true;
+    const r = $('board').getBoundingClientRect();
+    const dx = (ev.clientX-sx)/r.width, dy = (ev.clientY-sy)/r.height;
+    start.forEach(s => {
+      s.q.x = Math.min(1,Math.max(0, s.x + dx)); s.q.y = Math.min(1,Math.max(0, s.y + dy));
+      const el = slotEl(s.q.id); if (el) { el.style.left=(s.q.x*100)+'%'; el.style.top=(s.q.y*100)+'%'; }
+    }); });
+  const end = ev => { if(!dragging) return; dragging=false; slot.classList.remove('dragging');
+    try{ slot.releasePointerCapture(ev.pointerId); }catch(_){}
+    if (moved) {
+      if (dup) {
+        // Copy: snap the originals back and materialise duplicates at the dropped geometry.
+        const copies = start.map(s => {
+          const nx = s.q.x, ny = s.q.y; s.q.x = s.x; s.q.y = s.y;
+          return { id:'p'+(++seq), label:s.q.label, meaning:s.q.meaning, x:nx, y:ny };
+        });
+        positions = positions.concat(copies);
+        selected.clear(); copies.forEach(c => selected.add(c.id));
+        if (curSpreadId !== 'custom') { curSpreadId='custom'; $('spread').value='custom'; setCustomMode(true); }
+        renderBoard(); renderCustomList();
+      }
+      syncJson(); return;
+    }
+    clearSelection();
+    if (p.card) openCardDetail(p);                                  // tap a cast card → detail
+    else if (curSpreadId==='custom') { const r=$('clist').querySelector('input[data-f="label"][data-i="'+i+'"]'); if(r) r.focus(); }
+  };
+  slot.addEventListener('pointerup', end); slot.addEventListener('pointercancel', end);
+}
+
+function renderCustomList(){
+  const cl = $('clist'); if (curSpreadId !== 'custom') { cl.innerHTML=''; return; }
+  cl.innerHTML = positions.map((p,i) =>
+    `<div class="row"><div class="rn">${i+1}</div><div class="ff">`
+    + `<input type="text" data-f="label" data-i="${i}" value="${esc(p.label)}" placeholder="Label (e.g. The Root)">`
+    + `<input type="text" data-f="meaning" data-i="${i}" value="${esc(p.meaning)}" placeholder="The question this position asks">`
+    + `</div><button class="del" data-i="${i}">Delete</button></div>`).join('');
+  cl.querySelectorAll('input').forEach(inp => inp.addEventListener('input', e => {
+    const p = positions[+e.target.dataset.i]; if(!p) return; p[e.target.dataset.f] = e.target.value;
+    const slot = $('board').querySelector('.slot[data-i="'+e.target.dataset.i+'"]');
+    if (slot) { slot.querySelector('.plabel').textContent = p.label; slot.querySelector('.plabel').title = p.meaning||'';
+      if (!p.card) slot.querySelector('.ph') && (slot.querySelector('.ph').textContent = (p.meaning||'')||'—'); }
+    syncJson();
+  }));
+  cl.querySelectorAll('.del').forEach(b => b.addEventListener('click', e => {
+    positions.splice(+e.target.dataset.i,1); renderBoard(); renderCustomList(); syncJson(); }));
+}
+
+function drawN(n){ const pool = currentPool().slice();
+  for (let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  return pool.slice(0,n); }
+
+function cast(){
+  if (!positions.length) { alert('Add at least one position.'); return; }
+  const n = positions.length;
+  const cards = drawN(n);
+  if (cards.length < n){ alert('This deck has only ' + cards.length + ' castable cards — fewer than this spread needs (' + n + '). Try "All Decks" or a larger deck.'); return; }
+  const revProb = (parseInt($('revProb').value,10) || 0) / 100;
+  positions.forEach((p, i) => { const c = cards[i], m = c.metadata||{};
+    p.card = { name:c.name, deck:(m.deck||deckLabels[m.source_deck]||''), arcana:m.arcana||null, number:(m.number??null),
+      reversed: Math.random() < revProb, image_url:c.image_url||null,
+      source_deck:m.source_deck||null, source_item_id:m.source_item_id||null,
+      // The meta card's OWN content (its "Origin" provenance blurb etc.) — carried through so
+      // openCardDetail can render it additively alongside the resolved source deck content.
+      keywords:c.keywords||null, sections:c.sections||null }; });
+  $('reshuffle').style.display = 'inline-block';
+  renderBoard(); syncJson(); $('export').classList.add('on');
+  // Oracle Ribbon — ON by default since Aug 8 2026 (approved after the ?ribbon=1 preview).
+  // The moment a cast lands is exactly when "the cards have spoken" energy is highest, so
+  // that's where the frame belongs. Still dismissible for the session via its own ×.
+  if (window.OracleRibbon) OracleRibbon.show($('board'), { gated: false });
+}
+
+// The display name of the current working spread. ONE source of truth: the #spreadName field, which
+// setSpreadIdentity keeps in step with whatever was loaded (preset · My spread · assistant handoff ·
+// import) and which the user can retype at any time.
+function resolveSpreadName(){
+  const typed = (($('spreadName') && $('spreadName').value) || spreadName || '').trim();
+  if (typed) return typed;
+  if (mySpreadsById[curSpreadId]) return mySpreadsById[curSpreadId].name || 'My spread';
+  const s = spreadsById[curSpreadId];
+  if (curSpreadId !== 'custom' && s) return s.name;
+  return 'Custom spread';
+}
+
+function buildCast(){
+  const deckVal = $('deck').value;
+  return {
+    _type:'recursive-learning-cast', _version:2,
+    _source:'https://learning.recursive.eco/viewers/caster-studio.html',
+    spread: resolveSpreadName(),
+    spread_id: curSpreadId,
+    positions: positions.map((p,i) => ({ n:i+1, label:p.label, meaning:p.meaning, x:Math.round(p.x*1000)/1000, y:Math.round(p.y*1000)/1000 })),
+    ...(hasAxes() ? { axes: { rows: axes.rows.slice(), cols: axes.cols.slice() } } : {}),
+    deck: deckVal===ALL ? 'All Decks (cross-deck)' : (deckLabels[deckVal]||deckVal),
+    cast_at: new Date().toISOString(),
+    question: $('question').value.trim() || null,
+    cards: positions.map((p,i) => Object.assign({ position:p.label, prompt:p.meaning }, p.card || {})),
+  };
+}
+function syncJson(){ lastCast = buildCast(); const json = JSON.stringify(lastCast, null, 2);
+  $('json').value = json;
+  $('journalLink').href = FLOW + '/?d=' + b64urlEncode(json);
+  updateContributeLink(); }
+
+// "Contribute a spread on GitHub" used to be a static link to a blank new-file page — it never
+// carried the spread the visitor had just built. GitHub's new-file page accepts a `value=` query
+// param that prefills the editor, so hand it the exported spread contract (layout only, same JSON
+// `exportSpread()` writes to disk) pretty-printed. GitHub/browsers have no hard URL-length spec,
+// but very long query strings silently fail in some proxies/browsers well under the nominal 8k
+// limit — so past ~7000 chars we fall back to the plain (unprefilled) link and tell people to
+// export the file first instead of quietly producing a broken or truncated link.
+function updateContributeLink(){
+  const link = $('contributeLink');
+  if (!link) return;
+  const base = 'https://github.com/PlayfulProcess/recursive-learning/new/main';
+  if (!positions.length) {
+    link.href = base + '?filename=' + encodeURIComponent('glossary/proposed-spreads/my-spread.json');
+    link.title = 'Add your spread to the shared library via a GitHub pull request';
+    return;
+  }
+  const obj = buildSpreadObj();
+  const json = JSON.stringify(obj, null, 2);
+  // A proposal file; a maintainer folds it into glossary/spreads.src.json, the one source of the
+  // spreads (viewers/spreads.json is generated from it).
+  const filename = 'glossary/proposed-spreads/' + slugify(obj.name) + '.json';
+  const withValue = base + '?filename=' + encodeURIComponent(filename) + '&value=' + encodeURIComponent(json);
+  if (withValue.length > 7000) {
+    link.href = base + '?filename=' + encodeURIComponent(filename);
+    link.title = 'This spread is too large to prefill on GitHub — use "⤓ Save reading" or the spread-export icon to save the .json first, then attach or paste it into the pull request.';
+  } else {
+    link.href = withValue;
+    link.title = 'Opens a new GitHub file prefilled with this spread — review and submit as a pull request.';
+  }
+}
+
+// Clear casting — remove the drawn cards but keep the spread layout, labels & meanings
+// so you can re-cast into the same shape. (Clear all, above, wipes the layout too.)
+function clearCasting(){
+  if (!positions.length) return;
+  positions.forEach(p => { delete p.card; });
+  lastCast = null;
+  $('reshuffle').style.display = 'none';
+  $('export').classList.remove('on');
+  renderBoard(); syncJson();
+}
+
+// ── Interpret with AI — open the embedded flow assistant sidebar on THIS page (no redirect to
+// the flow oracle — the old "Send to recursive.eco oracle" link "is not really working" per the
+// builder, Jul 28 2026) and hand it the reading via postMessage. The flow side does not listen
+// for this message yet (queued in the flow repo); if it doesn't ack within ~1s we fall back to
+// copying a compact summary + a toast, and the sidebar stays open either way so the person can
+// paste it in themselves. Full contract (message shape, origin rule, ack, reading schema) is
+// documented in docs/ASSISTANT-EMBED-CONTRACT.md — keep this block and that file in sync.
+function getAssistantIframe(){ return document.querySelector('.rec-assistant-shell iframe'); }
+function ensureAssistantReady(cb, tries){
+  const ifr = getAssistantIframe();
+  if (ifr) { cb(ifr); return; }
+  if ((tries||0) > 40) { cb(null); return; }   // ~10s of polling — the shell never mounted, give up
+  setTimeout(() => ensureAssistantReady(cb, (tries||0) + 1), 250);
+}
+// The reading contract sent to the assistant — spread name, every position with its card (name,
+// deck, reversed flag) or null if not yet cast, and the free-text question. See
+// docs/ASSISTANT-EMBED-CONTRACT.md for the pinned schema.
+function buildReadingForAssistant(){
+  const c = lastCast || buildCast();
+  return {
+    v: 1,
+    spread: c.spread,
+    question: c.question || null,
+    positions: positions.map((p, i) => ({
+      n: i + 1,
+      label: p.label || '',
+      meaning: p.meaning || null,
+      card: p.card ? {
+        name: p.card.name,
+        deck: p.card.deck || null,
+        reversed: !!p.card.reversed,
+        arcana: p.card.arcana || null,
+        number: (p.card.number == null ? null : p.card.number),
+      } : null,
+    })),
+    cast_at: c.cast_at,
+    source: 'https://learning.recursive.eco/viewers/caster-studio.html',
+  };
+}
+function buildCompactReadingSummary(reading){
+  const cards = reading.positions.map(p => p.label + ': ' + (p.card ? (p.card.name + (p.card.reversed ? ' (reversed)' : '')) : '(empty)')).join('; ');
+  return reading.spread + ' — ' + cards + (reading.question ? ' — Question: ' + reading.question : '');
+}
+let rtToastTimer = null;
+function showToast(msg){
+  let t = document.getElementById('rtToast');
+  if (!t) { t = document.createElement('div'); t.id = 'rtToast'; t.className = 'rt-toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  requestAnimationFrame(() => t.classList.add('on'));
+  clearTimeout(rtToastTimer);
+  rtToastTimer = setTimeout(() => t.classList.remove('on'), 5200);
+}
+// The fallback path: no ack (or no assistant at all) arrived in time. Copy a compact summary to
+// the clipboard (the closest thing to "send it to the composer" we have — the embed is a
+// cross-origin iframe, so there is no DOM handle into its textbox) and toast either way.
+function showInterpretFallbackToast(){
+  const reading = buildReadingForAssistant();
+  const summary = buildCompactReadingSummary(reading);
+  const tellUser = copied => showToast(copied
+    ? 'Reading copied — paste it into the chat and ask about it. It will send automatically once recursive.eco updates.'
+    : 'Open the chat and ask about this reading — it will be sent automatically once the app updates.');
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(summary).then(() => tellUser(true)).catch(() => tellUser(false));
+    } else { tellUser(false); }
+  } catch(_) { tellUser(false); }
+}
+function interpretWithAI(){
+  if (!positions.some(p => p.card)) { alert('Cast a reading first.'); return; }
+  ensureAssistantReady(function(ifr){
+    if (!ifr || !window.RecursiveAssistant || typeof window.RecursiveAssistant.open !== 'function') {
+      showInterpretFallbackToast(); return;
+    }
+    window.RecursiveAssistant.open();
+    let origin;
+    try { origin = new URL(ifr.src).origin; }                          // the iframe's ACTUAL origin — never '*'
+    catch(_) { origin = (window.RecursiveAssistant.flowBaseUrl && window.RecursiveAssistant.flowBaseUrl()) || FLOW; }
+    const reading = buildReadingForAssistant();
+    let acked = false;
+    const onAck = function(e){
+      if (e.origin !== origin) return;
+      if (e.data && e.data.type === 'recursive:interpret-ack') { acked = true; window.removeEventListener('message', onAck); }
+    };
+    window.addEventListener('message', onAck);
+    try { ifr.contentWindow.postMessage({ type: 'recursive:interpret-reading', reading: reading }, origin); }
+    catch(_) { window.removeEventListener('message', onAck); showInterpretFallbackToast(); return; }
+    setTimeout(function(){
+      window.removeEventListener('message', onAck);
+      if (!acked) showInterpretFallbackToast();
+    }, 1000);
+  });
+}
+
+function copyJson(){ const ta=$('json'); ta.select();
+  navigator.clipboard?.writeText(ta.value).then(()=>{ const b=$('copyJson'); b.textContent='Copied'; setTimeout(()=>b.textContent='Copy JSON',1400); }).catch(()=>document.execCommand('copy')); }
+function downloadJson(){ if(!lastCast) syncJson();
+  const blob=new Blob([JSON.stringify(lastCast,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='reading-'+(lastCast.cast_at||'').replace(/[:.]/g,'-')+'.json'; a.click(); URL.revokeObjectURL(a.href); }
+
+// ── the spread contract — the layout only (no drawn cards), the pinned wire format ──
+// { v:1, name, positions:[{label, meaning?, x?, y?}] }. This is the STRICT writer: every
+// path that emits a spread (file export, ?importSpread= URL, Send to recursive.eco) uses it.
+function currentSpreadContract(){
+  const name = resolveSpreadName();
+  return {
+    v:1,
+    name: name || 'Custom spread',
+    positions: positions.slice(0,15).map(p => ({
+      label: p.label||'', meaning: p.meaning||'',
+      x: Math.round((p.x==null?0.5:p.x)*1000)/1000,
+      y: Math.round((p.y==null?0.5:p.y)*1000)/1000,
+    })),
+    // Optional aggregate headers — omitted entirely when unused, so old readers see the old shape.
+    ...(hasAxes() ? { axes: { rows: axes.rows.slice(), cols: axes.cols.slice() } } : {}),
+  };
+}
+// The file writer emits the contract (+ a tolerated `description` extra when there is one).
+function buildSpreadObj(){
+  const c = currentSpreadContract();
+  return spreadDesc ? Object.assign({}, c, { description: spreadDesc }) : c;
+}
+function exportSpread(){
+  if(!positions.length){ alert('Add at least one position first.'); return; }
+  const obj = buildSpreadObj();
+  const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='spread-'+slugify(obj.name)+'.json'; a.click(); URL.revokeObjectURL(a.href); }
+function slugify(s){ return (s||'spread').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'spread'; }
+
+// (Removed Jul 2026 — the paper-plane "Send to recursive.eco" icon button and its ecoImportUrl() /
+// sendToEco() helpers. It never reliably landed the spread in My Spreads, and the icon language now
+// follows the Create editor, which retired the paper plane. Spreads still travel both ways: the
+// assistant hands them in (?spread= / the eco-spread postMessage) and Export writes the contract.)
+
+// Persist a drag-rearranged layout. Export / Send / Save-reading already read the LIVE positions
+// (so they always carry the current x/y) — these two just make "keep my arrangement" explicit.
+// These are ICON buttons now (Create-editor parity), so "flash" confirms via the tooltip and a brief
+// highlight instead of replacing the label — replacing textContent would wipe the SVG.
+function flash(btn, txt){ if(!btn) return; const t=btn.title; btn.title=txt; btn.classList.add('primary');
+  setTimeout(()=>{ btn.title=t; if(btn.id!=='updateSpread') btn.classList.remove('primary'); }, 1600); }
+// Update spread — write the current (dragged) geometry and name back into the LOCAL working spread
+// in memory. Built-in presets are not updatable (their Update button is hidden). For a "My spread"
+// we also patch its in-memory copy so re-selecting it from the dropdown keeps the new layout.
+function updateSpreadGeometry(){
+  if (isBuiltinPreset()) return;   // shared library layout — Save as new instead (button is hidden anyway)
+  const geo = positions.map(p => ({ label:p.label, meaning:p.meaning,
+    x:Math.round((p.x==null?0.5:p.x)*1000)/1000, y:Math.round((p.y==null?0.5:p.y)*1000)/1000 }));
+  const my = mySpreadsById[curSpreadId];
+  if (my) { my.positions = geo; my.name = resolveSpreadName();   // keep the drag AND the rename
+    if (hasAxes()) my.axes = { rows:axes.rows.slice(), cols:axes.cols.slice() }; else delete my.axes;
+    const opt = $('spread').querySelector('option[value="'+curSpreadId+'"]'); if (opt) opt.textContent = my.name; }
+  // (custom spreads need no write-back: the live `positions` array IS the working spread.)
+  syncJson();
+  // Honest label: this is a static site with no write API — nothing is persisted
+  // server-side. Only the in-memory working spread (and this tab's session) changes.
+  flash($('updateSpread'), 'Updated in this tab (export to keep)');
+}
+// Save as new — turn the current arrangement into a fresh named custom spread. The name goes into
+// the visible #spreadName field, so Export / Cast / Contribute all pick it up from there.
+function saveAsNewSpread(){
+  if(!positions.length){ alert('Add at least one position first.'); return; }
+  const suggested = resolveSpreadName().replace(/^Imported:\s*/,'').trim();
+  const name = (prompt('Name this spread:', suggested==='Custom spread' ? 'My spread' : suggested)||'').trim();
+  if(!name) return;
+  curSpreadId='custom'; $('spread').value='custom'; setCustomMode(true);
+  setSpreadIdentity(name, '');
+  renderBoard(); renderCustomList(); syncJson();
+  flash($('saveAsNew'), 'Saved');
+}
+
+// ── receive a spread — ONE loader, two entry points (?spread= URL + eco-spread postMessage) ──
+// Loads a spread-contract object onto the canvas + into the editors, ready for fine-tuning.
+// Tolerant of a missing v / name / meaning / x / y and of unknown extra fields; caps at 15.
+function loadSpreadContract(obj){
+  if (!obj || typeof obj!=='object' || !Array.isArray(obj.positions) || !obj.positions.length) return false;
+  // Grid-shaped (axes, or "Row · Col" labels) → laid out as a real grid, overriding any stored
+  // x/y (an assistant-built spread's saved x/y may trace an arrow — see detectGrid). Otherwise:
+  // missing x/y → deterministic layout (no center pile); positions with x/y keep theirs.
+  positions = placePositions(obj.positions, obj);
+  selected.clear();
+  axes = normalizeAxes(obj); syncAxesInputs();
+  curSpreadId='custom';
+  const sel=$('spread'); if(sel) sel.value='custom';
+  setCustomMode(true);
+  // The contract CARRIES the name (the assistant's create_spread writes it) — surface it in the
+  // name field and in the dropdown so "Nature's Negotiation" is visibly the thing being edited.
+  setSpreadIdentity(obj.name || '', obj.description || '');
+  $('reshuffle').style.display='none'; $('export').classList.remove('on');
+  renderBoard(); renderCustomList(); syncJson();
+  return true;
+}
+// The recursive.eco assistant iframe (flow origin) posts { type:'eco-spread', spread:<contract obj> }
+// when the AI builds/loads a spread — load it live, no navigation, no reload.
+window.addEventListener('message', (e) => {
+  if (e.origin !== FLOW) return;                       // only trust the flow origin
+  const d = e.data;
+  if (!d || d.type !== 'eco-spread' || !d.spread) return;
+  try { loadSpreadContract(d.spread); } catch(_){}
+});
+
+// Import auto-detects: a full reading (has drawn cards) → layout + cards;
+// a bare spread (positions, no cards; incl. spreads.json entries) → layout only, ready to cast.
+async function onImport(e){ const f=e.target.files&&e.target.files[0]; if(!f) return;
+  try {
+    const obj=JSON.parse(await f.text());
+    if(!obj || typeof obj!=='object') throw new Error('not a JSON object');
+    const hasCards = Array.isArray(obj.cards) && obj.cards.length;
+    if (hasCards) {
+      // full reading — pair each card with its position (fall back to card.position label).
+      // Missing x/y → deterministic layout (no center pile); positions with x/y keep theirs.
+      const pos = Array.isArray(obj.positions) && obj.positions.length===obj.cards.length
+        ? obj.positions
+        : obj.cards.map((c,i)=>({ label:c.position||('Position '+(i+1)), meaning:c.prompt||'' }));
+      positions = placePositions(pos, obj).map((p,i)=>({ ...p, card:obj.cards[i] }));
+      selected.clear(); axes = normalizeAxes(obj); syncAxesInputs();
+      if(obj.question!=null) $('question').value = obj.question || '';
+      $('spread').value='custom'; curSpreadId='custom'; setCustomMode(true);
+      // A saved reading records its spread's name under `spread` — keep it instead of blanking it.
+      setSpreadIdentity(obj.spread || obj.name || '', '');
+      renderBoard(); renderCustomList(); $('reshuffle').style.display='inline-block'; syncJson(); $('export').classList.add('on');
+    } else if (Array.isArray(obj.positions) && obj.positions.length) {
+      // bare spread — layout only, no cards; ready to cast.
+      // Grid-shaped → laid out as a real grid (overrides stored x/y). Otherwise missing x/y →
+      // deterministic layout (no center pile); positions with x/y keep theirs.
+      positions = placePositions(obj.positions, obj);
+      selected.clear(); axes = normalizeAxes(obj); syncAxesInputs();
+      $('spread').value='custom'; curSpreadId='custom'; setCustomMode(true);
+      // Name and description are separate: the description no longer overwrites the name.
+      setSpreadIdentity(obj.name || '', obj.description || '');
+      $('reshuffle').style.display='none'; $('export').classList.remove('on');
+      renderBoard(); renderCustomList(); syncJson();
+    } else {
+      throw new Error('no positions or cards found');
+    }
+  } catch(err){ alert('Could not import this file — expected a spread or reading exported here.\n\n'+err.message); }
+  e.target.value=''; }
+
+// ── My spreads — pull the signed-in user's saved spreads from recursive.eco ──
+// The flow app exposes an authed, CORS-enabled read endpoint (credentials cookie identifies the
+// user). Primary: GET /api/spreads. Fallback on 404 (or if the primary isn't reachable): GET
+// /api/preferences, whose JSON carries the same spreads[] (as { preferences: { spreads:[…] } }).
+// Signed-out / 401 / error / timeout → we add NOTHING: the dropdown stays exactly as it is today.
+async function fetchMySpreadsJson(){
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 6000);
+  const opts = { credentials:'include', signal:ctl.signal, headers:{ 'Accept':'application/json' } };
+  try {
+    // Primary — the dedicated spreads endpoint.
+    try {
+      const r = await fetch(FLOW + '/api/spreads', opts);
+      if (r.ok) return await r.json();
+      if (r.status !== 404) return null;   // 401 signed-out / 5xx → stay silent, don't leak via prefs
+    } catch(_){ /* not deployed yet / no CORS / offline → try the fallback */ }
+    // Fallback — preferences carries the same spreads[].
+    try {
+      const r2 = await fetch(FLOW + '/api/preferences', opts);
+      if (r2.ok) return await r2.json();
+    } catch(_){}
+    return null;
+  } finally { clearTimeout(timer); }
+}
+
+// Tolerant extraction — accept an array of contracts, { spreads:[…] }, the preferences envelope
+// ({ preferences:{ spreads:[…] } }), or a single contract. Returns an array or null.
+function extractSpreadsList(data){
+  if (!data || typeof data !== 'object') return null;
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data.spreads)) return data.spreads;
+  if (data.preferences && Array.isArray(data.preferences.spreads)) return data.preferences.spreads;
+  if (Array.isArray(data.mySpreads)) return data.mySpreads;
+  if (Array.isArray(data.positions) && data.positions.length) return [data];
+  return null;
+}
+
+// Coerce one saved-spread entry into a { v:1, name, positions:[…] } contract, or null if unusable.
+function normalizeMySpread(s){
+  if (!s || typeof s !== 'object') return null;
+  const positions = Array.isArray(s.positions) ? s.positions
+    : (Array.isArray(s) ? s : null);
+  if (!positions || !positions.length) return null;
+  const clean = positions.slice(0,15)
+    .filter(p => p && typeof p === 'object')
+    .map(p => ({ label:String(p.label||''), meaning:p.meaning!=null?String(p.meaning):'',
+      ...(p.x!=null?{x:+p.x}:{}), ...(p.y!=null?{y:+p.y}:{}) }));
+  if (!clean.length) return null;
+  const out = { v:1, name:String(s.name || s.title || 'My spread'), positions:clean };
+  const ax = normalizeAxes(s);
+  if (ax.rows.length || ax.cols.length) out.axes = ax;
+  return out;
+}
+
+async function loadMySpreads(){
+  let data;
+  try { data = await fetchMySpreadsJson(); } catch(_){ return; }
+  const raw = extractSpreadsList(data);
+  if (!Array.isArray(raw) || !raw.length) return;   // signed-out / empty → dropdown unchanged
+  const valid = [];
+  raw.forEach(s => { const c = normalizeMySpread(s); if (c) valid.push(c); });
+  if (!valid.length) return;
+  const ssel = $('spread'); if (!ssel) return;
+  const og = document.createElement('optgroup'); og.label = 'My spreads';
+  valid.forEach((c, i) => {
+    const key = 'my:' + i; mySpreadsById[key] = c;
+    const o = document.createElement('option'); o.value = key; o.textContent = c.name; og.appendChild(o);
+  });
+  // Insert the group just before the Custom option so it reads: presets · My spreads · Custom.
+  const customOpt = ssel.querySelector('option[value="custom"]');
+  if (customOpt) ssel.insertBefore(og, customOpt); else ssel.appendChild(og);
+}
+
+// ── which model will the embedded assistant answer on? ──
+// The Studio pins NOTHING: the assistant sidebar is the flow app's own /assistant embed, and
+// flow/api/ai/chat resolves the model from the signed-in profile
+// (profile_data.preferences.modelQuality — tier 'cheap' → gemini-2.5-flash, otherwise the chosen
+// chat model, default claude-sonnet-5; signed-out guests are forced to gemini-2.5-flash).
+// Designing a spread is a reasoning task and the light models do it poorly, so when a light model is
+// active we show ONE dismissible line pointing at the account setting. Never a block, never a nag.
+const LIGHT_MODEL_RE = /flash|haiku|mini|lite/i;
+function showModelHint(html){
+  try { if (localStorage.getItem('rt-modelhint-dismissed')) return; } catch(_){}
+  $('modelHintText').innerHTML = html;
+  $('modelHint').classList.add('on');
+}
+// Only /api/spreads is CORS-enabled for the *.recursive.eco family, so that's our signed-in probe
+// (401 = guest). /api/preferences — which is what actually carries modelQuality — is NOT reachable
+// cross-origin today; we still try it for signed-in users so this hint sharpens by itself if flow
+// ever opens it up, and stay silent rather than guess when it can't be read.
+async function checkAssistantModel(){
+  const x = $('modelHintX');
+  if (x) x.addEventListener('click', () => { $('modelHint').classList.remove('on');
+    try { localStorage.setItem('rt-modelhint-dismissed','1'); } catch(_){} });
+  const get = async (path) => {
+    const ctl = new AbortController(); const t = setTimeout(()=>ctl.abort(), 6000);
+    try { return await fetch(FLOW + path, { credentials:'include', signal:ctl.signal, headers:{ 'Accept':'application/json' } }); }
+    catch(_){ return null; } finally { clearTimeout(t); }
+  };
+  const probe = await get('/api/spreads');
+  if (!probe) return;                                   // offline / blocked → say nothing at all
+  if (probe.status === 401 || probe.status === 403) {
+    // Signed-out chats are forced onto the lightweight model by the flow route.
+    showModelHint('You are not signed in to recursive.eco, so the assistant answers on the '
+      + '<strong>lightweight model</strong>. Designing a spread is a reasoning task and the light model does it '
+      + 'poorly — <a href="' + FLOW + '/" target="_blank" rel="noopener">sign in</a> before asking it to build one.');
+    return;
+  }
+  if (!probe.ok) return;
+  const r = await get('/api/preferences');
+  if (!r || !r.ok) return;                              // can't read the preference → don't guess
+  let data; try { data = await r.json(); } catch(_){ return; }
+  const mq = ((data && (data.preferences || data)) || {}).modelQuality || {};
+  const light = mq.tier === 'cheap' || LIGHT_MODEL_RE.test(String(mq.chat || ''));
+  if (!light) return;
+  showModelHint('Your assistant is set to a <strong>lightweight model</strong>'
+    + (mq.chat ? ' (' + esc(String(mq.chat)) + ')' : ' (Cheaper)')
+    + '. Designing a spread is a reasoning task — for better results switch to a stronger model in '
+    + '<a href="' + FLOW + '/account" target="_blank" rel="noopener">your account settings</a>, then ask again.');
+}
+
+// ── voices carousel ──
+async function loadVoices(){
+  let data; try { data = await (await fetch('voices.json')).json(); } catch(e){ return; }
+  const si = data.shared_intention || {};
+  $('intentionTitle').textContent = si.title || 'Before you cast';
+  $('intentionCreed').textContent = si.creed || '';
+  $('intentionPrinciples').innerHTML = (si.principles||[]).map(p=>'<li>'+esc(p)+'</li>').join('');
+  $('intentionNote').textContent = si.interpretation_note || '';
+  const vbox = $('voices'), detail = $('voiceDetail');
+  (data.voices||[]).forEach(v => { const el=document.createElement('div'); el.className='voice'; el.style.setProperty('--vc', v.color||'var(--accent)');
+    el.innerHTML = '<div class="g">'+(window.rtIcon?window.rtIcon(v.glyph,28):esc(v.glyph||'•'))+'</div><div class="vn">'+esc(v.name)+'</div><div class="vt">'+esc(v.tagline||'')+'</div>';
+    el.addEventListener('click', () => { const wasOn=el.classList.contains('on');
+      vbox.querySelectorAll('.voice').forEach(n=>n.classList.remove('on'));
+      if (wasOn){ detail.classList.remove('on'); return; }
+      el.classList.add('on');
+      detail.innerHTML = '<span class="vd-name" style="color:'+esc(v.color||'#fff')+'">'+esc(v.name)+'</span> — '+esc(v.how)
+        + ((v.essay||v.link) ? ' <a href="'+esc(v.essay||v.link)+'">Read more →</a>' : (v.persona ? ' <span style="color:#8a8273">· a voice you can consult on recursive.eco</span>' : ''));
+      detail.classList.add('on'); });
+    vbox.appendChild(el); });
+  $('intention').style.display='block';
+}
+
+// ── card detail modal ──
+// Fetching + caching the source deck's grammar.json is shared with cards.html and
+// tree-viewer.html via reference-resolve.js (RefResolve.resolveSourceItem).
+let openCardToken = 0;
+async function openCardDetail(p){ const c=p.card; if(!c) return;
+  const myToken = ++openCardToken;
+  const modal=$('cardDetailModal'), body=$('cdmBody');
+  $('cdmPos').textContent=p.label||''; $('cdmName').textContent=c.name+(c.reversed?' (reversed)':''); $('cdmDeck').textContent=c.deck||'';
+  const img=$('cdmImg'); if(c.image_url){ img.src=c.image_url; img.style.display='block'; img.style.transform=c.reversed?'rotate(180deg)':''; } else img.style.display='none';
+  // per-card actions → recursive.eco (Phase 5 seed: View deck / Edit card)
+  const uuid = (ecoIds && ecoIds.ids && c.source_deck) ? ecoIds.ids[c.source_deck] : null;
+  const _pen='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+  const _play='<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg>';
+  $('cdmActions').innerHTML = uuid
+    ? `<a class="eco-chip" href="${FLOW}/create/dashboard/unified/new?forkId=${uuid}${c.source_item_id?'&card='+encodeURIComponent(c.source_item_id):''}" target="_blank" rel="noopener">${_pen} Edit in recursive.eco ↗</a>`
+      + `<a class="eco-chip" href="${FLOW}/g/${uuid}?view=reading" target="_blank" rel="noopener">${_play} Play in recursive.eco ↗</a>`
+    : '';
+  modal.style.display='flex'; document.body.style.overflow='hidden';
+
+  // The drawn card's OWN content (a meta card's "Origin" provenance blurb, etc.) — rendered
+  // immediately, additive with (never replaced by) the resolved source-deck content below.
+  const ownSections = c.sections||{};
+  const ownKeys = Object.keys(ownSections).filter(k=>ownSections[k] && String(ownSections[k]).trim());
+  let ownHtml = '';
+  if (c.keywords && c.keywords.length) ownHtml += `<div class="cdm-keywords">${c.keywords.map(k=>`<span class="cdm-tag">${esc(k)}</span>`).join('')}</div>`;
+  ownKeys.forEach(k=>{ ownHtml += `<div class="cdm-section"><div class="cdm-sec-label">${esc(k)}</div><div class="cdm-sec-text">${mdLite(ownSections[k])}</div></div>`; });
+
+  body.innerHTML = ownHtml + `<div id="cdmRefPanel" class="cdm-ref-panel"><div class="cdm-loading">Loading from ${esc(c.deck||'the source deck')}…</div></div>`;
+
+  if (!c.source_deck || !c.source_item_id) {
+    const panel=$('cdmRefPanel'); if (panel) panel.remove();
+    if (!ownKeys.length && !(c.keywords&&c.keywords.length)) body.innerHTML = '<div class="cdm-loading">No additional details available.</div>';
+    return;
+  }
+
+  const result = await RefResolve.resolveSourceItem(c.source_deck, c.source_item_id, c.deck);
+  if (myToken !== openCardToken) return;          // board moved on to a different card meanwhile
+  const panel = $('cdmRefPanel'); if (!panel) return;
+
+  const deckUrl = 'cards.html?src=' + encodeURIComponent('../grammars/'+c.source_deck+'/grammar.json') + '&item=' + encodeURIComponent(c.source_item_id);
+  if (result.status === 'error') {
+    panel.innerHTML = RefResolve.renderEmbedError(result.deckLabel||c.deck, deckUrl);
+    return;
+  }
+
+  // Framed embed (reference-resolve.js). The Caster always draws from the aggregator
+  // (meta) grammar, whose card items are pointer stubs — so the resolved entry IS the
+  // content here and the box opens expanded, but it stays clearly bounded and attributed.
+  panel.innerHTML = RefResolve.renderEmbed({
+    hostItem: c,
+    sourceItem: result.item,
+    deckLabel: result.deckLabel,
+    href: deckUrl,
+    hostIsAggregator: true,
+    md: mdLite,
+  });
+}
+function closeCardDetail(){ $('cardDetailModal').style.display='none'; document.body.style.overflow=''; }
+document.addEventListener('DOMContentLoaded',()=>{ $('cdmClose').addEventListener('click',closeCardDetail);
+  $('cardDetailModal').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeCardDetail(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeCardDetail(); }); });
+
+// hover preview — a large floating copy of the cast card under the cursor (desktop only), mirroring the Explorer
+(function(){
+  const hp=document.getElementById('hovprev'), hpImg=hp.querySelector('img');
+  const SEL='#board .slot .card.filled img';
+  const HEADPAD=64;
+  function place(card){
+    const r=card.getBoundingClientRect();
+    hp.style.display='block';
+    const pw=hp.offsetWidth||300, ph=hp.offsetHeight||440, gap=16;
+    let left=r.right+gap;
+    if (left+pw > window.innerWidth-8) left=r.left-gap-pw;              // flip to the left edge
+    left=Math.max(8, Math.min(left, window.innerWidth-pw-8));
+    let top=r.top+r.height/2-ph/2;
+    top=Math.max(HEADPAD, Math.min(top, window.innerHeight-ph-8));
+    hp.style.left=left+'px'; hp.style.top=top+'px';
+  }
+  function hide(){ hp.style.display='none'; }
+  let pending=null;
+  function reveal(card){ hpImg.style.transform = /rotate/.test(card.style.transform) ? 'rotate(180deg)' : ''; hp.style.display='block'; place(card); }
+  document.addEventListener('mouseover', e=>{
+    const card=e.target.closest(SEL);
+    if (!card || !card.getAttribute('src')) return;
+    pending=card;
+    if (hpImg.getAttribute('src')!==card.getAttribute('src')) {
+      hide();                                                              // don't flash the previous card at its old spot while the new one loads
+      hpImg.onload  = () => { if (pending===card) reveal(card); };
+      hpImg.onerror = () => { if (pending===card) hide(); };
+      hpImg.src=card.src;
+    }
+    if (hpImg.complete && hpImg.naturalWidth) reveal(card);
+  });
+  document.addEventListener('mouseout', e=>{
+    const card=e.target.closest(SEL);
+    if (card && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(SEL))) { pending=null; hide(); }
+  });
+  document.addEventListener('pointerdown', hide);                        // don't hover-preview mid-drag
+  window.addEventListener('scroll', hide, true);
+})();
+</script>
+
+<script src="../site-footer.js?v=1"></script>
+<site-footer base="../"></site-footer>
+
+<!-- The ONE recursive.eco assistant — the shared sparkle-star launcher + collapsible
+     flow /assistant sidebar, same shell every page mounts. data-assistant-context on
+     <body> tells the flow embed it's hosted here (?context=spread-builder). The
+     eco-spread postMessage listener that loads AI-built spreads into the board lives in
+     the page script above (loadSpreadContract). -->
+<script src="../assistant.js" defer></script>
+</body>
+</html>

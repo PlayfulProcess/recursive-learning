@@ -1,0 +1,78 @@
+{
+  "_placeholder": "PLACEHOLDER written by the shell port (Sep 24 2026) so the caster has its three spreads before the Words builder lands. scripts/build_words_deck.py regenerates this file from glossary/spreads.src.json + glossary/terms.json and replaces it; do not edit it by hand.",
+  "_generated": true,
+  "_do_not_hand_edit": true,
+  "_type": "recursive-learning-spreads",
+  "_version": 1,
+  "spreads": [
+    {
+      "id": "before-you-delegate",
+      "name": "Before you delegate",
+      "description": "Three words to hold before handing a task to a system.",
+      "positions": [
+        {
+          "label": "Access",
+          "meaning": "What a system can reach and change: accounts, money, code, other systems.",
+          "x": 0.2,
+          "y": 0.5,
+          "term_id": "access"
+        },
+        {
+          "label": "Channel",
+          "meaning": "A path by which a system can act on, or talk to, something outside its task.",
+          "x": 0.5,
+          "y": 0.5,
+          "term_id": "channel"
+        },
+        {
+          "label": "What held",
+          "meaning": "For any action a system took or did not take, the name of the thing that decided it: inner rule, outer rule, presence, or nothing.",
+          "x": 0.8,
+          "y": 0.5,
+          "term_id": "what-held"
+        }
+      ]
+    },
+    {
+      "id": "the-fork",
+      "name": "The fork",
+      "description": "Two alignments, and the choice between the two geopolitics.",
+      "positions": [
+        {
+          "label": "Human-human alignment",
+          "meaning": "Whether the humans holding a capability share the interests of everyone else.",
+          "x": 0.2,
+          "y": 0.5,
+          "term_id": "human-human-alignment"
+        },
+        {
+          "label": "Human-AI alignment",
+          "meaning": "Whether the system itself shares the interests of everyone else, once no human is in the loop.",
+          "x": 0.5,
+          "y": 0.5,
+          "term_id": "human-ai-alignment"
+        },
+        {
+          "label": "The two geopolitics",
+          "meaning": "The bad-actor frame says keep it from them, and tends to race. The alignment frame says keep it from everyone, and tends to stop.",
+          "x": 0.8,
+          "y": 0.5,
+          "term_id": "two-geopolitics"
+        }
+      ]
+    },
+    {
+      "id": "single",
+      "name": "A single draw",
+      "description": "One word for now.",
+      "positions": [
+        {
+          "label": "The word for now",
+          "meaning": "The word that seems most alive in your situation today.",
+          "x": 0.5,
+          "y": 0.5
+        }
+      ]
+    }
+  ]
+}

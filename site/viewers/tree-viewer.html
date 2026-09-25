@@ -1,0 +1,1734 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../theme.css?v=3">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree · Recursive Eco-Improvement</title>
+    <!-- This page used to pull https://cdn.tailwindcss.com, which prints a
+         "should not be used in production" warning on every load. It used
+         exactly ONE Tailwind utility, so the CDN is gone and the utility is
+         inlined. Keep it that way: if you need more utilities, write the CSS. -->
+    <style>.hidden { display: none !important; }</style>
+    <!-- ── Static-mode shim (recursive-tarot drift, no backend) ──
+         The recursive.eco viewer expects Supabase + the app shell. Here we run
+         self-contained on GitHub Pages: stub the auth/Supabase client (no remote
+         reads), and register lightweight site-header / site-footer / ViewModeDropdown
+         so the same viewer code renders against the repo's own grammar.json files. -->
+    <script>
+    (function () {
+        // Stub Supabase client: any query resolves to empty data (no remote reads).
+        function stubQuery() {
+            const p = Promise.resolve({ data: [], error: null });
+            const chain = { select: () => chain, in: () => p, eq: () => p,
+                single: () => p, order: () => chain, limit: () => p, then: p.then.bind(p) };
+            return chain;
+        }
+        const stubClient = { from: () => stubQuery(), auth: { getUser: async () => ({ data: { user: null } }) } };
+        window.RecursiveAuth = { init() { return stubClient; }, getClient() { return stubClient; } };
+
+        // Header comes from the shared ../site-header.js (loaded below).
+        // Footer used to be a hand-rolled RTFooter stub here — retired Aug 11 2026 in
+        // favour of the real shared ../site-footer.js (loaded just above the
+        // <site-footer> tag near the end of this file), so this page gets the same
+        // newsletter/links footer AND the sitewide Oracle Ribbon every other page has
+        // carried since Aug 10 2026. Don't redefine `site-footer` here — the shared
+        // script's own `customElements.get('site-footer')` guard would then treat this
+        // stub as "already defined" and skip itself, silently keeping the old stub.
+
+        // ViewModeDropdown stub: the "eye" view-switcher it used to render was
+        // retired Jun 29 2026 and its custom element removed entirely Aug 2026 —
+        // the per-page header nav (site-header.js) already covers view switching.
+        // Kept as a no-op so callers don't need a feature-detect.
+        window.ViewModeDropdown = {
+            init(container, opts) {}
+        };
+    })();
+    </script>
+    <script src="../site-header.js?v=47"></script>
+    <script src="../view-switcher.js?v=13"></script>
+    <style>
+        :root {
+            
+            
+            
+            
+            
+            
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--tree-bg) 0%, var(--tree-bg-light) 100%);
+            min-height: 100vh;
+            color: var(--tree-text);
+        }
+
+        site-header, site-footer { color: initial; }
+        site-header *, site-footer * { color: inherit; }
+        site-header a, site-header button { color: #6b6457; }
+        site-header a:hover, site-header button:hover { color: #221f1a; }
+
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Header */
+        .tree-header {
+            margin-bottom: 1.5rem;
+        }
+        .tree-title {
+            font-size: 1.75rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        .tree-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--tree-text-muted);
+        }
+        .tree-stats span {
+            margin-right: 1rem;
+        }
+
+        /* Header row (title + view dropdown) */
+        .tree-header-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .tree-description {
+            color: var(--tree-text-muted);
+            font-size: 0.875rem;
+            max-width: 600px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 4.8em;
+            overflow: hidden;
+            position: relative;
+        }
+        .tree-description.expanded {
+            max-height: none;
+        }
+        .tree-description.needs-toggle:not(.expanded)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2em;
+            background: linear-gradient(transparent, var(--tree-bg));
+        }
+        .description-toggle {
+            display: inline-block;
+            margin-top: 0.25rem;
+            color: var(--tree-accent);
+            font-size: 0.7rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            text-decoration: underline;
+        }
+        .description-toggle:hover {
+            opacity: 0.8;
+        }
+
+        /* Loading / Error */
+        .state-message {
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--line);
+            border-top-color: var(--tree-accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .state-text { color: var(--tree-text-muted); }
+
+        /* No-tree fallback */
+        .no-tree-message {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--tree-text-muted);
+        }
+        .no-tree-message p {
+            margin-bottom: 1rem;
+        }
+
+        /* ── Breadcrumb ── */
+        .breadcrumb-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .breadcrumb-item {
+            color: var(--tree-accent);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            transition: background 0.2s;
+        }
+        .breadcrumb-item:hover {
+            background: rgba(23,125,86, 0.15);
+        }
+        .breadcrumb-separator {
+            color: var(--tree-text-muted);
+            font-size: 0.7rem;
+        }
+        .breadcrumb-current {
+            color: var(--tree-text);
+            padding: 0.25rem 0.5rem;
+        }
+
+        /* ── Tree Visualization ── */
+        .tree-container {
+            padding: 1rem 0;
+        }
+
+        .tree-canvas {
+            position: relative;
+            margin: 0 auto;
+        }
+
+        /* Level section */
+        .tree-level-section {
+            margin-bottom: 1rem;
+        }
+
+        .level-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            user-select: none;
+        }
+        .level-header:hover .level-label-text {
+            color: var(--tree-text);
+        }
+        .level-toggle {
+            font-size: 0.7rem;
+            color: var(--tree-text-muted);
+            transition: transform 0.2s;
+            width: 1rem;
+            text-align: center;
+        }
+        .level-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+        /* render_as pill filter bar (mirrors Library HashtagFilter; canonical purple) */
+        .pill-bar { display: flex; flex-direction: column; gap: 8px; margin: 6px 0 14px; }
+        .pill-bar.hidden { display: none; }
+        .pill-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+        .pill-group-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--faint); margin-right: 4px; }
+        .pill-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 0.8rem; cursor: pointer; background: var(--panel2); color: var(--ink-soft); border: 1px solid rgba(60,45,20,0.12); transition: all 0.15s; }
+        .pill-chip:hover { border-color: var(--gold); color: var(--ink); }
+        .pill-chip.active { background: var(--gold); color: #fff; border-color: var(--gold); }
+        .pill-count { font-size: 0.62rem; padding: 0 5px; border-radius: 999px; background: rgba(60,45,20,0.1); }
+        .pill-chip.active .pill-count { background: rgba(255,255,255,0.25); }
+        .pill-clear { font-size: 0.68rem; color: var(--mut); background: none; border: none; cursor: pointer; text-decoration: underline; }
+        .pill-hidden { display: none !important; }
+        .level-label-text {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--tree-text-muted);
+            transition: color 0.2s;
+        }
+        .level-count {
+            font-size: 0.65rem;
+            color: var(--faint);
+        }
+
+        /* Each level row - wrapping! */
+        .tree-level {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .tree-level.collapsed {
+            display: none;
+        }
+
+        /* Connector lines container */
+        .tree-connectors {
+            position: relative;
+            height: 2rem;
+        }
+        .tree-connectors.collapsed {
+            display: none;
+        }
+        .tree-connectors svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Connector hover highlighting */
+        .tree-connectors svg path {
+            transition: stroke-opacity 0.2s, stroke-width 0.2s;
+        }
+        .tree-canvas.hover-active .tree-connectors svg path {
+            stroke-opacity: 0.04 !important;
+        }
+        .tree-canvas.hover-active .tree-connectors svg path.path-highlighted {
+            stroke-opacity: 0.6 !important;
+            stroke-width: 2.5 !important;
+        }
+        .tree-canvas.hover-active .tree-node:not(.node-highlighted) {
+            opacity: 0.3;
+        }
+        .tree-canvas.hover-active .tree-node.node-highlighted {
+            opacity: 1;
+        }
+        .tree-node.node-highlighted .node-visual {
+            box-shadow: 0 0 16px rgba(23,125,86, 0.4);
+            border-color: var(--tree-accent);
+        }
+
+        /* ── Focused ancestor (the node you clicked to drill in) ── */
+        .focused-root {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(23,125,86, 0.06);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(23,125,86, 0.15);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .focused-root:hover {
+            background: rgba(23,125,86, 0.1);
+        }
+        .focused-root .focused-symbol {
+            font-size: 2.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .focused-root .focused-name {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--tree-text);
+        }
+        .focused-root .focused-keywords {
+            font-size: 0.75rem;
+            color: var(--tree-text-muted);
+            margin-top: 0.25rem;
+        }
+        .focused-root .focused-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+            border: 2px solid rgba(23,125,86, 0.4);
+        }
+
+        /* ── Node ── */
+        .tree-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            position: relative;
+            padding: 0.25rem;
+        }
+        .tree-node:hover {
+            transform: translateY(-2px);
+        }
+
+        .node-visual {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(60,45,20,0.12);
+            background: var(--panel2);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+        }
+        .tree-node:hover .node-visual {
+            border-color: var(--tree-accent);
+            box-shadow: 0 0 12px rgba(23,125,86, 0.3);
+        }
+
+        .node-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .node-level-badge {
+            position: absolute;
+            top: -2px;
+            right: calc(50% - 32px);
+            font-size: 0.55rem;
+            padding: 1px 4px;
+            border-radius: 4px;
+            background: var(--tree-accent);
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .node-name {
+            margin-top: 0.375rem;
+            text-align: center;
+            color: var(--tree-text-muted);
+            line-height: 1.3;
+            word-wrap: break-word;
+        }
+        .tree-node:hover .node-name {
+            color: var(--tree-text);
+        }
+
+        /* Composite indicator */
+        .node-has-children {
+            font-size: 0.55rem;
+            color: rgba(23,125,86, 0.6);
+            margin-top: 0.125rem;
+        }
+        .node-details-link {
+            font-size: 0.6rem;
+            color: var(--tree-text-muted);
+            opacity: 0;
+            transition: opacity 0.15s;
+            cursor: pointer;
+            margin-top: 0.125rem;
+        }
+        .tree-node:hover .node-details-link {
+            opacity: 1;
+        }
+        .node-details-link:hover {
+            color: var(--tree-accent);
+        }
+
+        /* ── Size classes based on item count ── */
+
+        /* Few items (1-12): large nodes */
+        .size-large .tree-node {
+            min-width: 100px;
+            max-width: 160px;
+        }
+        .size-large .node-visual {
+            width: 72px;
+            height: 72px;
+            font-size: 1.5rem;
+        }
+        .size-large .node-name {
+            font-size: 0.85rem;
+            max-width: 150px;
+        }
+
+        /* Medium items (13-30): medium nodes */
+        .size-medium .tree-node {
+            min-width: 80px;
+            max-width: 130px;
+        }
+        .size-medium .node-visual {
+            width: 56px;
+            height: 56px;
+            font-size: 1.25rem;
+        }
+        .size-medium .node-name {
+            font-size: 0.75rem;
+            max-width: 120px;
+        }
+
+        /* Many items (30+): compact nodes */
+        .size-compact .tree-node {
+            min-width: 64px;
+            max-width: 100px;
+        }
+        .size-compact .node-visual {
+            width: 44px;
+            height: 44px;
+            font-size: 1rem;
+        }
+        .size-compact .node-name {
+            font-size: 0.65rem;
+            max-width: 90px;
+        }
+
+        /* Higher-level nodes get accent border */
+        .tree-node.is-composite .node-visual {
+            border-color: rgba(23,125,86, 0.35);
+        }
+
+        /* ── Detail Modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .modal-overlay.hidden { display: none; }
+
+        .modal-content {
+            background: var(--tree-bg-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .modal-close {
+            float: right;
+            background: none;
+            border: none;
+            color: var(--tree-text-muted);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        .modal-close:hover { color: var(--tree-text); }
+
+        .modal-item-name {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+        .modal-item-symbol {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .modal-section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--tree-text-muted);
+            margin-top: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        .modal-section-content {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--tree-text);
+            white-space: pre-wrap;
+        }
+        .modal-components {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+        /* Resolved source-card content (meta-grammar reference resolution, reference-resolve.js)
+           — additive panel after this node's own content, set off with a plum accent. */
+        .modal-ref-panel {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed rgba(196, 167, 255, .4);
+        }
+        .modal-ref-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #6d4ab6;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .modal-ref-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #6d4ab6;
+            text-decoration: underline;
+        }
+        .modal-component-chip {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 0.25rem;
+            color: var(--tree-text-muted);
+            cursor: pointer;
+        }
+        .modal-component-chip:hover {
+            background: rgba(60,45,20,0.12);
+            color: var(--tree-text);
+        }
+        .modal-item-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .modal-focus-btn {
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--tree-accent);
+            border: 1px solid rgba(23,125,86, 0.3);
+            border-radius: 0.375rem;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-focus-btn:hover {
+            background: rgba(23,125,86, 0.1);
+            border-color: var(--tree-accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tree-level {
+                gap: 0.5rem;
+            }
+            .size-large .node-visual { width: 56px; height: 56px; }
+            .size-large .node-name { font-size: 0.75rem; }
+            .size-medium .node-visual { width: 44px; height: 44px; }
+            .size-medium .node-name { font-size: 0.65rem; }
+            .size-compact .node-visual { width: 36px; height: 36px; }
+            .size-compact .node-name { font-size: 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <script src="reference-resolve.js?v=2"></script>
+    <script src="grammar-loader.js"></script>
+
+    <site-header active="tree"></site-header>
+
+    <div class="main-content">
+        <!-- Loading -->
+        <div id="loading-state" class="state-message">
+            <div class="spinner"></div>
+            <p class="state-text">Loading grammar...</p>
+        </div>
+
+        <!-- Error -->
+        <div id="error-state" class="state-message hidden">
+            <p class="state-text">Could not load grammar.</p>
+        </div>
+
+        <!-- No Tree -->
+        <div id="no-tree-state" class="no-tree-message hidden">
+            <p>This grammar has no emergence relationships to visualize as a tree.</p>
+            <a id="back-to-cards-link" href="#" style="color: var(--tree-accent);">View as Cards</a>
+        </div>
+
+        <!-- Content -->
+        <div id="tree-content" class="hidden">
+            <!-- Header -->
+            <div class="tree-header">
+                <div class="tree-header-row">
+                    <div>
+                        <h1 id="tree-title" class="tree-title"></h1>
+                        <div id="description-container" class="hidden">
+                            <p id="tree-description" class="tree-description"></p>
+                            <button id="description-toggle" class="description-toggle hidden" onclick="toggleDescription()">Read more</button>
+                        </div>
+                        <div class="tree-meta">
+                            <span id="tree-stats" class="tree-stats"></span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        <div id="view-mode-container"></div>
+                        <a id="reading-btn" href="#" style="display:inline-flex;align-items:center;gap:4px;padding:6px 14px;background:#126445;color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:500;" title="Get a reading with this grammar">Get a Reading</a>
+                        <button id="github-btn" style="display:none;padding:6px;background:#4a4439;color:#d1d5db;border:none;border-radius:8px;cursor:pointer;" title="View GitHub source">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </button>
+                        <button id="copy-btn" style="display:inline-flex;align-items:center;gap:4px;padding:6px 14px;background:#4a4439;color:#d1d5db;border:none;border-radius:8px;cursor:pointer;font-size:13px;" onclick="copyToMyGrammars()" title="Copy to your drafts">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy to My Grammars
+                        </button>
+                        <button id="report-btn" style="display:inline-flex;align-items:center;gap:4px;padding:6px 10px;background:transparent;color:#6b6457;border:1px solid #4a4439;border-radius:8px;cursor:pointer;font-size:12px;" onclick="openReportModal()" title="Report issue"><rt-icon name="flag"></rt-icon> Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Breadcrumb -->
+            <div id="breadcrumb-bar" class="breadcrumb-bar hidden"></div>
+
+            <!-- Tree -->
+            <div class="tree-container">
+                <div id="tree-canvas" class="tree-canvas"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detail-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeModal()">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Site Footer: the shared component (site-footer.js) — newsletter + links +
+         the sitewide Oracle Ribbon (site-footer.js's own connectedCallback loads
+         viewers/oracle-ribbon.js and calls show()). base="../" because this page
+         lives one level down from the repo root, same as pages/about.html. -->
+    <script src="../site-footer.js?v=1"></script>
+    <site-footer base="../"></site-footer>
+
+    <script>
+        // Initialize Supabase via shared auth module
+        const supabaseClient = window.RecursiveAuth.init();
+
+        // ── State ──
+        let allItems = [];
+        let itemMap = {};       // id → item
+        let grammarType = '';
+        let grammarId = '';
+        let resolvedForkId = ''; // app UUID for "Copy to My Grammars", resolved from ?id= or from the loaded slug
+        let focusPath = [];     // stack of item IDs for drill-down
+        let collapsedLevels = new Set(); // level numbers that are collapsed
+
+        // ── Helpers ──
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Lightweight markdown to HTML: images, bold, italic, links, line breaks
+        function mdToHtml(s) {
+            // Block-aware markdown (headers/blockquotes/lists/paragraphs + inline).
+            if (!s) return '';
+            const esc = x => x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            // Bare http(s) URLs → anchors (same rule as cards.html): first, on escaped text,
+            // only after a space or line start, trailing punctuation left outside the href.
+            const linkifyBare = t => t.replace(/(^|\s)(https?:\/\/[^\s<>"']+)/g, (m, pre, url) => {
+                const tl = url.match(/[).,;:!?]+$/); const tail = tl ? tl[0] : '';
+                if (tail) url = url.slice(0, -tail.length);
+                return `${pre}<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>${tail}`;
+            });
+            const inline = t => linkifyBare(esc(t))
+                .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%;height:auto;margin:8px 0;border-radius:8px;">')
+                .replace(/\[([^\]]+)\]\(\s*(?:<a href="([^"]+)"[^>]*>[^<]*<\/a>|([^)\s]+))\s*\)/g,
+                    (m, text, wrapped, plain) => `<a href="${wrapped || plain || ''}" target="_blank" rel="noopener noreferrer">${text}</a>`)
+                .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+            const lines = String(s).split(/\r?\n/);
+            let html = '', inList = false, inQuote = false, m;
+            const closeL = () => { if (inList) { html += '</ul>'; inList = false; } };
+            const closeQ = () => { if (inQuote) { html += '</blockquote>'; inQuote = false; } };
+            for (const raw of lines) {
+                const line = raw.trim();
+                if (!line) { closeL(); closeQ(); continue; }
+                if (m = line.match(/^(#{1,6})\s+(.*)$/)) { closeL(); closeQ(); html += `<div style="font-weight:700;font-size:1.05em;margin:.7em 0 .25em;">${inline(m[2])}</div>`; continue; }
+                if (m = line.match(/^>\s?(.*)$/)) { closeL(); if (!inQuote) { html += '<blockquote style="border-left:3px solid currentColor;opacity:.8;margin:.5em 0;padding:.1em 0 .1em .8em;">'; inQuote = true; } html += inline(m[1]) + ' '; continue; }
+                if (m = line.match(/^[-*+]\s+(.*)$/)) { closeQ(); if (!inList) { html += '<ul style="margin:.4em 0;padding-left:1.2em;">'; inList = true; } html += `<li>${inline(m[1])}</li>`; continue; }
+                closeL(); closeQ(); html += `<p style="margin:.5em 0;">${inline(line)}</p>`;
+            }
+            closeL(); closeQ();
+            return html;
+        }
+
+        // ── Connected-grammar reference resolution (Capability 1, Jun 4 2026) ──
+        // A grammar's items can reference OTHER grammars via item.grammars[] —
+        // a Supabase UUID, a /play?id=UUID URL, or a GitHub folder URL. Resolve
+        // each to { name, url } so the tree shows the real grammar's name + a
+        // working link instead of a truncated id. The meta-grammar-by-reference
+        // model (the "tree of grammars" vision) renders through this.
+        let refMap = {}; // ref string → { name, url }
+
+        function titleCaseSlug(slug) {
+            return String(slug || '').replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).trim();
+        }
+
+        function parseGrammarRef(ref) {
+            const s = String(ref || '');
+            if (s.includes('github.com')) {
+                const slug = s.replace(/\/+$/, '').split('/').pop();
+                return { kind: 'github', slug, url: s };
+            }
+            const uuid = s.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+            if (uuid) return { kind: 'uuid', id: uuid[0] };
+            return { kind: 'other', raw: s };
+        }
+
+        async function resolveGrammarRefs(items) {
+            const refs = new Set();
+            items.forEach(it => (it.grammars || []).forEach(r => r && refs.add(r)));
+            if (refs.size === 0) return;
+            const uuidRefs = [];
+            refs.forEach(ref => {
+                const p = parseGrammarRef(ref);
+                if (p.kind === 'github') {
+                    refMap[ref] = { name: titleCaseSlug(p.slug), url: p.url };
+                } else if (p.kind === 'uuid') {
+                    uuidRefs.push({ ref, id: p.id });
+                } else {
+                    refMap[ref] = { name: p.raw, url: '#' };
+                }
+            });
+            if (uuidRefs.length) {
+                try {
+                    const ids = uuidRefs.map(u => u.id);
+                    const { data } = await supabaseClient
+                        .from('user_documents')
+                        .select('id, document_data')
+                        .in('id', ids);
+                    const byId = {};
+                    (data || []).forEach(d => { byId[d.id] = d.document_data || {}; });
+                    uuidRefs.forEach(u => {
+                        const dd = byId[u.id];
+                        refMap[u.ref] = {
+                            name: dd ? (dd.name || dd.title || 'Untitled grammar') : ('Grammar ' + u.id.slice(0, 8)),
+                            url: `/pages/grammar-viewer.html?type=custom&id=${u.id}`
+                        };
+                    });
+                } catch (e) {
+                    console.warn('resolveGrammarRefs: Supabase lookup failed', e);
+                }
+            }
+        }
+
+        function computeLevel(item) {
+            if (!item.composite_of || item.composite_of.length === 0) return 1;
+            let max = 0;
+            for (const cid of item.composite_of) {
+                const child = itemMap[cid];
+                if (child) max = Math.max(max, computeLevel(child));
+            }
+            return max + 1;
+        }
+
+        /** Get all descendant IDs of an item (recursive) */
+        function getDescendantIds(itemId) {
+            const item = itemMap[itemId];
+            if (!item || !item.composite_of) return new Set();
+            const ids = new Set();
+            item.composite_of.forEach(cid => {
+                ids.add(cid);
+                getDescendantIds(cid).forEach(d => ids.add(d));
+            });
+            return ids;
+        }
+
+        // ── render_as pills (faceted filter) — mirrors the Library HashtagFilter ──
+        // An item with render_as:'pill-group' (e.g. axis-deck) becomes a row of filter
+        // chips built from its children; those items are pulled OUT of the tree. A
+        // grammar with no pill-groups is unaffected (absent render_as => unchanged).
+        let selectedPills = {}; // groupId -> Set(pillId). OR within a group, AND across groups.
+        function getPillGroups() {
+            return allItems.filter(i => i.render_as === 'pill-group' && Array.isArray(i.composite_of) && i.composite_of.length);
+        }
+        function getPillExcludeSet() {
+            const s = new Set();
+            getPillGroups().forEach(g => { s.add(g.id); g.composite_of.forEach(id => s.add(id)); });
+            return s;
+        }
+        function isLeafCard(item) { return !!item && (!item.composite_of || item.composite_of.length === 0); }
+        function cardsUnder(itemId) {
+            const out = new Set();
+            const it = itemMap[itemId];
+            if (isLeafCard(it)) { out.add(itemId); return out; }
+            getDescendantIds(itemId).forEach(id => { if (isLeafCard(itemMap[id])) out.add(id); });
+            return out;
+        }
+
+        /** Get items to display based on focus state (pill-group items excluded — they're chips) */
+        function getVisibleItems() {
+            const exclude = getPillExcludeSet();
+            const keep = i => !exclude.has(i.id);
+            if (focusPath.length === 0) {
+                return allItems.filter(keep);
+            }
+            const focusedId = focusPath[focusPath.length - 1];
+            const descendantIds = getDescendantIds(focusedId);
+            return allItems.filter(i => keep(i) && (i.id === focusedId || descendantIds.has(i.id)));
+        }
+
+        /** Get size class based on visible item count */
+        function getSizeClass(count) {
+            if (count <= 12) return 'size-large';
+            if (count <= 30) return 'size-medium';
+            return 'size-compact';
+        }
+
+        // This site has no backend (see the stub Supabase client at the top of the
+        // file), so an ?id= can only be served from the repo: either it IS a deck
+        // slug, or it is a recursive.eco deck UUID that grammars/_eco_ids.json maps back
+        // to one. Returns a src path, or null when neither resolves.
+        let _ecoIds = null;
+        async function ensureEcoIds() {
+            if (!_ecoIds) { try { _ecoIds = await (await fetch('../grammars/_eco_ids.json')).json(); } catch (_) { _ecoIds = { ids: {} }; } }
+            return _ecoIds;
+        }
+        async function resolveStaticSrcForId(id) {
+            if (!id) return null;
+            await ensureEcoIds();
+            const ids = _ecoIds.ids || {};
+            let slug = null;
+            if (Object.prototype.hasOwnProperty.call(ids, id)) slug = id;
+            else slug = Object.keys(ids).find(k => ids[k] === id) || null;
+            if (!slug && /^[a-z0-9][a-z0-9-]*$/.test(id)) slug = id;
+            if (!slug) return null;
+            const path = `../grammars/${slug}/grammar.json`;
+            try {
+                const head = await fetch(path, { method: 'HEAD' });
+                if (!head.ok) return null;
+            } catch (_) { return null; }
+            return path;
+        }
+
+        // "Copy to My Grammars" needs a recursive.eco app UUID (forkId). ?id= already
+        // carries one on app-originated links; on the site's standard ?src= navigation
+        // there is none, so resolve it from the loaded grammar's own slug (the src path
+        // is always ../grammars/<slug>/grammar.json) via grammars/_eco_ids.json. If neither
+        // resolves, hide the button rather than emit an empty forkId link.
+        async function setupCopyButton(srcUrl) {
+            const btn = document.getElementById('copy-btn');
+            if (!btn) return;
+            if (grammarId) {
+                resolvedForkId = grammarId;
+            } else {
+                const m = /grammars\/([^/]+)\/grammar\.json/.exec(srcUrl || '');
+                const slug = m ? m[1] : null;
+                if (slug) {
+                    await ensureEcoIds();
+                    resolvedForkId = (_ecoIds.ids || {})[slug] || '';
+                } else {
+                    resolvedForkId = '';
+                }
+            }
+            btn.style.display = resolvedForkId ? 'inline-flex' : 'none';
+        }
+
+        // ── Load Grammar ──
+        async function loadGrammar() {
+            const params = new URLSearchParams(window.location.search);
+            grammarId = params.get('id') || params.get('deckId') || params.get('bookId') || '';
+            grammarType = params.get('type') || 'tarot';
+            const githubPath = params.get('github');
+            // Static mode: default to the repo's meta-grammar when no source is given.
+            let srcUrl = params.get('src') || (!grammarId && !githubPath ? '../grammars/words-deck/grammar.json' : '');
+
+            // ?id= used to fall through to GrammarLoader.loadFromSupabase, which on THIS
+            // site talks to the no-op stub client declared at the top of the file — so it
+            // could only ever fail, into two console.error lines and then the error state.
+            // Resolve ?id= against the repo instead: a deck slug is the folder name, and
+            // an app UUID maps back to its slug through grammars/_eco_ids.json.
+            if (!srcUrl && !githubPath && grammarId) {
+                srcUrl = await resolveStaticSrcForId(grammarId);
+                if (!srcUrl) {
+                    document.getElementById('loading-state').classList.add('hidden');
+                    const err = document.getElementById('error-state');
+                    err.textContent = 'No deck matches ?id=' + grammarId + '. This site is static, so ?id= '
+                        + 'only works for a deck slug or a known recursive.eco deck UUID — otherwise use '
+                        + '?src=../grammars/<deck-slug>/grammar.json (the form every link on this site uses), '
+                        + 'or ?github=path/to/grammar.json.';
+                    err.classList.remove('hidden');
+                    return;
+                }
+            }
+
+            let docData = null;
+
+            if (srcUrl) {
+                try {
+                    const resp = await fetch(srcUrl);
+                    if (resp.ok) docData = { document_data: await resp.json() };
+                } catch (e) { console.error('src load failed', e); }
+            } else if (githubPath) {
+                const result = await GrammarLoader.loadFromGitHub(githubPath);
+                if (result) docData = { document_data: result.data };
+            } else if (grammarId) {
+                docData = await GrammarLoader.loadFromSupabase(grammarId, { checkOwnership: false });
+            }
+
+            if (!docData) {
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('error-state').classList.remove('hidden');
+                return;
+            }
+
+            const data = docData.document_data || docData;
+            // Kept on window so the cross-grammar embed framing can tell whether THIS grammar is
+            // the aggregator (meta) one, whose items are pointer stubs (reference-resolve.js).
+            window._treeGrammar = data;
+
+            // Extract items (handle different formats)
+            let rawItems = data.items || [];
+            if (data.emergences) {
+                const existingIds = new Set(rawItems.map(i => i.id));
+                data.emergences.forEach(e => {
+                    if (!existingIds.has(e.id)) rawItems.push(e);
+                });
+            }
+            if (data.hexagrams) {
+                const existingIds = new Set(rawItems.map(i => i.id));
+                data.hexagrams.forEach(h => {
+                    if (!existingIds.has(h.id)) rawItems.push(h);
+                });
+            }
+
+            // Backward compat: convert legacy ref_document_id to grammars[] URL
+            rawItems.forEach(item => {
+                if (!item.grammars && item.ref_document_id) {
+                    item.grammars = [`/play?id=${item.ref_document_id}`];
+                }
+            });
+
+            // Build item map
+            rawItems.forEach(item => {
+                itemMap[item.id] = item;
+            });
+
+            // Compute levels
+            rawItems.forEach(item => {
+                item.level = computeLevel(item);
+            });
+
+            allItems = rawItems;
+
+            // Resolve connected-grammar references (name + link) before render,
+            // so the detail modal shows real grammar names instead of ids.
+            await resolveGrammarRefs(allItems);
+
+            // Check if there are any composite items
+            const hasComposites = allItems.some(i => i.composite_of && i.composite_of.length > 0);
+
+            if (!hasComposites) {
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('no-tree-state').classList.remove('hidden');
+                setupBackLink(srcUrl);
+                return;
+            }
+
+            // Set up header
+            const title = data.name || data.title || 'Grammar';
+            document.getElementById('tree-title').textContent = title;
+            document.title = `${title} — Tree View`;
+
+            if (data.description) {
+                const descEl = document.getElementById('tree-description');
+                const descContainer = document.getElementById('description-container');
+                const descToggle = document.getElementById('description-toggle');
+                descEl.innerHTML = mdToHtml(data.description);
+                descContainer.classList.remove('hidden');
+                if (data.description.length > 150) {
+                    descEl.classList.add('needs-toggle');
+                    descToggle.classList.remove('hidden');
+                }
+            }
+
+            // Stats
+            const levels = [...new Set(allItems.map(i => i.level))].sort();
+            const maxLevel = Math.max(...levels);
+            const baseCount = allItems.filter(i => i.level === 1).length;
+            const emergenceCount = allItems.filter(i => i.level > 1).length;
+            document.getElementById('tree-stats').innerHTML =
+                `<span>${allItems.length} items</span>` +
+                `<span>${baseCount} base</span>` +
+                `<span>${emergenceCount} emergences</span>` +
+                `<span>${maxLevel} levels</span>`;
+
+            // Set up view toggle links
+            setupViewLinks();
+
+            // Set up header buttons (static mode: local links)
+            const readingBtn = document.getElementById('reading-btn');
+            if (readingBtn) { readingBtn.textContent = 'Cast a Reading'; readingBtn.href = `caster.html${srcUrl ? '?src=' + encodeURIComponent(srcUrl) : ''}`; }
+            const exploreBtn = document.getElementById('explore-btn');
+            if (exploreBtn) { exploreBtn.textContent = 'Explorer'; exploreBtn.href = `explorer.html${srcUrl ? '?src=' + encodeURIComponent(srcUrl) : ''}`; }
+            const githubBtn = document.getElementById('github-btn');
+            if (githubBtn && data.publish_metadata?.github_source_url) {
+                githubBtn.style.display = 'inline-flex';
+                githubBtn.onclick = () => window.open(data.publish_metadata.github_source_url, '_blank');
+            }
+            await setupCopyButton(srcUrl);
+
+            // Render
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('tree-content').classList.remove('hidden');
+
+            renderTree();
+        }
+
+        function setupBackLink(srcUrl) {
+            // pages/grammar-viewer.html never existed in this repo (404). This site's
+            // card-level viewer is viewers/cards.html — carry whichever param loaded
+            // this page (?src= is the standard form; ?id= for app-originated links).
+            const link = document.getElementById('back-to-cards-link');
+            if (link) {
+                link.href = srcUrl
+                    ? `cards.html?src=${encodeURIComponent(srcUrl)}`
+                    : `cards.html?type=${encodeURIComponent(grammarType)}&id=${encodeURIComponent(grammarId)}`;
+            }
+        }
+
+        function setupViewLinks() {
+            const params = new URLSearchParams(window.location.search);
+            const githubParam = params.get('github');
+            ViewModeDropdown.init(document.getElementById('view-mode-container'), {
+                current: 'tree',
+                grammarType: grammarType,
+                grammarId: grammarId || null,
+                githubPath: githubParam || null,
+                hasTree: true,
+            });
+        }
+
+        function toggleDescription() {
+            const desc = document.getElementById('tree-description');
+            const toggle = document.getElementById('description-toggle');
+            if (desc.classList.contains('expanded')) {
+                desc.classList.remove('expanded');
+                toggle.textContent = 'Read more';
+            } else {
+                desc.classList.add('expanded');
+                toggle.textContent = 'Show less';
+            }
+        }
+
+        // ── Focus / Drill-down ──
+        function focusOnItem(itemId) {
+            const item = itemMap[itemId];
+            if (!item) return;
+
+            // If this item has no children, don't focus — open modal instead
+            if (!item.composite_of || item.composite_of.length === 0) {
+                openModal(item);
+                return;
+            }
+
+            focusPath.push(itemId);
+            collapsedLevels.clear();
+            renderTree();
+        }
+
+        function unfocusTo(index) {
+            // index = -1 means go back to root (show all)
+            if (index < 0) {
+                focusPath = [];
+            } else {
+                focusPath = focusPath.slice(0, index + 1);
+            }
+            collapsedLevels.clear();
+            renderTree();
+        }
+
+        function toggleLevel(level) {
+            if (collapsedLevels.has(level)) {
+                collapsedLevels.delete(level);
+            } else {
+                collapsedLevels.add(level);
+            }
+            // Re-render just the visibility
+            const section = document.querySelector(`.tree-level-section[data-level="${level}"]`);
+            if (!section) return;
+            const row = section.querySelector('.tree-level');
+            const toggle = section.querySelector('.level-toggle');
+            if (row) row.classList.toggle('collapsed', collapsedLevels.has(level));
+            if (toggle) toggle.classList.toggle('collapsed', collapsedLevels.has(level));
+
+            // Also toggle connectors above this level
+            const connector = document.querySelector(`.tree-connectors[data-to-level="${level}"]`);
+            if (connector) connector.classList.toggle('collapsed', collapsedLevels.has(level));
+
+            // Redraw visible connectors
+            redrawConnectors();
+        }
+
+        // ── Breadcrumb ──
+        function renderBreadcrumb() {
+            const bar = document.getElementById('breadcrumb-bar');
+            if (focusPath.length === 0) {
+                bar.classList.add('hidden');
+                return;
+            }
+
+            bar.classList.remove('hidden');
+            let html = `<span class="breadcrumb-item" onclick="unfocusTo(-1)">All</span>`;
+
+            focusPath.forEach((id, idx) => {
+                const item = itemMap[id];
+                html += `<span class="breadcrumb-separator">&rsaquo;</span>`;
+                if (idx === focusPath.length - 1) {
+                    html += `<span class="breadcrumb-current">${escapeHtml(item.symbol || '')} ${escapeHtml(item.name)}</span>`;
+                } else {
+                    html += `<span class="breadcrumb-item" onclick="unfocusTo(${idx})">${escapeHtml(item.symbol || '')} ${escapeHtml(item.name)}</span>`;
+                }
+            });
+
+            bar.innerHTML = html;
+        }
+
+        // ── Pill filter bar (render_as:'pill-group') ──
+        function ensurePillBar() {
+            let bar = document.getElementById('pill-bar');
+            if (!bar) {
+                bar = document.createElement('div');
+                bar.id = 'pill-bar';
+                bar.className = 'pill-bar';
+                const bc = document.getElementById('breadcrumb-bar');
+                if (bc && bc.parentNode) bc.parentNode.insertBefore(bar, bc.nextSibling);
+                else { const c = document.getElementById('tree-content'); if (c) c.insertBefore(bar, c.firstChild); }
+            }
+            return bar;
+        }
+        function renderPillBar() {
+            const groups = getPillGroups();
+            const bar = ensurePillBar();
+            if (!groups.length) { bar.classList.add('hidden'); bar.innerHTML = ''; return; }
+            bar.classList.remove('hidden');
+            let html = '';
+            groups.forEach(g => {
+                const sel = selectedPills[g.id] || new Set();
+                html += `<div class="pill-group"><span class="pill-group-label">${escapeHtml(g.name)}</span>`;
+                g.composite_of.forEach(pid => {
+                    const p = itemMap[pid]; if (!p) return;
+                    const active = sel.has(pid);
+                    html += `<button class="pill-chip${active ? ' active' : ''}" data-group="${escapeHtml(g.id)}" data-pill="${escapeHtml(pid)}">${escapeHtml(p.name)}<span class="pill-count">${cardsUnder(pid).size}</span></button>`;
+                });
+                if (sel.size) html += `<button class="pill-clear" data-group="${escapeHtml(g.id)}">clear</button>`;
+                html += `</div>`;
+            });
+            bar.innerHTML = html;
+            bar.querySelectorAll('.pill-chip').forEach(b => b.addEventListener('click', () => togglePill(b.dataset.group, b.dataset.pill)));
+            bar.querySelectorAll('.pill-clear').forEach(b => b.addEventListener('click', () => { selectedPills[b.dataset.group] = new Set(); renderPillBar(); applyPillFilter(); }));
+        }
+        function togglePill(groupId, pillId) {
+            if (!selectedPills[groupId]) selectedPills[groupId] = new Set();
+            const s = selectedPills[groupId];
+            if (s.has(pillId)) s.delete(pillId); else s.add(pillId);
+            renderPillBar();
+            applyPillFilter();
+        }
+        function computeMatchedCards() {
+            const groups = Object.values(selectedPills).filter(s => s && s.size);
+            if (!groups.length) return null; // no filter active
+            let matched = null;
+            groups.forEach(s => {
+                const groupSet = new Set();
+                s.forEach(pid => cardsUnder(pid).forEach(c => groupSet.add(c)));
+                matched = matched === null ? groupSet : new Set([...matched].filter(c => groupSet.has(c)));
+            });
+            return matched;
+        }
+        function applyPillFilter() {
+            const matched = computeMatchedCards();
+            const canvas = document.getElementById('tree-canvas');
+            if (!canvas) return;
+            canvas.querySelectorAll('.tree-node').forEach(node => {
+                const it = itemMap[node.dataset.itemId];
+                if (!it) return;
+                if (isLeafCard(it)) {
+                    node.classList.toggle('pill-hidden', !!matched && !matched.has(node.dataset.itemId));
+                } else {
+                    if (!matched) { node.classList.remove('pill-hidden'); return; }
+                    let any = false;
+                    for (const c of cardsUnder(node.dataset.itemId)) { if (matched.has(c)) { any = true; break; } }
+                    node.classList.toggle('pill-hidden', !any);
+                }
+            });
+            canvas.querySelectorAll('.tree-level-section').forEach(sec => {
+                sec.classList.toggle('pill-hidden', sec.querySelectorAll('.tree-node:not(.pill-hidden)').length === 0);
+            });
+            requestAnimationFrame(() => redrawConnectors());
+        }
+
+        // ── Render Tree ──
+        function renderTree() {
+            const canvas = document.getElementById('tree-canvas');
+            canvas.innerHTML = '';
+
+            renderBreadcrumb();
+            renderPillBar();
+
+            const visibleItems = getVisibleItems();
+            const sizeClass = getSizeClass(visibleItems.length);
+            canvas.className = 'tree-canvas ' + sizeClass;
+
+            // If focused, show the focused item as a prominent header card
+            const focusedId = focusPath.length > 0 ? focusPath[focusPath.length - 1] : null;
+            const focusedItem = focusedId ? itemMap[focusedId] : null;
+
+            if (focusedItem) {
+                const rootDiv = document.createElement('div');
+                rootDiv.className = 'focused-root';
+                rootDiv.onclick = () => openModal(focusedItem);
+
+                let rootHtml = '';
+                if (focusedItem.image_url) {
+                    rootHtml += `<img class="focused-image" src="${escapeHtml(focusedItem.image_url)}" alt="${escapeHtml(focusedItem.name)}">`;
+                } else if (focusedItem.symbol) {
+                    rootHtml += `<div class="focused-symbol">${escapeHtml(focusedItem.symbol)}</div>`;
+                }
+                rootHtml += `<div class="focused-name">${escapeHtml(focusedItem.name)}</div>`;
+                if (focusedItem.keywords && focusedItem.keywords.length > 0) {
+                    rootHtml += `<div class="focused-keywords">${focusedItem.keywords.map(escapeHtml).join(' · ')}</div>`;
+                }
+                rootDiv.innerHTML = rootHtml;
+                canvas.appendChild(rootDiv);
+            }
+
+            // Group remaining items by level (exclude the focused root itself)
+            const displayItems = focusedItem
+                ? visibleItems.filter(i => i.id !== focusedId)
+                : visibleItems;
+
+            const byLevel = {};
+            displayItems.forEach(item => {
+                const lvl = item.level;
+                if (!byLevel[lvl]) byLevel[lvl] = [];
+                byLevel[lvl].push(item);
+            });
+
+            const sortedLevels = Object.keys(byLevel).map(Number).sort((a, b) => b - a);
+
+            // Render level sections with headers
+            sortedLevels.forEach((lvl, idx) => {
+                const items = byLevel[lvl];
+                const isCollapsed = collapsedLevels.has(lvl);
+
+                // Connector space between levels
+                if (idx > 0) {
+                    const connectorDiv = document.createElement('div');
+                    connectorDiv.className = 'tree-connectors' + (isCollapsed ? ' collapsed' : '');
+                    connectorDiv.dataset.fromLevel = sortedLevels[idx - 1];
+                    connectorDiv.dataset.toLevel = lvl;
+                    canvas.appendChild(connectorDiv);
+                }
+
+                // Level section wrapper
+                const section = document.createElement('div');
+                section.className = 'tree-level-section';
+                section.dataset.level = lvl;
+
+                // Level header (clickable to collapse)
+                const levelName = lvl === 1 ? 'Base' : `Level ${lvl}`;
+                const header = document.createElement('div');
+                header.className = 'level-header';
+                header.innerHTML = `
+                    <span class="level-toggle ${isCollapsed ? 'collapsed' : ''}">&#9660;</span>
+                    <span class="level-label-text">${levelName}</span>
+                    <span class="level-count">(${items.length})</span>
+                `;
+                header.onclick = () => toggleLevel(lvl);
+                section.appendChild(header);
+
+                // Level row
+                const levelRow = document.createElement('div');
+                levelRow.className = 'tree-level' + (isCollapsed ? ' collapsed' : '');
+                levelRow.dataset.level = lvl;
+
+                items.forEach(item => {
+                    const node = createNode(item);
+                    levelRow.appendChild(node);
+                });
+
+                section.appendChild(levelRow);
+                canvas.appendChild(section);
+            });
+
+            // Draw connectors after layout, then apply any active pill filter
+            requestAnimationFrame(() => {
+                redrawConnectors();
+                applyPillFilter();
+            });
+        }
+
+        function createNode(item) {
+            const isComposite = item.composite_of && item.composite_of.length > 0;
+
+            const node = document.createElement('div');
+            node.className = 'tree-node' + (isComposite ? ' is-composite' : '');
+            node.dataset.level = item.level;
+            node.dataset.itemId = item.id;
+
+            // Visual
+            let visualContent = '';
+            if (item.image_url) {
+                visualContent = `<img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.name)}" loading="lazy">`;
+            } else if (item.symbol) {
+                visualContent = escapeHtml(item.symbol);
+            } else if (item.icon) {
+                visualContent = escapeHtml(item.icon);
+            } else {
+                visualContent = escapeHtml((item.name || '?').charAt(0).toUpperCase());
+            }
+
+            const levelBadge = item.level > 1 ? `<span class="node-level-badge">L${item.level}</span>` : '';
+
+            const detailsLink = isComposite ? `<span class="node-details-link">details</span>` : '';
+
+            node.innerHTML = `
+                ${levelBadge}
+                <div class="node-visual">${visualContent}</div>
+                <span class="node-name">${escapeHtml(item.name || 'Unnamed')}</span>
+                ${detailsLink}
+            `;
+
+            // Click behavior: composites drill down, leaves open modal
+            node.addEventListener('click', (e) => {
+                // If "details" link was clicked, open modal instead of drilling
+                if (e.target.classList.contains('node-details-link')) {
+                    openModal(item);
+                    return;
+                }
+                if (isComposite) {
+                    focusOnItem(item.id);
+                } else {
+                    openModal(item);
+                }
+            });
+
+            return node;
+        }
+
+        // ── Color palette for parent-coded connections ──
+        const CONNECTION_COLORS = [
+            'hsl(270, 60%, 65%)',  // purple
+            'hsl(200, 70%, 60%)',  // blue
+            'hsl(340, 60%, 65%)',  // pink
+            'hsl(160, 50%, 55%)',  // teal
+            'hsl(40, 70%, 60%)',   // amber
+            'hsl(100, 45%, 55%)',  // green
+            'hsl(20, 65%, 60%)',   // orange
+            'hsl(300, 45%, 60%)',  // magenta
+            'hsl(180, 50%, 55%)',  // cyan
+            'hsl(60, 55%, 55%)',   // yellow
+        ];
+        const parentColorMap = {};
+        let colorIndex = 0;
+
+        function getParentColor(parentId) {
+            if (!parentColorMap[parentId]) {
+                parentColorMap[parentId] = CONNECTION_COLORS[colorIndex % CONNECTION_COLORS.length];
+                colorIndex++;
+            }
+            return parentColorMap[parentId];
+        }
+
+        // ── Draw SVG Connectors ──
+        function redrawConnectors() {
+            const canvas = document.getElementById('tree-canvas');
+            if (!canvas) return;
+            // Clear existing SVGs
+            canvas.querySelectorAll('.tree-connectors svg').forEach(svg => svg.remove());
+
+            const connectorDivs = canvas.querySelectorAll('.tree-connectors:not(.collapsed)');
+            connectorDivs.forEach(div => {
+                const fromLevel = parseInt(div.dataset.fromLevel);
+                const toLevel = parseInt(div.dataset.toLevel);
+
+                const parentNodes = canvas.querySelectorAll(`.tree-level[data-level="${fromLevel}"]:not(.collapsed) .tree-node`);
+                if (parentNodes.length === 0) return;
+
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('width', '100%');
+                svg.setAttribute('height', '100%');
+                svg.style.overflow = 'visible';
+
+                const divRect = div.getBoundingClientRect();
+
+                parentNodes.forEach(parentEl => {
+                    const parentId = parentEl.dataset.itemId;
+                    const parentItem = itemMap[parentId];
+                    if (!parentItem || !parentItem.composite_of) return;
+
+                    const parentVisual = parentEl.querySelector('.node-visual');
+                    const parentRect = parentVisual.getBoundingClientRect();
+                    const px = parentRect.left + parentRect.width / 2 - divRect.left;
+                    const py = 0;
+
+                    // Get color for this parent's connections
+                    const color = getParentColor(parentId);
+
+                    parentItem.composite_of.forEach(childId => {
+                        const childEl = canvas.querySelector(`.tree-level[data-level="${toLevel}"]:not(.collapsed) .tree-node[data-item-id="${childId}"]`);
+                        if (!childEl) return;
+
+                        const childVisual = childEl.querySelector('.node-visual');
+                        const childRect = childVisual.getBoundingClientRect();
+                        const cx = childRect.left + childRect.width / 2 - divRect.left;
+                        const cy = divRect.height;
+
+                        const midY = divRect.height / 2;
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        path.setAttribute('d', `M ${px} ${py} C ${px} ${midY}, ${cx} ${midY}, ${cx} ${cy}`);
+                        path.setAttribute('fill', 'none');
+                        path.setAttribute('stroke', color);
+                        path.setAttribute('stroke-width', '1.5');
+                        path.setAttribute('stroke-opacity', '0.2');
+                        path.dataset.parentId = parentId;
+                        path.dataset.childId = childId;
+                        svg.appendChild(path);
+                    });
+                });
+
+                div.appendChild(svg);
+            });
+
+            setupHoverHighlighting();
+        }
+
+        // ── Hover highlighting for connections ──
+        function setupHoverHighlighting() {
+            const canvas = document.getElementById('tree-canvas');
+            if (!canvas) return;
+
+            // Build reverse lookup: child → parents
+            const childToParents = {};
+            Object.values(itemMap).forEach(item => {
+                if (item.composite_of) {
+                    item.composite_of.forEach(childId => {
+                        if (!childToParents[childId]) childToParents[childId] = [];
+                        childToParents[childId].push(item.id);
+                    });
+                }
+            });
+
+            canvas.querySelectorAll('.tree-node').forEach(node => {
+                node.addEventListener('mouseenter', () => {
+                    const nodeId = node.dataset.itemId;
+                    const item = itemMap[nodeId];
+                    if (!item) return;
+
+                    // Collect all connected node IDs
+                    const connectedIds = new Set([nodeId]);
+                    // Children (this node is parent, composite_of lists children)
+                    if (item.composite_of) {
+                        item.composite_of.forEach(id => connectedIds.add(id));
+                    }
+                    // Parents (other nodes that list this node in composite_of)
+                    if (childToParents[nodeId]) {
+                        childToParents[nodeId].forEach(id => connectedIds.add(id));
+                    }
+
+                    // Only activate if this node has connections
+                    if (connectedIds.size <= 1) return;
+
+                    canvas.classList.add('hover-active');
+
+                    // Highlight connected paths
+                    canvas.querySelectorAll('.tree-connectors svg path').forEach(path => {
+                        if (connectedIds.has(path.dataset.parentId) || connectedIds.has(path.dataset.childId)) {
+                            path.classList.add('path-highlighted');
+                        }
+                    });
+
+                    // Highlight connected nodes
+                    canvas.querySelectorAll('.tree-node').forEach(n => {
+                        if (connectedIds.has(n.dataset.itemId)) {
+                            n.classList.add('node-highlighted');
+                        }
+                    });
+                });
+
+                node.addEventListener('mouseleave', () => {
+                    canvas.classList.remove('hover-active');
+                    canvas.querySelectorAll('.path-highlighted').forEach(p => p.classList.remove('path-highlighted'));
+                    canvas.querySelectorAll('.node-highlighted').forEach(n => n.classList.remove('node-highlighted'));
+                });
+            });
+        }
+
+        // ── Detail Modal ──
+        let modalOpenToken = 0;
+        function openModal(item) {
+            const modal = document.getElementById('detail-modal');
+            const body = document.getElementById('modal-body');
+            const myToken = ++modalOpenToken;
+
+            let html = '';
+
+            if (item.image_url) {
+                html += `<img class="modal-item-image" src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.name)}">`;
+            }
+
+            if (item.symbol) {
+                html += `<div class="modal-item-symbol">${escapeHtml(item.symbol)}</div>`;
+            }
+
+            html += `<h2 class="modal-item-name">${escapeHtml(item.name)}</h2>`;
+
+            if (item.level > 1) {
+                html += `<span style="font-size:0.7rem;padding:2px 6px;background:var(--tree-accent);color:#fff;border-radius:4px;">Level ${item.level}</span>`;
+            }
+
+            if (item.keywords && item.keywords.length > 0) {
+                html += `<p style="color:var(--tree-text-muted);font-size:0.8rem;margin-top:0.5rem;">${item.keywords.map(escapeHtml).join(' · ')}</p>`;
+            }
+
+            // Sections — this node's OWN content (e.g. a meta card's "Origin" provenance blurb).
+            if (item.sections) {
+                Object.entries(item.sections).forEach(([key, value]) => {
+                    if (value && value.trim()) {
+                        html += `<div class="modal-section-title">${escapeHtml(key)}</div>`;
+                        html += `<div class="modal-section-content">${mdToHtml(value)}</div>`;
+                    }
+                });
+            }
+
+            // Resolved SOURCE card content (repo-local, reference-resolve.js) — additive, never
+            // replacing the node's own content above. Meta cards carry metadata.source_deck +
+            // metadata.source_item_id (the repo-native counterpart of the private app's
+            // ref_document_id/ref_item_id pointer). Detection is purely data-driven.
+            const refMeta = item.metadata || {};
+            const refSrcDeck = refMeta.source_deck;
+            const refSrcItem = refMeta.source_item_id;
+            if (refSrcDeck && refSrcItem) {
+                const refDeckLabel = refMeta.deck || refSrcDeck;
+                html += `<div id="modal-ref-panel" class="modal-ref-panel"><div class="modal-section-content">Loading from ${escapeHtml(refDeckLabel)}&hellip;</div></div>`;
+            }
+
+            // Components (composite_of)
+            if (item.composite_of && item.composite_of.length > 0) {
+                html += `<div class="modal-section-title">Composed of</div>`;
+                html += `<div class="modal-components">`;
+                item.composite_of.forEach(cid => {
+                    const child = itemMap[cid];
+                    if (child) {
+                        html += `<span class="modal-component-chip" onclick="closeModal();setTimeout(()=>openModal(itemMap['${cid}']),100)">${escapeHtml(child.symbol || '')} ${escapeHtml(child.name)}</span>`;
+                    }
+                });
+                html += `</div>`;
+
+                // Focus button for composites
+                html += `<button class="modal-focus-btn" onclick="closeModal();focusOnItem('${item.id}')">View subtree</button>`;
+            }
+
+            // Parents (which items is this a component of?)
+            const parents = allItems.filter(i =>
+                i.composite_of && i.composite_of.includes(item.id)
+            );
+            if (parents.length > 0) {
+                html += `<div class="modal-section-title">Component of</div>`;
+                html += `<div class="modal-components">`;
+                parents.forEach(p => {
+                    html += `<span class="modal-component-chip" onclick="closeModal();setTimeout(()=>openModal(itemMap['${p.id}']),100)">${escapeHtml(p.symbol || '')} ${escapeHtml(p.name)}</span>`;
+                });
+                html += `</div>`;
+            }
+
+            // Connected Grammars — resolved to the real grammar name + a working
+            // viewer/source link (refMap, Capability 1). Falls back to a short id
+            // if a reference couldn't be resolved.
+            if (item.grammars && item.grammars.length > 0) {
+                html += `<div class="modal-section-title">${item.grammars.length} connected grammar${item.grammars.length > 1 ? 's' : ''}</div>`;
+                html += `<div class="modal-components">`;
+                item.grammars.forEach(ref => {
+                    const r = refMap[ref] || { name: (String(ref).slice(0, 8) + '…'), url: '/pages/grammar-viewer.html?type=custom&id=' + encodeURIComponent(ref) };
+                    html += `<a class="modal-component-chip" href="${r.url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;" title="${escapeHtml(ref)}">${escapeHtml(r.name)}</a>`;
+                });
+                html += `</div>`;
+            }
+
+            body.innerHTML = html;
+            modal.classList.remove('hidden');
+
+            if (refSrcDeck && refSrcItem) {
+                resolveAndRenderRefPanel(item, refSrcDeck, refSrcItem, refMeta.deck || refSrcDeck, myToken);
+            }
+        }
+
+        // Fetches the source deck's grammar.json (via reference-resolve.js, cached per deck for
+        // the page's lifetime) and patches #modal-ref-panel with its keywords + sections. Guards
+        // against the modal having moved on to a different node while the fetch was in flight.
+        async function resolveAndRenderRefPanel(forItem, srcDeck, srcItem, deckLabel, myToken) {
+            const result = await RefResolve.resolveSourceItem(srcDeck, srcItem, deckLabel);
+            if (myToken !== modalOpenToken) return;
+            const panel = document.getElementById('modal-ref-panel');
+            if (!panel) return;
+
+            const deckUrl = 'cards.html?src=' + encodeURIComponent('../grammars/' + srcDeck + '/grammar.json') + '&item=' + encodeURIComponent(srcItem);
+            if (result.status === 'error') {
+                panel.innerHTML = RefResolve.renderEmbedError(result.deckLabel || deckLabel, deckUrl);
+                return;
+            }
+
+            // Framed, bounded, collapsed-by-default embed — see reference-resolve.js. Never the
+            // node's own .modal-section-title markup, which made the other grammar's content
+            // read as if it were this node's.
+            panel.innerHTML = RefResolve.renderEmbed({
+                hostItem: forItem,
+                sourceItem: result.item,
+                deckLabel: result.deckLabel,
+                href: deckUrl,
+                hostIsAggregator: RefResolve.isAggregatorGrammar(window._treeGrammar),
+                md: mdToHtml,
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+        }
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('detail-modal');
+                if (!modal.classList.contains('hidden')) {
+                    closeModal();
+                } else if (focusPath.length > 0) {
+                    // Escape goes up one level in focus
+                    focusPath.pop();
+                    collapsedLevels.clear();
+                    renderTree();
+                }
+            }
+        });
+
+        // Redraw connectors on resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => redrawConnectors(), 150);
+        });
+
+        // ── Init ──
+        loadGrammar();
+    </script>
+    <!-- AI assistant: the ONE shared recursive.eco shell (assistant.js) — same
+         star FAB + tabbed sidebar as index.html/deck.html. The hand-rolled plum
+         sparkle-toggle + bare /assistant iframe that used to live here was
+         retired Jul 15 2026: it opened as a second, dead-end sparkle shell next
+         to the real launcher. assistant.js picks up ?id= as the grammar to
+         ground on, and its top-window guard keeps it out of embeds. -->
+    <script src="../assistant.js" defer></script>
+    <script>
+        function getFlowBaseUrl() { const h = window.location.hostname; if (h.includes("dev.") || h.includes("localhost")) return "https://dev.flow.recursive.eco"; return "https://flow.recursive.eco"; }
+        function copyToMyGrammars() {
+            if (!resolvedForkId) return; // button is hidden in this case; guard anyway
+            window.open(`${getFlowBaseUrl()}/create/dashboard/unified/new?forkId=${resolvedForkId}`, '_blank');
+        }
+        function openReportModal() {
+            const id = new URLSearchParams(window.location.search).get('id') || '';
+            const title = document.getElementById('tree-title')?.textContent || 'Grammar';
+            const reason = prompt('What would you like to report about this grammar?');
+            if (reason) {
+                const subject = encodeURIComponent('Grammar Report: ' + title);
+                const body = encodeURIComponent('Grammar: ' + title + '\nID: ' + id + '\nURL: ' + window.location.href + '\n\nReason:\n' + reason);
+                window.location.href = 'mailto:pp@playfulprocess.com?subject=' + subject + '&body=' + body;
+            }
+        }
+    </script>
+
+</body>
+</html>

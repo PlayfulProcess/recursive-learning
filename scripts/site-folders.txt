@@ -1,0 +1,11 @@
+# What the Pages workflow publishes, one line per folder: <repo folder> <path in the site>.
+# Read by scripts/assemble-site.sh (CI and local) and scripts/check_all.py. This list exists once.
+#
+# A NEW TOP-LEVEL PAGE FOLDER (explainers/, lab/, data/ if published) is one line here plus its
+# menu entry in site/site-header.js. scripts/check-links.mjs --repo fails the deploy when a
+# top-level folder holds an .html page and is not listed here.
+site/.     /
+game       game
+glossary   glossary
+grammars   grammars
+shared     shared

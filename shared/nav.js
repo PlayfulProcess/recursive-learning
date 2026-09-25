@@ -1,53 +1,55 @@
 /*
- * shared/nav.js: the one navigation of learning.recursive.eco.
+ * shared/nav.js: a SHIM onto the one header of learning.recursive.eco.
  *
- * ONE LINE PER PAGE. A hand-written page puts this as the first thing inside <body>:
+ * The site header and footer are tarot's, ported: /site-header.js (<site-header>) and
+ * /site-footer.js (<site-footer>). Their menu arrays are the only site map. This file exists so
+ * the hand-written game pages keep working unedited: they load it as the first thing in <body>,
  *
  *     <script src="../shared/nav.js"></script>     a page one folder down (game/x.html)
- *     <script src="shared/nav.js"></script>        a page at the site root
- *     <script src="/shared/nav.js"></script>       404.html, which Pages serves at any depth
  *
- * and gives its content wrapper id="main" (a <main> where it can; if it forgets, the first
- * <main>, .wrap or .page gets the id). The script then writes:
- *   - "Skip to content", the first thing a keyboard reaches;
- *   - the site header: the spiral and "Recursive Learning" linking home, then the sections
- *     (Games, Words), the one you are in marked with aria-current. On a page that is one view
- *     of a game (The Walk as a table, a story, a dashboard) a second row switches views, and
- *     carries the walk in progress (the #v1;... hash) across;
- *   - the site footer: every game and every section, so any page is one click from any other.
- * It also opens a closed <details> that a link points into (/#grammars on the landing), and
- * tells screen readers which links open a new tab.
+ * and it writes, in the browser:
+ *   - "Skip to content", the first thing a keyboard reaches, landing on #main (a <main>, .wrap or
+ *     .page gets the id if the page forgot it);
+ *   - <site-header active="..."> (loading /site-header.js), the tab chosen from the page's path;
+ *   - on a page that is one view of a game (The Walk as a table, a story, a dashboard; Hot Potato
+ *     with others or alone), a row that switches views and carries the walk in progress (the
+ *     #v1;... hash) across;
+ *   - <site-footer> at the end (loading /site-footer.js);
+ *   - aria-describedby on every link that opens a new tab, so a screen reader says so;
+ *   - a link into a closed <details> (/#grammars) opens it.
+ * A page generated before this shim (the glossary) carries the OLD build-time header and footer
+ * in its HTML; they are removed and replaced, so nothing has to be rebuilt for the new header.
  *
- * The landing, the glossary and 404.html are GENERATED, and their builders render this same
- * header and footer into the HTML at build time (scripts/build-site.mjs loads this file with
- * require()). Those pages load the script at the END of <body>; it finds the header already
- * there and only adds the behaviour.
+ * In node (scripts/check-links.mjs, scripts/build-glossary.mjs) it exports:
+ *   SITE.games   the list of games and their views, the one list of them (play.html and the
+ *                header's Games menu must agree with it; scripts/check_all.py asserts that)
+ *   header(o) / footer(o) / CSS   build-time helpers that now emit the tarot tags, so a builder
+ *                that still calls them gets the new header. New builders write the tags directly:
+ *                  <script src="/site-header.js"></script><site-header active="words"></site-header>
+ * There is no SITE.sections and no SITE.shelf any more: the sections live in site-header.js.
  *
- * ADDING A SECTION (Explainers, Lab, Map): one entry in SITE.sections, but ONLY once its folder
- * exists and .github/workflows/pages.yml copies it. The link check in that workflow fails the
- * deploy on a link to a missing page. ADDING A GAME: one entry in SITE.games. Either way, then
- * run `node scripts/build-site.mjs`, so the landing, the glossary and 404.html pick it up.
+ * On the dark game pages the tarot footer finds no theme.css tokens and falls back to inherited
+ * text colours; that stays until those pages are relit (decision 11).
  *
- * The spiral is her mark, copied verbatim from scripts/mark.svg. Do not redraw it; no emoji.
+ * The spiral is her mark; it is drawn by site-header.js and site-footer.js from the path in
+ * scripts/mark.svg. No emoji.
  */
 (function (factory) {
   var api = factory();
-  if (typeof module === 'object' && module.exports) { module.exports = api; return; }   // node: the builders
+  if (typeof module === 'object' && module.exports) { module.exports = api; return; }   // node
+  window.RLNav = api;
   api.mount(document.currentScript);                                                     // a browser
 })(function () {
   'use strict';
 
-  /* Every href is relative to the site root. `match` marks a section as current for any page
-     whose path starts with it. */
+  /* Every href is relative to the site root. */
   var SITE = {
-    name: 'Recursive Learning',
-    sections: [
-      { id: 'games', label: 'Games', href: '#games', match: 'game/' },
-      { id: 'words', label: 'Words', title: 'Words, a glossary', href: 'glossary/', match: 'glossary/' }
-      // Explainers, Lab, Map: add each here once it exists and is deployed (see the top of this file).
-    ],
-    shelf: { label: 'The grammars behind the games', href: '#grammars' },
+    name: 'Recursive Eco-Improvement',
     games: [
+      { name: 'As-If', href: 'game/as-if.html',
+        blurb: 'Cast face down, forecast before you look, then hold the cards as if true and take one step.' },
+      { name: 'As-If, first edition', full: 'As-If — HOT POTATO edition', href: 'game/index.html',
+        blurb: 'Draw a character, hold it as if it were true, take a step. The reveal is earned, not clicked.' },
       { name: 'The Walk', href: 'game/spread.html', carry: 'v1',
         blurb: 'Cast the table, move the allocation, and watch which ending moves.',
         viewsLabel: 'The Walk, as', viewsIntro: 'One walk, three views:',
@@ -56,8 +58,6 @@
           { label: 'a story', short: 'as a story', href: 'game/scroll.html', note: 'read down, one year per section' },
           { label: 'a dashboard', short: 'as a dashboard', href: 'game/walk.html', note: 'every gauge and prior laid flat' }
         ] },
-      { name: 'As-If', full: 'As-If — HOT POTATO edition', href: 'game/index.html',
-        blurb: 'Draw a character, hold it as if it were true, take a step. The reveal is earned, not clicked.' },
       { name: 'Changing Lines', href: 'game/lines.html', tag: 'new and rough',
         blurb: 'The same lesson in six draws from the I Ching’s bowl of sixteen marbles.',
         notes: 'https://github.com/PlayfulProcess/recursive-learning/blob/main/game/DESIGN-changing-lines.md' },
@@ -69,59 +69,20 @@
           { label: 'alone', short: 'play alone', href: 'game/potato.html', note: 'for careful readers' }
         ],
         notes: 'https://github.com/PlayfulProcess/recursive-learning/blob/main/game/DESIGN-potato.md' }
-    ],
-    credits: [
-      { text: 'PlayfulProcess' },
-      { text: 'recursive.eco', href: 'https://recursive.eco' },
-      { text: 'content CC BY-SA 4.0', href: 'https://creativecommons.org/licenses/by-sa/4.0/' },
-      { text: 'source on GitHub', href: 'https://github.com/PlayfulProcess/recursive-learning' }
     ]
   };
 
-  var SPIRAL_D = 'M50.5 50L50.5 50.01 50.51,50.02 50.51,50.03 50.51,50.04 50.51,50.05 50.52,50.07 50.52,50.08 50.52,50.09 50.52,50.1 50.52,50.11 50.52,50.12 50.52,50.13 50.52,50.15 50.52,50.16 50.52,50.17 50.52,50.18 50.52,50.19 50.52,50.21 50.52,50.22 50.52,50.23 50.52,50.24 50.52,50.26 50.51,50.27 50.51,50.28 50.51,50.29 50.51,50.31 50.5,50.32 50.5,50.33 50.49,50.34 50.49,50.36 50.49,50.37 50.48,50.38 50.48,50.39 50.47,50.41 50.47,50.42 50.46,50.43 50.45,50.44 50.45,50.46 50.44,50.47 50.43,50.48 50.43,50.49 50.42,50.5 50.41,50.52 50.4,50.53 50.39,50.54 50.38,50.55 50.37,50.56 50.36,50.57 50.35,50.59 50.34,50.6 50.33,50.61 50.32,50.62 50.31,50.63 50.3,50.64 50.29,50.65 50.28,50.66 50.27,50.67 50.25,50.68 50.24,50.69 50.23,50.7 50.21,50.71 50.2,50.72 50.19,50.73 50.17,50.73 50.16,50.74 50.14,50.75 50.13,50.76 50.11,50.77 50.1,50.77 50.08,50.78 50.07,50.79 50.05,50.79 50.03,50.8 50.02,50.8 50,50.81 49.98,50.81 49.97,50.82 49.95,50.82 49.93,50.83 49.91,50.83 49.89,50.83 49.88,50.84 49.86,50.84 49.84,50.84 49.82,50.84 49.8,50.85 49.78,50.85 49.76,50.85 49.74,50.85 49.72,50.85 49.71,50.85 49.69,50.85 49.67,50.84 49.65,50.84 49.63,50.84 49.61,50.84 49.59,50.83 49.57,50.83 49.55,50.83 49.53,50.82 49.5,50.82 49.48,50.81 49.46,50.81 49.44,50.8 49.42,50.79 49.4,50.79 49.38,50.78 49.36,50.77 49.34,50.76 49.32,50.75 49.3,50.74 49.28,50.73 49.26,50.72 49.24,50.71 49.22,50.7 49.2,50.69 49.18,50.68 49.16,50.66 49.15,50.65 49.13,50.63 49.11,50.62 49.09,50.61 49.07,50.59 49.05,50.57 49.03,50.56 49.02,50.54 49,50.52 48.98,50.51 48.96,50.49 48.95,50.47 48.93,50.45 48.92,50.43 48.9,50.41 48.88,50.39 48.87,50.37 48.85,50.35 48.84,50.32 48.83,50.3 48.81,50.28 48.8,50.26 48.79,50.23 48.77,50.21 48.76,50.18 48.75,50.16 48.74,50.13 48.73,50.11 48.72,50.08 48.71,50.05 48.7,50.03 48.69,50 48.68,49.97 48.68,49.94 48.67,49.92 48.66,49.89 48.66,49.86 48.65,49.83 48.65,49.8 48.64,49.77 48.64,49.74 48.63,49.71 48.63,49.68 48.63,49.65 48.63,49.62 48.63,49.59 48.63,49.55 48.63,49.52 48.63,49.49 48.63,49.46 48.64,49.43 48.64,49.39 48.64,49.36 48.65,49.33 48.66,49.3 48.66,49.26 48.67,49.23 48.68,49.2 48.69,49.17 48.7,49.13 48.71,49.1 48.72,49.07 48.73,49.03 48.74,49 48.75,48.97 48.77,48.94 48.78,48.9 48.8,48.87 48.81,48.84 48.83,48.81 48.85,48.77 48.87,48.74 48.89,48.71 48.91,48.68 48.93,48.65 48.95,48.62 48.97,48.59 49,48.56 49.02,48.53 49.05,48.5 49.07,48.47 49.1,48.44 49.13,48.41 49.15,48.38 49.18,48.35 49.21,48.33 49.24,48.3 49.27,48.27 49.31,48.25 49.34,48.22 49.37,48.19 49.41,48.17 49.44,48.15 49.48,48.12 49.51,48.1 49.55,48.08 49.59,48.06 49.63,48.04 49.66,48.02 49.7,48 49.74,47.98 49.79,47.96 49.83,47.94 49.87,47.93 49.91,47.91 49.96,47.9 50,47.88 50.04,47.87 50.09,47.86 50.14,47.85 50.18,47.83 50.23,47.82 50.28,47.82 50.32,47.81 50.37,47.8 50.42,47.8 50.47,47.79 50.52,47.79 50.57,47.78 50.62,47.78 50.67,47.78 50.72,47.78 50.77,47.78 50.82,47.79 50.88,47.79 50.93,47.79 50.98,47.8 51.03,47.81 51.08,47.82 51.14,47.82 51.19,47.83 51.24,47.85 51.3,47.86 51.35,47.87 51.4,47.89 51.46,47.91 51.51,47.92 51.56,47.94 51.62,47.96 51.67,47.98 51.72,48.01 51.77,48.03 51.83,48.05 51.88,48.08 51.93,48.11 51.98,48.14 52.03,48.17 52.09,48.2 52.14,48.23 52.19,48.27 52.24,48.3 52.29,48.34 52.34,48.38 52.39,48.42 52.43,48.46 52.48,48.5 52.53,48.54 52.57,48.58 52.62,48.63 52.67,48.68 52.71,48.72 52.75,48.77 52.8,48.82 52.84,48.88 52.88,48.93 52.92,48.98 52.96,49.04 53,49.09 53.04,49.15 53.07,49.21 53.11,49.27 53.14,49.33 53.18,49.39 53.21,49.46 53.24,49.52 53.27,49.59 53.3,49.65 53.33,49.72 53.36,49.79 53.38,49.86 53.4,49.93 53.43,50 53.45,50.07 53.47,50.15 53.49,50.22 53.5,50.29 53.52,50.37 53.53,50.45 53.55,50.52 53.56,50.6 53.57,50.68 53.57,50.76 53.58,50.84 53.59,50.92 53.59,51 53.59,51.08 53.59,51.17 53.59,51.25 53.58,51.33 53.58,51.42 53.57,51.5 53.56,51.58 53.55,51.67 53.54,51.75 53.52,51.84 53.5,51.93 53.48,52.01 53.46,52.1 53.44,52.18 53.42,52.27 53.39,52.36 53.36,52.44 53.33,52.53 53.3,52.61 53.26,52.7 53.23,52.79 53.19,52.87 53.15,52.96 53.1,53.04 53.06,53.12 53.01,53.21 52.96,53.29 52.91,53.37 52.86,53.46 52.81,53.54 52.75,53.62 52.69,53.7 52.63,53.78 52.56,53.86 52.5,53.94 52.43,54.01 52.36,54.09 52.29,54.17 52.22,54.24 52.14,54.31 52.06,54.38 51.98,54.46 51.9,54.53 51.82,54.59 51.73,54.66 51.65,54.73 51.56,54.79 51.47,54.85 51.37,54.91 51.28,54.97 51.18,55.03 51.08,55.09 50.98,55.14 50.88,55.19 50.77,55.24 50.67,55.29 50.56,55.34 50.45,55.39 50.34,55.43 50.23,55.47 50.12,55.51 50,55.55 49.88,55.58 49.76,55.61 49.65,55.64 49.52,55.67 49.4,55.69 49.28,55.72 49.15,55.74 49.03,55.76 48.9,55.77 48.77,55.78 48.64,55.79 48.51,55.8 48.38,55.81 48.25,55.81 48.11,55.81 47.98,55.8 47.84,55.8 47.71,55.79 47.57,55.77 47.44,55.76 47.3,55.74 47.16,55.72 47.02,55.7 46.88,55.67 46.75,55.64 46.61,55.6 46.47,55.57 46.33,55.53 46.19,55.48 46.05,55.44 45.91,55.39 45.77,55.34 45.63,55.28 45.49,55.22 45.36,55.16 45.22,55.09 45.08,55.02 44.94,54.95 44.81,54.88 44.67,54.8 44.54,54.71 44.41,54.63 44.27,54.54 44.14,54.45 44.01,54.35 43.88,54.25 43.76,54.15 43.63,54.04 43.5,53.93 43.38,53.82 43.26,53.71 43.14,53.59 43.02,53.46 42.91,53.34 42.79,53.21 42.68,53.08 42.57,52.94 42.46,52.8 42.35,52.66 42.25,52.52 42.15,52.37 42.05,52.22 41.95,52.07 41.86,51.91 41.77,51.75 41.68,51.59 41.6,51.42 41.51,51.25 41.43,51.08 41.36,50.91 41.29,50.73 41.22,50.55 41.15,50.37 41.09,50.19 41.03,50 40.97,49.81 40.92,49.62 40.87,49.43 40.83,49.23 40.79,49.03 40.75,48.83 40.72,48.63 40.69,48.42 40.66,48.22 40.64,48.01 40.63,47.8 40.61,47.59 40.61,47.38 40.6,47.16 40.6,46.95 40.61,46.73 40.62,46.51 40.64,46.29 40.66,46.07 40.68,45.85 40.71,45.63 40.75,45.41 40.78,45.18 40.83,44.96 40.88,44.73 40.93,44.51 40.99,44.28 41.06,44.06 41.13,43.83 41.2,43.61 41.28,43.38 41.37,43.16 41.46,42.93 41.55,42.71 41.65,42.48 41.76,42.26 41.87,42.04 41.99,41.82 42.11,41.6 42.24,41.38 42.37,41.16 42.51,40.95 42.66,40.73 42.81,40.52 42.96,40.31 43.12,40.1 43.29,39.9 43.46,39.69 43.64,39.49 43.82,39.29 44,39.09 44.2,38.9 44.39,38.71 44.6,38.52 44.81,38.34 45.02,38.15 45.24,37.97 45.46,37.8 45.69,37.63 45.93,37.46 46.16,37.3 46.41,37.14 46.66,36.98 46.91,36.83 47.17,36.68 47.43,36.54 47.7,36.4 47.97,36.27 48.25,36.14 48.53,36.02 48.82,35.9 49.11,35.79 49.4,35.68 49.7,35.58 50,35.48 50.31,35.39 50.62,35.31 50.93,35.23 51.25,35.16 51.57,35.09 51.89,35.03 52.22,34.98 52.55,34.93 52.88,34.89 53.22,34.86 53.56,34.83 53.9,34.81 54.24,34.8 54.59,34.8 54.94,34.8 55.29,34.81 55.64,34.83 56,34.85 56.36,34.88 56.71,34.92 57.07,34.97 57.43,35.03 57.8,35.09 58.16,35.16 58.52,35.24 58.89,35.33 59.25,35.42 59.61,35.53 59.98,35.64 60.34,35.76 60.71,35.89 61.07,36.03 61.44,36.18 61.8,36.33 62.16,36.5 62.52,36.67 62.88,36.85 63.24,37.04 63.59,37.24 63.94,37.44 64.3,37.66 64.65,37.88 64.99,38.12 65.34,38.36 65.68,38.61 66.01,38.87 66.35,39.14 66.68,39.42 67,39.7 67.33,40 67.65,40.3 67.96,40.61 68.27,40.93 68.57,41.26 68.87,41.6 69.17,41.94 69.46,42.3 69.74,42.66 70.02,43.03 70.29,43.41 70.55,43.79 70.81,44.19 71.07,44.59 71.31,45 71.55,45.42 71.78,45.85 72,46.28 72.22,46.72 72.42,47.17 72.62,47.62 72.81,48.08 73,48.55 73.17,49.03 73.33,49.51 73.49,50 73.64,50.5 73.77,51 73.9,51.5 74.02,52.02 74.12,52.54 74.22,53.06 74.3,53.59 74.38,54.12 74.44,54.66 74.5,55.21 74.54,55.76 74.57,56.31 74.59,56.87 74.6,57.43 74.6,57.99 74.58,58.56 74.55,59.13 74.51,59.71 74.46,60.28 74.4,60.86 74.32,61.44 74.23,62.03 74.13,62.61 74.01,63.2 73.88,63.79 73.74,64.38 73.58,64.97 73.42,65.56 73.23,66.15 73.04,66.74 72.83,67.33 72.6,67.92 72.37,68.5 72.12,69.09 71.85,69.67 71.57,70.26 71.28,70.84 70.97,71.42 70.65,71.99 70.32,72.56 69.97,73.13 69.6,73.7 69.23,74.26 68.83,74.81 68.43,75.36 68.01,75.91 67.57,76.45 67.13,76.99 66.66,77.51 66.19,78.04 65.7,78.55 65.19,79.06 64.67,79.56 64.14,80.05 63.6,80.54 63.04,81.02 62.47,81.48 61.88,81.94 61.28,82.39 60.67,82.83 60.04,83.26 59.4,83.68 58.75,84.08 58.09,84.48 57.41,84.87 56.72,85.24 56.02,85.6 55.31,85.95 54.58,86.28 53.85,86.61 53.1,86.91 52.34,87.21 51.57,87.49 50.79,87.76 50,88.01 49.2,88.24 48.39,88.46 47.57,88.67 46.74,88.86 45.9,89.03 45.05,89.19 44.19,89.33 43.33,89.45 42.45,89.55 41.57,89.64 40.69,89.71 39.79,89.76 38.89,89.79 37.98,89.8 37.07,89.8 36.15,89.77 35.23,89.73 34.3,89.66 33.36,89.58 32.42,89.47 31.48,89.35 30.54,89.2 29.59,89.04 28.64,88.85 27.69,88.64 26.74,88.41 25.89,87.99 25.1,87.48 24.32,86.95 23.55,86.41 22.79,85.84 22.05,85.27 21.32,84.67 20.6,84.06 19.89,83.44 19.2,82.8 18.52,82.15 17.85,81.48 17.2,80.8 16.56,80.11 15.94,79.4 15.33,78.68 14.73,77.95 14.16,77.21 13.59,76.45 13.05,75.68 12.52,74.9 12.01,74.11 11.51,73.31 11.03,72.5 10.57,71.68 10.12,70.85 9.69,70.01 9.28,69.16 8.89,68.3 8.52,67.44 8.16,66.57 7.82,65.69 7.5,64.8 7.2,63.91 6.92,63.01 6.66,62.1 6.41,61.19 6.19,60.28 5.98,59.36 5.8,58.43 5.63,57.5 5.48,56.57 5.35,55.64 5.25,54.7 5.16,53.77 5.09,52.83 5.04,51.88 5.01,50.94 5,50 5.01,49.06 5.04,48.12 5.09,47.17 5.16,46.23 5.25,45.3 5.35,44.36 5.48,43.43 5.63,42.5 5.8,41.57 5.98,40.64 6.19,39.72 6.41,38.81 6.66,37.9 6.92,36.99 7.2,36.09 7.5,35.2 7.82,34.31 8.16,33.43 8.52,32.56 8.89,31.7 9.28,30.84 9.69,29.99 10.12,29.15 10.57,28.32 11.03,27.5 11.51,26.69 12.01,25.89 12.52,25.1 13.05,24.32 13.59,23.55 14.16,22.79 14.73,22.05 15.33,21.32 15.94,20.6 16.56,19.89 17.2,19.2 17.85,18.52 18.52,17.85 19.2,17.2 19.89,16.56 20.6,15.94 21.32,15.33 22.05,14.73 22.79,14.16 23.55,13.59 24.32,13.05 25.1,12.52 25.89,12.01 26.69,11.51 27.5,11.03 28.32,10.57 29.15,10.12 29.99,9.69 30.84,9.28 31.7,8.89 32.56,8.52 33.43,8.16 34.31,7.82 35.2,7.5 36.09,7.2 36.99,6.92 37.9,6.66 38.81,6.41 39.72,6.19 40.64,5.98 41.57,5.8 42.5,5.63 43.43,5.48 44.36,5.35 45.3,5.25 46.23,5.16 47.17,5.09 48.12,5.04 49.06,5.01 50,5 50.94,5.01 51.88,5.04 52.83,5.09 53.77,5.16 54.7,5.25 55.64,5.35 56.57,5.48 57.5,5.63 58.43,5.8 59.36,5.98 60.28,6.19 61.19,6.41 62.1,6.66 63.01,6.92 63.91,7.2 64.8,7.5 65.69,7.82 66.57,8.16 67.44,8.52 68.3,8.89 69.16,9.28 70.01,9.69 70.85,10.12 71.68,10.57 72.5,11.03 73.31,11.51 74.11,12.01 74.9,12.52 75.68,13.05 76.45,13.59 77.21,14.16 77.95,14.73 78.68,15.33 79.4,15.94 80.11,16.56 80.8,17.2 81.48,17.85 82.15,18.52 82.8,19.2 83.44,19.89 84.06,20.6 84.67,21.32 85.27,22.05 85.84,22.79 86.41,23.55 86.95,24.32 87.48,25.1 87.99,25.89 88.49,26.69 88.97,27.5 89.43,28.32 89.88,29.15 90.31,29.99 90.72,30.84 91.11,31.7 91.48,32.56 91.84,33.43 92.18,34.31 92.5,35.2 92.8,36.09 93.08,36.99 93.34,37.9 93.59,38.81 93.81,39.72 94.02,40.64 94.2,41.57 94.37,42.5 94.52,43.43 94.65,44.36 94.75,45.3 94.84,46.23 94.91,47.17 94.96,48.12 94.99,49.06 95,50 94.99,50.94 94.96,51.88 94.91,52.83 94.84,53.77 94.75,54.7 94.65,55.64 94.52,56.57 94.37,57.5 94.2,58.43 94.02,59.36 93.81,60.28 93.59,61.19 93.34,62.1 93.08,63.01 92.8,63.91 92.5,64.8 92.18,65.69 91.84,66.57 91.48,67.44 91.11,68.3 90.72,69.16 90.31,70.01 89.88,70.85 89.43,71.68 88.97,72.5 88.49,73.31 87.99,74.11 87.48,74.9 86.95,75.68 86.41,76.45 85.84,77.21 85.27,77.95 84.67,78.68 84.06,79.4 83.44,80.11 82.8,80.8 82.15,81.48 81.48,82.15 80.8,82.8 80.11,83.44 79.4,84.06 78.68,84.67 77.95,85.27 77.21,85.84 76.45,86.41 75.68,86.95 74.9,87.48 74.11,87.99 73.31,88.49 72.5,88.97 71.68,89.43 70.85,89.88 70.01,90.31 69.16,90.72 68.3,91.11 67.44,91.48 66.57,91.84 65.69,92.18 64.8,92.5 63.91,92.8 63.01,93.08 62.1,93.34 61.19,93.59 60.28,93.81 59.36,94.02 58.43,94.2 57.5,94.37 56.57,94.52 55.64,94.65 54.7,94.75 53.77,94.84 52.83,94.91 51.88,94.96 50.94,94.99 50,95 49.06,94.99 48.12,94.96 47.17,94.91 46.23,94.84 45.3,94.75 44.36,94.65 43.43,94.52 42.5,94.37 41.57,94.2 40.64,94.02 39.72,93.81 38.81,93.59 37.9,93.34 36.99,93.08 36.09,92.8 35.2,92.5 34.31,92.18 33.43,91.84 32.56,91.48 31.7,91.11 30.84,90.72 29.99,90.31 29.15,89.88 28.32,89.43 27.5,88.97 26.69,88.49 25.89,87.99';
-
-  /* The tokens are the pages' own (--accent, --ink, --muted, --line, --panel); the Hot Potato
-     pages name theirs --eco, --dim, --lift, so each falls back to those, then to a literal. */
+  /* Only what the shim itself draws: the skip link and the game views row. The header and footer
+     style themselves (shadow DOM / theme.css). Tokens fall back through the dark game pages' names. */
   var CSS = [
-    ':root{--site-a:var(--accent,var(--eco,#5ee2b0));--site-m:var(--muted,var(--dim,#8e9aae));--site-i:var(--ink,#e8ecf3);--site-l:var(--line,#2a3140);--site-p:var(--panel,var(--lift,#151922))}',
-    '.site-skip{position:absolute;left:12px;top:-120px;z-index:1000;padding:10px 14px;border-radius:8px;background:var(--site-a);color:#06281d;font:600 14px/1.2 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none}',
+    ':root{--site-a:var(--accent,var(--eco,#177d56));--site-m:var(--muted,var(--dim,#6b6457));--site-i:var(--ink,#221f1a);--site-l:var(--line,#d8d2c6)}',
+    '.site-skip{position:absolute;left:12px;top:-120px;z-index:1000;padding:10px 14px;border-radius:8px;background:#177d56;color:#fff;font:600 14px/1.2 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none}',
     '.site-skip:focus{top:10px}',
-    '.site-bar,.site-foot{display:block;margin:0;padding:0;background:none;border:0;color:var(--site-m);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;font-weight:400;line-height:1.4;letter-spacing:0;text-transform:none;text-align:left;-webkit-text-size-adjust:100%}',
-    '.site-in{box-sizing:border-box;width:100%;max-width:var(--site-max,900px);margin:0 auto;padding:0 16px}',
-    '.site-bar{border-bottom:1px solid var(--site-l)}',
-    '.site-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 20px;padding-top:2px;padding-bottom:2px}',
-    '.site-home{display:inline-flex;align-items:center;gap:9px;min-height:44px;color:var(--site-i);text-decoration:none;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}',
-    '.site-home svg{display:block;width:22px;height:22px;flex:none;color:var(--site-a);opacity:.92}',
-    '.site-home:hover span{color:var(--site-a)}',
-    '.site-nav{display:flex;flex-wrap:wrap;gap:0 20px;margin:0;padding:0}',
-    '.site-nav a,.site-views a{display:inline-block;padding:11px 0;color:var(--site-m);text-decoration:none}',
-    '.site-views a{padding:6px 0}',
-    '.site-nav a:hover,.site-views a:hover{color:var(--site-i)}',
-    '.site-nav a[aria-current],.site-views a[aria-current]{color:var(--site-i);text-decoration:underline;text-decoration-color:var(--site-a);text-decoration-thickness:2px;text-underline-offset:6px}',
-    '.site-views{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 16px;padding-bottom:4px;font-size:13px}',
+    '.site-views{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 16px;box-sizing:border-box;width:100%;max-width:var(--site-max,900px);margin:0 auto;padding:6px 16px 4px;font:400 13px/1.4 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--site-m)}',
+    '.site-views a{display:inline-block;padding:6px 0;color:var(--site-m);text-decoration:none}',
+    '.site-views a:hover{color:var(--site-i)}',
+    '.site-views a[aria-current]{color:var(--site-i);text-decoration:underline;text-decoration-color:var(--site-a);text-decoration-thickness:2px;text-underline-offset:6px}',
     '.site-vl{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--site-m)}',
-    '.site-foot{margin-top:40px;border-top:1px solid var(--site-l);font-size:13.5px}',
-    '.site-foot .site-in{padding-top:20px;padding-bottom:32px}',
-    '.site-map{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}',
-    '@media (min-width:560px){.site-map{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 32px}}',
-    '.site-k{margin:0 0 6px;max-width:none;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--site-m)}',
-    '.site-foot ul{list-style:none;margin:0;padding:0;display:grid;gap:0;background:none;border:0}',
-    '.site-foot li{margin:0;padding:0;color:var(--site-m)}',
-    '.site-foot a{display:inline-block;padding:3px 0;color:var(--site-i);text-decoration:none}',
-    '.site-foot a:hover{color:var(--site-a);text-decoration:underline}',
-    '.site-foot a[aria-current]{color:var(--site-a);font-weight:600}',
-    '.site-foot .site-alt,.site-foot .site-alt a{color:var(--site-m);font-size:12.5px}',
-    '.site-small{margin:20px 0 0;max-width:none;font-size:12px;color:var(--site-m)}',
-    '.site-foot .site-small a{color:var(--site-m);text-decoration:underline;padding:0}',
-    '.site-foot .site-small a.site-hm{color:var(--site-i);text-decoration:none;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:11px}',
-    '.site-games{list-style:none;margin:0;padding:0;display:grid;gap:9px}',
-    '.site-games li{margin:0;background:var(--site-p);border:1px solid var(--site-l);border-radius:11px;padding:12px 14px}',
-    '.site-gt{font-size:15px;font-weight:700;line-height:1.3;color:var(--site-a);text-decoration:none}',
-    '.site-gt:hover{text-decoration:underline}',
-    '.site-tag{display:inline-block;margin-left:8px;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--warn,var(--heat-hi,#f0b866));border:1px solid var(--site-l);border-radius:999px;padding:1px 8px;vertical-align:2px}',
-    '.site-gb{margin:5px 0 0;font-size:13.5px;color:var(--site-i)}',
-    '.site-gv{margin:6px 0 0;font-size:12.5px;color:var(--site-m)}',
-    '.site-gv a{color:var(--site-a)}',
     ':where(a,button,summary,input,select,textarea,[tabindex]:not([tabindex="-1"])):focus-visible{outline:2px solid var(--site-a);outline-offset:2px}'
   ].join('\n');
 
@@ -136,127 +97,106 @@
     return (p === '' || /\/$/.test(p)) ? p + 'index.html' : p;
   }
   function url(base, href) { var u = (base || '') + href; return u === '' ? './' : u; }
-  function cur(on, kind) { return on ? ' aria-current="' + (kind || 'page') + '"' : ''; }
-  function isExternal(h) { return /^[a-z]+:/i.test(h); }
 
-  /* Where a page sits: rel is its path from the site root ('game/spread.html', 'glossary/'). */
+  /* Where a page sits: rel is its path from the site root ('game/spread.html', 'glossary/').
+     `active` is the header tab: one of site-header.js's keys. */
   function where(rel) {
-    var r = norm(rel), w = { page: r, home: r === 'index.html', section: null, game: null, view: null };
-    SITE.sections.forEach(function (s) { if (s.match && r.indexOf(s.match) === 0) w.section = s.id; });
+    var r = norm(rel), w = { page: r, active: 'home', game: null, view: null };
+    if (r.indexOf('game/') === 0) w.active = 'play';
+    else if (r.indexOf('glossary/') === 0) w.active = 'words';
+    else if (r.indexOf('map/') === 0) w.active = 'sources';
     SITE.games.forEach(function (g) {
       if (norm(g.href) === r) w.game = g;
       (g.views || []).forEach(function (v) { if (norm(v.href) === r) { w.game = g; w.view = v; } });
     });
     return w;
   }
-  function maxAttr(o) { return o.max ? ' style="--site-max:' + esc(o.max) + '"' : ''; }
 
-  /* o: { base: '' | '../' | '/' | an absolute URL, rel: this page's path, sprite: use #spiral, max } */
+  /* The views row of a game with several views, or ''. */
+  function viewsRow(w, base, max) {
+    if (!(w.view && w.game && w.game.views)) return '';
+    return '<nav class="site-views" aria-label="' + esc(w.game.name) + ', views"' +
+      (max ? ' style="--site-max:' + esc(max) + '"' : '') + '>' +
+      '<span class="site-vl">' + esc(w.game.viewsLabel || w.game.name) + '</span>' +
+      w.game.views.map(function (v) {
+        return '<a href="' + esc(url(base, v.href)) + '"' + (w.game.carry ? ' data-carry="' + esc(w.game.carry) + '"' : '') +
+          (v === w.view ? ' aria-current="page"' : '') + '>' + esc(v.label) + '</a>';
+      }).join('') + '</nav>';
+  }
+
+  /* ---- build time (node): the tarot tags ---- */
+  /* o: { base: '' | '../' | '/', rel: this page's path from the root, max } (sprite is ignored) */
   function header(o) {
-    var b = o.base || '', w = where(o.rel);
-    var mark = o.sprite ? '<use href="#spiral"/>'
-      : '<path d="' + SPIRAL_D + '" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>';
-    var h = '<a class="site-skip" href="#main">Skip to content</a>\n' +
-      '<header class="site-bar" id="site-header"' + maxAttr(o) + '>\n' +
-      '  <div class="site-in site-row">\n' +
-      '    <a class="site-home" href="' + esc(url(b, '')) + '"' + cur(w.home) + '><svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">' +
-      mark + '</svg><span>' + esc(SITE.name) + '</span></a>\n' +
-      '    <nav class="site-nav" aria-label="Site">' + SITE.sections.map(function (s) {
-        var here = w.section === s.id, exact = here && norm(s.href) === w.page;
-        return '<a href="' + esc(url(b, s.href)) + '"' + cur(here, exact ? 'page' : 'true') + '>' + esc(s.label) + '</a>';
-      }).join('') + '</nav>\n' +
-      '  </div>\n';
-    if (w.view && w.game.views) {
-      h += '  <nav class="site-in site-views" aria-label="' + esc(w.game.name) + ', views">' +
-        '<span class="site-vl">' + esc(w.game.viewsLabel || w.game.name) + '</span>' +
-        w.game.views.map(function (v) {
-          return '<a href="' + esc(url(b, v.href)) + '"' + (w.game.carry ? ' data-carry="' + esc(w.game.carry) + '"' : '') +
-            cur(v === w.view) + '>' + esc(v.label) + '</a>';
-        }).join('') + '</nav>\n';
-    }
-    return h + '</header>\n';
+    o = o || {};
+    var w = where(o.rel);
+    return '<a class="site-skip" href="#main">Skip to content</a>\n' +
+      '<script src="/site-header.js"></script>\n' +
+      '<site-header active="' + esc(w.active) + '"></site-header>\n' +
+      (w.view ? viewsRow(w, o.base || '', o.max) + '\n' : '');
   }
-
-  function footer(o) {
-    var b = o.base || '', w = where(o.rel);
-    function link(href, text, aria, cls) {
-      var here = !isExternal(href) && href.charAt(0) !== '#' && norm(href) === w.page;
-      return '<a' + (cls ? ' class="' + cls + '"' : '') + ' href="' + esc(isExternal(href) ? href : url(b, href)) + '"' +
-        (aria ? ' aria-label="' + esc(aria) + '"' : '') + cur(here) + '>' + esc(text) + '</a>';
-    }
-    var games = SITE.games.map(function (g) {
-      var alt = (g.views || []).filter(function (v) { return norm(v.href) !== norm(g.href); });
-      return '        <li>' + link(g.href, g.name) + (alt.length ? ' <span class="site-alt">' + alt.map(function (v) {
-        return '&middot; ' + link(v.href, v.short || v.label, g.name + ', ' + (v.short || v.label));
-      }).join(' ') + '</span>' : '') + '</li>';
-    }).join('\n');
-    var more = SITE.sections.filter(function (s) { return s.id !== 'games'; })
-      .map(function (s) { return '        <li>' + link(s.href, s.title || s.label) + '</li>'; });
-    if (SITE.shelf) more.push('        <li>' + link(SITE.shelf.href, SITE.shelf.label) + '</li>');
-    return '<footer class="site-foot" id="site-footer"' + maxAttr(o) + '>\n' +
-      '  <div class="site-in">\n' +
-      '    <nav class="site-map" aria-label="Everything on this site">\n' +
-      '      <div><p class="site-k" id="site-k-games">Games</p><ul aria-labelledby="site-k-games">\n' + games + '\n      </ul></div>\n' +
-      '      <div><p class="site-k" id="site-k-more">More</p><ul aria-labelledby="site-k-more">\n' + more.join('\n') + '\n      </ul></div>\n' +
-      '    </nav>\n' +
-      '    <p class="site-small">' + link('', SITE.name, SITE.name + ', home', 'site-hm') + ' &middot; ' +
-      SITE.credits.map(function (c) { return c.href ? link(c.href, c.text) : esc(c.text); }).join(' &middot; ') + '</p>\n' +
-      '  </div>\n' +
-      '</footer>\n';
-  }
-
-  /* The list of every game, for the landing and 404.html (build time). */
-  function gamesList(o) {
-    var b = o.base || '';
-    return '<ul class="site-games">\n' + SITE.games.map(function (g) {
-      var h = '  <li><a class="site-gt" href="' + esc(url(b, g.href)) + '">' + esc(g.full || g.name) + '</a>' +
-        (g.tag ? '<span class="site-tag">' + esc(g.tag) + '</span>' : '') +
-        '\n    <p class="site-gb">' + esc(g.blurb) + '</p>';
-      var extra = [];
-      if (g.views) extra.push(esc(g.viewsIntro || '') + ' ' + g.views.map(function (v) {
-        return '<a href="' + esc(url(b, v.href)) + '" aria-label="' + esc(g.name + ', ' + v.label) + '">' + esc(v.label) + '</a>' +
-          (v.note ? ', ' + esc(v.note) : '');
-      }).join(' &middot; '));
-      if (g.notes) extra.push('<a href="' + esc(g.notes) + '" aria-label="' + esc(g.name + ': how it was made, the design notes on GitHub') + '">how it was made</a>');
-      if (extra.length) h += '\n    <p class="site-gv">' + extra.join(' &middot; ') + '</p>';
-      return h + '</li>';
-    }).join('\n') + '\n</ul>';
+  function footer() {
+    return '<script src="/site-footer.js"></script>\n<site-footer></site-footer>\n';
   }
 
   /* ---- the browser ---- */
   function mount(script) {
     var d = document;
     var src = (script && script.src) || '';
-    var base = src.replace(/shared\/nav\.js(?:[?#].*)?$/, '');
+    var base = src.replace(/shared\/nav\.js(?:[?#].*)?$/, '');   // the site root, as an absolute URL
     var here = location.href.split('#')[0].split('?')[0];
     var rel = base && here.indexOf(base) === 0 ? here.slice(base.length) : '';
+    var w = where(rel);
 
     if (!d.getElementById('site-nav-css')) {
       var st = d.createElement('style'); st.id = 'site-nav-css'; st.textContent = CSS;
       (d.head || d.documentElement).appendChild(st);
     }
+    function load(file, tag) {
+      if (window.customElements && customElements.get(tag)) return;
+      if (d.querySelector('script[src*="' + file + '"]')) return;
+      var s = d.createElement('script'); s.src = base + file;
+      (d.head || d.documentElement).appendChild(s);
+    }
+    // the header generated into a page's HTML before this shim (the glossary): replaced
+    function dropLegacy() {
+      var old = d.querySelector('header.site-bar#site-header'); if (old) old.remove();
+      var oldf = d.querySelector('footer.site-foot#site-footer'); if (oldf) oldf.remove();
+      var skips = d.querySelectorAll('a.site-skip');
+      for (var i = 1; i < skips.length; i++) skips[i].remove();
+    }
     function addHeader() {
-      if (!d.getElementById('site-header')) d.body.insertAdjacentHTML('afterbegin', header({ base: base, rel: rel }));
+      if (!d.body || d.querySelector('site-header')) return;
+      dropLegacy();
+      var html = (d.querySelector('a.site-skip') ? '' : '<a class="site-skip" href="#main">Skip to content</a>') +
+        '<site-header active="' + esc(w.active) + '"></site-header>' + viewsRow(w, base);
+      var skip = d.querySelector('a.site-skip');
+      if (skip) skip.insertAdjacentHTML('afterend', html); else d.body.insertAdjacentHTML('afterbegin', html);
+      load('site-header.js', 'site-header');
     }
     if (d.body) addHeader();
 
     function ready() {
       if (!d.body) return;
       addHeader();
-      if (!d.getElementById('site-footer')) d.body.insertAdjacentHTML('beforeend', footer({ base: base, rel: rel }));
+      if (!d.querySelector('site-footer')) {
+        dropLegacy();
+        d.body.insertAdjacentHTML('beforeend', '<site-footer></site-footer>');
+        load('site-footer.js', 'site-footer');
+      }
 
       // the skip link's target
       if (!d.getElementById('main')) { var m = d.querySelector('main, .wrap, .page'); if (m) m.id = 'main'; }
 
-      // header and footer as wide as the page's own column
-      var hd = d.getElementById('site-header'), ft = d.getElementById('site-footer');
-      var boxes = [d.getElementById('main'), d.querySelector('.wrap'), d.querySelector('.page')], mw = '';
+      // the views row as wide as the page's own column
+      var vr = d.querySelector('nav.site-views'), boxes = [d.getElementById('main'), d.querySelector('.wrap'), d.querySelector('.page')], mw = '';
       for (var i = 0; i < boxes.length && !mw; i++) if (boxes[i]) { var x = getComputedStyle(boxes[i]).maxWidth; if (x && x !== 'none') mw = x; }
-      [hd, ft].forEach(function (el) { if (el && mw && !el.style.getPropertyValue('--site-max')) el.style.setProperty('--site-max', mw); });
+      if (vr && mw && !vr.style.getPropertyValue('--site-max')) vr.style.setProperty('--site-max', mw);
 
       // links that open a new tab say so to a screen reader
-      var nt = d.createElement('span'); nt.id = 'site-newtab'; nt.hidden = true; nt.textContent = '(opens in a new tab)';
-      d.body.appendChild(nt);
+      if (!d.getElementById('site-newtab')) {
+        var nt = d.createElement('span'); nt.id = 'site-newtab'; nt.hidden = true; nt.textContent = '(opens in a new tab)';
+        d.body.appendChild(nt);
+      }
       function mark(root) {
         if (!root || root.nodeType !== 1) return;
         var list = root.matches && root.matches('a[target="_blank"]') ? [root] : [];
@@ -274,7 +214,7 @@
       openTo(location.hash);
     }
 
-    // a link into a closed <details> (the grammar shelf, /#grammars) opens it
+    // a link into a closed <details> (/#grammars) opens it
     function openTo(hash) {
       var id = String(hash || '').slice(1);
       if (!/^[A-Za-z][\w-]*$/.test(id)) return;
@@ -296,5 +236,5 @@
     if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', ready); else ready();
   }
 
-  return { SITE: SITE, CSS: CSS, SPIRAL_D: SPIRAL_D, header: header, footer: footer, gamesList: gamesList, where: where, mount: mount };
+  return { SITE: SITE, CSS: CSS, header: header, footer: footer, where: where, mount: mount };
 });
