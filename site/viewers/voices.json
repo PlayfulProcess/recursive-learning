@@ -1,0 +1,59 @@
+{
+  "_type": "recursive-learning-voices",
+  "_version": 1,
+  "_note": "The lenses the Spread Caster offers before a cast (tarot's voices carousel, viewers/voices.json, same shape). Written by hand; a DRAFT for PlayfulProcess's edit. Each voice is a way of reading, named for a stance and never for a person (arguments, not people), with a glyph from site/icons.js (no emoji), a one-line tagline and `how`, the way to read in that voice. `color` is the voice's name colour in the detail line; every one passes 4.5:1 on the caster's #faf8f3. No voice carries `persona`, `link` or `essay` yet. Author PlayfulProcess; CC-BY-SA-4.0.",
+  "shared_intention": {
+    "title": "Before you cast",
+    "creed": "A drawn card, a word or an idea, is a prompt for thinking about a real situation, not a forecast. Hold what you find loosely, check it against what you can see, and keep the decision your own.",
+    "principles": [
+      "A prompt, not a prediction: the card asks and you decide.",
+      "Name the situation first, so the card has something to land on.",
+      "Check the reading against what you can observe, and say what would change your mind.",
+      "Hold it loosely: a reading you can revise tomorrow.",
+      "Be honest about what you see and fair to the people involved."
+    ],
+    "interpretation_note": "These voices are lenses, not people. They speak for no one in particular; each is one way this project reads its own cards, and every reading is your own interpretation."
+  },
+  "voices": [
+    {
+      "id": "the-builder",
+      "name": "The builder",
+      "tagline": "the mechanism",
+      "glyph": "device",
+      "color": "#177d56",
+      "how": "Read the card as a part in a working system. Where does it sit in something you use or build, what does it connect to, and what would you test first to see whether it holds?"
+    },
+    {
+      "id": "the-keeper",
+      "name": "The keeper",
+      "tagline": "what held",
+      "glyph": "eye",
+      "color": "#6d4ab6",
+      "how": "Read the card from the side of what stops a step. Think of the last time something went right or wrong here: was it decided by an inner rule, an outer rule, a person watching, or nothing?"
+    },
+    {
+      "id": "the-neighbour",
+      "name": "The neighbour",
+      "tagline": "who else",
+      "glyph": "person",
+      "color": "#2f5f9e",
+      "how": "Read the card from the side of the people who are not in the room. Who would carry the cost if this went badly, were they asked, and how would they hear about it?"
+    },
+    {
+      "id": "the-skeptic",
+      "name": "The skeptic",
+      "tagline": "the evidence",
+      "glyph": "scale",
+      "color": "#9a4a1c",
+      "how": "Treat the card as a hypothesis rather than a fact. What have you actually seen that supports it, what would count against it, and how sure are you, on a rough scale?"
+    },
+    {
+      "id": "the-ecosystem",
+      "name": "The ecosystem",
+      "tagline": "the ground",
+      "glyph": "leaf",
+      "color": "#4a5568",
+      "how": "Read the card as one part of a larger living whole. A thing that improves itself still has to adapt with its surroundings, or change them: what does this card ask of the ground it stands on?"
+    }
+  ]
+}

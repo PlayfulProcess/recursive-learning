@@ -1,0 +1,10 @@
+# Pages scripts/check_all.py may find unreachable, or without the site header. One per line:
+#   <path in the site>  <kind>  <reason>
+# kinds: unreachable (nothing links it, on purpose) · no-header (it does not load the header yet)
+#        · redirect (a forwarding stub: both)
+404.html                    unreachable  GitHub Pages serves it for any missing path; nothing links to it on purpose
+viewers/caster.html         redirect     old Caster address, forwards to caster-studio.html with its query string (tarot's stub)
+pages/spread-builder.html   redirect     old Spread Builder address, forwards to the Spread Caster (tarot's stub)
+game/index.html             no-header    the first As-If; owned by the Hot Potato PR (PRIORITIES #26-28), which relights it
+game/potato.html            no-header    owned by the Hot Potato PR (PRIORITIES #26-28)
+game/potato-others.html     no-header    owned by the Hot Potato PR (PRIORITIES #26-28)

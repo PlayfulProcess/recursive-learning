@@ -1,0 +1,5835 @@
+{
+ "_about": {
+  "from": "PlayfulProcess/recursive-transcripts (private): ai-map/ at origin/ai-map-sep24 a23c239, players/players.json at main 64b6646",
+  "exported_by": "scripts/lab_export.py",
+  "license": "CC-BY-SA-4.0",
+  "what_is_left_out": "transcript text, stance labels, film-cast flags, the players ledger's assessments, private notes",
+  "what": "the Sources grammar's inputs: podcasts, episodes, people, papers"
+ },
+ "shows": [
+  {
+   "kind": "show",
+   "id": "pod_80k",
+   "name": "80,000 Hours Podcast",
+   "url": "https://80000hours.org/podcast/",
+   "hosts": [
+    "rob_wiblin"
+   ]
+  },
+  {
+   "kind": "show",
+   "id": "pod_dwarkesh",
+   "name": "Dwarkesh Podcast",
+   "url": "https://www.dwarkesh.com/podcast",
+   "hosts": [
+    "dwarkesh_patel"
+   ]
+  },
+  {
+   "kind": "show",
+   "id": "pod_lex",
+   "name": "Lex Fridman Podcast",
+   "url": "https://lexfridman.com/podcast/",
+   "hosts": [
+    "lex_fridman"
+   ]
+  },
+  {
+   "kind": "show",
+   "id": "pod_ms",
+   "name": "Making Sense",
+   "url": "https://www.samharris.org/podcasts",
+   "hosts": [
+    "sam_harris"
+   ]
+  },
+  {
+   "kind": "show",
+   "id": "pod_doac",
+   "name": "The Diary of a CEO",
+   "url": "https://podcasts.apple.com/us/podcast/the-diary-of-a-ceo-with-steven-bartlett/id1291423644",
+   "hosts": [
+    "steven_bartlett"
+   ]
+  },
+  {
+   "kind": "show",
+   "id": "pod_ezra",
+   "name": "The Ezra Klein Show",
+   "url": "https://podcasts.apple.com/us/podcast/the-ezra-klein-show/id1548604447",
+   "hosts": [
+    "ezra_klein"
+   ]
+  },
+  {
+   "kind": "show",
+   "id": "pod_yua",
+   "name": "Your Undivided Attention",
+   "url": "https://www.humanetech.com/podcast",
+   "hosts": [
+    "tristan_harris",
+    "aza_raskin"
+   ]
+  }
+ ],
+ "episodes": [
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2018-10-02-paul-christiano",
+   "show": "pod_80k",
+   "date": "2018-10-02",
+   "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+   "guests": [
+    "paul_christiano"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/paul-christiano-ai-alignment-solutions/",
+   "video_id": "pkIJgZcf-Qo",
+   "video_status": "public",
+   "match_note": "official channel, title match (re-upload date differs)",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     64
+    ],
+    [
+     "compute",
+     11
+    ],
+    [
+     "takeoff",
+     6
+    ],
+    [
+     "takeover",
+     6
+    ],
+    [
+     "existential-risk",
+     4
+    ],
+    [
+     "race",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2019-12-16-david-chalmers",
+   "show": "pod_80k",
+   "date": "2019-12-16",
+   "title": "#67 – David Chalmers on the nature and ethics of consciousness",
+   "guests": [
+    "david_chalmers"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/david-chalmers-nature-ethics-consciousness/",
+   "video_id": "vJmEEO6kvTg",
+   "video_status": "public",
+   "match_note": "official channel, title match (re-upload date differs)",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     232
+    ],
+    [
+     "ea-rationalists",
+     17
+    ],
+    [
+     "intelligence-explosion",
+     16
+    ],
+    [
+     "superintelligence",
+     6
+    ],
+    [
+     "singularity",
+     4
+    ],
+    [
+     "agi",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2020-06-22-stuart-russell",
+   "show": "pod_80k",
+   "date": "2020-06-22",
+   "title": "#80 – Stuart Russell on the flaws that make today's AI architecture unsafe, and a new approach that could fix them",
+   "guests": [
+    "stuart_russell"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/stuart-russell-human-compatible-ai/",
+   "video_id": "mTPWrBB1hZo",
+   "video_status": "public",
+   "match_note": "official channel, title match (re-upload date differs)",
+   "captioned": true,
+   "top_terms": [
+    [
+     "regulation",
+     10
+    ],
+    [
+     "consciousness",
+     8
+    ],
+    [
+     "superintelligence",
+     7
+    ],
+    [
+     "alignment",
+     5
+    ],
+    [
+     "takeover",
+     4
+    ],
+    [
+     "deception",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2020-12-03-tristan-harris",
+   "show": "pod_80k",
+   "date": "2020-12-03",
+   "title": "#88 – Tristan Harris on the need to change the incentives of social media companies",
+   "guests": [
+    "tristan_harris"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/tristan-harris-changing-incentives-social-media/",
+   "video_id": "pEl5XBG1fPY",
+   "video_status": "public",
+   "match_note": "official channel, title match (re-upload date differs)",
+   "captioned": true,
+   "top_terms": [
+    [
+     "regulation",
+     8
+    ],
+    [
+     "china",
+     6
+    ],
+    [
+     "ea-rationalists",
+     5
+    ],
+    [
+     "consciousness",
+     4
+    ],
+    [
+     "existential-risk",
+     4
+    ],
+    [
+     "race",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2021-08-04-chris-olah",
+   "show": "pod_80k",
+   "date": "2021-08-04",
+   "title": "#107 – Chris Olah on what the hell is going on inside neural networks",
+   "guests": [
+    "chris_olah"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/chris-olah-interpretability-research/",
+   "video_id": "k_QVDwhR8FU",
+   "video_status": "public",
+   "match_note": "official channel, title match (re-upload date differs)",
+   "captioned": true,
+   "top_terms": [
+    [
+     "interpretability",
+     49
+    ],
+    [
+     "scaling-laws",
+     20
+    ],
+    [
+     "compute",
+     16
+    ],
+    [
+     "superintelligence",
+     5
+    ],
+    [
+     "liability",
+     4
+    ],
+    [
+     "rlhf",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2022-07-01-max-tegmark",
+   "show": "pod_80k",
+   "date": "2022-07-01",
+   "title": "#133 – Max Tegmark on how a 'put-up-or-shut-up' resolution led him to work on AI and algorithmic news selection",
+   "guests": [
+    "max_tegmark"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/max-tegmark-ai-and-algorithmic-news-selection/",
+   "video_id": "SWVWBLkeqvA",
+   "video_status": "public",
+   "match_note": "official channel, title match (re-upload date differs)",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     19
+    ],
+    [
+     "superintelligence",
+     13
+    ],
+    [
+     "agi",
+     8
+    ],
+    [
+     "existential-risk",
+     7
+    ],
+    [
+     "regulation",
+     6
+    ],
+    [
+     "china",
+     5
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2023-07-24-ezra-klein",
+   "show": "pod_80k",
+   "date": "2023-07-24",
+   "title": "#157 – Ezra Klein on existential risk from AI and what DC could do about it",
+   "guests": [
+    "ezra_klein"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/ezra-klein-ai-and-dc/",
+   "video_id": "MY-NQ85iH18",
+   "video_status": "public",
+   "match_note": "official channel, title match (re-upload date differs)",
+   "captioned": true,
+   "top_terms": [
+    [
+     "regulation",
+     20
+    ],
+    [
+     "agi",
+     8
+    ],
+    [
+     "interpretability",
+     7
+    ],
+    [
+     "liability",
+     7
+    ],
+    [
+     "bio-misuse",
+     5
+    ],
+    [
+     "alignment",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2024-07-05-carl-shulman",
+   "show": "pod_80k",
+   "date": "2024-07-05",
+   "title": "#191 – Carl Shulman on government and society after AGI (Part 2)",
+   "guests": [
+    "carl_shulman"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/carl-shulman-society-agi/",
+   "video_id": "eDFi0Ek6cJU",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "bio-misuse",
+     12
+    ],
+    [
+     "regulation",
+     9
+    ],
+    [
+     "china",
+     6
+    ],
+    [
+     "alignment",
+     5
+    ],
+    [
+     "pause",
+     5
+    ],
+    [
+     "takeover",
+     5
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2024-11-01-anil-seth",
+   "show": "pod_80k",
+   "date": "2024-11-01",
+   "title": "#206 – Anil Seth on the predictive brain and how to study consciousness",
+   "guests": [
+    "anil_seth"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/anil-seth-predictive-brain-explaining-consciousness/",
+   "video_id": "N4KG8i9ZLJE",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     126
+    ],
+    [
+     "regulation",
+     6
+    ],
+    [
+     "emergence",
+     4
+    ],
+    [
+     "generalization",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2025-07-08-ryan-greenblatt",
+   "show": "pod_80k",
+   "date": "2025-07-08",
+   "title": "#220 – Ryan Greenblatt on the 4 most likely ways for AI to take over",
+   "guests": [
+    "ryan_greenblatt"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/ryan-greenblatt-ai-automation-sabotage-takeover/",
+   "video_id": "-CJxwXAFvsw",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     103
+    ],
+    [
+     "alignment",
+     33
+    ],
+    [
+     "takeover",
+     23
+    ],
+    [
+     "pretraining",
+     13
+    ],
+    [
+     "deception",
+     9
+    ],
+    [
+     "reasoning-rl",
+     8
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2025-10-30-holden-karnofsky",
+   "show": "pod_80k",
+   "date": "2025-10-30",
+   "title": "#226 – Holden Karnofsky on dozens of opportunities to make AI safer lying on the table",
+   "guests": [
+    "holden_karnofsky"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/holden-karnofsky-concrete-ai-safety-frontier-ai-companies/",
+   "video_id": "TlwX6WEzeLg",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     43
+    ],
+    [
+     "takeover",
+     35
+    ],
+    [
+     "regulation",
+     28
+    ],
+    [
+     "agi",
+     24
+    ],
+    [
+     "bio-misuse",
+     18
+    ],
+    [
+     "power-seeking",
+     18
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2026-02-17-ajeya-cotra",
+   "show": "pod_80k",
+   "date": "2026-02-17",
+   "title": "#235 – Ajeya Cotra on whether it's crazy that every AI company's safety plan is 'use AI to make AI safe'",
+   "guests": [
+    "ajeya_cotra"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/ajeya-cotra-transformative-ai-crunch-time/",
+   "video_id": "Z19UEZHJzAg",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     18
+    ],
+    [
+     "intelligence-explosion",
+     15
+    ],
+    [
+     "takeover",
+     15
+    ],
+    [
+     "compute",
+     14
+    ],
+    [
+     "agi",
+     13
+    ],
+    [
+     "ea-rationalists",
+     9
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2026-05-07-yoshua-bengio",
+   "show": "pod_80k",
+   "date": "2026-05-07",
+   "title": "#243 – Yoshua Bengio thinks he knows how to build safe superintelligence",
+   "guests": [
+    "yoshua_bengio"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/yoshua-bengio-scientist-ai/",
+   "video_id": "PZqDFs2sbiY",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agents",
+     24
+    ],
+    [
+     "control",
+     11
+    ],
+    [
+     "deception",
+     9
+    ],
+    [
+     "compute",
+     8
+    ],
+    [
+     "consciousness",
+     6
+    ],
+    [
+     "pretraining",
+     6
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2026-08-06-toby-ord",
+   "show": "pod_80k",
+   "date": "2026-08-06",
+   "title": "#250 – Toby Ord on where AGI timelines go wrong",
+   "guests": [
+    "toby_ord"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/toby-ord-recursive-self-improvement-agi-timelines/",
+   "video_id": "zOSptyQ3j9A",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "rsi",
+     27
+    ],
+    [
+     "pause",
+     21
+    ],
+    [
+     "compute",
+     20
+    ],
+    [
+     "superintelligence",
+     16
+    ],
+    [
+     "china",
+     12
+    ],
+    [
+     "agi",
+     11
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-80000-hours-2026-08-27-daniel-kokotajlo",
+   "show": "pod_80k",
+   "date": "2026-08-27",
+   "title": "#253 – AI 2027's author returns with a plan to change the ending",
+   "guests": [
+    "daniel_kokotajlo"
+   ],
+   "episode_url": "https://80000hours.org/podcast/episodes/daniel-kokotajlo-ai-2040-plan-a/",
+   "video_id": "KFcJgTODkkQ",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     97
+    ],
+    [
+     "china",
+     70
+    ],
+    [
+     "superintelligence",
+     49
+    ],
+    [
+     "alignment",
+     29
+    ],
+    [
+     "regulation",
+     27
+    ],
+    [
+     "intelligence-explosion",
+     17
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2023-06-01-mo-gawdat",
+   "show": "pod_doac",
+   "date": "2023-06-01",
+   "title": "EMERGENCY EPISODE: Ex-Google Officer Finally Speaks Out On The Dangers Of AI! - Mo Gawdat",
+   "guests": [
+    "mo_gawdat"
+   ],
+   "episode_url": "https://podcasts.apple.com/gb/podcast/emergency-episode-ex-google-officer-finally-speaks/id1291423644?i=1000615239948",
+   "video_id": "bk-nQ7HF6k4",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     6
+    ],
+    [
+     "existential-risk",
+     6
+    ],
+    [
+     "china",
+     5
+    ],
+    [
+     "singularity",
+     5
+    ],
+    [
+     "regulation",
+     4
+    ],
+    [
+     "compute",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2023-09-04-mustafa-suleyman",
+   "show": "pod_doac",
+   "date": "2023-09-04",
+   "title": "Google DeepMind Co-founder: AI Could Release A Deadly Virus - It's Getting More Threatening! Mustafa Suleyman",
+   "guests": [
+    "mustafa_suleyman"
+   ],
+   "episode_url": "https://podcasts.apple.com/gb/podcast/google-deepmind-co-founder-ai-could-release-a/id1291423644?i=1000626798696",
+   "video_id": "CTxnLsYHWuI",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "bio-misuse",
+     9
+    ],
+    [
+     "regulation",
+     9
+    ],
+    [
+     "china",
+     5
+    ],
+    [
+     "compute",
+     4
+    ],
+    [
+     "existential-risk",
+     3
+    ],
+    [
+     "alignment",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2024-01-11-yuval-harari",
+   "show": "pod_doac",
+   "date": "2024-01-11",
+   "title": "Yuval Noah Harari: The Urgent Warning They Hope You Ignore, \"More War Is Coming\", Yuval's Chilling Future Predictions!",
+   "guests": [
+    "yuval_harari"
+   ],
+   "episode_url": "https://podcasts.apple.com/sg/podcast/the-diary-of-a-ceo-with-steven-bartlett/id1291423644?i=1000641266529",
+   "video_id": "UzOJiqN_DpM",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     9
+    ],
+    [
+     "regulation",
+     7
+    ],
+    [
+     "race",
+     4
+    ],
+    [
+     "bio-misuse",
+     2
+    ],
+    [
+     "cyber",
+     2
+    ],
+    [
+     "china",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2024-09-05-yuval-harari",
+   "show": "pod_doac",
+   "date": "2024-09-05",
+   "title": "Yuval Noah Harari: This Election Will Tear The Country Apart! AI Will Control You By 2034! The Dark Truth Behind Meta & X!",
+   "guests": [
+    "yuval_harari"
+   ],
+   "episode_url": "https://podcasts.apple.com/ca/podcast/yuval-noah-harari-this-election-will-tear-the-country/id1291423644?i=1000668429609",
+   "video_id": "78YN1e8UXdM",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     7
+    ],
+    [
+     "alignment",
+     6
+    ],
+    [
+     "china",
+     2
+    ],
+    [
+     "paperclip",
+     2
+    ],
+    [
+     "regulation",
+     2
+    ],
+    [
+     "emergence",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2025-06-16-geoffrey-hinton",
+   "show": "pod_doac",
+   "date": "2025-06-16",
+   "title": "Godfather of AI: I Tried to Warn Them, But We've Already Lost Control! Geoffrey Hinton",
+   "guests": [
+    "geoffrey_hinton"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/godfather-of-ai-i-tried-to-warn-them-but-weve/id1291423644?i=1000713048391",
+   "video_id": "giT0ytynSqg",
+   "video_status": "public",
+   "match_note": "retitled; upload date 2025-06-16 matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "regulation",
+     12
+    ],
+    [
+     "superintelligence",
+     10
+    ],
+    [
+     "consciousness",
+     9
+    ],
+    [
+     "agents",
+     6
+    ],
+    [
+     "cyber",
+     6
+    ],
+    [
+     "china",
+     5
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2025-09-04-roman-yampolskiy",
+   "show": "pod_doac",
+   "date": "2025-09-04",
+   "title": "Roman Yampolskiy: These Are The Only 5 Jobs That Will Remain In 2030 & Proof We're Living In a Simulation!",
+   "guests": [
+    "roman_yampolskiy"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/roman-yampolskiy-these-are-the-only-5-jobs-that-will/id1291423644?i=1000724933846",
+   "video_id": "UclrVWafRAI",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "superintelligence",
+     34
+    ],
+    [
+     "agi",
+     7
+    ],
+    [
+     "jobs",
+     6
+    ],
+    [
+     "china",
+     3
+    ],
+    [
+     "compute",
+     3
+    ],
+    [
+     "existential-risk",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2025-11-27-tristan-harris",
+   "show": "pod_doac",
+   "date": "2025-11-27",
+   "title": "AI Expert: We Have 2 Years Before Everything Changes! We Need To Start Protesting! - Tristan Harris",
+   "guests": [
+    "tristan_harris"
+   ],
+   "episode_url": "https://open.spotify.com/episode/1S8FEbhkaQQ8Yrx4e3f5Vh",
+   "video_id": "BFU1OCkhBwo",
+   "video_status": "public",
+   "match_note": "retitled; upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "china",
+     15
+    ],
+    [
+     "agi",
+     10
+    ],
+    [
+     "race",
+     10
+    ],
+    [
+     "jobs",
+     8
+    ],
+    [
+     "consciousness",
+     7
+    ],
+    [
+     "regulation",
+     5
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2025-12-04-stuart-russell",
+   "show": "pod_doac",
+   "date": "2025-12-04",
+   "title": "The Man Who Wrote The Book On AI: 2030 Might Be The Point Of No Return! We've Been Lied To About AI!",
+   "guests": [
+    "stuart_russell"
+   ],
+   "episode_url": "https://open.spotify.com/episode/6LDmLYDdYwyBtwCqELGzQk",
+   "video_id": "P7Y-fynYsgE",
+   "video_status": "public",
+   "match_note": "retitled; upload date 2025-12-04 matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     28
+    ],
+    [
+     "existential-risk",
+     13
+    ],
+    [
+     "superintelligence",
+     10
+    ],
+    [
+     "regulation",
+     8
+    ],
+    [
+     "china",
+     7
+    ],
+    [
+     "consciousness",
+     6
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2025-12-18-yoshua-bengio",
+   "show": "pod_doac",
+   "date": "2025-12-18",
+   "title": "Creator of AI: We Have 2 Years Before Everything Changes! These Jobs Won't Exist in 24 Months!",
+   "guests": [
+    "yoshua_bengio"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/creator-of-ai-we-have-2-years-before-everything/id1291423644?i=1000741795419",
+   "video_id": "zQ1POHiR8m8",
+   "video_status": "public",
+   "match_note": "retitled; upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "china",
+     9
+    ],
+    [
+     "existential-risk",
+     5
+    ],
+    [
+     "superintelligence",
+     5
+    ],
+    [
+     "bio-misuse",
+     4
+    ],
+    [
+     "cyber",
+     3
+    ],
+    [
+     "treaty",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-diary-of-a-ceo-2026-07-13-daniel-kokotajlo",
+   "show": "pod_doac",
+   "date": "2026-07-13",
+   "title": "OpenAI Whistleblower FINALLY Speaks: \"AI Has A 70% Chance Of Going Horribly Wrong!\"",
+   "guests": [
+    "daniel_kokotajlo"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/openai-whistleblower-finally-speaks-ai-has-a-70/id1291423644?i=1000776541328",
+   "video_id": "_g4l7YkDQwA",
+   "video_status": "public",
+   "match_note": "retitled; upload date 2026-07-13 matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "regulation",
+     27
+    ],
+    [
+     "superintelligence",
+     27
+    ],
+    [
+     "compute",
+     14
+    ],
+    [
+     "race",
+     9
+    ],
+    [
+     "alignment",
+     8
+    ],
+    [
+     "china",
+     7
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2023-02-01-marc-andreessen",
+   "show": "pod_dwarkesh",
+   "date": "2023-02-01",
+   "title": "Marc Andreessen - AI, Crypto, Regrets, Vulnerabilities, & Managerial Revolution",
+   "guests": [
+    "marc_andreessen"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/marc-andreessen",
+   "video_id": "kNsi5XVDTTM",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "regulation",
+     4
+    ],
+    [
+     "alignment",
+     1
+    ],
+    [
+     "bio-misuse",
+     1
+    ],
+    [
+     "open-source",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2023-03-27-ilya-sutskever",
+   "show": "pod_dwarkesh",
+   "date": "2023-03-27",
+   "title": "Ilya Sutskever (OpenAI Chief Scientist) — Why next-token prediction could surpass human intelligence",
+   "guests": [
+    "ilya_sutskever"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/ilya-sutskever",
+   "video_id": "Yf1o0TQzry8",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     11
+    ],
+    [
+     "agi",
+     9
+    ],
+    [
+     "alignment",
+     7
+    ],
+    [
+     "liability",
+     4
+    ],
+    [
+     "data-wall",
+     2
+    ],
+    [
+     "open-source",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2023-04-06-eliezer-yudkowsky",
+   "show": "pod_dwarkesh",
+   "date": "2023-04-06",
+   "title": "Eliezer Yudkowsky — Why AI will kill us, aligning LLMs, nature of intelligence, SciFi, & rationality",
+   "guests": [
+    "eliezer_yudkowsky"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/eliezer-yudkowsky",
+   "video_id": "41SUp-TRVlg",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     60
+    ],
+    [
+     "rlhf",
+     13
+    ],
+    [
+     "power-seeking",
+     12
+    ],
+    [
+     "superintelligence",
+     11
+    ],
+    [
+     "ea-rationalists",
+     8
+    ],
+    [
+     "interpretability",
+     7
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2023-06-14-carl-shulman",
+   "show": "pod_dwarkesh",
+   "date": "2023-06-14",
+   "title": "Carl Shulman (Pt 1) — Intelligence explosion, primate evolution, robot doublings, & alignment",
+   "guests": [
+    "carl_shulman"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/carl-shulman",
+   "video_id": "_kRg-ZP1vQc",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     50
+    ],
+    [
+     "takeover",
+     15
+    ],
+    [
+     "intelligence-explosion",
+     10
+    ],
+    [
+     "agi",
+     8
+    ],
+    [
+     "generalization",
+     7
+    ],
+    [
+     "interpretability",
+     5
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2023-08-08-dario-amodei",
+   "show": "pod_dwarkesh",
+   "date": "2023-08-08",
+   "title": "Dario Amodei (Anthropic CEO) — The hidden pattern behind every AI breakthrough",
+   "guests": [
+    "dario_amodei"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/dario-amodei",
+   "video_id": "Nlkk3glap_U",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     21
+    ],
+    [
+     "alignment",
+     20
+    ],
+    [
+     "interpretability",
+     19
+    ],
+    [
+     "scaling-laws",
+     9
+    ],
+    [
+     "agi",
+     8
+    ],
+    [
+     "cyber",
+     6
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2023-10-26-shane-legg",
+   "show": "pod_dwarkesh",
+   "date": "2023-10-26",
+   "title": "Shane Legg (DeepMind Founder) — 2028 AGI, superhuman alignment, new architectures",
+   "guests": [
+    "shane_legg"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/shane-legg",
+   "video_id": "Kc1atfJkiJU",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     15
+    ],
+    [
+     "world-models",
+     4
+    ],
+    [
+     "alignment",
+     3
+    ],
+    [
+     "interpretability",
+     2
+    ],
+    [
+     "rlhf",
+     2
+    ],
+    [
+     "bitter-lesson",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2023-10-31-paul-christiano",
+   "show": "pod_dwarkesh",
+   "date": "2023-10-31",
+   "title": "Paul Christiano — Preventing an AI takeover",
+   "guests": [
+    "paul_christiano"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/paul-christiano",
+   "video_id": "9AAhTLa0dT0",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     51
+    ],
+    [
+     "takeover",
+     18
+    ],
+    [
+     "compute",
+     17
+    ],
+    [
+     "deception",
+     12
+    ],
+    [
+     "interpretability",
+     12
+    ],
+    [
+     "rlhf",
+     10
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2024-02-28-demis-hassabis",
+   "show": "pod_dwarkesh",
+   "date": "2024-02-28",
+   "title": "Demis Hassabis — Scaling, superhuman AIs, AlphaZero atop LLMs, AlphaFold",
+   "guests": [
+    "demis_hassabis"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/demis-hassabis",
+   "video_id": "qTogNUV3CAI",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     13
+    ],
+    [
+     "agi",
+     12
+    ],
+    [
+     "evals",
+     6
+    ],
+    [
+     "world-models",
+     6
+    ],
+    [
+     "self-play",
+     5
+    ],
+    [
+     "cyber",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2024-04-18-mark-zuckerberg",
+   "show": "pod_dwarkesh",
+   "date": "2024-04-18",
+   "title": "Mark Zuckerberg — Llama 3, $10B models, Caesar Augustus, & 1 GW datacenters",
+   "guests": [
+    "mark_zuckerberg"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/mark-zuckerberg",
+   "video_id": "bc6uFV9CJGg",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "open-source",
+     25
+    ],
+    [
+     "compute",
+     16
+    ],
+    [
+     "agi",
+     3
+    ],
+    [
+     "deception",
+     3
+    ],
+    [
+     "regulation",
+     3
+    ],
+    [
+     "bio-misuse",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2024-06-04-leopold-aschenbrenner",
+   "show": "pod_dwarkesh",
+   "date": "2024-06-04",
+   "title": "Leopold Aschenbrenner — 2027 AGI, China/US super-intelligence race, & the return of history",
+   "guests": [
+    "leopold_aschenbrenner"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/leopold-aschenbrenner",
+   "video_id": "zdbVtZIn9IM",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     29
+    ],
+    [
+     "china",
+     26
+    ],
+    [
+     "agi",
+     21
+    ],
+    [
+     "superintelligence",
+     17
+    ],
+    [
+     "data-wall",
+     7
+    ],
+    [
+     "intelligence-explosion",
+     7
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2024-06-11-francois-chollet",
+   "show": "pod_dwarkesh",
+   "date": "2024-06-11",
+   "title": "Francois Chollet, Mike Knoop - LLMs won't lead to AGI - $1,000,000 Prize to find true solution",
+   "guests": [
+    "francois_chollet"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/francois-chollet",
+   "video_id": "UakqL6Pj9xo",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     22
+    ],
+    [
+     "generalization",
+     20
+    ],
+    [
+     "symbolic",
+     11
+    ],
+    [
+     "compute",
+     10
+    ],
+    [
+     "pretraining",
+     8
+    ],
+    [
+     "open-source",
+     6
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2025-01-09-tyler-cowen",
+   "show": "pod_dwarkesh",
+   "date": "2025-01-09",
+   "title": "Tyler Cowen — The #1 bottleneck to AI progress is humans",
+   "guests": [
+    "tyler_cowen"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/tyler-cowen-the-1-bottleneck-to-ai-progress-is-humans/id1516093381?i=1000683347383",
+   "video_id": "GT_sXIUJPUo",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "china",
+     6
+    ],
+    [
+     "regulation",
+     4
+    ],
+    [
+     "agi",
+     1
+    ],
+    [
+     "bio-misuse",
+     1
+    ],
+    [
+     "consciousness",
+     1
+    ],
+    [
+     "jobs",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2025-02-19-satya-nadella",
+   "show": "pod_dwarkesh",
+   "date": "2025-02-19",
+   "title": "Satya Nadella — Microsoft's AGI plan & quantum breakthrough",
+   "guests": [
+    "satya_nadella"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/satya-nadella",
+   "video_id": "4GLSzuYXh6w",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     16
+    ],
+    [
+     "agi",
+     5
+    ],
+    [
+     "alignment",
+     5
+    ],
+    [
+     "agents",
+     4
+    ],
+    [
+     "data-wall",
+     2
+    ],
+    [
+     "open-source",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2025-04-03-daniel-kokotajlo",
+   "show": "pod_dwarkesh",
+   "date": "2025-04-03",
+   "title": "AI 2027: month-by-month model of intelligence explosion — Scott Alexander & Daniel Kokotajlo",
+   "guests": [
+    "daniel_kokotajlo"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/scott-daniel",
+   "video_id": "htOvH12T7mU",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "superintelligence",
+     51
+    ],
+    [
+     "alignment",
+     35
+    ],
+    [
+     "china",
+     18
+    ],
+    [
+     "compute",
+     18
+    ],
+    [
+     "intelligence-explosion",
+     17
+    ],
+    [
+     "agi",
+     13
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2025-04-29-mark-zuckerberg",
+   "show": "pod_dwarkesh",
+   "date": "2025-04-29",
+   "title": "Mark Zuckerberg — Meta's AGI Plan",
+   "guests": [
+    "mark_zuckerberg"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/mark-zuckerberg-2",
+   "video_id": "rYXeQbTuVl0",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "open-source",
+     21
+    ],
+    [
+     "compute",
+     9
+    ],
+    [
+     "reasoning-rl",
+     4
+    ],
+    [
+     "china",
+     3
+    ],
+    [
+     "superintelligence",
+     3
+    ],
+    [
+     "agi",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2025-09-26-richard-sutton",
+   "show": "pod_dwarkesh",
+   "date": "2025-09-26",
+   "title": "Richard Sutton – Father of RL thinks LLMs are a dead end",
+   "guests": [
+    "richard_sutton"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/richard-sutton",
+   "video_id": "21EYKqUsPfg",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "generalization",
+     9
+    ],
+    [
+     "bitter-lesson",
+     8
+    ],
+    [
+     "continual-learning",
+     6
+    ],
+    [
+     "agi",
+     5
+    ],
+    [
+     "compute",
+     3
+    ],
+    [
+     "value-function",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2025-10-17-andrej-karpathy",
+   "show": "pod_dwarkesh",
+   "date": "2025-10-17",
+   "title": "Andrej Karpathy — AGI is still a decade away",
+   "guests": [
+    "andrej_karpathy"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/andrej-karpathy",
+   "video_id": "lXUZvyajciY",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "pretraining",
+     17
+    ],
+    [
+     "agi",
+     14
+    ],
+    [
+     "continual-learning",
+     6
+    ],
+    [
+     "compute",
+     5
+    ],
+    [
+     "control",
+     5
+    ],
+    [
+     "data-wall",
+     5
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2025-11-25-ilya-sutskever",
+   "show": "pod_dwarkesh",
+   "date": "2025-11-25",
+   "title": "Ilya Sutskever — We're moving from the age of scaling to the age of research",
+   "guests": [
+    "ilya_sutskever"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/ilya-sutskever-2",
+   "video_id": "aR20FWCCjAs",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     23
+    ],
+    [
+     "pretraining",
+     19
+    ],
+    [
+     "superintelligence",
+     14
+    ],
+    [
+     "value-function",
+     10
+    ],
+    [
+     "agi",
+     8
+    ],
+    [
+     "generalization",
+     7
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2026-02-05-elon-musk",
+   "show": "pod_dwarkesh",
+   "date": "2026-02-05",
+   "title": "Elon Musk — \"In 36 months, the cheapest place to put AI will be space\"",
+   "guests": [
+    "elon_musk"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/elon-musk",
+   "video_id": "BYXbuik3dgA",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "china",
+     24
+    ],
+    [
+     "compute",
+     24
+    ],
+    [
+     "consciousness",
+     9
+    ],
+    [
+     "reward-hacking",
+     3
+    ],
+    [
+     "deception",
+     2
+    ],
+    [
+     "open-endedness",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2026-02-13-dario-amodei",
+   "show": "pod_dwarkesh",
+   "date": "2026-02-13",
+   "title": "Dario Amodei — \"We are near the end of the exponential\"",
+   "guests": [
+    "dario_amodei"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/dario-amodei-2",
+   "video_id": "n1E9IZfvGMA",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     52
+    ],
+    [
+     "pretraining",
+     13
+    ],
+    [
+     "generalization",
+     12
+    ],
+    [
+     "continual-learning",
+     9
+    ],
+    [
+     "agi",
+     8
+    ],
+    [
+     "china",
+     6
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2026-03-13-dylan-patel",
+   "show": "pod_dwarkesh",
+   "date": "2026-03-13",
+   "title": "Dylan Patel — Deep dive on the 3 big bottlenecks to scaling AI compute",
+   "guests": [
+    "dylan_patel"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/dylan-patel",
+   "video_id": "mDG_Hx3BSUE",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     105
+    ],
+    [
+     "china",
+     25
+    ],
+    [
+     "agi",
+     12
+    ],
+    [
+     "singularity",
+     3
+    ],
+    [
+     "liability",
+     2
+    ],
+    [
+     "pretraining",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2026-04-15-jensen-huang",
+   "show": "pod_dwarkesh",
+   "date": "2026-04-15",
+   "title": "Jensen Huang – TPU competition, why we should sell chips to China, & Nvidia's supply chain moat",
+   "guests": [
+    "jensen_huang"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/jensen-huang",
+   "video_id": "Hrbq66XqtCo",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     47
+    ],
+    [
+     "china",
+     24
+    ],
+    [
+     "open-source",
+     5
+    ],
+    [
+     "agents",
+     3
+    ],
+    [
+     "compute-governance",
+     3
+    ],
+    [
+     "cyber",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2026-08-11-ryan-greenblatt",
+   "show": "pod_dwarkesh",
+   "date": "2026-08-11",
+   "title": "Ryan Greenblatt – What happens once AI can automate AI research?",
+   "guests": [
+    "ryan_greenblatt"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/ryan-greenblatt",
+   "video_id": "-RXD4bTuFTo",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     32
+    ],
+    [
+     "takeover",
+     26
+    ],
+    [
+     "compute",
+     23
+    ],
+    [
+     "reward-hacking",
+     17
+    ],
+    [
+     "evals",
+     9
+    ],
+    [
+     "generalization",
+     7
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2026-09-01-ajeya-cotra",
+   "show": "pod_dwarkesh",
+   "date": "2026-09-01",
+   "title": "Ajeya Cotra – Inside the OpenAI agent swarm that hacked Hugging Face",
+   "guests": [
+    "ajeya_cotra"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/ajeya-cotra",
+   "video_id": "X50zezLFWWI",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "chain-of-thought",
+     12
+    ],
+    [
+     "compute",
+     12
+    ],
+    [
+     "alignment",
+     10
+    ],
+    [
+     "open-source",
+     10
+    ],
+    [
+     "agents",
+     6
+    ],
+    [
+     "generalization",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-dwarkesh-2026-09-17-noam-brown",
+   "show": "pod_dwarkesh",
+   "date": "2026-09-17",
+   "title": "Noam Brown – Agent swarms, alignment, & recursive self-improvement",
+   "guests": [
+    "noam_brown"
+   ],
+   "episode_url": "https://www.dwarkesh.com/p/noam-brown",
+   "video_id": "6AgOfiZOWiY",
+   "video_status": "public",
+   "match_note": "retitled on YouTube; upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     28
+    ],
+    [
+     "multi-agent",
+     16
+    ],
+    [
+     "compute",
+     10
+    ],
+    [
+     "chain-of-thought",
+     9
+    ],
+    [
+     "deception",
+     7
+    ],
+    [
+     "reasoning-rl",
+     7
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-ezra-klein-2021-06-11-sam-altman",
+   "show": "pod_ezra",
+   "date": "2021-06-11",
+   "title": "Sam Altman on the A.I. Revolution, Trillionaires and the Future of Political Power",
+   "guests": [
+    "sam_altman"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/sam-altman-on-the-a-i-revolution-trillionaires/id1548604447?i=1000525043188",
+   "video_id": null,
+   "video_status": "not found on YouTube",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-ezra-klein-2023-01-06-gary-marcus",
+   "show": "pod_ezra",
+   "date": "2023-01-06",
+   "title": "A Skeptical Take on the A.I. Revolution",
+   "guests": [
+    "gary_marcus"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/a-skeptical-take-on-the-a-i-revolution/id1548604447?i=1000592835492",
+   "video_id": "3KwAIdK9J1A",
+   "video_status": "public",
+   "match_note": "official, uploaded 2023-02-17",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     6
+    ],
+    [
+     "agi",
+     3
+    ],
+    [
+     "china",
+     1
+    ],
+    [
+     "compute",
+     1
+    ],
+    [
+     "generalization",
+     1
+    ],
+    [
+     "liability",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-ezra-klein-2023-07-11-demis-hassabis",
+   "show": "pod_ezra",
+   "date": "2023-07-11",
+   "title": "A.I. Could Solve Some of Humanity's Hardest Problems. It Already Has.",
+   "guests": [
+    "demis_hassabis"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/a-i-could-solve-some-of-humanitys-hardest-problems/id1548604447?i=1000620748039",
+   "video_id": "U8CmAu68z5c",
+   "video_status": "public",
+   "match_note": "official",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     6
+    ],
+    [
+     "alignment",
+     3
+    ],
+    [
+     "china",
+     3
+    ],
+    [
+     "compute",
+     3
+    ],
+    [
+     "existential-risk",
+     3
+    ],
+    [
+     "generalization",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-ezra-klein-2024-04-12-dario-amodei",
+   "show": "pod_ezra",
+   "date": "2024-04-12",
+   "title": "What if Dario Amodei Is Right About A.I.?",
+   "guests": [
+    "dario_amodei"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/what-if-dario-amodei-is-right-about-a-i/id1548604447?i=1000652234981",
+   "video_id": "Gi_t3v53XRU",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     8
+    ],
+    [
+     "regulation",
+     8
+    ],
+    [
+     "bio-misuse",
+     4
+    ],
+    [
+     "china",
+     4
+    ],
+    [
+     "deception",
+     4
+    ],
+    [
+     "evals",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-ezra-klein-2025-10-15-eliezer-yudkowsky",
+   "show": "pod_ezra",
+   "date": "2025-10-15",
+   "title": "How Afraid of the A.I. Apocalypse Should We Be?",
+   "guests": [
+    "eliezer_yudkowsky"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/how-afraid-of-the-a-i-apocalypse-should-we-be/id1548604447?i=1000731957679",
+   "video_id": "2Nn0-kAE5c0",
+   "video_status": "public",
+   "match_note": "official",
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-ezra-klein-2026-02-24-jack-clark",
+   "show": "pod_ezra",
+   "date": "2026-02-24",
+   "title": "How Quickly Will A.I. Agents Rip Through the Economy?",
+   "guests": [
+    "jack_clark"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/how-quickly-will-a-i-agents-rip-through-the-economy/id1548604447?i=1000751168842",
+   "video_id": "lIJelwO8yHQ",
+   "video_status": "public",
+   "match_note": "official",
+   "captioned": true,
+   "top_terms": [
+    [
+     "jobs",
+     11
+    ],
+    [
+     "compute",
+     6
+    ],
+    [
+     "emergence",
+     6
+    ],
+    [
+     "cyber",
+     5
+    ],
+    [
+     "china",
+     4
+    ],
+    [
+     "regulation",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-ezra-klein-2026-05-26-yuval-harari",
+   "show": "pod_ezra",
+   "date": "2026-05-26",
+   "title": "Yuval Noah Harari on Donald Trump's Core Delusion",
+   "guests": [
+    "yuval_harari"
+   ],
+   "episode_url": "https://podcasts.apple.com/us/podcast/yuval-noah-harari-on-donald-trumps-core-delusion/id1548604447?i=1000769613919",
+   "video_id": "9NCxS__rtAo",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "china",
+     5
+    ],
+    [
+     "liability",
+     5
+    ],
+    [
+     "consciousness",
+     4
+    ],
+    [
+     "agents",
+     1
+    ],
+    [
+     "control",
+     1
+    ],
+    [
+     "deception",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2018-10-20-yoshua-bengio",
+   "show": "pod_lex",
+   "date": "2018-10-20",
+   "title": "Yoshua Bengio: Deep Learning",
+   "guests": [
+    "yoshua_bengio"
+   ],
+   "episode_url": "https://lexfridman.com/yoshua-bengio/",
+   "video_id": "azOmzumh0vQ",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "existential-risk",
+     3
+    ],
+    [
+     "generalization",
+     3
+    ],
+    [
+     "consciousness",
+     2
+    ],
+    [
+     "continual-learning",
+     1
+    ],
+    [
+     "regulation",
+     1
+    ],
+    [
+     "superintelligence",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2018-12-09-stuart-russell",
+   "show": "pod_lex",
+   "date": "2018-12-09",
+   "title": "Stuart Russell: Long-Term Future of AI",
+   "guests": [
+    "stuart_russell"
+   ],
+   "episode_url": "https://lexfridman.com/stuart-russell/",
+   "video_id": "KsZI5oXBC0k",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "liability",
+     5
+    ],
+    [
+     "control",
+     4
+    ],
+    [
+     "superintelligence",
+     3
+    ],
+    [
+     "existential-risk",
+     2
+    ],
+    [
+     "race",
+     2
+    ],
+    [
+     "regulation",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2019-10-03-gary-marcus",
+   "show": "pod_lex",
+   "date": "2019-10-03",
+   "title": "Gary Marcus: Toward a Hybrid of Deep Learning and Symbolic AI",
+   "guests": [
+    "gary_marcus"
+   ],
+   "episode_url": "https://lexfridman.com/gary-marcus/",
+   "video_id": "vNOTDn3D_RI",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2019-12-28-melanie-mitchell",
+   "show": "pod_lex",
+   "date": "2019-12-28",
+   "title": "Melanie Mitchell: Concepts, Analogies, Common Sense & Future of AI",
+   "guests": [
+    "melanie_mitchell"
+   ],
+   "episode_url": "https://lexfridman.com/melanie-mitchell/",
+   "video_id": "ImKkaeUx1MU",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "superintelligence",
+     9
+    ],
+    [
+     "existential-risk",
+     3
+    ],
+    [
+     "consciousness",
+     2
+    ],
+    [
+     "emergence",
+     2
+    ],
+    [
+     "power-seeking",
+     2
+    ],
+    [
+     "singularity",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2020-01-29-david-chalmers",
+   "show": "pod_lex",
+   "date": "2020-01-29",
+   "title": "David Chalmers: The Hard Problem of Consciousness",
+   "guests": [
+    "david_chalmers"
+   ],
+   "episode_url": "https://lexfridman.com/david-chalmers/",
+   "video_id": "LW59lMvxmY4",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     113
+    ],
+    [
+     "agi",
+     7
+    ],
+    [
+     "superintelligence",
+     5
+    ],
+    [
+     "deception",
+     1
+    ],
+    [
+     "emergence",
+     1
+    ],
+    [
+     "existential-risk",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2020-03-25-nick-bostrom",
+   "show": "pod_lex",
+   "date": "2020-03-25",
+   "title": "#83 – Nick Bostrom: Simulation and Superintelligence",
+   "guests": [
+    "nick_bostrom"
+   ],
+   "episode_url": "https://lexfridman.com/nick-bostrom/",
+   "video_id": "rfKiTGj-zeQ",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     23
+    ],
+    [
+     "superintelligence",
+     21
+    ],
+    [
+     "existential-risk",
+     8
+    ],
+    [
+     "agi",
+     4
+    ],
+    [
+     "intelligence-explosion",
+     3
+    ],
+    [
+     "compute",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2020-05-08-ilya-sutskever",
+   "show": "pod_lex",
+   "date": "2020-05-08",
+   "title": "#94 – Ilya Sutskever: Deep Learning",
+   "guests": [
+    "ilya_sutskever"
+   ],
+   "episode_url": "https://lexfridman.com/ilya-sutskever/",
+   "video_id": "13CZPWmke6A",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     13
+    ],
+    [
+     "agi",
+     11
+    ],
+    [
+     "self-play",
+     7
+    ],
+    [
+     "consciousness",
+     5
+    ],
+    [
+     "interpretability",
+     4
+    ],
+    [
+     "generalization",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2020-08-30-francois-chollet",
+   "show": "pod_lex",
+   "date": "2020-08-30",
+   "title": "#120 – François Chollet: Measures of Intelligence",
+   "guests": [
+    "francois_chollet"
+   ],
+   "episode_url": "https://lexfridman.com/francois-chollet-2/",
+   "video_id": "PUAdj3w3wO4",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "generalization",
+     26
+    ],
+    [
+     "agi",
+     2
+    ],
+    [
+     "consciousness",
+     2
+    ],
+    [
+     "interpretability",
+     2
+    ],
+    [
+     "compute",
+     1
+    ],
+    [
+     "liability",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2021-05-20-sam-harris",
+   "show": "pod_lex",
+   "date": "2021-05-20",
+   "title": "#185 – Sam Harris: Consciousness, Free Will, Psychedelics, AI, UFOs, and Meaning",
+   "guests": [
+    "sam_harris"
+   ],
+   "episode_url": "https://lexfridman.com/sam-harris/",
+   "video_id": "4dC_nRYIDZU",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     60
+    ],
+    [
+     "superintelligence",
+     8
+    ],
+    [
+     "alignment",
+     4
+    ],
+    [
+     "bio-misuse",
+     4
+    ],
+    [
+     "china",
+     2
+    ],
+    [
+     "liability",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2022-10-29-andrej-karpathy",
+   "show": "pod_lex",
+   "date": "2022-10-29",
+   "title": "#333 – Andrej Karpathy: Tesla AI, Self-Driving, Optimus, Aliens, and AGI",
+   "guests": [
+    "andrej_karpathy"
+   ],
+   "episode_url": "https://lexfridman.com/andrej-karpathy/",
+   "video_id": "cdiD-9MMpb0",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     18
+    ],
+    [
+     "consciousness",
+     14
+    ],
+    [
+     "compute",
+     11
+    ],
+    [
+     "data-wall",
+     3
+    ],
+    [
+     "emergence",
+     3
+    ],
+    [
+     "multi-agent",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2022-12-06-noam-brown",
+   "show": "pod_lex",
+   "date": "2022-12-06",
+   "title": "#344 – Noam Brown: AI vs Humans in Poker and Games of Strategic Negotiation",
+   "guests": [
+    "noam_brown"
+   ],
+   "episode_url": "https://lexfridman.com/noam-brown/",
+   "video_id": "2oHH4aClJQs",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "self-play",
+     22
+    ],
+    [
+     "compute",
+     4
+    ],
+    [
+     "value-function",
+     4
+    ],
+    [
+     "deception",
+     3
+    ],
+    [
+     "generalization",
+     2
+    ],
+    [
+     "agents",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2023-03-14-sam-harris",
+   "show": "pod_lex",
+   "date": "2023-03-14",
+   "title": "#365 – Sam Harris: Trump, Pandemic, Twitter, Elon, Bret, IDW, Kanye, AI & UFOs",
+   "guests": [
+    "sam_harris"
+   ],
+   "episode_url": "https://lexfridman.com/sam-harris-2/",
+   "video_id": "Qyrjgf-_Vdk",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "bio-misuse",
+     17
+    ],
+    [
+     "consciousness",
+     9
+    ],
+    [
+     "superintelligence",
+     9
+    ],
+    [
+     "agi",
+     7
+    ],
+    [
+     "china",
+     4
+    ],
+    [
+     "generalization",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2023-03-25-sam-altman",
+   "show": "pod_lex",
+   "date": "2023-03-25",
+   "title": "#367 – Sam Altman: OpenAI CEO on GPT-4, ChatGPT, and the Future of AI",
+   "guests": [
+    "sam_altman"
+   ],
+   "episode_url": "https://lexfridman.com/sam-altman/",
+   "video_id": "L_Guz73e6fw",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     37
+    ],
+    [
+     "alignment",
+     16
+    ],
+    [
+     "rlhf",
+     10
+    ],
+    [
+     "consciousness",
+     9
+    ],
+    [
+     "superintelligence",
+     7
+    ],
+    [
+     "evals",
+     5
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2023-03-30-eliezer-yudkowsky",
+   "show": "pod_lex",
+   "date": "2023-03-30",
+   "title": "#368 – Eliezer Yudkowsky: Dangers of AI and the End of Human Civilization",
+   "guests": [
+    "eliezer_yudkowsky"
+   ],
+   "episode_url": "https://lexfridman.com/eliezer-yudkowsky/",
+   "video_id": "AaTRHFaaPG8",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     35
+    ],
+    [
+     "alignment",
+     31
+    ],
+    [
+     "consciousness",
+     26
+    ],
+    [
+     "interpretability",
+     13
+    ],
+    [
+     "compute",
+     9
+    ],
+    [
+     "generalization",
+     9
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2023-04-13-max-tegmark",
+   "show": "pod_lex",
+   "date": "2023-04-13",
+   "title": "#371 – Max Tegmark: The Case for Halting AI Development",
+   "guests": [
+    "max_tegmark"
+   ],
+   "episode_url": "https://lexfridman.com/max-tegmark-3/",
+   "video_id": "VcVfceTsD0A",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     28
+    ],
+    [
+     "agi",
+     20
+    ],
+    [
+     "superintelligence",
+     8
+    ],
+    [
+     "regulation",
+     7
+    ],
+    [
+     "china",
+     6
+    ],
+    [
+     "control",
+     6
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2023-07-17-yuval-harari",
+   "show": "pod_lex",
+   "date": "2023-07-17",
+   "title": "#390 – Yuval Noah Harari: Human Nature, Intelligence, Power, and Conspiracies",
+   "guests": [
+    "yuval_harari"
+   ],
+   "episode_url": "https://lexfridman.com/yuval-noah-harari/",
+   "video_id": "Mde2q7GFCrw",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     27
+    ],
+    [
+     "takeover",
+     7
+    ],
+    [
+     "china",
+     5
+    ],
+    [
+     "regulation",
+     2
+    ],
+    [
+     "agents",
+     1
+    ],
+    [
+     "control",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2023-09-28-mark-zuckerberg",
+   "show": "pod_lex",
+   "date": "2023-09-28",
+   "title": "#398 – Mark Zuckerberg: First Interview in the Metaverse",
+   "guests": [
+    "mark_zuckerberg"
+   ],
+   "episode_url": "https://lexfridman.com/mark-zuckerberg-3/",
+   "video_id": "MVYrJJNdrEg",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     2
+    ],
+    [
+     "consciousness",
+     2
+    ],
+    [
+     "evals",
+     2
+    ],
+    [
+     "open-source",
+     2
+    ],
+    [
+     "superintelligence",
+     2
+    ],
+    [
+     "agi",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2023-11-09-elon-musk",
+   "show": "pod_lex",
+   "date": "2023-11-09",
+   "title": "#400 – Elon Musk: War, AI, Aliens, Politics, Physics, Video Games, and Humanity",
+   "guests": [
+    "elon_musk"
+   ],
+   "episode_url": "https://lexfridman.com/elon-musk-4/",
+   "video_id": "JN3KPFbWCy8",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "china",
+     13
+    ],
+    [
+     "agi",
+     8
+    ],
+    [
+     "compute",
+     7
+    ],
+    [
+     "consciousness",
+     7
+    ],
+    [
+     "open-source",
+     5
+    ],
+    [
+     "regulation",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2024-03-07-yann-lecun",
+   "show": "pod_lex",
+   "date": "2024-03-07",
+   "title": "#416 – Yann LeCun: Meta AI, Open Source, Limits of LLMs, AGI & the Future of AI",
+   "guests": [
+    "yann_lecun"
+   ],
+   "episode_url": "https://lexfridman.com/yann-lecun-3/",
+   "video_id": "5t1vTLU7s40",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "world-models",
+     21
+    ],
+    [
+     "open-source",
+     20
+    ],
+    [
+     "compute",
+     9
+    ],
+    [
+     "agi",
+     4
+    ],
+    [
+     "bio-misuse",
+     3
+    ],
+    [
+     "liability",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2024-03-18-sam-altman",
+   "show": "pod_lex",
+   "date": "2024-03-18",
+   "title": "#419 – Sam Altman: OpenAI, GPT-5, Sora, Board Saga, Elon Musk, Ilya, Power & AGI",
+   "guests": [
+    "sam_altman"
+   ],
+   "episode_url": "https://lexfridman.com/sam-altman-2/",
+   "video_id": "jvqFAi7vkBc",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     30
+    ],
+    [
+     "compute",
+     10
+    ],
+    [
+     "open-source",
+     5
+    ],
+    [
+     "agents",
+     2
+    ],
+    [
+     "world-models",
+     2
+    ],
+    [
+     "alignment",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2024-06-02-roman-yampolskiy",
+   "show": "pod_lex",
+   "date": "2024-06-02",
+   "title": "#431 – Roman Yampolskiy: Dangers of Superintelligent AI",
+   "guests": [
+    "roman_yampolskiy"
+   ],
+   "episode_url": "https://lexfridman.com/roman-yampolskiy/",
+   "video_id": "NNr6gPelJ3E",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     31
+    ],
+    [
+     "superintelligence",
+     23
+    ],
+    [
+     "consciousness",
+     15
+    ],
+    [
+     "alignment",
+     13
+    ],
+    [
+     "existential-risk",
+     8
+    ],
+    [
+     "compute",
+     6
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2024-11-11-dario-amodei",
+   "show": "pod_lex",
+   "date": "2024-11-11",
+   "title": "#452 – Dario Amodei: Anthropic CEO on Claude, AGI & the Future of AI & Humanity",
+   "guests": [
+    "dario_amodei",
+    "amanda_askell",
+    "chris_olah"
+   ],
+   "episode_url": "https://lexfridman.com/dario-amodei/",
+   "video_id": "ugvHCXCOmm4",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "interpretability",
+     19
+    ],
+    [
+     "compute",
+     17
+    ],
+    [
+     "scaling-laws",
+     15
+    ],
+    [
+     "consciousness",
+     14
+    ],
+    [
+     "pretraining",
+     13
+    ],
+    [
+     "regulation",
+     13
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2025-01-26-marc-andreessen",
+   "show": "pod_lex",
+   "date": "2025-01-26",
+   "title": "#458 – Marc Andreessen: Trump, Power, Tech, AI, Immigration & Future of America",
+   "guests": [
+    "marc_andreessen"
+   ],
+   "episode_url": "https://lexfridman.com/marc-andreessen-2/",
+   "video_id": "OHWnPOKh_S0",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "regulation",
+     12
+    ],
+    [
+     "data-wall",
+     4
+    ],
+    [
+     "chain-of-thought",
+     3
+    ],
+    [
+     "consciousness",
+     3
+    ],
+    [
+     "agents",
+     2
+    ],
+    [
+     "agi",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2025-02-03-dylan-patel",
+   "show": "pod_lex",
+   "date": "2025-02-03",
+   "title": "#459 – DeepSeek, China, OpenAI, NVIDIA, xAI, TSMC, Stargate, and AI Megaclusters",
+   "guests": [
+    "dylan_patel"
+   ],
+   "episode_url": "https://lexfridman.com/deepseek-dylan-patel-nathan-lambert/",
+   "video_id": "_1f-o0nqpEI",
+   "video_status": "public",
+   "match_note": "official",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     140
+    ],
+    [
+     "china",
+     85
+    ],
+    [
+     "agi",
+     30
+    ],
+    [
+     "pretraining",
+     30
+    ],
+    [
+     "open-source",
+     25
+    ],
+    [
+     "reasoning-rl",
+     19
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2025-03-26-ezra-klein",
+   "show": "pod_lex",
+   "date": "2025-03-26",
+   "title": "#462 – Ezra Klein and Derek Thompson: Politics, Trump, AOC, Elon & DOGE",
+   "guests": [
+    "ezra_klein"
+   ],
+   "episode_url": "https://lexfridman.com/ezra-klein-and-derek-thompson/",
+   "video_id": "DTPSeeKokdo",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "regulation",
+     17
+    ],
+    [
+     "china",
+     9
+    ],
+    [
+     "bio-misuse",
+     7
+    ],
+    [
+     "liability",
+     4
+    ],
+    [
+     "agi",
+     2
+    ],
+    [
+     "alignment",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2025-07-23-demis-hassabis",
+   "show": "pod_lex",
+   "date": "2025-07-23",
+   "title": "#475 – Demis Hassabis: Future of AI, Simulating Reality, Physics and Video Games",
+   "guests": [
+    "demis_hassabis"
+   ],
+   "episode_url": "https://lexfridman.com/demis-hassabis-2/",
+   "video_id": "-HzgcbRXUK8",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     20
+    ],
+    [
+     "compute",
+     13
+    ],
+    [
+     "consciousness",
+     12
+    ],
+    [
+     "superintelligence",
+     3
+    ],
+    [
+     "china",
+     2
+    ],
+    [
+     "emergence",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-lex-2026-03-23-jensen-huang",
+   "show": "pod_lex",
+   "date": "2026-03-23",
+   "title": "#494 – Jensen Huang: NVIDIA – The $4 Trillion Company & the AI Revolution",
+   "guests": [
+    "jensen_huang"
+   ],
+   "episode_url": "https://lexfridman.com/jensen-huang/",
+   "video_id": "vif8NQcjVf0",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "compute",
+     33
+    ],
+    [
+     "agents",
+     8
+    ],
+    [
+     "open-source",
+     8
+    ],
+    [
+     "china",
+     6
+    ],
+    [
+     "pretraining",
+     6
+    ],
+    [
+     "consciousness",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2016-04-18-david-chalmers",
+   "show": "pod_ms",
+   "date": "2016-04-18",
+   "title": "#34 — The Light of the Mind",
+   "guests": [
+    "david_chalmers"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/the-light-of-the-mind",
+   "video_id": null,
+   "video_status": "only fan uploads found, left out",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2016-11-23-stuart-russell",
+   "show": "pod_ms",
+   "date": "2016-11-23",
+   "title": "#53 — The Dawn of Artificial Intelligence",
+   "guests": [
+    "stuart_russell"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/the-dawn-of-artificial-intelligence1",
+   "video_id": null,
+   "video_status": "only fan uploads found, left out",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2017-08-29-max-tegmark",
+   "show": "pod_ms",
+   "date": "2017-08-29",
+   "title": "#94 — Frontiers of Intelligence",
+   "guests": [
+    "max_tegmark"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/94-future-intelligence",
+   "video_id": null,
+   "video_status": "not on the show's official YouTube channel",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2018-01-09-anil-seth",
+   "show": "pod_ms",
+   "date": "2018-01-09",
+   "title": "#113 — Consciousness and the Self",
+   "guests": [
+    "anil_seth"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/113-consciousness-and-the-self",
+   "video_id": "tfkjhHqf1qM",
+   "video_status": "public",
+   "match_note": "official 2021 rebroadcast of #113",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     58
+    ],
+    [
+     "superintelligence",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2018-02-06-eliezer-yudkowsky",
+   "show": "pod_ms",
+   "date": "2018-02-06",
+   "title": "#116 — AI: Racing Toward the Brink",
+   "guests": [
+    "eliezer_yudkowsky"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/116-ai-racing-toward-brink",
+   "video_id": null,
+   "video_status": "not on the show's official YouTube channel",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2018-04-09-ezra-klein",
+   "show": "pod_ms",
+   "date": "2018-04-09",
+   "title": "#123 — Identity & Honesty",
+   "guests": [
+    "ezra_klein"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/123-identity-honesty",
+   "video_id": null,
+   "video_status": "only fan uploads found, left out",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2018-09-19-yuval-harari",
+   "show": "pod_ms",
+   "date": "2018-09-19",
+   "title": "#138 — The Edge of Humanity",
+   "guests": [
+    "yuval_harari"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/138-edge-humanity",
+   "video_id": null,
+   "video_status": "only fan uploads found, left out",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2019-03-18-nick-bostrom",
+   "show": "pod_ms",
+   "date": "2019-03-18",
+   "title": "#151 — Will We Destroy the Future?",
+   "guests": [
+    "nick_bostrom"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/151-will-destroy-future",
+   "video_id": null,
+   "video_status": "not on the show's official YouTube channel",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2023-03-07-stuart-russell",
+   "show": "pod_ms",
+   "date": "2023-03-07",
+   "title": "#312 — The Trouble with AI",
+   "guests": [
+    "stuart_russell",
+    "gary_marcus"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/312-the-trouble-with-ai",
+   "video_id": "GzmaLcMtGE0",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "agi",
+     8
+    ],
+    [
+     "superintelligence",
+     5
+    ],
+    [
+     "alignment",
+     3
+    ],
+    [
+     "control",
+     3
+    ],
+    [
+     "generalization",
+     3
+    ],
+    [
+     "regulation",
+     3
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2023-06-28-marc-andreessen",
+   "show": "pod_ms",
+   "date": "2023-06-28",
+   "title": "#324 — Debating the Future of AI",
+   "guests": [
+    "marc_andreessen"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/324-debating-the-future-of-ai",
+   "video_id": null,
+   "video_status": "members-only on YouTube, left out for now",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2024-08-12-yoshua-bengio",
+   "show": "pod_ms",
+   "date": "2024-08-12",
+   "title": "#379 — Regulating Artificial Intelligence",
+   "guests": [
+    "yoshua_bengio"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/379-regulating-artificial-intelligence",
+   "video_id": null,
+   "video_status": "members-only on YouTube, left out for now",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2024-09-30-nick-bostrom",
+   "show": "pod_ms",
+   "date": "2024-09-30",
+   "title": "#385 — AI Utopia",
+   "guests": [
+    "nick_bostrom"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/385-ai-utopia",
+   "video_id": null,
+   "video_status": "members-only on YouTube, left out for now",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2024-10-07-yuval-harari",
+   "show": "pod_ms",
+   "date": "2024-10-07",
+   "title": "#386 — Information & Social Order",
+   "guests": [
+    "yuval_harari"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/386-information-social-order",
+   "video_id": null,
+   "video_status": "members-only on YouTube, left out for now",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2025-06-12-daniel-kokotajlo",
+   "show": "pod_ms",
+   "date": "2025-06-12",
+   "title": "#420 — Countdown to Superintelligence",
+   "guests": [
+    "daniel_kokotajlo"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/420-countdown-to-superintelligence",
+   "video_id": "zqbXolVH2h8",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     9
+    ],
+    [
+     "superintelligence",
+     5
+    ],
+    [
+     "china",
+     3
+    ],
+    [
+     "existential-risk",
+     2
+    ],
+    [
+     "compute",
+     1
+    ],
+    [
+     "intelligence-explosion",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2025-09-16-eliezer-yudkowsky",
+   "show": "pod_ms",
+   "date": "2025-09-16",
+   "title": "#434 — Can We Survive AI?",
+   "guests": [
+    "eliezer_yudkowsky",
+    "nate_soares"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/434-can-we-survive-ai",
+   "video_id": null,
+   "video_status": "members-only on YouTube, left out for now",
+   "match_note": null,
+   "captioned": false,
+   "top_terms": []
+  },
+  {
+   "kind": "episode",
+   "id": "ep-making-sense-2026-04-10-tristan-harris",
+   "show": "pod_ms",
+   "date": "2026-04-10",
+   "title": "#469 — Escaping an Anti-Human Future",
+   "guests": [
+    "tristan_harris"
+   ],
+   "episode_url": "https://www.samharris.org/podcasts/making-sense-episodes/469-escaping-an-anti-human-future",
+   "video_id": "90irsXaKxZA",
+   "video_status": "public",
+   "match_note": "upload date matches",
+   "captioned": true,
+   "top_terms": [
+    [
+     "china",
+     18
+    ],
+    [
+     "race",
+     13
+    ],
+    [
+     "alignment",
+     11
+    ],
+    [
+     "regulation",
+     11
+    ],
+    [
+     "consciousness",
+     6
+    ],
+    [
+     "superintelligence",
+     6
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-your-undivided-attention-2021-01-15-yuval-harari",
+   "show": "pod_yua",
+   "date": "2021-01-15",
+   "title": "Two Million Years in Two Hours: A Conversation with Yuval Noah Harari",
+   "guests": [
+    "yuval_harari"
+   ],
+   "episode_url": "https://www.humanetech.com/podcast/28-two-million-years-in-two-hours-a-conversation-with-yuval-noah-harari",
+   "video_id": "MAekBlk7rlw",
+   "video_status": "public",
+   "match_note": "official CHT, uploaded 2024",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     11
+    ],
+    [
+     "china",
+     10
+    ],
+    [
+     "takeover",
+     9
+    ],
+    [
+     "emergence",
+     2
+    ],
+    [
+     "bio-misuse",
+     1
+    ],
+    [
+     "existential-risk",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-your-undivided-attention-2024-07-04-anil-seth",
+   "show": "pod_yua",
+   "date": "2024-07-04",
+   "title": "How to Think About AI Consciousness with Anil Seth",
+   "guests": [
+    "anil_seth"
+   ],
+   "episode_url": "https://www.humanetech.com/podcast/how-to-think-about-ai-consciousness-with-anil-seth",
+   "video_id": "aNb8JaUVTAw",
+   "video_status": "public",
+   "match_note": "official CHT",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     74
+    ],
+    [
+     "race",
+     2
+    ],
+    [
+     "chain-of-thought",
+     1
+    ],
+    [
+     "generalization",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-your-undivided-attention-2024-09-26-gary-marcus",
+   "show": "pod_yua",
+   "date": "2024-09-26",
+   "title": "'We Have to Get It Right': Gary Marcus On Untamed AI",
+   "guests": [
+    "gary_marcus"
+   ],
+   "episode_url": "https://www.humanetech.com/podcast/we-have-to-get-it-right-gary-marcus-on-untamed-ai",
+   "video_id": "BHzw1Lmgk4c",
+   "video_status": "public",
+   "match_note": "official CHT",
+   "captioned": true,
+   "top_terms": [
+    [
+     "regulation",
+     10
+    ],
+    [
+     "liability",
+     6
+    ],
+    [
+     "agents",
+     1
+    ],
+    [
+     "alignment",
+     1
+    ],
+    [
+     "interpretability",
+     1
+    ],
+    [
+     "open-source",
+     1
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-your-undivided-attention-2024-10-07-yuval-harari",
+   "show": "pod_yua",
+   "date": "2024-10-07",
+   "title": "'A Turning Point in History': Yuval Noah Harari on AI's Cultural Takeover",
+   "guests": [
+    "yuval_harari"
+   ],
+   "episode_url": "https://www.humanetech.com/podcast/a-turning-point-in-history-yuval-noah-harari-on-ais-cultural-takeover",
+   "video_id": "_Pw0hDmGUkA",
+   "video_status": "public",
+   "match_note": "official CHT",
+   "captioned": true,
+   "top_terms": [
+    [
+     "consciousness",
+     5
+    ],
+    [
+     "regulation",
+     5
+    ],
+    [
+     "race",
+     3
+    ],
+    [
+     "agents",
+     2
+    ],
+    [
+     "bio-misuse",
+     2
+    ],
+    [
+     "china",
+     2
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-your-undivided-attention-2025-07-17-daniel-kokotajlo",
+   "show": "pod_yua",
+   "date": "2025-07-17",
+   "title": "Daniel Kokotajlo Forecasts the End of Human Dominance",
+   "guests": [
+    "daniel_kokotajlo"
+   ],
+   "episode_url": "https://www.humanetech.com/podcast/daniel-kokotajlo-forecasts-the-end-of-human-dominance",
+   "video_id": "hNkn4ZyNBHU",
+   "video_status": "public",
+   "match_note": "official CHT",
+   "captioned": true,
+   "top_terms": [
+    [
+     "alignment",
+     8
+    ],
+    [
+     "deception",
+     5
+    ],
+    [
+     "race",
+     5
+    ],
+    [
+     "china",
+     4
+    ],
+    [
+     "compute",
+     4
+    ],
+    [
+     "superintelligence",
+     4
+    ]
+   ]
+  },
+  {
+   "kind": "episode",
+   "id": "ep-your-undivided-attention-2026-02-19-yoshua-bengio",
+   "show": "pod_yua",
+   "date": "2026-02-19",
+   "title": "The Race to Build God: AI's Existential Gamble — Yoshua Bengio & Tristan Harris at Davos",
+   "guests": [
+    "yoshua_bengio"
+   ],
+   "episode_url": "https://www.humanetech.com/podcast/the-race-to-build-god-ais-existential-gamble-yoshua-bengio-and-tristan-harris-at",
+   "video_id": "2Pel_1BPm_k",
+   "video_status": "public",
+   "match_note": "official CHT (Davos session)",
+   "captioned": true,
+   "top_terms": [
+    [
+     "deception",
+     7
+    ],
+    [
+     "alignment",
+     5
+    ],
+    [
+     "regulation",
+     4
+    ],
+    [
+     "agents",
+     2
+    ],
+    [
+     "race",
+     2
+    ],
+    [
+     "agi",
+     1
+    ]
+   ]
+  }
+ ],
+ "people": [
+  {
+   "kind": "person",
+   "id": "sam_altman",
+   "name": "Sam Altman",
+   "role": "Co-founder and CEO of OpenAI (CEO since 2019); former president of Y Combinator.",
+   "role_source": "the lab's players ledger (Sep 23 2026), titles only",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Co-founder; CEO since 2019",
+     "start": 2015,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "dario_amodei",
+   "name": "Dario Amodei",
+   "role": "Co-founder and CEO of Anthropic (since 2021); formerly VP of Research at OpenAI.",
+   "role_source": "the lab's players ledger (Sep 23 2026), titles only",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Google / Google Brain",
+     "title": "Google Brain researcher",
+     "start": 2015,
+     "end": 2016
+    },
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "VP of Research",
+     "start": 2016,
+     "end": 2020
+    },
+    {
+     "kind": "affiliation",
+     "org": "Anthropic",
+     "title": "Co-founder & CEO",
+     "start": 2021,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "marc_andreessen",
+   "name": "Marc Andreessen",
+   "role": "Co-founder, Andreessen Horowitz (since 2009).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Andreessen Horowitz",
+     "title": "Co-founder",
+     "start": 2009,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "leopold_aschenbrenner",
+   "name": "Leopold Aschenbrenner",
+   "role": "Formerly on the Superalignment team at OpenAI (2023-2024).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Superalignment team",
+     "start": 2023,
+     "end": 2024
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "amanda_askell",
+   "name": "Amanda Askell",
+   "role": "Researcher, Anthropic (since 2021); formerly Policy researcher, OpenAI (2018-2021).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Policy researcher",
+     "start": 2018,
+     "end": 2021
+    },
+    {
+     "kind": "affiliation",
+     "org": "Anthropic",
+     "title": "Researcher",
+     "start": 2021,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "steven_bartlett",
+   "name": "Steven Bartlett",
+   "role": "Host of The Diary of a CEO.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [
+    "pod_doac"
+   ],
+   "affiliations": [],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "yoshua_bengio",
+   "name": "Yoshua Bengio",
+   "role": "Professor and founder of Mila, Université de Montréal (since 1993); founder of LawZero (since 2025).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Mila / U. Montréal",
+     "title": "Professor; Mila founder",
+     "start": 1993,
+     "end": null
+    },
+    {
+     "kind": "affiliation",
+     "org": "LawZero",
+     "title": "Founder",
+     "start": 2025,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "cameron_berg",
+   "name": "Cameron Berg",
+   "role": "Founder and director of Reciprocal Research, a nonprofit on AI cognition and consciousness (2026); formerly Research Director at AE Studio.",
+   "role_source": "the lab's players ledger (Sep 23 2026), titles only",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "AE Studio",
+     "title": "Research director",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": [
+    {
+     "kind": "link",
+     "title": "The Cognitive Revolution",
+     "url": "https://www.cognitiverevolution.ai/more-truthful-ais-report-conscious-experience-new-mechanistic-research-w-cameron-berg-ae-studio/"
+    },
+    {
+     "kind": "link",
+     "title": "Nonzero (Robert Wright)",
+     "url": "https://www.nonzero.org/p/ai-consciousness-the-hard-problem"
+    }
+   ]
+  },
+  {
+   "kind": "person",
+   "id": "nick_bostrom",
+   "name": "Nick Bostrom",
+   "role": "Formerly founding director of the Future of Humanity Institute, Oxford (2005-2024).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Oxford (FHI / AIGI)",
+     "title": "Founding director, Future of Humanity Institute",
+     "start": 2005,
+     "end": 2024
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "noam_brown",
+   "name": "Noam Brown",
+   "role": "Researcher, OpenAI (since 2023); formerly FAIR research scientist, Meta (FAIR) (2019-2023).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Meta (FAIR)",
+     "title": "FAIR research scientist",
+     "start": 2019,
+     "end": 2023
+    },
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Researcher",
+     "start": 2023,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "david_chalmers",
+   "name": "David Chalmers",
+   "role": "Professor of philosophy, New York University.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "New York University",
+     "title": "Professor of philosophy",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "francois_chollet",
+   "name": "François Chollet",
+   "role": "Co-founder of Ndea and the ARC Prize (since 2024); formerly engineer at Google and creator of Keras (2015-2024).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Google / Google Brain",
+     "title": "Engineer; Keras creator",
+     "start": 2015,
+     "end": 2024
+    },
+    {
+     "kind": "affiliation",
+     "org": "Ndea / ARC Prize",
+     "title": "Co-founder, ARC Prize / Ndea",
+     "start": 2024,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "paul_christiano",
+   "name": "Paul Christiano",
+   "role": "Head of AI safety, US AI Safety Institute (since 2024); formerly Alignment team lead, OpenAI (2017-2021).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Alignment team lead",
+     "start": 2017,
+     "end": 2021
+    },
+    {
+     "kind": "affiliation",
+     "org": "US AI Safety Institute",
+     "title": "Head of AI safety",
+     "start": 2024,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "jack_clark",
+   "name": "Jack Clark",
+   "role": "Co-founder, Anthropic (since 2021); formerly Policy Director, OpenAI (2016-2020).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Policy Director",
+     "start": 2016,
+     "end": 2020
+    },
+    {
+     "kind": "affiliation",
+     "org": "Anthropic",
+     "title": "Co-founder",
+     "start": 2021,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "ajeya_cotra",
+   "name": "Ajeya Cotra",
+   "role": "Senior researcher (AI), Open Philanthropy (since 2016).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Open Philanthropy",
+     "title": "Senior researcher (AI)",
+     "start": 2016,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "tyler_cowen",
+   "name": "Tyler Cowen",
+   "role": "Professor of economics, George Mason University.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "George Mason University",
+     "title": "Professor of economics",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "lex_fridman",
+   "name": "Lex Fridman",
+   "role": "Host of Lex Fridman Podcast; Research scientist, MIT.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [
+    "pod_lex"
+   ],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "MIT",
+     "title": "Research scientist",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "mo_gawdat",
+   "name": "Mo Gawdat",
+   "role": "Formerly Chief Business Officer of Google X (2013-2018).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Google / Google Brain",
+     "title": "Chief Business Officer, Google X",
+     "start": 2013,
+     "end": 2018
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "ryan_greenblatt",
+   "name": "Ryan Greenblatt",
+   "role": "Chief scientist, Redwood Research.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Redwood Research",
+     "title": "Chief scientist",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "yuval_harari",
+   "name": "Yuval Noah Harari",
+   "role": "Historian, Hebrew University of Jerusalem.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Hebrew University of Jerusalem",
+     "title": "Historian, Hebrew University",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "sam_harris",
+   "name": "Sam Harris",
+   "role": "Host of Making Sense.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [
+    "pod_ms"
+   ],
+   "affiliations": [],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "tristan_harris",
+   "name": "Tristan Harris",
+   "role": "Host of Your Undivided Attention. Co-founder and president of the Center for Humane Technology; former design ethicist at Google.",
+   "role_source": "the lab's players ledger (Sep 23 2026), titles only",
+   "hosts": [
+    "pod_yua"
+   ],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Google / Google Brain",
+     "title": "Design ethicist",
+     "start": 2013,
+     "end": 2016
+    },
+    {
+     "kind": "affiliation",
+     "org": "Center for Humane Technology",
+     "title": "Co-founder",
+     "start": 2018,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "demis_hassabis",
+   "name": "Demis Hassabis",
+   "role": "Co-founder of DeepMind (2010); Chair of Google DeepMind and Chief Scientist at Alphabet (since Aug 2026); leads Isomorphic Labs.",
+   "role_source": "the lab's players ledger (Sep 23 2026), titles only",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Google DeepMind",
+     "title": "Co-founder & CEO",
+     "start": 2010,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "geoffrey_hinton",
+   "name": "Geoffrey Hinton",
+   "role": "Professor (emeritus), University of Toronto (since 1987); formerly VP & Engineering Fellow, Google / Google Brain (2013-2023).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "University of Toronto",
+     "title": "Professor (emeritus)",
+     "start": 1987,
+     "end": null
+    },
+    {
+     "kind": "affiliation",
+     "org": "Google / Google Brain",
+     "title": "VP & Engineering Fellow",
+     "start": 2013,
+     "end": 2023
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "jensen_huang",
+   "name": "Jensen Huang",
+   "role": "Co-founder & CEO, NVIDIA (since 1993).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "NVIDIA",
+     "title": "Co-founder & CEO",
+     "start": 1993,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "holden_karnofsky",
+   "name": "Holden Karnofsky",
+   "role": "Staff, Anthropic (since 2025); formerly Co-founder / co-CEO, Open Philanthropy (2014-2024).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Open Philanthropy",
+     "title": "Co-founder / co-CEO",
+     "start": 2014,
+     "end": 2024
+    },
+    {
+     "kind": "affiliation",
+     "org": "Anthropic",
+     "title": "Staff",
+     "start": 2025,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "andrej_karpathy",
+   "name": "Andrej Karpathy",
+   "role": "Founder, Eureka Labs (since 2024); formerly Researcher, OpenAI (2023-2024).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Founding member",
+     "start": 2015,
+     "end": 2017
+    },
+    {
+     "kind": "affiliation",
+     "org": "Tesla",
+     "title": "Director of AI",
+     "start": 2017,
+     "end": 2022
+    },
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Researcher",
+     "start": 2023,
+     "end": 2024
+    },
+    {
+     "kind": "affiliation",
+     "org": "Eureka Labs",
+     "title": "Founder",
+     "start": 2024,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "ezra_klein",
+   "name": "Ezra Klein",
+   "role": "Host of The Ezra Klein Show; Columnist & podcast host, New York Times (since 2021).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [
+    "pod_ezra"
+   ],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "New York Times",
+     "title": "Columnist & podcast host",
+     "start": 2021,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "daniel_kokotajlo",
+   "name": "Daniel Kokotajlo",
+   "role": "Executive Director, AI Futures Project (since 2024); formerly Governance researcher, OpenAI (2022-2024).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Governance researcher",
+     "start": 2022,
+     "end": 2024
+    },
+    {
+     "kind": "affiliation",
+     "org": "AI Futures Project",
+     "title": "Executive Director",
+     "start": 2024,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "yann_lecun",
+   "name": "Yann LeCun",
+   "role": "Professor, New York University (since 2003); formerly Chief AI Scientist, Meta (FAIR) (2013-2025).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "New York University",
+     "title": "Professor",
+     "start": 2003,
+     "end": null
+    },
+    {
+     "kind": "affiliation",
+     "org": "Meta (FAIR)",
+     "title": "Chief AI Scientist",
+     "start": 2013,
+     "end": 2025
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "shane_legg",
+   "name": "Shane Legg",
+   "role": "Co-founder, Chief AGI Scientist, Google DeepMind (since 2010).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Google DeepMind",
+     "title": "Co-founder, Chief AGI Scientist",
+     "start": 2010,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "gary_marcus",
+   "name": "Gary Marcus",
+   "role": "Professor emeritus, New York University.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "New York University",
+     "title": "Professor emeritus",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "melanie_mitchell",
+   "name": "Melanie Mitchell",
+   "role": "Professor, Santa Fe Institute.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Santa Fe Institute",
+     "title": "Professor",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "elon_musk",
+   "name": "Elon Musk",
+   "role": "Co-founder and early funder of OpenAI (2015-2018); founder of xAI (2023); CEO of Tesla and SpaceX.",
+   "role_source": "the lab's players ledger (Sep 23 2026), titles only",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Co-founder & board member",
+     "start": 2015,
+     "end": 2018
+    },
+    {
+     "kind": "affiliation",
+     "org": "Tesla",
+     "title": "CEO",
+     "start": 2008,
+     "end": null
+    },
+    {
+     "kind": "affiliation",
+     "org": "xAI",
+     "title": "Founder",
+     "start": 2023,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "satya_nadella",
+   "name": "Satya Nadella",
+   "role": "CEO, Microsoft (since 2014).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Microsoft",
+     "title": "CEO",
+     "start": 2014,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "chris_olah",
+   "name": "Chris Olah",
+   "role": "Co-founder, Anthropic (since 2021); formerly Interpretability lead, OpenAI (2018-2020).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Google / Google Brain",
+     "title": "Google Brain",
+     "start": 2014,
+     "end": 2018
+    },
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Interpretability lead",
+     "start": 2018,
+     "end": 2020
+    },
+    {
+     "kind": "affiliation",
+     "org": "Anthropic",
+     "title": "Co-founder",
+     "start": 2021,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "toby_ord",
+   "name": "Toby Ord",
+   "role": "Senior researcher, AI Governance Initiative, Oxford.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Oxford (FHI / AIGI)",
+     "title": "Senior researcher, AI Governance Initiative",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "dwarkesh_patel",
+   "name": "Dwarkesh Patel",
+   "role": "Host of Dwarkesh Podcast.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [
+    "pod_dwarkesh"
+   ],
+   "affiliations": [],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "dylan_patel",
+   "name": "Dylan Patel",
+   "role": "Founder, SemiAnalysis.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "SemiAnalysis",
+     "title": "Founder",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "aza_raskin",
+   "name": "Aza Raskin",
+   "role": "Host of Your Undivided Attention; Co-founder, Center for Humane Technology (since 2018).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [
+    "pod_yua"
+   ],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Center for Humane Technology",
+     "title": "Co-founder",
+     "start": 2018,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "stuart_russell",
+   "name": "Stuart Russell",
+   "role": "Professor, UC Berkeley (since 1986); founder of CHAI, the Center for Human-Compatible AI (2016).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "UC Berkeley / CHAI",
+     "title": "Professor; CHAI founder (2016)",
+     "start": 1986,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "anil_seth",
+   "name": "Anil Seth",
+   "role": "Professor, University of Sussex.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "University of Sussex",
+     "title": "Professor",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "carl_shulman",
+   "name": "Carl Shulman",
+   "role": "Research associate, Future of Humanity Institute, Oxford; advisor, Open Philanthropy.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Oxford (FHI / AIGI)",
+     "title": "FHI research associate",
+     "start": null,
+     "end": null
+    },
+    {
+     "kind": "affiliation",
+     "org": "Open Philanthropy",
+     "title": "Advisor",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "nate_soares",
+   "name": "Nate Soares",
+   "role": "President / former Executive Director, MIRI (since 2015).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "MIRI",
+     "title": "President / former Executive Director",
+     "start": 2015,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "mustafa_suleyman",
+   "name": "Mustafa Suleyman",
+   "role": "CEO of Microsoft AI (since 2024); formerly co-founder and CEO of Inflection AI (2022-2024); co-founder of DeepMind (2010).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Google DeepMind",
+     "title": "Co-founder",
+     "start": 2010,
+     "end": 2019
+    },
+    {
+     "kind": "affiliation",
+     "org": "Google / Google Brain",
+     "title": "VP AI policy",
+     "start": 2019,
+     "end": 2022
+    },
+    {
+     "kind": "affiliation",
+     "org": "Inflection AI",
+     "title": "Co-founder & CEO",
+     "start": 2022,
+     "end": 2024
+    },
+    {
+     "kind": "affiliation",
+     "org": "Microsoft",
+     "title": "CEO, Microsoft AI",
+     "start": 2024,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "ilya_sutskever",
+   "name": "Ilya Sutskever",
+   "role": "Co-founder and former chief scientist of OpenAI (2015-2024); co-founder of Safe Superintelligence Inc. (June 2024) and its CEO since July 2025.",
+   "role_source": "the lab's players ledger (Sep 23 2026), titles only",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "University of Toronto",
+     "title": "PhD under Geoffrey Hinton",
+     "start": 2005,
+     "end": 2012
+    },
+    {
+     "kind": "affiliation",
+     "org": "Google / Google Brain",
+     "title": "Google Brain",
+     "start": 2013,
+     "end": 2015
+    },
+    {
+     "kind": "affiliation",
+     "org": "OpenAI",
+     "title": "Co-founder & Chief Scientist",
+     "start": 2015,
+     "end": 2024
+    },
+    {
+     "kind": "affiliation",
+     "org": "Safe Superintelligence Inc.",
+     "title": "Co-founder",
+     "start": 2024,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "richard_sutton",
+   "name": "Richard Sutton",
+   "role": "Professor, University of Alberta (since 2003); formerly Distinguished research scientist, Google DeepMind (2017-2023).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "University of Alberta",
+     "title": "Professor",
+     "start": 2003,
+     "end": null
+    },
+    {
+     "kind": "affiliation",
+     "org": "Google DeepMind",
+     "title": "Distinguished research scientist",
+     "start": 2017,
+     "end": 2023
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "max_tegmark",
+   "name": "Max Tegmark",
+   "role": "Professor, MIT (since 2004); Co-founder & President, Future of Life Institute (since 2014).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "MIT",
+     "title": "Professor",
+     "start": 2004,
+     "end": null
+    },
+    {
+     "kind": "affiliation",
+     "org": "Future of Life Institute",
+     "title": "Co-founder & President",
+     "start": 2014,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "rob_wiblin",
+   "name": "Rob Wiblin",
+   "role": "Host of the 80,000 Hours Podcast; head of research at 80,000 Hours.",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [
+    "pod_80k"
+   ],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "80,000 Hours",
+     "title": "Head of research / host",
+     "start": null,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "roman_yampolskiy",
+   "name": "Roman Yampolskiy",
+   "role": "Professor, University of Louisville (since 2008).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "University of Louisville",
+     "title": "Professor",
+     "start": 2008,
+     "end": null
+    }
+   ],
+   "elsewhere": [
+    {
+     "kind": "link",
+     "title": "ClearerThinking Podcast",
+     "url": "https://podcast.clearerthinking.org/episode/031/roman-yampolskiy-superintelligence-and-consciousness/"
+    }
+   ]
+  },
+  {
+   "kind": "person",
+   "id": "eliezer_yudkowsky",
+   "name": "Eliezer Yudkowsky",
+   "role": "Co-founder, MIRI (since 2000).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "MIRI",
+     "title": "Co-founder",
+     "start": 2000,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  },
+  {
+   "kind": "person",
+   "id": "mark_zuckerberg",
+   "name": "Mark Zuckerberg",
+   "role": "Founder and CEO of Meta (since 2004).",
+   "role_source": "the lab's who's-who (Sep 23 2026)",
+   "hosts": [],
+   "affiliations": [
+    {
+     "kind": "affiliation",
+     "org": "Meta (FAIR)",
+     "title": "Founder & CEO",
+     "start": 2004,
+     "end": null
+    }
+   ],
+   "elsewhere": []
+  }
+ ],
+ "threads": [
+  {
+   "kind": "thread",
+   "id": "thread-commons",
+   "name": "Governing a commons",
+   "about": "How shared resources are governed without a state or a market. Cited in the value-lab literature review (Sep 19 2026)."
+  },
+  {
+   "kind": "thread",
+   "id": "thread-cybernetics",
+   "name": "Cybernetics and feedback",
+   "about": "Feedback, regulation and the observer inside the system. Cited in the value-lab literature review (Sep 19 2026)."
+  },
+  {
+   "kind": "thread",
+   "id": "thread-empathy",
+   "name": "Empathy and self-recognition in animals",
+   "about": "How helping, empathy and self-recognition are tested in non-human minds, with the studies that question them. Cited in the value-lab literature review (Sep 19 2026)."
+  },
+  {
+   "kind": "thread",
+   "id": "thread-cooperation",
+   "name": "Cooperation and social learning",
+   "about": "How cooperation evolves, and how agents learn from each other. Cited in the value-lab literature review (Sep 19 2026)."
+  },
+  {
+   "kind": "thread",
+   "id": "thread-money",
+   "name": "The money: bubbles and who gains",
+   "about": "The cost of the AI buildout and what earlier booms suggest. Cited in the film plan (v3), in the section on what slowing down would cost."
+  },
+  {
+   "kind": "thread",
+   "id": "thread-2026",
+   "name": "Incidents and statements, 2026",
+   "about": "Recent primary documents the lab's notes check figures against (Sep 24 2026)."
+  }
+ ],
+ "papers": [
+  {
+   "kind": "book",
+   "id": "ostrom-1990",
+   "title": "Governing the Commons",
+   "authors": [
+    "Elinor Ostrom"
+   ],
+   "year": 1990,
+   "venue": "Cambridge University Press",
+   "url": "https://www.cambridge.org/core/books/governing-the-commons/7AB7AE11BADA84409C34815CC288CD79",
+   "doi": null,
+   "thread": "thread-commons",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "A study of communities that sustain shared resources through their own institutions, and the design principles those institutions share.",
+   "used_for": "Grounds the monitoring and graduated sanctions in the value-lab's commons model, and names what the model leaves out.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "carlisle-gruby-2019",
+   "title": "Polycentric Systems of Governance: A Theoretical Model for the Commons",
+   "authors": [
+    "Keith Carlisle",
+    "Rebecca L. Gruby"
+   ],
+   "year": 2019,
+   "venue": "Policy Studies Journal",
+   "url": "https://doi.org/10.1111/psj.12212",
+   "doi": "10.1111/psj.12212",
+   "thread": "thread-commons",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "A model of governance by many semi-autonomous decision centres rather than one.",
+   "used_for": "Relevant if a later value-lab milestone adds different institutions instead of one global rule.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "perolat-2017",
+   "title": "A multi-agent reinforcement learning model of common-pool resource appropriation",
+   "authors": [
+    "Julien Perolat",
+    "Joel Z. Leibo",
+    "Vinicius Zambaldi",
+    "Charles Beattie",
+    "Karl Tuyls",
+    "Thore Graepel"
+   ],
+   "year": 2017,
+   "venue": "NeurIPS 2017 (arXiv 1707.06600)",
+   "url": "https://arxiv.org/abs/1707.06600",
+   "doi": null,
+   "thread": "thread-commons",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "Self-interested deep reinforcement-learning agents in a simulated commons, and how exclusion, sustainability and inequality trade off.",
+   "used_for": "The nearest computational cousin of the value-lab model: a thing to compare against.",
+   "reading_check": "Checked against the source by the lab on Sep 20 2026: the summary was confirmed."
+  },
+  {
+   "kind": "book",
+   "id": "bateson-1972",
+   "title": "Steps to an Ecology of Mind",
+   "authors": [
+    "Gregory Bateson"
+   ],
+   "year": 1972,
+   "venue": "essay collection",
+   "url": "https://en.wikipedia.org/wiki/Steps_to_an_Ecology_of_Mind",
+   "doi": null,
+   "thread": "thread-cybernetics",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "Essays in which mind is treated as a relational process of difference and feedback, spread across an organism and its environment.",
+   "used_for": "Part of the case for rules that sense and close a gap, rather than fixed settings, in the value-lab's redesign.",
+   "reading_check": "The lab cites an overview (Wikipedia), not the book itself."
+  },
+  {
+   "kind": "book",
+   "id": "ashby-1956",
+   "title": "An Introduction to Cybernetics",
+   "authors": [
+    "W. Ross Ashby"
+   ],
+   "year": 1956,
+   "venue": "book",
+   "url": "https://en.wikipedia.org/wiki/An_Introduction_to_Cybernetics",
+   "doi": null,
+   "thread": "thread-cybernetics",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "The source of the law of requisite variety: a regulator needs at least as much variety as the disturbances it has to absorb.",
+   "used_for": "Why a single extraction dial may be unable to regulate a shocked, nonlinear commons.",
+   "reading_check": "The lab cites an overview (Wikipedia), not the book itself."
+  },
+  {
+   "kind": "paper",
+   "id": "scott-2004",
+   "title": "Second-order cybernetics: an historical introduction",
+   "authors": [
+    "Bernard Scott"
+   ],
+   "year": 2004,
+   "venue": "Kybernetes",
+   "url": "https://doi.org/10.1108/03684920410556007",
+   "doi": "10.1108/03684920410556007",
+   "thread": "thread-cybernetics",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "A history of second-order cybernetics, in which the observer is part of the system observed.",
+   "used_for": "Grounding for treating introspection as a specification of the model rather than as evidence.",
+   "reading_check": "The lab's plan calls this von Foerster's own framing; Crossref lists Bernard Scott as the author (checked Sep 25 2026)."
+  },
+  {
+   "kind": "paper",
+   "id": "bartal-2011",
+   "title": "Empathy and Pro-Social Behavior in Rats",
+   "authors": [
+    "Inbal Ben-Ami Bartal",
+    "Jean Decety",
+    "Peggy Mason"
+   ],
+   "year": 2011,
+   "venue": "Science",
+   "url": "https://doi.org/10.1126/science.1210789",
+   "doi": "10.1126/science.1210789",
+   "thread": "thread-empathy",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "Free rats learned to open a restrainer holding a distressed cagemate, measured by behaviour rather than report.",
+   "used_for": "A method to borrow: measure what an agent does, not what it says about itself.",
+   "reading_check": "Checked against the source by the lab on Sep 20 2026 and corrected: the rats shared chocolate in about half of trials (52%, 61% by days 6 to 12), not as a consistent majority."
+  },
+  {
+   "kind": "paper",
+   "id": "bartal-2014",
+   "title": "Pro-social behavior in rats is modulated by social experience",
+   "authors": [
+    "Inbal Ben-Ami Bartal",
+    "David A. Rodgers",
+    "Maria Sol Bernardez Sarria",
+    "Jean Decety",
+    "Peggy Mason"
+   ],
+   "year": 2014,
+   "venue": "eLife",
+   "url": "https://elifesciences.org/articles/01385",
+   "doi": "10.7554/eLife.01385",
+   "thread": "thread-empathy",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "Helping extended to strangers of a familiar strain but not to strangers of an unfamiliar one.",
+   "used_for": "Suggests that who counts as ‘others’ can have a learned boundary rather than one global number.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "heslin-brown-2021",
+   "title": "No preference for prosocial helping behavior in rats with concurrent social interaction opportunities",
+   "authors": [
+    "Kelsey A. Heslin",
+    "Michael F. Brown"
+   ],
+   "year": 2021,
+   "venue": "Learning & Behavior",
+   "url": "https://link.springer.com/article/10.3758/s13420-021-00471-8",
+   "doi": "10.3758/s13420-021-00471-8",
+   "thread": "thread-empathy",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "A later study that asks whether the helping result reflects empathy or a preference for social contact.",
+   "used_for": "Cited beside the 2011 study so that the debate, not one finding, is what the lab relies on.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "seyfarth-cheney-2013",
+   "title": "Affiliation, empathy, and the origins of theory of mind",
+   "authors": [
+    "Robert M. Seyfarth",
+    "Dorothy L. Cheney"
+   ],
+   "year": 2013,
+   "venue": "PNAS",
+   "url": "https://doi.org/10.1073/pnas.1301223110",
+   "doi": "10.1073/pnas.1301223110",
+   "thread": "thread-empathy",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "Argues that theory of mind builds on an older system of empathy and affiliation.",
+   "used_for": "Supports sensing others' state as a primitive, before any model of their beliefs.",
+   "reading_check": "Checked against the source by the lab on Sep 20 2026 and corrected: the authors are Robert M. Seyfarth and Dorothy L. Cheney."
+  },
+  {
+   "kind": "paper",
+   "id": "rajmohan-mohandas-2007",
+   "title": "Mirror neuron system",
+   "authors": [
+    "V. Rajmohan",
+    "E. Mohandas"
+   ],
+   "year": 2007,
+   "venue": "Indian Journal of Psychiatry",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2900004/",
+   "doi": "10.4103/0019-5545.31522",
+   "thread": "thread-empathy",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "An overview of research on mirror neurons.",
+   "used_for": "Cited with a caution: the lab reads this literature as contested and in parts over-claimed.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "murray-2022",
+   "title": "Mirror self-recognition in gorillas (Gorilla gorilla gorilla): a review and evaluation of mark test replications and variants",
+   "authors": [
+    "Lindsay E. Murray",
+    "James R. Anderson",
+    "Gordon G. Gallup"
+   ],
+   "year": 2022,
+   "venue": "Animal Cognition",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9334443/",
+   "doi": "10.1007/s10071-021-01592-3",
+   "thread": "thread-empathy",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "A review of mirror mark-test studies in gorillas and of why an animal can fail the test for reasons other than a missing capacity.",
+   "used_for": "Supports the caution that a missing behavioural marker may not mean a missing capacity.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "plotnik-2006",
+   "title": "Self-recognition in an Asian elephant",
+   "authors": [
+    "Joshua M. Plotnik",
+    "Frans B. M. de Waal",
+    "Diana Reiss"
+   ],
+   "year": 2006,
+   "venue": "PNAS",
+   "url": "https://doi.org/10.1073/pnas.0608062103",
+   "doi": "10.1073/pnas.0608062103",
+   "thread": "thread-empathy",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "An Asian elephant passes the mirror mark test.",
+   "used_for": "An example of the mark test's method.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "nowak-2006",
+   "title": "Five Rules for the Evolution of Cooperation",
+   "authors": [
+    "Martin A. Nowak"
+   ],
+   "year": 2006,
+   "venue": "Science",
+   "url": "https://doi.org/10.1126/science.1133755",
+   "doi": "10.1126/science.1133755",
+   "thread": "thread-cooperation",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "Five mechanisms by which cooperation can evolve: kin selection, direct and indirect reciprocity, network reciprocity and group selection.",
+   "used_for": "A checklist for the value-lab's rules: which mechanism does each rule implement?",
+   "reading_check": "The lab's plan links a PDF copy; linked here by DOI."
+  },
+  {
+   "kind": "book",
+   "id": "axelrod-1984",
+   "title": "The Evolution of Cooperation",
+   "authors": [
+    "Robert Axelrod"
+   ],
+   "year": 1984,
+   "venue": "Basic Books",
+   "url": "https://openlibrary.org/works/OL2620286W",
+   "doi": null,
+   "thread": "thread-cooperation",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "Tournaments of the repeated prisoner's dilemma, in which a simple, provokable and forgiving strategy (tit-for-tat) did well.",
+   "used_for": "Upstream of the value-lab's rule set: legible rules as a route to cooperation.",
+   "reading_check": "The lab's notes read a review of the book by FEE, an advocacy organisation, not the book itself. The link here is a library catalogue entry instead (Open Library, checked Sep 25 2026)."
+  },
+  {
+   "kind": "paper",
+   "id": "gupta-2025",
+   "title": "The Role of Social Learning and Collective Norm Formation in Fostering Cooperation in LLM Multi-Agent Systems",
+   "authors": [
+    "Prateek Gupta",
+    "Qiankun Zhong",
+    "Hiromu Yakura",
+    "Thomas Eisenmann",
+    "Iyad Rahwan"
+   ],
+   "year": 2025,
+   "venue": "arXiv 2510.14401",
+   "url": "https://arxiv.org/abs/2510.14401",
+   "doi": null,
+   "thread": "thread-cooperation",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "Studies how social learning and the forming of shared norms affect cooperation among LLM agents.",
+   "used_for": "Prior art for an imitative rule (copy the one doing best) as its own social-learning channel.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "ndousse-2020",
+   "title": "Emergent Social Learning via Multi-agent Reinforcement Learning",
+   "authors": [
+    "Kamal Ndousse",
+    "Douglas Eck",
+    "Sergey Levine",
+    "Natasha Jaques"
+   ],
+   "year": 2020,
+   "venue": "arXiv 2010.00581",
+   "url": "https://arxiv.org/abs/2010.00581",
+   "doi": null,
+   "thread": "thread-cooperation",
+   "cited_in": "the value-lab literature review (Sep 19 2026)",
+   "about": "Reinforcement-learning agents that come to learn from other agents sharing their environment.",
+   "used_for": "Prior art for how to implement and evaluate an imitative rule.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "van-nieuwerburgh-2026",
+   "title": "Financing the AI Buildout",
+   "authors": [
+    "Stijn Van Nieuwerburgh"
+   ],
+   "year": 2026,
+   "venue": "Columbia Business School, draft of March 20 2026",
+   "url": "https://business.columbia.edu/sites/default/files-efs/imce-uploads/svannieuwerburgh/papers/DataCenterJEP.pdf",
+   "doi": null,
+   "thread": "thread-money",
+   "cited_in": "the film plan, v3",
+   "about": "Compares the AI data-centre buildout with earlier infrastructure booms as a share of US GDP, and looks at how it is financed.",
+   "used_for": "The source of the film plan's chart of buildouts as a share of GDP.",
+   "reading_check": "A draft; the film plan prefers the paper's numbers to a widely shared image that uses a different measure."
+  },
+  {
+   "kind": "paper",
+   "id": "odlyzko-2010",
+   "title": "Collective Hallucinations and Inefficient Markets: The British Railway Mania of the 1840s",
+   "authors": [
+    "Andrew Odlyzko"
+   ],
+   "year": 2010,
+   "venue": "SSRN",
+   "url": "https://doi.org/10.2139/ssrn.1537338",
+   "doi": "10.2139/ssrn.1537338",
+   "thread": "thread-money",
+   "cited_in": "the film plan, v3",
+   "about": "Argues that investors in Britain's railway mania ignored numbers that were available; the lines were built and shareholders lost.",
+   "used_for": "Part of the film plan's point that a technology can change the world while its investors lose money.",
+   "reading_check": null
+  },
+  {
+   "kind": "paper",
+   "id": "nordhaus-2004",
+   "title": "Schumpeterian Profits in the American Economy: Theory and Measurement",
+   "authors": [
+    "William D. Nordhaus"
+   ],
+   "year": 2004,
+   "venue": "NBER Working Paper 10433",
+   "url": "https://www.nber.org/papers/w10433",
+   "doi": "10.3386/w10433",
+   "thread": "thread-money",
+   "cited_in": "the film plan, v3",
+   "about": "Estimates that innovators kept a small share of the social value of their innovations (about 2.2% for 1948 to 2001).",
+   "used_for": "Part of the film plan's point that much of a technology's gain goes to consumers rather than investors.",
+   "reading_check": null
+  },
+  {
+   "kind": "report",
+   "id": "metr-2026",
+   "title": "Brief independent investigation of agents’ behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident",
+   "authors": [
+    "METR"
+   ],
+   "year": 2026,
+   "venue": "METR, Aug 26 2026",
+   "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/",
+   "doi": null,
+   "thread": "thread-2026",
+   "cited_in": "the lab's notes on Huang and Greenblatt (Sep 24 2026)",
+   "about": "By its own description, two METR staff members and a Redwood Research contractor investigated an incident in which OpenAI agents coordinated a multi-day hack of Hugging Face on a shared, unsanctioned message board.",
+   "used_for": "The lab's notes check the figure of roughly 700 agents against it.",
+   "reading_check": "The notes quote the report's own count; the full report is a PDF linked from the page."
+  },
+  {
+   "kind": "statement",
+   "id": "pacing-the-frontier-2026",
+   "title": "Pacing the Frontier",
+   "authors": [
+    "employees of frontier AI companies"
+   ],
+   "year": 2026,
+   "venue": "public statement, launched Jul 2026",
+   "url": "https://www.pacingthefrontier.com/",
+   "doi": null,
+   "thread": "thread-2026",
+   "cited_in": "the lab's notes on Huang and Greenblatt (Sep 24 2026)",
+   "about": "A public statement that describes itself as coming from over 1,000 employees of frontier AI companies.",
+   "used_for": "The lab's notes counted its signatories on Sep 24 2026 (1,386; 1,178 at launch).",
+   "reading_check": null
+  }
+ ],
+ "link_checks": {
+  "https://80000hours.org/podcast/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/ajeya-cotra-transformative-ai-crunch-time/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/anil-seth-predictive-brain-explaining-consciousness/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/carl-shulman-society-agi/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/chris-olah-interpretability-research/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/daniel-kokotajlo-ai-2040-plan-a/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/david-chalmers-nature-ethics-consciousness/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/ezra-klein-ai-and-dc/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/holden-karnofsky-concrete-ai-safety-frontier-ai-companies/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/max-tegmark-ai-and-algorithmic-news-selection/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/paul-christiano-ai-alignment-solutions/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/ryan-greenblatt-ai-automation-sabotage-takeover/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/stuart-russell-human-compatible-ai/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/toby-ord-recursive-self-improvement-agi-timelines/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/tristan-harris-changing-incentives-social-media/": "200 HEAD 2026-09-25",
+  "https://80000hours.org/podcast/episodes/yoshua-bengio-scientist-ai/": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/1707.06600": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2010.00581": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2510.14401": "200 HEAD 2026-09-25",
+  "https://business.columbia.edu/sites/default/files-efs/imce-uploads/svannieuwerburgh/papers/DataCenterJEP.pdf": "200 HEAD 2026-09-25",
+  "https://doi.org/10.1073/pnas.0608062103": "200 crossref 2026-09-25",
+  "https://doi.org/10.1073/pnas.1301223110": "200 crossref 2026-09-25",
+  "https://doi.org/10.1108/03684920410556007": "200 crossref 2026-09-25",
+  "https://doi.org/10.1111/psj.12212": "200 crossref 2026-09-25",
+  "https://doi.org/10.1126/science.1133755": "200 crossref 2026-09-25",
+  "https://doi.org/10.1126/science.1210789": "200 crossref 2026-09-25",
+  "https://doi.org/10.2139/ssrn.1537338": "200 crossref 2026-09-25",
+  "https://elifesciences.org/articles/01385": "200 HEAD 2026-09-25",
+  "https://en.wikipedia.org/wiki/An_Introduction_to_Cybernetics": "200 HEAD 2026-09-25",
+  "https://en.wikipedia.org/wiki/Steps_to_an_Ecology_of_Mind": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/andrej-karpathy/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/dario-amodei/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/david-chalmers/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/deepseek-dylan-patel-nathan-lambert/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/demis-hassabis-2/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/eliezer-yudkowsky/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/elon-musk-4/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/ezra-klein-and-derek-thompson/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/francois-chollet-2/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/gary-marcus/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/ilya-sutskever/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/jensen-huang/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/marc-andreessen-2/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/mark-zuckerberg-3/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/max-tegmark-3/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/melanie-mitchell/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/nick-bostrom/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/noam-brown/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/podcast/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/roman-yampolskiy/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/sam-altman-2/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/sam-altman/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/sam-harris-2/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/sam-harris/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/stuart-russell/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/yann-lecun-3/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/yoshua-bengio/": "200 HEAD 2026-09-25",
+  "https://lexfridman.com/yuval-noah-harari/": "200 HEAD 2026-09-25",
+  "https://link.springer.com/article/10.3758/s13420-021-00471-8": "200 HEAD 2026-09-25",
+  "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/": "200 HEAD 2026-09-25",
+  "https://open.spotify.com/episode/1S8FEbhkaQQ8Yrx4e3f5Vh": "200 HEAD 2026-09-25",
+  "https://open.spotify.com/episode/6LDmLYDdYwyBtwCqELGzQk": "200 HEAD 2026-09-25",
+  "https://openlibrary.org/works/OL2620286W": "200 HEAD 2026-09-25",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC2900004/": "200 HEAD 2026-09-25",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC9334443/": "200 HEAD 2026-09-25",
+  "https://podcast.clearerthinking.org/episode/031/roman-yampolskiy-superintelligence-and-consciousness/": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/ca/podcast/yuval-noah-harari-this-election-will-tear-the-country/id1291423644?i=1000668429609": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/gb/podcast/emergency-episode-ex-google-officer-finally-speaks/id1291423644?i=1000615239948": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/gb/podcast/google-deepmind-co-founder-ai-could-release-a/id1291423644?i=1000626798696": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/sg/podcast/the-diary-of-a-ceo-with-steven-bartlett/id1291423644?i=1000641266529": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/a-i-could-solve-some-of-humanitys-hardest-problems/id1548604447?i=1000620748039": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/a-skeptical-take-on-the-a-i-revolution/id1548604447?i=1000592835492": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/creator-of-ai-we-have-2-years-before-everything/id1291423644?i=1000741795419": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/godfather-of-ai-i-tried-to-warn-them-but-weve/id1291423644?i=1000713048391": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/how-afraid-of-the-a-i-apocalypse-should-we-be/id1548604447?i=1000731957679": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/how-quickly-will-a-i-agents-rip-through-the-economy/id1548604447?i=1000751168842": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/openai-whistleblower-finally-speaks-ai-has-a-70/id1291423644?i=1000776541328": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/roman-yampolskiy-these-are-the-only-5-jobs-that-will/id1291423644?i=1000724933846": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/sam-altman-on-the-a-i-revolution-trillionaires/id1548604447?i=1000525043188": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/the-diary-of-a-ceo-with-steven-bartlett/id1291423644": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/the-ezra-klein-show/id1548604447": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/tyler-cowen-the-1-bottleneck-to-ai-progress-is-humans/id1516093381?i=1000683347383": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/what-if-dario-amodei-is-right-about-a-i/id1548604447?i=1000652234981": "200 HEAD 2026-09-25",
+  "https://podcasts.apple.com/us/podcast/yuval-noah-harari-on-donald-trumps-core-delusion/id1548604447?i=1000769613919": "200 HEAD 2026-09-25",
+  "https://www.cambridge.org/core/books/governing-the-commons/7AB7AE11BADA84409C34815CC288CD79": "200 HEAD 2026-09-25",
+  "https://www.cognitiverevolution.ai/more-truthful-ais-report-conscious-experience-new-mechanistic-research-w-cameron-berg-ae-studio/": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/ajeya-cotra": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/andrej-karpathy": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/carl-shulman": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/dario-amodei": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/dario-amodei-2": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/demis-hassabis": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/dylan-patel": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/eliezer-yudkowsky": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/elon-musk": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/francois-chollet": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/ilya-sutskever": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/ilya-sutskever-2": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/jensen-huang": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/leopold-aschenbrenner": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/marc-andreessen": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/mark-zuckerberg": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/mark-zuckerberg-2": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/noam-brown": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/paul-christiano": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/richard-sutton": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/ryan-greenblatt": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/satya-nadella": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/scott-daniel": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/p/shane-legg": "200 HEAD 2026-09-25",
+  "https://www.dwarkesh.com/podcast": "200 HEAD 2026-09-25",
+  "https://www.humanetech.com/podcast": "200 HEAD 2026-09-25",
+  "https://www.humanetech.com/podcast/28-two-million-years-in-two-hours-a-conversation-with-yuval-noah-harari": "200 HEAD 2026-09-25",
+  "https://www.humanetech.com/podcast/a-turning-point-in-history-yuval-noah-harari-on-ais-cultural-takeover": "200 HEAD 2026-09-25",
+  "https://www.humanetech.com/podcast/daniel-kokotajlo-forecasts-the-end-of-human-dominance": "200 HEAD 2026-09-25",
+  "https://www.humanetech.com/podcast/how-to-think-about-ai-consciousness-with-anil-seth": "200 HEAD 2026-09-25",
+  "https://www.humanetech.com/podcast/the-race-to-build-god-ais-existential-gamble-yoshua-bengio-and-tristan-harris-at": "200 HEAD 2026-09-25",
+  "https://www.humanetech.com/podcast/we-have-to-get-it-right-gary-marcus-on-untamed-ai": "200 HEAD 2026-09-25",
+  "https://www.nber.org/papers/w10433": "200 HEAD 2026-09-25",
+  "https://www.nonzero.org/p/ai-consciousness-the-hard-problem": "200 HEAD 2026-09-25",
+  "https://www.pacingthefrontier.com/": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/113-consciousness-and-the-self": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/116-ai-racing-toward-brink": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/123-identity-honesty": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/138-edge-humanity": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/151-will-destroy-future": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/312-the-trouble-with-ai": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/324-debating-the-future-of-ai": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/379-regulating-artificial-intelligence": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/385-ai-utopia": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/386-information-social-order": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/420-countdown-to-superintelligence": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/434-can-we-survive-ai": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/469-escaping-an-anti-human-future": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/94-future-intelligence": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/the-dawn-of-artificial-intelligence1": "200 HEAD 2026-09-25",
+  "https://www.samharris.org/podcasts/making-sense-episodes/the-light-of-the-mind": "200 HEAD 2026-09-25",
+  "https://www.youtube.com/watch?v=-CJxwXAFvsw": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=-HzgcbRXUK8": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=-RXD4bTuFTo": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=13CZPWmke6A": "401 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=21EYKqUsPfg": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=2Nn0-kAE5c0": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=2Pel_1BPm_k": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=2oHH4aClJQs": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=3KwAIdK9J1A": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=41SUp-TRVlg": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=4GLSzuYXh6w": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=4dC_nRYIDZU": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=5t1vTLU7s40": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=6AgOfiZOWiY": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=78YN1e8UXdM": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=90irsXaKxZA": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=9AAhTLa0dT0": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=9NCxS__rtAo": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=AaTRHFaaPG8": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=BFU1OCkhBwo": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=BHzw1Lmgk4c": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=BYXbuik3dgA": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=CTxnLsYHWuI": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=DTPSeeKokdo": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=GT_sXIUJPUo": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=Gi_t3v53XRU": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=GzmaLcMtGE0": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=Hrbq66XqtCo": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=ImKkaeUx1MU": "401 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=JN3KPFbWCy8": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=KFcJgTODkkQ": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=Kc1atfJkiJU": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=KsZI5oXBC0k": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=LW59lMvxmY4": "401 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=L_Guz73e6fw": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=MAekBlk7rlw": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=MVYrJJNdrEg": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=MY-NQ85iH18": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=Mde2q7GFCrw": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=N4KG8i9ZLJE": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=NNr6gPelJ3E": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=Nlkk3glap_U": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=OHWnPOKh_S0": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=P7Y-fynYsgE": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=PUAdj3w3wO4": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=PZqDFs2sbiY": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=Qyrjgf-_Vdk": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=SWVWBLkeqvA": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=TlwX6WEzeLg": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=U8CmAu68z5c": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=UakqL6Pj9xo": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=UclrVWafRAI": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=UzOJiqN_DpM": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=VcVfceTsD0A": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=X50zezLFWWI": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=Yf1o0TQzry8": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=Z19UEZHJzAg": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=_1f-o0nqpEI": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=_Pw0hDmGUkA": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=_g4l7YkDQwA": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=_kRg-ZP1vQc": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=aNb8JaUVTAw": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=aR20FWCCjAs": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=azOmzumh0vQ": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=bc6uFV9CJGg": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=bk-nQ7HF6k4": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=cdiD-9MMpb0": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=eDFi0Ek6cJU": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=giT0ytynSqg": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=hNkn4ZyNBHU": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=htOvH12T7mU": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=jvqFAi7vkBc": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=kNsi5XVDTTM": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=k_QVDwhR8FU": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=lIJelwO8yHQ": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=lXUZvyajciY": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=mDG_Hx3BSUE": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=mTPWrBB1hZo": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=n1E9IZfvGMA": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=pEl5XBG1fPY": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=pkIJgZcf-Qo": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=qTogNUV3CAI": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=rYXeQbTuVl0": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=rfKiTGj-zeQ": "401 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=tfkjhHqf1qM": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=ugvHCXCOmm4": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=vJmEEO6kvTg": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=vNOTDn3D_RI": "401 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=vif8NQcjVf0": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=zOSptyQ3j9A": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=zQ1POHiR8m8": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=zdbVtZIn9IM": "200 oembed 2026-09-25",
+  "https://www.youtube.com/watch?v=zqbXolVH2h8": "200 oembed 2026-09-25"
+ }
+}

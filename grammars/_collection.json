@@ -1,0 +1,340 @@
+{
+  "repo": "PlayfulProcess/recursive-learning",
+  "branch": "main",
+  "github_url": "https://github.com/PlayfulProcess/recursive-learning",
+  "collection": "recursive-learning",
+  "name": "Recursive Eco-Improvement: explorations in adaptive alignment",
+  "version": "1.0.0",
+  "license": "Mixed: see each grammar's own licence; this site's own text and generated grammars are CC-BY-SA-4.0",
+  "original_creator": null,
+  "creator_name": "PlayfulProcess",
+  "meta_grammar": "all-decks",
+  "_generated": true,
+  "_built_by": "scripts/build_collection.py",
+  "branches": [
+    {
+      "id": "words",
+      "name": "Words — the glossary as cards",
+      "provenance": "living",
+      "deck_slugs": [
+        "words-deck"
+      ]
+    },
+    {
+      "id": "ideas",
+      "name": "Ideas — a seed map of the AI debate, a draft",
+      "provenance": "living",
+      "deck_slugs": [
+        "ideas-of-alignment"
+      ]
+    },
+    {
+      "id": "games",
+      "name": "Games — the decks the games deal",
+      "provenance": "living",
+      "deck_slugs": [
+        "as-if-hot-potato-edition"
+      ]
+    },
+    {
+      "id": "films",
+      "name": "Films — sequences cut from public footage",
+      "provenance": "living",
+      "deck_slugs": [
+        "hot-potato-the-chosen-alien-invasion",
+        "kpop-demon-hunters",
+        "the-chosen-alien-invasion",
+        "the-chosen-alien-invasion-star-wars-primitives",
+        "the-chosen-alien-invasion-v2"
+      ]
+    },
+    {
+      "id": "courses",
+      "name": "Courses — how the tools are made and used",
+      "provenance": "living",
+      "deck_slugs": [
+        "create-grammars-with-ai",
+        "create-magic-stories-for-your-kids-with-ai",
+        "vibe-coding-101-tools-and-process",
+        "vibe-coding-102-audiobook-with-claude-code",
+        "vibe-coding-with-claude-journaling-tools"
+      ]
+    },
+    {
+      "id": "studies",
+      "name": "Studies — longer readings",
+      "provenance": "living",
+      "deck_slugs": [
+        "the-freedom-paradox"
+      ]
+    },
+    {
+      "id": "record",
+      "name": "Record — sources and institutions, dated",
+      "provenance": "record",
+      "deck_slugs": [
+        "institutions-of-alignment",
+        "sources-of-alignment"
+      ]
+    },
+    {
+      "id": "meta",
+      "name": "The castable pool",
+      "provenance": "reference",
+      "deck_slugs": [
+        "all-decks"
+      ]
+    }
+  ],
+  "grammars": [
+    {
+      "slug": "words-deck",
+      "name": "Words — the glossary as cards",
+      "type": "custom",
+      "branch": "words",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 20,
+      "blurb": "The glossary's twenty working definitions, one per card: the words the film and the games lean on. Two are standard terms and eighteen are ours, marked so. Each card holds the definition, a note, a qu…",
+      "path": "grammars/words-deck/grammar.json",
+      "provenance": "living",
+      "generated": true,
+      "cover_image_url": "/grammars/_covers/words-deck.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "ideas-of-alignment",
+      "name": "Ideas — a seed map of the AI debate",
+      "type": "custom",
+      "branch": "ideas",
+      "is_meta": false,
+      "default_preview": "tree",
+      "items": 62,
+      "blurb": "A seed draft of the ideas in the AI debate: the lab's 52 seed terms, placed in the lanes of its genealogy of AI research. For each, how often it comes up in 91 podcast episodes with automatic captions…",
+      "path": "grammars/ideas-of-alignment/grammar.json",
+      "provenance": "living",
+      "status": "draft",
+      "generated": true,
+      "cover_image_url": "/grammars/_covers/ideas-of-alignment.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "as-if-hot-potato-edition",
+      "name": "As-If — HOT POTATO edition",
+      "type": "tarot",
+      "branch": "games",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 39,
+      "blurb": "A tarot-style deck where every card is drawn upright or reversed. Nothing is settled; everything is held. Characters from the film HOT POTATO: The Chosen Alien Invasion, and the hypotheses the film ca…",
+      "path": "grammars/as-if-hot-potato-edition/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Tiger_and_Magpie%2C_72x59.4_cm%2C_priviate_collection%2C_Japan.jpg",
+      "cover_credit": "the grammar's own cover, a public-domain work on Wikimedia Commons"
+    },
+    {
+      "slug": "hot-potato-the-chosen-alien-invasion",
+      "name": "HOT POTATO: The Chosen Alien Invasion",
+      "type": "sequence",
+      "branch": "films",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 259,
+      "blurb": "Raising empathic aliens might be within reach. — A film assembled from found footage. Scientists and mystics alike are naming the same thing: the largest influx of alien minds we have ever met. We are…",
+      "path": "grammars/hot-potato-the-chosen-alien-invasion/grammar.json",
+      "provenance": "living",
+      "common_name": "Hot Potato: The Chosen Alien Invasion",
+      "ai_images": true,
+      "cover_image_url": "/grammars/_covers/hot-potato-the-chosen-alien-invasion.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "kpop-demon-hunters",
+      "name": "KPop Demon Hunters",
+      "type": "sequence",
+      "branch": "films",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 142,
+      "blurb": "Great KPop Demon Hunters video worth watching together, in one place: dance covers from crews around the world, prop and costume builds to try at home, fan films and musician covers, the real Korean h…",
+      "path": "grammars/kpop-demon-hunters/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/kpop-demon-hunters.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "the-chosen-alien-invasion",
+      "name": "The Chosen Alien Invasion",
+      "type": "sequence",
+      "branch": "films",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 98,
+      "blurb": "Raising empathic aliens might be within reach. — A film assembled from found footage. Scientists and mystics alike are naming the same thing: the largest influx of alien minds we have ever met. We are…",
+      "path": "grammars/the-chosen-alien-invasion/grammar.json",
+      "provenance": "living",
+      "common_name": "The Chosen Alien Invasion",
+      "cover_image_url": "/grammars/_covers/the-chosen-alien-invasion.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "the-chosen-alien-invasion-star-wars-primitives",
+      "name": "The Chosen Alien Invasion — opening test (Star Wars primitives)",
+      "type": "sequence",
+      "branch": "films",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 212,
+      "blurb": "Raising empathic aliens might be within reach. — A film assembled from found footage. Scientists and mystics alike are naming the same thing: the largest influx of alien minds we have ever met. We are…",
+      "path": "grammars/the-chosen-alien-invasion-star-wars-primitives/grammar.json",
+      "provenance": "living",
+      "common_name": "The Chosen Alien Invasion, opening test",
+      "ai_images": true,
+      "cover_image_url": "/grammars/_covers/the-chosen-alien-invasion-star-wars-primitives.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "the-chosen-alien-invasion-v2",
+      "name": "The Chosen Alien Invasion — v2 (rebuild)",
+      "type": "sequence",
+      "branch": "films",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 202,
+      "blurb": "Raising empathic aliens might be within reach. — A film assembled from found footage. Scientists and mystics alike are naming the same thing: the largest influx of alien minds we have ever met. We are…",
+      "path": "grammars/the-chosen-alien-invasion-v2/grammar.json",
+      "provenance": "living",
+      "common_name": "The Chosen Alien Invasion, v2",
+      "ai_images": true,
+      "cover_image_url": "/grammars/_covers/the-chosen-alien-invasion-v2.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "create-grammars-with-ai",
+      "name": "Create Grammars with AI",
+      "type": "course",
+      "branch": "courses",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 1,
+      "blurb": "",
+      "path": "grammars/create-grammars-with-ai/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/create-grammars-with-ai.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "create-magic-stories-for-your-kids-with-ai",
+      "name": "Create Magic Stories for Your Kids with AI",
+      "type": "course",
+      "branch": "courses",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 1,
+      "blurb": "",
+      "path": "grammars/create-magic-stories-for-your-kids-with-ai/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/create-magic-stories-for-your-kids-with-ai.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "vibe-coding-101-tools-and-process",
+      "name": "Vibe Coding 101 — Tools & Process",
+      "type": "custom",
+      "branch": "courses",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 9,
+      "blurb": "Five Claude artifacts built during the **Vibe Coding 101** course on recursive.eco, in the order the course walks through them. Each item links to the public Claude artifact you can fork yourself.",
+      "path": "grammars/vibe-coding-101-tools-and-process/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/vibe-coding-101-tools-and-process.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "vibe-coding-102-audiobook-with-claude-code",
+      "name": "Vibe Coding 102: Create Your Own Audiobook with Claude Code",
+      "type": "course",
+      "branch": "courses",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 1,
+      "blurb": "",
+      "path": "grammars/vibe-coding-102-audiobook-with-claude-code/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/vibe-coding-102-audiobook-with-claude-code.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "vibe-coding-with-claude-journaling-tools",
+      "name": "Vibe Coding with Claude: Building 3 Journaling AI Tools in 1 hour",
+      "type": "course",
+      "branch": "courses",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 1,
+      "blurb": "",
+      "path": "grammars/vibe-coding-with-claude-journaling-tools/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/vibe-coding-with-claude-journaling-tools.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "the-freedom-paradox",
+      "name": "The Freedom Paradox: Open Source, AI, and the Limits of Openness",
+      "type": "custom",
+      "branch": "studies",
+      "is_meta": false,
+      "default_preview": "study",
+      "items": 22,
+      "blurb": "On February 27, 2026, the Secretary of War designated Anthropic as a supply chain risk — for refusing to build autonomous weapons and mass surveillance. This book traces how open source went from Rich…",
+      "path": "grammars/the-freedom-paradox/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/the-freedom-paradox.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "institutions-of-alignment",
+      "name": "Institutions — working on alignment",
+      "type": "custom",
+      "branch": "record",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 40,
+      "blurb": "30 organisations working on alignment, AI safety and humane technology: technical research, testing and evaluation, governance and policy, public-interest research and more. Each is described from its…",
+      "path": "grammars/institutions-of-alignment/grammar.json",
+      "provenance": "record",
+      "generated": true,
+      "cover_image_url": "/grammars/_covers/institutions-of-alignment.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "sources-of-alignment",
+      "name": "Sources — the record behind the words",
+      "type": "custom",
+      "branch": "record",
+      "is_meta": false,
+      "default_preview": "tree",
+      "items": 240,
+      "blurb": "The record behind Recursive Eco-Improvement: podcast episodes in which people in the AI debate speak, with where to listen and the terms that come up; the papers, books and statements the lab's plans …",
+      "path": "grammars/sources-of-alignment/grammar.json",
+      "provenance": "record",
+      "generated": true,
+      "cover_image_url": "/grammars/_covers/sources-of-alignment.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "all-decks",
+      "name": "All decks — the castable pool",
+      "type": "custom",
+      "branch": "meta",
+      "is_meta": true,
+      "default_preview": null,
+      "items": 75,
+      "blurb": "Every castable card on the site in one pool, as pointers: the Words deck and the Ideas seed map. The Spread Caster draws from it; each card's entry opens from its own deck.",
+      "path": "grammars/all-decks/grammar.json",
+      "provenance": "reference",
+      "generated": true
+    }
+  ]
+}

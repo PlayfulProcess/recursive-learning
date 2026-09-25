@@ -47,51 +47,127 @@ binding it to this repo continues it instead of starting a rival.
 
 ## What's in here
 
+Since Sep 24 2026 the site runs on the **recursive-tarot template**: the header, footer, theme and
+viewers in `site/` are ports of recursive-tarot's (copied, then only paths, branding, the accent
+colour and content changed). [`CLAUDE.md`](CLAUDE.md) has the rules for working here.
+
 ```
-index.html                a copy of the landing for the branch build — GENERATED, edit build-site.mjs
-.nojekyll                 without it Jekyll 404s every _-prefixed path (grammars/_eco_ids.json)
-CNAME                     learning.recursive.eco (read only by a branch build; see below)
-recursive-eco.json        the channel manifest the app reads (identity, where grammars live, id map)
-grammars/
-  _eco_ids.json           slug -> recursive.eco grammar UUID
-  PRIVATE.md              the private grammars: name + id only, never contents
-  <slug>/grammar.json     one public grammar, exported in the app's own sync shape
-game/                     the games: potato-others.html (Hot Potato, with others; potato.html alone)
-                          · walk.html (The Walk) · index.html (As-If) — hand-written
-glossary/                 Words: terms.json (the canonical definitions) + index.html (GENERATED)
-site/                     the landing the Pages workflow publishes at learning.recursive.eco
-scripts/                  export-grammars.mjs (re-export) · build-site.mjs (rebuild the landing
-                          and the glossary) · build-glossary.mjs (the glossary alone)
-                          mark.svg (her spiral + icons, inlined into the landing)
-docs/CHANNELS.md          the two-channel model, and what sync needs
+site/                     published at / : the tarot shell
+  index.html              the home page: doors to Words, Sources, Ideas, Games, Institutions; the
+                          games strip; the grammar gallery (from grammars/_collection.json)
+  site-header.js          the one site map (every menu); site-footer.js; theme.css (the one colour
+                          source, light only); style.css; icons.js; spiral.svg (her mark)
+  viewers/                cards, explorer, tree-viewer, caster-studio (the Spread Caster), with
+                          spreads.json (GENERATED) and voices.json
+  pages/                  about, play (the games hub), institutions (tarot's Shop slot)
+  map/                    the Sources hub
+game/                     the games, hand-written: as-if.html (As-If, cast from the As-If deck) ·
+                          spread.html / scroll.html / walk.html (The Walk) · lines.html (Changing
+                          Lines) · potato-others.html / potato.html (Hot Potato) · index.html (the
+                          first As-If) · DESIGN-*.md
+glossary/                 terms.json (the words, the one source) · spreads.src.json (the spreads) ·
+                          index.html (GENERATED)
+grammars/                 every grammar as <slug>/grammar.json, plus _collection.json and
+                          _covers/ (GENERATED), _eco_ids.json and PRIVATE.md
+shared/nav.js             the shim that gives the hand-written game pages the site header
+research/                 not published: lab-export/ (the public inputs of Sources and Ideas),
+                          crosswalk.json, institutions/institutions.json
+scripts/                  builders, checks and the export (below); mark.svg (her spiral)
+recursive-eco.json        the channel manifest the app reads
+index.html, 404.html      noindex stubs; the site is served from site/
 ```
+
+The published folders are listed once, in `scripts/site-folders.txt`. Test on an assembled site,
+never on the repo tree (the viewers reach `../grammars/` and `/site-header.js`):
+
+```
+bash scripts/assemble-site.sh _site && python -m http.server -d _site 8000
+```
+
+### The sections
+
+| Section | Where | Built from |
+|---|---|---|
+| **Words** | `/glossary/`, the Words deck in the viewers, the Spread Caster | `glossary/terms.json` + `glossary/spreads.src.json`: one source for the page, the deck and the spreads |
+| **Sources** | `/map/` (the hub), the Sources grammar | `research/lab-export/sources.json`: podcast episodes, people, papers and books, plus one pointer per institution |
+| **Ideas** | the Ideas grammar (tree, cards, explorer) | `research/lab-export/ideas.json` + `research/crosswalk.json`: the seed terms of the lab's map, a draft, kept apart from the record |
+| **Games** | `/pages/play.html`, `/game/` | hand-written pages; the list of games is `SITE.games` in `shared/nav.js` |
+| **Institutions** | `/pages/institutions.html` (where tarot has its Shop), the Institutions grammar | `research/institutions/institutions.json`: thirty organisations, each described from its own site, each card linking out to it |
+
+Nothing in Sources or Institutions is ranked, and listing is not endorsement. People and
+organisations are described from their own pages, dated, with no stance labels.
+
+### Generated files, and how to regenerate them
+
+Never hand-edit a generated file; edit its source and rebuild. One command rebuilds everything,
+in dependency order:
+
+```
+python scripts/build_all.py            # add --check to run scripts/check_all.py --check after
+```
+
+| Output | Builder | Source |
+|---|---|---|
+| `grammars/words-deck/grammar.json`, `site/viewers/spreads.json` | `build_words_deck.py` | `glossary/terms.json`, `glossary/spreads.src.json` |
+| `grammars/institutions-of-alignment/grammar.json` | `build_institutions_grammar.py` | `research/institutions/institutions.json` |
+| `grammars/sources-of-alignment/grammar.json` | `build_sources_grammar.py` | `research/lab-export/sources.json`, `ideas.json`, the institutions grammar |
+| `grammars/ideas-of-alignment/grammar.json` | `build_ideas_grammar.py` | `research/lab-export/ideas.json`, `research/crosswalk.json` |
+| `grammars/all-decks/grammar.json` (the caster's pool) | `build_meta_grammar.py` | the Words and Ideas grammars |
+| `grammars/_collection.json`, `grammars/_covers/*.svg` | `build_collection.py` | every `grammars/*/grammar.json` |
+| `glossary/index.html` | `build-glossary.mjs` (node) | `glossary/terms.json`, `glossary/spreads.src.json` |
+
+Every builder takes `--out DIR`, which `check_all --check` uses to rebuild into a temp folder and
+compare byte for byte. The generated grammars carry `_generated: true` (the app's importer and
+sync skip them), `_inputs_sha256` (never a date, so a rebuild is identical anywhere) and
+`_grammar_commons` (CC BY-SA 4.0). `recursive-eco.json` lists them under `grammars.exclude` too.
+
+Two steps are not in `build_all.py`:
+- `python scripts/lab_export.py --repo PATH/TO/recursive-transcripts` re-exports
+  `research/lab-export/` from the lab's **private** research repo, field by field from an
+  allow-list; no transcript text crosses over. Run `python scripts/check_all.py --only privacy`
+  before pushing anything under `research/`: this repo is public, and so is every pushed branch.
+- `node scripts/export-grammars.mjs` re-exports the app-owned grammars (below).
+
+The home gallery's covers are plain line covers (her spiral and the grammar's name), except where
+a grammar has a credited public-domain cover on Wikimedia Commons. No AI-generated images.
+
+### Checks
+
+```
+python scripts/check_all.py            # before every push
+python scripts/check_all.py --check    # after touching data or a builder
+```
+
+It checks the grammars (ids, links between cards, the generated stamps), that every generated
+file is current, the collection, the sync manifest, the words and spreads, that every page is
+reachable from the home page and loads the header, every internal link
+(`scripts/check-links.mjs`), the URLs already live (`scripts/live-urls.txt`), the theme (one
+colour source, her spiral, no emoji as marks), the privacy of the research export, and the As-If
+game (`scripts/check-asif.mjs`). The Pages workflow runs the same checks on every pull request
+(no deploy) and on every push to `main` (then deploys).
 
 ### Where GitHub Pages serves from
 
 The site is **https://learning.recursive.eco**, published by the **Pages workflow**
-(`.github/workflows/pages.yml`): its root is `site/`, with `game/`, `glossary/` and `grammars/` copied beside it.
-Until Sep 24 2026 it was the legacy branch build at `game.recursive.eco`, which now answers 404
-("Site not found"). Confirm rather than assume, any time this matters:
+(`.github/workflows/pages.yml`, build type "workflow"), which assembles `_site` from
+`scripts/site-folders.txt`. Confirm rather than assume, any time this matters:
 
 ```
 gh api repos/PlayfulProcess/recursive-learning/pages --jq '.build_type, .source, .https_enforced'
 ```
 
-`node scripts/build-site.mjs` writes the landing to `site/` **and** to the repo root, so if the
-source is ever switched back to the branch build it gets the same page.
+### The grammars
 
-### Words (the glossary)
+Generated here (above): **Words** (20 cards), **Sources** (podcast episodes, people, papers and
+books, and pointers to the institutions), **Ideas** (52 seed terms, a draft), **Institutions**
+(30 organisations) and **All decks** (the caster's pool).
 
-[`glossary/`](glossary/) holds twenty working definitions the film and the games use (alignment,
-access, channel, the two kinds of guardrail, what held, and more), two of them standard terms and
-the rest the lab's own. Edit `glossary/terms.json`, then run `node scripts/build-site.mjs`. Each
-term has a fixed anchor, so anything can link one: `glossary/#what-held`.
-
-### The grammars (public, exported)
+Exported from recursive.eco (public, app-owned):
 
 | Grammar | Items | Read |
 |---|---|---|
-| HOT POTATO: The Chosen Alien Invasion — opening test | 259 | [open](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438) |
+| As-If — HOT POTATO edition (the deck the As-If game deals) | 39 | [open](https://recursive.eco/view.html?id=0489bd30-d71d-4b7b-82b2-662bcbef25b0) |
+| HOT POTATO: The Chosen Alien Invasion | 259 | [open](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438) |
 | KPop Demon Hunters | 142 | [open](https://recursive.eco/view.html?id=3f7543af-d5e1-42d0-bc52-c3736d270dce) |
 | The Chosen Alien Invasion — opening test (Star Wars primitives) | 212 | [open](https://recursive.eco/view.html?id=a5a39d3a-5d93-45c9-9347-f844cfbe830e) |
 | The Chosen Alien Invasion — v2 (rebuild) | 202 | [open](https://recursive.eco/view.html?id=83668113-006c-4980-850c-5deeaae43221) |
@@ -136,11 +212,11 @@ never writes to recursive.eco, and it drops `ai_personality_prompt` before writi
 
 | What | License |
 |------|---------|
-| Code — `game/` (HTML and JS), `scripts/*.mjs`, `site/`, the root `index.html`, `.github/` | Apache-2.0 — [`LICENSE`](LICENSE), [`NOTICE`](NOTICE) |
-| Content — the grammars in `grammars/`, `docs/`, `glossary/terms.json`, and the design notes in `game/*.md` | CC BY-SA 4.0 for PlayfulProcess's own text — [`LICENSE-CONTENT.txt`](LICENSE-CONTENT.txt). Linked or embedded third-party media (videos, images, quoted sources) keep their own terms |
-| The names "recursive.eco" and "Recursive", and the spiral mark (`scripts/mark.svg`) | Not licensed — see [`TRADEMARKS.md`](TRADEMARKS.md) |
+| Code — `site/` (much of it ported from recursive-tarot), `game/` (HTML and JS), `shared/nav.js`, `scripts/`, the root `index.html` and `404.html`, `.github/` | Apache-2.0 — [`LICENSE`](LICENSE), [`NOTICE`](NOTICE) |
+| Content — the grammars in `grammars/`, `docs/`, `glossary/`, `research/`, and the design notes in `game/*.md` | CC BY-SA 4.0 for PlayfulProcess's own text — [`LICENSE-CONTENT.txt`](LICENSE-CONTENT.txt). Linked or embedded third-party media (videos, images, quoted sources) keep their own terms; the names and sites of the institutions belong to them |
+| The names "recursive.eco" and "Recursive", and the spiral mark (`scripts/mark.svg`, and its copies in `site/site-header.js`, `site/site-footer.js`, `site/spiral.svg` and the covers in `grammars/_covers/`) | Not licensed — see [`TRADEMARKS.md`](TRADEMARKS.md) |
 
-The grammars here are exported from recursive.eco; most do not carry their own
-`_grammar_commons` licence block, so this table is what applies to them.
+The grammars exported from recursive.eco mostly do not carry their own `_grammar_commons`
+licence block, so this table is what applies to them; the generated ones carry CC BY-SA 4.0.
 
 Author on everything here is **PlayfulProcess**.

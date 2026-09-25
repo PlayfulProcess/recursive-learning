@@ -17,8 +17,14 @@
   },
   "grammars": {
     "paths": ["grammars/*/grammar.json"],
-    "exclude": [],
-    "_exclude_note": "Nothing generated or apparatus-only lives here yet. Private grammars are simply absent — they are indexed by name + id in grammars/PRIVATE.md and appear here only if she publishes them and the export script is re-run.",
+    "exclude": [
+      "grammars/all-decks/grammar.json",
+      "grammars/words-deck/grammar.json",
+      "grammars/sources-of-alignment/grammar.json",
+      "grammars/ideas-of-alignment/grammar.json",
+      "grammars/institutions-of-alignment/grammar.json"
+    ],
+    "_exclude_note": "Generated grammars — built in this repo by scripts/build_*.py from their sources (glossary/terms.json, research/lab-export/, research/institutions/) and never hand-edited — are listed here so they are never imported as editable app documents. The guard that actually does the work is the top-level `_generated: true` each of them carries: the app's importer and sync skip any grammar with `_generated === true || _source_of_truth` (import-new-grammar.ts, sync-pull, sync-resolve, sync-preflight); `exclude` is typed in the app but not read today, and is kept for parity with recursive-tarot. Private grammars are simply absent — they are indexed by name + id in grammars/PRIVATE.md and appear here only if she publishes them and the export script is re-run.",
     "id_map": "grammars/_eco_ids.json"
   },
   "maintainers": ["pp@playfulprocess.com"],

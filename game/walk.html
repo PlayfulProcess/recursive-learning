@@ -82,7 +82,8 @@
   /* the first three steps */
   .guide{background:var(--panel2);border:1px solid var(--accent);border-radius:12px;padding:12px 14px;margin:0 0 14px}
   .guide .g-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600}
-  .guide .g-top a{color:var(--muted);text-decoration:none;letter-spacing:0;text-transform:none;font-weight:400;font-size:12px;cursor:pointer}
+  .guide .g-top a,.guide .g-top button{color:var(--muted);text-decoration:none;letter-spacing:0;text-transform:none;font-weight:400;font-size:12px;cursor:pointer;
+    background:none;border:0;padding:4px 0;font-family:inherit}
   .guide ol{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:5px}
   .guide li{font-size:13.5px;color:var(--muted);display:flex;gap:9px;align-items:baseline}
   .guide li .n{flex:none;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);font-size:11px;display:inline-flex;align-items:center;justify-content:center;color:var(--muted)}
@@ -151,7 +152,8 @@
 </style>
 </head>
 <body>
-<div class="wrap">
+<script src="../shared/nav.js"></script>
+<main class="wrap" id="main">
   <h1>The Walk<span class="sub">Conditional probability, made into steps you actually take.</span></h1>
   <p class="lede">A probability is not a property of the world. It is a property of the world
     <em>given a path</em>. Ten percent now, because of how people expect decisions will be made — but
@@ -177,7 +179,7 @@
   </div>
 
   <div class="guide" id="guide" hidden>
-    <div class="g-top"><span>Your first three steps</span><a id="guide-skip">skip</a></div>
+    <div class="g-top"><span>Your first three steps</span><button type="button" id="guide-skip" aria-label="Skip the guide">skip</button></div>
     <ol>
       <li id="g1"><span class="n">1</span><span>Drag <b>Power</b> to the right. The big number above moves. The world did not change; the path did.</span></li>
       <li id="g2"><span class="n">2</span><span>Press <b>Step</b>. That is a year or so, walked with this allocation.</span></li>
@@ -268,10 +270,10 @@
       2004). The collective prayer is the synchronised step.</p>
     <p>A model can be fully specified, deterministic, and still fail to show the effect its author
       believed in. This one is a teaching instrument and nothing more.</p>
-    <p>PlayfulProcess · Recursive Learning · <a href="spread.html">the same walk as a spread</a> · <a href="index.html">As-If, the other round in this folder</a>
+    <p><a href="spread.html">The same walk as a table</a> · <a href="scroll.html">as a story</a>
       · <button class="replay" id="guide-replay" type="button">show the first three steps again</button></p>
   </footer>
-</div>
+</main>
 
 <script src="walk-model.js"></script>
 <script>
@@ -715,6 +717,7 @@ function writeHash(){
   var over = Object.keys(priors);
   if (over.length) parts.push('p=' + over.map(function(k){ return k + ':' + priors[k]; }).join(','));
   var h = '#' + parts.join(';');
+  store('walk:last-hash', h);          // the same key the table and the story keep: one walk, three views
   if (location.hash !== h){
     // some contexts (data: snapshots, sandboxed frames) refuse both; the walk still plays
     try { history.replaceState(null, '', location.pathname + location.search + h); }
@@ -802,6 +805,8 @@ window.addEventListener('hashchange', function(){
   if (readHash()){ buildPriors(); prevProbs = null; moverShown = null; render(); }
 });
 
+// no hash on the URL: pick up the walk this browser left off, on this page or the table or the story
+if (!/^#v1/.test(location.hash)){ var lastH = store('walk:last-hash'); if (lastH && /^#v1/.test(lastH)){ try { history.replaceState(null, '', location.pathname + location.search + lastH); } catch (e) {} } }
 var fromLink = readHash();
 buildPriors();
 render();
