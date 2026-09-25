@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hot Potato · Recursive Learning</title>
+<meta name="description" content="The race to build AI is a hot potato. Hold it and your hands take the heat. Toss it and it goes round the table and comes back hotter. Ask for hands and the heat is shared; with enough hands you can put it down. A small game with made-up rules, not a forecast.">
+<!--
+  Hot Potato, v3 (Sep 24 2026). Rebuilt from scratch after PlayfulProcess played v1 and said
+  "Hold it does not hold it". Design: DESIGN-potato.md. Rules: potato-model.js (a rule-for-rule
+  port of tools/potato_rules_check.py; tools/potato_port_check.mjs compares the two).
+  The first version is kept at potato-v1/.
+  One file of HTML, inline SVG, no dependencies, no network calls. All game motion is computed
+  from one virtual clock (tweens from t), so window.potatoTest.step(ms) can drive it.
+-->
+<style>
+  :root{
+    --bg:#f6f0e4; --surface:#fffaf0; --ink:#211b14; --dim:#5b5145; --faint:#8d8273; --line:#d6c8b1;
+    --focus:#1f6fd1; --eco:#2d7f62; --eco-soft:#d7eadf;
+    --mitt:#fffdf7; --cuff:#b59d80; --h1:#f4d2a5; --h2bg:#f6d9b3; --h2:#d7742c; --h3bg:#f3c7a0; --h3:#c2411c;
+    --h4bg:#efb08e; --h4:#a8210c; --char:#2d2521; --charline:#8a7a70;
+    --pot1:#d9a862; --pot2:#e18d45; --pot3:#e2672f; --pot4:#c83b1b; --potline:#5a3a1c;
+    --heat:#d2551f; --litbox:#f7c58f; --hatch:#b9a78f; --soil:#8b6441; --soil-dark:#5f4128;
+    --chalk:#3d5c4f; --v-hold:#3e6db3; --v-toss:#c1541f; --v-tog:#2d7f62; --v-idk:#8d8273;
+    --dimveil:rgba(246,240,228,.9);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12161f; --surface:#1b2130; --ink:#f0e9dc; --dim:#b6ad9f; --faint:#877f73; --line:#343c50;
+      --focus:#7fb2ff; --eco:#6fd0aa; --eco-soft:#1d3a31;
+      --mitt:#3a4560; --cuff:#5d6986; --h1:#6a4c2c; --h2bg:#5d3f26; --h2:#f08a3e; --h3bg:#5a2e1f; --h3:#ff6a3d;
+      --h4bg:#5e1d12; --h4:#ff8a63; --char:#0b0a09; --charline:#6d625b;
+      --pot1:#c89656; --pot2:#d9823e; --pot3:#e0612b; --pot4:#e2431f; --potline:#2c1a0b;
+      --heat:#ff7a3d; --litbox:#7a4521; --hatch:#5b5347; --soil:#7b5838; --soil-dark:#4a321f;
+      --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#9a9184;
+      --dimveil:rgba(18,22,31,.9);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12161f; --surface:#1b2130; --ink:#f0e9dc; --dim:#b6ad9f; --faint:#877f73; --line:#343c50;
+    --focus:#7fb2ff; --eco:#6fd0aa; --eco-soft:#1d3a31;
+    --mitt:#3a4560; --cuff:#5d6986; --h1:#6a4c2c; --h2bg:#5d3f26; --h2:#f08a3e; --h3bg:#5a2e1f; --h3:#ff6a3d;
+    --h4bg:#5e1d12; --h4:#ff8a63; --char:#0b0a09; --charline:#6d625b;
+    --pot1:#c89656; --pot2:#d9823e; --pot3:#e0612b; --pot4:#e2431f; --potline:#2c1a0b;
+    --heat:#ff7a3d; --litbox:#7a4521; --hatch:#5b5347; --soil:#7b5838; --soil-dark:#4a321f;
+    --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#9a9184;
+    --dimveil:rgba(18,22,31,.9);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:var(--eco)}
+  button{font:inherit;color:inherit}
+  [hidden]{display:none!important}
+  :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+  .game{max-width:560px;margin:0 auto;padding:4px 16px 10px;display:flex;flex-direction:column;height:100vh;height:100svh;min-height:600px}
+  .game.over{height:auto;min-height:0}
+
+  header.top{display:flex;align-items:center;gap:8px;min-height:48px}
+  header.top .spiral{width:24px;height:24px;color:var(--eco);flex:none}
+  header.top h1{font-size:16px;line-height:1.25;font-weight:700;margin:0;flex:1}
+  .icon{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);flex:none;display:grid;place-items:center;cursor:pointer;font-size:19px;font-weight:700}
+  .icon svg{width:22px;height:22px}
+  .icon[aria-pressed="true"]{border-color:var(--eco);box-shadow:inset 0 0 0 2px var(--eco)}
+
+  .track{padding:0 0 4px}
+  .trk1{display:flex;align-items:baseline;gap:6px;font-size:13px;min-height:22px}
+  .trk1 .lbl{color:var(--dim)}
+  .trk1 b{font-size:16px}
+  .trk1 .hint{margin-left:auto;color:var(--dim);text-align:right;min-width:0}
+  .trk1 .hint svg{width:10px;height:10px;vertical-align:-1px}
+  .boxes{display:flex;align-items:center;gap:2px;margin-top:3px;position:relative;height:22px}
+  .box{flex:1 1 0;max-width:22px;min-width:11px;height:18px;border:1.5px solid var(--line);border-radius:3px;position:relative;background:var(--surface)}
+  .box.g4{margin-left:5px}
+  .box.band{border-style:dashed;border-color:var(--faint);background-image:repeating-linear-gradient(45deg,var(--hatch) 0 1.5px,transparent 1.5px 5px)}
+  .box.lit{background:var(--litbox);border-color:var(--heat);border-style:solid}
+  .box svg{position:absolute;inset:1px;width:calc(100% - 2px);height:calc(100% - 2px)}
+  .boxes .firemark{flex:none;width:20px;height:22px;margin-left:3px}
+  .box .plus{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:800;line-height:1;color:#fff;background:var(--heat);border-radius:2px;letter-spacing:-.02em}
+  .track.out .box{opacity:.45;filter:grayscale(1)}
+  .track.out .trk1 b,.track.burnt .trk1 b{font-size:16px}
+
+  .stagewrap{flex:0 0 auto;display:flex;justify-content:center;align-items:flex-start;position:relative}
+  .stage{position:relative;user-select:none;-webkit-user-select:none;touch-action:manipulation;width:358px;height:312px}
+  .stage > svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}
+  .ov{position:absolute;z-index:1;font-size:13px;line-height:1.25}
+  .seatlab .nm{font-size:14px;font-weight:700;display:flex;align-items:center;gap:5px}
+  .seatlab.r{text-align:right}.seatlab.r .nm{justify-content:flex-end}
+  .seatlab.c{text-align:center}.seatlab.c .nm{justify-content:center}
+  .seatlab .nm svg{width:13px;height:13px;flex:none}
+  .seatlab .tg{color:var(--dim)}
+  .seatlab .tg.stopped{color:var(--eco);font-weight:700}
+  .seatlab .tg svg{width:12px;height:12px;vertical-align:-1px}
+  .hw{display:flex;flex-direction:column;gap:2px}
+  .hw.r{align-items:flex-end}.hw.c{align-items:center}
+  .bar{display:flex;gap:2px;height:7px;width:100%}
+  .bar i{flex:1;border:1px solid var(--faint);border-radius:2px;background:var(--surface)}
+  .bar i.on{border-color:var(--h3)}
+  .bar.l1 i.on{background:var(--h1)}
+  .bar.l2 i.on{background:repeating-linear-gradient(45deg,var(--h2) 0 1.5px,var(--h2bg) 1.5px 4px)}
+  .bar.l3 i.on{background:repeating-linear-gradient(45deg,var(--h3) 0 1.5px,transparent 1.5px 4px),repeating-linear-gradient(-45deg,var(--h3) 0 1.5px,var(--h3bg) 1.5px 4px)}
+  .bar.l4 i.on{background:var(--h4);border-color:var(--h4)}
+  .bar.burnt i{background:var(--char);border-color:var(--char)}
+  .hw .word{font-size:13px;white-space:nowrap}
+  .hw .word b{font-weight:700}
+  .youline{text-align:center;white-space:nowrap}
+  .pill{display:inline-block;border:1.5px solid var(--ink);border-radius:999px;padding:0 7px;font-weight:700;font-size:13px;line-height:17px;margin-right:4px}
+  .ytag{display:inline-block;background:var(--ink);color:var(--bg);border-radius:6px;padding:0 6px;font-weight:700;margin-right:6px;line-height:17px}
+  .chalk{font:italic 700 14px/1.2 "Segoe Print","Bradley Hand","Comic Sans MS",cursive,system-ui;color:var(--chalk);text-align:center;letter-spacing:.01em}
+  .bubble{z-index:4;background:var(--surface);border:1.5px solid var(--ink);border-radius:12px;padding:4px 8px;font-size:13px;line-height:1.3;box-shadow:0 3px 10px rgba(0,0,0,.18);pointer-events:none}
+  .bubble b{display:block;font-size:14px;margin-bottom:2px}
+  .seatbtn{position:absolute;z-index:3;background:transparent;border:0;border-radius:12px;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
+  @media (hover:hover){ .seatbtn:hover{background:rgba(127,127,127,.07)} }
+  .endcards{position:absolute;left:0;right:0;top:0;min-height:100%;z-index:5;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:8px 4px;background:var(--dimveil);border-radius:14px}
+  .endcards h2{font-size:16px;line-height:1.3;margin:0;text-align:center}
+  .fork{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .fork div{background:var(--surface);border:1.5px solid var(--ink);border-radius:12px;padding:7px 8px;font-size:13px;line-height:1.3}
+  .fork b{display:block;font-size:13.5px;margin-bottom:3px}
+  .endcards .under{font-size:13px;text-align:center;margin:0;color:var(--dim)}
+
+  .handsrow{display:flex;align-items:flex-end;gap:8px;min-height:38px;padding-top:2px}
+  .handsrow .l{font-size:13px;color:var(--dim);padding-bottom:3px;white-space:nowrap}
+  .hicons{position:relative;display:flex;gap:3px;padding-top:8px;flex:none}
+  .hicons svg{width:22px;height:22px}
+  .bracket{position:absolute;top:2px;height:6px;border:1.5px solid var(--dim);border-bottom:0;border-radius:3px 3px 0 0}
+  .handsrow .need{font-size:13px;color:var(--dim);line-height:1.2;padding-bottom:2px;min-width:0;flex:0 1 auto}
+  html{overflow-x:hidden}
+
+  .caption{font-size:16px;line-height:1.3;margin:4px 0 8px;min-height:calc(1.3em * 4);font-weight:400}
+  .caption b{font-weight:700}
+  .game.over .caption{min-height:0}
+
+  .verbs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-bottom:4px}
+  .game:not(.over) .verbs{margin-top:auto}
+  .verb{min-height:72px;border-radius:14px;border:2px solid var(--vc);background:var(--surface);text-align:left;padding:7px 11px 8px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 0 var(--vc)}
+  .verb .v{font-size:18px;font-weight:700;line-height:1.15}
+  .verb .s{font-size:13px;color:var(--dim);line-height:1.25;margin-top:3px}
+  .verb:active:not(:disabled){transform:translateY(1px);box-shadow:none}
+  .verb:disabled{cursor:default;opacity:.5;box-shadow:none}
+  .verb.why:disabled{opacity:.72;border-style:dashed}
+  .verb.why:disabled .s{color:var(--ink);font-weight:600}
+  .verb.hold{--vc:var(--v-hold)} .verb.toss{--vc:var(--v-toss)} .verb.tog{--vc:var(--v-tog)} .verb.idk{--vc:var(--v-idk);border-style:dashed}
+  .verb.tog.down{background:var(--eco-soft)}
+
+  .end{padding:4px 0 8px}
+  .end .row{display:flex;gap:8px;flex-wrap:wrap}
+  .big{flex:1 1 auto;min-height:52px;border-radius:14px;border:2px solid var(--eco);background:var(--eco);color:var(--bg);font-size:18px;font-weight:700;cursor:pointer;padding:8px 16px}
+  .ghost{min-height:52px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);font-size:15px;font-weight:600;cursor:pointer;padding:8px 14px}
+  .recap{margin:14px 0 0;padding:0;list-style:none;font-size:15px;line-height:1.45}
+  .recap li{padding:6px 0;border-top:1px solid var(--line)}
+  .river{margin:18px 0 0;padding:10px 12px;border-left:3px solid var(--line);font-size:14px;line-height:1.45;font-style:italic}
+  .river small{display:block;font-style:normal;font-size:13px;color:var(--dim);margin-top:4px}
+
+  .how{max-width:560px;margin:0 auto;padding:8px 16px 40px;font-size:15px;line-height:1.5}
+  .how h2{font-size:18px;margin:18px 0 6px}
+  .how h3{font-size:15px;margin:14px 0 4px}
+  .how ol{padding-left:22px;margin:4px 0}
+  .how ul{padding-left:20px;margin:4px 0}
+  .how li{margin:3px 0}
+  .how .lines p{margin:6px 0}
+  .how .set{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+  .how .tog{min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);padding:6px 12px;cursor:pointer;font-size:14px}
+  .how .tog[aria-pressed="true"]{border-color:var(--eco);box-shadow:inset 0 0 0 2px var(--eco);font-weight:700}
+  .how .small{font-size:13px;color:var(--dim)}
+  kbd{font:600 12px/1 ui-monospace,Consolas,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:2px 5px;background:var(--surface)}
+  dialog.sheet{border:0;border-radius:16px;padding:0;max-width:min(560px,calc(100vw - 20px));width:100%;max-height:calc(100svh - 24px);background:var(--bg);color:var(--ink);box-shadow:0 10px 40px rgba(0,0,0,.35)}
+  dialog.sheet::backdrop{background:rgba(0,0,0,.45)}
+  dialog.sheet .close{position:sticky;top:0;display:flex;justify-content:flex-end;padding:8px 8px 0;background:var(--bg);z-index:1}
+
+  @media (max-width:400px){
+    .verb{padding:6px 9px 7px;min-height:66px}
+    .verb .v{font-size:17px}
+  }
+  @media (min-width:700px){
+    .game{padding-top:10px}
+    header.top h1{font-size:19px}
+    .trk1{font-size:15.5px} .trk1 b{font-size:19px}
+    .ov{font-size:15.5px} .seatlab .nm{font-size:17px} .hw .word{font-size:15.5px} .pill,.ytag{font-size:15px;line-height:20px}
+    .chalk{font-size:17px}
+    .handsrow .l,.bracket span{font-size:15.5px}
+    .caption{font-size:19px}
+    .verb .v{font-size:21px} .verb .s{font-size:15.5px}
+    .verb{min-height:84px}
+    .fork div{font-size:15px} .endcards h2{font-size:19px} .endcards .under{font-size:15px}
+  }
+</style>
+</head>
+<body>
+<div class="game" id="game">
+  <header class="top">
+    <svg class="spiral" viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
+    <h1>The race to build AI is a hot potato.</h1>
+    <button class="icon" id="readBtn" type="button" aria-pressed="false" aria-label="Read to me" title="Read to me" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke="none"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+    </button>
+    <button class="icon" id="helpBtn" type="button" aria-label="How this game works" title="How this game works">?</button>
+  </header>
+
+  <section class="track" id="track" aria-label="How hot the potato is">
+    <div class="trk1"><span class="lbl" id="hotLbl">How hot:</span> <b id="heatWord">warm</b>
+      <span class="hint" id="fireHint">catches fire somewhere in here <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1v7M2 5.5 5 8.5 8 5.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span></div>
+    <div class="boxes" id="boxes" aria-hidden="true"></div>
+  </section>
+
+  <div class="stagewrap" id="stagewrap">
+    <div class="stage" id="stage">
+      <div id="ovs"></div>
+      <svg id="svg" viewBox="0 0 390 340" aria-hidden="true">
+        <defs>
+          <pattern id="h2" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><rect width="4" height="4" style="fill:var(--h2bg)"/><rect width="1.4" height="4" style="fill:var(--h2)"/></pattern>
+          <pattern id="h3" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><rect width="4" height="4" style="fill:var(--h3bg)"/><rect width="1.3" height="4" style="fill:var(--h3)"/><rect width="4" height="1.3" style="fill:var(--h3)"/></pattern>
+          <pattern id="h4" patternUnits="userSpaceOnUse" width="3" height="3" patternTransform="rotate(45)"><rect width="3" height="3" style="fill:var(--h4bg)"/><rect width="1.4" height="3" style="fill:var(--h4)"/><rect width="3" height="1.4" style="fill:var(--h4)"/></pattern>
+          <pattern id="hb" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><rect width="4" height="4" style="fill:var(--char)"/><rect width="1" height="4" style="fill:var(--charline)"/><rect width="4" height="1" style="fill:var(--charline)"/></pattern>
+          <clipPath id="aboveGround"><rect x="0" y="0" width="390" height="199"/></clipPath>
+        </defs>
+        <g id="static"></g>
+        <g id="dyn"></g>
+      </svg>
+      <div class="endcards" id="endcards" hidden>
+        <h2>It’s in the ground. Whether it stays there, nobody knows yet.</h2>
+        <div class="fork">
+          <div><b>If there’s a known way to keep it down</b>People keep it there. For example: every builder agrees to a shared test that must be passed before building anything bigger, and someone checks.</div>
+          <div><b>If nobody knows how yet</b>Putting it down together bought time. Nobody knows yet how to keep it down. Finding a way is still ahead.</div>
+        </div>
+        <p class="under">This game can’t tell you which card is true. Nobody can yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="handsrow" id="handsrow" aria-label="Hands on it">
+    <span class="l">Hands on it</span>
+    <div class="hicons" id="hicons"></div>
+    <span class="need">← enough: about 4,<br>sometimes 5</span>
+  </div>
+
+  <p class="caption" id="caption" aria-live="polite"><b id="c1"></b> <span id="c2"></span></p>
+
+  <div class="verbs" id="verbs">
+    <button type="button" class="verb hold" id="vHold" data-verb="hold" aria-keyshortcuts="H"><span class="v">Hold it</span><span class="s">slow down: it stays in your hands</span></button>
+    <button type="button" class="verb toss" id="vToss" data-verb="toss" aria-keyshortcuts="T"><span class="v">Toss it on</span><span class="s">build faster: off your hands, hotter for all</span></button>
+    <button type="button" class="verb tog" id="vTog" data-verb="together" aria-keyshortcuts="G"><span class="v">Hold it together</span><span class="s">ask the others for hands</span></button>
+    <button type="button" class="verb idk" id="vIdk" data-verb="idk" aria-keyshortcuts="K"><span class="v">I don’t know</span><span class="s">it stays where it is</span></button>
+  </div>
+
+  <section class="end" id="end" hidden>
+    <div class="row"><button type="button" class="big" id="again">Play again</button><button type="button" class="ghost" id="howBtn2">How this game works</button></div>
+    <ul class="recap" id="recap"></ul>
+    <p class="river" id="river"></p>
+  </section>
+</div>
+
+<section class="how" id="howInline" hidden aria-label="How this game works"></section>
+
+<dialog class="sheet" id="sheet" aria-label="How this game works">
+  <div class="close"><button type="button" class="icon" id="sheetClose" aria-label="Close">×</button></div>
+  <div class="how" id="howSheet"></div>
+</dialog>
+
+<template id="howTpl">
+  <h2>How this game works</h2>
+  <ol>
+    <li>The potato is the danger of racing to build AI. It gets hotter in flames.</li>
+    <li>Whenever it leaves your hands, everyone else tosses it on, a flame each, and it comes back to you. Your toss adds one too.</li>
+    <li>Flint builds faster every round, adding a flame, until three of you hold it.</li>
+    <li>Hands holding it take its heat, 1 to 4 lines a move, the hotter the more. Lines go to the coolest hands first.</li>
+    <li>With enough hands, about 4, sometimes 5, no heat reaches the hands and you can put it down.</li>
+    <li>Hands that are too hot can’t keep holding.</li>
+    <li>Somewhere in the last two boxes it catches fire and burns everyone.</li>
+    <li>The others do what their lines say.</li>
+  </ol>
+  <h3>The five others</h3>
+  <div class="lines" id="LINES"></div>
+  <h3>What’s real here</h3>
+  <ul>
+    <li>These are this game’s rules, made up to show one idea. They are not measured from anything.</li>
+    <li>The five others are made up. Real builders don’t publish rules like these; not knowing what the others will do is part of what makes it hard.</li>
+    <li>How many hands it takes, and where it catches fire, are drawn fresh each game and not shown. In the real world, nobody knows either.</li>
+    <li>Here, whoever holds it feels the heat. In the research toy this game borrows its shape from, everyone felt the heat equally and the tosser gained. Both make tossing tempting for one and worse for all.</li>
+    <li>Holding it alone never cools it here. Nothing we know says it would.</li>
+    <li>Putting it down isn’t a happy ending by itself.</li>
+    <li>“Nobody had to be good. Enough of them had to agree on a number.” “A pause taken alone is a sacrifice the others outlive. Taken by enough, it keeps the river for everyone.” <span class="small">A line from a toy model of a river; a rhyme, not a finding about AI.</span></li>
+    <li>Nothing is saved or sent.</li>
+  </ul>
+  <h3>Settings</h3>
+  <div class="set">
+    <button type="button" class="tog" data-set="slow" aria-pressed="false">Slower</button>
+    <button type="button" class="tog" data-set="read" aria-pressed="false">Read to me</button>
+  </div>
+  <h3>Keys</h3>
+  <p><kbd>H</kbd> Hold it · <kbd>T</kbd> Toss it on · <kbd>G</kbd> Hold it together · <kbd>D</kbd> Put it down · <kbd>K</kbd> I don’t know. Tap or press Enter on a seat to read its line.</p>
+  <p class="small">The first version of this game is kept at <a href="potato-v1/potato-others.html">the first version</a>. More games: <a href="spread.html">The Walk</a> · <a href="lines.html">Changing Lines</a> · <a href="index.html">As-If</a> · <a href="../">Recursive Learning</a>.</p>
+</template>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px"><symbol id="spiral" viewBox="0 0 100 100"><path id="spiral-path" d="M50.5 50L50.5 50.01 50.51,50.02 50.51,50.03 50.51,50.04 50.51,50.05 50.52,50.07 50.52,50.08 50.52,50.09 50.52,50.1 50.52,50.11 50.52,50.12 50.52,50.13 50.52,50.15 50.52,50.16 50.52,50.17 50.52,50.18 50.52,50.19 50.52,50.21 50.52,50.22 50.52,50.23 50.52,50.24 50.52,50.26 50.51,50.27 50.51,50.28 50.51,50.29 50.51,50.31 50.5,50.32 50.5,50.33 50.49,50.34 50.49,50.36 50.49,50.37 50.48,50.38 50.48,50.39 50.47,50.41 50.47,50.42 50.46,50.43 50.45,50.44 50.45,50.46 50.44,50.47 50.43,50.48 50.43,50.49 50.42,50.5 50.41,50.52 50.4,50.53 50.39,50.54 50.38,50.55 50.37,50.56 50.36,50.57 50.35,50.59 50.34,50.6 50.33,50.61 50.32,50.62 50.31,50.63 50.3,50.64 50.29,50.65 50.28,50.66 50.27,50.67 50.25,50.68 50.24,50.69 50.23,50.7 50.21,50.71 50.2,50.72 50.19,50.73 50.17,50.73 50.16,50.74 50.14,50.75 50.13,50.76 50.11,50.77 50.1,50.77 50.08,50.78 50.07,50.79 50.05,50.79 50.03,50.8 50.02,50.8 50,50.81 49.98,50.81 49.97,50.82 49.95,50.82 49.93,50.83 49.91,50.83 49.89,50.83 49.88,50.84 49.86,50.84 49.84,50.84 49.82,50.84 49.8,50.85 49.78,50.85 49.76,50.85 49.74,50.85 49.72,50.85 49.71,50.85 49.69,50.85 49.67,50.84 49.65,50.84 49.63,50.84 49.61,50.84 49.59,50.83 49.57,50.83 49.55,50.83 49.53,50.82 49.5,50.82 49.48,50.81 49.46,50.81 49.44,50.8 49.42,50.79 49.4,50.79 49.38,50.78 49.36,50.77 49.34,50.76 49.32,50.75 49.3,50.74 49.28,50.73 49.26,50.72 49.24,50.71 49.22,50.7 49.2,50.69 49.18,50.68 49.16,50.66 49.15,50.65 49.13,50.63 49.11,50.62 49.09,50.61 49.07,50.59 49.05,50.57 49.03,50.56 49.02,50.54 49,50.52 48.98,50.51 48.96,50.49 48.95,50.47 48.93,50.45 48.92,50.43 48.9,50.41 48.88,50.39 48.87,50.37 48.85,50.35 48.84,50.32 48.83,50.3 48.81,50.28 48.8,50.26 48.79,50.23 48.77,50.21 48.76,50.18 48.75,50.16 48.74,50.13 48.73,50.11 48.72,50.08 48.71,50.05 48.7,50.03 48.69,50 48.68,49.97 48.68,49.94 48.67,49.92 48.66,49.89 48.66,49.86 48.65,49.83 48.65,49.8 48.64,49.77 48.64,49.74 48.63,49.71 48.63,49.68 48.63,49.65 48.63,49.62 48.63,49.59 48.63,49.55 48.63,49.52 48.63,49.49 48.63,49.46 48.64,49.43 48.64,49.39 48.64,49.36 48.65,49.33 48.66,49.3 48.66,49.26 48.67,49.23 48.68,49.2 48.69,49.17 48.7,49.13 48.71,49.1 48.72,49.07 48.73,49.03 48.74,49 48.75,48.97 48.77,48.94 48.78,48.9 48.8,48.87 48.81,48.84 48.83,48.81 48.85,48.77 48.87,48.74 48.89,48.71 48.91,48.68 48.93,48.65 48.95,48.62 48.97,48.59 49,48.56 49.02,48.53 49.05,48.5 49.07,48.47 49.1,48.44 49.13,48.41 49.15,48.38 49.18,48.35 49.21,48.33 49.24,48.3 49.27,48.27 49.31,48.25 49.34,48.22 49.37,48.19 49.41,48.17 49.44,48.15 49.48,48.12 49.51,48.1 49.55,48.08 49.59,48.06 49.63,48.04 49.66,48.02 49.7,48 49.74,47.98 49.79,47.96 49.83,47.94 49.87,47.93 49.91,47.91 49.96,47.9 50,47.88 50.04,47.87 50.09,47.86 50.14,47.85 50.18,47.83 50.23,47.82 50.28,47.82 50.32,47.81 50.37,47.8 50.42,47.8 50.47,47.79 50.52,47.79 50.57,47.78 50.62,47.78 50.67,47.78 50.72,47.78 50.77,47.78 50.82,47.79 50.88,47.79 50.93,47.79 50.98,47.8 51.03,47.81 51.08,47.82 51.14,47.82 51.19,47.83 51.24,47.85 51.3,47.86 51.35,47.87 51.4,47.89 51.46,47.91 51.51,47.92 51.56,47.94 51.62,47.96 51.67,47.98 51.72,48.01 51.77,48.03 51.83,48.05 51.88,48.08 51.93,48.11 51.98,48.14 52.03,48.17 52.09,48.2 52.14,48.23 52.19,48.27 52.24,48.3 52.29,48.34 52.34,48.38 52.39,48.42 52.43,48.46 52.48,48.5 52.53,48.54 52.57,48.58 52.62,48.63 52.67,48.68 52.71,48.72 52.75,48.77 52.8,48.82 52.84,48.88 52.88,48.93 52.92,48.98 52.96,49.04 53,49.09 53.04,49.15 53.07,49.21 53.11,49.27 53.14,49.33 53.18,49.39 53.21,49.46 53.24,49.52 53.27,49.59 53.3,49.65 53.33,49.72 53.36,49.79 53.38,49.86 53.4,49.93 53.43,50 53.45,50.07 53.47,50.15 53.49,50.22 53.5,50.29 53.52,50.37 53.53,50.45 53.55,50.52 53.56,50.6 53.57,50.68 53.57,50.76 53.58,50.84 53.59,50.92 53.59,51 53.59,51.08 53.59,51.17 53.59,51.25 53.58,51.33 53.58,51.42 53.57,51.5 53.56,51.58 53.55,51.67 53.54,51.75 53.52,51.84 53.5,51.93 53.48,52.01 53.46,52.1 53.44,52.18 53.42,52.27 53.39,52.36 53.36,52.44 53.33,52.53 53.3,52.61 53.26,52.7 53.23,52.79 53.19,52.87 53.15,52.96 53.1,53.04 53.06,53.12 53.01,53.21 52.96,53.29 52.91,53.37 52.86,53.46 52.81,53.54 52.75,53.62 52.69,53.7 52.63,53.78 52.56,53.86 52.5,53.94 52.43,54.01 52.36,54.09 52.29,54.17 52.22,54.24 52.14,54.31 52.06,54.38 51.98,54.46 51.9,54.53 51.82,54.59 51.73,54.66 51.65,54.73 51.56,54.79 51.47,54.85 51.37,54.91 51.28,54.97 51.18,55.03 51.08,55.09 50.98,55.14 50.88,55.19 50.77,55.24 50.67,55.29 50.56,55.34 50.45,55.39 50.34,55.43 50.23,55.47 50.12,55.51 50,55.55 49.88,55.58 49.76,55.61 49.65,55.64 49.52,55.67 49.4,55.69 49.28,55.72 49.15,55.74 49.03,55.76 48.9,55.77 48.77,55.78 48.64,55.79 48.51,55.8 48.38,55.81 48.25,55.81 48.11,55.81 47.98,55.8 47.84,55.8 47.71,55.79 47.57,55.77 47.44,55.76 47.3,55.74 47.16,55.72 47.02,55.7 46.88,55.67 46.75,55.64 46.61,55.6 46.47,55.57 46.33,55.53 46.19,55.48 46.05,55.44 45.91,55.39 45.77,55.34 45.63,55.28 45.49,55.22 45.36,55.16 45.22,55.09 45.08,55.02 44.94,54.95 44.81,54.88 44.67,54.8 44.54,54.71 44.41,54.63 44.27,54.54 44.14,54.45 44.01,54.35 43.88,54.25 43.76,54.15 43.63,54.04 43.5,53.93 43.38,53.82 43.26,53.71 43.14,53.59 43.02,53.46 42.91,53.34 42.79,53.21 42.68,53.08 42.57,52.94 42.46,52.8 42.35,52.66 42.25,52.52 42.15,52.37 42.05,52.22 41.95,52.07 41.86,51.91 41.77,51.75 41.68,51.59 41.6,51.42 41.51,51.25 41.43,51.08 41.36,50.91 41.29,50.73 41.22,50.55 41.15,50.37 41.09,50.19 41.03,50 40.97,49.81 40.92,49.62 40.87,49.43 40.83,49.23 40.79,49.03 40.75,48.83 40.72,48.63 40.69,48.42 40.66,48.22 40.64,48.01 40.63,47.8 40.61,47.59 40.61,47.38 40.6,47.16 40.6,46.95 40.61,46.73 40.62,46.51 40.64,46.29 40.66,46.07 40.68,45.85 40.71,45.63 40.75,45.41 40.78,45.18 40.83,44.96 40.88,44.73 40.93,44.51 40.99,44.28 41.06,44.06 41.13,43.83 41.2,43.61 41.28,43.38 41.37,43.16 41.46,42.93 41.55,42.71 41.65,42.48 41.76,42.26 41.87,42.04 41.99,41.82 42.11,41.6 42.24,41.38 42.37,41.16 42.51,40.95 42.66,40.73 42.81,40.52 42.96,40.31 43.12,40.1 43.29,39.9 43.46,39.69 43.64,39.49 43.82,39.29 44,39.09 44.2,38.9 44.39,38.71 44.6,38.52 44.81,38.34 45.02,38.15 45.24,37.97 45.46,37.8 45.69,37.63 45.93,37.46 46.16,37.3 46.41,37.14 46.66,36.98 46.91,36.83 47.17,36.68 47.43,36.54 47.7,36.4 47.97,36.27 48.25,36.14 48.53,36.02 48.82,35.9 49.11,35.79 49.4,35.68 49.7,35.58 50,35.48 50.31,35.39 50.62,35.31 50.93,35.23 51.25,35.16 51.57,35.09 51.89,35.03 52.22,34.98 52.55,34.93 52.88,34.89 53.22,34.86 53.56,34.83 53.9,34.81 54.24,34.8 54.59,34.8 54.94,34.8 55.29,34.81 55.64,34.83 56,34.85 56.36,34.88 56.71,34.92 57.07,34.97 57.43,35.03 57.8,35.09 58.16,35.16 58.52,35.24 58.89,35.33 59.25,35.42 59.61,35.53 59.98,35.64 60.34,35.76 60.71,35.89 61.07,36.03 61.44,36.18 61.8,36.33 62.16,36.5 62.52,36.67 62.88,36.85 63.24,37.04 63.59,37.24 63.94,37.44 64.3,37.66 64.65,37.88 64.99,38.12 65.34,38.36 65.68,38.61 66.01,38.87 66.35,39.14 66.68,39.42 67,39.7 67.33,40 67.65,40.3 67.96,40.61 68.27,40.93 68.57,41.26 68.87,41.6 69.17,41.94 69.46,42.3 69.74,42.66 70.02,43.03 70.29,43.41 70.55,43.79 70.81,44.19 71.07,44.59 71.31,45 71.55,45.42 71.78,45.85 72,46.28 72.22,46.72 72.42,47.17 72.62,47.62 72.81,48.08 73,48.55 73.17,49.03 73.33,49.51 73.49,50 73.64,50.5 73.77,51 73.9,51.5 74.02,52.02 74.12,52.54 74.22,53.06 74.3,53.59 74.38,54.12 74.44,54.66 74.5,55.21 74.54,55.76 74.57,56.31 74.59,56.87 74.6,57.43 74.6,57.99 74.58,58.56 74.55,59.13 74.51,59.71 74.46,60.28 74.4,60.86 74.32,61.44 74.23,62.03 74.13,62.61 74.01,63.2 73.88,63.79 73.74,64.38 73.58,64.97 73.42,65.56 73.23,66.15 73.04,66.74 72.83,67.33 72.6,67.92 72.37,68.5 72.12,69.09 71.85,69.67 71.57,70.26 71.28,70.84 70.97,71.42 70.65,71.99 70.32,72.56 69.97,73.13 69.6,73.7 69.23,74.26 68.83,74.81 68.43,75.36 68.01,75.91 67.57,76.45 67.13,76.99 66.66,77.51 66.19,78.04 65.7,78.55 65.19,79.06 64.67,79.56 64.14,80.05 63.6,80.54 63.04,81.02 62.47,81.48 61.88,81.94 61.28,82.39 60.67,82.83 60.04,83.26 59.4,83.68 58.75,84.08 58.09,84.48 57.41,84.87 56.72,85.24 56.02,85.6 55.31,85.95 54.58,86.28 53.85,86.61 53.1,86.91 52.34,87.21 51.57,87.49 50.79,87.76 50,88.01 49.2,88.24 48.39,88.46 47.57,88.67 46.74,88.86 45.9,89.03 45.05,89.19 44.19,89.33 43.33,89.45 42.45,89.55 41.57,89.64 40.69,89.71 39.79,89.76 38.89,89.79 37.98,89.8 37.07,89.8 36.15,89.77 35.23,89.73 34.3,89.66 33.36,89.58 32.42,89.47 31.48,89.35 30.54,89.2 29.59,89.04 28.64,88.85 27.69,88.64 26.74,88.41 25.89,87.99 25.1,87.48 24.32,86.95 23.55,86.41 22.79,85.84 22.05,85.27 21.32,84.67 20.6,84.06 19.89,83.44 19.2,82.8 18.52,82.15 17.85,81.48 17.2,80.8 16.56,80.11 15.94,79.4 15.33,78.68 14.73,77.95 14.16,77.21 13.59,76.45 13.05,75.68 12.52,74.9 12.01,74.11 11.51,73.31 11.03,72.5 10.57,71.68 10.12,70.85 9.69,70.01 9.28,69.16 8.89,68.3 8.52,67.44 8.16,66.57 7.82,65.69 7.5,64.8 7.2,63.91 6.92,63.01 6.66,62.1 6.41,61.19 6.19,60.28 5.98,59.36 5.8,58.43 5.63,57.5 5.48,56.57 5.35,55.64 5.25,54.7 5.16,53.77 5.09,52.83 5.04,51.88 5.01,50.94 5,50 5.01,49.06 5.04,48.12 5.09,47.17 5.16,46.23 5.25,45.3 5.35,44.36 5.48,43.43 5.63,42.5 5.8,41.57 5.98,40.64 6.19,39.72 6.41,38.81 6.66,37.9 6.92,36.99 7.2,36.09 7.5,35.2 7.82,34.31 8.16,33.43 8.52,32.56 8.89,31.7 9.28,30.84 9.69,29.99 10.12,29.15 10.57,28.32 11.03,27.5 11.51,26.69 12.01,25.89 12.52,25.1 13.05,24.32 13.59,23.55 14.16,22.79 14.73,22.05 15.33,21.32 15.94,20.6 16.56,19.89 17.2,19.2 17.85,18.52 18.52,17.85 19.2,17.2 19.89,16.56 20.6,15.94 21.32,15.33 22.05,14.73 22.79,14.16 23.55,13.59 24.32,13.05 25.1,12.52 25.89,12.01 26.69,11.51 27.5,11.03 28.32,10.57 29.15,10.12 29.99,9.69 30.84,9.28 31.7,8.89 32.56,8.52 33.43,8.16 34.31,7.82 35.2,7.5 36.09,7.2 36.99,6.92 37.9,6.66 38.81,6.41 39.72,6.19 40.64,5.98 41.57,5.8 42.5,5.63 43.43,5.48 44.36,5.35 45.3,5.25 46.23,5.16 47.17,5.09 48.12,5.04 49.06,5.01 50,5 50.94,5.01 51.88,5.04 52.83,5.09 53.77,5.16 54.7,5.25 55.64,5.35 56.57,5.48 57.5,5.63 58.43,5.8 59.36,5.98 60.28,6.19 61.19,6.41 62.1,6.66 63.01,6.92 63.91,7.2 64.8,7.5 65.69,7.82 66.57,8.16 67.44,8.52 68.3,8.89 69.16,9.28 70.01,9.69 70.85,10.12 71.68,10.57 72.5,11.03 73.31,11.51 74.11,12.01 74.9,12.52 75.68,13.05 76.45,13.59 77.21,14.16 77.95,14.73 78.68,15.33 79.4,15.94 80.11,16.56 80.8,17.2 81.48,17.85 82.15,18.52 82.8,19.2 83.44,19.89 84.06,20.6 84.67,21.32 85.27,22.05 85.84,22.79 86.41,23.55 86.95,24.32 87.48,25.1 87.99,25.89 88.49,26.69 88.97,27.5 89.43,28.32 89.88,29.15 90.31,29.99 90.72,30.84 91.11,31.7 91.48,32.56 91.84,33.43 92.18,34.31 92.5,35.2 92.8,36.09 93.08,36.99 93.34,37.9 93.59,38.81 93.81,39.72 94.02,40.64 94.2,41.57 94.37,42.5 94.52,43.43 94.65,44.36 94.75,45.3 94.84,46.23 94.91,47.17 94.96,48.12 94.99,49.06 95,50 94.99,50.94 94.96,51.88 94.91,52.83 94.84,53.77 94.75,54.7 94.65,55.64 94.52,56.57 94.37,57.5 94.2,58.43 94.02,59.36 93.81,60.28 93.59,61.19 93.34,62.1 93.08,63.01 92.8,63.91 92.5,64.8 92.18,65.69 91.84,66.57 91.48,67.44 91.11,68.3 90.72,69.16 90.31,70.01 89.88,70.85 89.43,71.68 88.97,72.5 88.49,73.31 87.99,74.11 87.48,74.9 86.95,75.68 86.41,76.45 85.84,77.21 85.27,77.95 84.67,78.68 84.06,79.4 83.44,80.11 82.8,80.8 82.15,81.48 81.48,82.15 80.8,82.8 80.11,83.44 79.4,84.06 78.68,84.67 77.95,85.27 77.21,85.84 76.45,86.41 75.68,86.95 74.9,87.48 74.11,87.99 73.31,88.49 72.5,88.97 71.68,89.43 70.85,89.88 70.01,90.31 69.16,90.72 68.3,91.11 67.44,91.48 66.57,91.84 65.69,92.18 64.8,92.5 63.91,92.8 63.01,93.08 62.1,93.34 61.19,93.59 60.28,93.81 59.36,94.02 58.43,94.2 57.5,94.37 56.57,94.52 55.64,94.65 54.7,94.75 53.77,94.84 52.83,94.91 51.88,94.96 50.94,94.99 50,95 49.06,94.99 48.12,94.96 47.17,94.91 46.23,94.84 45.3,94.75 44.36,94.65 43.43,94.52 42.5,94.37 41.57,94.2 40.64,94.02 39.72,93.81 38.81,93.59 37.9,93.34 36.99,93.08 36.09,92.8 35.2,92.5 34.31,92.18 33.43,91.84 32.56,91.48 31.7,91.11 30.84,90.72 29.99,90.31 29.15,89.88 28.32,89.43 27.5,88.97 26.69,88.49 25.89,87.99" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol></svg>
+
+<script src="potato-model.js"></script>
+<script>
+(function () {
+'use strict';
+var M = window.potatoModel;
+var OTHERS = M.OTHERS, SEATS = M.SEATS;
+var VBW = 390, VBH = 340, C = { x: 195, y: 170 }, R = 28, GROUND_Y = 199;
+var RM = false;
+try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+if (/[?&]reduced(=|&|$)/.test(location.search)) RM = true;     // potato.html?reduced shows the reduced-motion version
+
+/* ── The table ─────────────────────────────────────────────────────────────── */
+var NAME = { you: 'You', wren: 'Wren', moss: 'Moss', flint: 'Flint', reed: 'Reed', oak: 'Oak' };
+var SHAPE = { wren: 'circle', moss: 'square', flint: 'triangle', reed: 'diamond', oak: 'hexagon' };
+var TAG = {
+  wren: 'joins when you ask',
+  moss: 'joins when 2 hold it',
+  flint: 'builds until 3 hold it',
+  reed: 'joins once it’s written<br>not if scorching',
+  oak: 'joins when 4 hold it<br>not if scorching'
+};
+var LINE = {
+  wren: 'If you ask, I’ll hold it with you. Alone, I toss it on.',
+  moss: 'Once two of us hold it, I’ll hold it too. Alone, I toss it on.',
+  flint: 'If we don’t, they will. I build faster every round until three of you hold it. I never put my hands on it.',
+  reed: 'Once it’s written down, I’ll hold it too. Not if it’s scorching. Alone, I toss it on.',
+  oak: 'Once most of us hold it, I’ll hold it too. Not if it’s scorching. Alone, I toss it on.'
+};
+var WHY = {
+  wren: 'Wren’s hands joined yours, because you asked.',
+  moss: 'Moss’s hands joined, because two of you held it.',
+  reed: 'Reed’s hands joined, because it’s written down.',
+  oak: 'Oak’s hands joined, because most of you hold it.'
+};
+var WHY_RECAP = {
+  wren: 'Wren joined because you asked.',
+  moss: 'Moss joined because two of you held it.',
+  reed: 'Reed joined because it was written down.',
+  oak: 'Oak joined because most of you held it.'
+};
+// Geometry, in viewBox units (390 x 340). a = where the potato sits in that seat's hands.
+var G = {
+  you:   { a: { x: 195, y: 262 }, big: true },
+  flint: { a: { x: 195, y: 92 } },
+  moss:  { a: { x: 120, y: 136 } },
+  reed:  { a: { x: 270, y: 136 } },
+  wren:  { a: { x: 120, y: 210 } },
+  oak:   { a: { x: 270, y: 210 } }
+};
+SEATS.forEach(function (k) {
+  var g = G[k];
+  g.phi = k === 'you' ? -90 : k === 'flint' ? 90 : Math.atan2(C.y - g.a.y, C.x - g.a.x) * 180 / Math.PI;
+  g.alpha = (g.phi + 90) * Math.PI / 180;
+});
+// HTML overlays, in viewBox units: [x, y, w] (+ align)
+var LAB = { flint: [110, 0, 170, 'c'], moss: [2, 50, 150, 'l'], reed: [238, 50, 150, 'r'], wren: [2, 238, 150, 'l'], oak: [238, 238, 150, 'r'] };
+var HW = { moss: [6, 118, 50, 'l'], reed: [334, 118, 50, 'r'], wren: [6, 188, 50, 'l'], oak: [334, 188, 50, 'r'] };
+var PLUS_AT = { you: [66, -22], flint: [44, -30], moss: [0, -36], reed: [0, -36], wren: [0, -34], oak: [0, -34] };
+var BTN = { flint: [150, 0, 90, 110], moss: [0, 46, 150, 112], reed: [240, 46, 150, 112], wren: [0, 186, 150, 112], oak: [240, 186, 150, 112] };
+
+/* ── Words ─────────────────────────────────────────────────────────────────── */
+var NUMW = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen'];
+function times(n) { return n === 1 ? 'once' : n === 2 ? 'twice' : (NUMW[n] || n) + ' times'; }
+function handWord(h) { return M.HANDW[h]; }
+function joinNames(a) { return a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+
+/* ── Settings ──────────────────────────────────────────────────────────────── */
+function load(k) { try { return window.localStorage.getItem('potato-v3.' + k); } catch (e) { return null; } }
+function save(k, v) { try { window.localStorage.setItem('potato-v3.' + k, v); } catch (e) {} }
+var SET = { slow: load('slow') === '1', read: load('read') === '1' };
+var CAN_SPEAK = typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined';
+if (!CAN_SPEAK) SET.read = false;
+
+/* ── State: the model (S), the drawn values (base + the current timeline) ─── */
+var S, TL, clock = 0, base, seen, started = false;
+var $ = function (id) { return document.getElementById(id); };
+
+function resetBase() {
+  base = { F: 1, potAt: 'flint', luggage: true, on: [], c1: 'Flint has it. Watch.', c2: '', yourTag: '',
+           chalk: 0, chalkRub: 0, stack: 2, flintStopped: false, enough: 0, lower: 0, sink: 0, mound: 0,
+           outOfPlay: false, burned: false, crack: 0, dim: 0, ended: '', bubble: false };
+  SEATS.forEach(function (k) { base['reach.' + k] = 0; base['pose.' + k] = 'empty'; base['hand.' + k] = 0; });
+  base['pose.flint'] = 'rest';
+}
+
+/* ── Timelines: named tracks of segments on one virtual clock ──────────────── */
+function newTL() { return { tracks: {}, fx: [], end: 0, fxEnd: 0, done: false }; }
+function seg(tl, name, t0, t1, v0, v1) {
+  (tl.tracks[name] = tl.tracks[name] || []).push({ t0: t0, t1: t1, v0: v0, v1: v1 });
+  tl.end = Math.max(tl.end, t1);
+}
+function set(tl, name, t, v) { seg(tl, name, t, t, undefined, v); }
+function tween(tl, name, t0, dur, v0, v1) { seg(tl, name, t0, t0 + (RM ? 0 : dur), v0, v1); }
+var LINGER = { plusBox: 1, plusSeat: 1, joined: 1, loop: 1, flintMark: 1, downArrow: 1 };
+function fx(tl, o) {
+  tl.fx.push(o);
+  tl.fxEnd = Math.max(tl.fxEnd, (o.t1 || o.t0) + (o.kind === 'flight' ? 350 : 0));
+  if (!LINGER[o.kind]) tl.end = Math.max(tl.end, o.t1 || o.t0);
+}
+function ease(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+function V(name, t) {
+  var v = base[name], segs = TL && !TL.done && TL.tracks[name];
+  if (t === undefined) t = clock;
+  if (!segs) return v;
+  for (var i = 0; i < segs.length; i++) {
+    var s = segs[i];
+    if (t < s.t0) break;
+    if (t >= s.t1 || s.t1 === s.t0) { v = s.v1; continue; }
+    var a = s.v0 === undefined ? v : s.v0;
+    v = (typeof a === 'number' && typeof s.v1 === 'number') ? a + (s.v1 - a) * ease((t - s.t0) / (s.t1 - s.t0)) : s.v1;
+  }
+  return v;
+}
+function finalize(tl) {
+  Object.keys(tl.tracks).forEach(function (k) { tl.tracks[k].sort(function (a, b) { return a.t0 - b.t0; }); });
+  return tl;
+}
+function bake() {
+  if (!TL) return;
+  Object.keys(TL.tracks).forEach(function (k) { base[k] = V(k, Infinity); });
+}
+
+/* ── Building a move ───────────────────────────────────────────────────────── */
+function flight(tl, from, to, t0, dur, trail) {
+  if (RM) { set(tl, 'potAt', t0, to); return; }
+  fx(tl, { kind: 'flight', from: from, to: to, t0: t0, t1: t0 + dur, trail: trail });
+  set(tl, 'potAt', t0 + dur, to);
+}
+function plus(tl, t, box, seat, text) {
+  fx(tl, { kind: 'plusBox', box: box, text: text || '+1', t0: t, t1: t + 1000 });
+  if (seat) fx(tl, { kind: 'plusSeat', seat: seat, text: text || '+1', t0: t, t1: t + 1000 });
+}
+function burnAt(tl, t, s) {
+  set(tl, 'burned', t, true);
+  tween(tl, 'crack', t, 400, 0, 1);
+  set(tl, 'c1', t + 400, 'Too hot for everyone. It burned every pair of hands at the table, the ones that tossed it too.');
+  set(tl, 'c2', t + 400, '');
+  set(tl, 'yourTag', t, '');
+  set(tl, 'ended', t + 2200, 'burned');
+  tl.end = t + 2200;
+  tl.stop = true;
+}
+function heatWaves(tl, heatEv, t0, gap, dur) {
+  var last = t0;
+  heatEv.forEach(function (e, i) {
+    var a = t0 + gap * i, b = a + dur;
+    if (RM) { fx(tl, { kind: 'wave', to: e.to, t0: t0, t1: t0 + 1000, still: true, i: i, n: heatEv.length }); set(tl, 'hand.' + e.to, t0, e.hand); last = t0; return; }
+    fx(tl, { kind: 'wave', to: e.to, t0: a, t1: b });
+    set(tl, 'hand.' + e.to, b, e.hand);
+    last = b;
+  });
+  return last;
+}
+
+function buildRound(tl, pre, post, ev, yours) {
+  var mid = pre.on.length > 1, flames = ev.filter(function (e) { return e.type === 'flame'; });
+  var burn = ev.filter(function (e) { return e.type === 'burn'; })[0];
+  set(tl, 'hand.you', 0, 0);
+  set(tl, 'on', 0, []);
+  set(tl, 'yourTag', 0, '');
+  set(tl, 'flintStopped', 0, false);
+  if (mid) {
+    pre.on.forEach(function (k) { set(tl, 'pose.' + k, 0, 'empty'); tween(tl, 'reach.' + k, 0, 300, 1, 0); });
+    tween(tl, 'enough', 0, 200, undefined, 0);
+  }
+  if (pre.written) { tween(tl, 'chalkRub', 0, 300, 0, 1); set(tl, 'chalk', 300, 0); set(tl, 'chalkRub', 320, 0); }
+  if (RM) {
+    // Reduced motion: it appears back in your mittens; a dotted loop round the ring shows the lap.
+    set(tl, 'pose.you', 0, burn ? 'empty' : 'rest');
+    set(tl, 'potAt', 0, burn ? (burn.by === 'you' ? 'wren' : burn.by) : 'you');
+    set(tl, 'F', 0, post.F);
+    fx(tl, { kind: 'loop', t0: 0, t1: 1500, flames: flames.map(function (e) { return e.by; }) });
+    if (burn) { burnAt(tl, 0, post); return 0; }
+    set(tl, 'on', 0, ['you']);
+    return 1500;
+  }
+  var from = mid ? 'middle' : 'you', L;
+  if (yours) {
+    set(tl, 'pose.you', 0, 'empty');
+    var f0 = flames[0];
+    set(tl, 'F', 100, f0.F); plus(tl, 100, f0.F, 'you');
+    flight(tl, from, 'wren', 0, 450, true);
+    L = 450;
+    if (burn && burn.by === 'you') { set(tl, 'pose.wren', L, 'rest'); burnAt(tl, L, post); return L; }
+  } else {
+    set(tl, 'pose.you', 0, 'relaxed'); set(tl, 'pose.you', 300, 'empty');
+    flight(tl, from, 'wren', 0, 300, false);
+    L = 300;
+  }
+  var ring = ['wren', 'moss', 'flint', 'reed', 'oak'];
+  for (var i = 0; i < ring.length; i++) {
+    var k = ring[i], e = null;
+    flames.forEach(function (f) { if (f.by === k) e = f; });
+    if (!e) break;
+    set(tl, 'pose.' + k, L, 'rest');
+    set(tl, 'F', L, e.F); plus(tl, L, e.F, k);
+    if (burn && burn.by === k) { burnAt(tl, L, post); return L; }
+    set(tl, 'pose.' + k, L + 200, 'empty');
+    flight(tl, k, ring[i + 1] || 'you', L + 200, 250, true);
+    L += 450;
+  }
+  set(tl, 'pose.you', L, 'rest');
+  set(tl, 'on', L, ['you']);
+  return L + 200;
+}
+
+function build(v, pre, post, ev) {
+  var tl = newTL(), E = 0, heatEv = ev.filter(function (e) { return e.type === 'heat'; });
+  var slip = ev.some(function (e) { return e.type === 'slip'; });
+  var c1 = '';
+  set(tl, 'luggage', 0, false); set(tl, 'bubble', 0, false);
+  set(tl, 'c1', 0, ''); set(tl, 'c2', 0, '');
+  var mid = pre.on.length > 1;
+
+  if (v === 'toss' || slip) {
+    E = buildRound(tl, pre, post, ev, v === 'toss');
+    if (tl.stop) return finalize(tl);
+    if (v === 'toss') {
+      c1 = 'You tossed it. Your hands cooled at once. Everyone else tossed it on too, and it came back six flames hotter.';
+      if (pre.written) c1 += ' The others let go, and the rule on the ground is rubbed out.';
+      else if (mid) c1 += ' The others let go.';
+    } else {
+      c1 = 'While you thought, it slipped from your hands. Everyone else tossed it on, and it came back five flames hotter.';
+      if (mid) c1 += ' The others let go.';
+    }
+  } else if (v === 'hold' || v === 'idk') {
+    var grip = v === 'hold';
+    set(tl, 'pose.you', 0, grip ? 'grip' : 'relaxed');
+    set(tl, 'yourTag', 0, grip ? 'holding' : 'while you think…');
+    heatWaves(tl, heatEv, 150, 120, 300);
+    E = 1000;
+    if (M.enough(post)) c1 = 'Enough hands on it: no heat reaches anyone’s hands. You can put it down.';
+    else if (!mid && grip) c1 = 'You held it. It stayed in your hands, and your hands got ' + handWord(post.hands.you) + '.';
+    else if (!mid) c1 = 'While you thought, it stayed in your hands. Your hands got ' + handWord(post.hands.you) + '.';
+    else if (grip) c1 = 'You kept holding it together. The heat went to the coolest hands.';
+    else c1 = 'While you thought, it stayed in the middle. The heat went to the coolest hands.';
+  } else if (v === 'together') {
+    var joins = ev.filter(function (e) { return e.type === 'join'; }), T = 0;
+    set(tl, 'pose.you', 0, 'grip');
+    set(tl, 'yourTag', 0, 'holding');
+    if (!mid) {
+      tween(tl, 'reach.you', 0, 300, 0, 1);
+      flight(tl, 'you', 'middle', 0, 300, false);
+      T = 300;
+    }
+    var onNow = pre.on.slice();
+    joins.forEach(function (e, i) {
+      var tj = T + 250 * i;
+      set(tl, 'pose.' + e.who, tj, 'grip');
+      tween(tl, 'reach.' + e.who, tj, 250, 0, 1);
+      onNow = onNow.concat([e.who]);
+      set(tl, 'on', tj + (RM ? 0 : 250), onNow.slice());
+      if (RM) fx(tl, { kind: 'joined', seat: e.who, t0: tj, t1: tj + 1500 });
+    });
+    var tEnd = T + 250 * joins.length;
+    if (M.enough(post)) {
+      tween(tl, 'enough', tEnd + 100, 300, 0, 1);
+      E = Math.max(1000, tEnd + 400);
+    } else {
+      var last = heatWaves(tl, heatEv, Math.max(700, tEnd), 100, 250);
+      E = Math.max(1000, last + 100);
+    }
+    c1 = joins.map(function (e) { return WHY[e.who]; }).join(' ');
+    if (M.enough(post)) c1 += ' Enough hands on it: no heat reaches anyone’s hands. You can put it down.';
+    else if (!seen.shared) {
+      seen.shared = true;
+      var n = heatEv.length;
+      c1 += ' Now the heat is shared.' + (n > 1 ? ' Alone, all ' + NUMW[n] + ' lines would be yours.' : '');
+    }
+  } else if (v === 'down') {
+    pre.on.forEach(function (k) { set(tl, 'pose.' + k, 0, 'rest'); });
+    tween(tl, 'lower', 0, 300, 0, 1);
+    tween(tl, 'enough', 300, 200, undefined, 0);
+    tween(tl, 'sink', 300, 400, 0, 1);
+    tween(tl, 'mound', 450, 250, 0, 1);
+    if (RM) fx(tl, { kind: 'downArrow', t0: 0, t1: 1500 });
+    set(tl, 'potAt', 700, 'ground');
+    set(tl, 'on', 700, []);
+    set(tl, 'outOfPlay', 700, true);
+    set(tl, 'yourTag', 700, '');
+    pre.on.forEach(function (k) { set(tl, 'pose.' + k, 700, 'empty'); tween(tl, 'reach.' + k, 700, 300, 1, 0); });
+    tween(tl, 'lower', 700, 300, 1, 0);
+    set(tl, 'c1', 1000, 'It’s in the ground, out of everyone’s hands.');
+    tween(tl, 'dim', 2200, 300, 0, 1);
+    set(tl, 'ended', 2200, 'down');
+    tl.end = Math.max(tl.end, 2500);
+    return finalize(tl);
+  }
+  set(tl, 'c1', E, c1);
+  // Everyone else's hands cool while the verb plays out.
+  ev.forEach(function (e) { if (e.type === 'cool') set(tl, 'hand.' + e.who, E, e.hand); });
+
+  // The others answer, one at a time, after a still gap.
+  var A = E + 600, c2 = [];
+  function say(t, line) { c2.push(line); set(tl, 'c2', t, c2.join(' ')); }
+  var wrote = ev.some(function (e) { return e.type === 'written'; });
+  var stopNow = pre.on.length < 3 && post.on.length >= 3;
+  var build = ev.some(function (e) { return e.type === 'build'; });
+  if (wrote) {
+    tween(tl, 'chalk', A, 800, 0, 1);
+    if (stopNow) { seen.flintEverStopped = true; set(tl, 'flintStopped', A + 400, true); say(A, 'Three of you agree: it’s written on the ground, and Flint stopped building.'); }
+    else say(A, 'Three of you agree. It’s written on the ground.');
+    A += 800;
+  } else if (stopNow) {
+    seen.flintEverStopped = true;
+    set(tl, 'flintStopped', A, true);
+    say(A, 'Three of you hold it, so Flint stopped building.');
+    A += 800;
+  }
+  if (build) {
+    var fb = ev.filter(function (e) { return e.type === 'flame' && e.by === 'flint-build'; })[0];
+    if (RM) fx(tl, { kind: 'flintMark', t0: A, t1: A + 1000 });
+    else fx(tl, { kind: 'spark', t0: A, t1: A + 400 });
+    set(tl, 'stack', A + 100, (base.stack || 2) + 1);
+    set(tl, 'F', A + (RM ? 0 : 400), fb.F);
+    fx(tl, { kind: 'plusBox', box: fb.F, text: '+1', t0: A + (RM ? 0 : 400), t1: A + 1400 });
+    if (!RM) fx(tl, { kind: 'plusSeat', seat: 'flint', text: '+1 Flint', t0: A + 400, t1: A + 1400 });
+    var line;
+    if (post.on.length === 2) line = 'Two of you isn’t enough to stop Flint: one more flame.';
+    else if (!seen.flintAlone) { seen.flintAlone = true; line = 'Flint kept building: one more flame. Holding it alone doesn’t stop Flint.'; }
+    else line = 'Flint kept building: one more flame.';
+    say(A + (RM ? 0 : 400), line);
+    if (post.out === 'burned') { burnAt(tl, A + 400, post); return finalize(tl); }
+    A += 800;
+  }
+  // One-time lines, the first time each state occurs.
+  var once = [];
+  if (post.F >= M.SCORCH && !seen.scorch) { seen.scorch = true; once.push('It’s scorching now. Reed and Oak won’t put their hands on it.'); }
+  if (post.need === 5 && post.on.length === 4 && !seen.four) { seen.four = true; once.push('Four of you hold it, and it’s still not enough this time. Sometimes it takes five.'); }
+  if (post.hands.you >= 4 && !seen.tooHot) { seen.tooHot = true; once.push('Your hands are too hot to keep holding it.'); }
+  if (post.F >= M.SCORCH && !M.enough(post) && !M.joiners(post).length && post.on.length > 1 && !seen.noWay) { seen.noWay = true; once.push('It can’t go down with this few hands, and nobody else will join while it’s scorching.'); }
+  if ((v === 'hold' || v === 'idk') && post.on.length === 1 && post.hands.you >= 2 && pre.hands.you < 2 && !seen.sore) { seen.sore = true; once.push('Sore hands. Tossing it would get it off your hands right now.'); }
+  if (once.length) { var tt = c2.length ? A : E; once.forEach(function (l) { say(tt, l); }); }
+  tl.end = Math.max(tl.end, c2.length ? A : E);
+  return finalize(tl);
+}
+
+function buildIntro() {
+  var tl = newTL();
+  set(tl, 'bubble', 1000, true);
+  set(tl, 'F', 2000, 2); plus(tl, 2000, 2, 'flint');
+  set(tl, 'pose.flint', 2000, 'empty');
+  if (RM) set(tl, 'potAt', 2000, 'you');
+  else flight(tl, 'flint', 'you', 2000, 600, true);
+  set(tl, 'pose.you', 2600, 'rest');
+  set(tl, 'on', 2600, ['you']);
+  set(tl, 'bubble', 2600, false);
+  set(tl, 'c1', 2600, 'Flint tossed it to you. Every toss adds a flame. Now it’s in your hands.');
+  tl.end = 2600;
+  return finalize(tl);
+}
+
+/* ── Drawing: the stage (SVG) ──────────────────────────────────────────────── */
+var U = 1;        // viewBox units per CSS pixel, so SVG text can be sized in real pixels
+function rot(g, lx, ly) { var c = Math.cos(g.alpha), s = Math.sin(g.alpha); return { x: c * lx - s * ly, y: s * lx + c * ly }; }
+var POSE_HOME = {   // local to the potato in that seat's hands; +x toward the right mitten, -y toward the middle
+  grip:    function (mw, mh) { return { x: R + mw * 0.24, y: mh * 0.08, r: -16, over: true, curl: true }; },
+  rest:    function (mw, mh) { return { x: R + mw * 0.26, y: mh * 0.2, r: -4, over: true }; },
+  relaxed: function (mw, mh) { return { x: R + mw * 0.18, y: mh * 0.42, r: 14, over: false, crease: true }; },
+  empty:   function (mw, mh) { return { x: mw * 0.8, y: mh * 0.15, r: 8, over: false, crease: true }; }
+};
+var POSE_RING = {   // local to the potato in the middle; the pair sits on its own seat's side
+  grip:    function (mw, mh) { return { x: mw * 0.62, y: R + mh * 0.2, r: -10, over: true, curl: true }; },
+  rest:    function (mw, mh) { return { x: mw * 0.66, y: R + mh * 0.32, r: 0, over: true }; },
+  relaxed: function (mw, mh) { return { x: mw * 0.9, y: R + mh * 0.3, r: 16, over: false, crease: true }; },
+  empty:   function (mw, mh) { return { x: mw * 0.9, y: R + mh * 0.6, r: 14, over: false, crease: true }; }
+};
+function mittens(k, t) {
+  var g = G[k], reach = V('reach.' + k, t), pose = V('pose.' + k, t) || 'empty', lower = V('lower', t) || 0;
+  var hw = g.big ? 36 : 16, hh = g.big ? 44 : 24, rw = g.big ? 17 : 13, rh = g.big ? 25 : 21;
+  var ph = POSE_HOME[pose](hw, hh), pr = POSE_RING[pose](rw, rh), e = ease(Math.max(0, Math.min(1, reach)));
+  var out = [];
+  [1, -1].forEach(function (side) {
+    var h = rot(g, side * ph.x, ph.y), r = rot(g, side * pr.x, pr.y);
+    var hx = g.a.x + h.x, hy = g.a.y + h.y, rx = C.x + r.x, ry = C.y + r.y;
+    var lz = lower * 8 * e;
+    out.push({ x: hx + (rx - hx) * e, y: hy + (ry - hy) * e + lz, rot: g.phi + 90 + side * (ph.r + (pr.r - ph.r) * e),
+               w: hw + (rw - hw) * e, h: hh + (rh - hh) * e, side: side, over: e > 0.5 ? pr.over : ph.over,
+               curl: e > 0.5 ? pr.curl : ph.curl, crease: e > 0.5 ? pr.crease : ph.crease, big: g.big, reach: e });
+  });
+  return out;
+}
+function f1(n) { return Math.round(n * 10) / 10; }
+function mittenSVG(m, lvl, burned) {
+  var w = m.w, h = m.h, sw = m.big ? 2.6 : 1.8;
+  var fill = burned ? 'url(#hb)' : lvl === 0 ? 'var(--mitt)' : lvl === 1 ? 'var(--h1)' : 'url(#h' + lvl + ')';
+  var fillAttr = fill.indexOf('url') === 0 ? 'fill="' + fill + '"' : 'style="fill:' + fill + '"';
+  var body = 'M' + f1(-w / 2) + ',' + f1(h / 2) + 'L' + f1(-w / 2) + ',' + f1(-h / 2 + w / 2) + 'A' + f1(w / 2) + ',' + f1(w / 2) + ' 0 0 1 ' + f1(w / 2) + ',' + f1(-h / 2 + w / 2) + 'L' + f1(w / 2) + ',' + f1(h / 2) + 'Z';
+  var s = '<g transform="translate(' + f1(m.x) + ' ' + f1(m.y) + ') rotate(' + f1(m.rot) + ') scale(' + (m.side === 1 ? 1 : -1) + ' 1)">';
+  // the thumb is on the inside of the pair
+  s += '<ellipse cx="' + f1(-w * 0.5) + '" cy="' + f1(h * 0.06) + '" rx="' + f1(w * 0.24) + '" ry="' + f1(h * 0.2) + '" transform="rotate(-22 ' + f1(-w * 0.5) + ' ' + f1(h * 0.06) + ')" ' + fillAttr + ' style="stroke:var(--ink)" stroke-width="' + sw + '"/>';
+  if (lvl === 4 && !burned) s += '<path d="' + body + '" transform="scale(1.16)" fill="none" style="stroke:var(--h4)" stroke-width="' + (sw + 0.6) + '" stroke-dasharray="2.4 1.6"/>';
+  s += '<path d="' + body + '" ' + fillAttr + ' style="stroke:var(--ink)" stroke-width="' + sw + '" stroke-linejoin="round"/>';
+  s += '<rect x="' + f1(-w / 2) + '" y="' + f1(h / 2 - h * 0.18) + '" width="' + f1(w) + '" height="' + f1(h * 0.18) + '" style="fill:var(--cuff);stroke:var(--ink)" stroke-width="' + sw + '"/>';
+  if (m.curl) {
+    s += '<path d="M' + f1(-w * 0.34) + ',' + f1(-h * 0.2) + 'q' + f1(w * 0.34) + ',' + f1(-h * 0.13) + ' ' + f1(w * 0.68) + ',0M' + f1(-w * 0.34) + ',' + f1(-h * 0.02) + 'q' + f1(w * 0.34) + ',' + f1(-h * 0.13) + ' ' + f1(w * 0.68) + ',0" fill="none" style="stroke:var(--ink)" stroke-width="' + (sw * 0.8) + '" stroke-linecap="round"/>';
+  } else if (m.crease) {
+    s += '<path d="M' + f1(-w * 0.22) + ',' + f1(h * 0.1) + 'q' + f1(w * 0.22) + ',' + f1(h * 0.1) + ' ' + f1(w * 0.44) + ',0" fill="none" style="stroke:var(--ink)" stroke-width="' + (sw * 0.7) + '" stroke-linecap="round" opacity=".6"/>';
+  }
+  return s + '</g>';
+}
+function sleeves(k, ms) {
+  var g = G[k], e = ms[0].reach;
+  if (e < 0.03) return '';
+  var s = '';
+  ms.forEach(function (m) {
+    var sh = rot(g, m.side * (g.big ? 26 : 10), g.big ? 44 : 22);
+    var wr = { x: m.x - Math.sin(m.rot * Math.PI / 180) * -m.h * 0.45, y: m.y + Math.cos(m.rot * Math.PI / 180) * m.h * 0.45 };
+    s += '<line x1="' + f1(g.a.x + sh.x) + '" y1="' + f1(g.a.y + sh.y) + '" x2="' + f1(wr.x) + '" y2="' + f1(wr.y) + '" style="stroke:var(--ink)" stroke-width="' + (g.big ? 2.4 : 1.5) + '" opacity=".75" stroke-linecap="round"/>';
+  });
+  return s;
+}
+function anchorOf(p) { return p === 'middle' || p === 'ground' ? C : G[p] ? G[p].a : C; }
+function bez(a, c, b, p) { var q = 1 - p; return { x: q * q * a.x + 2 * q * p * c.x + p * p * b.x, y: q * q * a.y + 2 * q * p * c.y + p * p * b.y }; }
+function ctrlOf(a, b) {
+  var m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }, dx = C.x - m.x, dy = C.y - m.y, d = Math.hypot(dx, dy);
+  if (d < 25) { var nx = -(b.y - a.y), ny = b.x - a.x, nl = Math.hypot(nx, ny) || 1; return { x: m.x + nx / nl * 70, y: m.y + ny / nl * 70 }; }
+  return { x: m.x + dx * 0.45, y: m.y + dy * 0.45 };
+}
+function activeFlight(t) {
+  if (!TL) return null;
+  for (var i = TL.fx.length - 1; i >= 0; i--) { var f = TL.fx[i]; if (f.kind === 'flight' && t >= f.t0 && t < f.t1) return f; }
+  return null;
+}
+function potPos(t) {
+  var f = activeFlight(t);
+  if (f) {
+    var a = anchorOf(f.from), b = anchorOf(f.to), p = ease((t - f.t0) / (f.t1 - f.t0));
+    return f.trail ? bez(a, ctrlOf(a, b), b, p) : { x: a.x + (b.x - a.x) * p, y: a.y + (b.y - a.y) * p };
+  }
+  var at = V('potAt', t), pt = anchorOf(at);
+  var lz = (V('lower', t) || 0) * 8, sk = (V('sink', t) || 0) * 34;
+  return { x: pt.x, y: pt.y + (at === 'middle' || at === 'ground' ? lz + sk : 0) };
+}
+var POTPATH = 'M-29,-2C-30,-17 -15,-25 1,-25C17,-25 30,-15 29,0C29,14 16,24 0,24C-16,24 -28,13 -29,-2Z';
+function potatoSVG(p, F, crack, t) {
+  var n = M.lines(Math.max(1, F)), col = ['--pot1', '--pot2', '--pot3', '--pot4'][n - 1];
+  var s = '<g transform="translate(' + f1(p.x) + ' ' + f1(p.y) + ')">';
+  if (!crack) for (var i = 0; i < n; i++) {
+    var x0 = (i - (n - 1) / 2) * 9;
+    s += '<path d="M' + x0 + ',-29q4,-4 0,-8q-4,-4 0,-8" fill="none" style="stroke:var(--heat)" stroke-width="2" stroke-linecap="round"/>';
+  }
+  s += '<path d="' + POTPATH + '" style="fill:var(' + col + ');stroke:var(--potline)" stroke-width="2"/>';
+  s += '<path d="M-12,-9q2,-2 4,0M7,4q2,-2 4,0M10,-13q2,-2 4,0M-16,8q2,-2 4,0" fill="none" style="stroke:var(--potline)" stroke-width="1.6" stroke-linecap="round"/>';
+  if (crack) {
+    s += '<path d="' + POTPATH + '" style="fill:var(--char)" opacity="' + f1(0.75 * crack) + '"/>';
+    s += '<path d="M-22,-12l8,6-3,7 9,4-2,8M4,-24l-2,9 7,5-4,8 8,5M20,-12l-6,7 5,6" fill="none" style="stroke:var(--h4)" stroke-width="2" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="' + f1(1 - crack) + '"/>';
+  }
+  return s + '</g>';
+}
+function text(x, y, str, px, opts) {
+  opts = opts || {};
+  return '<text x="' + f1(x) + '" y="' + f1(y) + '" text-anchor="' + (opts.anchor || 'middle') + '" style="font-size:' + f1(px * U) + 'px;font-weight:' + (opts.w || 700) + ';fill:var(' + (opts.fill || '--ink') + ');stroke:var(--bg);stroke-width:' + f1(3 * U) + 'px;paint-order:stroke;stroke-linejoin:round">' + str + '</text>';
+}
+function waveSVG(from, to, p, still, i, n) {
+  var dx = to.x - from.x, dy = to.y - from.y, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, nx = -uy, ny = ux;
+  var a = still ? 0.15 : Math.max(0, p - 0.45), b = still ? 0.85 : Math.min(1, p), pts = [];
+  var off = still ? (i - (n - 1) / 2) * 6 : 0;
+  for (var q = a; q <= b + 1e-6; q += 0.04) {
+    var w = Math.sin(q * L / 5) * 3.2;
+    pts.push(f1(from.x + dx * q + nx * (w + off)) + ',' + f1(from.y + dy * q + ny * (w + off)));
+  }
+  if (pts.length < 2) return '';
+  return '<polyline points="' + pts.join(' ') + '" fill="none" style="stroke:var(--heat)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>';
+}
+function staticSVG() {
+  var s = '';
+  s += '<ellipse cx="195" cy="196" rx="44" ry="12" style="fill:var(--soil);stroke:var(--soil)" stroke-width="1.2" stroke-dasharray="3 3" fill-opacity=".12"/>';
+  s += '<circle cx="' + C.x + '" cy="' + C.y + '" r="58" fill="none" style="stroke:var(--faint)" stroke-width="1.6" stroke-dasharray="2 5" stroke-linecap="round"/>';
+  $('static').innerHTML = s;
+}
+function renderStage(t) {
+  var F = V('F', t), burned = V('burned', t), crack = V('crack', t) || 0, out = V('outOfPlay', t);
+  var pp = potPos(t), at = V('potAt', t), fl = activeFlight(t);
+  var s = '', under = '', over = '', pot = '', top = '';
+  // the middle: its label, the enough ring, the mound
+  var en = V('enough', t) || 0;
+  s += text(C.x, C.y - 44, en > 0.5 ? 'enough hands' : 'the middle', 13, { w: en > 0.5 ? 700 : 400, fill: en > 0.5 ? '--eco' : '--dim' });
+  if (en > 0) s += '<circle cx="' + C.x + '" cy="' + C.y + '" r="47" fill="none" style="stroke:var(--eco)" stroke-width="3" stroke-dasharray="7 5" opacity="' + f1(en) + '"/>';
+  // Flint's blocks
+  var n = V('stack', t) || 2;
+  for (var i = 0; i < n; i++) {
+    var row = Math.floor(i / 2), bx = 222 + (i % 2) * 13 + (row % 2) * 4, by = 104 - 7 * (row + 1);
+    s += '<rect x="' + bx + '" y="' + by + '" width="12" height="6.2" rx="1.2" style="fill:var(--surface);stroke:var(--ink)" stroke-width="1.2"/>';
+  }
+  // mittens and sleeves
+  SEATS.forEach(function (k) {
+    var ms = mittens(k, t), lvl = V('hand.' + k, t) || 0;
+    under += sleeves(k, ms);
+    ms.forEach(function (m) { var g = mittenSVG(m, lvl, burned); if (m.over && !fl && (at === k || (at === 'middle' && m.reach > 0.5))) over += g; else under += g; });
+  });
+  // the potato
+  var showPot = at !== 'ground' || fl || (V('sink', t) || 0) < 1;
+  if (showPot) {
+    var ptxt = potatoSVG(pp, F, crack, t);
+    if ((V('sink', t) || 0) > 0 && !fl) ptxt = '<g clip-path="url(#aboveGround)">' + ptxt + '</g>';
+    pot += ptxt;
+    if (!(V('sink', t) > 0.3)) {
+      var word = burned ? 'burned' : M.potw(Math.max(1, F));
+      if (at === 'middle' && !fl) top += text(C.x + 61, pp.y + 5, word, 13, { fill: '--ink', anchor: 'start' });
+      else top += text(pp.x, pp.y + R + 11 * U + 2, word, 13, { fill: '--ink' });
+    }
+  }
+  var mound = V('mound', t) || 0;
+  if (mound > 0) {
+    over += '<ellipse cx="195" cy="' + (GROUND_Y + 2) + '" rx="' + f1(34 * mound) + '" ry="' + f1(11 * mound) + '" style="fill:var(--soil);stroke:var(--soil-dark)" stroke-width="1.5"/>';
+    if (mound > 0.8) over += '<line x1="203" y1="' + (GROUND_Y - 1) + '" x2="203" y2="' + (GROUND_Y - 24) + '" style="stroke:var(--soil-dark)" stroke-width="2.4" stroke-linecap="round"/><path d="M203,' + (GROUND_Y - 24) + 'l11,4-11,4z" style="fill:var(--eco)"/>';
+  }
+  // the luggage tag, until your first press
+  if (V('luggage', t) && !burned) {
+    var d = { x: C.x - pp.x, y: C.y - pp.y }, dl = Math.hypot(d.x, d.y);
+    var tc = dl < 8 ? { x: pp.x, y: pp.y + 62 } : { x: pp.x + d.x / dl * 66, y: pp.y + d.y / dl * 66 };
+    var tw = 152, th = 38;
+    top += '<line x1="' + f1(pp.x) + '" y1="' + f1(pp.y) + '" x2="' + f1(tc.x) + '" y2="' + f1(tc.y + (tc.y > pp.y ? -th / 2 : th / 2)) + '" style="stroke:var(--dim)" stroke-width="1.2" stroke-dasharray="3 2"/>';
+    top += '<rect x="' + f1(tc.x - tw / 2) + '" y="' + f1(tc.y - th / 2) + '" width="' + tw + '" height="' + th + '" rx="6" style="fill:var(--surface);stroke:var(--ink)" stroke-width="1.4"/>';
+    top += text(tc.x, tc.y - 3, 'the danger of', 13, { w: 600 }) + text(tc.x, tc.y + 13 * U - 2, 'racing to build AI', 13, { w: 600 });
+  }
+  // effects
+  if (TL) TL.fx.forEach(function (f) {
+    if (t < f.t0 || t >= f.t1 + (f.kind === 'flight' && f.trail ? 350 : 0)) return;
+    var p = (t - f.t0) / Math.max(1, f.t1 - f.t0);
+    if (f.kind === 'flight' && f.trail) {
+      var a = anchorOf(f.from), b = anchorOf(f.to), c = ctrlOf(a, b), pts = [], pe = ease(Math.min(1, p));
+      for (var q = 0; q <= pe + 1e-6; q += 0.05) { var bp = bez(a, c, b, q); pts.push(f1(bp.x) + ',' + f1(bp.y)); }
+      var op = t >= f.t1 ? 1 - (t - f.t1) / 350 : 0.9;
+      if (pts.length > 1) under += '<polyline points="' + pts.join(' ') + '" fill="none" style="stroke:var(--dim)" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round" opacity="' + f1(op) + '"/>';
+    } else if (f.kind === 'wave') {
+      var ms = mittens(f.to, t), to = { x: (ms[0].x + ms[1].x) / 2, y: (ms[0].y + ms[1].y) / 2 };
+      top += waveSVG(pp, to, Math.min(1, p * 1.25), f.still, f.i || 0, f.n || 1);
+    } else if (f.kind === 'plusSeat') {
+      var g = G[f.seat].a, o = PLUS_AT[f.seat], rise = RM ? 0 : Math.min(1, p) * 8;
+      top += text(g.x + o[0], g.y + o[1] - rise, f.text, 15, { fill: '--heat' });
+    } else if (f.kind === 'spark') {
+      var sy0 = 104 - 7 * (Math.ceil((V('stack', t) || 2) / 2) + 0.5), sx = 234, sy = sy0, ex = pp.x, ey = pp.y;
+      top += '<line x1="' + sx + '" y1="' + sy + '" x2="' + f1(sx + (ex - sx) * Math.min(1, p)) + '" y2="' + f1(sy + (ey - sy) * Math.min(1, p)) + '" style="stroke:var(--heat)" stroke-width="2.4" stroke-dasharray="4 3" stroke-linecap="round"/>';
+    } else if (f.kind === 'flintMark') {
+      top += text(G.flint.a.x + 74, G.flint.a.y - 20, '+1 Flint', 15, { fill: '--heat' });
+    } else if (f.kind === 'joined') {
+      var gj = G[f.seat].a;
+      top += text(gj.x, gj.y - 26, '+ joined', 14, { fill: '--eco' });
+    } else if (f.kind === 'downArrow') {
+      top += '<path d="M195,120v44M184,153l11,12 11-12" fill="none" style="stroke:var(--eco)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+    } else if (f.kind === 'loop') {
+      top += '<circle cx="' + C.x + '" cy="' + C.y + '" r="92" fill="none" style="stroke:var(--heat)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>';
+      f.flames.forEach(function (k) {
+        var ga = G[k].a, o = PLUS_AT[k];
+        top += text(ga.x + o[0], ga.y + o[1], '+1', 15, { fill: '--heat' });
+      });
+    }
+  });
+  $('dyn').innerHTML = s + under + pot + over + top;
+  var svg = $('svg');
+  var dim = V('dim', t) || 0;
+  svg.style.opacity = f1(1 - 0.5 * dim);
+  $('ovs').style.opacity = f1(1 - 0.5 * dim);
+}
+
+/* ── Drawing: the HTML parts ───────────────────────────────────────────────── */
+var shapes = {
+  circle: '<circle cx="7" cy="7" r="5.6" style="fill:var(--ink)"/>',
+  square: '<rect x="1.6" y="1.6" width="10.8" height="10.8" rx="1" style="fill:var(--ink)"/>',
+  triangle: '<path d="M7,1.2 13,12.6H1z" style="fill:var(--ink)"/>',
+  diamond: '<path d="M7,.8 13.2,7 7,13.2 .8,7z" style="fill:var(--ink)"/>',
+  hexagon: '<path d="M4,1.3H10L13.2,7 10,12.7H4L.8,7z" style="fill:var(--ink)"/>'
+};
+function badge(k) { return '<svg viewBox="0 0 14 14" aria-hidden="true">' + shapes[SHAPE[k]] + '</svg>'; }
+var CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2,6.5 5,9.2 10.2,2.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function pct(x, y, w, h) {
+  return 'left:' + (x / VBW * 100) + '%;top:' + (y / VBH * 100) + '%;' + (w ? 'width:' + (w / VBW * 100) + '%;' : '') + (h ? 'height:' + (h / VBH * 100) + '%;' : '');
+}
+function barHTML(lvl, burned) {
+  var s = '<div class="bar l' + lvl + (burned ? ' burnt' : '') + '">';
+  for (var i = 1; i <= 4; i++) s += '<i class="' + (burned || i <= lvl ? 'on' : '') + '"></i>';
+  return s + '</div>';
+}
+function buildOverlays() {
+  var h = '';
+  OTHERS.forEach(function (k) {
+    var L = LAB[k];
+    h += '<div class="ov seatlab ' + L[3] + '" id="lab-' + k + '" style="' + pct(L[0], L[1], L[2]) + '"><div class="nm">' + (L[3] === 'r' ? '' : badge(k)) + '<span>' + NAME[k] + '</span>' + (L[3] === 'r' ? badge(k) : '') + '</div><div class="tg" id="tag-' + k + '">' + TAG[k] + '</div>' + (k === 'flint' ? '<div class="hw c" id="hw-flint" style="width:44%;margin:3px auto 0"></div>' : '') + '</div>';
+    if (HW[k]) { var W = HW[k]; h += '<div class="ov hw ' + W[3] + '" id="hw-' + k + '" style="' + pct(W[0], W[1], W[2]) + '"></div>'; }
+  });
+  h += '<div class="ov hw c" id="hw-you" style="' + pct(10, 309, 370) + '"></div>';
+  h += '<div class="ov chalk" id="chalk" style="' + pct(110, 226, 170) + '">We hold it<br>until it’s down.</div>';
+  h += '<div class="ov bubble" id="flintBubble" style="' + pct(105, 196, 180) + 'text-align:center" hidden>Flint: “If we don’t, they will.”</div>';
+  h += '<div class="ov bubble" id="seatBubble" hidden></div>';
+  OTHERS.forEach(function (k) {
+    var B = BTN[k];
+    h += '<button type="button" class="seatbtn" id="btn-' + k + '" data-seat="' + k + '" style="' + pct(B[0], B[1], B[2], B[3]) + '"></button>';
+  });
+  $('ovs').innerHTML = h;
+}
+var last = {};
+function put(id, html) { if (last[id] !== html) { last[id] = html; $(id).innerHTML = html; } }
+function renderOverlays(t) {
+  var burned = V('burned', t);
+  SEATS.forEach(function (k) {
+    var lvl = V('hand.' + k, t) || 0, w = burned ? 'burned' : handWord(lvl);
+    var html;
+    if (k === 'you') {
+      var tg = V('yourTag', t);
+      html = barHTML(lvl, burned).replace('class="bar', 'style="width:41%" class="bar') + '<div class="word youline"><span class="pill">you</span>' + (tg ? '<span class="ytag">' + tg + '</span>' : '') + 'your hands: <b>' + w + '</b></div>';
+    } else html = barHTML(lvl, burned) + '<div class="word"><b>' + w + '</b></div>';
+    put('hw-' + k, html);
+    if (k !== 'you') {
+      var b = $('btn-' + k), al = NAME[k] + ', ' + SHAPE[k] + '. ' + LINE[k] + ' Hands: ' + w + '.';
+      if (b.getAttribute('aria-label') !== al) b.setAttribute('aria-label', al);
+    }
+  });
+  var stopped = V('flintStopped', t);
+  put('tag-flint', stopped ? '<span class="stopped">' + CHECK + ' stopped: 3 hold it</span>' : TAG.flint);
+  var ch = V('chalk', t) || 0, rub = V('chalkRub', t) || 0, chalk = $('chalk');
+  var cs = 'inset(0 ' + f1((1 - ch) * 100) + '% 0 0)';
+  if (chalk.style.clipPath !== cs) { chalk.style.clipPath = cs; chalk.style.webkitClipPath = cs; }
+  chalk.style.opacity = ch > 0 ? f1(1 - rub) : 0;
+  chalk.style.visibility = ch > 0 ? 'visible' : 'hidden';
+  chalk.style.filter = rub > 0 ? 'blur(' + f1(rub * 3) + 'px)' : '';
+  $('flintBubble').hidden = !V('bubble', t);
+}
+function renderTrack(t) {
+  var F = Math.min(16, V('F', t) || 1), out = V('outOfPlay', t), burned = V('burned', t);
+  var h = '', plusOn = {};
+  if (TL) TL.fx.forEach(function (f) { if (f.kind === 'plusBox' && t >= f.t0 && t < f.t1) plusOn[Math.min(16, f.box)] = true; });
+  for (var i = 1; i <= 16; i++) {
+    var lit = i <= F, pl = plusOn[i];
+    h += '<span class="box' + (i > 1 && (i - 1) % 4 === 0 ? ' g4' : '') + (i >= 15 ? ' band' : '') + (lit ? ' lit' : '') + '" data-i="' + i + '">' + (lit && pl ? '<span class="plus">+1</span>' : lit ? '<svg viewBox="0 0 12 16"><path d="M6,1.5C7.6,4.4 10.4,6.4 10.4,10A4.4,4.4 0 0 1 1.6,10C1.6,8 2.8,6.8 3.8,5.9 4,7.4 4.8,8.3 5.6,8.6 4.9,6.1 5.2,3.7 6,1.5Z" style="fill:var(--heat)"/></svg>' : '') + '</span>';
+  }
+  h += '<svg class="firemark" viewBox="0 0 20 22"><path d="M10,1C12.5,5.6 17,8.4 17,13.8A7,7 0 0 1 3,13.8C3,10.6 4.8,8.8 6.4,7.4 6.7,9.8 8,11.2 9.2,11.7 8.1,7.8 8.7,4.2 10,1Z" style="fill:' + (burned ? 'var(--h4)' : 'none') + ';stroke:var(--h4)" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+  put('boxes', h);
+  var tr = $('track');
+  tr.classList.toggle('out', !!out); tr.classList.toggle('burnt', !!burned);
+  put('hotLbl', out || burned ? '' : 'How hot:');
+  put('heatWord', burned ? 'burned everyone' : out ? 'out of play' : M.potw(F));
+  $('fireHint').style.visibility = out || burned ? 'hidden' : '';
+}
+var MIT_ICON = '<path d="M8,20.5V8.5A5.5,5.5 0 0 1 19,8.5V20.5Z M8,15.5C4.5,15 2.6,12.4 3.4,10.2 4.2,8.4 6.6,9.2 8,11.4"/>';
+function renderHands(t) {
+  var on = (V('on', t) || []).length, h = '';
+  for (var i = 0; i < 5; i++) h += '<svg viewBox="0 0 24 22" aria-hidden="true"><g style="fill:' + (i < on ? 'var(--ink)' : 'none') + ';stroke:var(--ink)" stroke-width="1.6">' + MIT_ICON + '</g></svg>';
+  h += '<span class="bracket" style="left:75px;width:47px"></span>';
+  put('hicons', h);
+  $('handsrow').setAttribute('aria-label', 'Hands on it: ' + on + ' of the 4 or 5 it takes');
+}
+var spoken = { c1: '', c2: '' };
+function renderCaption(t) {
+  var c1 = V('c1', t) || '', c2 = V('c2', t) || '';
+  put('c1', c1); put('c2', c2);
+  if (SET.read && CAN_SPEAK) {
+    if (c1 !== spoken.c1) { spoken.c1 = c1; spoken.c2 = ''; if (c1) speak(c1, true); }
+    if (c2 !== spoken.c2) { var add = c2.indexOf(spoken.c2) === 0 ? c2.slice(spoken.c2.length) : c2; spoken.c2 = c2; if (add.trim()) speak(add, false); }
+  } else { spoken.c1 = c1; spoken.c2 = c2; }
+}
+function speak(str, fresh) {
+  try {
+    if (fresh) window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(str.replace(/…/g, '.')); u.rate = SET.slow ? 0.85 : 1;
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+function render() {
+  var t = clock;
+  renderStage(t); renderOverlays(t); renderTrack(t); renderHands(t); renderCaption(t);
+  var ended = V('ended', t), ec = $('endcards'), was = ec.hidden;
+  ec.hidden = ended !== 'down';
+  if (was && !ec.hidden) {                  // make room below the stage if the cards run taller
+    var wrap = $('stagewrap');
+    wrap.style.height = Math.max($('stage').offsetHeight, ec.offsetHeight) + 'px';
+  }
+  if (ended && !$('game').classList.contains('over')) showEnd(ended);
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────────── */
+function busy() { return !!(TL && !TL.done); }
+function reason(s) {
+  var w = M.whyNot(s);
+  if (w.burning.length) return joinNames(w.burning.map(function (k) { return NAME[k] + '’s'; })) + ' hands are burning';
+  if (w.scorching.length === 2) return 'Reed and Oak: not while scorching';
+  if (w.scorching.length === 1) return NAME[w.scorching[0]] + ': not while scorching';
+  return 'nobody else will join yet';
+}
+function setVerb(id, v, s, enabled, why) {
+  var b = $(id);
+  put(id, '<span class="v">' + v + '</span><span class="s">' + s + '</span>');
+  b.disabled = !enabled;
+  b.classList.toggle('why', !!why);
+}
+function updateButtons() {
+  var wait = busy() || !started || !!S.out, off = M.offered(S);
+  var tooHot = S.hands.you >= 4;
+  setVerb('vHold', 'Hold it', tooHot ? 'your hands are too hot' : 'slow down: it stays in your hands', !wait && off.indexOf('hold') >= 0, tooHot && !wait);
+  setVerb('vToss', 'Toss it on', 'build faster: off your hands, hotter for all', !wait);
+  var down = M.enough(S) && S.on.length > 1, tog = $('vTog');
+  tog.classList.toggle('down', down);
+  tog.dataset.verb = down ? 'down' : 'together';
+  tog.setAttribute('aria-keyshortcuts', down ? 'D' : 'G');
+  if (down) setVerb('vTog', 'Put it down', 'enough hands: out of play', !wait);
+  else {
+    var can = off.indexOf('together') >= 0;
+    setVerb('vTog', 'Hold it together', can ? 'ask the others for hands' : reason(S), !wait && can, !can && !wait);
+  }
+  setVerb('vIdk', 'I don’t know', tooHot ? 'it will slip from your hands' : 'it stays where it is', !wait);
+}
+
+/* ── Playing ───────────────────────────────────────────────────────────────── */
+var lastPressed = null;
+function press(v) {
+  if (busy() || !started || S.out) return false;
+  if (M.offered(S).indexOf(v) < 0) return false;
+  closeSeatBubble();
+  bake();
+  var pre = M.clone(S), ev = M.step(S, v);
+  TL = build(v, pre, S, ev); clock = 0;
+  updateButtons();
+  render();
+  return true;
+}
+function finish() {
+  if (!TL || TL.done) return;
+  bake();
+  TL.done = true;                       // the move is over; its lingering marks fade on their own
+  if (!started) started = true;
+  updateButtons();
+  render();
+  if (lastPressed && !lastPressed.disabled && document.activeElement === document.body) lastPressed.focus();
+}
+function advance(ms) {
+  if (!TL) return;
+  if (TL.done) {
+    if (clock < TL.fxEnd) { clock = Math.min(TL.fxEnd, clock + ms); render(); }
+    return;
+  }
+  clock += ms;
+  if (clock >= TL.end) { var over = clock; clock = TL.end; render(); finish(); clock = Math.min(over, Math.max(TL.end, TL.fxEnd)); render(); }
+  else render();
+}
+function newGame(need, burn) {
+  S = M.create(need || (Math.random() < 0.5 ? 4 : 5), burn || (Math.random() < 0.5 ? 15 : 16));
+  seen = {}; started = false; resetBase();
+  $('game').classList.remove('over');
+  $('end').hidden = true; $('verbs').hidden = false; $('howInline').hidden = true; $('endcards').hidden = true;
+  last = {};
+  TL = buildIntro(); clock = 0;
+  sizeStage();
+  updateButtons(); render();
+}
+
+/* ── The ending ────────────────────────────────────────────────────────────── */
+function recapLines(s) {
+  var L = [];
+  if (s.tosses) L.push('You tossed it ' + times(s.tosses) + '. Each time it went all the way round' + (s.burnedInLap && s.tosses === 1 ? ', and it caught fire on the way.' : ' and came back six flames hotter.' + (s.burnedInLap ? ' The last time, it caught fire on the way.' : '')));
+  if (s.slips) L.push('It slipped from your hands ' + times(s.slips) + '.');
+  if (s.joined.length) L.push(s.joined.map(function (k) { return WHY_RECAP[k]; }).join(' '));
+  L.push((seen.flintEverStopped ? 'Flint stopped building once three of you held it.' : 'Flint kept building the whole time; three of you never held it at once.') + ' Flint never put hands on it.');
+  if (s.out === 'burned' && s.aloneHolds >= 2) L.push('Holding it alone didn’t stop Flint.');
+  if (s.refused.length) L.push((s.refused.length === 2 ? 'Reed and Oak' : NAME[s.refused[0]]) + ' wouldn’t join once it was scorching.');
+  L.push('This time it took ' + NUMW[s.need] + ' pairs of hands. It would have caught fire at ' + NUMW[s.burn] + ' flames.');
+  if (s.out === 'down' && !s.tosses && !s.slips) L.push('Next time, try tossing it once and watch what comes back.');
+  return L;
+}
+function showEnd(kind) {
+  $('game').classList.add('over');
+  $('verbs').hidden = true;
+  $('end').hidden = false;
+  $('recap').innerHTML = recapLines(S).map(function (l) { return '<li>' + l + '</li>'; }).join('');
+  $('river').innerHTML = (kind === 'down' ? '“Nobody had to be good. Enough of them had to agree on a number.”'
+    : '“A pause taken alone is a sacrifice the others outlive. Taken by enough, it keeps the river for everyone.”') +
+    '<small>a line from a toy model of a river; a rhyme, not a finding about AI</small>';
+  $('howInline').hidden = false;
+  try { $('again').focus({ preventScroll: true }); } catch (e) {}
+}
+
+/* ── Seats: tap for the full line ──────────────────────────────────────────── */
+var openSeat = null;
+function openSeatBubble(k) {
+  var b = $('seatBubble'), L = LAB[k];
+  if (openSeat === k) { closeSeatBubble(); return; }
+  openSeat = k;
+  b.innerHTML = '<b>' + NAME[k] + '</b>“' + LINE[k] + '”';
+  var w = 210, x = L[3] === 'r' ? VBW - 4 - w : L[3] === 'c' ? (VBW - w) / 2 : 4;
+  var y = k === 'flint' ? 40 : k === 'moss' || k === 'reed' ? 100 : 150;
+  b.setAttribute('style', pct(x, y, w));
+  b.hidden = false;
+}
+function closeSeatBubble() { openSeat = null; $('seatBubble').hidden = true; }
+
+/* ── Layout: the stage fits the screen, the text keeps its size ────────────── */
+function sizeStage() {
+  var wrap = $('stagewrap'), st = $('stage'), game = $('game');
+  if (game.classList.contains('over')) return;
+  var cs = getComputedStyle(game), used = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+  ['.top', '#track', '#handsrow', '#caption', '#verbs'].forEach(function (q) {
+    var el = document.querySelector(q), m = getComputedStyle(el);
+    used += el.offsetHeight + (q === '#verbs' ? 0 : parseFloat(m.marginTop)) + parseFloat(m.marginBottom);
+  });
+  var aw = wrap.clientWidth, ah = Math.max(0, game.clientHeight - used - 6);
+  var w = Math.min(aw, Math.max(Math.min(aw, 300), ah * VBW / VBH));
+  wrap.style.height = Math.round(w * VBH / VBW) + 'px';
+  st.style.width = Math.round(w) + 'px';
+  st.style.height = Math.round(w * VBH / VBW) + 'px';
+  U = VBW / w;
+  staticSVG();
+  render();
+}
+
+/* ── Settings UI ───────────────────────────────────────────────────────────── */
+function syncSettings() {
+  document.querySelectorAll('[data-set]').forEach(function (b) { b.setAttribute('aria-pressed', SET[b.dataset.set] ? 'true' : 'false'); });
+  $('readBtn').setAttribute('aria-pressed', SET.read ? 'true' : 'false');
+  document.querySelectorAll('[data-set="read"]').forEach(function (b) { b.hidden = !CAN_SPEAK; });
+}
+function toggleSet(k) {
+  SET[k] = !SET[k]; save(k, SET[k] ? '1' : '0'); syncSettings();
+  if (k === 'read') {
+    if (SET.read) { var t = ($('c1').textContent + ' ' + $('c2').textContent).trim(); spoken = { c1: V('c1') || '', c2: V('c2') || '' }; if (t) speak(t, true); }
+    else try { window.speechSynthesis.cancel(); } catch (e) {}
+  }
+}
+function openSheet() {
+  var d = $('sheet');
+  if (typeof d.showModal === 'function') { try { d.showModal(); } catch (e) { d.setAttribute('open', ''); } }
+  else d.setAttribute('open', '');
+}
+function closeSheet() { var d = $('sheet'); if (typeof d.close === 'function') d.close(); else d.removeAttribute('open'); }
+
+/* ── Wiring ────────────────────────────────────────────────────────────────── */
+function fillHow() {
+  var tpl = $('howTpl').innerHTML;
+  var lines = OTHERS.map(function (k) { return '<p><b>' + badge(k).replace('<svg ', '<svg style="width:12px;height:12px;vertical-align:-1px" ') + ' ' + NAME[k] + '</b> (' + SHAPE[k] + ', ' + TAG[k].replace('<br>', ' · ') + '): “' + LINE[k] + '”</p>'; }).join('');
+  var html = tpl.replace('<div class="lines" id="LINES"></div>', '<div class="lines">' + lines + '</div>');
+  $('howSheet').innerHTML = html; $('howInline').innerHTML = html;
+}
+fillHow();
+buildOverlays();
+document.addEventListener('click', function (e) {
+  var t = e.target.closest ? e.target : e.target.parentNode;
+  var verb = t.closest('.verb'), seat = t.closest('.seatbtn'), set_ = t.closest('[data-set]');
+  if (verb) { lastPressed = verb; press(verb.dataset.verb); return; }
+  if (seat) { openSeatBubble(seat.dataset.seat); return; }
+  if (set_) { toggleSet(set_.dataset.set); return; }
+  if (openSeat) closeSeatBubble();
+});
+$('readBtn').addEventListener('click', function () { toggleSet('read'); });
+$('helpBtn').addEventListener('click', openSheet);
+$('howBtn2').addEventListener('click', openSheet);
+$('sheetClose').addEventListener('click', closeSheet);
+$('sheet').addEventListener('click', function (e) { if (e.target === $('sheet')) closeSheet(); });
+$('again').addEventListener('click', function () { window.scrollTo(0, 0); newGame(); });
+document.addEventListener('keydown', function (e) {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.key === 'Escape') { closeSeatBubble(); return; }
+  if ($('sheet').open) return;
+  var map = { h: 'vHold', t: 'vToss', g: 'vTog', d: 'vTog', k: 'vIdk' }, id = map[(e.key || '').toLowerCase()];
+  if (!id) return;
+  var b = $(id), want = { h: 'hold', t: 'toss', g: 'together', d: 'down', k: 'idk' }[e.key.toLowerCase()];
+  if (b.disabled || b.dataset.verb !== want) return;
+  e.preventDefault(); lastPressed = b; press(want);
+});
+if (CAN_SPEAK) $('readBtn').hidden = false;
+syncSettings();
+
+var lastTick = performance.now();
+function tick() {
+  var now = performance.now(), dt = Math.min(1000, now - lastTick);
+  lastTick = now;
+  if (dt > 0) advance(dt * (SET.slow ? 0.5 : 1));
+}
+function raf() { tick(); window.requestAnimationFrame(raf); }
+window.requestAnimationFrame(raf);
+setInterval(function () { if (performance.now() - lastTick > 300) tick(); }, 250);   // if frames stall
+window.addEventListener('resize', sizeStage);
+if (window.ResizeObserver) new ResizeObserver(function () { sizeStage(); }).observe($('stagewrap'));
+
+// Test hook: drive the game on the virtual clock (screenshots work with the pane hidden).
+window.potatoTest = {
+  state: function () {
+    var fl = activeFlight(clock), at = V('potAt');
+    var hands = {}; SEATS.forEach(function (k) { hands[k] = S.out === 'burned' ? 'burned' : handWord(S.hands[k]); });
+    return { flames: S.F, shownFlames: V('F'), heat: M.potw(S.F),
+             where: fl ? 'flying' : at === 'you' ? 'your hands' : at === 'middle' ? 'the middle' : at === 'ground' ? 'the ground' : at,
+             on: S.on.slice(), hands: hands, written: S.written, busy: busy() || !started, ended: S.out || null,
+             offered: busy() || !started || S.out ? [] : M.offered(S), caption: (($('c1').textContent || '') + ' ' + ($('c2').textContent || '')).trim() };
+  },
+  press: function (v) { var b = document.querySelector('.verb[data-verb="' + v + '"]'); if (b) lastPressed = b; return press(v); },
+  step: function (ms) { advance(ms || 0); return this.state(); },
+  draw: function (need, burn) { if (S.log.length) return false; S.need = need; S.burn = burn; return true; }
+};
+
+newGame();
+})();
+</script>
+</body>
+</html>
