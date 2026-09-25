@@ -8,7 +8,7 @@
 <title>The belief tree · Recursive Learning</title>
 <meta name="description" content="A decision tree for building minds smarter than ours: seven steps, then where people stand on it. Each person's public argument, their own if this, then that, and what they would have to believe to move.">
 <!--
-  The belief tree (Sep 24 2026; round 1 of the reader panel, Sep 25). An explainer for the HOT POTATO
+  The belief tree (Sep 24 2026; rounds 1 and 2 of the reader panel, Sep 25). An explainer for the HOT POTATO
   film and for each person's branch film. The tree itself is drawn by tree-render.js (shared with the
   Lab's game); the people are people.json (one shared file, public fields only). This page owns the
   step captions, the notes under them, the person cards and the step contract. No libraries, no fonts
@@ -64,18 +64,22 @@
   h1{font:400 32px/1.15 var(--serif);margin:6px 0 0}
   .lede{font:400 17px/1.5 var(--serif);color:var(--dim);max-width:66ch;margin:8px 0 18px}
 
-  .stage{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"cap" "tree" "side";gap:16px;align-items:start}
-  .tree-panel{grid-area:tree} .caption{grid-area:cap} .side{grid-area:side;min-width:0}
+  /* phone: the step's title and text, then the tree it lights, then the replies and notes; Prev/Next in a bar
+     at the foot of the screen. Wide: the tree on the left, the caption, notes and cards on the right. */
+  .stage{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"cap" "tree" "more" "side";gap:16px;align-items:start}
+  .tree-panel{grid-area:tree} .caption{grid-area:cap} .more{grid-area:more;min-width:0} .side{grid-area:side;min-width:0}
   @media (min-width:980px){
-    .stage{grid-template-columns:minmax(0,2.1fr) minmax(300px,1fr);grid-template-areas:"tree cap" "tree side";grid-template-rows:auto 1fr;gap:16px 18px}
+    .stage{grid-template-columns:minmax(0,2.1fr) minmax(300px,1fr);grid-template-areas:"tree cap" "tree more" "tree side";grid-template-rows:auto auto 1fr;gap:16px 18px}
+    html:not(.embed) .caption{border-bottom:0;border-bottom-left-radius:0;border-bottom-right-radius:0;padding-bottom:2px}
+    html:not(.embed) .more{background:var(--lift);border:1px solid var(--line);border-top:0;border-radius:0 0 16px 16px;
+      padding:0 18px 16px;margin-top:-16px}
   }
   .tree-panel{background:var(--lift);border:1px solid var(--line);border-radius:16px;padding:14px 12px 10px;min-width:0}
   #tree{width:100%;min-height:120px}
   #tree .bt-svg{--bt-bg-label:var(--lift)}
   .embed #tree .bt-svg{--bt-bg-label:var(--bg)}
 
-  .controls{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
-  .controls .dots{display:flex;gap:6px;flex:1 1 auto;justify-content:center;flex-wrap:wrap}
+  .dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
   .dot{min-width:30px;height:30px;border-radius:15px;border:1px solid var(--line);background:transparent;color:var(--dim);
     font:600 12px var(--sans);cursor:pointer;padding:0 6px}
   .dot.people{padding:0 10px}
@@ -86,10 +90,14 @@
   .btn[disabled]{opacity:.4;cursor:not-allowed}
   .count{font-size:12.5px;color:var(--faint);text-align:center}
   /* Prev | where you are | Next on one row, the dots under them: Next stays beside the caption */
-  .controls{display:grid;grid-template-columns:auto 1fr auto;gap:8px}
-  #prev{grid-column:1;grid-row:1} #next{grid-column:3;grid-row:1}
-  .controls .count{grid-column:2;grid-row:1}
-  .controls .dots{grid-column:1 / -1;grid-row:2}
+  .controls{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;margin-top:14px}
+  @media (max-width:979px){
+    /* on a phone the bar stays at the foot of the screen, so Next and the tree it moves are both in view */
+    html:not(.embed) .controls{position:fixed;left:0;right:0;bottom:0;z-index:5;margin:0;
+      padding:8px 16px calc(8px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--line)}
+    html:not(.embed) body{padding-bottom:calc(62px + env(safe-area-inset-bottom))}
+    .more{padding:0 4px}
+  }
 
   .caption{background:var(--lift);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
   .caption h2{font:400 25px/1.2 var(--serif);margin:4px 0 8px}
@@ -160,9 +168,10 @@
   /* ---------- embed: the scene only, dark ground, sized to the frame ---------- */
   html.embed,html.embed body{height:100%;overflow:hidden}
   .embed .wrap{max-width:none;height:100vh;padding:2.4vmin 2.8vmin}
-  .embed .top,.embed footer,.embed .controls,.embed .plist,.embed .notice,.embed .words{display:none}
-  .embed .stage{height:100%;grid-template-columns:minmax(0,2.25fr) minmax(0,1fr);grid-template-areas:"tree ." "tree cap" "tree side" "tree .";
-    grid-template-rows:minmax(0,1fr) auto auto minmax(0,1fr);gap:0 2.6vmin;align-items:start}
+  .embed .top,.embed footer,.embed .controls,.embed .dots,.embed .plist,.embed .notice,.embed .words{display:none}
+  .embed .stage{height:100%;grid-template-columns:minmax(0,2.25fr) minmax(0,1fr);grid-template-areas:"tree ." "tree cap" "tree more" "tree side" "tree .";
+    grid-template-rows:minmax(0,1fr) auto auto auto minmax(0,1fr);gap:0 2.6vmin;align-items:start}
+  .embed.has-card .more{display:none}
   .embed.has-card .stage{grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);grid-template-areas:"tree cap" "tree side";
     grid-template-rows:auto minmax(0,1fr)}
   .embed .tree-panel{background:none;border:0;padding:0;height:100%;display:flex;align-items:center}
@@ -210,7 +219,7 @@
       border-bottom:1px solid var(--line);text-decoration:none}
   }
   @media (max-width:420px){
-    .controls .dots{gap:4px}
+    .dots{gap:4px}
     .dot{min-width:28px;height:28px;font-size:11px;padding:0 4px}
     .btn{padding:8px 12px;font-size:13.5px}
     h1{font-size:28px} .caption h2{font-size:22px} .caption #cap-b{font-size:16px} .pcard h3{font-size:23px}
@@ -234,18 +243,20 @@
         <h2 id="cap-t"></h2>
         <p id="cap-b"></p>
       </div>
-      <nav class="controls" aria-label="Steps">
+      <nav class="controls" id="controls" aria-label="Steps">
         <button class="btn" id="prev" type="button">Prev</button>
-        <div class="dots" id="dots"></div>
-        <button class="btn" id="next" type="button">Next</button>
         <div class="count" id="count" aria-hidden="true"></div>
+        <button class="btn" id="next" type="button">Next</button>
       </nav>
-      <div class="replies" id="replies"></div>
-      <p class="pnote" id="pnote" hidden></p>
-      <details class="words" id="words" hidden><summary>The words</summary><dl id="words-list"></dl></details>
+      <div class="dots" id="dots" role="group" aria-label="Go to a step"></div>
     </section>
     <section class="tree-panel" aria-label="The tree">
       <div id="tree"></div>
+    </section>
+    <section class="more" id="more" aria-label="Notes on this step">
+      <div class="replies" id="replies"></div>
+      <p class="pnote" id="pnote" hidden></p>
+      <details class="words" id="words" hidden><summary>The words</summary><dl id="words-list"></dl></details>
     </section>
     <aside class="side" id="side">
       <div id="card"></div>
@@ -284,7 +295,7 @@
 </div>
 
 <script type="module">
-import { renderTree, loadPeople, LEAF_LABEL, ANSWER_WORD } from './tree-render.js';
+import { renderTree, loadPeople, nodeRect, STEP_LIT, LEAF_LABEL, ANSWER_WORD } from './tree-render.js';
 
 /* Steps 1-7: the stepper text from PlayfulProcess's Sep 24 2026 conversation, kept as written ("Yampolsky"
    corrected to "Yampolskiy"); whether any of it is reworded is her call. Step 8, the notes, the replies and the
@@ -308,7 +319,7 @@ const NOTE = {
   2: [{ t: "This is mostly a problem of checking: if a model acts differently when it is watched, tests cannot show what it does unwatched. That is the gate's “can't be tested” again. " },
       { a: 'Greenblatt on alignment faking', href: 'https://www.youtube.com/watch?v=wdnVeYx_fOA&t=4664s' }, { t: ' (Making Sense #494, about 1:17:44).' }],
   3: [{ t: "Both lines in the step are paraphrases; their own words are below. They may be speaking about different things: sealing off today's agents during tests, which is security work, and keeping control of a much smarter system for good, which is Yampolskiy's claim. In between sits monitoring, which Greenblatt says could work for some longer period before it breaks down." }],
-  4: [{ t: 'These are the voices the film draws on, not a poll of experts. Several of them ask to stop only the most powerful systems; each card says how far their stop reaches.' }],
+  4: [{ t: 'These are the voices the film draws on, not a poll of experts. A dashed name is placed by what they ask for: at least one of their own answers is not known yet or depends. Several of them ask to stop only superintelligence or the most advanced systems, not all AI.' }],
   6: [{ t: "“Huang's branch” names the branch he argues for. His own case, and his answer on outside checks, are below." }],
   7: [{ t: 'Shutdown’s weak spot, as some researchers put it: a stop by some leaves the rest building, and leaves released models and unused computing power behind, so a later restart may jump ahead rather than resume.' }],
   8: [{ t: 'These are the voices the film draws on, not a poll of experts. For a family: this argument is mostly about the most capable systems being built now and next. Even one of the voices placed at Shut down says ' },
@@ -563,15 +574,22 @@ function renderCard() {
 }
 
 /* in a frame, the card must fit the frame: drop the optional parts, least needed first (confidence, the
-   if-then, the answers strip (the tree already draws their open nodes), the pair, the later moves, then the
-   moves altogether in a very small frame). The same rule for every person. */
+   if-then, the later moves, the pair, their answers strip, then the moves altogether in a very small frame),
+   then put back every dropped part that fits on its own, most needed first (the moves, their answers, the
+   pair, the if-then, confidence, the later moves), so no room is left empty. The same rule for every person. */
+const FIT_DROP = ['1', '3', '6', '5', '4', '7'], FIT_KEEP = ['7', '4', '5', '3', '1', '6'];
 function fitEmbed() {
   if (!embed) return;
   const side = $('side');
+  const over = () => side.scrollHeight > side.clientHeight + 1;
+  const set = (lvl, hide) => side.querySelectorAll(`[data-fit="${lvl}"]`).forEach(e => e.classList.toggle('fit-hide', hide));
   side.querySelectorAll('.fit-hide').forEach(e => e.classList.remove('fit-hide'));
-  for (const level of ['1', '3', '4', '5', '6', '7']) {
-    if (side.scrollHeight <= side.clientHeight + 1) return;
-    side.querySelectorAll(`[data-fit="${level}"]`).forEach(e => e.classList.add('fit-hide'));
+  const dropped = [];
+  for (const lvl of FIT_DROP) { if (!over()) break; set(lvl, true); dropped.push(lvl); }
+  for (const lvl of FIT_KEEP) {
+    if (!dropped.includes(lvl)) continue;
+    set(lvl, false);
+    if (over()) set(lvl, true);
   }
 }
 window.addEventListener('resize', fitEmbed);
@@ -626,7 +644,32 @@ function tell() {
   try { window.parent.postMessage({ type: 'explainer-step', n: current, total: TOTAL }, '*'); } catch (_) {}
 }
 
-function gotoStep(n, animate) {
+/* on a phone, after the reader moves a step, bring the node it lights into view above the bar, scrolling as
+   little as it can; then keep the step title in view when the node still shows, and, for a leaf, the first
+   row of names under it when that costs neither */
+function revealLit() {
+  if (embed || window.innerWidth >= 980) return;
+  const ids = STEP_LIT[current] || [];
+  if (!ids.length) return;
+  const rs = ids.map(id => nodeRect(treeEl, id)).filter(Boolean);
+  if (!rs.length) return;
+  const extra = ids.some(id => ['proceed', 'regulate', 'contain', 'shutdown'].includes(id)) ? 40 : 0;
+  const top = Math.min(...rs.map(r => r.top)), bottom = Math.max(...rs.map(r => r.bottom));
+  const bar = $('controls');
+  const lo = 10, hi = (getComputedStyle(bar).position === 'fixed' ? bar.getBoundingClientRect().top : window.innerHeight) - 10;
+  const head = $('cap-t').getBoundingClientRect().top;
+  const lowN = bottom - hi, highN = top - lo;          // any scroll d in [lowN, highN] shows the node
+  let d = Math.min(Math.max(0, lowN), highN);
+  if (head - d < lo) d = Math.max(lowN, head - lo);
+  if (extra && bottom + extra - d > hi) {
+    let want = Math.min(bottom + extra - hi, highN);
+    if (head - d >= lo) want = Math.min(want, head - lo);
+    d = Math.max(d, want);
+  }
+  if (Math.abs(d) > 1) window.scrollBy({ top: d, behavior: reduce ? 'auto' : 'smooth' });
+}
+
+function gotoStep(n, animate, user) {
   n = Math.max(1, Math.min(TOTAL, Math.round(Number(n)) || 1));
   const anim = !!animate && n === current + 1;
   current = n;
@@ -638,6 +681,7 @@ function gotoStep(n, animate) {
   renderControls();
   syncUrl();
   tell();
+  if (user) revealLit();
   return n;
 }
 
@@ -675,17 +719,17 @@ for (let i = 1; i <= TOTAL; i++) {
   const d = h('button', 'dot' + (i === 8 ? ' people' : ''), i === 8 ? 'People' : String(i));
   d.type = 'button';
   d.setAttribute('aria-label', i === 8 ? 'Where people stand' : `Step ${STEPS[i - 1].t}`);
-  d.addEventListener('click', () => gotoStep(i, true));
+  d.addEventListener('click', () => gotoStep(i, true, true));
   $('dots').appendChild(d);
 }
-$('prev').addEventListener('click', () => gotoStep(current - 1, false));
-$('next').addEventListener('click', () => gotoStep(current + 1, true));
+$('prev').addEventListener('click', () => gotoStep(current - 1, false, true));
+$('next').addEventListener('click', () => gotoStep(current + 1, true, true));
 document.addEventListener('keydown', e => {
   if (e.altKey || e.ctrlKey || e.metaKey) return;
   const t = e.target;
   if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
-  if (e.key === 'ArrowRight') { e.preventDefault(); gotoStep(current + 1, true); }
-  else if (e.key === 'ArrowLeft') { e.preventDefault(); gotoStep(current - 1, false); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); gotoStep(current + 1, true, true); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); gotoStep(current - 1, false, true); }
   else if (e.key === 'Escape') closeCard();
 });
 const NODE_STEP = { gate: 1, alignment: 2, 'containment-if-aligned': 3, 'containment-if-not': 3, shutdown: 4,
@@ -693,7 +737,7 @@ const NODE_STEP = { gate: 1, alignment: 2, 'containment-if-aligned': 3, 'contain
 treeEl.addEventListener('belieftree:select', e => {
   const d = e.detail || {};
   if (d.person) selectPerson(d.person);
-  else if (d.node && NODE_STEP[d.node]) gotoStep(NODE_STEP[d.node], true);
+  else if (d.node && NODE_STEP[d.node]) gotoStep(NODE_STEP[d.node], true, true);
 });
 
 /* the step contract: messages from the parent frame only */

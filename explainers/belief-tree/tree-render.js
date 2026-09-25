@@ -14,6 +14,8 @@
  *   STEP_LIT         { 1..8: [nodeIds] } what each explainer step lights (8 = the person in focus)
  *   LEAF_LABEL       { proceed, regulate, contain, shutdown, outside } display names
  *   loadPeople(url?) fetches people.json (default: next to this module) once and caches it
+ *   nodeRect(el, id) where a node will sit once the current change settles, in viewport pixels
+ *                    ({ top, bottom, left, right }), so a page can scroll it into view mid-animation
  *
  * Node ids: gate, alignment, containment-if-aligned, containment-if-not,
  *           proceed, regulate, contain, shutdown, race.
@@ -27,7 +29,9 @@
  *   open:    [nodeIds]       still uncertain: drawn with a dashed outline
  *   focus:   '<person slug>' | null   a lens that lasts across steps: that person's chip is shown at every
  *                            step with a ring; at step 8 their path lights up, and the nodes where their own
- *                            answer is not a plain yes or no are drawn open (dashed)
+ *                            answer is not a plain yes or no are drawn open (dashed); so is the edge that
+ *                            answer leads down, and its label says their answer ('depends', 'not known',
+ *                            'not addressed') instead of the yes/no of the branch
  *   people:  [...]           defaults to the cached people.json (see loadPeople); [] hides chips
  *   casting: { node, method: 'coin'|'yarrow'|'decide'|'unknown', result: 'yes'|'no'|'unknown' } | null
  *   theme:   'dark' | 'light' | 'auto'
@@ -40,6 +44,8 @@
  * person's own two answers lead to their leaf (placed_by 'answers') and dashed when they are placed by
  * what they ask for ('ask', 'plan'): at least one of their answers is not known yet, conditional or not
  * addressed. The narrow layout sizes its chip band to the chips on show (no empty band in steps 1-3).
+ * Whenever a dashed chip is on show, a two-line key says what solid and dashed mean (top left in the
+ * wide layout, under the race in the narrow one); opts.legend === false leaves it out.
  *
  * people.json holds public fields only (it is served with the page): slug, name, short, role,
  * stated_leaf, placed_by, scope, confidence, gate/alignment/containment {answer, basis}, race,
@@ -133,6 +139,7 @@ const LAYOUTS = {
     },
     chip: { w: 106, h: 28, gap: 8, rowGap: 8, cols: 2, top: 472 },
     outside: { x: 866, y: 58, w: 240, h: 84, labelDx: 0, labelDy: -24, chipsTop: 64, cols: 2, row: false },
+    legend: { x: 10, y: 28, font: 14, pill: 26, rowH: 25 },
   },
   narrow: {
     w: 400, h: 880, dynamic: true,
@@ -161,6 +168,7 @@ const LAYOUTS = {
     },
     chip: { w: 94, h: 31, gap: 6, rowGap: 7, cols: 1, top: 467 },
     outside: { x: 200, y: 0, w: 384, h: 50, labelDx: -178, labelDy: 4.5, chipsTop: 0, cols: 1, row: true },
+    legend: { x: 10, y: 0, font: 12.5, pill: 24, rowH: 21 },     // placed under the race (layoutBand)
   },
 };
 
@@ -193,6 +201,7 @@ const CSS = (() => {
 @keyframes bt-pulse{0%{opacity:.85;stroke-width:2}100%{opacity:0;stroke-width:22}}
 .bt-edge{fill:none;stroke:var(--bt-line);stroke-width:2;transition:stroke .45s ease,stroke-width .45s ease}
 .bt-edge.is-lit{stroke:var(--bt-coral);stroke-width:3}
+.bt-edge.is-open{stroke-dasharray:7 5}
 .bt-elabel rect{fill:var(--bt-bg-label)}
 .bt-elabel text{fill:var(--bt-faint);font-weight:600;transition:fill .45s ease}
 .bt-elabel.is-lit text{fill:var(--bt-coral)}
@@ -214,6 +223,11 @@ const CSS = (() => {
 .bt-zone .zbox{fill:none;stroke:var(--bt-line);stroke-width:1.3;stroke-dasharray:4 5}
 .bt-zone.is-lit .zbox{stroke:var(--bt-coral);stroke-width:2}
 .bt-zone .zt{fill:var(--bt-faint);font-weight:650;letter-spacing:.08em}
+.bt-legend{opacity:0;transition:opacity .45s ease}
+.bt-legend.is-shown{opacity:1}
+.bt-legend .lbox{fill:var(--bt-chip);stroke:var(--bt-chip-line);stroke-width:1.2}
+.bt-legend .lbox.ask{stroke-dasharray:5 3.5}
+.bt-legend text{fill:var(--bt-dim)}
 .bt-cast .coin{fill:var(--bt-chip);stroke:var(--bt-coral);stroke-width:2}
 .bt-cast .stalk{stroke:var(--bt-coral);stroke-width:3;stroke-linecap:round}
 .bt-cast .ring{fill:none;stroke:var(--bt-coral)}
@@ -276,6 +290,16 @@ function build(el, L) {
   const gChips = S('g', { class: 'bt-chips' }, svg);
   const gChipsOut = S('g', { class: 'bt-chips-outside bt-dyn' }, svg);
   const gCast = S('g', { class: 'bt-cast' }, svg);
+  const gLegend = S('g', { class: 'bt-legend' + (L.dynamic ? ' bt-dyn' : ''), 'aria-hidden': 'true' }, svg);
+  {
+    const k = L.legend;
+    [['', 'own two answers lead here'], ['ask', 'placed by what they ask for']].forEach(([cls, words], i) => {
+      const y = k.y + i * k.rowH;
+      S('rect', { class: 'lbox' + (cls ? ' ' + cls : ''), x: k.x, y: y - 7, width: k.pill, height: 14, rx: 7 }, gLegend);
+      const t = S('text', { x: k.x + k.pill + 7, y: y + k.font * 0.36, 'font-size': k.font }, gLegend);
+      t.textContent = words;
+    });
+  }
 
   const nodeEls = {}, edgeEls = [], labelEls = [];
   for (const n of NODES) {
@@ -289,7 +313,7 @@ function build(el, L) {
       edgeEls.push(path);
       if (n.via) {
         const lx = x1 + (x2 - x1) * 0.5, ly = my;
-        const lg = S('g', { class: 'bt-elabel', 'data-to': n.id }, gLabels);
+        const lg = S('g', { class: 'bt-elabel', 'data-to': n.id, 'data-via': n.via, 'data-lx': lx }, gLabels);
         const fw = L.font.edge;
         S('rect', { x: lx - fw * 1.3, y: ly - fw * 0.8, width: fw * 2.6, height: fw * 1.6, rx: fw * 0.5 }, lg);
         const t = S('text', { x: lx, y: ly + fw * 0.36, 'text-anchor': 'middle', 'font-size': fw }, lg);
@@ -317,7 +341,7 @@ function build(el, L) {
     'text-anchor': o.row ? 'start' : 'middle' }, gZone);
   zt.textContent = 'OUTSIDE THE TREE';
 
-  const st = { svg, L, nodeEls, edgeEls, labelEls, gChips, gChipsOut, gZone, gCast, chipEls: {}, peopleKey: null,
+  const st = { svg, L, nodeEls, edgeEls, labelEls, gChips, gChipsOut, gZone, gCast, gLegend, chipEls: {}, peopleKey: null,
     prevLit: new Set(), castKey: null, castTimer: 0, layoutName: null };
 
   svg.addEventListener('click', e => {
@@ -370,7 +394,7 @@ function placeChips(st, people) {
         x = cx0 - rowW / 2 + col * (c.w + c.gap);
         y = top + row * (c.h + c.rowGap);
       }
-      const ask = p.placed_by === 'ask' || p.placed_by === 'plan';
+      const ask = isAsk(p);
       const how = [PLACED_WORDS[p.placed_by], p.confidence === 'low' ? 'low confidence' : null].filter(Boolean).join(', ');
       const label = `${p.name}: ${LEAF_LABEL[leaf]}${p.scope ? ' (' + p.scope + ')' : ''}.${how ? ' ' + how + '.' : ''} Open the card.`;
       const g = S('g', { class: 'bt-chip' + (ask ? ' is-ask' : ''), 'data-person': p.slug, 'data-leaf': leaf,
@@ -387,11 +411,17 @@ function placeChips(st, people) {
   }
 }
 
+/* a chip is dashed when the person is placed by what they ask for (or their organisation's plan) */
+const isAsk = p => p.placed_by === 'ask' || p.placed_by === 'plan';
+/* the edge label for a person's own answer that is not a plain yes or no */
+const EDGE_WORD = { conditional: 'depends', unclear: 'not known', unknown: 'not known', 'not-addressed': 'not addressed' };
+
 /* what glows, what is open, which chips show, from the state */
 function computeView(state, people) {
   const step = state.step == null ? null : Math.max(1, Math.min(8, Math.round(Number(state.step)) || 1));
   const focusP = state.focus ? people.find(p => p.slug === state.focus) : null;
   let lit, open = new Set(state.open || []);
+  const edgeOpen = new Set(), edgeWord = {};
   if (Array.isArray(state.lit)) lit = new Set(state.lit);
   else if (step) {
     lit = new Set(STEP_LIT[step]);
@@ -403,8 +433,11 @@ function computeView(state, people) {
         const cNode = leaf === 'proceed' || leaf === 'regulate' ? 'containment-if-aligned' : 'containment-if-not';
         ['gate', 'alignment', cNode, leaf].forEach(n => lit.add(n));
         if (!plain(focusP.gate && focusP.gate.answer)) open.add('gate');
-        if (!plain(focusP.alignment && focusP.alignment.answer)) open.add('alignment');
-        if (!plain(focusP.containment && focusP.containment.answer)) open.add(cNode);
+        const aA = focusP.alignment && focusP.alignment.answer, cA = focusP.containment && focusP.containment.answer;
+        // the yes/no on an edge is the branch's answer; where theirs is not a plain yes or no, the edge is
+        // drawn open and its label says their answer, so the path does not credit them with a yes they did not give
+        if (!plain(aA)) { open.add('alignment'); edgeOpen.add(cNode); edgeWord[cNode] = EDGE_WORD[aA] || 'not known'; }
+        if (!plain(cA)) { open.add(cNode); edgeOpen.add(leaf); edgeWord[leaf] = EDGE_WORD[cA] || 'not known'; }
       }
     }
   } else {
@@ -441,7 +474,8 @@ function computeView(state, people) {
     shown.add(p.slug);
     if (step === 8 || !step || namedHere.has(p.slug) || (lit.has(leaf) && step !== 6)) here.add(p.slug);
   }
-  return { step, lit, open, shown, here, focus: focusP ? focusP.slug : null, people,
+  const legend = [...shown].some(slug => { const p = people.find(q => q.slug === slug); return p && isAsk(p); });
+  return { step, lit, open, shown, here, focus: focusP ? focusP.slug : null, people, edgeOpen, edgeWord, legend,
     zoneShown: revealed.has('outside') && people.some(p => leafOfPerson(p) === 'outside') };
 }
 
@@ -457,8 +491,24 @@ function apply(st, view, animate) {
   }
   // the edge into a lit node glows with it, so the answer that leads there reads at a glance
   const edgeOn = to => view.lit.has(to);
-  edgeEls.forEach(e => e.classList.toggle('is-lit', edgeOn(e.dataset.to)));
-  labelEls.forEach(e => e.classList.toggle('is-lit', edgeOn(e.dataset.to)));
+  edgeEls.forEach(e => {
+    e.classList.toggle('is-lit', edgeOn(e.dataset.to));
+    e.classList.toggle('is-open', view.edgeOpen.has(e.dataset.to));
+  });
+  labelEls.forEach(e => {
+    e.classList.toggle('is-lit', edgeOn(e.dataset.to));
+    const word = view.edgeWord[e.dataset.to] || e.dataset.via;
+    const t = e.querySelector('text');
+    if (t.textContent !== word) {
+      t.textContent = word;
+      const fw = st.L.font.edge, lx = Number(e.dataset.lx);
+      const w = Math.max(fw * 2.6, word.length * fw * 0.58 + fw * 1.1);
+      const r = e.querySelector('rect');
+      r.setAttribute('x', lx - w / 2); r.setAttribute('width', w);
+    }
+  });
+  st.legendPrev = st.gLegend.classList.contains('is-shown');
+  st.gLegend.classList.toggle('is-shown', !!view.legend && st.legendOn);
   gZone.classList.toggle('is-shown', view.zoneShown);
   gZone.classList.toggle('is-lit', !!view.focus && chipEls[view.focus] && chipEls[view.focus].dataset.leaf === 'outside');
   let k = 0;
@@ -500,7 +550,18 @@ function layoutBand(st, view) {
     y = zy + L.outside.h / 2 + 18;
   }
   nodeEls.race.style.transform = `translateY(${y + L.nodes.race.h / 2}px)`;
-  svg.setAttribute('viewBox', `0 0 ${L.w} ${Math.ceil(y + L.nodes.race.h + 8)}`);
+  let bottom = y + L.nodes.race.h + 8;
+  if (view.legend && st.legendOn) {
+    const ly = bottom + 12, gl = st.gLegend;
+    if (!st.legendPrev) {   // appearing: put it in place first, then fade it in (no slide across the tree)
+      gl.style.transition = 'opacity .45s ease';
+      gl.style.transform = `translateY(${ly}px)`;
+      void gl.getBoundingClientRect();
+      requestAnimationFrame(() => { gl.style.transition = ''; });
+    } else gl.style.transform = `translateY(${ly}px)`;
+    bottom = ly + L.legend.rowH + 14;
+  }
+  svg.setAttribute('viewBox', `0 0 ${L.w} ${Math.ceil(bottom)}`);
 }
 
 /* ---------------- casting ---------------- */
@@ -573,6 +634,20 @@ function cast(el, st, casting, animate) {
   }
 }
 
+/* where node `id` will sit once the current change settles (the race moves by a CSS transition in the
+   narrow layout; this reads its target, not its position mid-move), in viewport pixels */
+export function nodeRect(el, id) {
+  const st = el && el.__beliefTree;
+  if (!st || !st.L.nodes[id]) return null;
+  const b = st.L.nodes[id], vb = st.svg.viewBox.baseVal, r = st.svg.getBoundingClientRect();
+  if (!vb || !vb.width || !r.width) return null;
+  const m = /translateY\((-?[\d.]+)px\)/.exec(st.nodeEls[id].style.transform || '');
+  const dy = m ? Number(m[1]) : 0, s = r.width / vb.width;
+  const top = r.top + (b.y - b.h / 2 + dy - vb.y) * s;
+  const left = r.left + (b.x - b.w / 2 - vb.x) * s;
+  return { top, bottom: top + b.h * s, left, right: left + b.w * s };
+}
+
 /* ---------------- entry point ---------------- */
 export function renderTree(el, state = {}, opts = {}) {
   const o = Object.assign({ animate: true, layout: 'auto' }, opts);
@@ -590,6 +665,7 @@ export function renderTree(el, state = {}, opts = {}) {
   const peopleKey = people.map(p => p.slug + ':' + p.stated_leaf).join('|');
   if (peopleKey !== st.peopleKey) { placeChips(st, people); st.peopleKey = peopleKey; }
   st.svg.setAttribute('data-bt-theme', state.theme === 'light' || state.theme === 'dark' ? state.theme : 'auto');
+  st.legendOn = o.legend !== false;
   const animate = o.animate !== false && !fresh && !reducedMotion();
   if (!animate) st.svg.classList.add('bt-cut');
   apply(st, computeView(state, people), animate);
