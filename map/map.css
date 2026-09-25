@@ -1,0 +1,178 @@
+/* The map that lights up: learning.recursive.eco/map/ */
+:root{
+  color-scheme:light;
+  --bg:#fbfbf9; --panel:#ffffff; --panel2:#f3f2ee; --line:#dedcd5;
+  --ink:#16181d; --muted:#5b5f69; --faint:#8a8d95;
+  --link:#1f63b8; --mark:#0f8a64;
+  --glow:#c2185b; --glow-soft:rgba(194,24,91,.22);
+  --dot-grey:#bcbab3; --dot-other:#8f8d86;
+  /* categorical slots, validated as a set (dataviz validator, all pairs): see map/build/README.md */
+  --s0:#2a78d6; --s1:#1baf7a; --s2:#eda100; --s3:#008300; --s4:#4a3aa7; --s5:#e34948;
+  --focus:#1f63b8;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
+    --ink:#e8ecf3; --muted:#a3adbf; --faint:#7d879a;
+    --link:#7fb6ff; --mark:#5ee2b0;
+    --glow:#ff6fae; --glow-soft:rgba(255,111,174,.25);
+    --dot-grey:#454b57; --dot-other:#6c7383;
+    --s0:#3987e5; --s1:#199e70; --s2:#c98500; --s3:#008300; --s4:#9085e9; --s5:#e66767;
+    --focus:#7fb6ff;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
+  --ink:#e8ecf3; --muted:#a3adbf; --faint:#7d879a;
+  --link:#7fb6ff; --mark:#5ee2b0;
+  --glow:#ff6fae; --glow-soft:rgba(255,111,174,.25);
+  --dot-grey:#454b57; --dot-other:#6c7383;
+  --s0:#3987e5; --s1:#199e70; --s2:#c98500; --s3:#008300; --s4:#9085e9; --s5:#e66767;
+  --focus:#7fb6ff;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.5}
+a{color:var(--link)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible,canvas:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1320px;margin:0 auto;padding:16px 16px 56px}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg.i{width:1em;height:1em;display:inline-block;vertical-align:-.14em;flex:none}
+
+/* header */
+.top{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.home{display:inline-flex;align-items:center;gap:9px;color:var(--muted);text-decoration:none;font-size:16px;
+  letter-spacing:.08em;text-transform:uppercase;min-height:44px}
+.home svg{width:32px;height:32px;color:var(--mark)}
+.home:hover{color:var(--ink)}
+h1{font-size:clamp(26px,5.4vw,36px);line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
+.pilot{font-size:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);border-radius:99px;padding:2px 9px;vertical-align:middle;margin-left:6px;white-space:nowrap}
+.sub{margin:0 0 16px;color:var(--muted);max-width:62ch}
+
+/* layout */
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;
+  grid-template-areas:"ask" "map" "results" "about" "sources"}
+.ask{grid-area:ask}.mapcol{grid-area:map}.results{grid-area:results}.about{grid-area:about}.sources{grid-area:sources}
+@media (min-width:900px){
+  .grid{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);column-gap:28px;
+    grid-template-areas:"ask ask" "map results" "about about" "sources sources"}
+  .mapcol{position:sticky;top:12px;align-self:start}
+}
+
+/* question box */
+form.q{display:flex;gap:8px;flex-wrap:wrap}
+form.q label{flex-basis:100%;font-weight:600}
+form.q input{flex:1 1 220px;min-width:0;min-height:48px;font:inherit;font-size:17px;padding:10px 14px;
+  border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+button,.btn{font:inherit;font-size:16px;min-height:44px;min-width:44px;padding:8px 14px;border-radius:12px;
+  border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+button:hover{background:var(--panel2)}
+button.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600}
+button.primary:hover{opacity:.9}
+.kbd{font-size:16px;color:var(--faint);margin:6px 0 0}
+.note{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);
+  font-size:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.note[hidden]{display:none}
+.note p{margin:0;flex:1 1 240px}
+.status{font-size:16px;color:var(--muted);margin:8px 0 0;min-height:1.5em}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+.chips button{font-size:16px;border-radius:99px;padding:8px 14px;text-align:left}
+.chips button[aria-pressed="true"]{border-color:var(--glow);box-shadow:inset 0 0 0 1px var(--glow)}
+
+/* the map */
+.stage{position:relative;width:100%;max-width:min(100%,70vh);aspect-ratio:1/1;margin:0 auto;
+  border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage canvas.base{pointer-events:none}
+.stage canvas.over{cursor:crosshair}
+.cap{font-size:16px;color:var(--muted);margin:8px 0 0}
+.controls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:12px 0 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.seg label{position:relative;display:inline-flex;align-items:center;min-height:44px;padding:0 13px;cursor:pointer;
+  font-size:16px;border-left:1px solid var(--line)}
+.seg label:first-of-type{border-left:0}
+.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg input:checked+span{font-weight:700}
+.seg label:has(input:checked){background:var(--panel2)}
+.seg label:has(input:focus-visible){outline:2px solid var(--focus);outline-offset:-2px}
+.zoom{display:inline-flex;gap:6px}
+.zoom button{padding:0;width:44px;font-size:20px;line-height:1}
+.zoom button.reset{width:auto;padding:0 12px;font-size:16px}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;padding:0;list-style:none}
+.legend button{display:inline-flex;align-items:center;gap:7px;font-size:16px;border-radius:99px;padding:6px 12px}
+.legend button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.sw{width:12px;height:12px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.12)}
+.legend .n{color:var(--faint);font-size:16px}
+
+/* results */
+.results h2,.about h2,.sources h2{font-size:20px;margin:0 0 8px}
+.lead{margin:0 0 10px;color:var(--muted)}
+.near-ideas{margin:0 0 12px;font-size:16px}
+.rows{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.row{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.row.on{border-color:var(--glow);box-shadow:0 0 0 1px var(--glow)}
+.row .quote{margin:0;font-size:17px;line-height:1.45}
+.row .quote a{text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line)}
+.row .quote a:hover{border-bottom-color:var(--ink)}
+.row .quote a.idea{color:var(--link);border-bottom:1px dashed var(--link)}
+.row .src{display:inline-block;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin:0 0 4px}
+.row .noq{margin:0;color:var(--muted);font-size:16px}
+.row .meta{margin:6px 0 0;font-size:16px;color:var(--muted)}
+.row .close{font-weight:600;color:var(--ink)}
+.row .links{display:flex;flex-wrap:wrap;gap:4px 14px;margin:8px 0 0;font-size:16px;align-items:center}
+.row .links a,.row .links button{min-height:44px;display:inline-flex;align-items:center;gap:5px}
+.row .links button{padding:0 12px}
+.row .tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.tag{display:inline-flex;align-items:center;min-height:32px;padding:3px 10px;border-radius:99px;font-size:16px;
+  border:1px solid var(--line);text-decoration:none;color:var(--ink);background:var(--panel2)}
+.tag.person::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c,var(--dot-other));margin-right:6px}
+.tag.idea{border-style:dashed}
+.player{margin:10px 0 0;aspect-ratio:16/9;width:100%;border:0;border-radius:10px;background:#000}
+details.anyway{margin:10px 0 0}
+details.anyway summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.empty{color:var(--muted);margin:0}
+.panelhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin:0 0 8px}
+.panelhead h2{margin:0}
+.caveat{font-size:16px;color:var(--muted);margin:0 0 10px}
+.eplist{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px;font-size:16px}
+
+/* the card for a tapped dot: bottom sheet on a phone, in-column panel on desktop */
+.sheet{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+.sheet[hidden]{display:none}
+@media (max-width:899px){
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;max-height:62vh;overflow:auto;border-radius:16px 16px 0 0;
+    box-shadow:0 -8px 30px rgba(0,0,0,.25);padding:14px 16px 20px}
+}
+.sheet h3{font-size:17px;margin:14px 0 8px}
+
+/* about + sources */
+.about{border-top:1px solid var(--line);padding-top:18px;max-width:78ch}
+.about h3{font-size:17px;margin:14px 0 4px}
+.about p,.about li{font-size:16px}
+.about ul{padding-left:20px;margin:6px 0}
+.sources{border-top:1px solid var(--line);padding-top:18px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:16px;min-width:560px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:16px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+footer{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:16px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* phone: the suggested questions scroll sideways inside their own row so the map stays near the top */
+.status:empty{display:none}
+@media (max-width:599px){
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin-left:-16px;margin-right:-16px;padding:2px 16px 6px;
+    scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  .chips li{flex:none;scroll-snap-align:start}
+  .chips button{white-space:nowrap}
+  .legend button{padding:6px 10px}
+}
