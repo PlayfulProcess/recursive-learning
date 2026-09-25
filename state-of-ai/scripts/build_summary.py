@@ -83,8 +83,10 @@ def newest_data(data):
     out["epoch_training_compute"] = {
         "date": max(r["date"] for r in tc if r["flop"]),
         "note": f"newest compute estimate; newest model listed {mon(max(r['date'] for r in tc), True)}"}
-    out["epoch_training_cost"] = {"date": max(r["date"] for r in objs(data["epoch_training_cost"])),
-                                  "note": "newest cost estimate"}
+    cost = objs(data["epoch_training_cost"])
+    front = [r["date"] for r in cost if r["frontier"]]
+    out["epoch_training_cost"] = {"date": max(r["date"] for r in cost), "frontier_date": max(front) if front else None,
+                                  "note": "newest cost estimate" + (f"; for the biggest models, {mon(max(front), True)}" if front else "")}
     out["epoch_eci"] = {"date": max(r["date"] for r in objs(data["epoch_eci"])), "note": "newest model scored"}
     out["epoch_benchmarks_internal"] = {"date": max(r["date"] for r in objs(data["epoch_benchmarks_internal"])),
                                         "note": "newest model tested (by release date)"}

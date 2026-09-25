@@ -16,7 +16,7 @@
    "fetched_at": "2026-09-25T08:45:17Z",
    "source_updated": "2026-09-21",
    "newest_data": "2026-07-29",
-   "newest_note": "newest cost estimate",
+   "newest_note": "newest cost estimate; for the biggest models, 9 Jul 2025",
    "licence": "CC BY 4.0",
    "redistribution": "copied",
    "changes": "From notable_ai_models.csv: only models with a cost estimate and a date kept; 9 columns kept and renamed; dollars and FLOP rounded to 4 significant figures. Coverage notes, trend lines and summaries (summary.json) are ours."

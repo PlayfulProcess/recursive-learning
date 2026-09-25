@@ -938,7 +938,8 @@
     var d = D.epoch_training_cost, c = card(parent, 'm-cost', 'Training cost',
       'What the compute for one final training run cost, in 2023 dollars. Research, staff, failed runs and data are not included.');
     var pos = S.positions.epoch_training_cost;
-    nowLine(c, usd(pos.value), 'costliest estimate: ' + pos.who + ' (' + pos.org + ', ' + fmtDate(pos.date) + ', compute "' + pos.confidence + '"); estimates stop in ' + fmtDate(newest('epoch_training_cost')));
+    nowLine(c, usd(pos.value), 'costliest estimate: ' + pos.who + ' (' + pos.org + ', ' + fmtDate(pos.date) + ', compute "' + pos.confidence + '"); newest estimate ' + fmtDate(newest('epoch_training_cost')) +
+      ((S.sources.epoch_training_cost || {}).newest_note && /biggest/.test(S.sources.epoch_training_cost.newest_note) ? ', ' + S.sources.epoch_training_cost.newest_note.split('; ')[1] : ''));
     var rows = objs(d).filter(function (r) { return r.date >= '2012-01-01'; }), host = h('div', null, null, c), pin = pinBox(c);
     var pts = rows.map(function (r) { var k = kindOfOpen(r.open); return { x: decYear(r.date), y: r.cost_usd_2023, r: r.frontier ? 5 : 3, hollow: r.confidence === 'Speculative', row: r, kind: k, player: playerOf(r.org) }; });
     var xs = pts.map(function (p) { return p.x; });
