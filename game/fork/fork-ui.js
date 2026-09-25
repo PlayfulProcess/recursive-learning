@@ -57,8 +57,11 @@ function lineNow() { return ui.q === 'gate' ? ui.gateRow : Q_LINE[ui.q]; }
 
 // ── drawing ────────────────────────────────────────────────────────────────────────────────────
 function shownWalk() { return ui.person ? ui.person.walk : ui.walk; }
+// The made-up example people are not drawn on the tree (two unexplained initials under the leaves read as real
+// people): they appear only while one of them is being walked. The film's own people file, once published, is.
 function treeState() {
-  return E.toTreeState(shownWalk(), { focus: ui.person ? ui.person.slug : null, people: ui.people, casting: ui.casting, theme: ui.theme });
+  const people = ui.peopleFrom === 'example' ? (ui.person ? ui.people.filter(p => p.slug === ui.person.slug) : []) : ui.people;
+  return E.toTreeState(shownWalk(), { focus: ui.person ? ui.person.slug : null, people, casting: ui.casting, theme: ui.theme });
 }
 function draw(opts) {
   skipEl.hidden = !ui.playing;
@@ -73,7 +76,16 @@ function renderPanel() {
   const key = a && panelEl.contains(a) ? a.getAttribute('data-k') : null;
   panelEl.textContent = '';
   panelEl.append(ui.person ? personPanel() : ui.q === 'gate' ? gatePanel() : questionPanel(ui.q));
+  hideIdleMore();
   if (key) { const again = panelEl.querySelector('[data-k="' + key + '"]'); if (again && !again.disabled) again.focus({ preventScroll: true }); }
+}
+// "more" only unclamps the belief lines on a question: where nothing is clamped (a wide screen), it would do
+// nothing, so it is hidden
+function hideIdleMore() {
+  const box = panelEl.querySelector('.answers.clamp'), btn = panelEl.querySelector('.more');
+  if (!box || !btn || ui.more) return;
+  const clipped = [...box.querySelectorAll('.believe')].some(b => b.scrollHeight > b.clientHeight + 1);
+  if (!clipped) btn.hidden = true;
 }
 function renderViews() {
   const slot = $('to-lines');
@@ -100,14 +112,15 @@ function moreBtn() {
 }
 function questionPanel(q) {
   const i = Q_LINE[q], Q = E.QUESTIONS[i], l = ui.walk.lines[i], busy = !!ui.playing, own = l.how === 'decide';
+  const box = E.leafName(q === 'containment' ? (ui.tapped || E.nodeFor(ui.walk, 3)) : q, NODES);
   const ans = a => h('div', { class: 'ans' },
     h('button', { 'data-k': 'ans-' + a, 'aria-pressed': own && l.answer === a ? 'true' : 'false', disabled: busy, onclick: () => doDecide(i, a) }, a === 'yes' ? 'Yes' : 'No'),
     h('p', { class: 'believe' }, "you'd have to believe " + Q.believe[a]));
   return h('div', null,
-    kicker(q, 'line ' + Q.line + ', ' + Q.place),
+    kicker(q, 'the ' + box.toLowerCase().replace(/^the /, '') + ' box'),
     h('h2', null, Q.ask),
     h('div', { class: 'answers' + (ui.more ? '' : ' clamp') }, ans('yes'), ans('no')),
-    castRow([i]),
+    castRow([i], l.how === 'unknown'),
     status(q, [i]),
     foot());
 }
@@ -124,17 +137,21 @@ function gatePanel() {
     }, label);
     return h('div', { class: 'gate-row' + (ui.gateRow === i ? ' cur' : '') },
       h('span', { class: 'gq' }, (i + 1) + '. ' + Q.ask),
-      h('span', { class: 'chips' }, chip('yes', 'yes'), chip('no', 'no'), chip('unknown', '?')),
+      h('span', { class: 'chips' }, chip('yes', 'yes'), chip('no', 'no'), chip('unknown', "don't know")),
       l.answer != null ? h('span', { class: 'held' }, rowHeld(l), own ? [' · ', h('button', { class: 'linkish', 'data-k': 'loose' + i, disabled: busy, onclick: () => toggleLoose(i) }, E.isTurning(l.kind) ? 'hold it steady' : 'hold it loosely')] : null) : null,
       ui.more ? h('span', { class: 'held' }, "yes: you'd have to believe " + Q.believe.yes + '. No: ' + Q.believe.no + '.') : null);
   });
+  // a cast never quietly replaces a part you decided: the buttons cast only the parts that are not yours
+  const notMine = [0, 1].filter(i => L[i].how !== 'decide');
+  const targets = notMine.length ? notMine : [0, 1];
+  const which = notMine.length === 2 ? 'both' : notMine.length === 1 ? 'part ' + (notMine[0] + 1) : 'both (replaces your answers)';
   return h('div', null,
-    kicker('gate', 'two parts'),
+    kicker('gate', 'the gate box, two parts'),
     h('h2', null, E.TREE_QUESTIONS[0].ask),
     rows,
     h('div', { class: 'row' },
-      h('button', { 'data-k': 'coin', disabled: busy, onclick: () => doCast([0, 1], 'coin') }, 'Flip for both'),
-      h('button', { 'data-k': 'yarrow', disabled: busy, onclick: () => doCast([0, 1], 'yarrow') }, 'Yarrow for both')),
+      h('button', { 'data-k': 'coin', disabled: busy, onclick: () => doCast(targets, 'coin') }, 'Flip for ' + which),
+      h('button', { 'data-k': 'yarrow', disabled: busy, onclick: () => doCast(targets, 'yarrow') }, 'Yarrow for ' + which)),
     h('p', { class: 'slicing' }, E.TREE_QUESTIONS[0].note + ' ' + E.TEXT.slicing + ' ', why('slicing')),
     status('gate', [0, 1]),
     foot());
@@ -144,14 +161,14 @@ function rowHeld(l) {
   if (E.isDevice(l.how)) return E.TEXT.castTag + ': ' + l.answer + (E.isTurning(l.kind) ? ', could flip' : '');
   return 'yours: ' + l.answer + ', ' + (E.isTurning(l.kind) ? 'held loosely' : 'held steady');
 }
-function castRow(lines) {
+function castRow(lines, unknownNow) {
   const busy = !!ui.playing, i = lines[0];
   const m = E.METHODS[ui.labelFor];
   return [
     h('div', { class: 'casts' },
       h('button', { 'data-k': 'coin', disabled: busy, onclick: () => doCast(lines, 'coin'), onfocus: () => setLabel('coin'), onmouseenter: () => setLabel('coin') }, 'Flip a coin'),
       h('button', { 'data-k': 'yarrow', disabled: busy, onclick: () => doCast(lines, 'yarrow'), onfocus: () => setLabel('yarrow'), onmouseenter: () => setLabel('yarrow') }, 'Yarrow'),
-      h('button', { class: 'idk', 'data-k': 'idk', disabled: busy, onclick: () => doUnknown(i) }, "I don't know")),
+      h('button', { class: 'idk', 'data-k': 'idk', 'aria-pressed': unknownNow ? 'true' : 'false', disabled: busy, onclick: () => doUnknown(i) }, "I don't know")),
     h('p', { class: 'mlabel', id: 'mlabel' }, m.label + ' ', why(m.anchor))
   ];
 }
@@ -185,7 +202,7 @@ function status(q, lines) {
 function foot() {
   const busy = !!ui.playing, fixed = leafFixed();
   return h('div', { class: 'foot' },
-    h('p', { class: 'tally' }, E.countsSummary(E.counts(ui.walk)), ' · ', why('short', 'risk or uncertainty?')),
+    h('p', { class: 'tally' }, E.countsSummary(E.counts(ui.walk), 'answers'), ' · ', why('short', 'risk or uncertainty?')),
     h('div', { class: 'row' },
       h('button', { class: 'primary', 'data-k': 'gap', disabled: busy, onclick: openClose }, 'Close the gap'),
       h('button', { 'data-k': 'c100', disabled: busy, 'aria-disabled': fixed ? 'true' : null, title: fixed ? E.TEXT.fixed : null, onclick: openCast100 }, 'Cast 100'),
@@ -300,9 +317,9 @@ function openClose() {
   openSheet(el => {
     el.append(h('h2', { id: 'sheet-title' }, E.TEXT.closeTitle));
     if (!open.length) {
-      el.append(h('p', null, 'Nothing is open: every question has an answer.'),
+      el.append(h('p', null, 'Nothing is open: every question has an answer, yours or cast. A cast answer is still not known.'),
         h('div', { class: 'opts' },
-          optBtn('See where you land', E.TEXT.landingAsk, () => openLanding({}), true),
+          optBtn('See where you land', E.TEXT.landingAsk, () => openLanding(), true),
           optBtn(E.TEXT.eitherTitle, 'casts nothing', openEither)),
         closeRow('Not now'));
       return;
@@ -311,7 +328,7 @@ function openClose() {
     el.append(h('p', { class: 'small' }, 'Open: ' + E.listWords(open.map(i => LINE_NAME[i])) + '.'));
     const ways = [
       optBtn('Flip coins for the open ones', 'one coin each: its odds are 1 in 2 because we made it so', () => closeBy('coin'), ui.method === 'coin'),
-      optBtn('Draw yarrow for the open ones', 'half yes, half no; 1 in 4 comes up turning', () => closeBy('yarrow'), ui.method === 'yarrow')
+      optBtn('Draw yarrow for the open ones', 'half yes, half no; 1 in 4 comes up turning (it could flip)', () => closeBy('yarrow'), ui.method === 'yarrow')
     ];
     if (ui.method === 'yarrow') ways.reverse();
     el.append(h('div', { class: 'opts' }, ways,
@@ -323,10 +340,10 @@ function openClose() {
 function closeBy(way) {
   closeSheet();
   const r = E.closeTheGap(ui.walk, way);
-  play(r.steps, () => openLanding({ byCast: true }));
+  play(r.steps, () => openLanding());
 }
 function stepper(prompts, k) {
-  if (k >= prompts.length) { openLanding({ byCast: E.landing(ui.walk, leafFor).leafCast }); return; }
+  if (k >= prompts.length) { openLanding(); return; }
   const i = prompts[k], Q = E.QUESTIONS[i];
   openSheet(el => {
     el.append(h('p', { class: 'kicker' }, 'One at a time · ' + (k + 1) + ' of ' + prompts.length),
@@ -348,66 +365,83 @@ function stepMove(prompts, k, m) {
   play([{ walk: r.walk, casting: r.casting, line: i }], () => stepper(prompts, k + 1));
 }
 
-// "Is there an action?"
-function openLanding(opts = {}) {
-  const L = E.landing(ui.walk, leafFor), la = ui.leafActions;
+// "Is there an action?" One leaf is named: under the burden reading, the rule's leaf (a cast yes and an open
+// answer count as no), whatever the casts drew; otherwise where the answers lead. Its notes and its lever reading
+// follow that one leaf, so the sheet never names two landings.
+function openLanding() {
+  const L = E.landing(ui.walk, leafFor), la = ui.leafActions, top = L.headline;
   openSheet(el => {
     el.append(h('p', { class: 'kicker' }, L.anyCast ? E.TEXT.landingCast : E.TEXT.landingOwn),
       h('h2', { id: 'sheet-title', class: 'big' }, E.TEXT.landingAsk));
-    if (L.leaf) {
-      el.append(h('div', { class: 'leafbox' }, h('b', null, nm(L.leaf)), la && la.leaves[L.leaf] ? ': ' + la.leaves[L.leaf].gloss : ''));
-      if (L.couldHave.length > 1) el.append(h('p', { class: 'small' }, E.TEXT.couldHave), chips(L.couldHave.map(nm), nm(L.leaf)));
+    if (top) {
+      el.append(h('div', { class: 'leafbox' }, L.byRule ? h('span', { class: 'small' }, "By the tree's rule you land on ") : null,
+        h('b', null, nm(top)), la && la.leaves[top] ? ': ' + la.leaves[top].gloss : ''));
     } else {
       el.append(h('p', null, 'Some questions are still open, so there is no single leaf yet.'),
         h('details', { class: 'more' }, h('summary', null, 'The leaves still possible'), chips(L.possible.map(nm))));
     }
-    if (L.burden === 'flipped' && L.burdenLeaf) el.append(h('p', null, E.burdenText(nm(L.burdenLeaf), L.gateCast), ' ', why('burden')));
-    else if (L.burden === 'unclear') el.append(h('p', { class: 'small' }, E.TEXT.gateUnknown));
-    else el.append(h('p', { class: 'small' }, (L.gateCast ? 'The casts put the gate at no. ' : '') + E.TEXT.gateNo));
-    if (L.relatingLeaf) el.append(h('p', null, E.relatingText(nm(L.relatingLeaf)) + '.'));
-    const raceHow = ui.walk.lines[4].how;
-    el.append(h('p', { class: 'small' }, 'The race: ' + E.answerWord(L.answers.race) + (E.isDevice(raceHow) ? ' (' + E.TEXT.castTag + ')' : '') + '. ' + E.TEXT.race));
-    if (L.leaf && la) actionsBlock(el, L);
-    if (!L.leaf && la) eitherBlock(el, L.couldHave);
+    if (L.burden === 'flipped' && L.burdenLeaf) {
+      el.append(h('p', null, E.burdenText(nm(L.burdenLeaf), { gateCast: L.gateCast, gateCastNo: L.gateCastNo, differs: L.ruleDiffers && L.leaf ? nm(L.leaf) : null, open: !L.leaf }), ' ', why('burden')));
+      if (L.throwSame) el.append(h('p', { class: 'small' }, E.TEXT.throwSame));
+    } else if (L.burden === 'unclear') el.append(h('p', { class: 'small' }, (L.gateCastNo ? E.TEXT.gateNoCast + ' ' : '') + E.TEXT.gateUnknown));
+    else el.append(h('p', { class: 'small' }, E.TEXT.gateNo));
+    if (L.couldHave.length > 1 && top) el.append(h('p', { class: 'small' }, E.TEXT.couldHave), chips(L.couldHave.map(nm), nm(top)));
+    if (L.relatingLeaf && top) el.append(h('p', null, E.relatingText(nm(L.relatingLeaf), L.relatingLeaf === top) + '.'));
+    el.append(h('p', { class: 'small' }, E.raceNote(L.answers.race, top, E.isDevice(ui.walk.lines[4].how))));
+    if (top && la) actionsBlock(el, top);
+    if (!top && la) eitherBlock(el, L.couldHave);
     if (!la) el.append(h('p', { class: 'warn' }, "The notes on each leaf didn't load."));
     const btns = h('div', { class: 'sheet-actions' });
-    if (L.anyCast) btns.append(h('button', { class: 'primary', onclick: () => { closeSheet(); play(E.throwAgain(ui.walk).steps, () => openLanding({ byCast: true })); } }, 'Throw again'));
-    if (L.leaf) btns.append(h('button', { onclick: openEither }, E.TEXT.eitherTitle));
+    if (L.anyCast) btns.append(h('button', { class: 'primary', onclick: () => { closeSheet(); play(E.throwAgain(ui.walk).steps, () => openLanding()); } }, 'Throw again'));
+    if (top) btns.append(h('button', { onclick: openEither }, E.TEXT.eitherTitle));
     btns.append(h('button', { onclick: () => { closeSheet(); setQ(L.pickedBy === 2 ? 'alignment' : L.pickedBy === 3 ? 'containment' : firstOpenQ()); } }, 'Change an answer'),
       h('button', { onclick: openCast100, 'aria-disabled': leafFixed() ? 'true' : null }, 'Cast 100'),
       h('button', { class: 'ghost', onclick: closeSheet }, 'Back to the tree'));
-    if (opts.byCast && L.leafCast) el.append(gladBlock(L));
+    if (L.leafCast && !L.throwSame) el.append(gladBlock(L));   // only when a new cast could change where you land
     el.append(btns);
   });
 }
 function firstOpenQ() { const o = E.openLines(ui.walk)[0]; return o == null ? 'gate' : o < 2 ? 'gate' : Q_ORDER[o - 1]; }
-function actionsBlock(el, L) {
-  const A = E.actionsFor([L.leaf], L.answers, ui.leafActions, null)[L.leaf];
+// What the one named leaf faces, and whether a working lever is known there (the page's own reading, never cast).
+// Each gloss shows only when its word is on screen.
+function actionsBlock(el, leaf) {
+  const A = E.actionsFor([leaf], null, ui.leafActions, null)[leaf];
   const nd = A.noData, plain = nd.class === 'none' || nd.class === 'gap';
-  el.append(h('h3', null, 'What this leaf faces'),
+  el.append(h('h3', null, 'What ' + nm(leaf) + ' faces'),
     chips(A.faces.map(E.faceName)),
-    h('p', null, 'Where it stands: ', plain ? h('code', { class: 'nm' }, nd.text) : nd.text),
-    h('p', { class: 'small' }, h('code', { class: 'nm' }, E.TEXT.noMechanism), ' ' + E.TEXT.noMechanismMeans),
-    h('p', { class: 'small' }, E.TEXT.targeted),
-    h('p', { class: 'small' }, 'No list of rules and proposals yet: that list is waiting to be checked before it is shown.'),
-    h('h3', null, 'Line 6'),
-    h('p', null, E.line6Sentence(A.line6)),
-    h('p', { class: 'small' }, A.line6.why + ' ' + E.TEXT.line6Intro));
+    h('p', null, 'Where it stands: ', plain ? h('span', { class: 'nm' }, nd.text) : nd.text));
+  if (nd.class === 'none') el.append(h('p', { class: 'small' }, h('span', { class: 'nm' }, E.TEXT.noMechanism), ' ' + E.TEXT.noMechanismMeans));
+  if (nd.class === 'targeted' || nd.class === 'weak' || nd.class === 'partial') el.append(h('p', { class: 'small' }, E.TEXT.targeted));
+  if (A.faces.includes('jobs')) el.append(h('p', { class: 'small' }, E.TEXT.jobs));
+  el.append(h('p', { class: 'small' }, E.TEXT.noList),
+    h('h3', null, 'Is a lever known to work here?'),
+    h('p', null, E.line6Sentence(A.line6, 'tree')),
+    h('p', { class: 'small' }, A.line6.why + ' ' + E.TEXT.leverIntro));
 }
 function eitherBlock(el, leaves) {
   const ew = E.eitherWay(leaves, ui.leafActions, null);
   el.append(h('h3', null, E.TEXT.eitherTitle), h('p', null, ew.sentence));
   if (ew.sharedFaces.length) el.append(chips(ew.sharedFaces.map(E.faceName)));
+  el.append(h('p', { class: 'small' }, E.TEXT.eitherDangers));
+}
+// a row of buttons where the one pressed stays marked
+function pickRow(items) {
+  const row = h('div', { class: 'row' });
+  items.forEach(([label, fn]) => row.append(h('button', { 'aria-pressed': 'false', onclick: ev => {
+    row.querySelectorAll('button[aria-pressed]').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    ev.currentTarget.setAttribute('aria-pressed', 'true'); fn();
+  } }, label)));
+  return row;
 }
 function gladBlock(L) {
   const out = h('p', { class: 'reply', 'aria-live': 'polite', hidden: true });
   const show = (t, extra) => { out.hidden = false; out.textContent = t; if (extra) out.append(' ', extra); };
   return h('div', null,
     h('p', null, h('b', null, E.TEXT.gladAsk)),
-    h('div', { class: 'row' },
-      h('button', { onclick: () => show(E.TEXT.glad) }, 'Glad'),
-      h('button', { onclick: () => show(E.TEXT.sorry, h('button', { class: 'linkish', onclick: () => { closeSheet(); setQ(L.pickedBy === 3 ? 'containment' : 'alignment'); say("Decide it yourself: yes, no, or I don't know."); } }, 'Decide it yourself')) }, 'Sorry'),
-      h('button', { onclick: () => show(E.TEXT.neither) }, 'Neither')),
+    pickRow([
+      ['Glad', () => show(E.TEXT.glad)],
+      ['Sorry', () => show(E.TEXT.sorry, h('button', { class: 'linkish', onclick: () => { closeSheet(); setQ(L.pickedBy === 3 ? 'containment' : 'alignment'); say("Decide it yourself: yes, no, or I don't know."); } }, 'Decide it yourself'))],
+      ['Neither', () => show(E.TEXT.neither)]]),
     out);
 }
 function openEither() {
@@ -423,11 +457,12 @@ function openEither() {
       if (ew.sharedFaces.length) el.append(chips(ew.sharedFaces.map(E.faceName)));
       el.append(h('p', { class: 'big' }, E.TEXT.landingAsk),
         h('p', null, ew.sharedFaces.length
-          ? 'If there is one that holds either way, it is aimed at these. No list of rules and proposals yet: that list is waiting to be checked before it is shown.'
-          : "Not one that holds everywhere: here, what you come to believe about the open questions decides it."));
+          ? 'If a move holds either way, it will be aimed at these, and maybe at more. ' + E.TEXT.noList
+          : 'Not one this list can show. ' + E.TEXT.noList),
+        h('p', { class: 'small' }, E.TEXT.eitherDangers));
     }
     el.append(h('div', { class: 'sheet-actions' },
-      L.leaf ? h('button', { onclick: () => openLanding({}) }, 'Where you land') : null,
+      L.headline ? h('button', { onclick: () => openLanding() }, 'Where you land') : null,
       h('button', { class: 'ghost', onclick: closeSheet, autofocus: true }, 'Back to the tree')));
   });
 }
@@ -435,7 +470,7 @@ function openEither() {
 // Cast 100: the device's spread, never the world's
 const DEVICE_SUB = {
   coin: 'odds we made: 1 in 2', yarrow: 'odds we made: half yes, half no',
-  'urn-new': "a mix we don't show you, new every draw", 'urn-one': "one mix we don't show you, kept for all 100"
+  'urn-new': "a jar of marbles (an 'urn') whose mix we don't show you, new every draw", 'urn-one': "one jar of marbles whose mix we don't show you, kept for all 100"
 };
 function openCast100() {
   if (ui.playing || ui.person) return;
@@ -464,10 +499,10 @@ function runCast100(d, res) {
   res.append(h('div', { class: 'counts' }, E.LEAVES.map(l => h('span', null, nm(l) + ': ' + E.countsLabel(r.counts[l] || 0, d)))),
     ...spreadLines(r, d).map(t => h('p', { class: 'small' }, t)),
     h('p', null, h('b', null, E.TEXT.riskAsk)),
-    h('div', { class: 'row' }, Object.keys(E.RISK_PICKS).map(p => h('button', { onclick: () => {
+    pickRow(Object.keys(E.RISK_PICKS).map(p => [cap(E.RISK_PICKS[p]), () => {
       out.hidden = false; out.textContent = E.riskReply(p, d) + ' ';
-      out.append(why('short', 'risk or uncertainty?'), ' · ', why('urn', 'the urn'), ' · ', why('slicing', 'cutting the question'), ' · ', why('coin-metaphor', 'is a coin a good metaphor?'));
-    } }, cap(E.RISK_PICKS[p])))),
+      out.append(why('short', 'risk or uncertainty?'), ' · ', why('urn', 'the hidden jar (urn)'), ' · ', why('slicing', 'cutting the question'), ' · ', why('coin-metaphor', 'is a coin a good metaphor?'));
+    }])),
     out);
 }
 function renderStrip() {
@@ -484,7 +519,7 @@ function openPeople() {
   if (ui.playing) return;
   openSheet(el => {
     el.append(h('h2', { id: 'sheet-title' }, 'Walk it as…'));
-    if (ui.peopleFrom === 'example') el.append(h('p', { class: 'warn' }, "made-up examples: two placeholders to test the walk, not real people. The film's people appear here once its people file is published."));
+    if (ui.peopleFrom === 'example') el.append(h('p', { class: 'warn' }, "Made-up examples to test the walk, not real people. Real people's walks appear here once the film's people file is published."));
     if (!ui.people.length) el.append(h('p', null, 'No people loaded.'));
     el.append(h('div', { class: 'opts' }, ui.people.map((p, k) => optBtn(p.name || p.slug,
       (p.role ? p.role + ' · ' : '') + 'says: ' + (p.stated_leaf ? nm(p.stated_leaf) : 'no leaf'),
@@ -564,7 +599,7 @@ function personPanel() {
       const q = st.quote, src = h('p', { class: 'src' }, q.source_label || 'source');
       const link = sourceLink(q);
       if (link) src.append(' · ', link);
-      if (q.how_checked) src.append(' · checked: ' + q.how_checked);
+      if (q.how_checked && q.how_checked !== 'placeholder') src.append(' · checked: ' + q.how_checked);
       wrap.append(h('blockquote', null, q.text || '', q.verbatim === false ? h('span', { class: 'small' }, ' (paraphrase)') : null), src);
     }
   } else {
@@ -592,7 +627,7 @@ function personPanel() {
 // ── events ─────────────────────────────────────────────────────────────────────────────────────
 function leafTapped(leaf) {
   const L = E.landing(ui.walk, leafFor);
-  if (L.leaf === leaf) { openLanding({}); return; }
+  if (L.headline === leaf) { openLanding(); return; }
   const ways = [['yes', 'yes'], ['yes', 'no'], ['no', 'yes'], ['no', 'no']]
     .filter(([a, c]) => leafFor({ alignment: a, containment: c }) === leaf)
     .map(([a, c]) => 'alignment ' + a + ' and containment ' + c);
@@ -650,6 +685,7 @@ async function init() {
   treeEl.addEventListener('belieftree:select', onSelect);
   skipEl.addEventListener('click', skip);
   document.addEventListener('keydown', onKey);
+  wireHelp();
   sheet.addEventListener('click', ev => { if (ev.target === sheet) closeSheet(); });   // a tap on the backdrop
   window.addEventListener('hashchange', () => {
     const d = E.decodeHash(location.hash);
@@ -658,11 +694,17 @@ async function init() {
     ui.token++; ui.playing = null; ui.casting = null; ui.person = null; ui.walk = d.walk;
     draw({ animate: false });
   });
-  say(fromHash ? 'Your walk, from the link. ' + E.countsSummary(E.counts(ui.walk)) + '.'
+  say(fromHash ? 'Your walk, picked up from the page address. ' + E.countsSummary(E.counts(ui.walk), 'answers') + '.'
     : "Decide each question, cast for it, or say I don't know. " + E.TEXT.coinIsFor);
   draw({ animate: false });
   const focus = params.get('focus') || (fromHash && fromHash.person);
   if (focus) startPerson(focus, !!params.get('focus'));
+}
+// the help box: a Close button inside it, and a tap outside it closes it
+function wireHelp() {
+  const help = $('help'), close = $('help-close');
+  if (close) close.addEventListener('click', () => { help.open = false; help.querySelector('summary').focus(); });
+  document.addEventListener('click', ev => { if (help.open && !help.contains(ev.target)) help.open = false; });
 }
 async function loadPeople() {
   // While the film's module is not on main (SOURCE standin), its people file is not either: skip that probe and

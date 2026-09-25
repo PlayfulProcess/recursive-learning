@@ -4,7 +4,7 @@
    lands, restyle this file to its template. */
 :root{
   --bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
-  --ink:#e8ecf3; --muted:#8e9aae; --accent:#5ee2b0; --accent-ink:#06281d; --warn:#f0b866;
+  --ink:#e8ecf3; --muted:#a7b2c4; --accent:#5ee2b0; --accent-ink:#06281d; --warn:#f0b866;
   --firm:#f0d9a8; --yield:#9fb8d8; --turn:#f08a5e;
   color-scheme:dark;
 }
@@ -46,7 +46,7 @@ button.idk{border-style:dashed}
 .views{display:flex;gap:2px;margin-left:auto;font-size:12.5px;border:1px solid var(--line);border-radius:8px;padding:2px}
 .views a,.views span{padding:3px 8px;border-radius:6px;text-decoration:none;color:var(--muted)}
 .views .on{background:var(--panel2);color:var(--ink)}
-.help>summary{list-style:none;cursor:pointer;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-weight:700;color:var(--muted)}
+.help>summary{list-style:none;cursor:pointer;height:30px;padding:0 10px;border-radius:15px;border:1px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
 .help>summary::-webkit-details-marker{display:none}
 .help[open]>summary{border-color:var(--accent);color:var(--accent)}
 .help-body{position:absolute;right:8px;top:44px;z-index:20;width:min(420px,calc(100vw - 16px));max-height:calc(100dvh - 60px);overflow:auto;
@@ -59,7 +59,8 @@ button.idk{border-style:dashed}
 main{flex:1;min-height:0;display:flex;flex-direction:column}
 .treebox{flex:1 1 0;min-height:36dvh;display:flex;flex-direction:column;position:relative}
 #tree{flex:1;min-height:0;padding:4px 8px 0}
-.draft{flex:none;order:-1;margin:0;padding:2px 12px 0;font-size:10.5px;line-height:1.2;color:var(--muted)}
+.draft{flex:none;order:-1;margin:0;padding:3px 12px 0;font-size:12px;line-height:1.25;color:var(--warn)}
+.loading{margin:8px 12px;font-size:13px;color:var(--muted)}
 .capline{flex:none;display:flex;align-items:flex-start;gap:8px;padding:2px 12px 4px}
 .caption{flex:1;margin:0;font-size:12.5px;line-height:1.35;color:var(--ink);min-height:18px}
 .capline .skip{flex:none;min-height:0;padding:3px 10px;font-size:12px}
@@ -77,25 +78,25 @@ main{flex:1;min-height:0;display:flex;flex-direction:column}
 .panel h2{font:400 17px/1.25 Georgia,"Iowan Old Style","Times New Roman",serif;margin:0 0 6px}
 .answers{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 4px}
 .ans button{width:100%}
-.believe{margin:3px 0 0;font-size:11.5px;line-height:1.3;color:var(--muted)}
+.believe{margin:3px 0 0;font-size:12.5px;line-height:1.3;color:var(--muted)}
 .clamp .believe{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .casts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:6px 0 2px}
-.mlabel{margin:2px 0 4px;font-size:11.5px;line-height:1.3;color:var(--muted)}
-.status{margin:4px 0;font-size:12.5px;line-height:1.35}
+.mlabel{margin:2px 0 4px;font-size:12.5px;line-height:1.3;color:var(--muted)}
+.status{margin:4px 0;font-size:13px;line-height:1.35}
 .status p{margin:0 0 3px}
 .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.02em;border:1px solid var(--turn);color:var(--turn);border-radius:999px;padding:0 7px;margin-right:4px}
 .tag.own{border-color:var(--line);color:var(--muted)}
 .after{color:var(--muted)}
 .gate-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 6px;align-items:center;padding:3px 6px;border-radius:8px;border:1px solid transparent}
 .gate-row.cur{border-color:var(--line);background:var(--panel2)}
-.gate-row .gq{font-size:12.5px;line-height:1.3}
+.gate-row .gq{font-size:13.5px;line-height:1.3}
 .gate-row .chips{display:flex;gap:4px}
 .gate-row .chips button{min-width:36px;padding:4px 6px;min-height:30px;font-size:12.5px}
-.gate-row .held{grid-column:1/-1;font-size:11px;color:var(--muted)}
-.slicing{font-size:11.5px;line-height:1.3;color:var(--muted);margin:4px 0}
+.gate-row .held{grid-column:1/-1;font-size:12px;color:var(--muted)}
+.slicing{font-size:12.5px;line-height:1.3;color:var(--muted);margin:4px 0}
 .foot{margin-top:6px;padding-top:6px;border-top:1px solid var(--line)}
-.tally{font-size:11.5px;color:var(--muted);margin:0 0 4px}
+.tally{font-size:12.5px;color:var(--muted);margin:0 0 4px}
 .foot .row button{flex:1}
 
 /* sheets */
@@ -118,8 +119,8 @@ dialog.sheet.light-backdrop::backdrop{background:rgba(0,0,0,.08)}
 .chipset{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0 8px}
 .chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:1px 9px;color:var(--ink)}
 .chip.this{border-color:var(--accent);color:var(--accent)}
-code.nm{font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--panel2);border-radius:5px;padding:1px 5px}
-.verdict.none,.verdict.gap{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+.nm{font-weight:600;background:var(--panel2);border-radius:5px;padding:1px 5px}
+.verdict.none,.verdict.gap{font-weight:600}
 .counts{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;margin:6px 0}
 .reply{border-left:3px solid var(--accent);padding:4px 10px;margin:8px 0}
 blockquote{margin:6px 0;padding:6px 10px;border-left:3px solid var(--line);font-family:Georgia,serif;font-size:14px}

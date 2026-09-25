@@ -159,6 +159,55 @@ test('burden reading: cast and unknown answers count as no', () => {
   // an own no on either part settles the gate
   const own = E.decide(E.cast(E.newWalk(2), 0, 'coin').walk, 1, 'no').walk;
   assert.equal(E.gateInfo(own).open, false);
+  assert.equal(E.landing(own, leafFor).burden, 'ordinary');
+});
+
+test('a cast can neither satisfy the caution nor switch it off (the reviewers\' seed 3 walk)', () => {
+  // all five cast by coins: the gate cast at no, alignment and containment cast at yes
+  const d = E.decodeHash('#f1;L=nc8.yc7.yc7.yc7.nc8;s=3;n=5');
+  const L = E.landing(d.walk, leafFor);
+  assert.equal(L.answers.gate, 'no');
+  assert.equal(L.gateCastNo, true);
+  assert.equal(L.burden, 'flipped', "a coin's 'it can be undone' was not shown either");
+  assert.equal(L.leaf, 'proceed');                  // where the casts point, as drawn
+  assert.equal(L.burdenLeaf, 'shutdown');            // cast yeses count as no
+  assert.equal(L.headline, 'shutdown', 'the page names the rule\'s leaf, never the casts\'');
+  assert.equal(L.byRule, true);
+  assert.equal(L.ruleDiffers, true);
+  assert.equal(L.throwSame, true);
+  assert.equal(E.afterLine('gate', d.walk), E.TEXT.gateNoCast);
+  assert.ok(!E.afterLine('gate', d.walk).includes(E.TEXT.gateNo));
+  assert.match(E.burdenText('Shut down', { gateCastNo: true, differs: 'Proceed' }), /by the rule you land on Shut down\.$/);
+  // with every combination of casts on the gate, only an own no gives ordinary trial and error
+  for (const how of ['coin', 'yarrow', 'coins']) {
+    for (let s = 1; s < 40; s++) {
+      let w = E.castLines(E.newWalk(s), [0, 1], how).walk;
+      assert.notEqual(E.landing(w, leafFor).burden, 'ordinary', 'a cast gate never reads ordinary');
+      w = E.decide(w, 1, 'no').walk;
+      assert.equal(E.landing(w, leafFor).burden, 'ordinary');
+    }
+  }
+  // a cast no on one part and an open other part: unclear, not ordinary
+  let u = E.newWalk(5);
+  while (true) { const r = E.cast(u, 0, 'coin'); u = r.walk; if (u.lines[0].answer === 'no') break; }
+  u = E.dontKnow(u, 1).walk;
+  assert.equal(E.landing(u, leafFor).burden, 'unclear');
+  // without the burden reading, the headline is where the answers lead
+  let own = E.decide(E.decide(E.newWalk(1), 0, 'no').walk, 1, 'no').walk;
+  own = E.decide(E.decide(own, 2, 'yes').walk, 3, 'no').walk;
+  const O = E.landing(own, leafFor);
+  assert.equal(O.headline, 'regulate'); assert.equal(O.byRule, false);
+});
+
+test('the race changes the landing words, never the leaf', () => {
+  let w = E.newWalk(1);
+  [0, 1, 2, 3].forEach(i => { w = E.decide(w, i, 'yes').walk; });
+  const yes = E.decide(w, 4, 'yes').walk, no = E.decide(w, 4, 'no').walk;
+  assert.equal(E.landing(yes, leafFor).headline, E.landing(no, leafFor).headline);
+  assert.notEqual(E.raceNote('yes', 'proceed'), E.raceNote('no', 'proceed'));
+  assert.match(E.raceNote('yes', 'shutdown'), /would take others stopping too/);
+  assert.match(E.raceNote('yes', 'regulate', true), /cast, not known/);
+  assert.match(E.raceNote(null, 'contain'), /Both readings stay/);
 });
 
 test('relating: turning lines flip, loosely held decisions included', () => {
@@ -234,7 +283,7 @@ test('close the gap: only the open lines, alignment before containment, always a
   const each = E.closeTheGap(E.dontKnow(E.newWalk(1), 3).walk, 'each');
   assert.deepEqual(each.prompts, [0, 1, 2, 3, 4]);
   const either = E.closeTheGap(E.newWalk(1), 'either', { leafFor, leafActions: LEAF_ACTIONS });
-  assert.equal(either.either.sentence, E.TEXT.eitherNothing);
+  assert.deepEqual(either.either.sharedFaces, ['race']);
 });
 
 test('throw again re-casts only the device-cast lines, with their own methods', () => {
@@ -270,27 +319,37 @@ test('cast 100: counts sum to 100, snapshots, fixed when both leaf answers are d
   assert.equal(E.cast100(w, 'coin', leafFor).gateYes, 23);
   const half = E.dontKnow(E.decide(w, 0, 'yes').walk, 1).walk;
   assert.equal(E.cast100(half, 'coin', leafFor).gateYes, 53);
+  // the odds note: about 50 for one coin or draw, but one hidden jar's single draw gives its own hidden mix
+  assert.match(E.gateSpreadLine(23, 'coin'), /one coin would give about 50/);
+  assert.match(E.gateSpreadLine(23, 'yarrow'), /one draw would give about 50/);
+  assert.ok(!E.gateSpreadLine(82, 'urn-one').includes('about 50'));
+  assert.match(E.gateSpreadLine(82, 'urn-one'), /its hidden mix/);
   const fixed = E.decide(E.decide(w, 2, 'no').walk, 3, 'yes').walk;
   assert.deepEqual(E.cast100(fixed, 'coin', leafFor), { fixed: 'contain' });
   assert.equal(typeof E.cast100(w, 'yarrow', leafFor).turningAvg, 'number');
 });
 
 test('what holds either way', () => {
+  // the race sits under every branch, so every leaf faces it
+  for (const leaf of E.LEAVES) assert.ok(LEAF_ACTIONS.leaves[leaf].faces.includes('race'), leaf + ' faces the race');
   const all = E.eitherWay(E.LEAVES, LEAF_ACTIONS, null);
-  assert.deepEqual(all.sharedFaces, []);
-  assert.equal(all.sentence, E.TEXT.eitherNothing);
+  assert.deepEqual(all.sharedFaces, ['race']);
+  assert.match(all.sentence, /^Under every leaf still possible you face: the race\./);
+  assert.equal(E.eitherWay([], LEAF_ACTIONS, null).sentence, E.TEXT.eitherNothing);
+  // the page never says "no action": it says this compares dangers, not moves
+  assert.match(E.TEXT.eitherDangers, /can't say that no move holds either way/);
   const two = E.eitherWay(['proceed', 'regulate'], LEAF_ACTIONS, null);
-  assert.deepEqual(two.sharedFaces, ['bio-misuse', 'cyber', 'concentration-of-power', 'jobs']);
-  assert.match(two.sentence, /^Under every leaf still possible you face: bio misuse, cyber, concentration of power and jobs\./);
+  assert.deepEqual(two.sharedFaces, ['bio-misuse', 'cyber', 'concentration-of-power', 'jobs', 'race']);
+  assert.match(two.sentence, /^Under every leaf still possible you face: bio misuse, cyber, concentration of power, jobs and the race\./);
   assert.deepEqual(two.sharedIdeas, []);
   const withData = E.eitherWay(['proceed', 'regulate'], LEAF_ACTIONS, FIXTURE);
   assert.ok(withData.sharedIdeas.length > 0);
-  assert.deepEqual(E.eitherWay(['contain', 'shutdown'], LEAF_ACTIONS, null).sharedFaces, ['takeoff']);
+  assert.deepEqual(E.eitherWay(['contain', 'shutdown'], LEAF_ACTIONS, null).sharedFaces, ['takeoff', 'takeover', 'existential-risk', 'race']);
 });
 
 test('actions on the made-up fixture', () => {
   const noData = E.actionsFor(['contain'], { race: 'yes' }, LEAF_ACTIONS, null);
-  assert.equal(noData.contain.noData.text, 'uncertainty: no known mechanism');
+  assert.match(noData.contain.noData.text, /^uncertainty: no known mechanism;/);
   assert.equal(noData.contain.noData.class, 'none');
   assert.equal(noData.contain.outcomes, undefined);
   const r = E.actionsFor(E.LEAVES, { race: 'no' }, LEAF_ACTIONS, FIXTURE);
@@ -326,16 +385,34 @@ test('actions on the made-up fixture', () => {
   assert.equal(raceOf('unknown').order, 'both-groups');
 });
 
-test('line 6: editorial without data; derived from data 7/9/6/6', () => {
+test('line 6: one standard, our reading, never steady while firm: 9/9/6/6 with or without data', () => {
   const ed = E.LEAVES.map(l => E.line6For(l, LEAF_ACTIONS, null).kind);
-  assert.deepEqual(ed, [7, 9, 6, 6]);
+  assert.deepEqual(ed, [9, 9, 6, 6]);
   const data = E.LEAVES.map(l => E.line6For(l, LEAF_ACTIONS, FIXTURE).kind);
-  assert.deepEqual(data, [7, 9, 6, 6]);
+  assert.deepEqual(data, [9, 9, 6, 6]);
+  // no leaf's line 6 is firm and steady: "targeted" means aimed at, not shown to work
+  for (const leaf of E.LEAVES) assert.notEqual(E.line6For(leaf, LEAF_ACTIONS, null).kind, 7, leaf);
   const bare = JSON.parse(JSON.stringify(FIXTURE));
   bare.outcomes.find(o => o.id === 'deception').if_controllable = [];
   assert.equal(E.line6For('contain', LEAF_ACTIONS, bare).kind, 8);
-  assert.match(E.line6Sentence({ kind: 9 }), /^Line 6, looked up: firm, a known action\. It could turn to none known/);
-  assert.match(E.line6Sentence({ kind: 6 }), /^Line 6, looked up: yielding, none known\. It could turn to known/);
+  // each leaf says how its own line could turn (contain's is not "a proposal became law": laws aimed at it exist)
+  for (const leaf of E.LEAVES) assert.ok(LEAF_ACTIONS.leaves[leaf].line6.turn, leaf + ' has its own turn text');
+  assert.ok(!E.line6Sentence(E.line6For('contain', LEAF_ACTIONS, null)).includes('became law'));
+  assert.match(E.line6Sentence({ kind: 9 }), /^Line 6, our reading \(not cast\): firm, turning: rules aim at the main danger, none shown to work\. It could turn/);
+  assert.match(E.line6Sentence({ kind: 6 }), /^Line 6, our reading \(not cast\): yielding, turning: no lever known to work/);
+  assert.match(E.line6Sentence({ kind: 9 }, 'tree'), /^Our reading: rules aim/);
+  assert.ok(![6, 7, 8, 9].some(k => /looked up|a known action/.test(E.line6Sentence({ kind: k }))), 'never "looked up" or "a known action"');
+});
+
+test('Cast 100 replies: each pick hears whether it fits, and the reason is not "someone made it"', () => {
+  for (const d of Object.keys(E.DEVICES)) {
+    const said = Object.keys(E.RISK_PICKS).map(p => E.riskReply(p, d));
+    assert.equal(new Set(said).size, 3, d + ': the three picks get three different replies');
+  }
+  assert.ok(!E.RISK_REPLY.coin.includes("weren't made by anyone"));
+  assert.match(E.RISK_REPLY.coin, /no pile of like cases/);
+  assert.match(E.countsSummary({ decided: 2, cast: 3, open: 0 }), /of 5 answers/);
+  assert.match(E.countsSummary({ decided: 2, cast: 3, open: 0 }, 'lines'), /of lines 1 to 5/);
 });
 
 test('walk it as a person (the made-up examples)', () => {
@@ -370,8 +447,11 @@ test('no percent sign in any formatter output or string constant', () => {
     outs.push(E.countsLabel(31, d), E.spreadLabel(d), E.gateSpreadLine(24, d));
     for (const p of Object.keys(E.RISK_PICKS)) outs.push(E.riskReply(p, d));
   }
-  outs.push(E.countsSummary({ decided: 1, cast: 2, open: 2 }), E.burdenText('Contain', true), E.relatingText('Shut down'));
-  [6, 7, 8, 9].forEach(k => outs.push(E.line6Sentence({ kind: k })));
+  outs.push(E.countsSummary({ decided: 1, cast: 2, open: 2 }), E.burdenText('Contain', true), E.relatingText('Shut down'),
+    E.burdenText('Shut down', { gateCastNo: true, differs: 'Proceed' }), E.relatingText('Contain', true));
+  ['yes', 'no', 'unknown', null].forEach(r => E.LEAVES.forEach(l => outs.push(E.raceNote(r, l, true))));
+  [6, 7, 8, 9].forEach(k => outs.push(E.line6Sentence({ kind: k }), E.line6Sentence({ kind: k }, 'tree')));
+  outs.push(JSON.stringify(E.RISK_VERDICT));
   outs.push(E.eitherWay(['proceed', 'regulate'], LEAF_ACTIONS, null).sentence, E.eitherWay(['proceed'], LEAF_ACTIONS, null).sentence);
   const w = randomWalk(3); ['gate', 'race', 'alignment'].forEach(q => outs.push(E.afterLine(q, w)));
   w.lines.forEach(l => outs.push(E.heldWord(l)));

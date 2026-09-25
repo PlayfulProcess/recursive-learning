@@ -7,7 +7,8 @@
 //   line 3 alignment            -> `alignment`
 //   line 4 containment          -> `containment-if-aligned` / `containment-if-not` (one shared answer)
 //   line 5 race                 -> `race` (never picks the leaf; changes which actions could work)
-//   line 6                      -> the leaf's "is there a known action?", looked up, never cast
+//   line 6                      -> the leaf's "is a working lever known?": the page's own reading (editorial,
+//                                  data/leaf-actions.json), never cast
 //
 // Each line holds { answer: 'yes'|'no'|'unknown'|null, how: 'decide'|'coin'|'yarrow'|'coins'|'unknown'|null,
 // kind: 6|7|8|9|0 }. Kinds are the I Ching's: 7 firm and steady (yes), 8 yielding and steady (no),
@@ -15,7 +16,9 @@
 //
 // What the coin is for here: it ends the choosing; it finds nothing out about the world. So a cast answer is
 // never treated as known: it stays in the renderer's `open` list, is tagged "cast, not known", and under the
-// burden reading a coin's yes counts as not shown.
+// burden reading a cast answer counts as not shown, whichever way it fell: a coin's yes on alignment or
+// containment, and a coin's "it can be undone" or "it can be tried first" on the gate. A cast can neither
+// satisfy the tree's caution nor switch it off.
 //
 // Rules this file keeps: no percent sign anywhere in it (odds are words or "N in M"); no number about AI;
 // "I don't know" is always legal; leafFor (the Film chat's mapping) is passed in and is only ever called with
@@ -77,18 +80,18 @@ export const LINES = [
   { n: 3, place: 'the crossing', id: 'alignment', node: 'alignment', key: 'alignment', ask: QUESTIONS[2].ask },
   { n: 4, place: 'the threshold', id: 'containment', node: 'containment-if-aligned', key: 'containment', ask: QUESTIONS[3].ask },
   { n: 5, place: 'the ruling place', id: 'race', node: 'race', key: 'race', ask: QUESTIONS[4].ask },
-  { n: 6, place: 'the top', id: 'action', node: 'leaf', key: null, ask: 'Is there a known action where this lands?', lookedUp: true }
+  { n: 6, place: 'the top', id: 'action', node: 'leaf', key: null, ask: 'Is a lever known to work where this lands?', ourReading: true }
 ];
 
 // ── the methods ────────────────────────────────────────────────────────────────────────────────
 // `render` is the renderer's cast method (the contract has coin, yarrow, decide, unknown).
 export const METHODS = {
   coin: { id: 'coin', name: 'Flip a coin', render: 'coin', bowl: { 6: 0, 7: 1, 8: 1, 9: 0 }, anchor: 'coin',
-    label: "The coin's odds are 1 in 2 because we made it that way. Nobody knows this question's odds." },
+    label: "The coin's odds are 1 in 2 because we made it that way. This question has no such count: no pile of like cases, and one try." },
   yarrow: { id: 'yarrow', name: 'Yarrow', render: 'yarrow', bowl: { 6: 1, 7: 5, 8: 7, 9: 3 }, anchor: 'tradition',
-    label: "Half yes, half no, and 1 in 4 comes up turning: it could flip. The odds are the bowl's, not the world's." },
+    label: "Half yes, half no, and 1 in 4 comes up turning (it could flip); a yes turns three times as often as a no. The odds are the bowl's, not the world's." },
   coins: { id: 'coins', name: 'The coin bowl (three coins)', render: 'coin', bowl: { 6: 2, 7: 6, 8: 6, 9: 2 }, anchor: 'coin',
-    label: 'Three coins: half yes, half no, 1 in 4 turning.' },
+    label: 'The odds of three tossed coins: half yes, half no, and 1 in 4 turning, a yes as often as a no. Its 16 marbles are the eight ways three coins fall, twice over.' },
   decide: { id: 'decide', name: 'Decide', render: 'decide' },
   unknown: { id: 'unknown', name: "I don't know", render: 'unknown' }
 };
@@ -102,10 +105,12 @@ export const TEXT = {
   afterUnknown: "A legal move. The question stays open and both sides stay on the tree.",
   gateYes: "The burden flips: whoever takes the step has to show it's safe.",
   gateNo: 'Ordinary trial and error can work: try, watch, fix.',
+  gateNoCast: "A cast put the gate at no, but a cast 'it can be undone' or 'it can be tried first' wasn't shown either. By the tree's rule that counts as not shown, so a cast can't switch the caution off.",
   gateUnknown: "It's unclear who has to show what. Both readings stay on the tree.",
   race: "The race sits under every branch. It doesn't pick where you land; it changes which actions could work. It also moves with what people believe about each other, which no coin can show.",
   slicing: "Asked as two questions, two coins put the gate at yes 1 time in 4. Asked as one, a coin says 1 in 2. Same world: 'even odds' depend on how you cut the question.",
-  line6Intro: 'Lines 1 to 5 nobody can look up yet, so you decide, cast or leave them open. Line 6 you can look up, so it is never cast.',
+  line6Intro: "Lines 1 to 5 nobody can settle yet, so you decide, cast or leave them open. Line 6 is never cast: it is this page's own reading of the sources, an editorial judgement that could be wrong and could change.",
+  leverIntro: "This is this page's own reading of the sources, never cast: an editorial judgement that could be wrong and could change.",
   closeTitle: 'Close the gap: pick a way to choose. None of these finds anything out.',
   allFive: 'All five by chance: nothing here will be yours.',
   landingCast: 'Where the casts put you',
@@ -113,11 +118,15 @@ export const TEXT = {
   landingAsk: 'Is there an action?',
   couldHave: 'the casts could have put you at:',
   eitherTitle: 'What holds either way',
-  eitherNothing: 'Nothing shows up under every leaf still possible: here the open questions matter.',
+  eitherNothing: 'Nothing on these lists shows up under every leaf still possible.',
+  eitherDangers: "This compares the dangers each leaf faces, not moves. One move can aim at dangers under several leaves at once, and the list of rules and proposals that would show which moves do is still being checked. So this can't say that no move holds either way.",
   targeted: "'Targeted' means some rule aims at it, not that it works.",
   noMechanism: 'uncertainty: no known mechanism',
-  noMechanismMeans: 'means two things: nobody can give odds anyone could defend, and nobody knows a lever that works.',
-  needsOthers: 'These need others. One lab or country doing the rest slows only itself.',
+  noMechanismMeans: 'means, on this page: there are no odds that most people would accept (some decision theorists would still give their own), and no lever is known to work.',
+  needsOthers: 'These need others. One lab or country doing the rest may mostly slow itself.',
+  noList: 'The list of rules and proposals aimed at these is still being checked, so it is not shown yet.',
+  throwSame: "Throwing again changes the casts, but by the tree's rule a cast yes still counts as no, so this landing stays until you decide a question yourself.",
+  jobs: 'Jobs: a gap in this list, not an unknown. It belongs to labour and tax policy more than to AI rules.',
   accelerant: 'also speeds the race (per the source file)',
   gladAsk: 'Glad or sorry it landed here?',
   glad: "Then you may already lean this way. The cast didn't tell you that; you did.",
@@ -131,18 +140,27 @@ export const TEXT = {
 };
 
 // Cast 100's reply after "Is that risk or uncertainty?": the player's pick, then the device fact.
+// The reason is not "someone made it": odds can be known for things nobody made (a death rate, a decay rate),
+// because there are many like cases to count. The tree's questions have no pile of like cases and one try.
 export const RISK_REPLY = {
-  coin: "We made this device, so its odds are known: that's risk. The tree's questions weren't made by anyone; nobody knows their odds.",
-  yarrow: "We made this device, so its odds are known: that's risk. The tree's questions weren't made by anyone; nobody knows their odds.",
-  'urn-new': "This tally looks like the coin's, and it is a coin one level down: we wrote the rule that picks each mix. Any urn a program draws from has odds someone wrote. What a tally can't show is whether anyone knew the odds; only knowing how they were made can.",
-  'urn-one': 'One hidden urn drawn 100 times shows its mix: that kind of not knowing shrinks with tries. The world gets one try at a step that may not be undoable.'
+  coin: "We made this device, and it can be flipped again and again, so its odds are known and its tallies settle: that's risk. The tree's questions have no pile of like cases to count and no second try, so no one can count their odds the way we count a coin's.",
+  yarrow: "We made this bowl, and it can be drawn from again and again, so its odds are known and its tallies settle: that's risk. The tree's questions have no pile of like cases to count and no second try, so no one can count their odds the way we count a bowl's.",
+  'urn-new': "This tally looks like the coin's, and it is a coin one level down: we wrote the rule that picks each mix. Any jar a program draws from has odds someone wrote. What a tally can't show is whether anyone knew the odds; only knowing how they were made can.",
+  'urn-one': 'One hidden jar drawn 100 times starts to show its mix: that kind of not knowing shrinks with tries. The world gets one try at a step that may not be undoable.'
+};
+// what each pick hears first, per device: whether it fits, in plain words (no mark, no score)
+export const RISK_VERDICT = {
+  coin: { risk: 'That fits.', uncertainty: 'Not for the coin itself.', cant: "The tally alone can't tell you, true; how the coin was made can." },
+  yarrow: { risk: 'That fits.', uncertainty: 'Not for the bowl itself.', cant: "The tally alone can't tell you, true; how the bowl was made can." },
+  'urn-new': { risk: "For us, who wrote the rule, yes; but the tally alone couldn't have told you.", uncertainty: "It looks that way from outside, but we wrote the rule, so its odds are known to us. The tally alone couldn't tell you either way.", cant: "That fits: a tally alone can't tell." },
+  'urn-one': { risk: "For us, who wrote it, yes. For you, who weren't shown the mix, it is closer to a jar you can't see into: odds you don't have.", uncertainty: "For you, yes: you weren't shown the mix.", cant: 'Fair: it depends on who knows the mix.' }
 };
 export const RISK_PICKS = { risk: 'risk', uncertainty: 'uncertainty', cant: "can't tell from this" };
 export const DEVICES = {
   coin: { id: 'coin', name: 'a coin', noun: 'coins', owner: "the coin's" },
   yarrow: { id: 'yarrow', name: 'the yarrow bowl', noun: 'yarrow draws', owner: "the yarrow bowl's" },
-  'urn-new': { id: 'urn-new', name: 'a new hidden urn each time', noun: 'urn draws', owner: "the urns'" },
-  'urn-one': { id: 'urn-one', name: 'one hidden urn', noun: 'urn draws', owner: "the urn's" }
+  'urn-new': { id: 'urn-new', name: 'a new hidden jar each time', noun: 'jar draws', owner: "the jars'" },
+  'urn-one': { id: 'urn-one', name: 'one hidden jar', noun: 'jar draws', owner: "the jar's" }
 };
 
 // ── rng (copied from game/lines.html @ 5b55c90) ────────────────────────────────────────────────
@@ -285,17 +303,28 @@ export function landing(walk, leafFor) {
   const leaf = leafIfSet(answers, leafFor);
   const possible = leavesOver(answers, openKeys, leafFor);
   const couldHave = leavesOver(answers, [...new Set([...openKeys, ...castKeys])], leafFor);
-  const burden = answers.gate === 'yes' ? 'flipped' : answers.gate === 'no' ? 'ordinary' : 'unclear';
+  // The tree's caution reads a cast gate part as not shown whichever way it fell: a cast "out for good" is the
+  // cautious answer anyway, and a cast "it can be undone" or "it can be tried first" is a safety claim nobody
+  // showed. So a cast can put the gate at no on the drawing, but cannot switch the caution off.
+  const cautionGate = gateOf(...[0, 1].map(i => (isDevice(L[i].how) ? 'yes' : L[i].answer)));
+  const burden = cautionGate === 'yes' ? 'flipped' : cautionGate === 'no' ? 'ordinary' : 'unclear';
+  const gateCastNo = answers.gate === 'no' && g.cast;
   const b = { ...answers };
   [2, 3].forEach(i => { const k = LINE_IDS[i]; if (lineUncertain(L[i])) b[k] = 'no'; });
   const burdenLeaf = leafIfSet(b, leafFor);
   const rel = relating(walk, leafFor);
   const pickedBy = [2, 3].find(i => isDevice(L[i].how));
+  // the one leaf the page names: under the burden reading it is the rule's leaf, whatever the casts drew
+  const byRule = burden === 'flipped' && !!burdenLeaf;
+  const headline = byRule ? burdenLeaf : leaf;
   return {
-    answers, leaf, possible, couldHave, burden, gateCast: g.cast, burdenLeaf,
+    answers, leaf, possible, couldHave, burden, gateCast: g.cast, gateCastNo, burdenLeaf,
+    headline, byRule, ruleDiffers: byRule && burdenLeaf !== leaf,
     relatingLeaf: rel.relatingLeaf, turned: rel.turned,
     anyCast: castLinesOf(walk).length > 0,
-    leafCast: pickedBy !== undefined, pickedBy: pickedBy === undefined ? null : pickedBy
+    leafCast: pickedBy !== undefined, pickedBy: pickedBy === undefined ? null : pickedBy,
+    // with the burden flipped and alignment or containment cast, throwing again cannot move the rule's leaf
+    throwSame: byRule && [2, 3].some(i => isDevice(L[i].how))
   };
 }
 
@@ -396,17 +425,15 @@ export function line6For(leaf, leafActions, regulatory) {
   const L = leafActions && leafActions.leaves && leafActions.leaves[leaf];
   if (!L) return null;
   if (!regulatory) return { ...L.line6, from: 'editorial' };
+  // One standard for every leaf. Firm: rules or agencies aim at the leaf's main danger. Yielding: no lever is known
+  // to work against it. Always turning while firm: "targeted" means aimed at, not shown to work, and by the page's
+  // own "not shown counts as no" a firm line here can never be steady. Yielding and turning when ideas aim at it
+  // (it could turn if one were shown to work); yielding and steady when nothing does. A gap (a danger that belongs
+  // to another policy layer, like jobs) is not "no known mechanism" and does not make a line yielding.
   const mains = (L.main || []).map(id => outcomeView(id, null, leafActions, regulatory));
-  const yielding = mains.some(m => m.class === 'none' || m.class === 'gap');
-  let kind;
-  if (!yielding) {
-    const turning = mains.some(m => m.class === 'partial' || m.class === 'weak' || !m.ideas.some(x => x.onTheBooks));
-    kind = turning ? 9 : 7;
-  } else {
-    const soft = mains.filter(m => m.class === 'none' || m.class === 'gap');
-    kind = soft.every(m => m.ideas.length > 0) ? 6 : 8;
-  }
-  return { kind, why: L.line6 ? L.line6.why : '', from: 'data' };
+  const soft = mains.filter(m => m.class === 'none');
+  const kind = !soft.length ? 9 : soft.every(m => m.ideas.length > 0) ? 6 : 8;
+  return { kind, why: L.line6 ? L.line6.why : '', turn: L.line6 ? L.line6.turn || '' : '', from: 'data' };
 }
 export function actionsFor(leaves, answers, leafActions, regulatory) {
   const out = {};
@@ -544,32 +571,70 @@ export function walkFromPerson(person, walk, upTo = 3) {
 
 // ── formatters (never a bare number, never a percent sign) ────────────────────────────────────
 export function listWords(xs) { xs = xs.filter(Boolean); if (xs.length < 2) return xs.join(''); return xs.slice(0, -1).join(', ') + ' and ' + xs[xs.length - 1]; }
-export function faceName(id) { return String(id).replace(/-/g, ' '); }
+const FACE_NAMES = { race: 'the race' };
+export function faceName(id) { return FACE_NAMES[id] || String(id).replace(/-/g, ' '); }
 export function countsLabel(n, device) { return n + ' of 100 ' + (DEVICES[device] ? DEVICES[device].noun : 'casts'); }
-export function countsSummary(c) { return 'decided ' + c.decided + ' · cast ' + c.cast + ' · open ' + c.open; }
+// unit 'answers' (the tree: four questions, the gate in two parts) or 'lines' (six lines: lines 1 to 5)
+export function countsSummary(c, unit = 'answers') {
+  return 'decided ' + c.decided + ' · cast ' + c.cast + ' · open ' + c.open +
+    (unit === 'lines' ? ', of lines 1 to 5' : ', of 5 answers (the gate has two parts)');
+}
 export function spreadLabel(device) { return (DEVICES[device] ? DEVICES[device].owner : "the device's") + " spread, not the world's"; }
+// What one draw would give depends on the device: about 50 for a coin, the bowls and a new jar each time (each
+// comes up yes 1 time in 2); for one hidden jar it is that jar's own mix, which the tally does not show you.
 export function gateSpreadLine(gateYes, device, parts = 2) {
   const one = device === 'coin' ? 'coin' : 'draw';
   if (parts < 2) return 'gate yes: ' + gateYes + ' of 100 (one ' + one + ': the other part is your own answer)';
+  if (device === 'urn-one') return 'gate yes: ' + gateYes + ' of 100 (two draws from the same hidden jar; one draw would give about its hidden mix, which this tally does not show)';
   return 'gate yes: ' + gateYes + ' of 100 (two ' + one + 's; one ' + one + ' would give about 50)';
 }
-export function riskReply(pick, device) { return 'You said ' + (RISK_PICKS[pick] || pick) + '. ' + (RISK_REPLY[device] || ''); }
-export function answerWord(a) { return a === 'yes' ? 'yes' : a === 'no' ? 'no' : a === 'unknown' ? "don't know" : 'not yet asked'; }
-export function burdenText(burdenLeafName, gateCast) {
-  return (gateCast ? 'The casts put the gate at yes. ' : '') +
-    "The tree's rule: when a step can't be undone or tried first, 'not shown' counts as 'no'. A cast yes wasn't shown, so it counts as no here. Your own yes counts only if you think it has been shown, not just hoped. By that rule you land on " + burdenLeafName + '.';
+export function riskReply(pick, device) {
+  const v = RISK_VERDICT[device] && RISK_VERDICT[device][pick];
+  return 'You said ' + (RISK_PICKS[pick] || pick) + '. ' + (v ? v + ' ' : '') + (RISK_REPLY[device] || '');
 }
-export function relatingText(leafName_) { return 'If the answers that could flip did flip: ' + leafName_; }
-export function line6Sentence(l6) {
+export function answerWord(a) { return a === 'yes' ? 'yes' : a === 'no' ? 'no' : a === 'unknown' ? "don't know" : 'not yet asked'; }
+// burdenText(the rule's leaf, { gateCast, gateCastNo, differs: the answers' leaf name when it is another, open })
+export function burdenText(burdenLeafName, o = {}) {
+  if (typeof o === 'boolean') o = { gateCast: o };
+  let s = o.gateCastNo ? TEXT.gateNoCast + ' ' : o.gateCast ? 'The casts put the gate at yes. ' : '';
+  s += "The tree's rule: when a step can't be undone or tried first, 'not shown' counts as 'no'. A cast yes wasn't shown, and neither was an open answer, so they count as no here. Your own yes counts only if you think it has been shown, not just hoped.";
+  if (o.differs) s += ' The drawing lights where the answers as they stand lead (' + o.differs + '); by the rule you land on ' + burdenLeafName + '.';
+  else if (o.open) s += ' Some questions are still open; by the rule they read as no, so you land on ' + burdenLeafName + '.';
+  else s += ' By that rule you land on ' + burdenLeafName + '.';
+  return s;
+}
+export function relatingText(leafName_, same) {
+  return same ? 'If the answers that could flip did flip, you would still land on ' + leafName_
+    : 'If the answers that could flip did flip, you would land on ' + leafName_ + ' instead';
+}
+// the race line on a landing: what the race answer changes about which actions could work (never the leaf)
+export function raceNote(race, leaf, cast) {
+  const tag = cast ? ' (' + TEXT.castTag + ')' : '';
+  if (race === 'yes') {
+    return 'The race: yes' + tag + '. Then a move that needs everyone to stop (a ban, a treaty, a pause) needs the main rivals in it; one lab or country stopping alone may mostly slow itself.' +
+      (leaf === 'shutdown' ? ' So "stop building it" would take others stopping too.' : leaf === 'proceed' || leaf === 'regulate' ? ' And rules at home may push some of the work elsewhere.' : '');
+  }
+  if (race === 'no') return 'The race: no' + tag + '. Then moves that need others to join, like a treaty or a shared pause, are more within reach, if that no is right.';
+  return 'The race: ' + answerWord(race) + tag + '. Both readings stay: moves that need others to join may or may not be within reach.';
+}
+// Line 6: the page's own reading, never cast. firm = rules aim at the leaf's main danger; yielding = no lever known
+// to work against it; turning = this reading could change (the leaf's own `turn` says how, when it has one).
+export function line6Sentence(l6, view = 'lines') {
   if (!l6) return '';
-  const firm = isFirm(l6.kind);
-  let s = 'Line 6, looked up: ' + (firm ? 'firm, a known action' : 'yielding, none known');
-  if (l6.kind === 9) s += '. It could turn to none known: the targeting is weak or not yet on the books';
-  if (l6.kind === 6) s += '. It could turn to known: if a mechanism were found, or a proposal became law';
+  const firm = isFirm(l6.kind), turning = isTurning(l6.kind);
+  const what = firm ? 'rules aim at the main danger, none shown to work' : 'no lever known to work against the main danger';
+  let s = view === 'tree'
+    ? 'Our reading: ' + what
+    : 'Line 6, our reading (not cast): ' + (firm ? 'firm' : 'yielding') + (turning ? ', turning' : '') + ': ' + what;
+  if (turning) s += '. It could turn: ' + (l6.turn || (firm ? 'if the targeting proved weak' : 'if a lever were shown to work'));
   return s + '.';
 }
 export function afterLine(q, walk) {
-  if (q === 'gate') { const g = answersOf(walk).gate; return g === 'yes' ? TEXT.gateYes : g === 'no' ? TEXT.gateNo : g === 'unknown' ? TEXT.gateUnknown : ''; }
+  if (q === 'gate') {
+    const g = answersOf(walk).gate;
+    if (g === 'no' && gateInfo(walk).cast) return TEXT.gateNoCast;
+    return g === 'yes' ? TEXT.gateYes : g === 'no' ? TEXT.gateNo : g === 'unknown' ? TEXT.gateUnknown : '';
+  }
   if (q === 'race') return TEXT.race;
   return '';
 }

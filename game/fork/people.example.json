@@ -4,19 +4,19 @@
     "name": "Example A (placeholder)",
     "role": "made-up example, not a real person",
     "stated_leaf": "proceed",
-    "gate": { "answer": "yes", "basis": "[placeholder] A made-up basis: this example holds that the step could not be undone.", "quote_ids": ["a1"] },
-    "alignment": { "answer": "yes", "basis": "[placeholder] A made-up basis: this example expects a way to check goals in time.", "quote_ids": ["a2"] },
-    "containment": { "answer": "no", "basis": "[placeholder] A made-up basis: this example doubts the walls would hold.", "quote_ids": ["a3"] },
-    "race": { "answer": "yes", "basis": "[placeholder] A made-up basis: this example says others would keep going.", "quote_ids": [] },
-    "own_conditional": "[placeholder] If the walls were shown to hold, this example would sit at proceed.",
+    "gate": { "answer": "yes", "basis": "Made up for testing: this example holds that the step could not be undone.", "quote_ids": ["a1"] },
+    "alignment": { "answer": "yes", "basis": "Made up for testing: this example expects a way to check goals in time.", "quote_ids": ["a2"] },
+    "containment": { "answer": "no", "basis": "Made up for testing: this example doubts the walls would hold.", "quote_ids": ["a3"] },
+    "race": { "answer": "yes", "basis": "Made up for testing: this example says others would keep going.", "quote_ids": [] },
+    "own_conditional": "Made up for testing: If the walls were shown to hold, this example would sit at proceed.",
     "to_move": [
-      { "to": "shutdown", "would_have_to_believe": "[placeholder] that no method would give it our goals, or let us check in time" },
-      { "to": "proceed", "would_have_to_believe": "[placeholder] that walls, watching and off-switches would hold" }
+      { "to": "shutdown", "would_have_to_believe": "that no method would give it our goals, or let us check in time" },
+      { "to": "proceed", "would_have_to_believe": "that walls, watching and off-switches would hold" }
     ],
     "quotes": [
-      { "id": "a1", "text": "[placeholder, not a real quote]", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "placeholder", "url": null, "how_checked": "placeholder" },
-      { "id": "a2", "text": "[placeholder, not a real quote]", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "placeholder", "url": null, "how_checked": "placeholder" },
-      { "id": "a3", "text": "[placeholder, not a real quote]", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "placeholder", "url": null, "how_checked": "placeholder" }
+      { "id": "a1", "text": "No real quote: this is a made-up example.", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "made-up example", "url": null, "how_checked": "placeholder" },
+      { "id": "a2", "text": "No real quote: this is a made-up example.", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "made-up example", "url": null, "how_checked": "placeholder" },
+      { "id": "a3", "text": "No real quote: this is a made-up example.", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "made-up example", "url": null, "how_checked": "placeholder" }
     ],
     "cautions": [
       "A made-up example to test the walk. Not a real person.",
@@ -30,17 +30,17 @@
     "name": "Example B (placeholder)",
     "role": "made-up example, not a real person",
     "stated_leaf": "contain",
-    "gate": { "answer": "no", "basis": "[placeholder] A made-up basis: this example holds that it could be tried small first.", "quote_ids": ["b1"] },
-    "alignment": { "answer": "unknown", "basis": "[placeholder] A made-up basis: this example says nobody can tell yet.", "quote_ids": [] },
-    "containment": { "answer": "yes", "basis": "[placeholder] A made-up basis: this example trusts the walls.", "quote_ids": ["b2"] },
-    "race": { "answer": "no", "basis": "[placeholder] A made-up basis: this example says others could be brought to stop together.", "quote_ids": [] },
-    "own_conditional": "[placeholder] If alignment turned out to work, this example would move to proceed.",
+    "gate": { "answer": "no", "basis": "Made up for testing: this example holds that it could be tried small first.", "quote_ids": ["b1"] },
+    "alignment": { "answer": "unknown", "basis": "Made up for testing: this example says nobody can tell yet.", "quote_ids": [] },
+    "containment": { "answer": "yes", "basis": "Made up for testing: this example trusts the walls.", "quote_ids": ["b2"] },
+    "race": { "answer": "no", "basis": "Made up for testing: this example says others could be brought to stop together.", "quote_ids": [] },
+    "own_conditional": "Made up for testing: If alignment turned out to work, this example would move to proceed.",
     "to_move": [
-      { "to": "proceed", "would_have_to_believe": "[placeholder] that there will be a way to give it our goals and check it in time" }
+      { "to": "proceed", "would_have_to_believe": "that there will be a way to give it our goals and check it in time" }
     ],
     "quotes": [
-      { "id": "b1", "text": "[placeholder, not a real quote]", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "placeholder", "url": null, "how_checked": "placeholder" },
-      { "id": "b2", "text": "[placeholder, not a real quote]", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "placeholder", "url": null, "how_checked": "placeholder" }
+      { "id": "b1", "text": "No real quote: this is a made-up example.", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "made-up example", "url": null, "how_checked": "placeholder" },
+      { "id": "b2", "text": "No real quote: this is a made-up example.", "verbatim": false, "video_id": null, "start_sec": null, "end_sec": null, "source_label": "made-up example", "url": null, "how_checked": "placeholder" }
     ],
     "cautions": [
       "A made-up example to test the walk. Not a real person."

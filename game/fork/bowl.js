@@ -112,20 +112,21 @@ export function isWhole(kinds) { return kinds.length === 6 && kinds.every(k => k
 const steadyOpposite = k => (isFirm(k) ? 8 : 7);
 
 // The relating reading, one turning line at a time, bottom to top (the path caster's sequential idea; in the
-// tradition all turning lines change at once). `kinds`: six kinds, lines 1 to 5 from the walk and line 6 looked
-// up. `line6At(kinds5)` looks line 6 up again for lines 1 to 5 as they stand: when the leaf changes, line 6 may
-// change with it, and that is a consequence, not a flip. Line 6's own turning, if any, is the last step.
-// Returns [{ kinds, flipped: index|null, line6Changed }], the first entry being where the lines stand.
+// tradition all turning lines change at once). `kinds`: six kinds, lines 1 to 5 from the walk and line 6 the
+// page's reading for where they land. Every turning line flips exactly once, line 6 included (its own step,
+// last), and nothing else changes: the number of steps is the number of turning lines the hexagram shows, and
+// the end is the tradition's relating hexagram. Line 6 is NOT looked up again on the way (that would change a
+// line nobody turned). The last step carries `lookedUp`: the page's reading for where lines 1 to 5 end, which
+// the page may mention beside the reading (a change in the landing, not a flip).
+// Returns [{ kinds, flipped: index|null, line6Changed: false }], the first entry being where the lines stand.
 export function relatingSteps(kinds, line6At) {
   const cur = kinds.slice(), steps = [{ kinds: cur.slice(), flipped: null, line6Changed: false }];
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 6; i++) {
     if (!isTurning(kinds[i])) continue;
     cur[i] = steadyOpposite(cur[i]);
-    const k6 = line6At(cur.slice(0, 5)), changed = k6 !== cur[5];
-    cur[5] = k6;
-    steps.push({ kinds: cur.slice(), flipped: i, line6Changed: changed });
+    steps.push({ kinds: cur.slice(), flipped: i, line6Changed: false });
   }
-  if (isTurning(cur[5])) { cur[5] = steadyOpposite(cur[5]); steps.push({ kinds: cur.slice(), flipped: 5, line6Changed: false }); }
+  steps[steps.length - 1].lookedUp = line6At ? line6At(cur.slice(0, 5)) : 0;
   return steps;
 }
 

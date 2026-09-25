@@ -1,6 +1,6 @@
 // The Fork, six-lines view: the I Ching path game on the same walk as the tree view (index.html).
 // One walk, one URL hash (#f1;...), one engine (fork-engine.js), one renderer (reached only through tree-adapter.js).
-// Lines 1 to 5 are the tree's questions (1 and 2 together are the gate); line 6 is looked up, never drawn. Each line
+// Lines 1 to 5 are the tree's questions (1 and 2 together are the gate); line 6 is the page's own reading, never drawn. Each line
 // is decided (yes is a firm line, no a yielding one; held loosely it could flip), drawn from a fresh bowl of 16
 // marbles (the yarrow bowl or the coin bowl), or left open with "I don't know". Every draw plays the renderer's own
 // cast at the matching node; the bowl here is static, the drawn marble ringed.
@@ -22,21 +22,20 @@ const BOWL = { yarrow: B.START.yarrow, coins: B.START.coins, coin: { 6: 0, 7: 1,
 const SAYS = { yarrow: 'the yarrow bowl', coins: 'the coin bowl', coin: 'the coin' };
 const BTN = { yarrow: 'Yarrow bowl', coins: 'Coin bowl' };
 const BTN_LONG = { yarrow: 'Draw from the yarrow bowl', coins: 'Draw from the coin bowl (three coins)' };
-const HEAD = { yarrow: 'The yarrow bowl: 16 marbles, a fresh bowl each draw', coins: 'The coin bowl (three coins): 16 marbles, a fresh bowl each draw', coin: 'One coin: two sides' };
+const HEAD = { yarrow: 'The yarrow bowl: 16 marbles, a fresh bowl each draw', coins: 'The coin bowl: three coins’ odds as 16 marbles, a fresh bowl each draw', coin: 'One coin: two sides' };
 const T = {
-  hello: "Build the hexagram from the bottom: decide each line, draw it from a bowl, or say I don't know.",
+  hello: "Build a hexagram, the I Ching's figure of six stacked lines, from the bottom up: yes is a solid (firm) line, no a broken (yielding) one. Decide each line, draw it from a bowl, or say I don't know.",
   relatingHonest: 'In the tradition all turning lines change at once; walking them one at a time is ours (from the Recursive I Ching’s path caster).',
   mustBelieve: "To get here you'd have to come to believe (or someone would have to show): ",
   notMind: 'That is a change in the landing, not a change of mind.',
   already: "You're already there.",
   noneTurning: 'No line is turning. The hexagram stands; the tradition reads only its judgment.',
   line6Waits: 'Line 6 waits for a leaf: alignment (line 3) and containment (line 4) each need a yes or a no, yours or drawn.',
-  pathRule: 'The path flips only lines 3 and 4. Lines 1, 2 and 5 stay as they are; line 6 is looked up again after each flip.',
+  flipShows: 'A flip in a reading shows nothing about the world: it only asks what would follow.',
+  pathRule: 'The path flips only lines 3 and 4. Lines 1, 2 and 5 stay as they are; line 6, our reading, is read again after each flip.',
   pathIs: 'Each flip names what you would have to come to believe. A path of beliefs, not a forecast.',
-  turn9: 'It could turn to none known: the targeting is weak or not yet on the books.',
-  turn6: 'It could turn to known: if a mechanism were found, or a proposal became law.',
-  noNotes: "The notes on each leaf didn't load, so line 6 can't be looked up.",
-  legge: 'Text: James Legge (tr.), 1882, public domain, read from the Recursive I Ching.'
+  noNotes: "The notes on each leaf didn't load, so line 6 can't be read.",
+  legge: 'Judgment and line texts: James Legge (tr.), 1882, public domain; hexagram names as in the Wilhelm/Baynes translation (1950); both read from the Recursive I Ching.'
 };
 
 const $ = id => document.getElementById(id);
@@ -79,7 +78,7 @@ function lineWord(i) { return 'Line ' + (i + 1) + ', ' + B.PLACES[i].nm; }
 function where(i) { return lineWord(i) + (i < 2 ? ' (the gate, ' + (i + 1) + ' of 2)' : ''); }
 function numWords(list) { return (list.length === 1 ? 'line ' : 'lines ') + E.listWords(list.map(i => String(i + 1))); }
 
-// ── the six kinds: lines 1 to 5 from the walk (0 while open), line 6 looked up for the leaf ─────────────
+// ── the six kinds: lines 1 to 5 from the walk (0 while open), line 6 our reading for the leaf ─────────────
 const yn = k => (B.isFirm(k) ? 'yes' : 'no');
 // leafFor is only ever asked with alignment and containment both yes or no (the gate and the race ride along)
 function leafOf(k5, w = ui.walk) {
@@ -92,6 +91,13 @@ function line6Kind(k5, w = ui.walk) {
   const l6 = E.line6For(leaf, la, null);
   return l6 ? l6.kind : 0;
 }
+// line 6's sentence for the leaf lines 1 to 5 of `kinds` lead to, with the line's kind as it now stands
+function l6Words(kinds, kind) {
+  const leaf = leafOf(kinds), la = ui.leafActions;
+  const l6 = leaf && la ? E.line6For(leaf, la, null) : null;
+  return E.line6Sentence({ ...(l6 || {}), kind: kind == null ? kinds[5] : kind });
+}
+function l6Short(k) { return B.isFirm(k) ? 'firm: rules aim at the main danger' : 'yielding: no lever known to work'; }
 function walkKinds(w) {
   const k = w.lines.map(l => (l.answer === 'yes' || l.answer === 'no' ? l.kind : 0));
   k.push(line6Kind(k, w));
@@ -135,7 +141,7 @@ function draw(opts) {
 function turnedSoFar() { const P = ui.path; return P ? P.steps.slice(1, P.k + 1).map(s => s.flipped) : []; }
 function slotTag(i, k) {
   if (turnedSoFar().includes(i)) return 'turned';
-  if (i === 5) return k ? 'looked up' : '';
+  if (i === 5) return k ? 'our reading' : '';
   const l = ui.walk.lines[i];
   if (l.answer == null) return '';
   if (l.how === 'unknown') return 'open';
@@ -143,9 +149,9 @@ function slotTag(i, k) {
   return 'yours';
 }
 function slotLabel(i, k, tag) {
-  let s = lineWord(i) + ', ' + (i < 5 ? E.QUESTIONS[i].short.toLowerCase() : 'a known action? looked up, never cast') + ': ';
+  let s = lineWord(i) + ', ' + (i < 5 ? E.QUESTIONS[i].short.toLowerCase() : 'is a lever known to work? our reading, never cast') + ': ';
   if (!k) s += i === 5 ? 'waits for a leaf' : ui.walk.lines[i].answer === 'unknown' ? "I don't know, open" : 'not yet asked';
-  else s += (i === 5 ? (B.isFirm(k) ? 'firm, a known action' : 'yielding, none known') : yn(k) + ', ' + (B.isFirm(k) ? 'a firm line' : 'a yielding line')) + (B.isTurning(k) ? ', turning: it could flip' : '');
+  else s += (i === 5 ? l6Short(k) : yn(k) + ', ' + (B.isFirm(k) ? 'a firm line' : 'a yielding line')) + (B.isTurning(k) ? ', turning: it could flip' : '');
   if (tag === 'cast') s += ', ' + E.TEXT.castTag;
   else if (tag === 'yours') s += ', your answer';
   else if (tag === 'turned') s += ', turned in this reading';
@@ -172,7 +178,7 @@ function renderHex() {
     hexNameEl.append(h('b', null, hx[0] + '. ' + hx[1]), ' ' + hx[3], h('br'), n ? n + ' turning' : 'none turning');
   } else {
     const n = kinds.filter(Boolean).length;
-    hexNameEl.append(n + ' of 6 lines. ', n ? '' : 'The first is at the bottom.');
+    hexNameEl.append(n + ' of 6 lines set. ', n ? '' : 'Line 1 is at the bottom.');
   }
   if (key) { const again = hexEl.querySelector('[data-k="' + key + '"]'); if (again && !again.disabled) again.focus({ preventScroll: true }); }
 }
@@ -215,7 +221,7 @@ function linePanel(i) {
     bowlBlock(peek),
     h('div', { class: 'casts' },
       DRAWS.map(m => h('button', { 'data-k': 'draw-' + m, 'aria-label': BTN_LONG[m], disabled: busy, onclick: () => doDraw([i], m), onfocus: () => setPeek(m), onmouseenter: () => setPeek(m) }, BTN[m])),
-      h('button', { class: 'idk', 'data-k': 'idk', disabled: busy, onclick: () => doUnknown(i) }, "I don't know")),
+      h('button', { class: 'idk', 'data-k': 'idk', 'aria-pressed': l.how === 'unknown' ? 'true' : 'false', disabled: busy, onclick: () => doUnknown(i) }, "I don't know")),
     h('p', { class: 'mlabel', id: 'mlabel' }, E.METHODS[peek].label + ' ', why(E.METHODS[peek].anchor)),
     lineStatus(i),
     ui.more ? h('p', { class: 'small' }, B.PLACES[i].tr + ' The reading of the six places as these questions is this page’s own.') : null,
@@ -253,11 +259,12 @@ function lineStatus(i) {
 function topPanel() {
   const L = E.landing(ui.walk, leafFor), la = ui.leafActions;
   const l6 = L.leaf && la ? E.line6For(L.leaf, la, null) : null;
-  const box = h('div', null, kicker('Line 6 of 6 · ' + B.PLACES[5].nm + ' · looked up, never cast'), h('h2', null, E.LINES[5].ask));
+  const box = h('div', null, kicker('Line 6 of 6 · ' + B.PLACES[5].nm + ' · our reading, never cast'), h('h2', null, 'Is a lever known to work where this lands?'));
   if (l6) {
-    box.append(h('div', { class: 'leafbox' }, h('b', null, nm(L.leaf)), ': ' + la.leaves[L.leaf].gloss),
+    box.append(h('div', { class: 'leafbox' }, h('span', { class: 'small' }, 'Where the lines lead: '), h('b', null, nm(L.leaf)), ': ' + la.leaves[L.leaf].gloss),
       h('p', { class: 'l6' }, E.line6Sentence(l6)));
     if (L.anyCast) box.append(h('p', { class: 'small' }, h('span', { class: 'tag' }, E.TEXT.castTag), 'Some lines that got you here were drawn.'));
+    if (L.ruleDiffers) box.append(h('p', { class: 'small' }, "By the tree's rule a drawn yes counts as not shown, so you land on " + nm(L.headline) + ' instead. Is there an action? says more.'));
     if (ui.more) box.append(h('p', { class: 'small' }, l6.why));
   } else if (!la) box.append(h('p', { class: 'warn' }, T.noNotes));
   else {
@@ -266,14 +273,14 @@ function topPanel() {
   }
   if (ui.more || !L.leaf) box.append(h('p', { class: 'small' }, E.TEXT.line6Intro));
   if (ui.more) box.append(h('p', { class: 'small' }, B.PLACES[5].tr));
-  if (L.leaf) box.append(h('div', { class: 'row' }, h('button', { class: 'primary', 'data-k': 'land', disabled: !!ui.playing, onclick: () => openLanding({}) }, E.TEXT.landingAsk)));
+  if (L.leaf) box.append(h('div', { class: 'row' }, h('button', { class: 'primary', 'data-k': 'land', disabled: !!ui.playing, onclick: () => openLanding() }, E.TEXT.landingAsk)));
   box.append(foot());
   return box;
 }
 function foot() {
   const busy = !!ui.playing, whole = B.isWhole(walkKinds(ui.walk));
   return h('div', { class: 'foot' },
-    h('p', { class: 'tally' }, E.countsSummary(E.counts(ui.walk)), ' · ', why('short', 'risk or uncertainty?')),
+    h('p', { class: 'tally' }, E.countsSummary(E.counts(ui.walk), 'lines'), ' · ', why('short', 'risk or uncertainty?')),
     h('div', { class: 'row' },
       h('button', { class: 'primary', 'data-k': 'gap', disabled: busy, onclick: openClose }, 'Close the gap'),
       h('button', { 'data-k': 'walk', disabled: busy, onclick: () => openWalk(null) }, 'Walk to a leaf'),
@@ -356,6 +363,7 @@ function play(steps, done) {
     if (k >= steps.length) { ui.playing = null; ui.casting = null; draw(); if (done) done(); return; }
     const s = steps[k++];
     ui.walk = s.walk; ui.casting = s.casting;
+    if (!ui.path) ui.line = s.line;   // the panel follows the line being played
     const d = lastDrawOf(s);
     if (d) { ui.last = d; ui.peek = d.method; }
     draw();
@@ -448,7 +456,7 @@ function lineText(kinds, i) {
   const t = hx && ui.texts && ui.texts[hx[0]] ? ui.texts[hx[0]]['Line ' + (i + 1)] : null;
   return t ? { hx, text: String(t) } : null;
 }
-function line6Again(kind) { return 'And line 6, looked up again: ' + E.line6Sentence({ kind }).replace(/^Line 6, looked up: /, '') + ' ' + T.notMind; }
+function line6Again(kinds) { return 'And line 6, read again for where this leads: ' + l6Words(kinds).replace(/^Line 6, our reading \(not cast\): /, '') + ' ' + T.notMind; }
 function pathNavRow(lastLabel) {
   const P = ui.path, last = P.k === P.steps.length - 1;
   return h('div', { class: 'row pathnav' },
@@ -468,21 +476,31 @@ function relatingPanel() {
       h('p', { class: 'small' }, E.TEXT.hexFrame + ' ' + T.legge));
   } else {
     const i = st.flipped, prev = P.steps[P.k - 1];
-    box.append(h('p', { class: 'kicker' }, h('span', null, (i === 5 ? 'Line 6, looked up, is turning too' : lineWord(i) + ', turns') + ' · ' + P.k + ' of ' + n)));
-    if (i === 5) box.append(h('p', null, prev.kinds[5] === 9 ? T.turn9 : T.turn6));
-    else box.append(h('p', null, 'It was ' + yn(prev.kinds[i]) + ' and could flip; now it reads ' + yn(st.kinds[i]) + ': ' + E.QUESTIONS[i].believe[yn(st.kinds[i])] + '.'));
+    box.append(h('p', { class: 'kicker' }, h('span', null, (i === 5 ? 'Line 6, our reading, is turning too' : lineWord(i) + ', turns') + ' · ' + P.k + ' of ' + n)));
+    if (i === 5) {
+      const leaf = leafOf(P.steps[0].kinds), l6 = leaf && ui.leafActions ? E.line6For(leaf, ui.leafActions, null) : null;
+      box.append(h('p', null, 'Our reading of line 6 was ' + l6Short(prev.kinds[5]) + ', and it could turn' + (l6 && l6.turn ? ' ' + l6.turn : '') +
+        '. Turned, it reads ' + l6Short(st.kinds[5]) + '. ' + T.flipShows));
+    } else {
+      const l = ui.walk.lines[i], how = E.isDevice(l.how) ? 'drawn from ' + SAYS[l.how] : 'your answer, held loosely';
+      box.append(h('p', null, 'It was ' + yn(prev.kinds[i]) + ' (' + how + ') and could flip. If it did, it would read ' + yn(st.kinds[i]) +
+        ": you'd have to come to believe " + E.QUESTIONS[i].believe[yn(st.kinds[i])] + '. ' + T.flipShows));
+    }
     if (i < 2) {
       const g0 = E.gateOf(yn(prev.kinds[0]), yn(prev.kinds[1])), g1 = E.gateOf(yn(st.kinds[0]), yn(st.kinds[1]));
-      if (g0 !== g1) box.append(h('p', { class: 'small' }, 'The gate now reads ' + g1 + '. ' + E.afterLine('gate', shownWalk())));
+      if (g0 !== g1) box.append(h('p', { class: 'small' }, 'The gate would then read ' + g1 + '. ' + (g1 === 'no'
+        ? "Ordinary trial and error could work, if that no were shown; a flip in a reading doesn't show it."
+        : "The burden would flip: whoever takes the step would have to show it's safe.")));
     }
     const lt = lineText(prev.kinds, i);
     if (lt) box.append(h('details', { class: 'more' }, h('summary', null, 'The tradition’s text for line ' + (i + 1) + ' of ' + lt.hx[1]), h('p', { class: 'small' }, lt.text)));
     box.append(h('h2', null, svgNode(B.hexSVG(st.kinds, { hl: i })), last ? 'It is turning into ' : 'Passing through ', hexTitle(st.kinds)));
     const a = leafOf(prev.kinds), b = leafOf(st.kinds);
     if (a !== b) box.append(h('p', null, 'The path turns from ', h('i', null, nm(a)), ' to ', h('i', null, nm(b)), '.'));
-    if (st.line6Changed) box.append(h('p', null, line6Again(st.kinds[5])));
+    if (st.line6Changed) box.append(h('p', null, line6Again(st.kinds)));
     if (last) {
       const A = leafOf(P.steps[0].kinds), Z = leafOf(st.kinds);
+      if (st.lookedUp && B.isFirm(st.lookedUp) !== B.isFirm(st.kinds[5]) && Z) box.append(h('p', { class: 'small' }, 'Read again for where lines 1 to 5 now lead (' + nm(Z) + '), our line 6 would be ' + l6Short(st.lookedUp) + (B.isTurning(st.lookedUp) ? ', turning' : '') + '. ' + T.notMind));
       box.append(judgment(st.kinds) || '',
         h('p', null, h('b', null, 'If the turning answers flip, the path ', A === Z ? ['stays at ', h('i', null, nm(A))] : ['turns from ', h('i', null, nm(A)), ' to ', h('i', null, nm(Z))], '.')),
         h('p', { class: 'small' }, T.relatingHonest),
@@ -505,8 +523,8 @@ function leafPanel() {
     box.append(h('h2', null, lineWord(i) + ', turns to ' + ans),
       h('p', null, T.mustBelieve + E.QUESTIONS[i].believe[ans] + '.'),
       h('p', null, svgNode(B.hexSVG(st.kinds, { hl: i })), last ? 'Arriving at ' : 'Passing through ', h('b', null, hexTitle(st.kinds)), '. The path is at ', h('i', null, nm(leafOf(st.kinds))), '.'));
-    if (st.line6Changed) box.append(h('p', null, line6Again(st.kinds[5])));
-    if (last) box.append(h('p', { class: 'small' }, E.line6Sentence({ kind: st.kinds[5] }) + ' ' + T.pathIs));
+    if (st.line6Changed) box.append(h('p', null, line6Again(st.kinds)));
+    if (last) box.append(h('p', { class: 'small' }, l6Words(st.kinds) + ' ' + T.pathIs));
   }
   box.append(pathNavRow('Back to your walk'));
   return box;
@@ -536,13 +554,13 @@ function openClose() {
     if (!open.length) {
       el.append(h('p', null, 'Nothing is open: every line has a yes or a no.'),
         h('div', { class: 'opts' },
-          optBtn('See where you land', E.TEXT.landingAsk, () => openLanding({}), true),
+          optBtn('See where you land', E.TEXT.landingAsk, () => openLanding(), true),
           optBtn(E.TEXT.eitherTitle, 'casts nothing', openEither)),
         closeRow('Not now'));
       return;
     }
     if (open.length === 5) el.append(h('p', { class: 'warn' }, E.TEXT.allFive));
-    el.append(h('p', { class: 'small' }, 'Open: ' + numWords(open) + '. Each is drawn from a fresh bowl, bottom to top.'));
+    el.append(h('p', { class: 'small' }, 'Open: ' + numWords(open) + '. Each is drawn from a fresh bowl, bottom to top. The two bowls both come up yes half the time and turning 1 time in 4; in the yarrow bowl a yes turns more often than a no, in the coin bowl they turn alike.'));
     const ways = DRAWS.map(m => optBtn(m === 'yarrow' ? 'Draw yarrow for the open ones' : 'Draw from the coin bowl for the open ones', E.METHODS[m].label, () => closeBy(m), ui.bowl === m));
     if (ui.bowl === 'coins') ways.reverse();
     el.append(h('div', { class: 'opts' }, ways,
@@ -556,10 +574,10 @@ function closeBy(m) {
   closeSheet();
   ui.bowl = m; ui.peek = m;
   const r = E.closeTheGap(ui.walk, m);
-  play(r.steps, () => { toTop(); openLanding({ byCast: true }); });
+  play(r.steps, () => { toTop(); openLanding(); });
 }
 function stepper(prompts, k) {
-  if (k >= prompts.length) { toTop(); openLanding({ byCast: E.landing(ui.walk, leafFor).leafCast }); return; }
+  if (k >= prompts.length) { toTop(); openLanding(); return; }
   const i = prompts[k], Q = E.QUESTIONS[i];
   openSheet(el => {
     el.append(h('p', { class: 'kicker' }, 'One at a time · ' + (k + 1) + ' of ' + prompts.length + ' · line ' + (i + 1)),
@@ -584,33 +602,36 @@ function stepMove(prompts, k, m) {
   play([{ walk: r.walk, casting: r.casting, line: i }], () => stepper(prompts, k + 1));
 }
 
-// "Is there an action?"
-function openLanding(opts = {}) {
-  const L = E.landing(ui.walk, leafFor), la = ui.leafActions, kinds = walkKinds(ui.walk), whole = B.isWhole(kinds);
+// "Is there an action?" One leaf is named, as in the tree view: under the burden reading the rule's leaf.
+function openLanding() {
+  const L = E.landing(ui.walk, leafFor), la = ui.leafActions, kinds = walkKinds(ui.walk), whole = B.isWhole(kinds), top = L.headline;
   openSheet(el => {
     el.append(h('p', { class: 'kicker' }, L.anyCast ? E.TEXT.landingCast : E.TEXT.landingOwn),
       h('h2', { id: 'sheet-title', class: 'big' }, E.TEXT.landingAsk));
-    if (L.leaf) {
-      el.append(h('div', { class: 'leafbox' }, h('b', null, nm(L.leaf)), la && la.leaves[L.leaf] ? ': ' + la.leaves[L.leaf].gloss : ''));
-      if (L.couldHave.length > 1) el.append(h('p', { class: 'small' }, E.TEXT.couldHave), chips(L.couldHave.map(nm), nm(L.leaf)));
+    if (top) {
+      el.append(h('div', { class: 'leafbox' }, L.byRule ? h('span', { class: 'small' }, "By the tree's rule you land on ") : null,
+        h('b', null, nm(top)), la && la.leaves[top] ? ': ' + la.leaves[top].gloss : ''));
     } else {
       el.append(h('p', null, 'Some lines are still open, so there is no single leaf yet.'),
         h('details', { class: 'more' }, h('summary', null, 'The leaves still possible'), chips(L.possible.map(nm))));
     }
-    if (whole) el.append(h('p', { class: 'hexline' }, svgNode(B.hexSVG(kinds)), 'As six lines: ', h('b', null, hexName(kinds)), '. ' + E.TEXT.hexFrame));
-    if (L.burden === 'flipped' && L.burdenLeaf) el.append(h('p', null, E.burdenText(nm(L.burdenLeaf), L.gateCast), ' ', why('burden')));
-    else if (L.burden === 'unclear') el.append(h('p', { class: 'small' }, E.TEXT.gateUnknown));
-    else el.append(h('p', { class: 'small' }, (L.gateCast ? 'The draws put the gate at no. ' : '') + E.TEXT.gateNo));
-    if (L.relatingLeaf) el.append(h('p', null, E.relatingText(nm(L.relatingLeaf)) + '.'));
-    const raceHow = ui.walk.lines[4].how;
-    el.append(h('p', { class: 'small' }, 'The race (line 5): ' + E.answerWord(L.answers.race) + (E.isDevice(raceHow) ? ' (' + E.TEXT.castTag + ')' : '') + '. ' + E.TEXT.race));
-    if (L.leaf && la) actionsBlock(el, L);
-    if (!L.leaf && la) eitherBlock(el, L.couldHave);
+    if (L.burden === 'flipped' && L.burdenLeaf) {
+      el.append(h('p', null, E.burdenText(nm(L.burdenLeaf), { gateCast: L.gateCast, gateCastNo: L.gateCastNo, differs: L.ruleDiffers && L.leaf ? nm(L.leaf) : null, open: !L.leaf }).replace('The drawing lights', 'The hexagram and the drawing show'), ' ', why('burden')));
+      if (L.throwSame) el.append(h('p', { class: 'small' }, E.TEXT.throwSame));
+    } else if (L.burden === 'unclear') el.append(h('p', { class: 'small' }, (L.gateCastNo ? E.TEXT.gateNoCast + ' ' : '') + E.TEXT.gateUnknown));
+    else el.append(h('p', { class: 'small' }, E.TEXT.gateNo));
+    if (L.couldHave.length > 1 && top) el.append(h('p', { class: 'small' }, E.TEXT.couldHave), chips(L.couldHave.map(nm), nm(top)));
+    if (whole) el.append(h('p', { class: 'hexline' }, svgNode(B.hexSVG(kinds)), 'As six lines: ', h('b', null, hexName(kinds)), '. ' + E.TEXT.hexFrame +
+      (L.ruleDiffers ? ' Its line 6 is read for where the lines as drawn lead (' + nm(L.leaf) + ').' : '')));
+    if (L.relatingLeaf && top) el.append(h('p', null, E.relatingText(nm(L.relatingLeaf), L.relatingLeaf === top) + '.'));
+    el.append(h('p', { class: 'small' }, E.raceNote(L.answers.race, top, E.isDevice(ui.walk.lines[4].how)).replace(/^The race/, 'The race (line 5)')));
+    if (top && la) actionsBlock(el, top);
+    if (!top && la) eitherBlock(el, L.couldHave);
     if (!la) el.append(h('p', { class: 'warn' }, T.noNotes));
-    if (opts.byCast && L.leafCast) el.append(gladBlock(L));
+    if (L.leafCast && !L.throwSame) el.append(gladBlock(L));   // only when a new cast could change where you land
     const btns = h('div', { class: 'sheet-actions' });
     if (whole) btns.append(h('button', { class: 'primary', onclick: () => { closeSheet(); startRelating(); } }, 'The reading'));
-    if (L.anyCast) btns.append(h('button', { onclick: () => { closeSheet(); play(E.throwAgain(ui.walk).steps, () => { toTop(); openLanding({ byCast: true }); }); } }, 'Throw again'));
+    if (L.anyCast) btns.append(h('button', { onclick: () => { closeSheet(); play(E.throwAgain(ui.walk).steps, () => { toTop(); openLanding(); }); } }, 'Throw again'));
     btns.append(h('button', { onclick: openEither }, E.TEXT.eitherTitle),
       h('button', { onclick: () => openWalk(null) }, 'Walk to a leaf'),
       h('button', { onclick: () => { closeSheet(); setLine(L.pickedBy != null ? L.pickedBy : firstOpen()); } }, 'Change an answer'),
@@ -619,16 +640,19 @@ function openLanding(opts = {}) {
   });
 }
 function firstOpen() { const o = E.openLines(ui.walk)[0]; return o == null ? 0 : o; }
-function actionsBlock(el, L) {
-  const A = E.actionsFor([L.leaf], L.answers, ui.leafActions, null)[L.leaf];
+// What the one named leaf faces, and line 6 for it: the page's own reading, never cast. Each gloss shows only
+// when its word is on screen.
+function actionsBlock(el, leaf) {
+  const A = E.actionsFor([leaf], null, ui.leafActions, null)[leaf];
   const nd = A.noData, plain = nd.class === 'none' || nd.class === 'gap';
-  el.append(h('h3', null, 'What this leaf faces'),
+  el.append(h('h3', null, 'What ' + nm(leaf) + ' faces'),
     chips(A.faces.map(E.faceName)),
-    h('p', null, 'Where it stands: ', plain ? h('code', { class: 'nm' }, nd.text) : nd.text),
-    h('p', { class: 'small' }, h('code', { class: 'nm' }, E.TEXT.noMechanism), ' ' + E.TEXT.noMechanismMeans),
-    h('p', { class: 'small' }, E.TEXT.targeted),
-    h('p', { class: 'small' }, 'No list of rules and proposals yet: that list is waiting to be checked before it is shown.'),
-    h('h3', null, 'Line 6'),
+    h('p', null, 'Where it stands: ', plain ? h('span', { class: 'nm' }, nd.text) : nd.text));
+  if (nd.class === 'none') el.append(h('p', { class: 'small' }, h('span', { class: 'nm' }, E.TEXT.noMechanism), ' ' + E.TEXT.noMechanismMeans));
+  if (nd.class === 'targeted' || nd.class === 'weak' || nd.class === 'partial') el.append(h('p', { class: 'small' }, E.TEXT.targeted));
+  if (A.faces.includes('jobs')) el.append(h('p', { class: 'small' }, E.TEXT.jobs));
+  el.append(h('p', { class: 'small' }, E.TEXT.noList),
+    h('h3', null, 'Line 6: is a lever known to work here?'),
     h('p', null, E.line6Sentence(A.line6)),
     h('p', { class: 'small' }, A.line6.why + ' ' + E.TEXT.line6Intro));
 }
@@ -636,16 +660,26 @@ function eitherBlock(el, leaves) {
   const ew = E.eitherWay(leaves, ui.leafActions, null);
   el.append(h('h3', null, E.TEXT.eitherTitle), h('p', null, ew.sentence));
   if (ew.sharedFaces.length) el.append(chips(ew.sharedFaces.map(E.faceName)));
+  el.append(h('p', { class: 'small' }, E.TEXT.eitherDangers));
+}
+// a row of buttons where the one pressed stays marked
+function pickRow(items) {
+  const row = h('div', { class: 'row' });
+  items.forEach(([label, fn]) => row.append(h('button', { 'aria-pressed': 'false', onclick: ev => {
+    row.querySelectorAll('button[aria-pressed]').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    ev.currentTarget.setAttribute('aria-pressed', 'true'); fn();
+  } }, label)));
+  return row;
 }
 function gladBlock(L) {
   const out = h('p', { class: 'reply', 'aria-live': 'polite', hidden: true });
   const show = (t, extra) => { out.hidden = false; out.textContent = t; if (extra) out.append(' ', extra); };
   return h('div', null,
     h('p', null, h('b', null, E.TEXT.gladAsk)),
-    h('div', { class: 'row' },
-      h('button', { onclick: () => show(E.TEXT.glad) }, 'Glad'),
-      h('button', { onclick: () => show(E.TEXT.sorry, h('button', { class: 'linkish', onclick: () => { closeSheet(); setLine(L.pickedBy != null ? L.pickedBy : 2); say("Decide it yourself: yes, no, or I don't know."); } }, 'Decide it yourself')) }, 'Sorry'),
-      h('button', { onclick: () => show(E.TEXT.neither) }, 'Neither')),
+    pickRow([
+      ['Glad', () => show(E.TEXT.glad)],
+      ['Sorry', () => show(E.TEXT.sorry, h('button', { class: 'linkish', onclick: () => { closeSheet(); setLine(L.pickedBy != null ? L.pickedBy : 2); say("Decide it yourself: yes, no, or I don't know."); } }, 'Decide it yourself'))],
+      ['Neither', () => show(E.TEXT.neither)]]),
     out);
 }
 function openEither() {
@@ -661,11 +695,12 @@ function openEither() {
       if (ew.sharedFaces.length) el.append(chips(ew.sharedFaces.map(E.faceName)));
       el.append(h('p', { class: 'big' }, E.TEXT.landingAsk),
         h('p', null, ew.sharedFaces.length
-          ? 'If there is one that holds either way, it is aimed at these. No list of rules and proposals yet: that list is waiting to be checked before it is shown.'
-          : 'Not one that holds everywhere: here, what you come to believe about the open questions decides it.'));
+          ? 'If a move holds either way, it will be aimed at these, and maybe at more. ' + E.TEXT.noList
+          : 'Not one this list can show. ' + E.TEXT.noList),
+        h('p', { class: 'small' }, E.TEXT.eitherDangers));
     }
     el.append(h('div', { class: 'sheet-actions' },
-      L.leaf ? h('button', { onclick: () => openLanding({}) }, 'Where you land') : null,
+      L.headline ? h('button', { onclick: () => openLanding() }, 'Where you land') : null,
       h('button', { class: 'ghost', onclick: closeSheet, autofocus: true }, 'Back to the lines')));
   });
 }
@@ -754,6 +789,7 @@ async function init() {
   treeEl.addEventListener('belieftree:select', onSelect);
   skipEl.addEventListener('click', skip);
   document.addEventListener('keydown', onKey);
+  wireHelp();
   sheet.addEventListener('click', ev => { if (ev.target === sheet) closeSheet(); });   // a tap on the backdrop
   window.addEventListener('hashchange', () => {
     const d = E.decodeHash(location.hash);
@@ -762,8 +798,14 @@ async function init() {
     ui.line = firstUnasked();
     draw({ animate: false });
   });
-  say(fromHash ? 'Your walk, from the link, as six lines. ' + E.countsSummary(E.counts(ui.walk)) + '.' : T.hello + ' ' + E.TEXT.coinIsFor);
+  say(fromHash ? 'Your walk, picked up from the page address, as six lines. ' + E.countsSummary(E.counts(ui.walk), 'lines') + '.' : T.hello + ' ' + E.TEXT.coinIsFor);
   draw({ animate: false });
+}
+// the help box: a Close button inside it, and a tap outside it closes it
+function wireHelp() {
+  const help = $('help'), close = $('help-close');
+  if (close) close.addEventListener('click', () => { help.open = false; help.querySelector('summary').focus(); });
+  document.addEventListener('click', ev => { if (help.open && !help.contains(ev.target)) help.open = false; });
 }
 
 init();

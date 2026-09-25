@@ -91,6 +91,7 @@ const STYLE = `
 .bt-node.is-yes .bt-badge,.bt-node.is-no .bt-badge,.bt-node.is-unknown .bt-badge{opacity:1}
 .bt-node.is-yes .bt-badge circle{stroke:var(--bt-yes)} .bt-node.is-yes .bt-badge text{fill:var(--bt-yes)}
 .bt-node.is-no .bt-badge circle{stroke:var(--bt-no)} .bt-node.is-no .bt-badge text{fill:var(--bt-no)}
+.bt-node.is-open.is-yes .bt-badge circle,.bt-node.is-open.is-no .bt-badge circle{stroke-dasharray:3 2.5;stroke-width:2}
 .bt-node.is-casting .bt-badge{opacity:0}
 .bt-chip{cursor:pointer;outline:none}
 .bt-chip circle{fill:var(--bt-box);stroke:var(--bt-muted);stroke-width:1.5}
@@ -195,9 +196,14 @@ function initials(name) {
   const w = String(name).split(/[\s-]+/).filter(x => /^[A-Za-z0-9]/.test(x));
   return ((w[0] || '?')[0] + (w[1] ? w[1][0] : '')).toUpperCase();
 }
+// A person's path: with alignment yes or no, its side; with alignment open, the side of the leaf they name (so the
+// drawn path reaches it), or both sides when they name none.
 function personNodes(p) {
   const al = p.alignment && typeof p.alignment === 'object' ? p.alignment.answer : p.alignment;
-  const ids = ['gate', 'alignment', al === 'no' ? 'containment-if-not' : 'containment-if-aligned', 'race'];
+  const leafSide = { proceed: 'containment-if-aligned', regulate: 'containment-if-aligned', contain: 'containment-if-not', shutdown: 'containment-if-not' };
+  const cont = al === 'no' ? ['containment-if-not'] : al === 'yes' ? ['containment-if-aligned']
+    : leafSide[p.stated_leaf] ? [leafSide[p.stated_leaf]] : ['containment-if-aligned', 'containment-if-not'];
+  const ids = ['gate', 'alignment', ...cont, 'race'];
   if (p.stated_leaf) ids.push(p.stated_leaf);
   return ids;
 }
@@ -240,21 +246,25 @@ function paint(rec, state) {
     g.classList.toggle('is-reached', n.kind === 'leaf' && leaf === n.id);
     g.classList.toggle('is-focus', focusSet.has(n.id));
     const t = g.querySelector('.bt-badge text'); if (t) t.textContent = badgeText(a);
+    // an answer that is yes or no yet still open was cast, not known: its badge ring is dashed, as its edge is
+    const castYN = glow.has(n.id) && (a === 'yes' || a === 'no');
     let label = n.label + (n.short ? ', ' + n.short : '');
     if (n.kind === 'leaf') label += leaf === n.id ? ': where the answers lead' : '';
-    else label += ': ' + wordOf(a);
-    if (glow.has(n.id)) label += ', still open';
+    else label += ': ' + wordOf(a) + (castYN ? ', cast, not known' : '');
+    if (glow.has(n.id) && !castYN) label += ', still open';
     g.setAttribute('aria-label', label);
   });
+  // Solid: an answer that is settled. Dashed: an open one, or one still in state.open (cast, not known), so a cast
+  // answer never lights its edge the way a decision does.
   const al = answers.alignment, co = answers.containment;
   const on = {}, maybe = {};
-  if (answers.gate != null) on['gate>alignment'] = true;
+  if (answers.gate != null) (glow.has('gate') ? maybe : on)['gate>alignment'] = true;
   const alSide = al === 'yes' ? ['containment-if-aligned'] : al === 'no' ? ['containment-if-not'] : al === 'unknown' ? ['containment-if-aligned', 'containment-if-not'] : [];
-  alSide.forEach(c => { (al === 'unknown' ? maybe : on)['alignment>' + c] = true; });
+  alSide.forEach(c => { (al === 'unknown' || glow.has('alignment') ? maybe : on)['alignment>' + c] = true; });
   alSide.forEach(c => {
     const kids = c === 'containment-if-aligned' ? ['proceed', 'regulate'] : ['contain', 'shutdown'];
     const pick = co === 'yes' ? [kids[0]] : co === 'no' ? [kids[1]] : co === 'unknown' ? kids : [];
-    pick.forEach(k => { (al === 'unknown' || co === 'unknown' ? maybe : on)[c + '>' + k] = true; });
+    pick.forEach(k => { (al === 'unknown' || co === 'unknown' || glow.has('alignment') || glow.has(c) ? maybe : on)[c + '>' + k] = true; });
   });
   Object.keys(rec.edges).forEach(k => {
     rec.edges[k].classList.toggle('is-on', !!on[k]);
