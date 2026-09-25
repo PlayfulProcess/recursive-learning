@@ -316,7 +316,7 @@
   <p>The Fork's gate is a live case. Ask “once it's out, would it be out for good?” and “would the first real test be the step itself?” as two coins, and the gate comes up yes 1 time in 4. Ask it as one coin: 1 in 2. Same world, same ignorance, different cuts, different “even odds”. It is one of the clearest reasons to doubt that a coin is a good picture of not knowing.</p>
 
   <div class="play" id="play-gate">
-    <p class="q">The gate, 100 coin casts each way. When it comes up yes, the burden flips.</p>
+    <p class="q">The gate, 100 coin casts each way: how often does it come up yes?</p>
     <div class="row">
       <button type="button" data-gate="1">As one question</button>
       <button type="button" data-gate="2">As two questions</button>
@@ -339,6 +339,7 @@
     </div>
     <p class="out" aria-live="polite"></p>
     <p class="small">One coin per question casts alignment and containment. “Either” first casts “is either one solvable?”: no lands on Shut down; yes, and a second cast picks among the other three leaves.</p>
+    <p class="small">These count where the coins point, not where you land. With the tree's caution on, a coin's yes counts as not shown, so all 100 of these would land on Shut down (<a href="#burden">who has to show what</a>). The tallies show how the cut shapes “even odds”, nothing more.</p>
   </div>
 
   <details class="disagree"><summary>Where people disagree</summary>
@@ -407,7 +408,7 @@
 <section class="sec" id="burden" data-step="7">
   <h2><span class="n">7 · Who has to show</span>Who has to show what</h2>
   <p>A <em>burden of proof</em> decides which side wins while the evidence is unclear. Precaution comes in two strengths. The weak form, the Rio Declaration (1992, Principle 15): where harm could be serious or irreversible, lack of full scientific certainty is no reason to put off cost-effective measures against it. “Cost-effective” is part of what keeps it weak. The strong form, the Wingspread Statement (1998): whoever proposes the activity bears the burden of proof.</p>
-  <p>The Fork's gate is a narrower, conditional version of the strong form: it flips the burden only when a step can't be undone or tried first (Wingspread has no such condition). Then whoever takes it has to show it's safe, and “not shown” counts as “no”. A coin's yes wasn't shown, and neither was a coin's “it can be undone”: a cast can't switch the caution off. Cass Sunstein (2005) answers that stopping has risks too; on the tree, that is the race.</p>
+  <p>The Fork's gate is a narrower, conditional version of the strong form: it flips the burden only when a step can't be undone or tried first (Wingspread has no such condition). Then whoever takes it has to show it's safe, and a claim that it's safe counts only if it has been shown. A coin's yes wasn't shown, and neither was a coin's “it can be undone”: a cast can't switch the caution off. Nor can “I don't know” about the gate: nobody has shown the step can be undone or tried first, so the caution stays on. Only your own “it can be undone” or “it can be tried first” switches it off. Cass Sunstein (2005) answers that stopping has risks too; on the tree, that is the race.</p>
 
   <div class="play" id="play-burden">
     <div class="qline">
@@ -415,6 +416,7 @@
       <div class="row" role="group" aria-labelledby="bq-gate">
         <button type="button" data-q="gate" data-v="yes">Yes: the burden flips</button>
         <button type="button" data-q="gate" data-v="coin-no">a coin said no</button>
+        <button type="button" data-q="gate" data-v="unknown">don't know</button>
         <button type="button" data-q="gate" data-v="no">No, shown: ordinary trial and error</button>
       </div>
     </div>
@@ -441,7 +443,7 @@
 
   <details class="disagree"><summary>Where people disagree</summary>
     <p>Sunstein argues the strong form can forbid everything, since every option, stopping included, carries risk. Defenders reply that irreversibility breaks the tie.</p>
-    <p>Reading “not shown” as “no”, and a coin's yes as not shown, is this page's reading of the tree, not a settled rule.</p>
+    <p>Reading “not shown” as “no”, a coin's yes as not shown, and an open gate as “caution on” is this page's reading of the tree, not a settled rule.</p>
   </details>
 </section>
 
@@ -467,8 +469,8 @@
 <!-- 9 -->
 <section class="sec" id="either-way" data-step="9">
   <h2><span class="n">9 · Either way</span>What holds either way</h2>
-  <p>When you can't close the gap by knowing, you can look for what holds under every answer still possible. Planners call this <em>robust decision-making</em> (Lempert, Popper and Bankes, 2003): instead of betting on one forecast, look for moves that do acceptably across many futures. An older cousin is <em>minimax regret</em> (Savage, 1951): pick the option whose worst regret is smallest.</p>
-  <p>In The Fork, “What holds either way” casts nothing. It lists the dangers every leaf still possible would face. That compares dangers, not moves: one move can aim at dangers under several leaves at once, and the list of moves is still being checked, so “nothing shared” does not mean no move holds either way. When the game prints <code>uncertainty: no known mechanism</code>, it means, on this page: there are no odds that most people would accept (some decision theorists, above, would still give their own), and no lever is known to work.</p>
+  <p>When you can't close the gap by knowing, you can look for what holds under every answer still possible. Planners call this <em>robust decision-making</em> (Lempert, S. W. Popper and Bankes, 2003; Steven Popper, not the Karl Popper of section 6): instead of betting on one forecast, look for moves that do acceptably across many futures. An older cousin is <em>minimax regret</em> (Savage, 1951): pick the option whose worst regret is smallest.</p>
+  <p>In The Fork, “What holds either way” casts nothing. It lists the dangers every leaf still possible would face. That compares dangers, not moves: one move can aim at dangers under several leaves at once, and the list of moves is still being checked, so “nothing shared” does not mean no move holds either way, and a shared danger does not mean a move must aim at it: a move can hold either way by aiming at a different danger under each leaf. When the game prints <code>uncertainty: no known mechanism</code>, that is the source file's label: no known way to control that danger, no lever. It is a different thing from uncertainty in Knight's sense (no odds anyone could defend), though for these dangers both apply.</p>
   <details class="disagree"><summary>Where people disagree</summary>
     <p>Robust choices can be timid, and what counts as “acceptable” is a choice of values, not a finding. Minimax regret depends on which options you list: adding one can change the pick. Both still ask you to say what the possible worlds are.</p>
   </details>
@@ -482,7 +484,7 @@
   <ul>
     <li>Its odds are known.</li>
     <li>It can be flipped again.</li>
-    <li>It can't ruin you.</li>
+    <li>A toss is usually small stakes: the coin itself can't ruin you, though what you stake on it can (<a href="#ruin">ruin</a>).</li>
     <li>Nobody's beliefs change it. The race can be changed by beliefs: believing “they will” can make it truer, a self-fulfilling prophecy (Merton, 1948).</li>
   </ul>
   <p>And it has a flaw of its own: its “even odds” depend on how the question was cut (<a href="#slicing">cutting the question</a>).</p>
@@ -691,9 +693,10 @@
       ran[parts] = true;
       setBar($('[data-row="' + parts + '"]', box), n, 100, n + ' of 100 casts');
       var msg = parts === '1'
-        ? 'One coin: the gate came up yes, and the burden flipped, in ' + n + ' of 100 casts.'
+        ? 'One coin: the gate came up yes in ' + n + ' of 100 casts.'
         : 'Two coins: the gate came up yes in ' + n + ' of 100 casts. Both answers had to land yes.';
       if (ran['1'] && ran['2']) msg += ' Same ignorance, different cuts: about 50 against about 25. Neither is the world’s odds.';
+      msg += ' (On the tree, a cast gate leaves the caution on whichever way it lands: a coin shows nothing. See who has to show what.)';
       out.textContent = msg;
     });
   })();
@@ -798,7 +801,7 @@
     var st = { gate: 'yes', al: 'unknown', co: 'unknown' };
     var NAME = { al: 'alignment', co: 'containment' };
     var WORD = { shown: 'shown yes', coin: 'a coin’s yes', unknown: 'don’t know', no: 'no' };
-    var FLIP = { yes: true, 'coin-no': true };
+    var FLIP = { yes: true, 'coin-no': true, unknown: true };
     function sync() {
       $$('button[data-q]', box).forEach(function (b) { b.setAttribute('aria-pressed', st[b.dataset.q] === b.dataset.v ? 'true' : 'false'); });
       var coinUsed = st.al === 'coin' || st.co === 'coin';
@@ -809,6 +812,7 @@
         var asNo = ['al', 'co'].filter(function (k) { return st[k] === 'coin' || st[k] === 'unknown'; })
           .map(function (k) { return NAME[k] + ' (' + WORD[st[k]] + ')'; });
         msg = (st.gate === 'coin-no' ? 'A coin said the step can be undone or tried first, but a coin’s no wasn’t shown either, so it can’t switch the caution off. ' : '') +
+          (st.gate === 'unknown' ? 'Nobody has shown the step can be undone or tried first, so “don’t know” leaves the caution on. ' : '') +
           'The burden flips: whoever takes the step has to show it’s safe. ' +
           (asNo.length ? 'Not shown counts as no, so ' + listWords(asNo) + (asNo.length === 1 ? ' counts' : ' count') + ' as no here. ' : '') +
           (coinUsed ? 'A coin’s yes wasn’t shown. ' : '') + 'You land on: ';
@@ -821,7 +825,7 @@
         msg = 'Ordinary trial and error: nobody has to prove safety first. Try small, watch, fix. ';
         if (possible.length === 1) msg += 'You land on: ' + LEAF_NAME[possible[0]] + '.';
         else msg += 'Unclear answers stay open, and trying is how they get settled. Still possible: ' + listWords(possible.map(function (l) { return LEAF_NAME[l]; })) + '.';
-        if (coinUsed) msg += ' A coin’s yes stays open here too: it found nothing out.';
+        if (coinUsed) msg += ' A coin’s yes stays open here too: it found nothing out. A coin can still pick one to try first: that ends the choosing, not the not knowing.';
         out.textContent = msg;
       }
     }

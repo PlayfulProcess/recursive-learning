@@ -7,18 +7,27 @@
 //   line 3 alignment            -> `alignment`
 //   line 4 containment          -> `containment-if-aligned` / `containment-if-not` (one shared answer)
 //   line 5 race                 -> `race` (never picks the leaf; changes which actions could work)
-//   line 6                      -> the leaf's "is a working lever known?": the page's own reading (editorial,
-//                                  data/leaf-actions.json), never cast
+//   line 6                      -> "is a lever known to work where this lands?": the page's own reading
+//                                  (editorial, data/leaf-actions.json), never cast. The same for every leaf
+//                                  today: yielding and turning, no lever shown to work against any leaf's main
+//                                  danger (what is aimed at each is said in words, per leaf)
 //
 // Each line holds { answer: 'yes'|'no'|'unknown'|null, how: 'decide'|'coin'|'yarrow'|'coins'|'unknown'|null,
 // kind: 6|7|8|9|0 }. Kinds are the I Ching's: 7 firm and steady (yes), 8 yielding and steady (no),
 // 9 firm and turning (yes, could flip), 6 yielding and turning (no, could flip), 0 none.
 //
 // What the coin is for here: it ends the choosing; it finds nothing out about the world. So a cast answer is
-// never treated as known: it stays in the renderer's `open` list, is tagged "cast, not known", and under the
-// burden reading a cast answer counts as not shown, whichever way it fell: a coin's yes on alignment or
-// containment, and a coin's "it can be undone" or "it can be tried first" on the gate. A cast can neither
-// satisfy the tree's caution nor switch it off.
+// never treated as known: it stays in the renderer's `open` list and is tagged "cast, not known".
+//
+// The tree's rule, as this page reads it (one rule, used by both views, the landing, Cast 100 and the reading):
+// "it can be undone", "it can be tried first", "we can give it our goals in time" and "we can keep it in" are
+// claims that the step is safe. The caution is on unless the player says, as their OWN answer, that the step can
+// be undone or tried first (an own "no" on either gate part). A cast can't switch it off (a coin shows nothing),
+// and neither can an open part ("I don't know", or not asked): nobody has shown it. While the caution is on, a
+// safety claim counts only if it has been shown: a cast yes and an open answer on alignment or containment read
+// as no. So casts and open answers never move where you land; only the player's own answers do. With the caution
+// off (ordinary trial and error), a cast alignment or containment is still not known: no single leaf, and what
+// the casts drew is only their pick, "one way to stop choosing".
 //
 // Rules this file keeps: no percent sign anywhere in it (odds are words or "N in M"); no number about AI;
 // "I don't know" is always legal; leafFor (the Film chat's mapping) is passed in and is only ever called with
@@ -103,34 +112,38 @@ export const TEXT = {
   afterCast: "Cast, not known. The coin picked; it didn't find out.",
   castTag: 'cast, not known',
   afterUnknown: "A legal move. The question stays open and both sides stay on the tree.",
-  gateYes: "The burden flips: whoever takes the step has to show it's safe.",
-  gateNo: 'Ordinary trial and error can work: try, watch, fix.',
-  gateNoCast: "A cast put the gate at no, but a cast 'it can be undone' or 'it can be tried first' wasn't shown either. By the tree's rule that counts as not shown, so a cast can't switch the caution off.",
-  gateUnknown: "It's unclear who has to show what. Both readings stay on the tree.",
+  gateYes: "The caution is on: whoever takes the step has to show it's safe.",
+  gateYesCast: "A cast put the gate at yes. A cast shows nothing, but the caution is on anyway: nobody has shown the step can be undone or tried first.",
+  gateNo: 'You said the step can be undone or tried first. Then ordinary trial and error can work: try, watch, fix.',
+  gateNoCast: "A cast put the gate at no. But a cast can't show that the step can be undone or tried first, so the caution stays on: whoever takes the step has to show it's safe.",
+  gateUnknown: "Open. Nobody has shown the step can be undone or tried first, so the caution stays on: whoever takes it has to show it's safe. \"I don't know\" is still a fair answer; it just can't switch the caution off.",
+  gateMoot: 'Your no settles the gate: the other part is not needed.',
   race: "The race sits under every branch. It doesn't pick where you land; it changes which actions could work. It also moves with what people believe about each other, which no coin can show.",
   slicing: "Asked as two questions, two coins put the gate at yes 1 time in 4. Asked as one, a coin says 1 in 2. Same world: 'even odds' depend on how you cut the question.",
-  line6Intro: "Lines 1 to 5 nobody can settle yet, so you decide, cast or leave them open. Line 6 is never cast: it is this page's own reading of the sources, an editorial judgement that could be wrong and could change.",
+  line6Intro: "Lines 1 to 5 nobody can settle yet, so you decide, cast or leave them open. Line 6 is never cast: it is this page's own reading of the sources, an editorial judgement that could be wrong and could change. Today it reads the same for every leaf.",
   leverIntro: "This is this page's own reading of the sources, never cast: an editorial judgement that could be wrong and could change.",
   closeTitle: 'Close the gap: pick a way to choose. None of these finds anything out.',
   allFive: 'All five by chance: nothing here will be yours.',
-  landingCast: 'Where the casts put you',
+  landingRule: "Where the tree's rule puts you",
   landingOwn: 'Where your answers put you',
+  landingPick: 'What the casts picked',
+  landingOpen: 'Still open',
   landingAsk: 'Is there an action?',
-  couldHave: 'the casts could have put you at:',
+  stillPossible: 'Still possible:',
   eitherTitle: 'What holds either way',
   eitherNothing: 'Nothing on these lists shows up under every leaf still possible.',
-  eitherDangers: "This compares the dangers each leaf faces, not moves. One move can aim at dangers under several leaves at once, and the list of rules and proposals that would show which moves do is still being checked. So this can't say that no move holds either way.",
+  eitherDangers: "This compares the dangers each leaf faces, not moves. A move can also hold either way by aiming at a different danger under each leaf: outside testing, for one, looks for misuse under one leaf and for deception under another. The list of rules and proposals that would show which moves do is still being checked. So this can't name the moves that hold, or say that none does.",
+  eitherShared: 'A move aimed at any of these would matter whichever leaf is true.',
   targeted: "'Targeted' means some rule aims at it, not that it works.",
   noMechanism: 'uncertainty: no known mechanism',
-  noMechanismMeans: 'means, on this page: there are no odds that most people would accept (some decision theorists would still give their own), and no lever is known to work.',
+  noMechanismMeans: "is the source file's label. It means no known way to control this danger: no lever. That is a different thing from 'uncertainty' in the explainer's sense (no odds anyone could defend), though here both apply.",
   needsOthers: 'These need others. One lab or country doing the rest may mostly slow itself.',
-  noList: 'The list of rules and proposals aimed at these is still being checked, so it is not shown yet.',
-  throwSame: "Throwing again changes the casts, but by the tree's rule a cast yes still counts as no, so this landing stays until you decide a question yourself.",
+  noList: "The list of rules and proposals these notes draw on is a first draft, made with an AI's help in September 2026 and not yet reviewed. It isn't shown yet, and these notes may be wrong.",
   jobs: 'Jobs: a gap in this list, not an unknown. It belongs to labour and tax policy more than to AI rules.',
   accelerant: 'also speeds the race (per the source file)',
-  gladAsk: 'Glad or sorry it landed here?',
+  gladAsk: 'Glad or sorry the casts picked this?',
   glad: "Then you may already lean this way. The cast didn't tell you that; you did.",
-  sorry: 'Then you may already lean the other way. Decide it yourself?',
+  sorry: 'Then you may already lean the other way.',
   neither: "Then the cast settled a choice you didn't mind. That's all a coin or a bowl can do.",
   riskAsk: 'Is that risk or uncertainty?',
   fixed: 'Your decided answers fix the leaf: nothing to cast.',
@@ -189,11 +202,13 @@ export function newWalk(seed) {
 export function cloneWalk(w) { return { lines: w.lines.map(l => ({ answer: l.answer, how: l.how, kind: l.kind })), seed: w.seed, n: w.n }; }
 function lineIndex(line) { const i = typeof line === 'number' ? line : LINE_IDS.indexOf(line); if (i < 0 || i > 4) throw new Error('fork: no line ' + line); return i; }
 
+// The gate from its two parts. One part yes and the other not asked yet is null (not answered yet), not
+// 'unknown': the player hasn't said "I don't know", so the tree must not draw a "?" for it.
 export function gateOf(u, t) {
-  if (u == null && t == null) return null;
   if (u === 'no' || t === 'no') return 'no';
   if (u === 'yes' && t === 'yes') return 'yes';
-  return 'unknown';
+  if (u === 'unknown' || t === 'unknown') return 'unknown';
+  return null;
 }
 // The contract's `answers`. A cast answer appears as its yes/no (the contract has no other value); that it was
 // cast lives in toTreeState().open and in the game's own tags.
@@ -202,14 +217,27 @@ export function answersOf(walk) {
   return { gate: gateOf(a[0].answer, a[1].answer), alignment: a[2].answer, containment: a[3].answer, race: a[4].answer };
 }
 // Is the gate settled by the player's own answers, or still uncertain (open, or put there by a device)?
+// open/cast describe the gate as the tree draws it; partCast/partOpen say whether either part was cast or left
+// open (for the words); ownYes: both parts the player's own yes.
 export function gateInfo(walk) {
   const [u, t] = walk.lines, answer = gateOf(u.answer, t.answer);
-  if (answer == null || answer === 'unknown') return { answer, open: true, cast: false };
-  if (answer === 'yes') { const cast = isDevice(u.how) || isDevice(t.how); return { answer, open: cast, cast }; }
-  const ownNo = [u, t].some(l => l.answer === 'no' && l.how === 'decide');
-  return { answer, open: !ownNo, cast: !ownNo };
+  const parts = { partCast: isDevice(u.how) || isDevice(t.how), partOpen: isOpenAnswer(u.answer) || isOpenAnswer(t.answer),
+    ownYes: [u, t].every(l => l.how === 'decide' && l.answer === 'yes') };
+  if (answer == null || answer === 'unknown') return { answer, open: true, cast: false, ...parts };
+  if (answer === 'yes') { const cast = parts.partCast; return { answer, open: cast, cast, ...parts }; }
+  const settled = ownNo(u) || ownNo(t);
+  return { answer, open: !settled, cast: !settled, ...parts };
 }
 const lineUncertain = l => isOpenAnswer(l.answer) || isDevice(l.how);
+const ownNo = l => l.how === 'decide' && l.answer === 'no';
+// The caution is on unless the player's own answer says the step can be undone or tried first (see the header).
+export function cautionOn(walk) { return !ownNo(walk.lines[0]) && !ownNo(walk.lines[1]); }
+// A gate part that no longer matters: not asked yet, while the other part is the player's own no.
+export function mootLines(walk) {
+  const L = walk.lines, r = [];
+  [0, 1].forEach(i => { if (L[i].answer == null && ownNo(L[1 - i])) r.push(i); });
+  return r;
+}
 export function nodeFor(walk, line, opts = {}) {
   const i = lineIndex(line);
   if (i < 2) return 'gate';
@@ -257,12 +285,15 @@ export function castLines(walk, lines, method, opts = {}) {
 }
 
 // ── reading a walk ─────────────────────────────────────────────────────────────────────────────
+// moot: a gate part not asked while the other part is the player's own no (not counted as open)
 export function counts(walk) {
   let decided = 0, cast = 0, open = 0;
-  walk.lines.forEach(l => { if (isOpenAnswer(l.answer)) open++; else if (isDevice(l.how)) cast++; else decided++; });
-  return { decided, cast, open };
+  const m = mootLines(walk);
+  walk.lines.forEach((l, i) => { if (m.includes(i)) return; if (isOpenAnswer(l.answer)) open++; else if (isDevice(l.how)) cast++; else decided++; });
+  return { decided, cast, open, moot: m.length };
 }
 export function openLines(walk) { const r = []; walk.lines.forEach((l, i) => { if (isOpenAnswer(l.answer)) r.push(i); }); return r; }
+export function neededOpenLines(walk) { const m = mootLines(walk); return openLines(walk).filter(i => !m.includes(i)); }
 export function castLinesOf(walk) { const r = []; walk.lines.forEach((l, i) => { if (isDevice(l.how)) r.push(i); }); return r; }
 
 // every leaf leafFor gives when the listed answer keys are filled with yes and no every way
@@ -292,6 +323,17 @@ export function relating(walk, leafFor) {
   return { answers, turned, walk: w, relatingLeaf: turned.length ? leafIfSet(answers, leafFor) : null };
 }
 
+// The one leaf the page names for a walk, by the tree's rule (see the header): with the caution on, the leaf the
+// player's own answers give when every cast or open alignment/containment reads as no (always a leaf); with it
+// off, the leaf the player's own alignment and containment give, or null when either is cast or open.
+function ruleOf(walk, leafFor) {
+  const L = walk.lines, answers = answersOf(walk), caution = cautionOn(walk);
+  const b = { ...answers };
+  [2, 3].forEach(i => { if (lineUncertain(L[i])) b[LINE_IDS[i]] = 'no'; });
+  const ruleLeaf = leafIfSet(b, leafFor);
+  const own = !lineUncertain(L[2]) && !lineUncertain(L[3]);
+  return { caution, ruleLeaf, headline: caution ? ruleLeaf : own ? leafIfSet(answers, leafFor) : null };
+}
 export function landing(walk, leafFor) {
   const answers = answersOf(walk), g = gateInfo(walk), L = walk.lines;
   const openKeys = ANSWER_KEYS.filter(k => isOpenAnswer(answers[k]));
@@ -300,46 +342,54 @@ export function landing(walk, leafFor) {
   if (isDevice(L[2].how)) castKeys.push('alignment');
   if (isDevice(L[3].how)) castKeys.push('containment');
   if (isDevice(L[4].how)) castKeys.push('race');
-  const leaf = leafIfSet(answers, leafFor);
+  const leaf = leafIfSet(answers, leafFor);            // where the answers as they stand point: the drawing
   const possible = leavesOver(answers, openKeys, leafFor);
   const couldHave = leavesOver(answers, [...new Set([...openKeys, ...castKeys])], leafFor);
-  // The tree's caution reads a cast gate part as not shown whichever way it fell: a cast "out for good" is the
-  // cautious answer anyway, and a cast "it can be undone" or "it can be tried first" is a safety claim nobody
-  // showed. So a cast can put the gate at no on the drawing, but cannot switch the caution off.
-  const cautionGate = gateOf(...[0, 1].map(i => (isDevice(L[i].how) ? 'yes' : L[i].answer)));
-  const burden = cautionGate === 'yes' ? 'flipped' : cautionGate === 'no' ? 'ordinary' : 'unclear';
-  const gateCastNo = answers.gate === 'no' && g.cast;
-  const b = { ...answers };
-  [2, 3].forEach(i => { const k = LINE_IDS[i]; if (lineUncertain(L[i])) b[k] = 'no'; });
-  const burdenLeaf = leafIfSet(b, leafFor);
-  const rel = relating(walk, leafFor);
+  const R = ruleOf(walk, leafFor), headline = R.headline;
   const pickedBy = [2, 3].find(i => isDevice(L[i].how));
-  // the one leaf the page names: under the burden reading it is the rule's leaf, whatever the casts drew
-  const byRule = burden === 'flipped' && !!burdenLeaf;
-  const headline = byRule ? burdenLeaf : leaf;
+  // With the caution off and alignment or containment cast, no leaf is known: what the casts drew is their pick.
+  const pick = !R.caution && !headline && leaf && pickedBy !== undefined ? leaf : null;
+  // Could the landing change if the answers held loosely flipped? Only the player's own answers can move it: a
+  // flipped cast line is still cast, so under the rule it still reads as not shown.
+  const rel = relating(walk, leafFor);
+  const flipped = headline && rel.turned.length ? ruleOf(rel.walk, leafFor).headline : null;
+  const al = L[2], co = L[3];
   return {
-    answers, leaf, possible, couldHave, burden, gateCast: g.cast, gateCastNo, burdenLeaf,
-    headline, byRule, ruleDiffers: byRule && burdenLeaf !== leaf,
+    answers, leaf, possible, couldHave, headline, pick,
+    caution: R.caution, burden: R.caution ? 'flipped' : 'ordinary', byRule: R.caution, ruleLeaf: R.ruleLeaf,
+    // the drawing lights another leaf than the one named (only possible with the caution on)
+    drawnDiffers: !!(headline && leaf && leaf !== headline),
+    still: headline ? [headline] : couldHave,
+    gateCast: g.partCast, gateOpen: g.partOpen, gateOwnYes: g.ownYes, gateCastNo: answers.gate === 'no' && g.cast,
+    gateIdk: [0, 1].some(i => L[i].answer === 'unknown'), gateUnasked: [0, 1].some(i => L[i].answer == null),
+    castYes: [al, co].some(l => isDevice(l.how) && l.answer === 'yes'),
+    openLeafAnswer: [al, co].some(l => isOpenAnswer(l.answer)),
+    ownYes: [al, co].some(l => l.how === 'decide' && l.answer === 'yes'),
     relatingLeaf: rel.relatingLeaf, turned: rel.turned,
+    flipLeaf: flipped && flipped !== headline ? flipped : null,
     anyCast: castLinesOf(walk).length > 0,
     leafCast: pickedBy !== undefined, pickedBy: pickedBy === undefined ? null : pickedBy,
-    // with the burden flipped and alignment or containment cast, throwing again cannot move the rule's leaf
-    throwSame: byRule && [2, 3].some(i => isDevice(L[i].how))
+    // re-casting cannot move a named leaf: casts never count toward it
+    throwSame: castLinesOf(walk).length > 0 && !!headline,
+    throwMatters: !!pick
   };
 }
 
 // ── closing the gap ────────────────────────────────────────────────────────────────────────────
 // way: 'coin' | 'yarrow' (cast the open lines, alignment before containment) | 'each' (prompts for a stepper)
 // | 'either' (casts nothing: what holds under every leaf still possible). opts: { leafFor, leafActions, regulatory }
+// opts.needed: leave out a gate part the player's own no has made moot (the tree view; the six-lines view keeps
+// it, since the hexagram needs every line).
 export function closeTheGap(walk, way, opts = {}) {
-  if (way === 'each') return { walk, prompts: openLines(walk) };
+  const open = opts.needed ? neededOpenLines(walk) : openLines(walk);
+  if (way === 'each') return { walk, prompts: open };
   if (way === 'either') {
     if (!opts.leafFor || !opts.leafActions) throw new Error('fork: closeTheGap either needs leafFor and leafActions');
     const possible = landing(walk, opts.leafFor).possible;
     return { walk, possible, either: eitherWay(possible, opts.leafActions, opts.regulatory || null) };
   }
   if (way !== 'coin' && way !== 'yarrow' && way !== 'coins') throw new Error('fork: no way ' + way);
-  return castLines(walk, openLines(walk), way);
+  return castLines(walk, open, way);
 }
 // re-cast only the lines a device cast, each with its own method; decided lines stay
 export function throwAgain(walk) {
@@ -363,6 +413,10 @@ export function toTreeState(walk, opts = {}) {
     else open.push('containment-if-aligned', 'containment-if-not');
   }
   if (lineUncertain(L[4])) open.push('race');
+  // a leaf the drawing reaches through a cast (or open) alignment or containment is still uncertain: it is drawn
+  // dashed like the rest of the cast path, never as a place you landed (opts.leafFor: the renderer's mapping)
+  const drawn = opts.leafFor && (lineUncertain(L[2]) || lineUncertain(L[3])) ? leafIfSet(answers, opts.leafFor) : null;
+  if (drawn) open.push(drawn);
   const st = { step: null, answers, open, focus: opts.focus || null, casting: opts.casting || null, theme: opts.theme || 'dark' };
   if (opts.people !== undefined) st.people = opts.people;
   return st;
@@ -380,9 +434,12 @@ export function checkNodes(NODES, warn = (m) => console.warn(m)) {
   if (missing.length) warn('[fork] belief-tree NODES is missing: ' + missing.join(', '));
   return missing;
 }
-export function leafName(leaf, NODES) {
+// The renderer's own name for a node, so the page's words match the drawing: its LEAF_LABEL when it has one (the
+// film's module does), else the node's label (the stand-in) or title (the film's NODES), else a plain default.
+export function leafName(leaf, NODES, LABELS) {
+  if (LABELS && LABELS[leaf]) return LABELS[leaf];
   const n = NODES ? nodeIndex(NODES)[leaf] : null;
-  return (n && n.label) || ({ proceed: 'Proceed', regulate: 'Regulate', contain: 'Contain', shutdown: 'Shut down' })[leaf] || String(leaf);
+  return (n && (n.label || n.title)) || ({ proceed: 'Proceed', regulate: 'Regulate', contain: 'Contain', shutdown: 'Shut down' })[leaf] || String(leaf);
 }
 
 // ── what each leaf faces (data/leaf-actions.json; regulatory.json only once approved) ──────────
@@ -425,14 +482,13 @@ export function line6For(leaf, leafActions, regulatory) {
   const L = leafActions && leafActions.leaves && leafActions.leaves[leaf];
   if (!L) return null;
   if (!regulatory) return { ...L.line6, from: 'editorial' };
-  // One standard for every leaf. Firm: rules or agencies aim at the leaf's main danger. Yielding: no lever is known
-  // to work against it. Always turning while firm: "targeted" means aimed at, not shown to work, and by the page's
-  // own "not shown counts as no" a firm line here can never be steady. Yielding and turning when ideas aim at it
-  // (it could turn if one were shown to work); yielding and steady when nothing does. A gap (a danger that belongs
-  // to another policy layer, like jobs) is not "no known mechanism" and does not make a line yielding.
+  // One question, one standard: "is a lever KNOWN TO WORK where this lands?" Firm (yes) only when some lever is
+  // shown to work against the leaf's main danger. "Targeted" means aimed at, not shown to work, so a targeted danger
+  // is a yielding line too (a firm line for "aimed at" would draw "aimed at" as "known to work"). Yielding and turning
+  // when something aims at a main danger (it could turn if that were shown to work); yielding and steady when
+  // nothing does. No verdict in the source says "shown to work", so no line 6 is firm today.
   const mains = (L.main || []).map(id => outcomeView(id, null, leafActions, regulatory));
-  const soft = mains.filter(m => m.class === 'none');
-  const kind = !soft.length ? 9 : soft.every(m => m.ideas.length > 0) ? 6 : 8;
+  const kind = mains.some(m => m.ideas.length > 0) ? 6 : 8;
   return { kind, why: L.line6 ? L.line6.why : '', turn: L.line6 ? L.line6.turn || '' : '', from: 'data' };
 }
 export function actionsFor(leaves, answers, leafActions, regulatory) {
@@ -469,36 +525,47 @@ export function eitherWay(possibleLeaves, leafActions, regulatory) {
 }
 
 // ── Cast 100 ───────────────────────────────────────────────────────────────────────────────────
-// Re-casts the open and device-cast lines 100 times from the walk's seed. Decided lines stay. The counts are the
-// device's spread, never the world's.
+// Re-casts the open and device-cast lines 100 times from the walk's seed. Decided lines stay. `counts` are where
+// the DRAWING points in each run (the device's spread, never the world's): they are not landings. `rule` is where
+// the tree's rule puts every one of the runs: re-cast lines are still cast, so the rule's leaf is the same in all
+// of them (null when the caution is off: then each run's leaf is only the casts' pick).
 const SALT = { coin: 0x1F123BB5, yarrow: 0x2C1B3C6D, 'urn-new': 0x297A2D39, 'urn-one': 0x5BD1E995 };
 export function cast100(walk, device, leafFor, runs = 100) {
   if (!DEVICES[device]) throw new Error('fork: no device ' + device);
   const L = walk.lines;
   if (L[2].how === 'decide' && L[3].how === 'decide') return { fixed: leafFor(answersOf(walk)) || null };
   const rng = rngFrom((walk.seed ^ SALT[device]) >>> 0);
-  const redo = []; L.forEach((l, i) => { if (lineUncertain(l)) redo.push(i); });
+  const moot = mootLines(walk);
+  const redo = []; L.forEach((l, i) => { if (lineUncertain(l) && !moot.includes(i)) redo.push(i); });
   const hidden = device === 'urn-one' ? rng() : null;
   const countsOut = { proceed: 0, regulate: 0, contain: 0, shutdown: 0 };
-  let gateYes = 0, turning = 0;
+  const ruleCounts = { proceed: 0, regulate: 0, contain: 0, shutdown: 0 };
+  let gateYes = 0, turning = 0, cautionRuns = 0;
   for (let r = 0; r < runs; r++) {
     const w = cloneWalk(walk);
     redo.forEach(i => {
-      let yes;
+      let yes, kind;
       if (device === 'coin') yes = rng() < 0.5;
-      else if (device === 'yarrow') { const k = kindFrom('yarrow', rng()); yes = isFirm(k); if (isTurning(k)) turning++; }
+      else if (device === 'yarrow') { kind = kindFrom('yarrow', rng()); yes = isFirm(kind); if (isTurning(kind)) turning++; }
       else if (device === 'urn-new') { const mix = rng(); yes = rng() < mix; }
       else yes = rng() < hidden;
+      // a re-cast line is a cast line: `how` is the device (coin stands for them all), so the rule reads it as cast
       w.lines[i] = { answer: yes ? 'yes' : 'no', how: 'coin', kind: yes ? 7 : 8 };
     });
     const a = answersOf(w);
     const leaf = leafIfSet(a, leafFor);
     if (leaf) countsOut[leaf] = (countsOut[leaf] || 0) + 1;
     if (a.gate === 'yes') gateYes++;
+    const R = ruleOf(w, leafFor);
+    if (R.caution) cautionRuns++;
+    if (R.headline) ruleCounts[R.headline]++;
   }
   const gateParts = redo.filter(i => i < 2).length;   // how many gate parts were re-cast: 2 gives the 1 in 4, 1 gives 1 in 2
-  const res = { counts: countsOut, gateYes, gateOpen: gateInfo(walk).open, gateParts, runs, device, recast: redo };
-  if (device === 'yarrow') res.turningAvg = Math.round(turning / runs * 10) / 10;
+  const ruleLeaf = LEAVES.find(l => ruleCounts[l] === runs) || null;
+  const res = { counts: countsOut, gateYes, gateOpen: gateInfo(walk).open, gateParts, runs, device, recast: redo,
+    caution: cautionRuns === runs, cautionRuns, rule: ruleLeaf, ruleCounts, gateSettled: !cautionOn(walk) };
+  // yarrow: how many of the lines drawn came up turning (whole numbers, never a decimal)
+  if (device === 'yarrow') { res.turning = turning; res.linesDrawn = redo.length * runs; }
   return res;
 }
 
@@ -576,37 +643,74 @@ export function faceName(id) { return FACE_NAMES[id] || String(id).replace(/-/g,
 export function countsLabel(n, device) { return n + ' of 100 ' + (DEVICES[device] ? DEVICES[device].noun : 'casts'); }
 // unit 'answers' (the tree: four questions, the gate in two parts) or 'lines' (six lines: lines 1 to 5)
 export function countsSummary(c, unit = 'answers') {
-  return 'decided ' + c.decided + ' · cast ' + c.cast + ' · open ' + c.open +
-    (unit === 'lines' ? ', of lines 1 to 5' : ', of 5 answers (the gate has two parts)');
+  const moot = c.moot || 0;
+  if (unit === 'lines') return 'decided ' + c.decided + ' · cast ' + c.cast + ' · open ' + (c.open + moot) + ', of lines 1 to 5';
+  return 'decided ' + c.decided + ' · cast ' + c.cast + ' · open ' + c.open + (moot ? ' · not needed ' + moot : '') +
+    ', of 5 answers (the gate has two parts)';
 }
 export function spreadLabel(device) { return (DEVICES[device] ? DEVICES[device].owner : "the device's") + " spread, not the world's"; }
+// Cast 100's heading for the counts, and what the rule makes of them (r: cast100's result)
+export function drawnHead(device) { return 'Where the drawing points, 100 ' + (DEVICES[device] ? DEVICES[device].noun : 'casts') + ' (not landings):'; }
+export function ruleLine100(r, ruleName) {
+  if (r.rule) return "By the tree's rule: " + ruleName + ', in ' + r.runs + ' of ' + r.runs + '. A cast is never shown, so no re-cast moves where you land; the counts above are only where the drawing points.';
+  return "You said the step can be undone or tried first, so these are the casts' picks under trial and error: ways to stop choosing, not landings anyone knows.";
+}
+export function turningLine(r) {
+  return r.turning == null ? '' : 'turning: ' + r.turning + ' of the ' + r.linesDrawn + " lines drawn could flip (the bowl's 1 in 4)";
+}
 // What one draw would give depends on the device: about 50 for a coin, the bowls and a new jar each time (each
 // comes up yes 1 time in 2); for one hidden jar it is that jar's own mix, which the tally does not show you.
-export function gateSpreadLine(gateYes, device, parts = 2) {
+// caution: whether the caution stays on in every run (it does whenever no gate part is the player's own no)
+export function gateSpreadLine(gateYes, device, parts = 2, caution = false) {
   const one = device === 'coin' ? 'coin' : 'draw';
-  if (parts < 2) return 'gate yes: ' + gateYes + ' of 100 (one ' + one + ': the other part is your own answer)';
-  if (device === 'urn-one') return 'gate yes: ' + gateYes + ' of 100 (two draws from the same hidden jar; one draw would give about its hidden mix, which this tally does not show)';
-  return 'gate yes: ' + gateYes + ' of 100 (two ' + one + 's; one ' + one + ' would give about 50)';
+  const tail = caution ? '. The caution stays on in all 100: a cast gate shows nothing either way' : '';
+  if (parts < 2) return 'gate yes on the drawing: ' + gateYes + ' of 100 (one ' + one + ': the other part is your own answer)' + tail;
+  if (device === 'urn-one') return 'gate yes on the drawing: ' + gateYes + ' of 100 (two draws from the same hidden jar; one draw would give about its hidden mix, which this tally does not show)' + tail;
+  return 'gate yes on the drawing: ' + gateYes + ' of 100 (two ' + one + 's; one ' + one + ' would give about 50)' + tail;
 }
 export function riskReply(pick, device) {
   const v = RISK_VERDICT[device] && RISK_VERDICT[device][pick];
   return 'You said ' + (RISK_PICKS[pick] || pick) + '. ' + (v ? v + ' ' : '') + (RISK_REPLY[device] || '');
 }
 export function answerWord(a) { return a === 'yes' ? 'yes' : a === 'no' ? 'no' : a === 'unknown' ? "don't know" : 'not yet asked'; }
-// burdenText(the rule's leaf, { gateCast, gateCastNo, differs: the answers' leaf name when it is another, open })
-export function burdenText(burdenLeafName, o = {}) {
-  if (typeof o === 'boolean') o = { gateCast: o };
-  let s = o.gateCastNo ? TEXT.gateNoCast + ' ' : o.gateCast ? 'The casts put the gate at yes. ' : '';
-  s += "The tree's rule: when a step can't be undone or tried first, 'not shown' counts as 'no'. A cast yes wasn't shown, and neither was an open answer, so they count as no here. Your own yes counts only if you think it has been shown, not just hoped.";
-  if (o.differs) s += ' The drawing lights where the answers as they stand lead (' + o.differs + '); by the rule you land on ' + burdenLeafName + '.';
-  else if (o.open) s += ' Some questions are still open; by the rule they read as no, so you land on ' + burdenLeafName + '.';
-  else s += ' By that rule you land on ' + burdenLeafName + '.';
+// Why you land where you land, in plain sentences (L: landing(); nm: a leaf's name). One rule, both views.
+export function ruleText(L, nm) {
+  const s = [];
+  if (L.caution) {
+    if (L.gateOwnYes) s.push("You said the step can't be undone or tried first, so the caution is on: whoever takes it has to show it's safe.");
+    else {
+      const why = [];
+      if (L.gateCast) why.push("a cast can't show it");
+      if (L.gateIdk) why.push("\"I don't know\" hasn't shown it");
+      if (L.gateUnasked) why.push("a part not answered yet hasn't shown it");
+      s.push('Nobody has shown the step can be undone or tried first' + (why.length ? ' (' + listWords(why) + ')' : '') +
+        ", so the caution is on: whoever takes the step has to show it's safe.");
+    }
+    const unshown = [];
+    if (L.castYes) unshown.push('a cast yes');
+    if (L.openLeafAnswer) unshown.push('an open answer');
+    s.push("While it's on, a claim that it's safe counts only if it has been shown." +
+      (unshown.length ? ' ' + cap1(listWords(unshown)) + " wasn't shown, so " + (unshown.length > 1 ? 'they count' : 'it counts') + ' as no here.' : '') +
+      (L.ownYes ? ' Your own yes counts only if you think it has been shown, not just hoped.' : ''));
+    s.push('Counting only what was shown, you land on ' + nm(L.headline) + '.');
+    if (L.drawnDiffers) s.push('The drawing lights where the answers as cast point (' + nm(L.leaf) + ", drawn dashed): that isn't where you land.");
+    return s;
+  }
+  s.push(TEXT.gateNo);
+  if (L.pick) {
+    s.push('A cast found nothing out, so what it drew is still not known: ' + listWords(L.still.map(nm)) + (L.still.length > 1 ? ' all stay possible.' : ' stays possible.'));
+    s.push('The casts picked ' + nm(L.pick) + ': under trial and error a pick is one way to stop choosing and start trying, watching and fixing. It is not a finding.');
+  } else if (!L.headline) {
+    s.push('Some answers are still open (a cast one counts as open: it found nothing out), so no single leaf yet. Trying is how they get settled.');
+  }
   return s;
 }
-export function relatingText(leafName_, same) {
-  return same ? 'If the answers that could flip did flip, you would still land on ' + leafName_
-    : 'If the answers that could flip did flip, you would land on ' + leafName_ + ' instead';
+function cap1(x) { return x ? x.charAt(0).toUpperCase() + x.slice(1) : x; }
+export function throwSameText(leafName_) {
+  return 'Throwing again changes only the drawing. A cast is never shown, so you stay at ' + leafName_ + ' until you decide a question yourself.';
 }
+// the landing if the answers the player holds loosely flipped (L.flipLeaf; casts never move it)
+export function flipText(leafName_) { return 'If the answers you hold loosely did flip, you would land on ' + leafName_ + ' instead.'; }
 // the race line on a landing: what the race answer changes about which actions could work (never the leaf)
 export function raceNote(race, leaf, cast) {
   const tag = cast ? ' (' + TEXT.castTag + ')' : '';
@@ -617,23 +721,26 @@ export function raceNote(race, leaf, cast) {
   if (race === 'no') return 'The race: no' + tag + '. Then moves that need others to join, like a treaty or a shared pause, are more within reach, if that no is right.';
   return 'The race: ' + answerWord(race) + tag + '. Both readings stay: moves that need others to join may or may not be within reach.';
 }
-// Line 6: the page's own reading, never cast. firm = rules aim at the leaf's main danger; yielding = no lever known
-// to work against it; turning = this reading could change (the leaf's own `turn` says how, when it has one).
+// Line 6: the page's own reading, never cast, of "is a lever known to work where this lands?". firm = yes, a lever
+// is shown to work against the main danger; yielding = no lever shown to work; turning = this reading could change
+// (the leaf's own `turn` says how). Today every leaf reads yielding and turning.
 export function line6Sentence(l6, view = 'lines') {
   if (!l6) return '';
   const firm = isFirm(l6.kind), turning = isTurning(l6.kind);
-  const what = firm ? 'rules aim at the main danger, none shown to work' : 'no lever known to work against the main danger';
+  const what = firm ? 'a lever is known to work against the main danger' : 'no lever shown to work against the main danger';
   let s = view === 'tree'
     ? 'Our reading: ' + what
     : 'Line 6, our reading (not cast): ' + (firm ? 'firm' : 'yielding') + (turning ? ', turning' : '') + ': ' + what;
-  if (turning) s += '. It could turn: ' + (l6.turn || (firm ? 'if the targeting proved weak' : 'if a lever were shown to work'));
+  if (turning) s += '. It could turn: ' + (l6.turn || (firm ? 'if that lever proved not to work' : 'if a lever were shown to work'));
   return s + '.';
 }
 export function afterLine(q, walk) {
   if (q === 'gate') {
-    const g = answersOf(walk).gate;
-    if (g === 'no' && gateInfo(walk).cast) return TEXT.gateNoCast;
-    return g === 'yes' ? TEXT.gateYes : g === 'no' ? TEXT.gateNo : g === 'unknown' ? TEXT.gateUnknown : '';
+    const g = answersOf(walk).gate, gi = gateInfo(walk);
+    if (mootLines(walk).length) return TEXT.gateMoot + ' ' + TEXT.gateNo;
+    if (g === 'no') return gi.cast ? TEXT.gateNoCast : TEXT.gateNo;
+    if (g === 'yes') return gi.cast ? TEXT.gateYesCast : TEXT.gateYes;
+    return g === 'unknown' ? TEXT.gateUnknown : '';
   }
   if (q === 'race') return TEXT.race;
   return '';

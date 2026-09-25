@@ -3,7 +3,7 @@
 // stand-in until it lands). Everything the contract does not cover (the "cast, not known" tags, the tally, the
 // Cast 100 strip, "1 of 2") is drawn here, in the game's own DOM, never inside the renderer.
 // No percent sign in this file: odds are words or "N in M"; CSS lives in fork.css.
-import { renderTree, NODES, leafFor, SOURCE } from './tree-adapter.js';
+import { renderTree, NODES, leafFor, SOURCE, LABELS } from './tree-adapter.js';
 import * as E from './fork-engine.js';
 
 const EXPLAINER = '../../explainers/risk-and-uncertainty/';
@@ -12,21 +12,23 @@ const EXAMPLE_PEOPLE = './people.example.json';
 // 'auto': the film's people file when it is published (the contract default, decision 3); 'example': hold the
 // real people back and walk only the two made-up placeholders.
 const PEOPLE = 'auto';
-const HOLD = 250, SAFETY = 2200, PERSON_PAUSE = 3200;
+const HOLD = 600, SAFETY = 2200, PERSON_PAUSE = 3200;
 const Q_ORDER = ['gate', 'alignment', 'containment', 'race'];
 const Q_LINE = { alignment: 2, containment: 3, race: 4 };
 const LINE_NAME = ['out for good (the gate, part 1)', 'no trial first (the gate, part 2)', 'alignment', 'containment', 'the race'];
 const DEVICE_SAYS = { coin: 'the coin', yarrow: 'the yarrow bowl', coins: 'the coin bowl' };
+const IN_AIR = { coin: 'the coin is in the air…', yarrow: 'drawing from the yarrow bowl…', coins: 'drawing from the coin bowl…' };
+const BOX = { gate: 'gate', alignment: 'alignment', 'containment-if-aligned': 'containment (if aligned)', 'containment-if-not': 'containment (if not aligned)', race: 'race' };
 
 const $ = id => document.getElementById(id);
-const treeEl = $('tree'), captionEl = $('caption'), stripEl = $('strip'), panelEl = $('panel'), skipEl = $('skip');
+const treeEl = $('tree'), captionEl = $('caption'), stripEl = $('strip'), panelEl = $('panel'), skipEl = $('skip'), ruleEl = $('rulebar');
 const sheet = $('sheet'), sheetIn = $('sheet-in');
 const params = new URLSearchParams(location.search);
 const oneOf = (v, ok, d) => (ok.includes(v) ? v : d);
 
 const ui = {
   walk: null, q: 'gate', gateRow: 0, tapped: null,
-  casting: null, token: 0, playing: null,
+  casting: null, token: 0, playing: null, inAir: null,
   people: [], peopleFrom: 'none', person: null,
   theme: oneOf(params.get('theme'), ['dark', 'light', 'auto'], 'dark'),
   method: oneOf(params.get('method'), ['coin', 'yarrow'], 'coin'),
@@ -46,7 +48,7 @@ function h(tag, attrs, ...kids) {
   return e;
 }
 const cap = s => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
-const nm = leaf => E.leafName(leaf, NODES);
+const nm = leaf => E.leafName(leaf, NODES, LABELS);
 const say = t => { captionEl.textContent = t; };
 function why(anchor, text) { return h('a', { href: EXPLAINER + '#' + anchor, target: '_blank', rel: 'noopener' }, text || 'why?'); }
 function chips(labels, hi) { return h('div', { class: 'chipset' }, labels.map(x => h('span', { class: 'chip' + (hi && x === hi ? ' this' : '') }, x))); }
@@ -61,15 +63,27 @@ function shownWalk() { return ui.person ? ui.person.walk : ui.walk; }
 // people): they appear only while one of them is being walked. The film's own people file, once published, is.
 function treeState() {
   const people = ui.peopleFrom === 'example' ? (ui.person ? ui.people.filter(p => p.slug === ui.person.slug) : []) : ui.people;
-  return E.toTreeState(shownWalk(), { focus: ui.person ? ui.person.slug : null, people, casting: ui.casting, theme: ui.theme });
+  return E.toTreeState(shownWalk(), { focus: ui.person ? ui.person.slug : null, people, casting: ui.casting, theme: ui.theme, leafFor });
 }
 function draw(opts) {
   skipEl.hidden = !ui.playing;
   renderTree(treeEl, treeState(), opts || { animate: true });
   renderPanel();
   renderStrip();
+  renderRule();
   renderViews();
   writeHash();
+}
+// Under the tree, in the game's own DOM: when the drawing lights a leaf the rule does not put you on, or when the
+// lit leaf is only the casts' pick, say so where the drawing is (not only in the sheet).
+function renderRule() {
+  if (!ruleEl) return;
+  const L = ui.person || ui.inAir ? null : E.landing(ui.walk, leafFor);
+  let t = '';
+  if (L && L.drawnDiffers) t = 'The drawing points at ' + nm(L.leaf) + " (dashed: cast). By the tree's rule you land on " + nm(L.headline) + '.';
+  else if (L && L.pick) t = 'The casts picked ' + nm(L.pick) + ' (dashed): a pick, not a finding.';
+  ruleEl.hidden = !t;
+  ruleEl.textContent = t;
 }
 function renderPanel() {
   const a = document.activeElement;
@@ -101,7 +115,12 @@ function writeHash() {
 }
 
 // ── the panel ──────────────────────────────────────────────────────────────────────────────────
-function answeredQ(q) { const L = ui.walk.lines; return q === 'gate' ? L[0].answer != null && L[1].answer != null : L[Q_LINE[q]].answer != null; }
+// the gate is answered when both parts are, or when the player's own no on one part settles it
+function answeredQ(q) {
+  const L = ui.walk.lines;
+  if (q !== 'gate') return L[Q_LINE[q]].answer != null;
+  return (L[0].answer != null && L[1].answer != null) || E.mootLines(ui.walk).length > 0;
+}
 function kicker(q, extra) {
   const n = Q_ORDER.indexOf(q);
   const dots = h('span', { class: 'dots', 'aria-hidden': 'true' }, Q_ORDER.map((x, i) => h('i', { class: i === n ? 'on' : answeredQ(x) ? 'done' : '' })));
@@ -112,12 +131,12 @@ function moreBtn() {
 }
 function questionPanel(q) {
   const i = Q_LINE[q], Q = E.QUESTIONS[i], l = ui.walk.lines[i], busy = !!ui.playing, own = l.how === 'decide';
-  const box = E.leafName(q === 'containment' ? (ui.tapped || E.nodeFor(ui.walk, 3)) : q, NODES);
+  const box = BOX[q === 'containment' ? (ui.tapped || E.nodeFor(ui.walk, 3)) : q];
   const ans = a => h('div', { class: 'ans' },
     h('button', { 'data-k': 'ans-' + a, 'aria-pressed': own && l.answer === a ? 'true' : 'false', disabled: busy, onclick: () => doDecide(i, a) }, a === 'yes' ? 'Yes' : 'No'),
     h('p', { class: 'believe' }, "you'd have to believe " + Q.believe[a]));
   return h('div', null,
-    kicker(q, 'the ' + box.toLowerCase().replace(/^the /, '') + ' box'),
+    kicker(q, 'the ' + box + ' box'),
     h('h2', null, Q.ask),
     h('div', { class: 'answers' + (ui.more ? '' : ' clamp') }, ans('yes'), ans('no')),
     castRow([i], l.how === 'unknown'),
@@ -126,6 +145,7 @@ function questionPanel(q) {
 }
 function gatePanel() {
   const L = ui.walk.lines, busy = !!ui.playing;
+  const moot = E.mootLines(ui.walk);
   const rows = [0, 1].map(i => {
     const Q = E.QUESTIONS[i], l = L[i], own = l.how === 'decide';
     const chip = (a, label) => h('button', {
@@ -138,13 +158,15 @@ function gatePanel() {
     return h('div', { class: 'gate-row' + (ui.gateRow === i ? ' cur' : '') },
       h('span', { class: 'gq' }, (i + 1) + '. ' + Q.ask),
       h('span', { class: 'chips' }, chip('yes', 'yes'), chip('no', 'no'), chip('unknown', "don't know")),
-      l.answer != null ? h('span', { class: 'held' }, rowHeld(l), own ? [' · ', h('button', { class: 'linkish', 'data-k': 'loose' + i, disabled: busy, onclick: () => toggleLoose(i) }, E.isTurning(l.kind) ? 'hold it steady' : 'hold it loosely')] : null) : null,
+      l.answer != null ? h('span', { class: 'held' }, rowHeld(l), own ? [' · ', h('button', { class: 'linkish', 'data-k': 'loose' + i, disabled: busy, onclick: () => toggleLoose(i) }, E.isTurning(l.kind) ? 'hold it steady' : 'hold it loosely')] : null)
+        : moot.includes(i) ? h('span', { class: 'held' }, 'not needed: your no on part ' + (2 - i) + ' settles the gate') : null,
       ui.more ? h('span', { class: 'held' }, "yes: you'd have to believe " + Q.believe.yes + '. No: ' + Q.believe.no + '.') : null);
   });
-  // a cast never quietly replaces a part you decided: the buttons cast only the parts that are not yours
-  const notMine = [0, 1].filter(i => L[i].how !== 'decide');
-  const targets = notMine.length ? notMine : [0, 1];
-  const which = notMine.length === 2 ? 'both' : notMine.length === 1 ? 'part ' + (notMine[0] + 1) : 'both (replaces your answers)';
+  // a cast never quietly replaces a part you decided: the buttons cast only the parts that are not yours (and not
+  // a part your own no has made moot)
+  const notMine = [0, 1].filter(i => L[i].how !== 'decide' && !moot.includes(i));
+  const targets = notMine.length ? notMine : moot.length ? [0, 1].filter(i => !moot.includes(i)) : [0, 1];
+  const which = notMine.length === 2 ? 'both' : notMine.length === 1 ? 'part ' + (notMine[0] + 1) : moot.length ? 'part ' + (2 - moot[0]) + ' (replaces your no)' : 'both (replaces your answers)';
   return h('div', null,
     kicker('gate', 'the gate box, two parts'),
     h('h2', null, E.TREE_QUESTIONS[0].ask),
@@ -205,7 +227,8 @@ function foot() {
     h('p', { class: 'tally' }, E.countsSummary(E.counts(ui.walk), 'answers'), ' · ', why('short', 'risk or uncertainty?')),
     h('div', { class: 'row' },
       h('button', { class: 'primary', 'data-k': 'gap', disabled: busy, onclick: openClose }, 'Close the gap'),
-      h('button', { 'data-k': 'c100', disabled: busy, 'aria-disabled': fixed ? 'true' : null, title: fixed ? E.TEXT.fixed : null, onclick: openCast100 }, 'Cast 100'),
+      // greyed with its reason on the button itself: a tablet can't show a hover tooltip
+      h('button', { 'data-k': 'c100', disabled: busy, 'aria-disabled': fixed ? 'true' : null, onclick: openCast100 }, 'Cast 100', fixed ? h('small', { class: 'why-off' }, 'nothing to cast') : null),
       h('button', { 'data-k': 'people', disabled: busy, onclick: openPeople }, 'Walk it as…')));
 }
 function setQ(q) {
@@ -226,7 +249,7 @@ function moveQ(d) {
 function doDecide(i, a) {
   if (ui.playing || ui.person) return;
   const r = E.decide(ui.walk, i, a, { node: i === 3 ? ui.tapped : null });
-  if (ui.q === 'gate' && i === 0) ui.gateRow = 1;
+  if (ui.q === 'gate' && i === 0 && !E.mootLines(r.walk).length) ui.gateRow = 1;
   play([{ walk: r.walk, casting: r.casting, line: i }]);
 }
 function doUnknown(i) {
@@ -248,16 +271,25 @@ function toggleLoose(i) {
   say(cap(LINE_NAME[i]) + ': ' + E.heldWord(ui.walk.lines[i]) + '.');
   draw();
 }
+function whereOf(i) { return i < 2 ? 'The gate, ' + (i + 1) + ' of 2 (' + E.QUESTIONS[i].short.replace('?', '').toLowerCase() + ')' : cap(LINE_NAME[i]); }
+function airCaption(s, k, n) {
+  const l = s.walk.lines[s.line];
+  return whereOf(s.line) + ': ' + IN_AIR[l.how] + (n > 1 ? ' (' + k + ' of ' + n + ')' : '');
+}
 function captionFor(s, k, n) {
   const i = s.line, l = s.walk.lines[i];
-  const where = i < 2 ? 'The gate, ' + (i + 1) + ' of 2 (' + E.QUESTIONS[i].short.replace('?', '').toLowerCase() + ')' : cap(LINE_NAME[i]);
+  const where = whereOf(i);
   const of = n > 1 && i >= 2 ? ' (' + k + ' of ' + n + ')' : '';
   if (l.how === 'decide') return where + ': ' + l.answer + ', ' + E.heldWord(l) + '.' + of;
   if (l.how === 'unknown') return where + ": I don't know. It stays open." + of;
   return where + ': ' + DEVICE_SAYS[l.how] + ' says ' + l.answer + (E.isTurning(l.kind) ? ', turning' : '') + '. ' + E.castAfter(l.how) + of;
 }
-// Play steps one at a time at their nodes: each waits for the renderer's castend (or a safety timeout), then a
-// short hold. A token makes late events from an older sequence harmless. Skip (or Esc) jumps to the end.
+// Play steps one at a time at their nodes. A device cast plays "in the air" first: the tree's answers, the panel
+// and the caption keep the walk as it was until the renderer's castend (or a safety timeout), so nothing gives the
+// result away while the coin spins; then the result lands everywhere at once, and a short hold. A decision or
+// "I don't know" shows at once (the player chose it). The casting object stays the same after its castend, so a
+// re-render never restarts it. A token makes late events from an older sequence harmless. Skip (or Esc) jumps to
+// the end.
 function play(steps, done) {
   if (!steps.length) { draw(); if (done) done(); return; }
   const token = ++ui.token;
@@ -265,30 +297,44 @@ function play(steps, done) {
   let k = 0;
   const next = () => {
     if (token !== ui.token) return;
-    if (k >= steps.length) { ui.playing = null; ui.casting = null; draw(); if (done) done(); return; }
+    if (k >= steps.length) { ui.playing = null; ui.inAir = null; draw(); if (done) done(); return; }
     const s = steps[k++];
-    ui.walk = s.walk; ui.casting = s.casting;
-    draw();
-    let finished = false;
-    const onEnd = ev => {
-      if (finished) return;
-      if (token !== ui.token) { finished = true; clearTimeout(safety); treeEl.removeEventListener('belieftree:castend', onEnd); return; }
-      if (ev && ev.detail && ev.detail.node !== s.casting.node) return;
-      finished = true; clearTimeout(safety); treeEl.removeEventListener('belieftree:castend', onEnd);
-      ui.casting = null;
+    const device = E.isDevice(s.walk.lines[s.line].how);
+    ui.casting = s.casting;
+    if (device) { ui.inAir = s; say(airCaption(s, k, steps.length)); } else ui.walk = s.walk;
+    drawThenEnd(s.casting, token, () => {
+      if (device) { ui.walk = s.walk; ui.inAir = null; draw(); }
       say(captionFor(s, k, steps.length));
       if (k < steps.length) setTimeout(next, HOLD); else next();
-    };
-    // attached after draw(): a cast that the new render replaced ends synchronously inside draw(), and is not ours
-    treeEl.addEventListener('belieftree:castend', onEnd);
-    const safety = setTimeout(onEnd, SAFETY);
+    });
   };
   next();
+}
+// Draw, then call back once the renderer's castend for `casting` arrives, or after a safety timeout (a hidden tab
+// paints no frames, so an animation driven by requestAnimationFrame may never end there). A renderer may also end a
+// cast inside the render itself (the film's module does under reduced motion): that end is caught too, so reduced
+// motion never waits for the timeout. A token makes a late end from an older sequence harmless.
+function drawThenEnd(casting, token, cb) {
+  let sync = null;
+  const early = ev => { if (ev.detail && ev.detail.node === casting.node) sync = ev; };
+  treeEl.addEventListener('belieftree:castend', early);
+  draw();
+  treeEl.removeEventListener('belieftree:castend', early);
+  let finished = false;
+  const onEnd = ev => {
+    if (finished) return;
+    if (ev && ev.detail && ev.detail.node !== casting.node) return;
+    finished = true; clearTimeout(safety); treeEl.removeEventListener('belieftree:castend', onEnd);
+    if (token === ui.token) cb();
+  };
+  treeEl.addEventListener('belieftree:castend', onEnd);
+  const safety = setTimeout(onEnd, SAFETY);
+  if (sync) onEnd(sync);
 }
 function skip() {
   const p = ui.playing;
   if (!p) return;
-  ui.token++; ui.playing = null; ui.casting = null;
+  ui.token++; ui.playing = null; ui.casting = null; ui.inAir = null;
   ui.walk = p.final;
   draw({ animate: false });
   say('Skipped to the end. ' + captionFor(p.steps[p.steps.length - 1], p.steps.length, p.steps.length));
@@ -313,7 +359,7 @@ function closeRow(label) { return h('div', { class: 'sheet-actions' }, h('button
 
 function openClose() {
   if (ui.playing || ui.person) return;
-  const open = E.openLines(ui.walk);
+  const open = E.neededOpenLines(ui.walk);
   openSheet(el => {
     el.append(h('h2', { id: 'sheet-title' }, E.TEXT.closeTitle));
     if (!open.length) {
@@ -339,7 +385,7 @@ function openClose() {
 }
 function closeBy(way) {
   closeSheet();
-  const r = E.closeTheGap(ui.walk, way);
+  const r = E.closeTheGap(ui.walk, way, { needed: true });
   play(r.steps, () => openLanding());
 }
 function stepper(prompts, k) {
@@ -365,49 +411,53 @@ function stepMove(prompts, k, m) {
   play([{ walk: r.walk, casting: r.casting, line: i }], () => stepper(prompts, k + 1));
 }
 
-// "Is there an action?" One leaf is named: under the burden reading, the rule's leaf (a cast yes and an open
-// answer count as no), whatever the casts drew; otherwise where the answers lead. Its notes and its lever reading
-// follow that one leaf, so the sheet never names two landings.
+// "Is there an action?" At most one leaf is named, and only by the tree's rule (fork-engine.js ruleOf): with the
+// caution on, the leaf your own answers give when every cast or open answer reads as not shown; with it off, the
+// leaf your own alignment and containment give. When the caution is off and a cast picked alignment or
+// containment, no leaf is named: the casts' pick is shown as a pick, with what is still possible. The notes, the
+// lever reading, the flip line and Cast 100 all follow the same rule, so the sheet never names two landings.
 function openLanding() {
   const L = E.landing(ui.walk, leafFor), la = ui.leafActions, top = L.headline;
+  const kick = L.caution ? E.TEXT.landingRule : top ? E.TEXT.landingOwn : L.pick ? E.TEXT.landingPick : E.TEXT.landingOpen;
   openSheet(el => {
-    el.append(h('p', { class: 'kicker' }, L.anyCast ? E.TEXT.landingCast : E.TEXT.landingOwn),
-      h('h2', { id: 'sheet-title', class: 'big' }, E.TEXT.landingAsk));
+    el.append(h('p', { class: 'kicker' }, kick), h('h2', { id: 'sheet-title', class: 'big' }, E.TEXT.landingAsk));
     if (top) {
-      el.append(h('div', { class: 'leafbox' }, L.byRule ? h('span', { class: 'small' }, "By the tree's rule you land on ") : null,
+      el.append(h('div', { class: 'leafbox' }, h('span', { class: 'small' }, L.caution ? "By the tree's rule you land on " : 'Your answers put you at '),
         h('b', null, nm(top)), la && la.leaves[top] ? ': ' + la.leaves[top].gloss : ''));
-    } else {
-      el.append(h('p', null, 'Some questions are still open, so there is no single leaf yet.'),
-        h('details', { class: 'more' }, h('summary', null, 'The leaves still possible'), chips(L.possible.map(nm))));
-    }
-    if (L.burden === 'flipped' && L.burdenLeaf) {
-      el.append(h('p', null, E.burdenText(nm(L.burdenLeaf), { gateCast: L.gateCast, gateCastNo: L.gateCastNo, differs: L.ruleDiffers && L.leaf ? nm(L.leaf) : null, open: !L.leaf }), ' ', why('burden')));
-      if (L.throwSame) el.append(h('p', { class: 'small' }, E.TEXT.throwSame));
-    } else if (L.burden === 'unclear') el.append(h('p', { class: 'small' }, (L.gateCastNo ? E.TEXT.gateNoCast + ' ' : '') + E.TEXT.gateUnknown));
-    else el.append(h('p', { class: 'small' }, E.TEXT.gateNo));
-    if (L.couldHave.length > 1 && top) el.append(h('p', { class: 'small' }, E.TEXT.couldHave), chips(L.couldHave.map(nm), nm(top)));
-    if (L.relatingLeaf && top) el.append(h('p', null, E.relatingText(nm(L.relatingLeaf), L.relatingLeaf === top) + '.'));
+    } else if (L.pick) {
+      el.append(h('div', { class: 'leafbox pick' }, h('span', { class: 'small' }, 'No single leaf is known. The casts picked '),
+        h('b', null, nm(L.pick)), la && la.leaves[L.pick] ? ': ' + la.leaves[L.pick].gloss : ''));
+    } else el.append(h('p', null, 'Some answers are still open, so there is no single leaf yet.'));
+    E.ruleText(L, nm).forEach((t, k) => el.append(h('p', { class: k ? 'small' : null }, t, k === 0 ? [' ', why('burden')] : null)));
+    if (L.throwSame) el.append(h('p', { class: 'small' }, E.throwSameText(nm(top))));
+    if (L.flipLeaf) el.append(h('p', null, E.flipText(nm(L.flipLeaf))));
+    if (!top) el.append(h('p', { class: 'small' }, E.TEXT.stillPossible), chips(L.still.map(nm), L.pick ? nm(L.pick) : null));
     el.append(h('p', { class: 'small' }, E.raceNote(L.answers.race, top, E.isDevice(ui.walk.lines[4].how))));
-    if (top && la) actionsBlock(el, top);
-    if (!top && la) eitherBlock(el, L.couldHave);
+    if ((top || L.pick) && la) actionsBlock(el, top || L.pick, !top);
+    if (!top && la) eitherBlock(el, L.still);
     if (!la) el.append(h('p', { class: 'warn' }, "The notes on each leaf didn't load."));
+    if (L.pick) el.append(gladBlock(L));   // only when a new cast could change the pick
     const btns = h('div', { class: 'sheet-actions' });
-    if (L.anyCast) btns.append(h('button', { class: 'primary', onclick: () => { closeSheet(); play(E.throwAgain(ui.walk).steps, () => openLanding()); } }, 'Throw again'));
-    if (top) btns.append(h('button', { onclick: openEither }, E.TEXT.eitherTitle));
-    btns.append(h('button', { onclick: () => { closeSheet(); setQ(L.pickedBy === 2 ? 'alignment' : L.pickedBy === 3 ? 'containment' : firstOpenQ()); } }, 'Change an answer'),
-      h('button', { onclick: openCast100, 'aria-disabled': leafFixed() ? 'true' : null }, 'Cast 100'),
+    const decideQ = L.pickedBy === 2 ? 'alignment' : L.pickedBy === 3 ? 'containment' : firstOpenQ();
+    const change = h('button', { class: L.throwSame ? 'primary' : null, onclick: () => { closeSheet(); setQ(decideQ); say("Decide it yourself: yes, no, or I don't know."); } },
+      L.throwSame ? 'Decide a question yourself' : 'Change an answer');
+    if (L.throwSame) btns.append(change);
+    if (L.anyCast) btns.append(h('button', { class: L.throwMatters ? 'primary' : null, onclick: () => { closeSheet(); play(E.throwAgain(ui.walk).steps, () => openLanding()); } },
+      L.throwMatters ? 'Throw again' : 'Throw again (the drawing only)'));
+    btns.append(h('button', { onclick: openEither }, E.TEXT.eitherTitle));
+    if (!L.throwSame) btns.append(change);
+    btns.append(h('button', { onclick: openCast100, 'aria-disabled': leafFixed() ? 'true' : null }, 'Cast 100'),
       h('button', { class: 'ghost', onclick: closeSheet }, 'Back to the tree'));
-    if (L.leafCast && !L.throwSame) el.append(gladBlock(L));   // only when a new cast could change where you land
     el.append(btns);
   });
 }
-function firstOpenQ() { const o = E.openLines(ui.walk)[0]; return o == null ? 'gate' : o < 2 ? 'gate' : Q_ORDER[o - 1]; }
-// What the one named leaf faces, and whether a working lever is known there (the page's own reading, never cast).
-// Each gloss shows only when its word is on screen.
-function actionsBlock(el, leaf) {
+function firstOpenQ() { const o = E.neededOpenLines(ui.walk)[0]; return o == null ? 'gate' : o < 2 ? 'gate' : Q_ORDER[o - 1]; }
+// What one leaf faces, and whether a lever is known to work there (the page's own reading, never cast). `picked`:
+// the leaf is only the casts' pick, not a landing. Each gloss shows only when its word is on screen.
+function actionsBlock(el, leaf, picked) {
   const A = E.actionsFor([leaf], null, ui.leafActions, null)[leaf];
   const nd = A.noData, plain = nd.class === 'none' || nd.class === 'gap';
-  el.append(h('h3', null, 'What ' + nm(leaf) + ' faces'),
+  el.append(h('h3', null, picked ? 'If you try ' + nm(leaf) + ', it faces' : 'What ' + nm(leaf) + ' faces'),
     chips(A.faces.map(E.faceName)),
     h('p', null, 'Where it stands: ', plain ? h('span', { class: 'nm' }, nd.text) : nd.text));
   if (nd.class === 'none') el.append(h('p', { class: 'small' }, h('span', { class: 'nm' }, E.TEXT.noMechanism), ' ' + E.TEXT.noMechanismMeans));
@@ -456,13 +506,11 @@ function openEither() {
       el.append(h('p', null, ew.sentence));
       if (ew.sharedFaces.length) el.append(chips(ew.sharedFaces.map(E.faceName)));
       el.append(h('p', { class: 'big' }, E.TEXT.landingAsk),
-        h('p', null, ew.sharedFaces.length
-          ? 'If a move holds either way, it will be aimed at these, and maybe at more. ' + E.TEXT.noList
-          : 'Not one this list can show. ' + E.TEXT.noList),
-        h('p', { class: 'small' }, E.TEXT.eitherDangers));
+        h('p', null, (ew.sharedFaces.length ? E.TEXT.eitherShared + ' ' : '') + E.TEXT.eitherDangers),
+        h('p', { class: 'small' }, E.TEXT.noList));
     }
     el.append(h('div', { class: 'sheet-actions' },
-      L.headline ? h('button', { onclick: () => openLanding() }, 'Where you land') : null,
+      h('button', { onclick: () => openLanding() }, L.headline ? 'Where you land' : E.TEXT.landingAsk),
       h('button', { class: 'ghost', onclick: closeSheet, autofocus: true }, 'Back to the tree')));
   });
 }
@@ -478,15 +526,16 @@ function openCast100() {
   openSheet(el => {
     const res = h('div', { 'aria-live': 'polite' });
     el.append(h('h2', { id: 'sheet-title' }, 'Cast 100'),
-      h('p', { class: 'small' }, 'Re-cast the open and cast questions 100 times with one device. Your decided answers stay.'),
+      h('p', { class: 'small' }, "Re-cast the open and cast questions 100 times with one device. Your decided answers stay. The counts show where the drawing points each time: the device's spread, not landings and not the world's odds."),
       h('div', { class: 'opts' }, Object.keys(E.DEVICES).map((d, k) => optBtn(cap(E.DEVICES[d].name), DEVICE_SUB[d], () => runCast100(d, res), k === 0))),
       res, closeRow());
   });
 }
 function spreadLines(r, d) {
   const out = [E.spreadLabel(d)];
-  if (r.gateParts > 0) out.push(E.gateSpreadLine(r.gateYes, d, r.gateParts));
-  if (r.turningAvg != null) out.push('turning: about ' + r.turningAvg + ' lines per cast could flip');
+  if (r.gateParts > 0 && !r.gateSettled) out.push(E.gateSpreadLine(r.gateYes, d, r.gateParts, r.caution));
+  const t = E.turningLine(r);
+  if (t) out.push(t);
   return out;
 }
 function runCast100(d, res) {
@@ -496,7 +545,9 @@ function runCast100(d, res) {
   renderStrip();
   const out = h('p', { class: 'reply', hidden: true });
   res.textContent = '';
-  res.append(h('div', { class: 'counts' }, E.LEAVES.map(l => h('span', null, nm(l) + ': ' + E.countsLabel(r.counts[l] || 0, d)))),
+  res.append(h('p', { class: 'small' }, E.drawnHead(d)),
+    h('div', { class: 'counts' }, E.LEAVES.map(l => h('span', null, nm(l) + ': ' + E.countsLabel(r.counts[l] || 0, d)))),
+    h('p', null, E.ruleLine100(r, r.rule ? nm(r.rule) : '')),
     ...spreadLines(r, d).map(t => h('p', { class: 'small' }, t)),
     h('p', null, h('b', null, E.TEXT.riskAsk)),
     pickRow(Object.keys(E.RISK_PICKS).map(p => [cap(E.RISK_PICKS[p]), () => {
@@ -510,7 +561,9 @@ function renderStrip() {
   if (!s || ui.person || s.hash !== E.encodeHash(ui.walk)) { stripEl.hidden = true; return; }
   stripEl.hidden = false;
   stripEl.textContent = '';
-  stripEl.append(h('div', { class: 'cells' }, E.LEAVES.map(l => h('span', null, nm(l) + ': ' + E.countsLabel(s.r.counts[l] || 0, s.d)))),
+  stripEl.append(h('div', { class: 'lab' }, E.drawnHead(s.d)),
+    h('div', { class: 'cells' }, E.LEAVES.map(l => h('span', null, nm(l) + ': ' + E.countsLabel(s.r.counts[l] || 0, s.d)))),
+    h('div', { class: 'lab rule' }, s.r.rule ? "By the tree's rule: " + nm(s.r.rule) + ', in ' + s.r.runs + ' of ' + s.r.runs + '.' : "Picks, not landings: you said the step can be undone or tried first."),
     h('div', { class: 'lab' }, spreadLines(s.r, s.d).join(' · ')));
 }
 
@@ -551,19 +604,10 @@ function personGo(i) {
   P.walk = E.walkFromPerson(P.p, ui.walk, P.i);
   const casting = { node: st.node, method: yn ? 'decide' : 'unknown', result: yn ? st.answer : 'unknown' };
   ui.casting = casting;
-  draw();
   say((P.p.name || P.slug) + ', ' + E.TREE_QUESTIONS[P.i].ask.toLowerCase() + ' ' + E.answerWord(st.answer) + '.');
-  let finished = false;
-  const onEnd = ev => {
-    if (finished) return;
-    if (token !== ui.token) { finished = true; clearTimeout(safety); treeEl.removeEventListener('belieftree:castend', onEnd); return; }
-    if (ev && ev.detail && ev.detail.node !== casting.node) return;
-    finished = true; clearTimeout(safety); treeEl.removeEventListener('belieftree:castend', onEnd);
-    if (ui.casting === casting) ui.casting = null;
+  drawThenEnd(casting, token, () => {
     if (P.auto && ui.person === P) P.timer = setTimeout(() => { if (token === ui.token && ui.person === P) personGo(P.i + 1); }, PERSON_PAUSE);
-  };
-  treeEl.addEventListener('belieftree:castend', onEnd);
-  const safety = setTimeout(onEnd, SAFETY);
+  });
 }
 function personNav(d) { const P = ui.person; if (!P) return; P.auto = false; personGo(Math.min(4, Math.max(0, P.i + d))); }
 function stopPerson(adopt) {
@@ -627,7 +671,8 @@ function personPanel() {
 // ── events ─────────────────────────────────────────────────────────────────────────────────────
 function leafTapped(leaf) {
   const L = E.landing(ui.walk, leafFor);
-  if (L.headline === leaf) { openLanding(); return; }
+  // the leaf you land on, the leaf the drawing points at, or the casts' pick: the landing sheet explains all three
+  if (L.headline === leaf || L.leaf === leaf) { openLanding(); return; }
   const ways = [['yes', 'yes'], ['yes', 'no'], ['no', 'yes'], ['no', 'no']]
     .filter(([a, c]) => leafFor({ alignment: a, containment: c }) === leaf)
     .map(([a, c]) => 'alignment ' + a + ' and containment ' + c);
@@ -691,8 +736,10 @@ async function init() {
     const d = E.decodeHash(location.hash);
     if (!d || E.encodeHash(d.walk) === E.encodeHash(ui.walk)) return;
     stopTimers();
-    ui.token++; ui.playing = null; ui.casting = null; ui.person = null; ui.walk = d.walk;
+    ui.token++; ui.playing = null; ui.casting = null; ui.inAir = null; ui.person = null; ui.walk = d.walk;
     draw({ animate: false });
+    // the message line follows the walk, so it never tells of a cast the page no longer shows
+    say('Your walk, picked up from the page address. ' + E.countsSummary(E.counts(ui.walk), 'answers') + '.');
   });
   say(fromHash ? 'Your walk, picked up from the page address. ' + E.countsSummary(E.counts(ui.walk), 'answers') + '.'
     : "Decide each question, cast for it, or say I don't know. " + E.TEXT.coinIsFor);

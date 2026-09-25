@@ -24,15 +24,15 @@ export const NODES = [
     links: [{ to: 'alignment', when: 'yes' }, { to: 'alignment', when: 'no' }, { to: 'alignment', when: 'unknown' }] },
   { id: 'alignment', kind: 'question', key: 'alignment', label: 'Alignment', short: 'our goals, checked in time?',
     links: [{ to: 'containment-if-aligned', when: 'yes' }, { to: 'containment-if-not', when: 'no' }] },
-  { id: 'containment-if-aligned', kind: 'question', key: 'containment', label: 'Containment', short: 'if aligned: kept in?',
+  { id: 'containment-if-aligned', kind: 'question', key: 'containment', label: 'Containment', short: 'aligned: kept in?',
     links: [{ to: 'proceed', when: 'yes' }, { to: 'regulate', when: 'no' }] },
-  { id: 'containment-if-not', kind: 'question', key: 'containment', label: 'Containment', short: 'if not aligned: kept in?',
+  { id: 'containment-if-not', kind: 'question', key: 'containment', label: 'Containment', short: 'not aligned: kept in?',
     links: [{ to: 'contain', when: 'yes' }, { to: 'shutdown', when: 'no' }] },
   { id: 'proceed', kind: 'leaf', label: 'Proceed', leadsFrom: { alignment: 'yes', containment: 'yes' }, links: [] },
   { id: 'regulate', kind: 'leaf', label: 'Regulate', leadsFrom: { alignment: 'yes', containment: 'no' }, links: [] },
   { id: 'contain', kind: 'leaf', label: 'Contain', leadsFrom: { alignment: 'no', containment: 'yes' }, links: [] },
   { id: 'shutdown', kind: 'leaf', label: 'Shut down', leadsFrom: { alignment: 'no', containment: 'no' }, links: [] },
-  { id: 'race', kind: 'band', key: 'race', label: 'The race', short: 'if we stopped, would others keep going? (under every branch)', links: [] }
+  { id: 'race', kind: 'band', key: 'race', label: 'The race', short: 'would others keep going? (under every branch)', links: [] }
 ];
 
 export function leafFor(answers) {
@@ -43,16 +43,17 @@ export function leafFor(answers) {
 
 // ── drawing ────────────────────────────────────────────────────────────────────────────────────
 const SVGNS = 'http://www.w3.org/2000/svg';
+// Compact (360 x 372) so a phone's short tree box scales it as little as possible: text stays readable.
 const POS = {
-  gate: { x: 180, y: 32, w: 216, h: 42 },
-  alignment: { x: 180, y: 108, w: 216, h: 42 },
-  'containment-if-aligned': { x: 92, y: 190, w: 160, h: 42 },
-  'containment-if-not': { x: 268, y: 190, w: 160, h: 42 },
-  proceed: { x: 48, y: 272, w: 80, h: 30 },
-  regulate: { x: 136, y: 272, w: 80, h: 30 },
-  contain: { x: 224, y: 272, w: 80, h: 30 },
-  shutdown: { x: 312, y: 272, w: 80, h: 30 },
-  race: { x: 180, y: 384, w: 344, h: 50 }
+  gate: { x: 180, y: 28, w: 240, h: 46 },
+  alignment: { x: 180, y: 100, w: 240, h: 46 },
+  'containment-if-aligned': { x: 91, y: 176, w: 174, h: 46 },
+  'containment-if-not': { x: 269, y: 176, w: 174, h: 46 },
+  proceed: { x: 46, y: 252, w: 84, h: 34 },
+  regulate: { x: 136, y: 252, w: 84, h: 34 },
+  contain: { x: 224, y: 252, w: 84, h: 34 },
+  shutdown: { x: 314, y: 252, w: 84, h: 34 },
+  race: { x: 180, y: 340, w: 348, h: 50 }
 };
 const EDGES = [
   ['gate', 'alignment', null],
@@ -72,22 +73,26 @@ const STYLE = `
 .bt-edge{stroke:var(--bt-line);stroke-width:2;fill:none;transition:stroke .4s,stroke-width .4s,opacity .4s}
 .bt-edge.is-on{stroke:var(--bt-accent);stroke-width:3}
 .bt-edge.is-maybe{stroke:var(--bt-accent);stroke-dasharray:4 4;opacity:.7}
-.bt-edge-t{fill:var(--bt-muted);font-size:10px}
+.bt-edge-t{fill:var(--bt-muted);font-size:12px;font-weight:600}
 .bt-node{cursor:pointer;outline:none}
 .bt-box{fill:var(--bt-box);stroke:var(--bt-line);stroke-width:1.5;transition:fill .4s,stroke .4s}
 .bt-leaf .bt-box{fill:var(--bt-leaf)}
 .bt-band .bt-box{fill:none;stroke-dasharray:6 4}
 .bt-node:focus-visible .bt-box{stroke:var(--bt-accent);stroke-width:3}
+.bt-node.is-open .bt-box{stroke-dasharray:6 4}
 .bt-node.is-reached .bt-box{fill:var(--bt-accent);stroke:var(--bt-accent)}
 .bt-node.is-reached .bt-label{fill:var(--bt-accent-ink)}
+.bt-node.is-reached.is-open .bt-box{fill:var(--bt-leaf);stroke:var(--bt-accent);stroke-width:2.5;stroke-dasharray:6 4}
+.bt-node.is-reached.is-open .bt-label{fill:var(--bt-ink)}
 .bt-node.is-focus .bt-box{stroke:var(--bt-turn);stroke-width:2.5}
-.bt-label{fill:var(--bt-ink);font-size:12.5px;font-weight:700}
-.bt-short{fill:var(--bt-muted);font-size:10px}
+.bt-label{fill:var(--bt-ink);font-size:14.5px;font-weight:700}
+.bt-leaf .bt-label{font-size:13.5px}
+.bt-short{fill:var(--bt-muted);font-size:12px}
 .bt-glow{fill:none;stroke:var(--bt-accent);stroke-width:2;opacity:0;transition:opacity .4s}
 .bt-node.is-open .bt-glow{opacity:.9;animation:bt-breathe 1.4s ease-in-out infinite alternate}
 .bt-badge{opacity:0;transition:opacity .3s}
 .bt-badge circle{fill:var(--bt-box);stroke:var(--bt-line);stroke-width:1.5}
-.bt-badge text{font-size:11px;font-weight:700;fill:var(--bt-ink)}
+.bt-badge text{font-size:12px;font-weight:700;fill:var(--bt-ink)}
 .bt-node.is-yes .bt-badge,.bt-node.is-no .bt-badge,.bt-node.is-unknown .bt-badge{opacity:1}
 .bt-node.is-yes .bt-badge circle{stroke:var(--bt-yes)} .bt-node.is-yes .bt-badge text{fill:var(--bt-yes)}
 .bt-node.is-no .bt-badge circle{stroke:var(--bt-no)} .bt-node.is-no .bt-badge text{fill:var(--bt-no)}
@@ -95,19 +100,19 @@ const STYLE = `
 .bt-node.is-casting .bt-badge{opacity:0}
 .bt-chip{cursor:pointer;outline:none}
 .bt-chip circle{fill:var(--bt-box);stroke:var(--bt-muted);stroke-width:1.5}
-.bt-chip text{fill:var(--bt-ink);font-size:9.5px;font-weight:700}
+.bt-chip text{fill:var(--bt-ink);font-size:10.5px;font-weight:700}
 .bt-chip.is-focus circle{stroke:var(--bt-turn);stroke-width:2.5}
 .bt-chip:focus-visible circle{stroke:var(--bt-accent);stroke-width:3}
 .bt-cast{pointer-events:none}
 .bt-coin{transform-box:fill-box;transform-origin:center;animation:bt-flip .25s linear 4 alternate}
 .bt-coin circle{fill:var(--bt-yes);stroke:var(--bt-ink);stroke-width:1}
-.bt-coin text,.bt-res{font-size:10.5px;font-weight:800;fill:var(--bt-accent-ink)}
+.bt-coin text,.bt-res{font-size:12.5px;font-weight:800;fill:var(--bt-accent-ink)}
 .bt-cast.is-landed .bt-coin{animation:none}
 .bt-res-bg{fill:var(--bt-accent)}
 .bt-tick{stroke:var(--bt-ink);stroke-width:2.5;stroke-linecap:round;opacity:0;transition:opacity .08s}
 .bt-tick.is-on{opacity:1}
 .bt-pulse{fill:none;stroke:var(--bt-accent);stroke-width:3;transform-box:fill-box;transform-origin:center;animation:bt-pulse .35s ease-out 1 forwards}
-.bt-q{font-size:22px;font-weight:700;fill:var(--bt-muted);animation:bt-soft .6s ease-in-out 1 forwards}
+.bt-q{font-size:26px;font-weight:700;fill:var(--bt-muted);animation:bt-soft .6s ease-in-out 1 forwards}
 @keyframes bt-flip{from{transform:scaleX(1)}to{transform:scaleX(-1)}}
 @keyframes bt-pulse{from{transform:scale(.8);opacity:1}to{transform:scale(1.6);opacity:0}}
 @keyframes bt-soft{from{opacity:0}to{opacity:.95}}
@@ -143,7 +148,7 @@ function build(el) {
   ensureStyle();
   el.textContent = '';
   const root = document.createElement('div'); root.className = 'bt-root'; el.appendChild(root);
-  const svg = mk('svg', { viewBox: '0 0 360 420', class: 'bt-svg', role: 'group', 'aria-label': 'The belief tree', preserveAspectRatio: 'xMidYMid meet' }, root);
+  const svg = mk('svg', { viewBox: '0 0 360 372', class: 'bt-svg', role: 'group', 'aria-label': 'The belief tree', preserveAspectRatio: 'xMidYMid meet' }, root);
   const rec = { el, root, svg, nodes: {}, edges: {}, chips: mk('g', { class: 'bt-chips' }), casts: null, casting: null, inflight: null, state: null };
   const gEdges = mk('g', { class: 'bt-edges' }, svg);
   EDGES.forEach(([a, b, when]) => {
@@ -159,12 +164,12 @@ function build(el) {
     const g = mk('g', { class: 'bt-node bt-' + n.kind, tabindex: 0, role: 'button', 'data-node': n.id, transform: `translate(${p.x} ${p.y})` }, gNodes);
     mk('rect', { class: 'bt-glow', x: -p.w / 2 - 4, y: -p.h / 2 - 4, width: p.w + 8, height: p.h + 8, rx: 12 }, g);
     mk('rect', { class: 'bt-box', x: -p.w / 2, y: -p.h / 2, width: p.w, height: p.h, rx: n.kind === 'leaf' ? 15 : 9 }, g);
-    if (n.kind === 'leaf') mk('text', { class: 'bt-label', x: 0, y: 4, 'text-anchor': 'middle' }, g, n.label);
+    if (n.kind === 'leaf') mk('text', { class: 'bt-label', x: 0, y: 5, 'text-anchor': 'middle' }, g, n.label);
     else {
       mk('text', { class: 'bt-label', x: -p.w / 2 + 10, y: -3 }, g, n.label);
-      mk('text', { class: 'bt-short', x: -p.w / 2 + 10, y: 12 }, g, n.short);
-      const b = mk('g', { class: 'bt-badge', transform: `translate(${p.w / 2 - 15} 0)` }, g);
-      mk('circle', { r: 10 }, b);
+      mk('text', { class: 'bt-short', x: -p.w / 2 + 10, y: 14 }, g, n.short);
+      const b = mk('g', { class: 'bt-badge', transform: `translate(${p.w / 2 - 16} 0)` }, g);
+      mk('circle', { r: 11 }, b);
       mk('text', { 'text-anchor': 'middle', y: 4 }, b, '');
     }
     const pick = () => fire(el, 'belieftree:select', { node: n.id });
@@ -249,7 +254,7 @@ function paint(rec, state) {
     // an answer that is yes or no yet still open was cast, not known: its badge ring is dashed, as its edge is
     const castYN = glow.has(n.id) && (a === 'yes' || a === 'no');
     let label = n.label + (n.short ? ', ' + n.short : '');
-    if (n.kind === 'leaf') label += leaf === n.id ? ': where the answers lead' : '';
+    if (n.kind === 'leaf') label += leaf === n.id ? (glow.has(n.id) ? ': where the casts point, not known' : ': where the answers lead') : '';
     else label += ': ' + wordOf(a) + (castYN ? ', cast, not known' : '');
     if (glow.has(n.id) && !castYN) label += ', still open';
     g.setAttribute('aria-label', label);
@@ -301,12 +306,12 @@ function startCast(rec, casting, instant) {
   fl.overlay = ov;
   const showResult = () => {
     ov.classList.add('is-landed');
-    mk('rect', { class: 'bt-res-bg', x: -16, y: -10, width: 32, height: 20, rx: 10 }, ov);
+    mk('rect', { class: 'bt-res-bg', x: -18, y: -11, width: 36, height: 22, rx: 11 }, ov);
     mk('text', { class: 'bt-res', 'text-anchor': 'middle', y: 4 }, ov, res);
   };
   if (casting.method === 'coin') {
     const c = mk('g', { class: 'bt-coin' }, ov);
-    mk('circle', { r: 13 }, c);
+    mk('circle', { r: 16 }, c);
     later(fl, () => { if (c.parentNode) c.parentNode.removeChild(c); showResult(); }, 1000);
   } else if (casting.method === 'yarrow') {
     const ticks = [];

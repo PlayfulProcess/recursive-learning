@@ -5,6 +5,15 @@
 //
 // THE ONE-LINE SWAP: PIN = FILM once film/belief-tree is on main (PIN = null tries the film module, then the
 // stand-in). PIN is STANDIN until then: probing a module that is not there costs a 404 in every visitor's console.
+// To try the film's module before the swap, open the page with ?tree=film (it probes the film path first, then
+// falls back to the stand-in): checked that way against film/belief-tree @ 041ae0a, Sep 25 2026.
+//
+// Two things the film's module does that the game allows for here, so the swap needs nothing else:
+//  - it keys a cast by its value (JSON of { node, method, result }), so two identical casts in a row (both gate
+//    coins yes) would play once and fire one castend. renderTree below clears the cast first when a NEW casting
+//    object carries the same value as the last one, so each cast plays and ends.
+//  - its leaves are named by LEAF_LABEL ('Regulate use'), not NODES[].label: LABELS passes those names on, so the
+//    page's words match the drawing (fork-engine.js leafName).
 const FILM = '../../explainers/belief-tree/tree-render.js';
 const STANDIN = './tree-render-standin.js';
 const PIN = STANDIN;   // film/belief-tree is not on main yet: no 404 probe, a clean console. Swap to FILM (or null) when it lands.
@@ -23,6 +32,17 @@ export async function pickTree(paths, base = import.meta.url) {
   throw lastErr;
 }
 
-const picked = await pickTree(PIN ? [PIN] : [FILM, STANDIN]);
-export const { renderTree, NODES, leafFor } = picked.mod;
+const askFilm = typeof location !== 'undefined' && /(?:^|[?&])tree=film(?:&|$)/.test(location.search || '');
+const picked = await pickTree(askFilm ? [FILM, STANDIN] : PIN ? [PIN] : [FILM, STANDIN]);
+export const { NODES, leafFor } = picked.mod;
+export const LABELS = picked.mod.LEAF_LABEL || null;
 export const SOURCE = picked.path === FILM ? 'film' : 'standin';
+
+const lastCast = new WeakMap();   // el -> { obj, key } of the last casting passed in
+export function renderTree(el, state, opts) {
+  const c = (state && state.casting) || null, key = c ? JSON.stringify({ node: c.node, method: c.method, result: c.result }) : null;
+  const prev = lastCast.get(el);
+  if (c && prev && prev.obj !== c && prev.key === key) picked.mod.renderTree(el, { ...state, casting: null }, opts);
+  lastCast.set(el, { obj: c, key });
+  return picked.mod.renderTree(el, state, opts);
+}

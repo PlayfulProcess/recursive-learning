@@ -8,8 +8,9 @@
 <!--
   The Fork, tree view. The film's belief tree (explainers/belief-tree, owned by the Film chat) as a game you can
   play: decide each question, cast for it (a coin, or the yarrow bowl), or say "I don't know". Close the gap casts
-  the open ones with the film's own cast animation, or looks for what holds either way; then the page asks "Is
-  there an action?" for where you landed. The six-lines view (lines.html) walks the same answers as a hexagram.
+  the open ones with the tree renderer's cast animation (the stand-in's today; the film's once its module is on
+  main: try it before then with ?tree=film), or looks for what holds either way; then the page asks "Is there an
+  action?" by the tree's rule (fork-engine.js). The six-lines view (lines.html) walks the same answers as a hexagram.
 
   Files: fork-engine.js (pure rules, tested by tests/fork-engine.test.mjs), fork-ui.js (this page), fork.css,
   tree-adapter.js (the ONLY way in to the tree renderer: the Film's module when it is on main, else
@@ -17,7 +18,8 @@
   Serve over http (ES modules): a static server rooted at the repo, so ../../explainers/... resolves.
 
   URL: ?focus=<person slug> plays that person's walk · &theme=dark|light|auto · &method=coin|yarrow (the default
-  way to close the gap) · #f1;L=...;s=...;n=... the walk itself (a shared link replays exactly, in either view).
+  way to close the gap) · &tree=film (try the film's renderer) · #f1;L=...;s=...;n=... the walk itself (a shared
+  link replays exactly, in either view).
   Nothing is sent anywhere; nothing is stored but the URL. PlayfulProcess, CC BY-SA 4.0.
 -->
 <link rel="stylesheet" href="fork.css">
@@ -38,7 +40,8 @@
         <li>say <b>I don't know</b>. That is always a legal move: the question stays open.</li>
       </ul>
       <p>When you get tired, press <b>Close the gap</b>: have the open questions cast, take them one at a time, or look for <b>what holds either way</b>. Then the page asks: <b>is there an action?</b></p>
-      <p>The coin ends the choosing; it finds nothing out about the world. A cast answer stays marked "cast, not known": on the tree its ring and its branch are dashed, where your own answer is solid. A "?" on a box means you said I don't know. Nothing is scored, staked or sent. This is not a forecast.</p>
+      <p>The coin ends the choosing; it finds nothing out about the world. A cast answer stays marked "cast, not known": on the tree its box is drawn dashed, where your own answer's box is solid. A "?" on a box means you said I don't know.</p>
+      <p><b>The tree's rule.</b> Unless you say, yourself, that the step can be undone or tried first, the caution is on: a claim that it's safe counts only if it has been shown. A cast shows nothing, and neither does "I don't know", so they can't move where you land. Only your own answers can. Nothing is scored, staked or sent. This is not a forecast.</p>
       <p class="small">Keys: <kbd>&uarr;</kbd> <kbd>&darr;</kbd> questions · <kbd>Y</kbd> <kbd>N</kbd> decide · <kbd>C</kbd> coin · <kbd>S</kbd> yarrow · <kbd>I</kbd> I don't know · <kbd>G</kbd> close the gap · <kbd>E</kbd> what holds either way · <kbd>H</kbd> cast 100 · <kbd>L</kbd> six lines · <kbd>Esc</kbd> skip or close.</p>
       <p>The same walk as a hexagram: <a href="lines.html">six lines</a>. Is a coin risk or uncertainty, and is it a good metaphor? <a href="../../explainers/risk-and-uncertainty/">Risk or uncertainty?</a>, a short explainer.</p>
       <p class="small">A teaching instrument by PlayfulProcess, CC BY-SA 4.0. <a href="../index.html">Other games</a>.</p>
@@ -49,7 +52,8 @@
 <main>
   <section class="treebox" aria-label="The tree">
     <div id="tree"><p class="loading">Loading the tree…</p></div>
-    <p class="draft" id="draft" hidden>A stand-in drawing: the film's own tree will replace it. Solid: your answer. Dashed: cast or open.</p>
+    <p class="draft" id="draft" hidden>Stand-in tree. Solid box: yours. Dashed: cast or open.</p>
+    <p class="rulebar" id="rulebar" hidden></p>
     <div class="capline"><p class="caption" id="caption" aria-live="polite"></p><button class="skip ghost" id="skip" hidden>Skip</button></div>
     <div class="strip" id="strip" hidden></div>
   </section>

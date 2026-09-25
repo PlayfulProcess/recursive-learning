@@ -52,8 +52,8 @@ test("the drawn marble: the engine's draw and the bowl on screen agree, marble f
 });
 
 test('line 6 is our reading, never drawn: the editorial kinds per leaf', () => {
-  assert.equal(line6At([7, 7, 7, 7, 7]), 9);   // proceed
-  assert.equal(line6At([7, 7, 7, 8, 7]), 9);   // regulate
+  assert.equal(line6At([7, 7, 7, 7, 7]), 6);   // proceed: yielding, turning (no lever shown to work)
+  assert.equal(line6At([7, 7, 7, 8, 7]), 6);   // regulate
   assert.equal(line6At([7, 7, 8, 7, 7]), 6);   // contain
   assert.equal(line6At([7, 7, 8, 8, 7]), 6);   // shutdown
 });
