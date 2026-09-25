@@ -1,0 +1,99 @@
+{
+ "id": "metr_time_horizon",
+ "name": "METR task-completion time horizon",
+ "what_it_measures": "How long a task, timed by how long a skilled person takes, an AI agent can finish with 50% success. METR fits a doubling time to it.",
+ "source": "METR, Time Horizons of Frontier AI Models",
+ "url": "https://metr.org/assets/benchmark_results_1_1.yaml",
+ "page": "https://metr.org/time-horizons/",
+ "licence": "No open licence stated (site: all rights reserved)",
+ "licence_url": "https://metr.org/time-horizons/",
+ "licence_note": "robots.txt allows the download, but no licence grants reuse of the per-model numbers. Only METR's headline doubling times are quoted here, with attribution; the chart lives on METR's page. Decision pending: store per-model numbers, or ask METR.",
+ "citation": "METR, 'Task-Completion Time Horizons of Frontier AI Models', https://metr.org/time-horizons/",
+ "redistribution": "link-only",
+ "fetched_at": "2026-09-25T08:46:49Z",
+ "coverage": {
+  "summary": "26 models in v1.1, 2019-02-14 to 2026-04-07: OpenAI 15, Anthropic 9, Google DeepMind 2. The tasks are software and ML-research work only, so this is not general capability. METR may skip a release or measure it late.",
+  "counted": "Models METR has run on its task suite, mostly from OpenAI, Anthropic and Google, plus old baselines.",
+  "not_counted": "In v1.1: no models from xAI, Meta AI, DeepSeek, Alibaba, Moonshot, Mistral AI. (xAI, DeepSeek, Alibaba, Moonshot appear only in an older version.)",
+  "numbers": {
+   "versions": [
+    {
+     "version": "v1.1",
+     "url": "https://metr.org/assets/benchmark_results_1_1.yaml",
+     "models": 26,
+     "first": "2019-02-14",
+     "newest": "2026-04-07",
+     "newest_model": "claude_mythos_preview_early_inspect",
+     "orgs": {
+      "Anthropic": 9,
+      "OpenAI": 15,
+      "Google DeepMind": 2
+     }
+    },
+    {
+     "version": "v1.0",
+     "url": "https://metr.org/assets/benchmark_results_1_0.yaml",
+     "models": 33,
+     "first": "2019-02-14",
+     "newest": "2025-11-24",
+     "newest_model": "claude_opus_4_5",
+     "orgs": {
+      "Anthropic": 9,
+      "OpenAI": 15,
+      "DeepSeek": 4,
+      "Google DeepMind": 1,
+      "xAI": 1,
+      "Moonshot": 1,
+      "Alibaba": 2
+     }
+    }
+   ]
+  }
+ },
+ "columns": [
+  "version",
+  "model",
+  "org",
+  "date",
+  "p50_minutes",
+  "p50_lo",
+  "p50_hi"
+ ],
+ "rows": [],
+ "quoted": [
+  {
+   "version": "v1.1",
+   "window": "all time stitched",
+   "doubling_days": 187.778,
+   "ci_low_days": null,
+   "ci_high_days": null,
+   "note": "METR excludes points whose central 50% horizon is over 16 hours"
+  },
+  {
+   "version": "v1.1",
+   "window": "from 2023 on",
+   "doubling_days": 128.744,
+   "ci_low_days": 104.428,
+   "ci_high_days": 158.012,
+   "note": "METR excludes points whose central 50% horizon is over 16 hours"
+  },
+  {
+   "version": "v1.0",
+   "window": "all time",
+   "doubling_days": 201.15,
+   "ci_low_days": 176.208,
+   "ci_high_days": 225.353,
+   "note": null
+  },
+  {
+   "version": "v1.0",
+   "window": "from 2023 on",
+   "doubling_days": 175.603,
+   "ci_low_days": 138.411,
+   "ci_high_days": 229.176,
+   "note": null
+  }
+ ],
+ "unit": "minutes of skilled-human time",
+ "source_updated": "2026-04-07"
+}

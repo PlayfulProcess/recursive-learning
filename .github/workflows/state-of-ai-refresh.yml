@@ -1,0 +1,87 @@
+name: State of AI refresh
+
+# Weekly: re-fetch every source behind learning.recursive.eco/state-of-ai/, rebuild the summary,
+# and open (or update) ONE pull request with the new numbers. It never pushes to main: a person
+# reads the diff and merges, and the merge is what publishes (pages.yml deploys on push to main).
+#
+# No installs: the fetchers use only the Python standard library, and ubuntu-latest ships python3.
+# A source that fails keeps its previous file; the pull request body names it. If no data file
+# changed, nothing is committed.
+#
+# The branch `data/state-of-ai-refresh` is rebuilt from main on every run (force-pushed), so an
+# unmerged refresh is replaced by the newer one rather than piling up. Do not hand-edit that branch.
+#
+# Opening the pull request needs Settings -> Actions -> General -> "Allow GitHub Actions to create
+# and approve pull requests". If that is off, the run still pushes the branch and prints a link
+# to open the pull request by hand.
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'   # Mondays, 06:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: state-of-ai-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      BRANCH: data/state-of-ai-refresh
+      ARENA_BUDGET_MIN: '25'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Offline checks (fitting code, YAML reader)
+        run: python3 state-of-ai/scripts/test_scripts.py
+
+      - name: Fetch every source and rebuild the summary
+        env:
+          STATE_OF_AI_REPORT: ${{ runner.temp }}/report.md
+        run: python3 state-of-ai/scripts/run_all.py
+
+      - name: Commit to the refresh branch and open or update the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPORT: ${{ runner.temp }}/report.md
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain -- state-of-ai/data)" ]; then
+            echo "No data file changed; nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git add state-of-ai/data
+          git commit -m "State of AI: weekly data refresh ($(date -u +%Y-%m-%d))"
+          git push --force origin "$BRANCH"
+
+          {
+            echo "Weekly refresh of the numbers behind https://learning.recursive.eco/state-of-ai/."
+            echo
+            echo "Only files under \`state-of-ai/data/\` change. Read the diff: each data file keeps one row per line,"
+            echo "so a changed estimate shows as a changed line. Merging publishes the new numbers."
+            echo
+            cat "$REPORT" 2>/dev/null || true
+          } > "$RUNNER_TEMP/body.md"
+
+          num="$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number' || true)"
+          if [ -n "$num" ]; then
+            gh pr edit "$num" --body-file "$RUNNER_TEMP/body.md"
+            echo "Updated pull request #$num."
+          elif gh pr create --base main --head "$BRANCH" \
+                 --title "State of AI: weekly data refresh ($(date -u +%Y-%m-%d))" \
+                 --body-file "$RUNNER_TEMP/body.md"; then
+            echo "Opened a pull request."
+          else
+            echo "::warning::Could not open a pull request (is 'Allow GitHub Actions to create pull requests' off?). Open it here: https://github.com/${GITHUB_REPOSITORY}/compare/main...${BRANCH}"
+          fi

@@ -27,6 +27,7 @@ on:
       - 'game/**'
       - 'grammars/**'
       - 'glossary/**'
+      - 'state-of-ai/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -52,6 +53,7 @@ jobs:
           cp -r game _site/game
           cp -r grammars _site/grammars
           cp -r glossary _site/glossary
+          cp -r state-of-ai _site/state-of-ai
           test -f _site/.nojekyll || touch _site/.nojekyll
           echo "--- deploying ---"
           find _site -maxdepth 2 | sort
