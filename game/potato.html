@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Hot Potato · Recursive Learning</title>
-<meta name="description" content="The race to build AI is a hot potato. Hold it and your hands take the heat, and Wren sees you mean it. Toss it and it goes round the table and comes back hotter. Once Wren is ready, hold it together: the others follow, and with five pairs of hands you can put it down. A small game with made-up rules, not a forecast.">
+<meta name="description" content="The race to build AI is a hot potato. Hold it and you slow down: your hands take the heat, and Wren sees you mean it. Toss it and you race ahead and win coins, but it goes round the table and comes back hotter. Somewhere in the striped boxes it catches fire and everyone loses everything. Hold it together, and with five pairs of hands you can put it down. A small game with made-up rules, not a forecast.">
 <!--
-  Hot Potato, v3.2 (Sep 25 2026). v3 was rebuilt from scratch after PlayfulProcess played v1 and said
-  "Hold it does not hold it"; v3.1 answered playtest round 1; v3.2 answers round 2 (asking too soon
-  looked like holding but didn't count, Wren's hidden number made asking a guess, one toss decided
-  the game, a hold/rest grind, nothing to decide after Wren joined, it burned by itself).
+  Hot Potato, v4 (Sep 25 2026). v3 was rebuilt from scratch after PlayfulProcess played v1 and said
+  "Hold it does not hold it"; v3.1 and v3.2 answered playtest rounds 1 and 2; v4 answers round 3
+  (one recipe won every round, a toss was never worth it, and holding held back no heat: Flint
+  added his flame either way). Now Hold it adds no flame of yours, the race pays in coins, and the
+  fire hides anywhere in the striped boxes, so racing is a real bet.
   Design: DESIGN-potato.md. Rules: potato-model.js (a rule-for-rule port of
   tools/potato_rules_check.py; tools/potato_port_check.mjs compares them, tools/potato_solve.mjs
   checks the rounds). The first version is kept at potato-v1/.
@@ -25,7 +26,7 @@
     --pot1:#d9a862; --pot2:#e18d45; --pot3:#e2672f; --pot4:#c83b1b; --potline:#5a3a1c;
     --heat:#d2551f; --litbox:#f7c58f; --hatch:#b9a78f; --soil:#8b6441; --soil-dark:#5f4128;
     --chalk:#3d5c4f; --v-hold:#3e6db3; --v-toss:#c1541f; --v-tog:#2d7f62; --v-idk:#7a6f61;
-    --dimveil:rgba(246,240,228,.94);
+    --dimveil:rgba(246,240,228,.94); --coin:#9a6a00; --coin-fill:#f2c94c; --warn:#a8210c;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -36,7 +37,7 @@
       --pot1:#c89656; --pot2:#d9823e; --pot3:#e0612b; --pot4:#e2431f; --potline:#2c1a0b;
       --heat:#ff7a3d; --litbox:#7a4521; --hatch:#5b5347; --soil:#7b5838; --soil-dark:#4a321f;
       --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#a59c8f;
-      --dimveil:rgba(18,22,31,.94);
+      --dimveil:rgba(18,22,31,.94); --coin:#f2c94c; --coin-fill:#b8860b; --warn:#ff8a63;
     }
   }
   :root[data-theme="dark"]{
@@ -47,7 +48,7 @@
     --pot1:#c89656; --pot2:#d9823e; --pot3:#e0612b; --pot4:#e2431f; --potline:#2c1a0b;
     --heat:#ff7a3d; --litbox:#7a4521; --hatch:#5b5347; --soil:#7b5838; --soil-dark:#4a321f;
     --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#a59c8f;
-    --dimveil:rgba(18,22,31,.94);
+    --dimveil:rgba(18,22,31,.94); --coin:#f2c94c; --coin-fill:#b8860b; --warn:#ff8a63;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -70,18 +71,20 @@
   .trk1{display:flex;align-items:baseline;gap:6px;font-size:14px;min-height:22px;white-space:nowrap}
   .trk1 .lbl{color:var(--dim)}
   .trk1 b{font-size:17px}
-  .trk1 .hint{margin-left:auto;color:var(--dim);text-align:right;overflow:hidden;text-overflow:ellipsis;min-width:0}
-  .trk1 .hint svg{width:10px;height:10px;vertical-align:-1px}
+  .trk1 .hint{margin-left:auto;color:var(--dim);text-align:right;white-space:nowrap;flex:none}
+  .trk1 .hint .lng{display:inline}
+  .trk1 .hint .sht{display:none}
+  .trk1 .hint svg{width:11px;height:11px;vertical-align:-1px}
   .boxes{display:flex;align-items:flex-start;gap:6px;margin-top:3px}
   .grp{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:stretch;gap:2px}
   .grp .gb{display:flex;gap:2px}
-  .grp .gl{font-size:13px;line-height:1.1;color:var(--dim);text-align:center;white-space:nowrap}
+  .grp .gl{font-size:14px;line-height:1.1;color:var(--dim);text-align:center;white-space:nowrap}
   .grp .gl.now{color:var(--ink);font-weight:700}
-  .box{flex:1 1 0;min-width:9px;height:18px;border:1.5px solid var(--line);border-radius:3px;position:relative;background:var(--surface)}
+  .box{flex:1 1 0;min-width:9px;height:20px;border:1.5px solid var(--line);border-radius:3px;position:relative;background:var(--surface)}
   .box.band{border-style:dashed;border-color:var(--faint);background-image:repeating-linear-gradient(45deg,var(--hatch) 0 1.5px,transparent 1.5px 5px)}
   .box.lit{background:var(--litbox);border-color:var(--heat);border-style:solid}
   .box svg{position:absolute;inset:1px;width:calc(100% - 2px);height:calc(100% - 2px)}
-  .boxes .firemark{flex:none;width:18px;height:20px}
+  .boxes .firemark{flex:none;width:20px;height:22px}
   .box .plus{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:800;line-height:1;color:#fff;background:var(--heat);border-radius:2px;letter-spacing:-.02em}
   .box .plus.minus{background:var(--cool)}
   .track.out .box{opacity:.45;filter:grayscale(1)}
@@ -121,7 +124,13 @@
   .pill{display:inline-block;border:1.5px solid var(--ink);border-radius:999px;padding:0 8px;font-weight:700;font-size:14px;line-height:19px}
   .ytag{display:inline-block;background:var(--ink);color:var(--bg);border-radius:6px;padding:0 7px;font-weight:700;font-size:14px;line-height:19px}
   .yourow .yh{display:inline-flex;align-items:center;gap:6px}
-  .bar{display:inline-flex;gap:2px;height:10px;width:40px;flex:none}
+  .coins{display:inline-flex;align-items:center;gap:4px;margin-left:auto;font-weight:700;border-radius:8px;padding:0 4px;transition:background-color .3s}
+  .coins.pop{background:var(--coin-fill);color:#211b14}
+  .coins svg{width:17px;height:17px;flex:none}
+  .coins.burnt{color:var(--no);text-decoration:line-through}
+  .seat .st .cn{white-space:nowrap}
+  .seat .st .cn svg{width:12px;height:12px;vertical-align:-2px}
+  .bar{display:inline-flex;gap:2px;height:13px;width:50px;flex:none}
   .bar i{flex:1;border:1px solid var(--faint);border-radius:2px;background:var(--surface)}
   .bar.l1 i.on{background:var(--h1);border-color:var(--h3)}
   .bar.l2 i.on{background:repeating-linear-gradient(45deg,var(--h3) 0 1.5px,transparent 1.5px 4px),repeating-linear-gradient(-45deg,var(--h3) 0 1.5px,var(--h3bg) 1.5px 4px);border-color:var(--h3)}
@@ -135,7 +144,11 @@
   .verbs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .verb{min-height:70px;border-radius:14px;border:2px solid var(--vc);background:var(--surface);text-align:left;padding:7px 11px 8px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 0 var(--vc);min-width:0}
   .verb .v{font-size:18px;font-weight:700;line-height:1.15}
-  .verb .s{font-size:13.5px;color:var(--dim);line-height:1.25;margin-top:3px}
+  .verb .s{font-size:14px;color:var(--dim);line-height:1.25;margin-top:3px}
+  .verb .w{font-size:14px;color:var(--warn);font-weight:700;line-height:1.25;margin-top:0}
+  .verb .w.soft{color:var(--dim);font-weight:400;font-style:italic}
+  .verb .w.cost{color:var(--ink);font-weight:600}
+  .verb .w{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .verb:active:not(.off){transform:translateY(1px);box-shadow:none}
   .verb.hold{--vc:var(--v-hold)} .verb.toss{--vc:var(--v-toss)} .verb.tog{--vc:var(--v-tog)} .verb.idk{--vc:var(--v-idk)} .verb.down{--vc:var(--eco)}
   .verb.down{grid-column:1 / -1;min-height:56px;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
@@ -144,11 +157,17 @@
   .verb.down .txt{min-width:0}
   .verb.down:not(.off){background:var(--eco);color:var(--bg)}
   .verb.down:not(.off) .s{color:var(--bg)}
+  .verb.down.done{background:var(--eco-soft);border-style:solid;border-color:var(--eco)}
+  .verb.down.done .v,.verb.down.done .s{color:var(--ink)}
   .verb.off{cursor:default;box-shadow:none;border-style:dashed;border-color:var(--faint);background:transparent}
   .verb.off .v{color:var(--faint)}
   .verb.off .s{color:var(--dim)}
   .verb.pulse{animation:pulse 1.4s ease-out 2}
   @keyframes pulse{0%{box-shadow:0 0 0 0 var(--eco)}60%{box-shadow:0 0 0 12px transparent}100%{box-shadow:0 2px 0 var(--vc)}}
+  .doom{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .doom button{min-height:62px;border-radius:14px;font-size:17px;font-weight:700;cursor:pointer;padding:8px 12px}
+  .doom .again{border:2px solid var(--eco);background:var(--eco);color:var(--bg)}
+  .doom .see{border:2px solid var(--line);background:var(--surface)}
   .inlinebtn{font-size:14px;font-weight:700;min-height:24px;line-height:20px;border-radius:8px;border:1.5px solid var(--eco);background:var(--surface);color:var(--eco);padding:0 10px;cursor:pointer;margin-left:2px;vertical-align:baseline}
 
   .end{padding:4px 0 8px}
@@ -186,19 +205,40 @@
     .game.over .right{padding-top:8px}
   }
   @media (max-height:740px) and (max-width:699px){
-    .caption{min-height:calc(1.35em * 3 + 6px);margin-top:4px}
+    .caption{min-height:calc(1.35em * 4 + 6px);margin-top:4px}
     .verb{min-height:62px}
     .verb.down{min-height:50px}
+  }
+  @media (max-width:420px){
+    #hotLbl{display:none}
+    .trk1 .hint .lng{display:none}
+    .trk1 .hint .sht{display:inline}
   }
   @media (max-width:400px){
     .caption{font-size:15.5px}
     .yourow{font-size:14px}
-    .verb{padding:6px 9px 7px;min-height:68px}
+    .verb{padding:6px 9px 7px;min-height:77px}
     .verb .v{font-size:17px}
-    .verb .s{font-size:13px}
+    .verb .s,.verb .w{font-size:13.5px}
+  }
+  @media (max-width:359px){
+    .yourow{gap:4px 6px}
+    .yourow .pill{padding:0 6px}
+    .yourow .ytag{padding:0 5px}
+    .bar{width:40px}
+    .yourow .hl{display:none}
+    .grp .gl{font-size:12.5px}
+    .trk1{font-size:13px} .trk1 b{font-size:15px}
   }
   @media (max-width:360px){
-    .verb{min-height:86px}
+    .verb{min-height:93px}
+  }
+  @media (max-width:300px){
+    .verb{min-height:124px}
+    .verb .w{white-space:normal}
+    .trk1{flex-wrap:wrap}
+    .trk1 .hint{margin-left:0;width:100%;text-align:left}
+    .yourow .bar{display:none}
   }
   @media (max-width:340px){
     .caption{font-size:14.5px;min-height:calc(1.35em * 5 + 6px)}
@@ -206,7 +246,7 @@
   @media (max-width:330px){
     header.top h1{font-size:14.5px}
     .textbtn{padding:6px 8px;font-size:14px}
-    .verb .s{font-size:12.5px}
+    .verb .s,.verb .w{font-size:12.5px}
     .verb.down{flex-wrap:wrap}
   }
   @media (min-width:700px){
@@ -218,8 +258,8 @@
     .chalk{font-size:17px}
     .yourow{font-size:16px}
     .caption{font-size:19px}
-    .verb .v{font-size:21px} .verb .s{font-size:15.5px}
-    .verb{min-height:80px} .verb.down{min-height:62px}
+    .verb .v{font-size:21px} .verb .s,.verb .w{font-size:15.5px}
+    .verb{min-height:88px} .verb.down{min-height:88px}
     .fork div{font-size:15px} .endcards h2{font-size:23px} .endcards .sub{font-size:17px} .endcards .under{font-size:15px}
   }
 </style>
@@ -260,14 +300,18 @@
   </div>
   <div class="right">
 
-  <p class="caption" id="caption"><span aria-live="polite"><b id="c1"></b> <span id="c2"></span></span> <button type="button" class="inlinebtn" id="restart" hidden>Start again</button></p>
+  <p class="caption" id="caption"><span aria-live="polite"><b id="c1"></b> <span id="c2"></span></span></p>
 
   <div class="verbs" id="verbs">
     <button type="button" class="verb hold" id="vHold" data-verb="hold" aria-keyshortcuts="H"></button>
     <button type="button" class="verb toss" id="vToss" data-verb="toss" aria-keyshortcuts="T"></button>
     <button type="button" class="verb tog" id="vTog" data-verb="together" aria-keyshortcuts="G"></button>
-    <button type="button" class="verb idk" id="vIdk" data-verb="idk" aria-keyshortcuts="K"></button>
+    <button type="button" class="verb idk" id="vBounce" data-verb="bounce" aria-keyshortcuts="B"></button>
     <button type="button" class="verb down" id="vDown" data-verb="down" aria-keyshortcuts="D"></button>
+  </div>
+  <div class="doom" id="doom" hidden>
+    <button type="button" class="see" id="seeEnd">See how it ends</button>
+    <button type="button" class="again" id="doomAgain">Start this round again</button>
   </div>
 
   <section class="end" id="end" hidden>
@@ -290,29 +334,28 @@
 <template id="howTpl">
   <h2>How to play</h2>
   <ol>
-    <li><b>The potato is the race to build AI.</b> You and five others are building it (made up: think labs, companies or countries). Flint adds a flame every move. Somewhere in the two striped boxes it catches fire and burns everyone.</li>
-    <li><b>Hold it</b>: it stays in your hands. Your hands heat up one step (cool, warm, sore, too hot), and Wren counts it. Her seat shows how many holds she wants to see.</li>
-    <li><b>Hold it together</b> lights up once Wren has seen enough. Ask, and Wren says yes; Moss follows her, Reed follows Moss, Oak follows Reed. Reed and Oak won’t touch it while it’s scorching.</li>
-    <li>Three of you holding it stops Flint, and it cools a flame a move. With five pairs of hands, <b>put it down</b>.</li>
-    <li><b>Toss it on</b>: your hands cool at once, but everyone tosses it on and it comes back six flames hotter. Wren saw you toss it, so she crosses out one hold.</li>
-    <li><b>I don’t know</b>: you bounce it from hand to hand. Your hands cool a step, but bouncing isn’t holding: Wren doesn’t count it, and Flint adds a flame.</li>
+    <li><b>The potato is the race to build AI.</b> Everyone at the table is building it (made up: think labs, companies or countries). Each flame makes it more dangerous. Somewhere in the striped boxes it catches fire, and everyone loses everything, coins too.</li>
+    <li><b>Hold it</b>: you slow down. You add no flame; only Flint adds his. Your hands heat a step, and Wren counts the hold.</li>
+    <li><b>Bounce it</b>: you carry on. You win a coin, but you add a flame, and so does Flint. Your hands cool a step.</li>
+    <li><b>Toss it on</b>: you race. You win 5 coins and your hands cool at once, but everyone races after you: +6 flames. The others let go, and Wren crosses out a hold.</li>
+    <li><b>Hold it together</b>, once Wren has seen enough holds: she says yes, and Moss, Reed and Oak follow (Reed and Oak not while it’s scorching). Three holding it stops Flint. With five pairs of hands, <b>put it down</b> and keep your coins.</li>
   </ol>
-  <p class="small">Your score is the hottest it got: lower is better. Three rounds, each a little harder, then random rounds. Only where it catches fire (15 or 16 flames) is hidden.</p>
-  <h3>The five others</h3>
-  <div class="lines" id="LINES"></div>
+  <p class="small">Your score is the coins you keep. You start each round with 5. The fire’s box changes every round, and you only find out where it was at the end.</p>
+  <details>
+    <summary>The five others</summary>
+    <div class="lines" id="LINES"></div>
+  </details>
   <details>
     <summary>What’s real here</summary>
     <ul>
       <li>These are this game’s rules, made up to show one idea. They are not measured from anything, and they are not a forecast.</li>
-      <li>In the real race nobody can read the heat, or knows where it catches fire. Here you can count the flames, and only the fire’s exact box is hidden.</li>
-      <li>The five others stand for other builders of AI. They are made up, and they are equal here; real builders are not equal in power, and harms and gains may not fall equally.</li>
-      <li>Here, holding it alone is what earns Wren’s trust, and she prints how much she needs. Whether one side slowing down makes others follow is debated, and real builders don’t publish a number.</li>
-      <li>Here, tossing only buys your hands a rest. In the real race, racing ahead can also win a lead, money or power, so the pull to toss is stronger than it shows.</li>
-      <li>“I don’t know” stands for waiting to see. Here it rests your hands; in the real race, waiting may not ease the pressure, and the others keep building.</li>
-      <li>Here, Reed and Oak won’t touch it while it’s scorching, and join once it cools. Real crises have pushed rivals apart and also together (after the Cuban missile crisis came a hotline and a test-ban treaty).</li>
-      <li>Here, Flint stops once three of you hold it, without ever agreeing to, and holding it together cools it. Whether a group can hold back a builder who never signs up, and whether an agreement lowers the risk or how fast, are open questions.</li>
-      <li>Here, five pairs of hands are enough. Nobody knows how many would be enough in reality.</li>
-      <li>Putting it down isn’t a happy ending by itself.</li>
+      <li>Here you can count the flames, and you’re told the fire is somewhere in the striped boxes. In the real race nobody can count the flames, or knows where the stripes begin.</li>
+      <li>Here, racing wins coins, and holding alone wins none while Flint keeps winning. Real builders feel that pull: racing ahead can win a lead, money or power.</li>
+      <li>Here, Wren prints how many holds she needs and always keeps her word, the others always follow her, and Flint always stops once three of you hold it. Whether one side slowing down makes others follow, and whether a group can hold back a builder who never signs up, are debated.</li>
+      <li>This game takes a side: it was made to show why holding it together might matter. Flint’s line, “If we don’t, they will”, is a real argument that serious people make.</li>
+      <li>Here the only way to lose is a fire that burns everyone the same. Real harms could also come from misuse or from power piling up in a few hands, and may not fall equally. The five others are equal here; real builders are not.</li>
+      <li>Here, three holding a scorching potato cool it a flame a move. Whether an agreement lowers the danger, or how fast, is an open question. Real crises have pushed rivals apart and also together (after the Cuban missile crisis came a hotline and a test-ban treaty).</li>
+      <li>Here, five pairs of hands are enough. Nobody knows how many would be enough in reality. Putting it down isn’t a happy ending by itself.</li>
       <li>“Nobody had to be good. Enough of them had to agree on a number.” “A pause taken alone is a sacrifice the others outlive. Taken by enough, it keeps the river for everyone.” <span class="small">Lines from a toy model of a river; a rhyme, not a finding about AI.</span></li>
       <li>Nothing is saved or sent.</li>
     </ul>
@@ -324,7 +367,7 @@
     <button type="button" class="tog" data-act="round1">Start again from round 1</button>
   </div>
   <h3>Keys</h3>
-  <p><kbd>H</kbd> Hold it · <kbd>T</kbd> Toss it on · <kbd>G</kbd> Hold it together · <kbd>K</kbd> I don’t know · <kbd>D</kbd> Put it down. Tap a name, or press Enter on it, to read that seat’s line.</p>
+  <p><kbd>H</kbd> Hold it · <kbd>B</kbd> Bounce it · <kbd>T</kbd> Toss it on · <kbd>G</kbd> Hold it together · <kbd>D</kbd> Put it down. Tap a name, or press Enter on it, to read that seat’s line.</p>
   <p class="small">The first version of this game is kept at <a href="potato-v1/potato-others.html">the first version</a>. More games: <a href="spread.html">The Walk</a> · <a href="lines.html">Changing Lines</a> · <a href="index.html">As-If</a> · <a href="../">Recursive Learning</a>.</p>
 </template>
 
@@ -345,14 +388,14 @@ if (/[?&]reduced(=|&|$)/.test(location.search)) RM = true;     // potato.html?re
 var NAME = { you: 'you', wren: 'Wren', moss: 'Moss', flint: 'Flint', reed: 'Reed', oak: 'Oak' };
 var SHAPE = { wren: 'circle', moss: 'square', flint: 'triangle', reed: 'diamond', oak: 'hexagon' };
 var LINE = {
-  wren: 'Show me you mean it: hold it yourself, and I’ll count every hold. Once I’ve seen enough, ask me and I’ll hold it with you.',
+  wren: 'I’m building it too. Show me you mean it: hold it yourself, and I’ll count every hold. Once I’ve seen enough, ask me and I’ll hold it with you.',
   moss: 'If Wren holds it with you, so will I.',
-  flint: 'If we don’t, they will. I add a flame every move until three of you hold it. I never put my hands on it.',
+  flint: 'If we don’t, they will. Every move I add a flame and win a coin, until three of you hold it. I never put my hands on it.',
   reed: 'If Moss holds it, so will I. Not while it’s scorching: it’s too hot to touch.',
   oak: 'If Reed holds it, so will I. Not while it’s scorching.'
 };
 var RULE = {             // the short rule, for the help sheet
-  wren: 'says yes once she’s seen enough holds', moss: 'follows Wren', flint: 'adds a flame every move until 3 hold it',
+  wren: 'joins once she’s seen enough holds', moss: 'follows Wren', flint: 'adds a flame and wins a coin every move, until 3 hold it',
   reed: 'follows Moss, not while it’s scorching', oak: 'follows Reed, not while it’s scorching'
 };
 // Geometry, in viewBox units (390 x 352). a = where the potato sits in that seat's hands.
@@ -374,15 +417,18 @@ var LAB = { flint: [40, 0, 310, 'c'], moss: [2, 44, 146, 'l'], reed: [242, 44, 1
 var PLUS_AT = { you: [70, -24], flint: [60, 10], moss: [22, -30], reed: [-22, -30], wren: [24, 34], oak: [-24, 34] };
 var SAY_AT = { wren: [118, 180], moss: [118, 100], reed: [272, 100], oak: [272, 180], flint: [195, 62] };
 var BTN = { flint: [140, 0, 110, 112], moss: [0, 38, 150, 120], reed: [240, 38, 150, 120], wren: [0, 176, 140, 150], oak: [250, 176, 140, 150] };
+var YOU_MARK = { x: 146, y: 246 };        // where your own flame shows: +1 when you add it, crossed out when you hold it back
 
 /* ── Words ─────────────────────────────────────────────────────────────────── */
 var NUMW = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen'];
 function times(n) { return n === 1 ? 'once' : n === 2 ? 'twice' : (NUMW[n] || n) + ' times'; }
 function holdsW(n) { return n + (n === 1 ? ' hold' : ' holds'); }
 function flamesW(n) { return n + (n === 1 ? ' flame' : ' flames'); }
+function coinsW(n) { return n + (n === 1 ? ' coin' : ' coins'); }
 function HW(h) { return M.HANDW[h]; }
 function joinNames(a) { return a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
 function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+var DOOM = 'No way left: even if the fire is in the last box, it gets there before five of you can hold it.';
 
 /* ── Settings (per viewer, in this browser only) ───────────────────────────── */
 function load(k) { try { return window.localStorage.getItem('potato-v3.' + k); } catch (e) { return null; } }
@@ -392,26 +438,26 @@ var CAN_SPEAK = typeof window.speechSynthesis !== 'undefined' && typeof window.S
 if (!CAN_SPEAK) SET.read = false;
 
 /* ── State: the model (S), the round, the drawn values (base + the current timeline) ── */
-var S, ROUNDI = 0, PARAMS, TL, clock = 0, base, notes;
+var S, ROUNDI = 0, PARAMS, TL, clock = 0, base, RESULTS = [];
 var $ = function (id) { return document.getElementById(id); };
 
 function resetBase(start) {
-  base = { F: start - 1, potAt: 'flint', luggage: true, on: [], c1: '', c2: '', tag: '', seen: 0, seenPop: 0,
-           hand: 0, flint: 'builds', chalk: 0, chalkRub: 0, lower: 0, sink: 0, mound: 0, out: false,
-           burned: false, crack: 0, dim: 0, ended: '', bubble: false };
+  base = { F: start, maxF: start, coins: M.BANK, flintCoins: M.BANK, potAt: 'flint', luggage: true, on: [], c1: '', c2: '', tag: '',
+           seen: 0, seenPop: 0, hand: 0, flint: 'builds', chalk: 0, chalkRub: 0, lower: 0, sink: 0, mound: 0, out: false,
+           burned: false, crack: 0, dim: 0, ended: '', bubble: false, doomUI: false };
   SEATS.forEach(function (k) { base['reach.' + k] = 0; base['pose.' + k] = 'empty'; });
   base['pose.flint'] = 'rest';
 }
 
 /* ── Timelines: named tracks of segments on one virtual clock ──────────────── */
-function newTL() { return { tracks: {}, fx: [], end: 0, fxEnd: 0, done: false }; }
+function newTL() { return { tracks: {}, fx: [], end: 0, fxEnd: 0, done: false, capT: 0 }; }
 function seg(tl, name, t0, t1, v0, v1) {
   (tl.tracks[name] = tl.tracks[name] || []).push({ t0: t0, t1: t1, v0: v0, v1: v1 });
   tl.end = Math.max(tl.end, t1);
 }
 function set(tl, name, t, v) { seg(tl, name, t, t, undefined, v); }
 function tween(tl, name, t0, dur, v0, v1) { seg(tl, name, t0, t0 + (RM ? 0 : dur), v0, v1); }
-var LINGER = { plusBox: 1, minusBox: 1, plusSeat: 1, coolMark: 1, flintMark: 1, say: 1, loop: 1, downArrow: 1 };
+var LINGER = { plusBox: 1, minusBox: 1, plusSeat: 1, coolMark: 1, flintMark: 1, say: 1, loop: 1, downArrow: 1, noFlame: 1, youFlame: 1, coinPop: 1 };
 function fx(tl, o) {
   tl.fx.push(o);
   tl.fxEnd = Math.max(tl.fxEnd, (o.t1 || o.t0) + (o.kind === 'flight' ? 350 : 0));
@@ -441,91 +487,98 @@ function bake() {
 }
 
 /* ── Captions and button words, from the rules ─────────────────────────────── */
-function fire16() { return S && !S.out && S.F >= 15; }        // it didn't catch fire at 15, so it's at 16
-// What a heat would mean, for button warnings: '' when nothing to say.
-function heatNote(F1) {
-  if (F1 >= 16 || (F1 >= 15 && !fire16())) return F1 >= 16 ? 'it will catch fire' : 'it may catch fire';
-  if (F1 >= M.SCORCH) return 'scorching';
-  return '';
+// Captions stay within four short lines on a phone: what happened (bold), then the one or two
+// things that matter next. Every number they name is on screen at the same moment.
+function stripesNote(pre, post) {
+  if (post.out || post.maxF <= pre.maxF || post.maxF < M.LO) return '';
+  if (pre.maxF < M.LO) return 'It’s in the striped boxes now: the fire could be in any of them.';
+  return 'No fire up to ' + post.maxF + ': it’s higher up.';
 }
-// Captions stay within four short lines on a phone: what happened to you (bold), then one or two
-// short sentences: Flint's flame, and the one thing that matters next.
-function flintSays(post) {
-  if (post.out === 'burned') return '';
-  if (post.F >= M.SCORCH && post.F - 1 < M.SCORCH) return 'Flint added a flame: it’s scorching, so Reed and Oak say no.';
-  if (post.F === 15 && !notes.said16) { notes.said16 = true; return 'Flint added a flame. No fire at 15, so it’s at 16.'; }
-  return 'Flint added a flame.';
+function wrenNote(post) {
+  if (post.seen >= post.wait) return 'Wren has seen enough: hold it together.';
+  return 'Wren has seen ' + post.seen + ' of ' + post.wait + '.';
 }
 function captionFor(v, pre, post, ev) {
-  var c1 = '', c2 = [];
-  var joins = ev.filter(function (e) { return e.type === 'join'; }).map(function (e) { return NAME[e.who]; });
+  var c1 = '', c2 = [], sn = stripesNote(pre, post);
+  var joins = ev.filter(function (e) { return e.type === 'join' && !e.late; }).map(function (e) { return NAME[e.who]; });
+  var late = ev.filter(function (e) { return e.type === 'join' && e.late; }).map(function (e) { return NAME[e.who]; });
   var hotNo = ev.filter(function (e) { return e.type === 'refuse' && e.why === 'scorching'; }).map(function (e) { return NAME[e.who]; });
   var cooled = ev.some(function (e) { return e.type === 'cool'; });
   if (v === 'hold') {
-    c1 = 'You held it. Your hands are ' + HW(post.hand) + (post.seen < post.wait ? '; Wren has seen ' + post.seen + ' of ' + post.wait + '.'
-                                                          : post.seen === post.wait ? '; Wren has seen enough.' : '.');
-  } else if (v === 'idk') {
-    c1 = 'You bounced it. ' + (pre.hand > 0 ? 'Your hands cooled to ' + HW(post.hand) + ', but bouncing isn’t holding: Wren didn’t count it.'
-                                            : 'Your hands were already cool, and bouncing isn’t holding.');
+    c1 = 'You held it: no flame from you.';
+    c2.push('Flint added his: ' + flamesW(post.F) + '. Your hands are ' + HW(post.hand) + '.');
+    // one more thing, the most useful first: into the stripes, Wren ready, what the stripes say, Wren's count
+    if (sn && pre.maxF < M.LO) c2.push(sn);
+    else if (M.ready(post) && !M.ready(pre)) c2.push(wrenNote(post));
+    else if (sn) c2.push(sn);
+    else c2.push(wrenNote(post));
+    if (!sn && M.tooHot(post) && !M.ready(post)) c2.push('Too hot to hold: bounce it or toss it.');
+  } else if (v === 'bounce') {
+    c1 = 'You bounced it: +1 coin, but you added a flame.';
+    c2.push('Flint added his: ' + flamesW(post.F) + '.' + (pre.hand > 0 ? ' Your hands cooled to ' + HW(post.hand) + '.' : ''));
+    if (sn) c2.push(sn);
+    else if (M.ready(post)) c2.push('Wren is ready: hold it together.');
   } else if (v === 'together') {
-    var hands = post.on.length >= M.NEED ? ': five pairs of hands.' : '.';
-    if (joins.length && joins[0] === 'Wren') c1 = 'Wren said yes' + (joins.length > 2 ? ', and ' : ' and ') + joinNames(joins.slice(1)) + ' followed' + hands;
-    else if (joins.length) c1 = joinNames(joins) + ' said yes' + hands;
-    else c1 = 'You kept holding it together.';
-    if (hotNo.length && joins.length) c1 = c1.replace(/\.$/, ';') + ' ' + joinNames(hotNo) + ' said no: too hot.';
-    else if (hotNo.length) c1 += ' ' + joinNames(hotNo) + ' still say no.';
-    if (pre.on.length < 3 && post.on.length >= 3) c2.push('Three hands stop Flint, and it cooled a flame.');
-    else if (cooled) c2.push('It cooled a flame.');
-    if (post.on.length >= M.NEED) c2.push('Put it down now.');
-    else if (post.F >= M.SCORCH) c2.push('Ask again below scorching.');
-    else c2.push('Not scorching now: ask again.');
-  } else if (v === 'toss') {
-    c1 = 'You tossed it: ' + (pre.hand > 0 ? 'your hands cooled at once, but' : 'your hands were already cool, and') + ' it came back six flames hotter.';
-    if (pre.on.length > 1) c2.push('The others let go.');
-    if (pre.seen > 0) c2.push('Wren crossed out a hold (' + post.seen + ' of ' + post.wait + ').');
-    if (post.F >= M.SCORCH && pre.F < M.SCORCH) c2.push('It’s scorching: Reed and Oak say no.');
-  }
-  if (ev.some(function (e) { return e.type === 'build'; })) { var fs = flintSays(post); if (fs) c2.unshift(fs); }
-  if (!post.out && (v === 'hold' || v === 'idk')) {
-    if (M.ready(post)) c2.push(M.tooHot(post) ? 'Wren is ready: ask, and the others take the heat.' : 'Wren is ready: hold it together.');
-    else if (M.tooHot(post)) c2.push('Too hot to hold: bounce it or toss it.');
+    var five = post.on.length >= M.NEED, stopped = pre.on.length < 3 && post.on.length >= 3;
+    if (joins.length && !hotNo.length) c1 = 'Wren said yes, and ' + joinNames(joins.slice(1)) + ' followed.';
+    else if (joins.length) c1 = joinNames(joins) + ' said yes; ' + joinNames(hotNo) + (late.length ? ' waited: it was scorching.' : ' said no: it’s scorching.');
+    else c1 = 'You held it together: it cooled to ' + post.F + '.';
+    if (!joins.length && late.length) c2.push(joinNames(late) + ' joined: five pairs of hands.');
+    else if (!joins.length) c2.push('Still scorching: keep holding it together.');
+    else if (hotNo.length && late.length) c2.push('Three holding it stopped Flint and cooled it to ' + post.F + ', so ' + joinNames(late) + ' joined.');
+    else if (hotNo.length) c2.push('Three holding it stopped Flint and cooled it to ' + post.F + '. Keep holding it together.');
+    else c2.push('Five pairs of hands, and Flint has stopped.');
+    if (five) c2.push('Put it down to keep your coins.');
   }
   return [c1, c2.join(' ')];
 }
 function nextHoldsW(s) { var n = s.wait - s.seen; return n === 1 ? 'one more hold' : NUMW[n] + ' more holds'; }
-// What each button will do now, or why it isn't lit: { lit, s, why: [c1, c2] }.
+// What a move would do to the heat, read from the rules: the hottest it would get, and whether it
+// would leave no way to put it down even if the fire is in the last box.
+function lookAhead(v) {
+  var t = M.clone(S); t.burn = 99; M.step(t, v);
+  return { maxF: t.maxF, doom: t.maxF >= M.TOP || !M.canWin(t) };
+}
+function fireNote(v) {
+  var r = lookAhead(v);
+  if (r.maxF >= M.TOP) return '→ ' + r.maxF + ': it catches fire';
+  if (r.doom) return '→ ' + r.maxF + ': no way back';
+  if (r.maxF > S.maxF && r.maxF >= M.LO) return '→ ' + r.maxF + ': may catch fire';
+  return '';
+}
+// What each button will do now, or why it isn't lit: { lit, s, w (a warning, or ''), soft, why: [c1, c2] }.
 function verbInfo(v) {
-  var s = S, o = M.offered(s), lit = o.indexOf(v) >= 0, alone = s.on.length === 1, F1 = s.F + 1, n;
-  if (s.out) return { lit: false, s: 'the round is over', why: ['This round is over.', ''] };
+  var s = S, o = M.offered(s), lit = o.indexOf(v) >= 0, alone = s.on.length === 1, n;
+  if (s.out) return { lit: false, s: v === 'down' && s.out === 'down' ? 'you keep your coins' : 'the round is over', w: '', why: ['This round is over.', ''] };
   if (v === 'hold') {
-    if (lit) { n = heatNote(F1); return { lit: true, s: n ? '+1 flame (Flint) → ' + F1 + ': ' + n : 'slow down alone: hands heat, Wren counts' }; }
-    if (!alone) return { lit: false, s: 'not now: you’re holding it together', why: ['You’re already holding it, together with the others.', 'Hold it is for holding it alone. Keep holding it together, or put it down.'] };
-    return { lit: false, s: 'not now: your hands are too hot',
-             why: ['Not now: your hands are too hot to hold it alone.', M.ready(s) ? 'Wren is ready: hold it together, and the others take the heat.' : 'Bounce it (I don’t know) to cool them a step, or toss it to cool them at once.'] };
+    if (lit) return { lit: true, s: '+1 flame (Flint’s)', g: 'slow down alone', w: fireNote('hold') };
+    if (!alone) return { lit: false, s: 'not now: holding it together', w: '', why: ['You’re already holding it, together with the others.', 'Put it down, or keep holding it together.'] };
+    return { lit: false, s: 'not now: hands too hot', w: '',
+             why: ['Not now: your hands are too hot to hold it alone.', M.ready(s) ? 'Wren is ready: hold it together, and the others take the heat.' : 'Bounce it to cool them a step, or toss it to cool them at once.'] };
+  }
+  if (v === 'bounce') {
+    if (!lit) return { lit: false, s: 'not now: holding it together', w: '', why: ['You’re holding it together with the others.', 'Put it down, or keep holding it together.'] };
+    return { lit: true, s: '+1 coin, +2 flames', g: 'carry on building', w: fireNote('bounce') };
   }
   if (v === 'toss') {
-    var F6 = s.F + M.ROUND, hn = heatNote(F6);
-    if (!alone) return { lit: true, s: 'race on: they let go; +6 ' + (hn ? '→ ' + hn : '→ ' + F6 + ' flames') };
-    if (hn === 'it will catch fire' || hn === 'it may catch fire') return { lit: true, s: 'race on: +6 flames, ' + hn.replace('it may', 'may') };
-    if (hn) return { lit: true, s: 'race on: +6 → ' + F6 + ', scorching' };
-    return { lit: true, s: 'race on: ' + (s.hand > 0 ? 'cool hands now; ' : '') + '+6 → ' + F6 + ' flames' };
+    var f = fireNote('toss');
+    return { lit: true, s: '+5 coins, +6 flames', g: 'race ahead', w: f,
+             soft: s.on.length > 1 ? 'they let go, Wren −1' : s.seen > 0 ? 'Wren −1 hold' : '' };
   }
   if (v === 'together') {
-    if (!lit) return { lit: false, s: 'not now: Wren wants ' + nextHoldsW(s),
-                       why: ['Not now: Wren wants to see you hold it ' + s.wait + (s.wait === 1 ? ' time' : ' times') + ' first.', 'She has seen ' + s.seen + '. Hold it, and she counts it.'] };
-    if (alone) return { lit: true, s: 'ask: Wren says yes, the rest follow' };
-    if (M.enough(s)) return { lit: true, s: 'keep holding it together: −1 flame' };
-    return { lit: true, s: M.scorching(s) ? 'keep holding it: −1 flame' : 'ask again: Reed and Oak follow' };
-  }
-  if (v === 'idk') {
-    if (!lit) return { lit: false, s: 'not now: you’re holding it together', why: ['You’re holding it together: nothing to wait for.', 'Keep holding it together, or put it down.'] };
-    n = heatNote(F1);
-    return { lit: true, s: n ? '+1 flame (Flint) → ' + F1 + ': ' + n : 'wait and see: hands cool, +1 flame' };
+    if (!lit) {
+      if (!alone) return { lit: false, s: 'everyone’s holding it', w: '', why: ['All five of you are holding it.', 'Put it down to keep your coins.'] };
+      return { lit: false, s: 'not yet: Wren wants ' + (s.wait - s.seen) + ' more', w: '',
+               why: ['Not yet: Wren wants to see you hold it ' + s.wait + (s.wait === 1 ? ' time' : ' times') + ' first.', 'She has seen ' + s.seen + '. Hold it, and she counts it.'] };
+    }
+    if (alone) return { lit: true, s: M.scorching(s) ? 'ask: 3 of you, not 5' : 'ask: the others follow', g: M.scorching(s) ? 'Reed, Oak: too hot' : 'slow down together', w: '' };
+    return { lit: true, s: '−1 flame a move', g: 'Reed and Oak wait', w: '' };
   }
   if (v === 'down') {
-    if (lit) return { lit: true, s: 'five pairs of hands: into the ground' };
-    return { lit: false, s: 'needs five pairs of hands on it',
-             why: ['Not yet: it takes five pairs of hands to put it down.', s.on.length === 1 ? 'Right now it’s only yours.' : 'Now there are ' + NUMW[s.on.length] + '.'] };
+    if (lit) return { lit: true, s: 'stop the race together: keep your coins', w: '' };
+    n = s.on.length;
+    return { lit: false, s: 'needs five pairs of hands', w: '',
+             why: ['Not yet: it takes five pairs of hands to put it down.', n === 1 ? 'Right now it’s only yours.' : 'Now there are ' + NUMW[n] + '.'] };
   }
 }
 
@@ -536,17 +589,27 @@ function flight(tl, from, to, t0, dur, trail) {
   set(tl, 'potAt', t0 + dur, to);
 }
 function plus(tl, t, box, seat, text) {
-  fx(tl, { kind: 'plusBox', box: box, t0: t, t1: t + 1000 });
-  if (seat) fx(tl, { kind: 'plusSeat', seat: seat, text: text || '+1', t0: t, t1: t + 1000 });
+  fx(tl, { kind: 'plusBox', box: box, t0: t, t1: t + 1100 });
+  if (seat) fx(tl, { kind: 'plusSeat', seat: seat, text: text || '+1', t0: t, t1: t + 1100 });
+}
+// Everything the words name changes when the words do: flames, the stripes, your hands, Wren's
+// dots, your coins and Flint's. (A burn zeroes the coins when it happens, not before.)
+function readouts(tl, t, post) {
+  var burned = post.out === 'burned';
+  set(tl, 'F', t, post.F); set(tl, 'maxF', t, post.maxF);
+  set(tl, 'hand', t, post.hand); set(tl, 'seen', t, post.seen);
+  set(tl, 'coins', t, burned ? post.lost : post.coins);
+  set(tl, 'flintCoins', t, burned ? post.flintLost : post.flint);
 }
 function burnAt(tl, t, post) {
   set(tl, 'burned', t, true);
   tween(tl, 'crack', t, 400, 0, 1);
-  set(tl, 'c1', t, 'It caught fire at ' + post.burn + ' flames. It burned every pair of hands at the table, Flint’s too.');
-  set(tl, 'c2', t, '');
+  set(tl, 'coins', t, 0); set(tl, 'flintCoins', t, 0);
+  set(tl, 'c1', t, 'It caught fire at ' + flamesW(post.burn) + '.');
+  set(tl, 'c2', t, 'It burned every pair of hands at the table, Flint’s too, and all their coins.');
   set(tl, 'tag', t, '');
   set(tl, 'ended', t + 1300, 'burned');
-  tl.end = t + 1300;
+  tl.end = t + 1300; tl.capT = t;
   tl.stop = true;
 }
 function flintBuild(tl, A, ev, post) {        // Flint's flame: a spark from Flint to the potato, +1 in its box
@@ -554,116 +617,82 @@ function flintBuild(tl, A, ev, post) {        // Flint's flame: a spark from Fli
   if (!fb) return A;
   if (RM) fx(tl, { kind: 'flintMark', t0: A, t1: A + 1300 });
   else fx(tl, { kind: 'spark', t0: A, t1: A + 280 });
-  var t = A + (RM ? 0 : 280);
-  set(tl, 'F', t, fb.F); plus(tl, t, fb.F, 'flint', '+1 flame');
-  if (post.out === 'burned') burnAt(tl, t + 150, post);
-  return t + 150;
+  plus(tl, A, fb.F, 'flint', '+1 flame');
+  if (post.out === 'burned') burnAt(tl, A + (RM ? 0 : 300), post);
+  return A + 300;
 }
 function coolFx(tl, A, ev) {
   var c = ev.filter(function (e) { return e.type === 'cool'; })[0];
   if (!c) return A;
-  set(tl, 'F', A, c.F);
   fx(tl, { kind: 'minusBox', box: c.F + 1, t0: A, t1: A + 1100 });
   fx(tl, { kind: 'coolMark', t0: A, t1: A + 1100 });
   return A + 150;
 }
-// The lap: off your hands, round the ring, a flame at each seat, back into your hands.
+// The lap: off your hands, round the ring, a flame at each seat, back into your hands. The flames
+// climb in the box as it goes round, and the caption says the total when it's back.
 function buildRound(tl, pre, post, ev) {
   var mid = pre.on.length > 1, flames = ev.filter(function (e) { return e.type === 'flame'; });
   var burn = ev.filter(function (e) { return e.type === 'burn'; })[0];
-  set(tl, 'hand', 0, 0);
+  set(tl, 'hand', 0, 0); set(tl, 'seen', 0, post.seen);
+  set(tl, 'coins', 0, pre.coins + M.TOSS_COINS);
+  fx(tl, { kind: 'coinPop', n: M.TOSS_COINS, t0: 0, t1: 1600 });
   set(tl, 'on', 0, []);
-  set(tl, 'tag', 0, 'tossed it');
-  if (pre.seen > 0) { set(tl, 'seen', 0, post.seen); set(tl, 'seenPop', 0, -1); set(tl, 'seenPop', 1300, 0); }
+  set(tl, 'tag', 0, 'tossed');
+  if (pre.seen > 0) { set(tl, 'seenPop', 0, -1); set(tl, 'seenPop', 1400, 0); }
   if (base.flint === 'stopped') set(tl, 'flint', 0, 'builds');
   if (mid) pre.on.forEach(function (k) { set(tl, 'pose.' + k, 0, 'empty'); tween(tl, 'reach.' + k, 0, 300, 1, 0); });
   if (pre.on.length >= 3) { tween(tl, 'chalkRub', 0, 300, 0, 1); set(tl, 'chalk', 300, 0); set(tl, 'chalkRub', 320, 0); }
+  var sn = stripesNote(pre, post);
+  var back = [(pre.seen > 0 ? 'Wren crossed out a hold (' + post.seen + ' of ' + post.wait + ').' : ''),
+              sn || (post.F >= M.SCORCH && pre.F < M.SCORCH ? 'It’s scorching: Reed and Oak won’t touch it.' : '')].filter(Boolean).join(' ');
+  function backAt(t) {
+    set(tl, 'c1', t, 'It came back six flames hotter: ' + flamesW(post.F) + '.');
+    set(tl, 'c2', t, back || 'Your hands are cool.');
+    tl.capT = t;
+  }
   if (RM) {
     set(tl, 'pose.you', 0, burn ? 'empty' : 'rest');
     set(tl, 'potAt', 0, burn ? (burn.by === 'you' ? 'wren' : burn.by) : 'you');
-    set(tl, 'F', 0, post.F);
+    readouts(tl, 0, post);
     fx(tl, { kind: 'loop', t0: 0, t1: 1500, flames: flames.map(function (e) { return e.by; }) });
     if (burn) { burnAt(tl, 0, post); return 0; }
-    set(tl, 'on', 0, ['you']); set(tl, 'tag', 0, 'back to you');
+    set(tl, 'on', 0, ['you']); set(tl, 'tag', 0, 'back');
+    backAt(0);
     return 400;
   }
   var from = mid ? 'middle' : 'you', L;
   set(tl, 'pose.you', 0, 'empty');
   var f0 = flames[0];
-  set(tl, 'F', 100, f0.F); plus(tl, 100, f0.F, 'you');
+  set(tl, 'F', 100, f0.F); set(tl, 'maxF', 100, Math.max(pre.maxF, f0.F)); plus(tl, 100, f0.F, 'you');
   flight(tl, from, 'wren', 0, 320, true);
   L = 320;
-  if (burn && burn.by === 'you') { set(tl, 'pose.wren', L, 'rest'); burnAt(tl, L, post); return L; }
+  if (burn && burn.by === 'you') { set(tl, 'pose.wren', L, 'rest'); set(tl, 'flintCoins', 0, post.flintLost); burnAt(tl, L, post); return L; }
   var ring = ['wren', 'moss', 'flint', 'reed', 'oak'];
   for (var i = 0; i < ring.length; i++) {
     var k = ring[i], e = null;
     flames.forEach(function (f) { if (f.by === k) e = f; });
     if (!e) break;
     set(tl, 'pose.' + k, L, 'rest');
-    set(tl, 'F', L, e.F); plus(tl, L, e.F, k);
-    if (burn && burn.by === k) { burnAt(tl, L, post); return L; }
+    set(tl, 'F', L, e.F); set(tl, 'maxF', L, Math.max(pre.maxF, e.F)); plus(tl, L, e.F, k);
+    if (burn && burn.by === k) { set(tl, 'flintCoins', 0, post.flintLost); burnAt(tl, L, post); return L; }
     set(tl, 'pose.' + k, L + 130, 'empty');
     flight(tl, k, ring[i + 1] || 'you', L + 130, 200, true);
     L += 330;
   }
   set(tl, 'pose.you', L, 'rest');
   set(tl, 'on', L, ['you']);
-  set(tl, 'tag', L, 'back to you');
+  set(tl, 'tag', L, 'back');
+  backAt(L);
   return L + 150;
 }
 function build(v, pre, post, ev) {
   var tl = newTL(), E = 0;
-  var cc = captionFor(v, pre, post, ev);
   set(tl, 'luggage', 0, false); set(tl, 'bubble', 0, false);
-  set(tl, 'c1', 0, cc[0]); set(tl, 'c2', 0, cc[1]);
   if (v === 'toss') {
+    set(tl, 'c1', 0, 'You tossed it on: +5 coins, and your hands are cool.');
+    set(tl, 'c2', 0, 'Everyone races after you: a flame at every seat.' + (pre.on.length > 1 ? ' The others let go.' : ''));
     E = buildRound(tl, pre, post, ev);
-    return finalize(tl);
-  }
-  if (v === 'hold') {
-    set(tl, 'pose.you', 0, 'grip');
-    set(tl, 'tag', 0, 'holding it');
-    if (RM) fx(tl, { kind: 'wave', t0: 0, t1: 900, still: true });
-    else fx(tl, { kind: 'wave', t0: 60, t1: 380 });
-    set(tl, 'hand', RM ? 0 : 380, post.hand);
-    set(tl, 'seen', RM ? 0 : 380, post.seen); set(tl, 'seenPop', RM ? 0 : 380, 1); set(tl, 'seenPop', 1400, 0);
-    E = flintBuild(tl, 430, ev, post);
-    if (tl.stop) return finalize(tl);
-    tl.end = Math.max(tl.end, 800);
-    return finalize(tl);
-  }
-  if (v === 'idk') {
-    set(tl, 'pose.you', 0, 'relaxed');
-    set(tl, 'tag', 0, 'bouncing it');
-    if (!RM) { fx(tl, { kind: 'bounce', t0: 0, t1: 720 }); if (pre.hand > 0) fx(tl, { kind: 'vent', t0: 120, t1: 820 }); }
-    set(tl, 'hand', RM ? 0 : 360, post.hand);
-    E = flintBuild(tl, 480, ev, post);
-    if (tl.stop) return finalize(tl);
-    tl.end = Math.max(tl.end, 820);
-    return finalize(tl);
-  }
-  if (v === 'together') {
-    var joins = ev.filter(function (e) { return e.type === 'join'; }), refs = ev.filter(function (e) { return e.type === 'refuse'; }), T = 0;
-    var mid = pre.on.length > 1;
-    set(tl, 'pose.you', 0, 'grip');
-    set(tl, 'tag', 0, 'together');
-    if (!mid) { tween(tl, 'reach.you', 0, 300, 0, 1); flight(tl, 'you', 'middle', 0, 300, false); T = RM ? 0 : 300; }
-    var onNow = pre.on.slice();
-    joins.forEach(function (e, i) {
-      var tj = T + (RM ? 0 : 260 * i);
-      set(tl, 'pose.' + e.who, tj, 'grip');
-      tween(tl, 'reach.' + e.who, tj, 250, 0, 1);
-      onNow = onNow.concat([e.who]);
-      set(tl, 'on', tj + (RM ? 0 : 250), onNow.slice());
-      fx(tl, { kind: 'say', seat: e.who, text: 'Yes', ok: true, t0: tj, t1: tj + 1500 });
-    });
-    var tEnd = T + (RM ? 0 : 260 * joins.length);
-    refs.forEach(function (e) { if (e.why === 'scorching') fx(tl, { kind: 'say', seat: e.who, text: 'Too hot', t0: tEnd, t1: tEnd + 1700 }); });
-    var sh = ev.filter(function (e) { return e.type === 'shared'; })[0];
-    if (sh) set(tl, 'hand', tEnd, sh.hand);
-    if (pre.on.length < 3 && post.on.length >= 3) { tween(tl, 'chalk', tEnd, 600, 0, 1); set(tl, 'flint', tEnd + 150, 'stopped'); }
-    E = coolFx(tl, tEnd + (RM ? 0 : 250), ev);
-    tl.end = Math.max(tl.end, E + 250);
+    tl.end = Math.max(tl.end, E);
     return finalize(tl);
   }
   if (v === 'down') {
@@ -674,42 +703,113 @@ function build(v, pre, post, ev) {
     tween(tl, 'chalk', 0, 300, undefined, 0);
     if (RM) fx(tl, { kind: 'downArrow', t0: 0, t1: 1500 });
     set(tl, 'potAt', 700, 'ground');
-    set(tl, 'on', 700, []);
     set(tl, 'out', 700, true);
     set(tl, 'tag', 0, '');
     pre.on.forEach(function (k) { set(tl, 'pose.' + k, 700, 'empty'); tween(tl, 'reach.' + k, 700, 300, 1, 0); });
     tween(tl, 'lower', 700, 300, 1, 0);
-    set(tl, 'c1', 0, 'You put it down together, into the ground.');
-    set(tl, 'c2', 0, '');
+    set(tl, 'c1', 0, 'You put it down together.');
+    set(tl, 'c2', 0, 'You keep your ' + coinsW(post.coins) + '. Nobody got burned.');
     tween(tl, 'dim', 1500, 300, 0, 1);
     set(tl, 'ended', 1500, 'down');
     tl.end = Math.max(tl.end, 1800);
     return finalize(tl);
   }
+  var cc = captionFor(v, pre, post, ev);
+  set(tl, 'c1', 0, cc[0]); set(tl, 'c2', 0, cc[1]);
+  readouts(tl, 0, post);
+  if (v === 'hold') {
+    set(tl, 'pose.you', 0, 'grip');
+    set(tl, 'tag', 0, 'holding it');
+    if (RM) fx(tl, { kind: 'wave', t0: 0, t1: 900, still: true });
+    else fx(tl, { kind: 'wave', t0: 60, t1: 380 });
+    fx(tl, { kind: 'noFlame', t0: 0, t1: 1300 });
+    set(tl, 'seenPop', 0, 1); set(tl, 'seenPop', 1400, 0);
+    E = flintBuild(tl, RM ? 0 : 120, ev, post);
+    if (tl.stop) return finalize(tl);
+    tl.end = Math.max(tl.end, 800);
+    return finalize(tl);
+  }
+  if (v === 'bounce') {
+    var yf = ev.filter(function (e) { return e.type === 'flame' && e.by === 'you'; })[0];
+    set(tl, 'pose.you', 0, 'relaxed');
+    set(tl, 'tag', 0, 'bouncing');
+    if (!RM) { fx(tl, { kind: 'bounce', t0: 0, t1: 720 }); if (pre.hand > 0) fx(tl, { kind: 'vent', t0: 120, t1: 820 }); }
+    fx(tl, { kind: 'coinPop', n: M.BOUNCE_COINS, t0: 0, t1: 1500 });
+    fx(tl, { kind: 'youFlame', t0: 0, t1: 1300 });
+    if (yf) fx(tl, { kind: 'plusBox', box: yf.F, t0: 0, t1: 1100 });
+    if (post.out === 'burned' && !ev.some(function (e) { return e.type === 'build'; })) { burnAt(tl, RM ? 0 : 300, post); return finalize(tl); }
+    E = flintBuild(tl, RM ? 0 : 120, ev, post);
+    if (tl.stop) return finalize(tl);
+    tl.end = Math.max(tl.end, 820);
+    return finalize(tl);
+  }
+  if (v === 'together') {
+    var joins = ev.filter(function (e) { return e.type === 'join' && !e.late; }), late = ev.filter(function (e) { return e.type === 'join' && e.late; });
+    var refs = ev.filter(function (e) { return e.type === 'refuse'; }), T = 0;
+    var mid = pre.on.length > 1;
+    set(tl, 'pose.you', 0, 'grip');
+    set(tl, 'tag', 0, 'together');
+    set(tl, 'on', 0, post.on.slice());
+    if (!mid) { tween(tl, 'reach.you', 0, 300, 0, 1); flight(tl, 'you', 'middle', 0, 300, false); T = RM ? 0 : 300; }
+    joins.forEach(function (e, i) {
+      var tj = T + (RM ? 0 : 260 * i);
+      set(tl, 'pose.' + e.who, tj, 'grip');
+      tween(tl, 'reach.' + e.who, tj, 250, 0, 1);
+      fx(tl, { kind: 'say', seat: e.who, text: 'Yes', ok: true, t0: tj, t1: tj + 1500 });
+    });
+    var tEnd = T + (RM ? 0 : 260 * joins.length);
+    if (pre.on.length < 3 && post.on.length >= 3) { tween(tl, 'chalk', 0, 600, 0, 1); set(tl, 'flint', 0, 'stopped'); }
+    E = coolFx(tl, tEnd + (RM ? 0 : 450), ev);
+    var lateAt = E + (RM ? 0 : 500);
+    refs.forEach(function (e) { if (e.why === 'scorching') fx(tl, { kind: 'say', seat: e.who, text: 'Too hot', t0: tEnd, t1: late.length ? lateAt : tEnd + 1700 }); });
+    late.forEach(function (e, i) {
+      var tj = lateAt + (RM ? 0 : 260 * i);
+      set(tl, 'pose.' + e.who, tj, 'grip');
+      tween(tl, 'reach.' + e.who, tj, 250, 0, 1);
+      fx(tl, { kind: 'say', seat: e.who, text: 'Yes', ok: true, t0: tj, t1: tj + 1500 });
+    });
+    tl.end = Math.max(tl.end, (late.length ? lateAt : E) + 250 + (RM ? 0 : 260 * late.length));
+    return finalize(tl);
+  }
+}
+// No way left, and you chose to see it: Flint keeps adding flames until it catches fire.
+function buildPlayOut(pre, post, ev) {
+  var tl = newTL(), t = 0;
+  set(tl, 'c1', 0, 'No way left: Flint keeps adding flames.'); set(tl, 'c2', 0, '');
+  set(tl, 'doomUI', 0, false);
+  var fl = ev.filter(function (e) { return e.type === 'flame'; });
+  fl.forEach(function (e) {
+    if (!RM) fx(tl, { kind: 'spark', t0: t, t1: t + 260 });
+    set(tl, 'F', t + (RM ? 0 : 260), e.F); set(tl, 'maxF', t + (RM ? 0 : 260), Math.max(pre.maxF, e.F));
+    plus(tl, t + (RM ? 0 : 260), e.F, 'flint', '+1 flame');
+    t += RM ? 0 : 420;
+  });
+  set(tl, 'flintCoins', 0, post.flintLost);
+  burnAt(tl, t + (RM ? 0 : 100), post);
+  return finalize(tl);
 }
 function introText() {
   var p = PARAMS;
-  if (ROUNDI === 0) return ['Flint tossed you the potato: the race to build AI. You and five others are building it.',
-                            'Hold it, and Wren sees you mean it.'];
+  if (ROUNDI === 0) return ['Flint tossed you the potato: the race to build AI. Everyone at this table is building it.',
+                            'Hold it to slow down. Wren, another builder, joins once she’s seen you hold it twice.'];
   if (ROUNDI === 1) return ['Round 2: Wren wants to see 4 holds, and your hands can take 3.',
-                            'Too hot? Bounce it (+1 flame) or toss it (+6).'];
-  if (ROUNDI === 2) return ['Round 3: it starts hotter, at 5 flames, and Wren wants 5 holds.',
-                            'Every flame counts: the fire is just past scorching.'];
+                            'Every move, Flint still adds a flame. Is there room to race?'];
+  if (ROUNDI === 2) return ['Round 3: it starts hotter, at 3 flames. Wren wants 2 holds.',
+                            'Race, or not? The fire is somewhere in the stripes.'];
   return ['Round ' + (ROUNDI + 1) + ': it starts at ' + flamesW(p.start) + ', and Wren wants ' + holdsW(p.wait) + '.',
-          'Put it down with five pairs of hands before it catches fire.'];
+          'The fire is somewhere in the striped boxes, in a new place.'];
 }
 function buildIntro() {
   var tl = newTL(), it = introText();
   set(tl, 'c1', 0, it[0]); set(tl, 'c2', 0, it[1]);
   set(tl, 'tag', 0, '');
   set(tl, 'bubble', RM ? 0 : 100, true);
-  set(tl, 'F', RM ? 0 : 700, S.F); plus(tl, RM ? 0 : 700, S.F, 'flint');
   set(tl, 'pose.flint', RM ? 0 : 700, 'empty');
   if (RM) set(tl, 'potAt', 0, 'you');
   else flight(tl, 'flint', 'you', 700, 450, true);
   set(tl, 'pose.you', RM ? 0 : 1150, 'rest');
   set(tl, 'on', RM ? 0 : 1150, ['you']);
-  set(tl, 'tag', RM ? 0 : 1150, 'yours now');
+  set(tl, 'tag', RM ? 0 : 1150, 'yours');
   set(tl, 'bubble', RM ? 1600 : 1300, false);
   tl.end = RM ? 1600 : 1300;
   return finalize(tl);
@@ -795,7 +895,7 @@ function potPos(t) {
   var at = V('potAt', t), pt = anchorOf(at);
   var lz = (V('lower', t) || 0) * 8, sk = (V('sink', t) || 0) * 34;
   var bo = activeFx('bounce', t), bx = 0, by = 0;
-  if (bo && at === 'you') {             // I don't know: hop from one mitten to the other and back
+  if (bo && at === 'you') {             // Bounce it: hop from one mitten to the other and back
     var q = (t - bo.t0) / (bo.t1 - bo.t0);
     bx = Math.sin(q * Math.PI * 2) * 26; by = -Math.abs(Math.sin(q * Math.PI * 2)) * 22;
   }
@@ -891,6 +991,13 @@ function renderStage(t) {
     } else if (f.kind === 'spark') {                // Flint's flame travels to the potato
       var sx = G.flint.a.x + 30, sy = G.flint.a.y - 8, e2 = ease(Math.min(1, p));
       top += flameIcon(sx + (pp.x + 8 - sx) * e2, sy + (pp.y - 30 - sy) * e2, 1.3);
+    } else if (f.kind === 'noFlame') {             // Hold it: your own flame, held back
+      var q1 = Math.min(1, p * 4, (1 - p) * 4);
+      top += '<g opacity="' + f1(q1) + '">' + flameIcon(YOU_MARK.x, YOU_MARK.y, 1.5).replace('fill:var(--heat);stroke:var(--bg)', 'fill:var(--cool-soft);stroke:var(--cool)') +
+             '<line x1="' + (YOU_MARK.x - 10) + '" y1="' + (YOU_MARK.y + 8) + '" x2="' + (YOU_MARK.x + 10) + '" y2="' + (YOU_MARK.y - 14) + '" style="stroke:var(--cool)" stroke-width="3" stroke-linecap="round"/></g>';
+    } else if (f.kind === 'youFlame') {            // Bounce it: you added your flame
+      var rise2 = RM ? 0 : Math.min(1, p) * 8, q2 = Math.min(1, p * 4, (1 - p) * 4);
+      top += '<g opacity="' + f1(q2) + '">' + flameIcon(YOU_MARK.x, YOU_MARK.y - rise2, 1.5) + text(YOU_MARK.x - 22, YOU_MARK.y + 2 - rise2, '+1', 15, { fill: '--heat' }) + '</g>';
     } else if (f.kind === 'flintMark') {
       top += text(G.flint.a.x + 74, G.flint.a.y - 20, '+1 flame', 15, { fill: '--heat' });
     } else if (f.kind === 'coolMark') {
@@ -920,6 +1027,7 @@ var shapes = {
 };
 function badge(k) { return '<svg viewBox="0 0 14 14" aria-hidden="true">' + shapes[SHAPE[k]] + '</svg>'; }
 var CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2,6.5 5,9.2 10.2,2.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var COIN = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.6" style="fill:var(--coin-fill);stroke:var(--coin)" stroke-width="1.5"/><path d="M8,4.6v6.8M6.2,6.4h3.6" style="stroke:var(--coin)" stroke-width="1.4" stroke-linecap="round"/></svg>';
 function pct(x, y, w, h) {
   return 'left:' + (x / VBW * 100) + '%;top:' + (y / VBH * 100) + '%;' + (w ? 'width:' + (w / VBW * 100) + '%;' : '') + (h ? 'height:' + (h / VBH * 100) + '%;' : '');
 }
@@ -957,12 +1065,15 @@ function no(s) { return '<span class="no">' + s + '</span>'; }
 function status(k, t) {
   var on = V('on', t) || [], F = V('F', t), burned = V('burned', t), out = V('out', t);
   if (burned) return no('burned');
-  if (k === 'flint') return V('flint', t) === 'stopped' ? ok('stopped: 3 hold it') : '+1 flame a move until 3 hold it';
+  if (k === 'flint') {
+    var fc = '<span class="cn">' + COIN + ' ' + V('flintCoins', t) + '</span>';
+    return (V('flint', t) === 'stopped' ? ok('stopped: 3 hold it') : '+1 flame a move') + ' · ' + fc;
+  }
   if (out) return 'hands off it';
   if (on.indexOf(k) >= 0) return ok('holding it');
   if (k === 'wren') {
     var n = V('seen', t) || 0;
-    return (n >= S.wait ? ok('ready: ask her') : 'yes after ' + holdsW(S.wait)) + '<br>' + pipsHTML(n, S.wait, V('seenPop', t) || 0);
+    return (n >= S.wait ? ok('ready: ask her') : 'joins after ' + holdsW(S.wait)) + '<br>' + pipsHTML(n, S.wait, V('seenPop', t) || 0);
   }
   if ((k === 'reed' || k === 'oak') && F >= M.SCORCH) return no('no: it’s scorching');
   return k === 'moss' ? 'follows Wren' : k === 'reed' ? 'follows Moss; not if scorching' : 'follows Reed; not if scorching';
@@ -981,8 +1092,10 @@ function renderOverlays(t) {
   chalk.style.visibility = ch > 0 ? 'visible' : 'hidden';
   $('flintBubble').hidden = !V('bubble', t);
 }
+// The heat: 16 boxes in four named groups. The fire is somewhere in the striped boxes; a box it has
+// already passed without catching loses its stripes, so the stripes show where it can still be.
 function renderTrack(t) {
-  var F = Math.min(16, V('F', t) || 1), out = V('out', t), burned = V('burned', t);
+  var F = Math.min(16, V('F', t) || 1), mx = V('maxF', t) || F, out = V('out', t), burned = V('burned', t);
   var h = '', mark = {}, words = ['warm', 'hot', 'very hot', 'scorching'], now = M.level(Math.max(1, F)) - 1;
   if (TL) TL.fx.forEach(function (f) {
     if ((f.kind === 'plusBox' || f.kind === 'minusBox') && t >= f.t0 && t < f.t1) mark[Math.min(16, f.box)] = f.kind === 'plusBox' ? '+1' : '−1';
@@ -990,8 +1103,8 @@ function renderTrack(t) {
   for (var gI = 0; gI < 4; gI++) {
     h += '<div class="grp"><div class="gb">';
     for (var i = gI * 4 + 1; i <= gI * 4 + 4; i++) {
-      var lit = i <= F, mk = mark[i];
-      h += '<span class="box' + (i >= 15 ? ' band' : '') + (lit ? ' lit' : '') + '">' +
+      var lit = i <= F, mk = mark[i], band = i >= M.LO && i > mx && !out;
+      h += '<span class="box' + (band ? ' band' : '') + (lit ? ' lit' : '') + '">' +
            (mk === '+1' && lit ? '<span class="plus">+1</span>' : mk === '−1' ? '<span class="plus minus">−1</span>'
             : lit ? '<svg viewBox="0 0 12 16"><path d="M6,1.5C7.6,4.4 10.4,6.4 10.4,10A4.4,4.4 0 0 1 1.6,10C1.6,8 2.8,6.8 3.8,5.9 4,7.4 4.8,8.3 5.6,8.6 4.9,6.1 5.2,3.7 6,1.5Z" style="fill:var(--heat)"/></svg>' : '') + '</span>';
     }
@@ -1003,14 +1116,15 @@ function renderTrack(t) {
   put('hotLbl', out || burned ? '' : 'How hot:');
   put('heatWord', burned ? 'burned everyone' : out ? 'in the ground' : M.potw(F));
   put('flameCount', burned || out ? '' : '· ' + flamesW(F));
-  put('fireHint', burned || out ? '' : (S.F >= 15 && !S.out ? 'fire at 16 ' : 'fire in here ') +
-      '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1v7M2 5.5 5 8.5 8 5.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>');
+  var arrow = ' <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1v7M2 5.5 5 8.5 8 5.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+  put('fireHint', burned ? '' : out ? 'the fire was at ' + S.burn : '<span class="lng">the fire is in the stripes</span><span class="sht">fire’s in the stripes</span>' + arrow);
 }
 var MIT_ICON = '<path d="M8,20.5V8.5A5.5,5.5 0 0 1 19,8.5V20.5Z M8,15.5C4.5,15 2.6,12.4 3.4,10.2 4.2,8.4 6.6,9.2 8,11.4"/>';
 function renderRows(t) {
-  var burned = V('burned', t), lvl = V('hand', t) || 0, tg = V('tag', t);
+  var burned = V('burned', t), lvl = V('hand', t) || 0, tg = V('tag', t), c = V('coins', t), pop = activeFx('coinPop', t);
   put('yourow', '<span class="pill">you</span>' + (tg ? '<span class="ytag">' + tg + '</span>' : '') +
-      '<span class="yh">hands: <b>' + (burned ? 'burned' : HW(lvl)) + '</b> ' + barHTML(lvl, burned) + '</span>');
+      '<span class="yh"><span class="hl">hands:</span> <b>' + (burned ? 'burned' : HW(lvl)) + '</b> ' + barHTML(lvl, burned) + '</span>' +
+      '<span class="coins' + (burned ? ' burnt' : '') + (pop && !burned ? ' pop' : '') + '" title="your coins" aria-label="your coins: ' + c + '">' + COIN + ' ' + c + '</span>');
 }
 var spoken = { c1: '', c2: '' };
 function renderCaption(t) {
@@ -1023,13 +1137,18 @@ function renderCaption(t) {
 function speak(str, fresh) {
   try {
     if (fresh) window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(str.replace(/…/g, '.').replace(/−/g, 'minus ')); u.rate = SET.slow ? 0.85 : 1;
+    var u = new SpeechSynthesisUtterance(str.replace(/…/g, '.').replace(/−/g, 'minus ').replace(/→/g, 'to')); u.rate = SET.slow ? 0.85 : 1;
     window.speechSynthesis.speak(u);
   } catch (e) {}
 }
+// No way left: once the move has played out, the buttons give way to two plain choices.
+function renderDoom(t) {
+  var d = !!V('doomUI', t) && S && !S.out;
+  if ($('doom').hidden === d) { $('doom').hidden = !d; $('verbs').hidden = d; }
+}
 function render() {
   var t = clock;
-  renderStage(t); renderOverlays(t); renderTrack(t); renderRows(t); renderCaption(t);
+  renderStage(t); renderOverlays(t); renderTrack(t); renderRows(t); renderCaption(t); renderDoom(t);
   var ended = V('ended', t);
   if (ended && !$('game').classList.contains('over')) showEnd(ended);
 }
@@ -1037,8 +1156,9 @@ function render() {
 /* ── Buttons ───────────────────────────────────────────────────────────────── */
 var wasDown = false;
 function setVerb(id, v, info, extra) {
-  var b = $(id);
-  put(id, extra ? extra(info) : '<span class="v">' + v + '</span><span class="s">' + info.s + '</span>');
+  var b = $(id), l2 = info.w || info.soft || info.g || '';
+  put(id, extra ? extra(info) : '<span class="v">' + v + '</span><span class="s">' + info.s + '</span>' +
+      (l2 ? '<span class="w' + (info.w ? '' : info.soft ? ' cost' : ' soft') + '">' + l2 + '</span>' : ''));
   b.classList.toggle('off', !info.lit);
   b.setAttribute('aria-disabled', info.lit ? 'false' : 'true');
 }
@@ -1046,23 +1166,23 @@ function updateButtons() {
   setVerb('vHold', 'Hold it', verbInfo('hold'));
   setVerb('vToss', 'Toss it on', verbInfo('toss'));
   setVerb('vTog', 'Hold it together', verbInfo('together'));
-  setVerb('vIdk', 'I don’t know', verbInfo('idk'));
-  var d = verbInfo('down'), n = S.out ? 0 : S.on.length;
+  setVerb('vBounce', 'Bounce it', verbInfo('bounce'));
+  var d = verbInfo('down'), put_ = S.out === 'down', n = put_ ? M.NEED : S.out ? 0 : S.on.length;
   setVerb('vDown', 'Put it down', d, function (info) {
     var ic = '';
     for (var i = 0; i < M.NEED; i++) ic += '<svg viewBox="0 0 24 22" aria-hidden="true"><g style="fill:' + (i < n ? 'currentColor' : 'none') + ';stroke:currentColor" stroke-width="1.6">' + MIT_ICON + '</g></svg>';
-    return '<span class="txt"><span class="v">Put it down</span><span class="s" style="display:block">' + info.s + '</span></span>' +
+    return '<span class="txt"><span class="v">' + (put_ ? 'Put down' : 'Put it down') + '</span><span class="s" style="display:block">' + info.s + '</span></span>' +
            '<span class="hc" aria-label="' + n + ' of 5 pairs of hands on it">' + ic + ' ' + n + ' of 5</span>';
   });
+  $('vDown').classList.toggle('done', put_);
   var down = d.lit, db = $('vDown');
   if (!down) db.classList.remove('pulse');
   if (down && !wasDown) { db.classList.remove('pulse'); void db.offsetWidth; db.classList.add('pulse'); }
   wasDown = down;
-  $('restart').hidden = !(S.doomed && !S.out);
 }
 
 /* ── Playing ───────────────────────────────────────────────────────────────── */
-var lastPressed = null;
+var lastPressed = null, lastPress = { v: '', at: 0 };
 function finish() {
   if (!TL || TL.done) return;
   var end = TL.end;
@@ -1071,11 +1191,15 @@ function finish() {
   TL.done = true;                       // the move is over; its lingering marks fade on their own
   render();
 }
-// A press always does what its button says. If a move is still playing out, it finishes at once first.
+// A press always does what its button says. If a move is still playing out, it finishes at once
+// first. A second tap on the same button within a fifth of a second is taken as a double tap.
 function press(v) {
   if (!S) return false;
+  var now = performance.now();
+  if (v === lastPress.v && now - lastPress.at < 200) return false;
+  lastPress = { v: v, at: now };
   if (TL && !TL.done) finish();
-  if (S.out) return false;
+  if (S.out || S.doomed) return false;
   var info = verbInfo(v);
   if (!info.lit) {                      // a button that isn't lit says why, and nothing happens
     base.c1 = info.why[0]; base.c2 = info.why[1];
@@ -1084,16 +1208,23 @@ function press(v) {
   }
   closeSeatBubble();
   var pre = M.clone(S), ev = M.step(S, v);
-  if (v === 'toss' && pre.hand === 0) notes.coolTosses = (notes.coolTosses || 0) + 1;
   S.doomed = !S.out && !M.canWin(S);
   TL = build(v, pre, S, ev); clock = 0;
-  if (S.doomed && !S.out) {
-    set(TL, 'c2', 0, 'No way left to put it down in time.');
+  if (S.doomed) {
+    set(TL, 'c2', TL.capT, DOOM);
+    set(TL, 'doomUI', TL.capT, true);
     finalize(TL);
   }
   updateButtons();
   render();
   return true;
+}
+function seeEnd() {
+  if (!S || S.out || !S.doomed) return;
+  if (TL && !TL.done) finish();
+  var pre = M.clone(S), ev = M.playOut(S);
+  TL = buildPlayOut(pre, S, ev); clock = 0;
+  updateButtons(); render();
 }
 function advance(ms) {
   if (!TL) return;
@@ -1108,17 +1239,18 @@ function advance(ms) {
 function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
 function paramsFor(i) {
   if (i < M.ROUNDS.length) return M.ROUNDS[i];
-  return { start: pick(M.FREE.starts), wait: pick(M.FREE.waits) };
+  return pick(M.FREE);
 }
 function newRound(i, keepParams) {
   ROUNDI = i;
   if (!keepParams) PARAMS = paramsFor(i);
-  S = M.create(PARAMS.start, PARAMS.wait, pick(M.BURNS));
+  S = M.create(PARAMS.start, PARAMS.wait, pick(M.FIRES));
   S.doomed = false;
-  notes = {}; wasDown = false; resetBase(PARAMS.start);
+  wasDown = false; resetBase(PARAMS.start);
+  if (i === 0) RESULTS = RESULTS.slice(0, 0);
   $('game').classList.remove('over');
-  $('end').hidden = true; $('verbs').hidden = false; $('howInline').hidden = true; $('endcards').hidden = true;
-  $('yourow').hidden = false; $('restart').hidden = true;
+  $('end').hidden = true; $('verbs').hidden = false; $('doom').hidden = true; $('howInline').hidden = true; $('endcards').hidden = true;
+  $('yourow').hidden = false;
   $('stagewrap').style.height = '';
   put('roundName', i < M.ROUNDS.length ? 'Round ' + (i + 1) + ' of ' + M.ROUNDS.length : 'Round ' + (i + 1) + ' (random)');
   last = {};
@@ -1128,40 +1260,58 @@ function newRound(i, keepParams) {
 }
 
 /* ── The ending ────────────────────────────────────────────────────────────── */
+function didW(s) {
+  var a = [];
+  if (s.holds) a.push('held it alone ' + times(s.holds));
+  if (s.bounces) a.push('bounced it ' + times(s.bounces));
+  if (s.tosses) a.push('tossed it ' + times(s.tosses));
+  if (!a.length) return '';
+  return 'You ' + joinNames(a) + '.';
+}
 function recapLines(s, kind) {
-  var L = [], best = M.coolest(s.start, s.wait);
-  L.push('Wren wanted to see ' + holdsW(s.wait) + '. You held it alone ' + times(s.holds) +
-         (s.forgot ? ', and she crossed out ' + (s.forgot === 1 ? 'one' : NUMW[s.forgot]) + ' when you tossed it.' : '.'));
-  if (s.tosses) L.push('You tossed it ' + times(s.tosses) + (s.tosses === 1 ? ': it came back six flames hotter' : ': six flames each time') + (s.lapBurn ? ', and ' + (s.tosses === 1 ? 'it' : 'the last time it') + ' caught fire on the way round.' : '.') + (s.tossesWithOthers ? ' Tossing it made the others let go.' : ''));
-  if (s.rests) L.push('You bounced it ' + times(s.rests) + (s.rests === 1 ? ', and Flint added a flame' : ', and each time Flint added a flame') +
-                     (s.idleRests ? '; ' + (s.idleRests === s.rests ? (s.rests === 1 ? 'your hands were' : 'each time your hands were') : times(s.idleRests) + ' your hands were') + ' already cool, so it cooled nothing.' : '.'));
-  if (s.refusedHot) L.push(kind === 'down' ? 'Reed and Oak said no while it was scorching. With three of you holding it, it cooled, and then they joined.' : 'Reed and Oak said no while it was scorching.');
-  L.push('Flint added ' + flamesW(s.flintBuilt) + (s.everThree ? ', until three of you held it and Flint stopped.' : '. Three of you never held it at once.'));
-  L.push(kind === 'burned' ? 'It caught fire at ' + s.burn + ' flames.' : 'It would have caught fire at ' + s.burn + ' flames.');
+  var L = [], sure = M.surest(s.start, s.wait), hind = M.most(M.create(s.start, s.wait, 99), s.burn);
+  var did = didW(s); if (did) L.push(did);
+  L.push('Flint added ' + flamesW(s.flintBuilt) + ' and won a coin with each' + (s.everThree ? ', until three of you held it.' : '. Three of you never held it at once.'));
   if (kind === 'burned') {
-    if (s.tosses && notes.coolTosses === s.tosses) L.push('<b>Next time:</b> don’t toss it while your hands are cool: it gains you nothing and adds six flames. Hold it instead.');
-    else if (s.tosses) L.push('<b>Next time:</b> when your hands are too hot, bounce it instead of tossing it. Bouncing lets Flint add one flame; a toss adds six.');
-    else if (s.idleRests) L.push('<b>Next time:</b> hold it while your hands can take it, and bounce it only when they’re too hot.');
-    else L.push('<b>Next time:</b> hold it while your hands can take it, bounce it when they’re too hot, and ask as soon as Wren is ready.');
-  } else if (s.maxF > best.maxF) {
-    L.push('<b>To keep it cooler:</b> ' + (s.tosses ? 'when your hands are too hot, bounce it instead of tossing it (one flame instead of six). ' : '') +
-           'Hold it while your hands can take it, bounce it only when they’re too hot, and ask as soon as Wren is ready. That keeps it at ' + flamesW(best.maxF) + '.');
+    var how = s.burnMove === 'toss' ? 'your toss sent it round the table from ' + s.burnFrom + ' flames.'
+            : s.burnMove === 'bounce' ? 'you bounced it at ' + s.burnFrom + ' flames, and your flame and Flint’s took it there.'
+            : s.burnMove === 'hold' ? 'you held it at ' + s.burnFrom + ' flames, and Flint’s flame took it there.'
+            : 'there was no way left, and Flint kept adding flames.';
+    L.push('It caught fire at ' + s.burn + ': ' + how);
+    L.push('Everyone lost their coins: your ' + s.lost + ', Flint’s ' + s.flintLost + ', and the others’ 5 each.');
+  } else {
+    L.push(s.maxF >= M.LO ? 'You went into the striped boxes (up to ' + flamesW(s.maxF) + ') and got away with it: the fire was at ' + s.burn + '.'
+                          : 'You never touched the stripes. The fire was at ' + s.burn + '.');
   }
+  var kept = kind === 'down' ? s.coins : 0;
+  L.push('The surest way, never touching the stripes, keeps ' + coinsW(sure.coins) +
+         (kept === sure.coins ? ', as you did.' : sure.line.indexOf('bounce') >= 0 && s.bounces === 0 ? ' (bounce it while it’s below the stripes).' : '.') +
+         (!hind ? '' : kept >= hind.coins ? ' With the fire at ' + s.burn + ', nobody could have kept more.'
+          : ' Knowing the fire was at ' + s.burn + ', you could have kept ' + coinsW(hind.coins) + (hind.line.indexOf('toss') >= 0 ? ', with a toss' : '') + '. Nobody knows that in advance.'));
+  if (kind === 'burned' && s.burnMove !== 'wait') L.push('<b>Before you race, count the room:</b> a toss adds 6 flames, a bounce 2, and every hold still lets Flint add 1 until three of you hold it.');
+  if (kind === 'burned' && s.burnMove === 'wait') L.push('<b>Next time:</b> the buttons say “no way back” before a move that leaves no way to put it down.');
   return L;
 }
+function scoreboard() {
+  var parts = [], tot = 0;
+  for (var i = 0; i < RESULTS.length; i++) if (RESULTS[i] != null) { parts.push(RESULTS[i]); tot += RESULTS[i]; }
+  if (parts.length < 2) return '';
+  return ' Coins kept so far: ' + parts.join(' + ') + ' = ' + tot + '.';
+}
 function showEnd(kind) {
-  var s = S, best = M.coolest(s.start, s.wait), last3 = ROUNDI >= M.ROUNDS.length - 1;
+  var s = S, last3 = ROUNDI >= M.ROUNDS.length - 1;
   $('game').classList.add('over');
-  $('verbs').hidden = true; $('restart').hidden = true;
+  $('verbs').hidden = true; $('doom').hidden = true;
   $('end').hidden = false;
+  RESULTS[ROUNDI] = kind === 'down' ? s.coins : 0;
+  RESULTS.length = ROUNDI + 1;
   if (kind === 'down') {
-    var ec = $('endcards'), exact = s.maxF <= best.maxF;
-    var sub = 'It got as hot as ' + flamesW(s.maxF) + (exact ? ': the coolest possible this round.' : '; the coolest possible this round was ' + best.maxF + '.') + ' Nobody got burned.';
-    ec.innerHTML = '<h2>You put it down together.</h2><p class="sub">' + sub + '</p>' +
+    var ec = $('endcards');
+    ec.innerHTML = '<h2>You put it down together.</h2><p class="sub">You keep ' + coinsW(s.coins) + '. Nobody got burned. The fire was at ' + s.burn + '.</p>' +
       (last3 ? '<p class="next">It’s in the ground. What happens next isn’t in this game:</p><div class="fork">' +
-        '<div><b>If there’s a known way to keep it down</b>People keep it there. For example: every builder agrees to a shared test that must be passed before building anything bigger, and someone checks.</div>' +
+        '<div><b>If people know how to keep it down</b>They keep it there. For example: every builder agrees to pass a safety test before building anything bigger, and someone checks.</div>' +
         '<div><b>If nobody knows how yet</b>Putting it down together bought time. Finding a way to keep it down is still ahead.</div></div>' +
-        '<p class="under">This game can’t tell you which card is true. Nobody can yet.</p>'
+        '<p class="under">This game can’t tell you which of these is true. Nobody can yet.</p>'
         : '<p class="sub">It’s in the ground. Whether it stays there, nobody knows yet.</p>');
     ec.hidden = false;
     var wrap = $('stagewrap');
@@ -1169,12 +1319,12 @@ function showEnd(kind) {
     $('nextBtn').textContent = ROUNDI + 1 < M.ROUNDS.length ? 'Next: round ' + (ROUNDI + 2) : 'Another round (random)';
     $('nextBtn').dataset.act = 'next';
     $('againBtn').hidden = false;
-    $('score').innerHTML = '<b>Round ' + (ROUNDI + 1) + ':</b> put down. Hottest it got: ' + flamesW(s.maxF) + ' (coolest possible: ' + best.maxF + ').';
+    $('score').innerHTML = '<b>Round ' + (ROUNDI + 1) + ':</b> put down. You keep ' + coinsW(s.coins) + '.' + scoreboard();
   } else {
     $('nextBtn').textContent = 'Try this round again';
     $('nextBtn').dataset.act = 'again';
     $('againBtn').hidden = true;
-    $('score').innerHTML = '<b>Round ' + (ROUNDI + 1) + ':</b> it caught fire at ' + flamesW(s.burn) + '.';
+    $('score').innerHTML = '<b>Round ' + (ROUNDI + 1) + ':</b> it caught fire at ' + flamesW(s.burn) + '. Everyone kept 0 coins.' + scoreboard();
   }
   $('recap').innerHTML = recapLines(s, kind).map(function (l) { return '<li>' + l + '</li>'; }).join('');
   var riv = $('river');
@@ -1216,7 +1366,7 @@ function sizeStage() {
   st.style.width = Math.round(w) + 'px';
   st.style.height = Math.round(w * VBH / VBW) + 'px';
   U = VBW / w;
-  var fs = Math.max(11, Math.min(15, w / 26));          // the seats' words shrink a little with the table
+  var fs = Math.max(11.5, Math.min(15, w / 26));          // the seats' words shrink a little with the table
   $('ovs').style.fontSize = f1(fs) + 'px';
   render();
 }
@@ -1264,13 +1414,14 @@ $('sheetClose').addEventListener('click', closeSheet);
 $('sheet').addEventListener('click', function (e) { if (e.target === $('sheet')) closeSheet(); });
 $('nextBtn').addEventListener('click', function () { window.scrollTo(0, 0); if (this.dataset.act === 'next') newRound(ROUNDI + 1); else newRound(ROUNDI, true); });
 $('againBtn').addEventListener('click', function () { window.scrollTo(0, 0); newRound(ROUNDI, true); });
-$('restart').addEventListener('click', function () { window.scrollTo(0, 0); newRound(ROUNDI, true); });
+$('seeEnd').addEventListener('click', seeEnd);
+$('doomAgain').addEventListener('click', function () { window.scrollTo(0, 0); newRound(ROUNDI, true); });
 document.addEventListener('keydown', function (e) {
-  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
   if (e.key === 'Escape') { closeSeatBubble(); return; }
   if ($('sheet').open) return;
-  var want = { h: 'hold', t: 'toss', g: 'together', k: 'idk', d: 'down' }[(e.key || '').toLowerCase()];
-  if (!want || !S || $('game').classList.contains('over')) return;
+  var want = { h: 'hold', t: 'toss', g: 'together', b: 'bounce', k: 'bounce', d: 'down' }[(e.key || '').toLowerCase()];
+  if (!want || !S || $('game').classList.contains('over') || S.doomed) return;
   e.preventDefault();
   lastPressed = document.querySelector('.verb[data-verb="' + want + '"]');
   press(want);
@@ -1292,14 +1443,16 @@ window.addEventListener('resize', sizeStage);
 window.potatoTest = {
   state: function () {
     var fl = activeFx('flight', clock), at = V('potAt'), btn = {};
-    ['hold', 'toss', 'together', 'idk', 'down'].forEach(function (v) { var i = verbInfo(v); btn[v] = (i.lit ? '' : '(off) ') + i.s; });
+    ['hold', 'toss', 'together', 'bounce', 'down'].forEach(function (v) { var i = verbInfo(v); btn[v] = (i.lit ? '' : '(off) ') + i.s + ' | ' + (i.w || i.soft || i.g || ''); });
     return { round: ROUNDI + 1, start: S.start, wait: S.wait, flames: S.F, shownFlames: V('F'), hottest: S.maxF, heat: M.potw(S.F),
-             seen: S.seen, hands: HW(S.hand), on: S.on.slice(),
+             seen: S.seen, shownSeen: V('seen'), hands: HW(S.hand), shownHands: HW(V('hand') || 0), coins: S.coins, shownCoins: V('coins'),
+             flint: S.flint, on: S.on.slice(),
              where: fl ? 'flying' : at === 'you' ? 'your hands' : at === 'middle' ? 'the middle' : at === 'ground' ? 'the ground' : at,
              animating: !!(TL && !TL.done), ended: S.out || null, doomed: !!S.doomed, offered: S.out ? [] : M.offered(S), buttons: btn,
              caption: (($('c1').textContent || '') + ' ' + ($('c2').textContent || '')).trim() };
   },
-  press: function (v) { var b = document.querySelector('.verb[data-verb="' + v + '"]'); if (b) lastPressed = b; return press(v); },
+  press: function (v) { if (v === 'idk') v = 'bounce'; lastPress = { v: '', at: 0 }; var b = document.querySelector('.verb[data-verb="' + v + '"]'); if (b) lastPressed = b; return press(v); },
+  seeEnd: function () { seeEnd(); return this.state(); },
   step: function (ms) { advance(ms || 0); return this.state(); },
   fire: function (b) { if (S.log.length) return false; S.burn = b; return true; },
   round: function (i, start, wait) { if (start) { PARAMS = { start: start, wait: wait }; newRound(i - 1, true); } else newRound(i - 1); return this.state(); },

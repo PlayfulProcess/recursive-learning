@@ -32,18 +32,19 @@ URL hash, so a link to either opens in the other:
   the forecast and confidence, the reading, the step with its kind and card id, the two forgiveness
   lines, the asymmetry, the synthesis, a timestamp and the consent line. `FORM_URL` near the Step
   code is empty until she makes the form; once set, a **Send it** button opens it.
-- **`potato.html` — Hot Potato (v3.2, Sep 25; v3 rebuilt from scratch Sep 24).** "The race to build
-  AI is a hot potato." Three short rounds, then random ones. **Hold it** keeps it in your hands: your
-  hands heat a step and Wren counts it (her seat prints how many holds she wants). **Hold it
-  together** lights up once Wren is ready: she says yes and Moss, Reed and Oak follow in one press
-  (Reed and Oak not while it's scorching); three holding it stops Flint and cools it. **Toss it on**
-  cools your hands at once, but it comes back six flames hotter and Wren crosses out a hold.
-  **I don't know** bounces it from hand to hand: your hands cool, it isn't holding, Flint adds a flame.
-  With five pairs of hands, **Put it down**. Only the fire's box is hidden; the score is the hottest
-  it got. The rules are the game's own, small enough to print (`potato-model.js`, checked against
-  `tools/potato_rules_check.py` by `tools/potato_port_check.mjs`; `tools/potato_solve.mjs` checks each
-  round). Notes, why v1 was replaced ("Hold it did not hold it") and what playtest rounds 1 and 2
-  changed: `DESIGN-potato.md`.
+- **`potato.html` — Hot Potato (v4, Sep 25; v3 rebuilt from scratch Sep 24).** "The race to build
+  AI is a hot potato." Three short rounds, then random ones. You start each round with 5 coins.
+  **Hold it** keeps it in your hands and slows you down: you add no flame (only Flint adds his), your
+  hands heat a step and Wren counts it (her seat prints how many holds she wants). **Bounce it**
+  carries on: +1 coin, but your flame and Flint's (+2). **Toss it on** races: +5 coins and cool hands,
+  but everyone races after you (+6 flames) and Wren crosses out a hold. The fire hides somewhere in
+  the striped boxes (9 to 16 flames); if it catches, everyone's coins burn. **Hold it together** lights
+  up once Wren is ready: she says yes and Moss, Reed and Oak follow (Reed and Oak not while it's
+  scorching); three holding it stops Flint. With five pairs of hands, **Put it down** and keep your
+  coins. The rules are the game's own, small enough to print (`potato-model.js`, checked against
+  `tools/potato_rules_check.py` by `tools/potato_port_check.mjs`; `tools/potato_solve.mjs` checks
+  that each round asks for a choice). Notes, why v1 was replaced ("Hold it did not hold it") and what
+  playtest rounds 1 to 3 changed: `DESIGN-potato.md`.
 - **`potato-others.html`** only redirects to `potato.html`, so old links still work. **`potato-v1/`**
   keeps the first version (with others, and alone, on the Walk's model) and its notes.
 - **`lines.html` — Changing Lines (prototype, Sep 22).** A second game for the same lesson, built on

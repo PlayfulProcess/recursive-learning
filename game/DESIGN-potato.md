@@ -1,7 +1,7 @@
-# Hot Potato v3.2 — design notes (Sep 25 2026)
+# Hot Potato v4 — design notes (Sep 25 2026)
 
-Page: `game/potato.html`. Rules: `game/potato-model.js`. `game/potato-others.html` now only redirects
-to `potato.html`, so old links keep working. The first version (both pages and its notes) is kept in
+Page: `game/potato.html`. Rules: `game/potato-model.js`. `game/potato-others.html` only redirects to
+`potato.html`, so old links keep working. The first version (both pages and its notes) is kept in
 `game/potato-v1/`.
 
 Built on the branch `lab/potato-redesign`. **Nothing merges until PlayfulProcess has played it.**
@@ -11,12 +11,210 @@ Built on the branch `lab/potato-redesign`. **Nothing merges until PlayfulProcess
 PlayfulProcess played v1 and said: *"The game does not make any sense. Hold it does not hold it."*
 
 That was literally true. In v1 every button was a year of the Walk's model: "Hold it" meant *a year
-spent mostly on alignment*. Pressing it moved some numbers (risk, coordination) and a caption said
-what they meant, but nothing on screen was held. v3 started from the opposite end: every verb does
-something you can see, to the potato and to the hands, within a second, and one bold sentence says
-what happened and why.
+spent mostly on alignment*. Pressing it moved some numbers and a caption said what they meant, but
+nothing on screen was held. v3 started from the opposite end: every verb does something you can see,
+to the potato and to the hands, within a second, and one bold sentence says what happened and why.
 
-## What playtest round 2 found, and what v3.2 changed
+## What playtest round 3 found, and what v4 changed
+
+Six players again (a 12-year-old on a phone, a nurse with 3 minutes, an 80-year-old on a tablet, an
+exploit-hunting board-game designer, an AI-policy researcher, a teenager on a 280 px pane). **All six
+said Hold held it, and all six could explain the game.** Five of six said it wasn't fun: it had become
+a puzzle with one answer. The designer found the other half of PlayfulProcess's complaint: *Hold did
+not hold back any heat.* Flint added one flame whether you held it or bounced it, so the heat rose the
+same either way. Everything more than one of them hit, and how v4 answers it:
+
+| What players found (how many of the six) | v4 |
+|---|---|
+| One recipe won every round: hold till your hands are too hot, bounce once, hold, ask, put it down. The end screen even printed it (6) | **The race pays, and the fire can be anywhere in the stripes.** You start each round with 5 coins; Bounce it wins 1, Toss it on wins 5. Put it down and you keep them; if it catches fire, everyone's coins burn. The fire is somewhere from 9 to 16 flames (the eight striped boxes), any box as likely, new each round. Playing it safe never reaches the stripes in rounds 1–3, so the choice is how far to push, not a sum. The score is the coins you keep, not the hottest it got. |
+| A toss was never worth it: a bounce cooled your hands for 1 flame, a toss for 6, and cool hands scored nothing (6) | **A toss wins 5 coins**, doubling what you started with, and still cools your hands at once, breaks the group and costs a Wren hold. Checked by `tools/potato_solve.mjs`: tossing is the best bet in 5 of the 12 set-ups (rounds 1 and 3 among them), and part of the best play with hindsight in 49 of 96 set-up × fire cases. It is never a sure thing. |
+| **Hold didn't hold back the heat:** Flint's +1 came whether you held or bounced, so "slow down alone" slowed nothing (2, and the root of "Hold it does not hold it") | **Hold it adds no flame of yours; only Flint's.** Bounce it means you carry on: your flame *and* Flint's, +2. Toss it on: +6. The buttons read +1, +2, +6 side by side, and the stage shows your flame crossed out when you hold and a +1 at your hands when you bounce. |
+| The picture lagged the words: the caption said "too hot" while the meter said "sore", Wren's dots and the flame count one behind (5) | **Everything the words name changes when the words do**: flames, stripes, your hands, Wren's dots, your coins and Flint's. Only the toss's lap climbs box by box, and its caption waits until the potato is back. Checked by script 150 ms after every press at five sizes: no mismatch. |
+| "Keep holding it together (−1 flame)" did nothing once all five held it (4) | With five pairs of hands, Hold it together isn't offered ("everyone's holding it"); only Put it down and Toss it on (a defection that pays 5 coins) are lit. |
+| The hidden fire never mattered: always 15 or 16, and the buttons said "may" or "will" catch fire (3; the researcher: false precision) | The fire hides anywhere in eight boxes. A box it has passed without catching loses its stripes, so the stripes show where it can still be. Buttons say "may catch fire" for any move into the stripes; "it catches fire" only past the last box. |
+| "I don't know" was a strange name for bouncing it (3) | **Bounce it** (the 12-year-old's name), with "carry on building" under it. Key B (K still works). |
+| One tap lost the round with no warning, and after "No way left" you had to click on until it burned (3) | A button whose move leaves no way to put it down says **"→ 14: no way back"** before you press it. If you press it anyway, once the move has played out the buttons give way to two plain choices: **See how it ends** and **Start this round again**. |
+| The round seemed to start a flame lower, then Flint's toss added one (2) | The round starts at its number, shown from the first frame; Flint's toss to you adds nothing. |
+| The Toss button never said Wren crosses out a hold (1); the end tip didn't match what I did (2) | When there's no fire warning to show, Toss's second line says "Wren −1 hold" (or "they let go, Wren −1"). The recap tells what happened (where it caught fire, what your move took it from) and what the surest way and hindsight would have kept, not a recipe. |
+| Who is Wren? Why does the race get hotter when I pass it on? (2) | The first caption says everyone at the table is building it and calls Wren "another builder"; her line starts "I'm building it too". Toss it on is "race ahead": everyone races after you. |
+| Too much small print on a phone (3); the heat line cut off at 280 px (1) | Each button is exactly two short lines: the numbers, then a warning or the AI gloss. How to play is five short points; the seats' lines and What's real are folded. Heat labels 14 px, a bigger hands bar. The heat line fits from 280 to 1280 px (checked). |
+| Racing's pull was left out; the risk meter looked precise; disputed ideas played as sure things; one-sided framing; only one way to lose (the researcher) | Racing now wins coins and Flint wins a coin a move while you hold alone. What's real says so, says the game takes a side (Flint's "If we don't, they will" is a real argument), that nobody can count the real flames or knows where the stripes begin, that Wren always keeping her word is the game's assumption, and that real harms can be unequal. |
+
+Also (one player each): a second tap on the same button within 0.2 s is taken as a double tap; Reed
+and Oak join by themselves once three of you have cooled it below scorching (no extra tap); the Hold
+it together button says "ask: 3 of you, not 5" while it's scorching; the ending says "which of these
+is true" instead of "card"; random rounds no longer claim to get harder; Put it down reads "Put down,
+5 of 5" after you press it instead of "0 of 5".
+
+## The idea, on the page
+
+**The race to build AI is a hot potato.**
+- Hold it and you slow down: you add no flame, your hands take the heat, and Wren sees you mean it.
+- Bounce it and you carry on: a coin, and a flame from you as well as Flint's.
+- Toss it and you race: five coins and cool hands, but everyone races after you, and it comes back
+  six flames hotter.
+- Somewhere in the stripes it catches fire, and everyone loses everything.
+- Once Wren trusts you, hold it together: the others follow, and three of you stop Flint. With five
+  pairs of hands you can put it in the ground and keep your coins. Whether it stays there, nobody
+  knows.
+
+## How to play (as on the page)
+
+1. The potato is the race to build AI. Everyone at the table is building it (think labs, companies or
+   countries). Each flame makes it more dangerous. Somewhere in the striped boxes it catches fire, and
+   everyone loses everything, coins too.
+2. **Hold it**: you slow down. You add no flame; only Flint adds his. Your hands heat a step, and Wren
+   counts the hold.
+3. **Bounce it**: you carry on. You win a coin, but you add a flame, and so does Flint. Your hands cool
+   a step.
+4. **Toss it on**: you race. You win 5 coins and your hands cool at once, but everyone races after
+   you: +6 flames. The others let go, and Wren crosses out a hold.
+5. **Hold it together**, once Wren has seen enough holds: she says yes, and Moss, Reed and Oak follow
+   (Reed and Oak not while it's scorching). Three holding it stops Flint. With five pairs of hands,
+   **put it down** and keep your coins.
+
+Score: the coins you keep. You start each round with 5. The fire's box changes every round; you find
+out where it was at the end.
+
+## The rules
+
+These are the game's own rules, made up to show one idea. They are not the Walk's model and not
+value-lab's. `tools/potato_rules_check.py` is the rule set; `potato-model.js` is a rule-for-rule port.
+
+- **Seats**, clockwise from you: Wren, Moss, Flint, Reed, Oak.
+- **Rounds** (start flames, holds Wren wants): 1: (2, 2); 2: (2, 4); 3: (3, 2); then random rounds
+  drawn from every set-up (start 2–5, Wren 2–4) where playing it safe stays out of the stripes.
+- **Hidden:** the fire, at 9 to 16 flames, each as likely, drawn fresh each round.
+- **Coins:** 5 at the start of each round, for you and for Flint.
+- **Heat word:** 1–4 flames warm, 5–8 hot, 9–12 very hot, 13+ scorching.
+- **Your hands:** cool, warm, sore, too hot (0 to 3).
+- **Hold it** (alone, hands not too hot): Wren has seen one more; your hands heat one step. No flame
+  from you.
+- **Bounce it** (alone): your hands cool one step; +1 coin; your flame (+1).
+- **Hold it together** (lit once Wren has seen enough, or while three hold a scorching potato): down
+  the chain Wren, Moss, Reed, Oak, each joins if the one before holds it (Wren: if she has seen
+  enough); Reed and Oak not while it's scorching. Your hands cool a step.
+- **Toss it on**: +5 coins; the others let go; your hands are cool; Wren crosses out one hold; it
+  goes round, a flame for your toss and one for each of the five others (+6).
+- **Put it down** (five pairs of hands) ends the round; you keep your coins.
+- **After every move but a toss:** fewer than 3 holding it, Flint adds a flame and wins a coin; 3 or
+  more and scorching, it cools a flame, and once it's below scorching Reed and Oak join.
+- **Fire:** the moment it reaches the fire's box it burns, and every seat's coins go to 0.
+- **No way back:** if no sequence of presses can put it down even with the fire in the last box, the
+  page says so (on the button before, in the caption after) and offers See how it ends or Start this
+  round again. It never burns it by itself.
+
+## What the checks showed (Sep 25)
+
+- `node game/tools/potato_port_check.mjs`: the JS matches the Python on all **31,317** sequences of
+  offered presses up to 11, for the 9 set-ups, with the fire at 9, 11, 13 and 16 (ending, flames,
+  hottest, Wren's count, who holds it, your hands, your coins, Flint's coins).
+- `node game/tools/potato_solve.mjs` (a few seconds):
+  - Playing it safe (put it down > ask > hold > bounce) never reaches the stripes in any set-up.
+  - The surest coins (never touching the stripes): 7, 6 and 6 in rounds 1–3, by bouncing while it's
+    still below the stripes.
+  - The best bet, not knowing where the fire is: round 1, toss first (7.5 coins on average, burns one
+    time in four) against a sure 7; round 2, never race (a toss burns three times in four); round 3,
+    toss first (6.25, burns 38%) against a sure 6. A toss is the best bet in 5 of 12 set-ups.
+  - With hindsight, the most coins anyone could keep needs a toss in 49 of 96 set-up × fire cases.
+  - The same button every move never puts it down (Hold, Bounce, Toss: 0%). Random presses put it
+    down 5% of the time; random presses that never toss, 49%.
+- `python game/tools/potato_rules_check.py` prints a table of sample games.
+
+## The screen (phone first, one screen during play)
+
+Header (spiral, the one line, **How to play**) · "Round 2 of 3 · made-up rules, not a forecast" · the
+heat track (16 boxes in four named groups; boxes 9–16 striped, "the fire is in the stripes", and a box
+loses its stripes once it has been passed without catching) · the table (six seats; each other seat
+is its shape, name and one line: its rule, "no: it's scorching", "ready: ask her" or "holding it";
+Wren's line has a dot per hold; Flint's shows his coins) · your row (you, what you're doing, your
+hands in a word and a three-box bar, your coins) · the chalk rule when three hold it · the caption
+(what happened in bold, then the one or two things that matter next) · four buttons in a grid and
+**Put it down** under them, full width, with five mitten icons.
+
+- **Hold it holds.** Your mittens curl round the potato, heat rises into them, the "holding it" tag
+  shows, one of Wren's dots fills, and your own flame shows crossed out while Flint's flies in.
+- **Bounce it** is the potato hopping from mitten to mitten with steam going up, a +1 flame at your
+  hands, Flint's flame, and the coin count flashing.
+- **Hold it together**: your sleeves reach into the middle and the others follow one by one, each
+  with a green "Yes"; Reed and Oak show a red "Too hot" while it's scorching, then "Yes" once it cools.
+- **Toss it on**: your mittens open empty, it goes round the ring with a +1 at each seat and comes
+  back; the coins flash; a dot is crossed out at Wren's seat.
+- **Put it down**: the hands lower together, the potato sinks, a sprout comes up; then "You put it
+  down together", the coins you keep and where the fire was, and (after round 3) the two equal cards,
+  *If people know how to keep it down* / *If nobody knows how yet*, and "This game can't tell you which
+  of these is true. Nobody can yet."
+- **Burned:** the potato cracks and every pair of mittens is charred, Flint's too; everyone's coins
+  go to 0.
+- Under either ending: what you did, what Flint did, where the fire was and what your last move took
+  it from, the surest way's coins and the hindsight coins, and a running total over the rounds.
+
+Nothing reads by colour alone: hands show a word and a patterned bar; seats have shapes (Wren circle,
+Moss square, Flint triangle, Reed diamond, Oak hexagon); unlit buttons are dashed and say "not now" or
+"not yet"; warnings start with an arrow and the number.
+
+Pace: tap-paced, no timers. A move plays out in under a second (a toss's lap about two). "Slower" and
+"Read aloud" are in How to play, with "Start again from round 1". Keys: H, B, T, G, D.
+`prefers-reduced-motion` (or `potato.html?reduced`) replaces motion with still marks. `?round=2`
+opens a round directly. Wide screens (900 px and wider, landscape) put the table on the left.
+
+## Build notes
+
+- One static page, inline SVG, no dependencies, no network calls; colour tokens with a dark set.
+- All game motion is computed from one virtual clock (named tracks of timed segments).
+  `requestAnimationFrame` adds real time; a 250 ms timer takes over if frames stall.
+- Test hook: `window.potatoTest.state()` (round, flames and shown flames, hottest, Wren's count and
+  shown count, hands and shown hands, coins and shown coins, Flint's coins, who holds it, what each
+  button says, caption, doomed), `.press(verb)` (the same path as a tap), `.seeEnd()`, `.step(ms)`,
+  `.fire(9..16)` (before the first press), `.round(n[, start, wait])`, `.secret()`.
+
+## Checked on Sep 25 (local, `python -m http.server 8130`)
+
+Real clicks in the built-in browser at 375 × 812 and 1280 × 820 (the games are listed in the build
+report). Scripted in headless Chrome (random rounds, every press, then stepping the clock): 375 × 812
+dark (60 rounds, ~300 presses), 320 × 640 light (40), 280 × 600 `?reduced` (30), 768 × 1024 (30),
+1280 × 820 dark (30): captions at most four lines (five at 340 px and under), the buttons never move
+within a round, every button line fits, the heat line and your row never clip, no horizontal scroll,
+375 × 812 stays one screen tall, and the flames, hands, Wren's dots and coins on screen match the
+rules 150 ms after every press. The Walk's model (`walk-model.js`) is untouched.
+
+## For PlayfulProcess to decide
+
+- **D11 (new, the big one).** The race pays in coins, and the score is the coins you keep. This is
+  what made tossing a real temptation and the game a set of choices instead of a recipe, and it is
+  what the researcher and the designer asked for. It also means the game says, out loud, that racing
+  can pay for the one who races if they get away with it (round 1: a toss is a good bet three times
+  in four). The counterweight is on the page: everyone loses everything when it burns, holding alone
+  wins nothing while Flint keeps winning, and the stripes can't be seen in reality. If you'd rather
+  the game never reward racing on average, the smallest change is Toss +4 (then a toss is never the
+  best bet, only a gamble).
+- **D12 (new).** The fire is somewhere in eight boxes, each as likely, and playing it safe never
+  reaches them in rounds 1–3. That keeps the careful player safe (no one loses by holding), but it
+  also makes "race until just below the stripes" free. Real life has no such line; What's real says
+  so.
+- **D13 (new).** Flint's coins are on the table (he wins one a move until three hold it). It makes
+  "a pause taken alone is a sacrifice the others outlive" visible, and it is one more number.
+- **D1 (kept).** Reed and Oak won't touch it while it's scorching, and now join by themselves once
+  three of you have cooled it.
+- **D5 (kept).** Wren's patience is printed (2, 4, 2 holds in rounds 1–3).
+- **D6 (kept).** A toss crosses out one hold, not all of them.
+- **D7 (kept, softened).** The game never burns it by itself; when there's no way left it asks
+  whether you want to see how it ends or start again.
+- **D8 (kept).** Holding it together cools a scorching potato, a flame a move.
+- **D10 (kept).** Five pairs of hands, always.
+- **D4 (kept).** The AI glosses on the buttons ("slow down alone", "carry on building", "race ahead",
+  "slow down together", "stop the race together").
+
+## Success test (from the spec)
+
+The verb test: for Hold, Toss, Together and Put it down, press with `potatoTest` and screenshot at
+`step(300)` and `step(700)`; a stranger shown only a before/after pair should name the verb. Then 5
+players, the URL and two minutes each: it passes if 4 of 5 can say that holding keeps it and heats
+your hands, tossing gets it off your hands now but it comes back hotter for everyone, and holding it
+together shares the heat until enough hands can put it down; and 3 of 5 say it's about the race to
+build AI without being asked. v4 adds one: 3 of 5 should play two rounds differently, and say why.
+
+## Earlier: what playtest round 2 found, and what v3.2 changed
 
 Six players again (a 12-year-old, a nurse on a phone, an 80-year-old on a tablet, a board-game
 designer, an AI-policy researcher, a teenager). **All six said Hold held it.** Two could not explain
@@ -45,149 +243,6 @@ Also fixed (one player each): the burn screen now says "burned" for Flint too; y
 unexplained dark oval and dashed ring are gone; the 280 px overlap; the caption that recommended a
 toss that was about to be fatal. "I don't know" is now *bouncing it from hand to hand* (cools your
 hands, isn't holding, Flint builds), and What's real says what it stands for.
-
-## The idea, on the page
-
-**The race to build AI is a hot potato.**
-- Hold it and your hands take the heat, and Wren sees you mean it.
-- Toss it and your hands cool at once, but it goes round the whole table and comes back hotter.
-- Once Wren trusts you, hold it together: the others follow, and the heat is shared.
-- With five pairs of hands you can put it in the ground. Whether it stays there, nobody knows.
-
-## How to play (as on the page)
-
-1. The potato is the race to build AI. You and five others are building it. Flint adds a flame every
-   move; somewhere in the two striped boxes it catches fire and burns everyone.
-2. **Hold it**: it stays in your hands. Your hands heat up one step, and Wren counts it.
-3. **Hold it together** lights up once Wren has seen enough. Wren says yes; Moss follows her, Reed
-   follows Moss, Oak follows Reed. Reed and Oak won't touch it while it's scorching.
-4. Three holding it stops Flint and cools it a flame a move. With five pairs of hands, **Put it down**.
-5. **Toss it on**: your hands cool at once, but it comes back six flames hotter, and Wren crosses out
-   one hold.
-6. **I don't know**: you bounce it from hand to hand. Your hands cool a step, Wren doesn't count it,
-   and Flint adds a flame.
-
-Score: the hottest it got (lower is better), shown against the coolest possible for that round.
-
-## The rules
-
-These are the game's own rules, made up to show one idea. They are not the Walk's model and not
-value-lab's. `tools/potato_rules_check.py` is the rule set; `potato-model.js` is a rule-for-rule port.
-
-- **Seats**, clockwise from you: Wren, Moss, Flint, Reed, Oak.
-- **Rounds** (start flames, holds Wren wants): 1: (2, 2); 2: (2, 4); 3: (5, 5); then random rounds,
-  start 2 to 5, Wren 2 to 5, printed at the start. **Hidden:** the fire, at 15 or 16 flames.
-- **Heat word:** 1–4 flames warm, 5–8 hot, 9–12 very hot, 13+ scorching.
-- **Your hands:** cool, warm, sore, too hot (0 to 3).
-- **Hold it** (alone, hands not too hot): Wren has seen one more; your hands heat one step.
-- **I don't know** (alone): your hands cool one step.
-- **Hold it together** (lit once Wren has seen enough, or once others hold it): down the chain Wren,
-  Moss, Reed, Oak, each joins if the one before holds it (Wren: if she has seen enough); Reed and Oak
-  not while it's scorching. Your hands cool a step (the others take the heat).
-- **Toss it on**: the others let go; your hands are cool; Wren crosses out one hold; it goes round,
-  a flame for your toss and one for each of the five others (+6), burning if it reaches the fire.
-- **Put it down** (five pairs of hands) ends the round in the ground.
-- **After every move but a toss:** fewer than 3 holding it, Flint adds a flame (it burns at the
-  fire); 3 or more, it cools a flame.
-- **No way left:** if no sequence of presses can put it down even with the fire at 16, the page
-  says so and offers Start again. It does not burn it for you.
-
-## What the checks showed (Sep 25)
-
-- `node game/tools/potato_port_check.mjs`: the JS matches the Python on all **134,814** sequences of
-  offered presses up to 9, for the 3 rounds and all 16 random set-ups, with the fire at 15 and 16.
-- `node game/tools/potato_solve.mjs` (a few seconds):
-  - The page's "coolest possible" line (put it down, else ask, else hold, else bounce) is the coolest
-    safe play in every one of the 19 set-ups: round 1 keeps it at 4 flames in 4 presses, round 2 at 7
-    in 7 (one bounce), round 3 at 12 in 9 (two bounces).
-  - One toss slipped in anywhere: rounds 1 and 2 still win, even with the fire at 15; round 3 never.
-    Two tosses: no set-up wins.
-  - The same button every move wins none (Hold, Toss, I don't know: 0%). Random presses win 4% of
-    rounds 1–3; random presses that never toss win 71%.
-- `python game/tools/potato_rules_check.py` prints a table of sample games.
-
-## The screen (phone first, one screen during play)
-
-Header (spiral, the one line, **How to play**) · "Round 2 of 3 · made-up rules, not a forecast" · the
-heat track (16 boxes in four named groups, the last two striped: "fire in here", or "fire at 16" once
-it has passed 15) · the table (six seats; each other seat is its shape, name and one line: its rule,
-"no: it's scorching", "ready: ask her" or "holding it"; Wren's line has a dot per hold) · your row
-(you, what you're doing, your hands in a word and a three-box bar) · the chalk rule when three hold it
-· the caption (what happened in bold, then Flint's flame and the one thing that matters next) · four
-buttons in a grid and **Put it down** under them, full width, with five mitten icons.
-
-- **Hold it holds.** Your mittens curl round the potato, heat rises into them, the "holding it" tag
-  shows and one of Wren's dots fills. Too-hot hands grey Hold it out with the reason on it.
-- **I don't know** is the potato hopping from mitten to mitten with steam going up; "bouncing it".
-- **Hold it together**: your sleeves reach into the middle and the others follow one by one, each
-  with a green "Yes"; Reed and Oak show a red "Too hot" while it's scorching. A −1 shows in the box.
-- **Toss it on**: your mittens open empty, it goes round the ring with a +1 at each seat and comes
-  back; a dot is crossed out at Wren's seat.
-- **Put it down**: the hands lower together, the potato sinks, a sprout comes up; then "You put it
-  down together", the hottest it got against the coolest possible, and (after round 3) the two equal
-  cards, *If there's a known way to keep it down* / *If nobody knows how yet*, and "This game can't
-  tell you which card is true. Nobody can yet."
-- **Burned:** the potato cracks and every pair of mittens is charred, Flint's too.
-- Under either ending: what you did, in a few lines, and one piece of advice that matches the rules.
-
-Nothing reads by colour alone: hands show a word and a patterned bar; seats have shapes (Wren circle,
-Moss square, Flint triangle, Reed diamond, Oak hexagon); unlit buttons are dashed and say "not now".
-
-Pace: tap-paced, no timers. A move plays out in under a second (a toss's lap about two). "Slower" and
-"Read aloud" are in How to play, with "Start again from round 1". Keys: H, T, G, K, D.
-`prefers-reduced-motion` (or `potato.html?reduced`) replaces motion with still marks. `?round=2`
-opens a round directly. Wide screens (900 px and wider, landscape) put the table on the left.
-
-## Build notes
-
-- One static page, inline SVG, no dependencies, no network calls; colour tokens with a dark set.
-- All game motion is computed from one virtual clock (named tracks of timed segments).
-  `requestAnimationFrame` adds real time; a 250 ms timer takes over if frames stall.
-- Test hook: `window.potatoTest.state()` (round, flames, hottest, seen, hands, who holds it, what each
-  button says, caption), `.press(verb)` (the same path as a tap), `.step(ms)`, `.fire(15|16)` (before
-  the first press), `.round(n[, start, wait])`, `.secret()`.
-
-## Checked on Sep 25 (local, `python -m http.server 8130`)
-
-Real clicks at 375 × 812 (dark): round 1 (Hold, Hold, Together, Put it down: 4 flames, the coolest);
-round 2 with a toss at too-hot hands (back at 11, Wren crossed out a hold, scorching at the ask, Reed
-and Oak said "Too hot", it cooled, they joined: put down, hottest 13); round 3 the coolest way (12);
-round 3 with a toss (No way left, Start again shown; bounced on and it caught fire at 16). Real clicks
-at 1280 × 820 (two columns): rounds 1 and 2, including tapping the grey Hold it together to read why.
-768 × 1024: round 2 with one bounce (7, the coolest). 320 × 640 in light and 280 × 600 with
-`?reduced`: no horizontal scroll, no seat labels overlapping. Keys H and G; the How to play sheet.
-Scripted at 375 × 812 (60 random rounds, 588 presses): captions at most four lines, button lines at
-most two, the buttons never move, the page stays one screen tall during play, no page errors. At
-320 × 640 (40 rounds) the buttons stay within 1 px. The Walk's model (`walk-model.js`) is untouched.
-
-## For PlayfulProcess to decide
-
-- **D1 (kept, softened).** Reed and Oak won't touch it while it's scorching, but they join once three
-  of you have cooled it. Danger slows agreement here; it doesn't end it.
-- **D5 (changed).** Wren's patience is printed (2, 4, 5 holds), not hidden. Clearer, but real
-  builders don't publish how much restraint would earn their trust; the hedge says so.
-- **D6 (changed).** A toss crosses out one hold, not all of them: costly, survivable once early on.
-- **D7 (reversed).** The game never ends itself. It says when there's no way left and offers Start
-  again.
-- **D8 (new).** Holding it together cools it, a flame a move. That is a claim (hedged in What's real):
-  an agreement lowers the risk over time.
-- **D9 (new).** There is now a best way to play each round (hold while your hands can take it, bounce
-  when they're too hot, ask as soon as Wren is ready), shown after the round as advice. Round 2 and 3
-  change the numbers, and the score is the hottest it got. This trades the old guessing for a small
-  puzzle with a known answer: clear, but not much to replay. The researcher suggested giving a toss a
-  prize (a lead); that would make tossing a real temptation, and also teach that racing pays. Not
-  built; your call.
-- **D10 (new).** Five pairs of hands, always (everyone but Flint), instead of a hidden 4 or 5.
-- **D4 (kept).** The AI glosses on the buttons ("slow down alone", "race on", "wait and see").
-
-## Success test (from the spec)
-
-The verb test: for Hold, Toss, Together and Put it down, press with `potatoTest` and screenshot at
-`step(300)` and `step(700)`; a stranger shown only a before/after pair should name the verb. Then 5
-players, the URL and two minutes each: it passes if 4 of 5 can say that holding keeps it and heats
-your hands, tossing gets it off your hands now but it comes back hotter for everyone, and holding it
-together shares the heat until enough hands can put it down; and 3 of 5 say it's about the race to
-build AI without being asked.
 
 ## Earlier: what playtest round 1 found (v3.1)
 
