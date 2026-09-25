@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:,">
+<title>Principles · Recursive Learning</title>
+<meta name="description" content="Draft. The yardstick the Hot Potato film, the belief tree and the editorial hold themselves to: PlayfulProcess's own lines, each with the principle it names, its source, and where the film already uses it. Open questions at the end.">
+<!--
+  Principles (draft, Sep 25 2026). A page for PlayfulProcess to carve.
+  Her lines are verbatim, trimmed only where an ellipsis marks a cut; every other line is Claude's.
+  Terms are NOT defined here: each links to its entry in Words (the glossary). Entries marked
+  class="term proposed" are in the Lab's proposal (recursive-learning lab/fork:proposals/
+  words-philosophy-of-science.json), awaiting her word, and land on the glossary top until merged.
+  Sources for every line: the Film chat's work/principles/sources.md (scratchpad), Sep 25 2026.
+  Static page: no libraries, no fonts fetched, no build step. The only script opens the contents
+  list on wide screens.
+-->
+<style>
+  :root{
+    --bg:#0a0e16; --lift:#121a29; --lift2:#18223a; --line:#26314a;
+    --ink:#eee7da; --dim:#a3acba; --faint:#8a93a4;
+    --coral:#ff8a6b; --coral-ink:#ffc4b1; --link:#74d8b4; --focus:#cfe2ff;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color-scheme:dark;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#fbfaf6; --lift:#ffffff; --lift2:#f3efe6; --line:#ddd5c6;
+      --ink:#1d1b18; --dim:#4f5663; --faint:#5f6572;
+      --coral:#c24a30; --coral-ink:#9c3a1f; --link:#1d6f57; --focus:#1f5fbf;
+      color-scheme:light;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#fbfaf6; --lift:#ffffff; --lift2:#f3efe6; --line:#ddd5c6;
+    --ink:#1d1b18; --dim:#4f5663; --faint:#5f6572;
+    --coral:#c24a30; --coral-ink:#9c3a1f; --link:#1d6f57; --focus:#1f5fbf;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+  body{line-height:1.5;overflow-x:hidden;overflow-wrap:break-word}
+  a{color:var(--link)}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  .wrap{max-width:1180px;margin:0 auto;padding:14px 16px 56px}
+
+  /* header, as on the belief tree */
+  .top .mark{display:flex;align-items:center;gap:12px;margin:8px 0 4px}
+  .top .mark svg{width:30px;height:30px;color:var(--link);flex:none}
+  .kick{font:600 11px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0}
+  .kick a{color:inherit}
+  h1{font:400 34px/1.15 var(--serif);margin:6px 0 0}
+  .lede{font:400 17px/1.5 var(--serif);color:var(--dim);max-width:66ch;margin:8px 0 14px}
+  .draft{border:1px dashed var(--coral);border-radius:14px;padding:12px 16px;margin:14px 0 6px;max-width:780px;background:var(--lift)}
+  .draft .dh{font:600 12px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--coral-ink);margin:0 0 4px}
+  .draft p{margin:0;font-size:14px;color:var(--dim)}
+  .links{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px;padding:0;list-style:none}
+  .links a{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:6px 12px;border:1px solid var(--line);border-radius:10px;
+    background:var(--lift);color:var(--ink);text-decoration:none;font-size:14px}
+  .links a:hover{border-color:var(--dim)}
+  .links a .tag{margin:0}
+
+  /* contents beside the page on wide screens, folded above it on a phone */
+  .layout{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-top:18px}
+  @media (min-width:980px){
+    .layout{grid-template-columns:240px minmax(0,780px);gap:34px;align-items:start}
+    .toc{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto}
+  }
+  .toc{background:var(--lift);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+  .toc summary{cursor:pointer;font:600 11px/1.6 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);min-height:28px;
+    display:flex;align-items:center}
+  .toc ol{list-style:none;margin:6px 0 4px;padding:0}
+  .toc li{margin:0}
+  .toc .part{font:600 10.5px/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:10px 0 2px}
+  .toc a{display:block;padding:3px 0;font-size:13.5px;color:var(--ink);text-decoration:none;line-height:1.35}
+  .toc a:hover{color:var(--link)}
+  .toc a .n{color:var(--coral-ink);font-weight:600;font-size:12px;display:inline-block;min-width:30px}
+  @media (max-width:979px){ .toc a{padding:8px 0;border-bottom:1px solid var(--line)} .toc li:last-child a{border-bottom:0} }
+
+  main{min-width:0}
+  .part-h{margin:34px 0 12px}
+  .part-h:first-child{margin-top:0}
+  .part-h .kick{color:var(--coral)}
+  .part-h h2{font:400 28px/1.2 var(--serif);margin:4px 0 0}
+  .part-h p:not(.kick){font:400 16px/1.5 var(--serif);color:var(--dim);margin:6px 0 0;max-width:62ch}
+
+  /* one principle: her lines, then the principle, then where the film uses it */
+  .pr{background:var(--lift);border:1px solid var(--line);border-radius:16px;padding:16px 18px 16px;margin:0 0 14px;scroll-margin-top:14px}
+  .pr-h{display:flex;align-items:baseline;gap:10px;margin:0}
+  .pr-h .num{font:600 12px/1 var(--sans);letter-spacing:.08em;color:var(--coral-ink);flex:none}
+  .pr-h h3{font:400 22px/1.2 var(--serif);margin:0}
+  .her{margin:14px 0 0;padding:0 0 0 14px;border-left:3px solid var(--coral)}
+  .her blockquote{margin:0}
+  .her blockquote p{font:400 19.5px/1.45 var(--serif);margin:0;color:var(--ink)}
+  .her figcaption{font-size:12.5px;color:var(--faint);margin-top:5px}
+  .her.confirm{border-left-style:dashed}
+  .her .caution{display:block;margin-top:4px;color:var(--coral-ink)}
+  .names{font-size:14.5px;line-height:1.55;margin:16px 0 0;padding-top:12px;border-top:1px solid var(--line)}
+  .uses{font-size:14px;line-height:1.6;margin:8px 0 0;color:var(--dim)}
+  .lab{font:600 10.5px/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-right:6px}
+  .cite{color:var(--dim)}
+  .uses .it{white-space:normal}
+  .tag{display:inline-block;font:600 10px/1.6 var(--sans);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);
+    border-radius:6px;padding:0 5px;color:var(--dim);vertical-align:1px;white-space:nowrap;margin-left:3px}
+  .tag.film{color:var(--link);border-color:var(--link)}
+  .tag.cand{border-style:dashed}
+  .tag.warn{color:var(--coral-ink);border-color:var(--coral);margin:0 4px 0 0}
+  .tag.soon{color:var(--coral-ink);border-style:dashed;border-color:var(--coral)}
+  a.term{text-decoration-style:dotted;text-underline-offset:2px}
+  a.term.proposed{text-decoration-style:dashed}
+
+  /* values */
+  .pr.value{border-left:3px solid var(--link)}
+
+  /* open questions */
+  ol.qs{list-style:none;padding:0;margin:0}
+  ol.qs li{background:var(--lift);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 10px;font-size:15px;line-height:1.55;
+    scroll-margin-top:14px}
+  ol.qs li .qn{font:600 11px/1 var(--sans);letter-spacing:.08em;color:var(--coral-ink);margin-right:8px}
+  ol.qs li b{font-weight:600}
+  ol.qs li .ask{display:block;margin-top:6px;font:400 17px/1.45 var(--serif);color:var(--ink)}
+  ol.qs li .refs{display:block;margin-top:6px;font-size:12.5px;color:var(--faint)}
+  ol.qs li .refs a{color:inherit}
+  ol.qs.flags li{background:var(--lift2)}
+
+  footer{margin-top:34px;border-top:1px solid var(--line);padding-top:14px;font-size:13px;color:var(--dim);max-width:80ch}
+  footer p{margin:0 0 9px}
+  footer strong{color:var(--ink);font-weight:600}
+
+  @media (max-width:420px){
+    h1{font-size:30px} .part-h h2{font-size:25px} .pr{padding:14px 14px} .pr-h h3{font-size:20px}
+    .her blockquote p{font-size:18px} ol.qs li .ask{font-size:16px}
+  }
+  @media print{ .toc{display:none} .layout{display:block} .pr,ol.qs li{break-inside:avoid} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px"><symbol id="spiral" viewBox="0 0 100 100"><path d="M50.5 50L50.5 50.01 50.51,50.02 50.51,50.03 50.51,50.04 50.51,50.05 50.52,50.07 50.52,50.08 50.52,50.09 50.52,50.1 50.52,50.11 50.52,50.12 50.52,50.13 50.52,50.15 50.52,50.16 50.52,50.17 50.52,50.18 50.52,50.19 50.52,50.21 50.52,50.22 50.52,50.23 50.52,50.24 50.52,50.26 50.51,50.27 50.51,50.28 50.51,50.29 50.51,50.31 50.5,50.32 50.5,50.33 50.49,50.34 50.49,50.36 50.49,50.37 50.48,50.38 50.48,50.39 50.47,50.41 50.47,50.42 50.46,50.43 50.45,50.44 50.45,50.46 50.44,50.47 50.43,50.48 50.43,50.49 50.42,50.5 50.41,50.52 50.4,50.53 50.39,50.54 50.38,50.55 50.37,50.56 50.36,50.57 50.35,50.59 50.34,50.6 50.33,50.61 50.32,50.62 50.31,50.63 50.3,50.64 50.29,50.65 50.28,50.66 50.27,50.67 50.25,50.68 50.24,50.69 50.23,50.7 50.21,50.71 50.2,50.72 50.19,50.73 50.17,50.73 50.16,50.74 50.14,50.75 50.13,50.76 50.11,50.77 50.1,50.77 50.08,50.78 50.07,50.79 50.05,50.79 50.03,50.8 50.02,50.8 50,50.81 49.98,50.81 49.97,50.82 49.95,50.82 49.93,50.83 49.91,50.83 49.89,50.83 49.88,50.84 49.86,50.84 49.84,50.84 49.82,50.84 49.8,50.85 49.78,50.85 49.76,50.85 49.74,50.85 49.72,50.85 49.71,50.85 49.69,50.85 49.67,50.84 49.65,50.84 49.63,50.84 49.61,50.84 49.59,50.83 49.57,50.83 49.55,50.83 49.53,50.82 49.5,50.82 49.48,50.81 49.46,50.81 49.44,50.8 49.42,50.79 49.4,50.79 49.38,50.78 49.36,50.77 49.34,50.76 49.32,50.75 49.3,50.74 49.28,50.73 49.26,50.72 49.24,50.71 49.22,50.7 49.2,50.69 49.18,50.68 49.16,50.66 49.15,50.65 49.13,50.63 49.11,50.62 49.09,50.61 49.07,50.59 49.05,50.57 49.03,50.56 49.02,50.54 49,50.52 48.98,50.51 48.96,50.49 48.95,50.47 48.93,50.45 48.92,50.43 48.9,50.41 48.88,50.39 48.87,50.37 48.85,50.35 48.84,50.32 48.83,50.3 48.81,50.28 48.8,50.26 48.79,50.23 48.77,50.21 48.76,50.18 48.75,50.16 48.74,50.13 48.73,50.11 48.72,50.08 48.71,50.05 48.7,50.03 48.69,50 48.68,49.97 48.68,49.94 48.67,49.92 48.66,49.89 48.66,49.86 48.65,49.83 48.65,49.8 48.64,49.77 48.64,49.74 48.63,49.71 48.63,49.68 48.63,49.65 48.63,49.62 48.63,49.59 48.63,49.55 48.63,49.52 48.63,49.49 48.63,49.46 48.64,49.43 48.64,49.39 48.64,49.36 48.65,49.33 48.66,49.3 48.66,49.26 48.67,49.23 48.68,49.2 48.69,49.17 48.7,49.13 48.71,49.1 48.72,49.07 48.73,49.03 48.74,49 48.75,48.97 48.77,48.94 48.78,48.9 48.8,48.87 48.81,48.84 48.83,48.81 48.85,48.77 48.87,48.74 48.89,48.71 48.91,48.68 48.93,48.65 48.95,48.62 48.97,48.59 49,48.56 49.02,48.53 49.05,48.5 49.07,48.47 49.1,48.44 49.13,48.41 49.15,48.38 49.18,48.35 49.21,48.33 49.24,48.3 49.27,48.27 49.31,48.25 49.34,48.22 49.37,48.19 49.41,48.17 49.44,48.15 49.48,48.12 49.51,48.1 49.55,48.08 49.59,48.06 49.63,48.04 49.66,48.02 49.7,48 49.74,47.98 49.79,47.96 49.83,47.94 49.87,47.93 49.91,47.91 49.96,47.9 50,47.88 50.04,47.87 50.09,47.86 50.14,47.85 50.18,47.83 50.23,47.82 50.28,47.82 50.32,47.81 50.37,47.8 50.42,47.8 50.47,47.79 50.52,47.79 50.57,47.78 50.62,47.78 50.67,47.78 50.72,47.78 50.77,47.78 50.82,47.79 50.88,47.79 50.93,47.79 50.98,47.8 51.03,47.81 51.08,47.82 51.14,47.82 51.19,47.83 51.24,47.85 51.3,47.86 51.35,47.87 51.4,47.89 51.46,47.91 51.51,47.92 51.56,47.94 51.62,47.96 51.67,47.98 51.72,48.01 51.77,48.03 51.83,48.05 51.88,48.08 51.93,48.11 51.98,48.14 52.03,48.17 52.09,48.2 52.14,48.23 52.19,48.27 52.24,48.3 52.29,48.34 52.34,48.38 52.39,48.42 52.43,48.46 52.48,48.5 52.53,48.54 52.57,48.58 52.62,48.63 52.67,48.68 52.71,48.72 52.75,48.77 52.8,48.82 52.84,48.88 52.88,48.93 52.92,48.98 52.96,49.04 53,49.09 53.04,49.15 53.07,49.21 53.11,49.27 53.14,49.33 53.18,49.39 53.21,49.46 53.24,49.52 53.27,49.59 53.3,49.65 53.33,49.72 53.36,49.79 53.38,49.86 53.4,49.93 53.43,50 53.45,50.07 53.47,50.15 53.49,50.22 53.5,50.29 53.52,50.37 53.53,50.45 53.55,50.52 53.56,50.6 53.57,50.68 53.57,50.76 53.58,50.84 53.59,50.92 53.59,51 53.59,51.08 53.59,51.17 53.59,51.25 53.58,51.33 53.58,51.42 53.57,51.5 53.56,51.58 53.55,51.67 53.54,51.75 53.52,51.84 53.5,51.93 53.48,52.01 53.46,52.1 53.44,52.18 53.42,52.27 53.39,52.36 53.36,52.44 53.33,52.53 53.3,52.61 53.26,52.7 53.23,52.79 53.19,52.87 53.15,52.96 53.1,53.04 53.06,53.12 53.01,53.21 52.96,53.29 52.91,53.37 52.86,53.46 52.81,53.54 52.75,53.62 52.69,53.7 52.63,53.78 52.56,53.86 52.5,53.94 52.43,54.01 52.36,54.09 52.29,54.17 52.22,54.24 52.14,54.31 52.06,54.38 51.98,54.46 51.9,54.53 51.82,54.59 51.73,54.66 51.65,54.73 51.56,54.79 51.47,54.85 51.37,54.91 51.28,54.97 51.18,55.03 51.08,55.09 50.98,55.14 50.88,55.19 50.77,55.24 50.67,55.29 50.56,55.34 50.45,55.39 50.34,55.43 50.23,55.47 50.12,55.51 50,55.55 49.88,55.58 49.76,55.61 49.65,55.64 49.52,55.67 49.4,55.69 49.28,55.72 49.15,55.74 49.03,55.76 48.9,55.77 48.77,55.78 48.64,55.79 48.51,55.8 48.38,55.81 48.25,55.81 48.11,55.81 47.98,55.8 47.84,55.8 47.71,55.79 47.57,55.77 47.44,55.76 47.3,55.74 47.16,55.72 47.02,55.7 46.88,55.67 46.75,55.64 46.61,55.6 46.47,55.57 46.33,55.53 46.19,55.48 46.05,55.44 45.91,55.39 45.77,55.34 45.63,55.28 45.49,55.22 45.36,55.16 45.22,55.09 45.08,55.02 44.94,54.95 44.81,54.88 44.67,54.8 44.54,54.71 44.41,54.63 44.27,54.54 44.14,54.45 44.01,54.35 43.88,54.25 43.76,54.15 43.63,54.04 43.5,53.93 43.38,53.82 43.26,53.71 43.14,53.59 43.02,53.46 42.91,53.34 42.79,53.21 42.68,53.08 42.57,52.94 42.46,52.8 42.35,52.66 42.25,52.52 42.15,52.37 42.05,52.22 41.95,52.07 41.86,51.91 41.77,51.75 41.68,51.59 41.6,51.42 41.51,51.25 41.43,51.08 41.36,50.91 41.29,50.73 41.22,50.55 41.15,50.37 41.09,50.19 41.03,50 40.97,49.81 40.92,49.62 40.87,49.43 40.83,49.23 40.79,49.03 40.75,48.83 40.72,48.63 40.69,48.42 40.66,48.22 40.64,48.01 40.63,47.8 40.61,47.59 40.61,47.38 40.6,47.16 40.6,46.95 40.61,46.73 40.62,46.51 40.64,46.29 40.66,46.07 40.68,45.85 40.71,45.63 40.75,45.41 40.78,45.18 40.83,44.96 40.88,44.73 40.93,44.51 40.99,44.28 41.06,44.06 41.13,43.83 41.2,43.61 41.28,43.38 41.37,43.16 41.46,42.93 41.55,42.71 41.65,42.48 41.76,42.26 41.87,42.04 41.99,41.82 42.11,41.6 42.24,41.38 42.37,41.16 42.51,40.95 42.66,40.73 42.81,40.52 42.96,40.31 43.12,40.1 43.29,39.9 43.46,39.69 43.64,39.49 43.82,39.29 44,39.09 44.2,38.9 44.39,38.71 44.6,38.52 44.81,38.34 45.02,38.15 45.24,37.97 45.46,37.8 45.69,37.63 45.93,37.46 46.16,37.3 46.41,37.14 46.66,36.98 46.91,36.83 47.17,36.68 47.43,36.54 47.7,36.4 47.97,36.27 48.25,36.14 48.53,36.02 48.82,35.9 49.11,35.79 49.4,35.68 49.7,35.58 50,35.48 50.31,35.39 50.62,35.31 50.93,35.23 51.25,35.16 51.57,35.09 51.89,35.03 52.22,34.98 52.55,34.93 52.88,34.89 53.22,34.86 53.56,34.83 53.9,34.81 54.24,34.8 54.59,34.8 54.94,34.8 55.29,34.81 55.64,34.83 56,34.85 56.36,34.88 56.71,34.92 57.07,34.97 57.43,35.03 57.8,35.09 58.16,35.16 58.52,35.24 58.89,35.33 59.25,35.42 59.61,35.53 59.98,35.64 60.34,35.76 60.71,35.89 61.07,36.03 61.44,36.18 61.8,36.33 62.16,36.5 62.52,36.67 62.88,36.85 63.24,37.04 63.59,37.24 63.94,37.44 64.3,37.66 64.65,37.88 64.99,38.12 65.34,38.36 65.68,38.61 66.01,38.87 66.35,39.14 66.68,39.42 67,39.7 67.33,40 67.65,40.3 67.96,40.61 68.27,40.93 68.57,41.26 68.87,41.6 69.17,41.94 69.46,42.3 69.74,42.66 70.02,43.03 70.29,43.41 70.55,43.79 70.81,44.19 71.07,44.59 71.31,45 71.55,45.42 71.78,45.85 72,46.28 72.22,46.72 72.42,47.17 72.62,47.62 72.81,48.08 73,48.55 73.17,49.03 73.33,49.51 73.49,50 73.64,50.5 73.77,51 73.9,51.5 74.02,52.02 74.12,52.54 74.22,53.06 74.3,53.59 74.38,54.12 74.44,54.66 74.5,55.21 74.54,55.76 74.57,56.31 74.59,56.87 74.6,57.43 74.6,57.99 74.58,58.56 74.55,59.13 74.51,59.71 74.46,60.28 74.4,60.86 74.32,61.44 74.23,62.03 74.13,62.61 74.01,63.2 73.88,63.79 73.74,64.38 73.58,64.97 73.42,65.56 73.23,66.15 73.04,66.74 72.83,67.33 72.6,67.92 72.37,68.5 72.12,69.09 71.85,69.67 71.57,70.26 71.28,70.84 70.97,71.42 70.65,71.99 70.32,72.56 69.97,73.13 69.6,73.7 69.23,74.26 68.83,74.81 68.43,75.36 68.01,75.91 67.57,76.45 67.13,76.99 66.66,77.51 66.19,78.04 65.7,78.55 65.19,79.06 64.67,79.56 64.14,80.05 63.6,80.54 63.04,81.02 62.47,81.48 61.88,81.94 61.28,82.39 60.67,82.83 60.04,83.26 59.4,83.68 58.75,84.08 58.09,84.48 57.41,84.87 56.72,85.24 56.02,85.6 55.31,85.95 54.58,86.28 53.85,86.61 53.1,86.91 52.34,87.21 51.57,87.49 50.79,87.76 50,88.01 49.2,88.24 48.39,88.46 47.57,88.67 46.74,88.86 45.9,89.03 45.05,89.19 44.19,89.33 43.33,89.45 42.45,89.55 41.57,89.64 40.69,89.71 39.79,89.76 38.89,89.79 37.98,89.8 37.07,89.8 36.15,89.77 35.23,89.73 34.3,89.66 33.36,89.58 32.42,89.47 31.48,89.35 30.54,89.2 29.59,89.04 28.64,88.85 27.69,88.64 26.74,88.41 25.89,87.99 25.1,87.48 24.32,86.95 23.55,86.41 22.79,85.84 22.05,85.27 21.32,84.67 20.6,84.06 19.89,83.44 19.2,82.8 18.52,82.15 17.85,81.48 17.2,80.8 16.56,80.11 15.94,79.4 15.33,78.68 14.73,77.95 14.16,77.21 13.59,76.45 13.05,75.68 12.52,74.9 12.01,74.11 11.51,73.31 11.03,72.5 10.57,71.68 10.12,70.85 9.69,70.01 9.28,69.16 8.89,68.3 8.52,67.44 8.16,66.57 7.82,65.69 7.5,64.8 7.2,63.91 6.92,63.01 6.66,62.1 6.41,61.19 6.19,60.28 5.98,59.36 5.8,58.43 5.63,57.5 5.48,56.57 5.35,55.64 5.25,54.7 5.16,53.77 5.09,52.83 5.04,51.88 5.01,50.94 5,50 5.01,49.06 5.04,48.12 5.09,47.17 5.16,46.23 5.25,45.3 5.35,44.36 5.48,43.43 5.63,42.5 5.8,41.57 5.98,40.64 6.19,39.72 6.41,38.81 6.66,37.9 6.92,36.99 7.2,36.09 7.5,35.2 7.82,34.31 8.16,33.43 8.52,32.56 8.89,31.7 9.28,30.84 9.69,29.99 10.12,29.15 10.57,28.32 11.03,27.5 11.51,26.69 12.01,25.89 12.52,25.1 13.05,24.32 13.59,23.55 14.16,22.79 14.73,22.05 15.33,21.32 15.94,20.6 16.56,19.89 17.2,19.2 17.85,18.52 18.52,17.85 19.2,17.2 19.89,16.56 20.6,15.94 21.32,15.33 22.05,14.73 22.79,14.16 23.55,13.59 24.32,13.05 25.1,12.52 25.89,12.01 26.69,11.51 27.5,11.03 28.32,10.57 29.15,10.12 29.99,9.69 30.84,9.28 31.7,8.89 32.56,8.52 33.43,8.16 34.31,7.82 35.2,7.5 36.09,7.2 36.99,6.92 37.9,6.66 38.81,6.41 39.72,6.19 40.64,5.98 41.57,5.8 42.5,5.63 43.43,5.48 44.36,5.35 45.3,5.25 46.23,5.16 47.17,5.09 48.12,5.04 49.06,5.01 50,5 50.94,5.01 51.88,5.04 52.83,5.09 53.77,5.16 54.7,5.25 55.64,5.35 56.57,5.48 57.5,5.63 58.43,5.8 59.36,5.98 60.28,6.19 61.19,6.41 62.1,6.66 63.01,6.92 63.91,7.2 64.8,7.5 65.69,7.82 66.57,8.16 67.44,8.52 68.3,8.89 69.16,9.28 70.01,9.69 70.85,10.12 71.68,10.57 72.5,11.03 73.31,11.51 74.11,12.01 74.9,12.52 75.68,13.05 76.45,13.59 77.21,14.16 77.95,14.73 78.68,15.33 79.4,15.94 80.11,16.56 80.8,17.2 81.48,17.85 82.15,18.52 82.8,19.2 83.44,19.89 84.06,20.6 84.67,21.32 85.27,22.05 85.84,22.79 86.41,23.55 86.95,24.32 87.48,25.1 87.99,25.89 88.49,26.69 88.97,27.5 89.43,28.32 89.88,29.15 90.31,29.99 90.72,30.84 91.11,31.7 91.48,32.56 91.84,33.43 92.18,34.31 92.5,35.2 92.8,36.09 93.08,36.99 93.34,37.9 93.59,38.81 93.81,39.72 94.02,40.64 94.2,41.57 94.37,42.5 94.52,43.43 94.65,44.36 94.75,45.3 94.84,46.23 94.91,47.17 94.96,48.12 94.99,49.06 95,50 94.99,50.94 94.96,51.88 94.91,52.83 94.84,53.77 94.75,54.7 94.65,55.64 94.52,56.57 94.37,57.5 94.2,58.43 94.02,59.36 93.81,60.28 93.59,61.19 93.34,62.1 93.08,63.01 92.8,63.91 92.5,64.8 92.18,65.69 91.84,66.57 91.48,67.44 91.11,68.3 90.72,69.16 90.31,70.01 89.88,70.85 89.43,71.68 88.97,72.5 88.49,73.31 87.99,74.11 87.48,74.9 86.95,75.68 86.41,76.45 85.84,77.21 85.27,77.95 84.67,78.68 84.06,79.4 83.44,80.11 82.8,80.8 82.15,81.48 81.48,82.15 80.8,82.8 80.11,83.44 79.4,84.06 78.68,84.67 77.95,85.27 77.21,85.84 76.45,86.41 75.68,86.95 74.9,87.48 74.11,87.99 73.31,88.49 72.5,88.97 71.68,89.43 70.85,89.88 70.01,90.31 69.16,90.72 68.3,91.11 67.44,91.48 66.57,91.84 65.69,92.18 64.8,92.5 63.91,92.8 63.01,93.08 62.1,93.34 61.19,93.59 60.28,93.81 59.36,94.02 58.43,94.2 57.5,94.37 56.57,94.52 55.64,94.65 54.7,94.75 53.77,94.84 52.83,94.91 51.88,94.96 50.94,94.99 50,95 49.06,94.99 48.12,94.96 47.17,94.91 46.23,94.84 45.3,94.75 44.36,94.65 43.43,94.52 42.5,94.37 41.57,94.2 40.64,94.02 39.72,93.81 38.81,93.59 37.9,93.34 36.99,93.08 36.09,92.8 35.2,92.5 34.31,92.18 33.43,91.84 32.56,91.48 31.7,91.11 30.84,90.72 29.99,90.31 29.15,89.88 28.32,89.43 27.5,88.97 26.69,88.49 25.89,87.99" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol></svg>
+<div class="wrap">
+  <header class="top">
+    <div class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
+      <p class="kick">Recursive Learning · for the film <a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film">Hot Potato</a></p></div>
+    <div class="draft" role="note">
+      <p class="dh">Draft — for PlayfulProcess to carve</p>
+      <p>Lines in quotation marks are hers, trimmed only where “…” marks a cut; every other line is Claude's, and hers to cut or rewrite.</p>
+    </div>
+    <h1>Principles</h1>
+    <p class="lede">The yardstick the film, the belief tree and the editorial hold themselves to: her lines first, then the principle each one names, and where the film already uses it.</p>
+    <ul class="links">
+      <li><a href="https://learning.recursive.eco/explainers/belief-tree/">The belief tree</a></li>
+      <li><a href="https://learning.recursive.eco/explainers/risk-and-uncertainty/">Risk and uncertainty, the Lab's explainer <span class="tag soon">coming</span></a></li>
+      <li><a href="https://learning.recursive.eco/glossary/">Words, the glossary</a></li>
+    </ul>
+  </header>
+
+  <div class="layout">
+    <details class="toc" id="toc">
+      <summary>Contents</summary>
+      <ol>
+        <li class="part">How we come to believe</li>
+        <li><a href="#p1"><span class="n">P1</span>A claim is a hypothesis</a></li>
+        <li><a href="#p2"><span class="n">P2</span>Doubt what you hear, and what you say</a></li>
+        <li><a href="#p3"><span class="n">P3</span>Name what is not known</a></li>
+        <li><a href="#p4"><span class="n">P4</span>Every number is given something</a></li>
+        <li><a href="#p5"><span class="n">P5</span>Scenarios, not bets</a></li>
+        <li><a href="#p6"><span class="n">P6</span>No absolute vantage point</a></li>
+        <li class="part">Before building</li>
+        <li><a href="#p7"><span class="n">P7</span>The gate</a></li>
+        <li><a href="#p8"><span class="n">P8</span>Two problems, two maps</a></li>
+        <li class="part">Judging reasoning</li>
+        <li><a href="#p9"><span class="n">P9</span>The argument, not the person</a></li>
+        <li><a href="#p10"><span class="n">P10</span>Question the frame</a></li>
+        <li><a href="#p11"><span class="n">P11</span>State the other side fairly</a></li>
+        <li><a href="#p12"><span class="n">P12</span>Change your mind in the open</a></li>
+        <li class="part">Belief and action</li>
+        <li><a href="#p13"><span class="n">P13</span>Belief that helps make its fact</a></li>
+        <li><a href="#p14"><span class="n">P14</span>Act from where you stand</a></li>
+        <li class="part">What it serves</li>
+        <li><a href="#v1"><span class="n">V1</span>Sentient life above all</a></li>
+        <li><a href="#v2"><span class="n">V2</span>Stopping as a mandate</a></li>
+        <li class="part">Left open</li>
+        <li><a href="#questions"><span class="n">Q</span>Open questions</a></li>
+        <li><a href="#flags"><span class="n">F</span>Where the film may not meet these yet</a></li>
+      </ol>
+    </details>
+
+    <main>
+      <!-- ============ I ============ -->
+      <div class="part-h" id="believe">
+        <p class="kick">Part one</p>
+        <h2>How we come to believe</h2>
+      </div>
+
+      <article class="pr" id="p1">
+        <div class="pr-h"><span class="num">P1</span><h3>A claim is a hypothesis, tested at our own size</h3></div>
+        <figure class="her">
+          <blockquote><p>“We're here to do recursive eco improvement. Recursive self-improvement can fail in multiple ways, because we need to adapt with the environment or adapt the environment. We're here to test this hypothesis in the sizes and areas we work with.”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026</figcaption>
+        </figure>
+        <figure class="her">
+          <blockquote><p>“I am building recursive.eco because I will to hope, and I want every step in that learning to be an authentic iteration towards recursive eco improvement.”</p></blockquote>
+          <figcaption>21 Sep 2026</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>A claim is a conjecture held until a test could refute it (<a class="term proposed" href="https://learning.recursive.eco/glossary/#falsifiable">falsifiable</a>), tested in small steps whose errors can be seen and undone. <span class="cite"><a href="https://plato.stanford.edu/entries/popper/">Popper</a>, <i>Conjectures and Refutations</i> (1963), and his “piecemeal engineering”, <i>The Poverty of Historicism</i> (1957).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=c71808b9-c572-47d8-b3eb-aec2dec3a154" title="Film item c71808b9">“It is time for us to learn how to be our own size”</a><span class="tag film">in the film</span></p>
+      </article>
+
+      <article class="pr" id="p2">
+        <div class="pr-h"><span class="num">P2</span><h3>Doubt what you hear, and what you say</h3></div>
+        <figure class="her">
+          <blockquote><p>“I'm afraid that because I don't understand AI and self-improvement I might become the Harari of that industry, saying things I don't understand.”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026 <span class="caution"><span class="tag warn">caution</span>It names a voice in the film; see <a href="#f7">F7</a>.</span></figcaption>
+        </figure>
+        <figure class="her">
+          <blockquote><p>“Is it just because he acquired Hugging Face? Is this real?”</p></blockquote>
+          <figcaption>Dictated while listening to a podcast about Nvidia and open models, 24 Sep 2026</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Organised skepticism, turned on your own claims as well as on what you hear. <span class="cite">Merton, <a href="https://www.panarchy.org/merton/science.html">“Science and Technology in a Democratic Order”</a> (1942); Nickerson, <a href="https://doi.org/10.1037/1089-2680.2.2.175">“Confirmation Bias”</a> (1998).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=b7f13a86-6893-4167-8527-bdfbdc9c1d2b" title="Film item b7f13a86">“What you just watched — and how to make one”</a><span class="tag film">in the film</span> · the tree's rule that a quote is marked verbatim only when matched to a transcript or caption cue (<a href="https://learning.recursive.eco/explainers/belief-tree/">tree, footer</a>)</p>
+      </article>
+
+      <article class="pr" id="p3">
+        <div class="pr-h"><span class="num">P3</span><h3>Name what is not known, and leave it open</h3></div>
+        <figure class="her">
+          <blockquote><p>“More of a hospicing-modernity attitude: holding what we don't know together; we don't need to close anything; we ask questions when we don't know the answers.”</p></blockquote>
+          <figcaption>Her note on a film card, 20 Sep 2026</figcaption>
+        </figure>
+        <figure class="her">
+          <blockquote><p>“I like Harari's framing — whether it's good or bad, we need to see, with the fact that this will be out of control and it will be a great power that we don't know yet.”</p></blockquote>
+          <figcaption>Her note on a film card, 20 Sep 2026</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Where no odds are known, say so rather than price it: <a class="term proposed" href="https://learning.recursive.eco/glossary/#risk">risk</a> is not <a class="term proposed" href="https://learning.recursive.eco/glossary/#uncertainty">uncertainty</a> or <a class="term proposed" href="https://learning.recursive.eco/glossary/#ambiguity">ambiguity</a>. <span class="cite">Knight, <a href="https://www.econlib.org/library/Knight/knRUP.html"><i>Risk, Uncertainty and Profit</i></a> (1921); Keynes, <a href="https://doi.org/10.2307/1882087">“The General Theory of Employment”</a> (1937). “Hospicing modernity” is Vanessa Machado de Oliveira Andreotti's phrase (2021).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=f49042cc-dd13-4717-946f-053ef3ee3a19" title="Film item f49042cc">“Holding what we don't know, together”</a><span class="tag cand">candidate</span> · <a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=6430b9ab-fb97-4688-9a63-996c9adf988e" title="Film item 6430b9ab">“Good or bad, we will have to see”</a><span class="tag cand">candidate</span> · the tree's dashed outlines, “not known yet” (<a href="https://learning.recursive.eco/explainers/belief-tree/?step=8">tree, step 8</a>) · <a href="https://learning.recursive.eco/explainers/risk-and-uncertainty/">the Lab's explainer</a><span class="tag soon">coming</span></p>
+      </article>
+
+      <article class="pr" id="p4">
+        <div class="pr-h"><span class="num">P4</span><h3>Every number is given something</h3></div>
+        <figure class="her">
+          <blockquote><p>“If there's one teaching that I want … I want people to learn what conditional probability actually means.”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026</figcaption>
+        </figure>
+        <figure class="her">
+          <blockquote><p>“It might be 10% now because of how people expect decisions will be made, but if it is 100% investments in power, 0% in alignment, the 10% might become 100.”</p></blockquote>
+          <figcaption>The same note</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>A chance is a chance given a path (<a class="term proposed" href="https://learning.recursive.eco/glossary/#conditional-probability">conditional probability</a>, against a <a class="term proposed" href="https://learning.recursive.eco/glossary/#base-rate">base rate</a>), and the same odds land differently framed as gains or as losses. <span class="cite">Bayes, “An Essay towards solving a Problem in the Doctrine of Chances” (1763); Tversky and Kahneman, <a href="https://doi.org/10.1126/science.7455683">“The Framing of Decisions and the Psychology of Choice”</a> (1981).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=16a26c1e-c668-455d-af10-26b8b53d287e" title="Film item 16a26c1e">“Ninety percent, many times”</a><span class="tag cand">candidate</span> · <a href="https://learning.recursive.eco/game/walk.html">The Walk</a><span class="tag">game</span> · <a href="https://learning.recursive.eco/explainers/risk-and-uncertainty/#given">the Lab's explainer, “given”</a><span class="tag soon">coming</span></p>
+      </article>
+
+      <article class="pr" id="p5">
+        <div class="pr-h"><span class="num">P5</span><h3>Scenarios, not bets</h3></div>
+        <figure class="her">
+          <blockquote><p>“So maybe not place bets, but I'll have my own scenario in which people walk, and the conditional probabilities change in each case …”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Offer scenarios rather than forecasts, and keep confidence calibrated rather than staked. <span class="cite">Wack, “Scenarios: Uncharted Waters Ahead”, <i>Harvard Business Review</i> (1985); Brier (1950) and Tetlock and Gardner, <i>Superforecasting</i> (2015), on calibration.</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=4c5a1301-6663-45f7-8100-a3d0e099c109" title="Film item 4c5a1301">“Three ways this could go (imagined, not predicted)”</a><span class="tag film">in the film</span> · <a href="https://learning.recursive.eco/game/walk.html">The Walk</a><span class="tag">game</span> · <a href="https://flow.recursive.eco/g/0489bd30-d71d-4b7b-82b2-662bcbef25b0">the As-If deck</a><span class="tag">deck</span></p>
+      </article>
+
+      <article class="pr" id="p6">
+        <div class="pr-h"><span class="num">P6</span><h3>No absolute vantage point</h3></div>
+        <figure class="her">
+          <blockquote><p>“There is no moral absolutist vantage point. We cannot act as if all beings' benefit can happen at once — but maybe we can try.”</p></blockquote>
+          <figcaption>Her words on a film card, marked “to be cut”</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Fallibilism: any claim, moral or factual, may be wrong, so claims are hedged to what is known. <span class="cite">Peirce (c. 1897); <a href="https://plato.stanford.edu/entries/popper/">Popper</a> (1963).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;item=0d3159f6-6d92-412c-85ed-1291c91e31d5" title="Film item 0d3159f6">“May it benefit all beings”</a><span class="tag cand">candidate</span> · the film's working rule of no absolutist claims, which live text still breaks in four places (<a href="#f2">F2</a>)</p>
+      </article>
+
+      <!-- ============ II ============ -->
+      <div class="part-h" id="building">
+        <p class="kick">Part two</p>
+        <h2>Before building</h2>
+      </div>
+
+      <article class="pr" id="p7">
+        <div class="pr-h"><span class="num">P7</span><h3>The gate</h3></div>
+        <figure class="her">
+          <blockquote><p>“… if there is no reason to believe we can ever know whether superintelligence could be built aligned without building it, that might be reason enough not to build it, even if you don't put the value of human life above all else.”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026</figcaption>
+        </figure>
+        <figure class="her">
+          <blockquote><p>“… if there is the impossibility of predicting to a certain point that they will escape or not, you should shut down the labs.”</p></blockquote>
+          <figcaption>Dictated, 24 Sep 2026 <span class="caution"><span class="tag warn">caution</span>Said while describing Jensen Huang's interview. His own “shut the labs” is conditional: it applies if containment proves impossible (<a href="https://learning.recursive.eco/explainers/belief-tree/?step=3">tree, step 3</a>).</span></figcaption>
+        </figure>
+        <figure class="her confirm">
+          <blockquote><p>“Long autonomous runs are fine if every change is on a branch or a private copy, with a one-line rollback.”</p></blockquote>
+          <figcaption><span class="tag">wording to confirm</span> Her working agreements with Claude</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>When a step can't be undone or tried first, the <a class="term proposed" href="https://learning.recursive.eco/glossary/#burden-of-proof">burden of proof</a> moves to whoever wants to take it (<a class="term proposed" href="https://learning.recursive.eco/glossary/#precaution">precaution</a>, <a class="term" href="https://learning.recursive.eco/glossary/#reversibility">reversibility</a>, <a class="term proposed" href="https://learning.recursive.eco/glossary/#ruin">ruin</a>). <span class="cite">Sunstein, <a href="https://scholarship.law.cornell.edu/clr/vol91/iss4/2/">“Irreversible and Catastrophic”</a> (2006); Taleb, Read, Douady, Norman and Bar-Yam, <a href="https://arxiv.org/abs/1410.5787"><i>The Precautionary Principle</i></a> (2014); the ignition question, settled by calculation: Konopinski, Marvin and Teller, LA-602 (1946).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://learning.recursive.eco/explainers/belief-tree/?step=1">tree, step 1: The gate</a> · <a href="https://learning.recursive.eco/explainers/belief-tree/?step=4">step 4: No and no</a> · <a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=87e66493-4ed4-4927-87df-f510b78779df" title="Film item 87e66493">“Chances are near zero” (Welch Labs, on Oppenheimer)</a><span class="tag film">in the film</span> · <a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=5f6a5c5b-d17c-4778-8323-25be9c9816d9" title="Film item 5f6a5c5b">“We cannot know without building it”</a><span class="tag cand">candidate</span> (<a href="#f1">F1</a>)</p>
+      </article>
+
+      <article class="pr" id="p8">
+        <div class="pr-h"><span class="num">P8</span><h3>Two problems, two maps</h3></div>
+        <figure class="her">
+          <blockquote><p>“… the problem of the bad actor and the problem of the AI alignment provide very different recommended action steps for mitigation (one brings China and US apart, the other together)”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Name the problem before the remedy: misuse, accident and structure call for different ones (<a class="term" href="https://learning.recursive.eco/glossary/#two-geopolitics">two geopolitics</a>). <span class="cite">Zwetsloot and Dafoe, <a href="https://www.lawfaremedia.org/article/thinking-about-risks-ai-accidents-misuse-and-structure">“Thinking About Risks From AI: Accidents, Misuse and Structure”</a> (2019).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=5d131060-3677-4dce-bc2f-3d05fa3fd97c" title="Film item 5d131060">“Two different fears, and only one has a villain”</a><span class="tag cand">candidate</span> · <a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=024846c7-8c42-450b-a786-6667daffdb81" title="Film item 024846c7">“Two problems, two maps”</a><span class="tag cand">candidate</span> · <a href="https://learning.recursive.eco/explainers/belief-tree/?step=7">tree, step 7: No villains required</a></p>
+      </article>
+
+      <!-- ============ III ============ -->
+      <div class="part-h" id="judging">
+        <p class="kick">Part three</p>
+        <h2>Judging reasoning, not people</h2>
+      </div>
+
+      <article class="pr" id="p9">
+        <div class="pr-h"><span class="num">P9</span><h3>The argument, not the person</h3></div>
+        <figure class="her confirm">
+          <blockquote><p>“The structure is the harm. I am not saying Dario is them. I am saying the structural similarity should make all of us — him, me, you — much more careful about the framings we accept.”</p></blockquote>
+          <figcaption><span class="tag">wording to confirm</span> Her essay draft, 27 May 2026 (“them”: the essay's earlier comparison, residential-school staff) <span class="caution"><span class="tag warn">caution</span>Her view of Anthropic has moved since May; see <a href="#f4">F4</a>.</span></figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Judge a claim by its argument, not by who makes it or why they might hold it. <span class="cite">Merton's universalism, <a href="https://www.panarchy.org/merton/science.html">“Science and Technology in a Democratic Order”</a> (1942); Rosenberg, <i>Nonviolent Communication</i> (1999): observation before evaluation.</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span>the tree's rule, “Placements are readings of public arguments, not verdicts on people” (<a href="https://learning.recursive.eco/explainers/belief-tree/">tree, footer</a>) · <a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;item=1314c164-7014-4957-a392-48b4057fc60c" title="Film item 1314c164">the set-aside beats, moved out because they “assign motive rather than show a move”</a><span class="tag">parked</span></p>
+      </article>
+
+      <article class="pr" id="p10">
+        <div class="pr-h"><span class="num">P10</span><h3>Question the frame</h3></div>
+        <figure class="her confirm">
+          <blockquote><p>“The question is well-formed if you accept the premise. <em>If you do not, the question itself is the trap.</em>”</p></blockquote>
+          <figcaption><span class="tag">wording to confirm</span> Her essay draft, 27 May 2026</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Check a question's premise before choosing among its answers. <span class="cite">The fallacy of many questions, in Hamblin, <i>Fallacies</i> (1970); framing effects, Tversky and Kahneman (1981).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=07085aec-fbc8-403d-b0e5-33813c3e3ffe" title="Film item 07085aec">“Sit with this. Two exits are open: call it a hoax, or melt the machines. Neither is the one we need”</a><span class="tag film">in the film</span></p>
+      </article>
+
+      <article class="pr" id="p11">
+        <div class="pr-h"><span class="num">P11</span><h3>State the other side so it would recognise itself</h3></div>
+        <figure class="her">
+          <blockquote><p>“… if people believe that doom does not change behavior, because if singularity is developed it is going to be eventually developed and doom will come anyway and there is nothing to control that.”</p></blockquote>
+          <figcaption>Her note on a film card</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Restate a view well enough that the people who hold it would recognise it, before answering it. <span class="cite">Rapoport's rules, in Dennett, <i>Intuition Pumps and Other Tools for Thinking</i> (2013); the principle of charity, Wilson, <a href="https://philpapers.org/rec/WILSWS">“Substances without Substrata”</a> (1959).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;item=837d622f-aa94-4b28-8200-7a74f143e19d" title="Film item 837d622f">“The argument that empties the room”</a><span class="tag">parked</span> · the tree's person cards, “what they would have to believe to move” (<a href="https://learning.recursive.eco/explainers/belief-tree/?step=8">tree, step 8</a>) · <a href="https://flow.recursive.eco/g/0489bd30-d71d-4b7b-82b2-662bcbef25b0">the As-If deck's upright and reversed readings</a><span class="tag">deck</span></p>
+      </article>
+
+      <article class="pr" id="p12">
+        <div class="pr-h"><span class="num">P12</span><h3>Change your mind in the open</h3></div>
+        <figure class="her">
+          <blockquote><p>“So I stepped away from my rationalization that 'if humanity gets destroyed by something it builds irresponsibly, it is only fair' to 'we have a hell of a responsibility in not creating a paper-clip-builder monster that kills all of sentient life in the name of paper-clip treasures'”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026</figcaption>
+        </figure>
+        <figure class="her">
+          <blockquote><p>“maybe not finding it is a sign that I should produce a movie on it?”</p></blockquote>
+          <figcaption>20 Sep 2026, on finding no footage of a group visibly wrong, then visibly better</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Knowledge grows by finding and correcting errors, so a change of mind is dated and shown with its reason. <span class="cite"><a href="https://plato.stanford.edu/entries/popper/">Popper</a>, <i>Conjectures and Refutations</i> (1963).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=4b99eec3-9bd3-426f-9112-af062189221d" title="Film item 4b99eec3">“Sentient life above all”</a><span class="tag cand">candidate</span> · <a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;item=7d0bb51c-d783-439c-a7a6-ab8326c1fe62" title="Film item 7d0bb51c">the appendix of footage still to pull</a><span class="tag">parked</span></p>
+      </article>
+
+      <!-- ============ IV ============ -->
+      <div class="part-h" id="action">
+        <p class="kick">Part four</p>
+        <h2>Belief and action</h2>
+      </div>
+
+      <article class="pr" id="p13">
+        <div class="pr-h"><span class="num">P13</span><h3>Belief that helps make its fact</h3></div>
+        <figure class="her">
+          <blockquote><p>“… some scenarios will not come true if we don't take steps in their direction — just like supervised learning works, all the vectors take one step of faith at a time toward the ultimate goal.”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026</figcaption>
+        </figure>
+        <figure class="her">
+          <blockquote><p>“Certain outcomes might require a collective prayer.”</p></blockquote>
+          <figcaption>The same note</figcaption>
+        </figure>
+        <figure class="her">
+          <blockquote><p>“maybe we show Oedipus and enactment of the prophecy one was trying to escape by trying to escape it.”</p></blockquote>
+          <figcaption>Her note on a film card</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Some facts are made partly by what people believe and do, and a prediction can bring about what it predicts. <span class="cite">William James, <a href="https://www.gutenberg.org/ebooks/26659">“The Will to Believe”</a> (1896); Merton, <a href="https://doi.org/10.2307/4609267">“The Self-Fulfilling Prophecy”</a> (1948); Popper's “Oedipus effect”, <i>The Poverty of Historicism</i> (1957).</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=c8cc0774-495e-4921-8efd-6b26bf271ef6" title="Film item c8cc0774">“Oedipus — the prophecy carried out by the escape”</a><span class="tag cand">candidate</span> · <a href="https://learning.recursive.eco/explainers/belief-tree/?step=7">tree, step 7: “Each lab believes it's the careful one, so it must lead”</a> · <a href="https://flow.recursive.eco/g/0489bd30-d71d-4b7b-82b2-662bcbef25b0">the As-If deck</a><span class="tag">deck</span></p>
+      </article>
+
+      <article class="pr" id="p14">
+        <div class="pr-h"><span class="num">P14</span><h3>Act from where you stand</h3></div>
+        <figure class="her">
+          <blockquote><p>“good actors should take the stand in Kurukshetra.”</p></blockquote>
+          <figcaption>Her note on a film card</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Principle</span>Knowing without acting leaves a claim untested; acting is part of testing it. <span class="cite">William James, <i>Pragmatism</i> (1907); the Bhagavad Gita, where Arjuna is told to act well from where he stands.</span></p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=6e896a5c-1296-4708-9ec9-cee76f290995" title="Film item 6e896a5c">“Kurukshetra — not whether it comes, but who is standing there”</a><span class="tag cand">candidate</span> · <a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=f31aff8f-7ece-48bf-9eb5-35889c73e1ff" title="Film item f31aff8f">“the next right thing” (Frozen II)</a><span class="tag film">in the film</span></p>
+      </article>
+
+      <!-- ============ V ============ -->
+      <div class="part-h" id="serves">
+        <p class="kick">Part five</p>
+        <h2>What the method serves</h2>
+        <p>These are commitments, not findings; the questions below ask whether the method above holds them.</p>
+      </div>
+
+      <article class="pr value" id="v1">
+        <div class="pr-h"><span class="num">V1</span><h3>Sentient life above all</h3></div>
+        <figure class="her">
+          <blockquote><p>“I want to put the value of sentient life above all else”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Value</span>Sentient life first, chosen rather than derived from a finding (<a href="#q2">Q2</a>, <a href="#q10">Q10</a>).</p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=4b99eec3-9bd3-426f-9112-af062189221d" title="Film item 4b99eec3">“Sentient life above all”</a><span class="tag cand">candidate</span></p>
+      </article>
+
+      <article class="pr value" id="v2">
+        <div class="pr-h"><span class="num">V2</span><h3>Stopping as a mandate</h3></div>
+        <figure class="her">
+          <blockquote><p>“I am reformulating all my projects to understand and try to communicate what I feel about stopping as a mandate … It is time.”</p></blockquote>
+          <figcaption>Voice note, 20 Sep 2026</figcaption>
+        </figure>
+        <p class="names"><span class="lab">Value</span>The ask the gate (<a href="#p7">P7</a>) leads to, if its premise holds (<a href="#q1">Q1</a>, <a href="#q5">Q5</a>).</p>
+        <p class="uses"><span class="lab">Where the film uses it</span><a href="https://learning.recursive.eco/explainers/belief-tree/?step=4">tree, step 4: No and no, shut down</a> · <a href="https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438&amp;edition=film&amp;item=5f6a5c5b-d17c-4778-8323-25be9c9816d9" title="Film item 5f6a5c5b">“We cannot know without building it”</a><span class="tag cand">candidate</span></p>
+      </article>
+
+      <!-- ============ VI ============ -->
+      <div class="part-h" id="questions">
+        <p class="kick">Left open</p>
+        <h2>Open questions</h2>
+        <p>Where these principles pull against each other; none is answered here.</p>
+      </div>
+      <ol class="qs">
+        <li id="q1"><span class="qn">Q1</span><b>The gate, and “we cannot know without building it”.</b> If the only test is the building, the builder's burden can never be met.
+          <span class="ask">Is the gate a standing prohibition, or can evidence short of building meet it: a calculation, as with ignition in 1946, interpretability, smaller staged systems? If it can, “no way to know without building” is itself an empirical claim, and it is where Huang and Yampolskiy split.</span>
+          <span class="refs"><a href="#p7">P7</a> · <a href="#v2">V2</a> · Popper's piecemeal engineering sits on both sides</span></li>
+        <li id="q2"><span class="qn">Q2</span><b>Sentient life above all, and shutting down.</b>
+          <span class="ask">If some AI systems are or become sentient, does the first value limit deleting weights, retraining or shutting down? Does not creating a being wrong it (Parfit's non-identity problem, 1984)? Sutskever voices a similar value and argues for building: is that the same principle, split by a different fact?</span>
+          <span class="refs"><a href="#v1">V1</a> · <a href="#p7">P7</a></span></li>
+        <li id="q3"><span class="qn">Q3</span><b>Reversible for whom?</b> The tree says stopping is reversible and escape isn't; its own note under step 7 says a stop by some leaves the rest building, and a later restart may jump ahead.
+          <span class="ask">Reversible for the one who stops, or for the world?</span>
+          <span class="refs"><a href="#p7">P7</a> · <a href="#f2">F2</a></span></li>
+        <li id="q4"><span class="qn">Q4</span><b>Argument, not motive, and “who benefits from this narrative?”</b>
+          <span class="ask">Is looking at an institution's incentives (structure) allowed where a claim about a person's reasons is not? Where is that line, and does the opening thesis card's “because the money needs it” cross it? The same question applies to Claude, made by Anthropic, drafting this page.</span>
+          <span class="refs"><a href="#p9">P9</a> · <a href="#f3">F3</a></span></li>
+        <li id="q5"><span class="qn">Q5</span><b>Holding open, and stating the stop.</b> “We don't need to close anything” sits beside “stopping as a mandate”.
+          <span class="ask">Can one page say “we don't know” and “stop” without one hollowing the other? If not knowing is the reason to stop, is this Q1 again?</span>
+          <span class="refs"><a href="#p3">P3</a> · <a href="#v2">V2</a></span></li>
+        <li id="q6"><span class="qn">Q6</span><b>Skeptical of apocalypse, and the survivor's ledger.</b> Doom has been predicted many times and failed; the counts were kept by the side that didn't end; a new kind of thing may have no <a class="term proposed" href="https://learning.recursive.eco/glossary/#reference-class">reference class</a> to count (Hájek, 2007).
+          <span class="ask">Which reference class does the skepticism rest on? If none fits, does it lose its base rate too?</span>
+          <span class="refs"><a href="#p4">P4</a> · <a href="#p6">P6</a></span></li>
+        <li id="q7"><span class="qn">Q7</span><b>Coherence as the yardstick, and wisdom as holding contradictory truths.</b> Her reading that Amodei is wiser for not sitting in one leaf is marked, in her own audit, “to be tested”.
+          <span class="ask">When is holding two things wisdom, and when is it a stated commitment and an action pointing opposite ways? Claude is made by Anthropic, whose CEO this question is about.</span>
+          <span class="refs"><a href="#p2">P2</a> · <a href="#p9">P9</a> · <a href="#p12">P12</a></span></li>
+        <li id="q8"><span class="qn">Q8</span><b>Making it real, and testing first.</b> Belief can help make social facts: a race, a pause, coordination. It cannot make a sandbox hold, or make alignment solvable.
+          <span class="ask">Should the page mark which nodes of the tree are belief-sensitive, and allow believing ahead of the evidence only there?</span>
+          <span class="refs"><a href="#p13">P13</a> · <a href="#p1">P1</a> · <a href="#f6">F6</a></span></li>
+        <li id="q9"><span class="qn">Q9</span><b>“I will to hope more than I will to find truth, because truth is what we build together.”</b> The book's own audit reads it as false broadly and true narrowly, for facts that agreement and action help make.
+          <span class="ask">Narrow it before this page leans on it?</span>
+          <span class="refs"><a href="#p13">P13</a> · <a href="#p1">P1</a></span></li>
+        <li id="q10"><span class="qn">Q10</span><b>Worth held, or worth conferred?</b> The film's card “The value function, offered” reads “Each being has value just because it exists, / and value is what coordinates.” Whether those words are hers or the book draft's is not settled.
+          <span class="ask">Is worth held by each being, or conferred by coordination? “Sentient life above all” seems to rest on the first reading.</span>
+          <span class="refs"><a href="#v1">V1</a></span></li>
+        <li id="q11"><span class="qn">Q11</span><b>A measurable stop line, and unknowability.</b> A line drawn on compute or evaluations measures capability, not alignment, and implies building up to the line; the gate implies not building.
+          <span class="ask">Is a measured line a fallback for when the stop is not adopted, or a replacement for it?</span>
+          <span class="refs"><a href="#p7">P7</a> · <a href="#v2">V2</a> · <a href="#f5">F5</a></span></li>
+        <li id="q12"><span class="qn">Q12</span><b>Teaching with numbers, when the odds may not exist.</b> Her own note teaches with “the 10% might become 100”; the Lab's explainer warns that a toy turning invented causes into counts “would be a forecast in costume”.
+          <span class="ask">Can the page teach that every number is given something, and also say the tree's odds may not exist?</span>
+          <span class="refs"><a href="#p4">P4</a> · <a href="#p3">P3</a></span></li>
+        <li id="q13"><span class="qn">Q13</span><b>Two maps at once.</b> When misuse and alignment are live together, the bad-actor map says lead and the alignment map says pause together.
+          <span class="ask">Which governs when they conflict?</span>
+          <span class="refs"><a href="#p8">P8</a></span></li>
+      </ol>
+
+      <!-- ============ VII ============ -->
+      <div class="part-h" id="flags">
+        <p class="kick">Left open</p>
+        <h2>Where the film may not meet these yet</h2>
+        <p>For her to decide; nothing below has been changed.</p>
+      </div>
+      <ol class="qs flags">
+        <li id="f1"><span class="qn">F1</span><b>A dropped hedge.</b> She said “might be reason enough”; the candidate card “We cannot know without building it” and the Lab's ledger of her positions say “reason enough”.
+          <span class="ask">Restore “might”?</span><span class="refs"><a href="#p7">P7</a> · <a href="#p6">P6</a></span></li>
+        <li id="f2"><span class="qn">F2</span><b>Absolutes in live text.</b> Tree step 4: “the only move you can still undo later”. In the film: “There has never been a sandbox that held” (a divider, and the opening thesis card); “No lab can slow down alone, and no country can.”; “Nothing that arrives like this has ever been recalled.”
+          <span class="ask">Hedge each, keep it as someone's quoted view, or cut it?</span><span class="refs"><a href="#p6">P6</a></span></li>
+        <li id="f3"><span class="qn">F3</span><b>Structure or motive?</b> The opening thesis card: “The people in charge need the warnings to be a hoax, because the money needs it.”
+          <span class="ask">A claim about structure, or about motive?</span><span class="refs"><a href="#p9">P9</a> · <a href="#q4">Q4</a></span></li>
+        <li id="f4"><span class="qn">F4</span><b>Her own change of position.</b> Her view of Anthropic's pacing moved between May (the race as “harm dressed in good”) and September (backing the pacing); the note on it is still open in her queue, and the line under P9 is from the May essay.
+          <span class="ask">Show the change with its reason, as the 20 Sep note does for the stop?</span><span class="refs"><a href="#p12">P12</a> · <a href="#p9">P9</a></span></li>
+        <li id="f5"><span class="qn">F5</span><b>A position without her words.</b> The Lab's ledger gives her a fourth position: a stop triggered by a pre-agreed measurable threshold applied to everyone. No source in her own words was found for it.
+          <span class="ask">Is it hers?</span><span class="refs"><a href="#q11">Q11</a></span></li>
+        <li id="f6"><span class="qn">F6</span><b>The first line is not hers yet.</b> The tree opens “Science normally tests, then believes.” That is the wording of the stepper Claude wrote from her tree, and it is also the natural first line of this page.
+          <span class="ask">How would she say it?</span><span class="refs"><a href="#p1">P1</a> · <a href="#q8">Q8</a></span></li>
+        <li id="f7"><span class="qn">F7</span><b>A line that names a person.</b> The line under P2 uses Harari, a voice in the film, as the figure of saying things one doesn't understand.
+          <span class="ask">Does it meet P9? Keep, trim, or replace?</span><span class="refs"><a href="#p2">P2</a> · <a href="#p9">P9</a></span></li>
+      </ol>
+
+      <footer>
+        <p><strong>How to read the marks.</strong> A solid coral rule marks her words, verbatim. A dashed one marks
+          “wording to confirm”: lines in her voice whose drafting is not recorded. “Caution” gives context a reader
+          needs. <span class="tag film">in the film</span> is in the current cut; <span class="tag cand">candidate</span>
+          is proposed for it, not yet approved; <span class="tag">parked</span> is set aside and kept.</p>
+        <p><strong>Words are not defined here.</strong> Each term links to its entry in Words, the glossary; a dashed
+          underline marks an entry the Lab has proposed that is not yet published.</p>
+        <p><strong>Where her lines come from.</strong> Her voice notes of 20 and 21 Sep 2026, her notes on the film's
+          cards, a message she dictated on 24 Sep 2026, her working agreements with Claude, and her essay draft of
+          27 May 2026. Nothing has been paraphrased; where a line is cut, “…” shows it.</p>
+        <p>This page was drafted by Claude, an AI model by Anthropic. Anthropic's CEO, Dario Amodei, is on the belief
+          tree and is named in P9 and Q7.</p>
+        <p>Content <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · code
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a> · PlayfulProcess · Recursive Learning ·
+          <a href="../../game/">the games</a></p>
+      </footer>
+    </main>
+  </div>
+</div>
+<script>
+  // Open the contents beside the page on wide screens; on a phone it stays folded above it.
+  (function () {
+    var toc = document.getElementById('toc');
+    if (!toc || !window.matchMedia) return;
+    var wide = window.matchMedia('(min-width: 980px)');
+    function sync() { if (wide.matches) toc.open = true; }
+    sync();
+    if (wide.addEventListener) wide.addEventListener('change', sync);
+    toc.addEventListener('click', function (e) {
+      if (!wide.matches && e.target.closest('a')) toc.open = false;
+    });
+  })();
+</script>
+</body>
+</html>
