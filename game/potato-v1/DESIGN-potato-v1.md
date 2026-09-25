@@ -1,4 +1,6 @@
-# Hot Potato, playable — design notes (Sep 24 2026)
+# Hot Potato v1 — design notes (Sep 24 2026), kept for the record
+
+*Superseded the same day by v3 (`../DESIGN-potato.md`). The page paths below are the old ones; the pages now live in this folder.*
 
 Pages: `game/potato-others.html` (with others, the default) and `game/potato.html` (alone). Live:
 https://learning.recursive.eco/game/potato-others.html and https://learning.recursive.eco/game/potato.html
