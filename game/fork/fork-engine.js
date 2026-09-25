@@ -108,10 +108,10 @@ export const TEXT = {
   line6Intro: 'Lines 1 to 5 nobody can look up yet, so you decide, cast or leave them open. Line 6 you can look up, so it is never cast.',
   closeTitle: 'Close the gap: pick a way to choose. None of these finds anything out.',
   allFive: 'All five by chance: nothing here will be yours.',
-  landingCast: 'Where the coins put you',
+  landingCast: 'Where the casts put you',
   landingOwn: 'Where your answers put you',
   landingAsk: 'Is there an action?',
-  couldHave: 'the coins could have put you at:',
+  couldHave: 'the casts could have put you at:',
   eitherTitle: 'What holds either way',
   eitherNothing: 'Nothing shows up under every leaf still possible: here the open questions matter.',
   targeted: "'Targeted' means some rule aims at it, not that it works.",
@@ -120,9 +120,9 @@ export const TEXT = {
   needsOthers: 'These need others. One lab or country doing the rest slows only itself.',
   accelerant: 'also speeds the race (per the source file)',
   gladAsk: 'Glad or sorry it landed here?',
-  glad: "Then you may already lean this way. The coin didn't tell you that; you did.",
+  glad: "Then you may already lean this way. The cast didn't tell you that; you did.",
   sorry: 'Then you may already lean the other way. Decide it yourself?',
-  neither: "Then the coin settled a choice you didn't mind. That's all a coin can do.",
+  neither: "Then the cast settled a choice you didn't mind. That's all a coin or a bowl can do.",
   riskAsk: 'Is that risk or uncertainty?',
   fixed: 'Your decided answers fix the leaf: nothing to cast.',
   yourTurn: 'Your turn: change any answer.',
@@ -556,8 +556,8 @@ export function gateSpreadLine(gateYes, device, parts = 2) {
 export function riskReply(pick, device) { return 'You said ' + (RISK_PICKS[pick] || pick) + '. ' + (RISK_REPLY[device] || ''); }
 export function answerWord(a) { return a === 'yes' ? 'yes' : a === 'no' ? 'no' : a === 'unknown' ? "don't know" : 'not yet asked'; }
 export function burdenText(burdenLeafName, gateCast) {
-  return (gateCast ? 'The coins put the gate at yes. ' : '') +
-    "The tree's rule: when a step can't be undone or tried first, 'not shown' counts as 'no'. A coin's yes wasn't shown, so it counts as no here. Your own yes counts only if you think it has been shown, not just hoped. By that rule you land on " + burdenLeafName + '.';
+  return (gateCast ? 'The casts put the gate at yes. ' : '') +
+    "The tree's rule: when a step can't be undone or tried first, 'not shown' counts as 'no'. A cast yes wasn't shown, so it counts as no here. Your own yes counts only if you think it has been shown, not just hoped. By that rule you land on " + burdenLeafName + '.';
 }
 export function relatingText(leafName_) { return 'If the answers that could flip did flip: ' + leafName_; }
 export function line6Sentence(l6) {

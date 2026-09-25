@@ -3,11 +3,11 @@
 // film/belief-tree). Until that module is on main, the game falls back to a stand-in with exactly the same
 // exports, node ids, state shape and events (./tree-render-standin.js).
 //
-// THE ONE-LINE SWAP: PIN = FILM once film/belief-tree is on main (or PIN = STANDIN to skip the 404 probe).
-// Until then the page makes one expected 404 request for the film module, and warns once in the console.
+// THE ONE-LINE SWAP: PIN = FILM once film/belief-tree is on main (PIN = null tries the film module, then the
+// stand-in). PIN is STANDIN until then: probing a module that is not there costs a 404 in every visitor's console.
 const FILM = '../../explainers/belief-tree/tree-render.js';
 const STANDIN = './tree-render-standin.js';
-const PIN = null;
+const PIN = STANDIN;   // film/belief-tree is not on main yet: no 404 probe, a clean console. Swap to FILM (or null) when it lands.
 
 // Try each path in order; the first module with all three contract exports wins. Exported for the tests.
 export async function pickTree(paths, base = import.meta.url) {

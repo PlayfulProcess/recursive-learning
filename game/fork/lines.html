@@ -3,56 +3,125 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The Fork · Recursive Learning</title>
-<meta name="description" content="The film's belief tree as a game. At each question you decide, cast for it, or say you don't know. When you tire, close the gap and ask: is there an action? A coin ends the choosing; it finds nothing out about the world. Not a forecast.">
+<title>The Fork, six lines · Recursive Learning</title>
+<meta name="description" content="The film's belief tree as a hexagram, built from the bottom. Decide each line, draw it from a bowl of sixteen marbles, or say you don't know; line 6 is looked up, never drawn. Then turn the turning lines one at a time, or walk to a leaf and see what you'd have to come to believe. A frame to think with, not a forecast.">
 <!--
-  The Fork, tree view. The film's belief tree (explainers/belief-tree, owned by the Film chat) as a game you can
-  play: decide each question, cast for it (a coin, or the yarrow bowl), or say "I don't know". Close the gap casts
-  the open ones with the film's own cast animation, or looks for what holds either way; then the page asks "Is
-  there an action?" for where you landed. The six-lines view (lines.html) walks the same answers as a hexagram.
+  The Fork, six-lines view: the I Ching path game. The same walk as the tree view (index.html), the same URL hash,
+  the same engine (fork-engine.js) and the same renderer (tree-adapter.js: the Film chat's module when it is on
+  main, else the stand-in). Lines 1 to 5 are the tree's questions (1 and 2 together are the gate); line 6 is
+  looked up for the leaf, never drawn. The bowl, hexagram and path maths are copies in bowl.js (from
+  game/lines.html @ 5b55c90 and recursive-iching viewers/caster-engine.js @ b8d82df). Page logic: lines-ui.js.
+  Serve over http (ES modules): a static server rooted at the repo.
 
-  Files: fork-engine.js (pure rules, tested by tests/fork-engine.test.mjs), fork-ui.js (this page), fork.css,
-  tree-adapter.js (the ONLY way in to the tree renderer: the Film's module when it is on main, else
-  tree-render-standin.js), people.example.json (two made-up placeholders), data/leaf-actions.json (editorial).
-  Serve over http (ES modules): a static server rooted at the repo, so ../../explainers/... resolves.
-
-  URL: ?focus=<person slug> plays that person's walk · &theme=dark|light|auto · &method=coin|yarrow (the default
-  way to close the gap) · #f1;L=...;s=...;n=... the walk itself (a shared link replays exactly, in either view).
-  Nothing is sent anywhere; nothing is stored but the URL. PlayfulProcess, CC BY-SA 4.0.
+  URL: &theme=dark|light|auto · &method=coin|yarrow (coin means the coin bowl here; the default way to close the
+  gap) · #f1;L=...;s=...;n=... the walk itself (a shared link replays exactly, in either view).
+  Hexagram names and texts: James Legge (tr.), 1882, public domain, read live from iching.recursive.eco
+  (zhouyi-core). Nothing is sent anywhere; nothing is stored but the URL. PlayfulProcess, CC BY-SA 4.0.
 -->
 <link rel="stylesheet" href="fork.css">
-<script type="module" src="fork-ui.js"></script>
+<style>
+  /* this view only; the tokens and the shared layout are fork.css's. No percent sign here. */
+  :root{--mb7:#3a3222;--mb9:#4a2a1e;--mb8:#1f2a38;--mb6:#2e2330}
+  :root[data-theme="light"]{--mb7:#f1e4c6;--mb9:#f5d6c6;--mb8:#dde7f2;--mb6:#eadcee}
+  @media (prefers-color-scheme: light){ :root[data-theme="auto"]{--mb7:#f1e4c6;--mb9:#f5d6c6;--mb8:#dde7f2;--mb6:#eadcee} }
+  main.lines{flex-direction:column}
+  .stage{flex:none;display:flex;flex-direction:column;min-height:0}
+  .linesbox{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;padding:6px 12px 0;height:192px}
+  .hexcol{display:flex;flex-direction:column;justify-content:flex-end;min-width:0}
+  .hex{display:flex;flex-direction:column-reverse;gap:3px}
+  .slot{display:grid;grid-template-columns:9px minmax(0,1fr) 11px 50px;gap:5px;align-items:center;width:auto;height:24px;min-height:0;
+    padding:0 5px;border:1px solid transparent;border-radius:6px;background:none;color:var(--muted);font-size:10.5px;font-weight:500;text-align:left}
+  .slot .n{font-weight:700}
+  .slot .ln{display:flex;gap:9px;height:9px}
+  .slot .bar{flex:1;border-radius:2px;background:var(--firm)}
+  .slot.no .bar{background:var(--yield)}
+  .slot.empty .ln,.slot.unknown .ln{height:11px;border:1px dashed var(--line);border-radius:3px;justify-content:center;align-items:center;font-size:9px;line-height:1;font-style:normal}
+  .slot .mk{color:var(--turn);font-weight:700;font-size:12px;text-align:center}
+  .slot .tg{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .slot .tg.cast{color:var(--turn)}
+  .slot.top .tg{font-style:italic}
+  .slot.now{border-color:var(--accent);color:var(--ink)}
+  .slot.hl{border-color:var(--turn);color:var(--ink)}
+  .slot[disabled]{opacity:1;cursor:default}
+  .hexname{margin:4px 0 0;min-height:28px;font-size:11px;line-height:1.3;color:var(--muted)}
+  .hexname b{color:var(--ink);font-weight:600}
+  .treemini{min-width:0;min-height:0}
+  .treemini #tree{height:192px;padding:0}
+  main.lines .panel{flex:1 1 auto}
+  .loose-row{margin:2px 0 0}
+  .loose-row .linkish{font-size:12px}
+  .bowlrow{margin:5px 0 0}
+  .bowlhead{display:flex;justify-content:space-between;gap:8px;margin:0 0 3px;font-size:11px;line-height:1.25;color:var(--muted)}
+  .bowlhead .drawn{text-align:right}
+  .bowl{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:3px;max-width:430px}
+  .bowl.two{grid-template-columns:repeat(2,22px)}
+  .mb{aspect-ratio:1;border-radius:999px;display:grid;place-items:center;background:var(--mb8)}
+  .mb svg{width:13px;height:13px}
+  .mb.k7{background:var(--mb7)} .mb.k9{background:var(--mb9)} .mb.k8{background:var(--mb8)} .mb.k6{background:var(--mb6)}
+  .mb.k9,.mb.k6{box-shadow:0 0 0 2px var(--turn) inset}
+  .mb.pick{outline:2px solid var(--accent);outline-offset:1px}
+  .hexmini{display:inline-block;width:26px;height:26px;vertical-align:middle;margin-right:6px}
+  .hexmini svg{display:block;width:26px;height:26px}
+  .pathcard h2 small{font:12px Inter,system-ui,sans-serif;color:var(--muted)}
+  .pathcard .judg{font-family:Georgia,"Iowan Old Style","Times New Roman",serif;font-size:13.5px;line-height:1.45;margin:4px 0 6px}
+  .pathcard p{margin:0 0 6px;font-size:13px;line-height:1.4}
+  main.lines .panel .foot{position:sticky;bottom:-8px;margin:6px -12px -8px;padding:6px 12px 8px;background:var(--panel)}
+  .pathnav{position:sticky;bottom:-8px;margin:8px -12px -8px;padding:6px 12px 8px;background:var(--panel);border-top:1px solid var(--line)}
+  .hexline{font-size:13px}
+  .panel .l6{margin:0 0 6px;font-size:13.5px;line-height:1.4}
+  .panel .leafbox{padding:6px 10px;margin:2px 0 6px}
+  .help-body .small{font-size:12px}
+  @media (min-width:900px){
+    main.lines{flex-direction:row}
+    .stage{flex:3 1 0}
+    .linesbox{flex:1;height:auto;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:20px;padding:18px 20px 0}
+    .hexcol{justify-content:center}
+    .hex{gap:10px}
+    .slot{height:40px;font-size:12.5px;grid-template-columns:14px minmax(0,1fr) 16px 80px}
+    .slot .ln{height:14px;gap:16px}
+    .hexname{font-size:13px}
+    .treemini #tree{height:calc(100dvh - 130px)}
+    main.lines .panel{flex:2 1 0}
+    main.lines .panel .foot,.pathnav{bottom:-16px;margin:10px -18px -16px;padding:8px 18px 16px}
+  }
+</style>
+<script type="module" src="lines-ui.js"></script>
 </head>
 <body>
 <header class="top">
   <a class="mark" href="../../" aria-label="Recursive Learning, home"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg></a>
   <h1>The Fork</h1>
-  <nav class="views" aria-label="Two views of one walk"><span class="on" aria-current="page">tree</span><span id="to-lines">six lines</span></nav>
+  <nav class="views" aria-label="Two views of one walk"><a id="to-tree" href="./">tree</a><span class="on" aria-current="page">six lines</span></nav>
   <details class="help" id="help">
     <summary aria-label="How to play">?</summary>
     <div class="help-body">
-      <p><b>The film's tree, as a game.</b> Four questions lead to four places: proceed, regulate, contain, shut down. At each question you can:</p>
+      <p><b>The film's tree, as six lines.</b> The same walk as the tree view, built as a hexagram from the bottom. Lines 1 to 5 are the tree's questions (lines 1 and 2 together are the gate). Line 6 is looked up, never drawn: is there a known action where this lands?</p>
       <ul>
-        <li><b>decide</b> it yourself, yes or no, held steady or held loosely (it could flip);</li>
-        <li><b>cast</b> for it: flip a coin, or draw from the yarrow bowl;</li>
-        <li>say <b>I don't know</b>. That is always a legal move: the question stays open.</li>
+        <li><b>decide</b> a line: yes is a firm line, no a yielding one. Held loosely, it is a turning line: it could flip;</li>
+        <li><b>draw</b> it from a bowl of 16 marbles: the yarrow bowl or the coin bowl, a fresh bowl each draw. The odds are the bowl's, not the world's;</li>
+        <li>say <b>I don't know</b>. Always a legal move: the slot stays open.</li>
       </ul>
-      <p>When you get tired, press <b>Close the gap</b>: have the open questions cast, take them one at a time, or look for <b>what holds either way</b>. Then the page asks: <b>is there an action?</b></p>
-      <p>The coin ends the choosing; it finds nothing out about the world. A cast answer stays marked "cast, not known". Nothing is scored, staked or sent. This is not a forecast.</p>
-      <p class="small">Keys: <kbd>&uarr;</kbd> <kbd>&darr;</kbd> questions · <kbd>Y</kbd> <kbd>N</kbd> decide · <kbd>C</kbd> coin · <kbd>S</kbd> yarrow · <kbd>I</kbd> I don't know · <kbd>G</kbd> close the gap · <kbd>E</kbd> what holds either way · <kbd>H</kbd> cast 100 · <kbd>L</kbd> six lines · <kbd>Esc</kbd> skip or close.</p>
-      <p>The same walk as a hexagram: <a href="lines.html">six lines</a>. Is a coin risk or uncertainty, and is it a good metaphor? <a href="../../explainers/risk-and-uncertainty/">Risk or uncertainty?</a>, a short explainer.</p>
-      <p class="small">A teaching instrument by PlayfulProcess, CC BY-SA 4.0. <a href="../index.html">Other games</a>.</p>
+      <p><b>Close the gap</b> draws the open lines. <b>The reading</b> turns the turning lines one at a time, bottom to top, each through a real hexagram. <b>Walk to a leaf</b> flips lines 3 and 4 toward a leaf and says what you'd have to come to believe.</p>
+      <p>A drawn line stays marked "cast, not known": the bowl picked; it didn't find out. The hexagram is a frame to think with. The tradition's text is not about AI and is not a forecast. Nothing is scored, staked or sent.</p>
+      <p>The same walk as a tree: <a href="./">tree</a>. Are the bowl's odds risk or uncertainty? <a href="../../explainers/risk-and-uncertainty/">Risk or uncertainty?</a>, a short explainer.</p>
+      <p class="small">Keys: <kbd>&uarr;</kbd> <kbd>&darr;</kbd> up and down the lines · <kbd>Y</kbd> <kbd>N</kbd> decide · <kbd>F</kbd> hold loosely · <kbd>S</kbd> yarrow bowl · <kbd>C</kbd> coin bowl · <kbd>I</kbd> I don't know · <kbd>G</kbd> close the gap · <kbd>E</kbd> what holds either way · <kbd>W</kbd> walk to a leaf · <kbd>R</kbd> the reading · <kbd>L</kbd> tree · <kbd>Esc</kbd> skip or close. In a reading or a walk: <kbd>&larr;</kbd> <kbd>&rarr;</kbd> step.</p>
+      <p class="small">Hexagram names and texts: James Legge (tr.), <i>The Yî King</i>, 1882, public domain, read from the <a href="https://iching.recursive.eco">Recursive I Ching</a> (zhouyi-core). The two bowls reproduce the yarrow-stalk and three-coin odds, as in <a href="../lines.html">Changing Lines</a>. Turning the lines one at a time, and walking to a destination, come from the Recursive I Ching's path caster. The reading of the six places as these questions is this page's own. A teaching instrument by PlayfulProcess, CC BY-SA 4.0. <a href="../index.html">Other games</a>.</p>
     </div>
   </details>
 </header>
-<main>
-  <section class="treebox" aria-label="The tree">
-    <div id="tree"></div>
+<main class="lines">
+  <section class="stage" aria-label="The hexagram and the tree">
     <p class="draft" id="draft" hidden>draft drawing: the film's tree will replace it</p>
+    <div class="linesbox">
+      <div class="hexcol">
+        <div class="hex" id="hex" role="group" aria-label="The six lines, line 1 at the bottom"></div>
+        <p class="hexname" id="hexname"></p>
+      </div>
+      <div class="treemini"><div id="tree"></div></div>
+    </div>
     <div class="capline"><p class="caption" id="caption" aria-live="polite"></p><button class="skip ghost" id="skip" hidden>Skip</button></div>
-    <div class="strip" id="strip" hidden></div>
   </section>
-  <section class="panel" id="panel" aria-label="The question"><noscript>The Fork needs JavaScript, served over http.</noscript></section>
+  <section class="panel" id="panel" aria-label="The line"><noscript>The Fork needs JavaScript, served over http.</noscript></section>
 </main>
 <dialog class="sheet" id="sheet" aria-labelledby="sheet-title"><div class="sheet-in" id="sheet-in"></div></dialog>
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px"><symbol id="spiral" viewBox="0 0 100 100"><path d="M50.5 50L50.5 50.01 50.51,50.02 50.51,50.03 50.51,50.04 50.51,50.05 50.52,50.07 50.52,50.08 50.52,50.09 50.52,50.1 50.52,50.11 50.52,50.12 50.52,50.13 50.52,50.15 50.52,50.16 50.52,50.17 50.52,50.18 50.52,50.19 50.52,50.21 50.52,50.22 50.52,50.23 50.52,50.24 50.52,50.26 50.51,50.27 50.51,50.28 50.51,50.29 50.51,50.31 50.5,50.32 50.5,50.33 50.49,50.34 50.49,50.36 50.49,50.37 50.48,50.38 50.48,50.39 50.47,50.41 50.47,50.42 50.46,50.43 50.45,50.44 50.45,50.46 50.44,50.47 50.43,50.48 50.43,50.49 50.42,50.5 50.41,50.52 50.4,50.53 50.39,50.54 50.38,50.55 50.37,50.56 50.36,50.57 50.35,50.59 50.34,50.6 50.33,50.61 50.32,50.62 50.31,50.63 50.3,50.64 50.29,50.65 50.28,50.66 50.27,50.67 50.25,50.68 50.24,50.69 50.23,50.7 50.21,50.71 50.2,50.72 50.19,50.73 50.17,50.73 50.16,50.74 50.14,50.75 50.13,50.76 50.11,50.77 50.1,50.77 50.08,50.78 50.07,50.79 50.05,50.79 50.03,50.8 50.02,50.8 50,50.81 49.98,50.81 49.97,50.82 49.95,50.82 49.93,50.83 49.91,50.83 49.89,50.83 49.88,50.84 49.86,50.84 49.84,50.84 49.82,50.84 49.8,50.85 49.78,50.85 49.76,50.85 49.74,50.85 49.72,50.85 49.71,50.85 49.69,50.85 49.67,50.84 49.65,50.84 49.63,50.84 49.61,50.84 49.59,50.83 49.57,50.83 49.55,50.83 49.53,50.82 49.5,50.82 49.48,50.81 49.46,50.81 49.44,50.8 49.42,50.79 49.4,50.79 49.38,50.78 49.36,50.77 49.34,50.76 49.32,50.75 49.3,50.74 49.28,50.73 49.26,50.72 49.24,50.71 49.22,50.7 49.2,50.69 49.18,50.68 49.16,50.66 49.15,50.65 49.13,50.63 49.11,50.62 49.09,50.61 49.07,50.59 49.05,50.57 49.03,50.56 49.02,50.54 49,50.52 48.98,50.51 48.96,50.49 48.95,50.47 48.93,50.45 48.92,50.43 48.9,50.41 48.88,50.39 48.87,50.37 48.85,50.35 48.84,50.32 48.83,50.3 48.81,50.28 48.8,50.26 48.79,50.23 48.77,50.21 48.76,50.18 48.75,50.16 48.74,50.13 48.73,50.11 48.72,50.08 48.71,50.05 48.7,50.03 48.69,50 48.68,49.97 48.68,49.94 48.67,49.92 48.66,49.89 48.66,49.86 48.65,49.83 48.65,49.8 48.64,49.77 48.64,49.74 48.63,49.71 48.63,49.68 48.63,49.65 48.63,49.62 48.63,49.59 48.63,49.55 48.63,49.52 48.63,49.49 48.63,49.46 48.64,49.43 48.64,49.39 48.64,49.36 48.65,49.33 48.66,49.3 48.66,49.26 48.67,49.23 48.68,49.2 48.69,49.17 48.7,49.13 48.71,49.1 48.72,49.07 48.73,49.03 48.74,49 48.75,48.97 48.77,48.94 48.78,48.9 48.8,48.87 48.81,48.84 48.83,48.81 48.85,48.77 48.87,48.74 48.89,48.71 48.91,48.68 48.93,48.65 48.95,48.62 48.97,48.59 49,48.56 49.02,48.53 49.05,48.5 49.07,48.47 49.1,48.44 49.13,48.41 49.15,48.38 49.18,48.35 49.21,48.33 49.24,48.3 49.27,48.27 49.31,48.25 49.34,48.22 49.37,48.19 49.41,48.17 49.44,48.15 49.48,48.12 49.51,48.1 49.55,48.08 49.59,48.06 49.63,48.04 49.66,48.02 49.7,48 49.74,47.98 49.79,47.96 49.83,47.94 49.87,47.93 49.91,47.91 49.96,47.9 50,47.88 50.04,47.87 50.09,47.86 50.14,47.85 50.18,47.83 50.23,47.82 50.28,47.82 50.32,47.81 50.37,47.8 50.42,47.8 50.47,47.79 50.52,47.79 50.57,47.78 50.62,47.78 50.67,47.78 50.72,47.78 50.77,47.78 50.82,47.79 50.88,47.79 50.93,47.79 50.98,47.8 51.03,47.81 51.08,47.82 51.14,47.82 51.19,47.83 51.24,47.85 51.3,47.86 51.35,47.87 51.4,47.89 51.46,47.91 51.51,47.92 51.56,47.94 51.62,47.96 51.67,47.98 51.72,48.01 51.77,48.03 51.83,48.05 51.88,48.08 51.93,48.11 51.98,48.14 52.03,48.17 52.09,48.2 52.14,48.23 52.19,48.27 52.24,48.3 52.29,48.34 52.34,48.38 52.39,48.42 52.43,48.46 52.48,48.5 52.53,48.54 52.57,48.58 52.62,48.63 52.67,48.68 52.71,48.72 52.75,48.77 52.8,48.82 52.84,48.88 52.88,48.93 52.92,48.98 52.96,49.04 53,49.09 53.04,49.15 53.07,49.21 53.11,49.27 53.14,49.33 53.18,49.39 53.21,49.46 53.24,49.52 53.27,49.59 53.3,49.65 53.33,49.72 53.36,49.79 53.38,49.86 53.4,49.93 53.43,50 53.45,50.07 53.47,50.15 53.49,50.22 53.5,50.29 53.52,50.37 53.53,50.45 53.55,50.52 53.56,50.6 53.57,50.68 53.57,50.76 53.58,50.84 53.59,50.92 53.59,51 53.59,51.08 53.59,51.17 53.59,51.25 53.58,51.33 53.58,51.42 53.57,51.5 53.56,51.58 53.55,51.67 53.54,51.75 53.52,51.84 53.5,51.93 53.48,52.01 53.46,52.1 53.44,52.18 53.42,52.27 53.39,52.36 53.36,52.44 53.33,52.53 53.3,52.61 53.26,52.7 53.23,52.79 53.19,52.87 53.15,52.96 53.1,53.04 53.06,53.12 53.01,53.21 52.96,53.29 52.91,53.37 52.86,53.46 52.81,53.54 52.75,53.62 52.69,53.7 52.63,53.78 52.56,53.86 52.5,53.94 52.43,54.01 52.36,54.09 52.29,54.17 52.22,54.24 52.14,54.31 52.06,54.38 51.98,54.46 51.9,54.53 51.82,54.59 51.73,54.66 51.65,54.73 51.56,54.79 51.47,54.85 51.37,54.91 51.28,54.97 51.18,55.03 51.08,55.09 50.98,55.14 50.88,55.19 50.77,55.24 50.67,55.29 50.56,55.34 50.45,55.39 50.34,55.43 50.23,55.47 50.12,55.51 50,55.55 49.88,55.58 49.76,55.61 49.65,55.64 49.52,55.67 49.4,55.69 49.28,55.72 49.15,55.74 49.03,55.76 48.9,55.77 48.77,55.78 48.64,55.79 48.51,55.8 48.38,55.81 48.25,55.81 48.11,55.81 47.98,55.8 47.84,55.8 47.71,55.79 47.57,55.77 47.44,55.76 47.3,55.74 47.16,55.72 47.02,55.7 46.88,55.67 46.75,55.64 46.61,55.6 46.47,55.57 46.33,55.53 46.19,55.48 46.05,55.44 45.91,55.39 45.77,55.34 45.63,55.28 45.49,55.22 45.36,55.16 45.22,55.09 45.08,55.02 44.94,54.95 44.81,54.88 44.67,54.8 44.54,54.71 44.41,54.63 44.27,54.54 44.14,54.45 44.01,54.35 43.88,54.25 43.76,54.15 43.63,54.04 43.5,53.93 43.38,53.82 43.26,53.71 43.14,53.59 43.02,53.46 42.91,53.34 42.79,53.21 42.68,53.08 42.57,52.94 42.46,52.8 42.35,52.66 42.25,52.52 42.15,52.37 42.05,52.22 41.95,52.07 41.86,51.91 41.77,51.75 41.68,51.59 41.6,51.42 41.51,51.25 41.43,51.08 41.36,50.91 41.29,50.73 41.22,50.55 41.15,50.37 41.09,50.19 41.03,50 40.97,49.81 40.92,49.62 40.87,49.43 40.83,49.23 40.79,49.03 40.75,48.83 40.72,48.63 40.69,48.42 40.66,48.22 40.64,48.01 40.63,47.8 40.61,47.59 40.61,47.38 40.6,47.16 40.6,46.95 40.61,46.73 40.62,46.51 40.64,46.29 40.66,46.07 40.68,45.85 40.71,45.63 40.75,45.41 40.78,45.18 40.83,44.96 40.88,44.73 40.93,44.51 40.99,44.28 41.06,44.06 41.13,43.83 41.2,43.61 41.28,43.38 41.37,43.16 41.46,42.93 41.55,42.71 41.65,42.48 41.76,42.26 41.87,42.04 41.99,41.82 42.11,41.6 42.24,41.38 42.37,41.16 42.51,40.95 42.66,40.73 42.81,40.52 42.96,40.31 43.12,40.1 43.29,39.9 43.46,39.69 43.64,39.49 43.82,39.29 44,39.09 44.2,38.9 44.39,38.71 44.6,38.52 44.81,38.34 45.02,38.15 45.24,37.97 45.46,37.8 45.69,37.63 45.93,37.46 46.16,37.3 46.41,37.14 46.66,36.98 46.91,36.83 47.17,36.68 47.43,36.54 47.7,36.4 47.97,36.27 48.25,36.14 48.53,36.02 48.82,35.9 49.11,35.79 49.4,35.68 49.7,35.58 50,35.48 50.31,35.39 50.62,35.31 50.93,35.23 51.25,35.16 51.57,35.09 51.89,35.03 52.22,34.98 52.55,34.93 52.88,34.89 53.22,34.86 53.56,34.83 53.9,34.81 54.24,34.8 54.59,34.8 54.94,34.8 55.29,34.81 55.64,34.83 56,34.85 56.36,34.88 56.71,34.92 57.07,34.97 57.43,35.03 57.8,35.09 58.16,35.16 58.52,35.24 58.89,35.33 59.25,35.42 59.61,35.53 59.98,35.64 60.34,35.76 60.71,35.89 61.07,36.03 61.44,36.18 61.8,36.33 62.16,36.5 62.52,36.67 62.88,36.85 63.24,37.04 63.59,37.24 63.94,37.44 64.3,37.66 64.65,37.88 64.99,38.12 65.34,38.36 65.68,38.61 66.01,38.87 66.35,39.14 66.68,39.42 67,39.7 67.33,40 67.65,40.3 67.96,40.61 68.27,40.93 68.57,41.26 68.87,41.6 69.17,41.94 69.46,42.3 69.74,42.66 70.02,43.03 70.29,43.41 70.55,43.79 70.81,44.19 71.07,44.59 71.31,45 71.55,45.42 71.78,45.85 72,46.28 72.22,46.72 72.42,47.17 72.62,47.62 72.81,48.08 73,48.55 73.17,49.03 73.33,49.51 73.49,50 73.64,50.5 73.77,51 73.9,51.5 74.02,52.02 74.12,52.54 74.22,53.06 74.3,53.59 74.38,54.12 74.44,54.66 74.5,55.21 74.54,55.76 74.57,56.31 74.59,56.87 74.6,57.43 74.6,57.99 74.58,58.56 74.55,59.13 74.51,59.71 74.46,60.28 74.4,60.86 74.32,61.44 74.23,62.03 74.13,62.61 74.01,63.2 73.88,63.79 73.74,64.38 73.58,64.97 73.42,65.56 73.23,66.15 73.04,66.74 72.83,67.33 72.6,67.92 72.37,68.5 72.12,69.09 71.85,69.67 71.57,70.26 71.28,70.84 70.97,71.42 70.65,71.99 70.32,72.56 69.97,73.13 69.6,73.7 69.23,74.26 68.83,74.81 68.43,75.36 68.01,75.91 67.57,76.45 67.13,76.99 66.66,77.51 66.19,78.04 65.7,78.55 65.19,79.06 64.67,79.56 64.14,80.05 63.6,80.54 63.04,81.02 62.47,81.48 61.88,81.94 61.28,82.39 60.67,82.83 60.04,83.26 59.4,83.68 58.75,84.08 58.09,84.48 57.41,84.87 56.72,85.24 56.02,85.6 55.31,85.95 54.58,86.28 53.85,86.61 53.1,86.91 52.34,87.21 51.57,87.49 50.79,87.76 50,88.01 49.2,88.24 48.39,88.46 47.57,88.67 46.74,88.86 45.9,89.03 45.05,89.19 44.19,89.33 43.33,89.45 42.45,89.55 41.57,89.64 40.69,89.71 39.79,89.76 38.89,89.79 37.98,89.8 37.07,89.8 36.15,89.77 35.23,89.73 34.3,89.66 33.36,89.58 32.42,89.47 31.48,89.35 30.54,89.2 29.59,89.04 28.64,88.85 27.69,88.64 26.74,88.41 25.89,87.99 25.1,87.48 24.32,86.95 23.55,86.41 22.79,85.84 22.05,85.27 21.32,84.67 20.6,84.06 19.89,83.44 19.2,82.8 18.52,82.15 17.85,81.48 17.2,80.8 16.56,80.11 15.94,79.4 15.33,78.68 14.73,77.95 14.16,77.21 13.59,76.45 13.05,75.68 12.52,74.9 12.01,74.11 11.51,73.31 11.03,72.5 10.57,71.68 10.12,70.85 9.69,70.01 9.28,69.16 8.89,68.3 8.52,67.44 8.16,66.57 7.82,65.69 7.5,64.8 7.2,63.91 6.92,63.01 6.66,62.1 6.41,61.19 6.19,60.28 5.98,59.36 5.8,58.43 5.63,57.5 5.48,56.57 5.35,55.64 5.25,54.7 5.16,53.77 5.09,52.83 5.04,51.88 5.01,50.94 5,50 5.01,49.06 5.04,48.12 5.09,47.17 5.16,46.23 5.25,45.3 5.35,44.36 5.48,43.43 5.63,42.5 5.8,41.57 5.98,40.64 6.19,39.72 6.41,38.81 6.66,37.9 6.92,36.99 7.2,36.09 7.5,35.2 7.82,34.31 8.16,33.43 8.52,32.56 8.89,31.7 9.28,30.84 9.69,29.99 10.12,29.15 10.57,28.32 11.03,27.5 11.51,26.69 12.01,25.89 12.52,25.1 13.05,24.32 13.59,23.55 14.16,22.79 14.73,22.05 15.33,21.32 15.94,20.6 16.56,19.89 17.2,19.2 17.85,18.52 18.52,17.85 19.2,17.2 19.89,16.56 20.6,15.94 21.32,15.33 22.05,14.73 22.79,14.16 23.55,13.59 24.32,13.05 25.1,12.52 25.89,12.01 26.69,11.51 27.5,11.03 28.32,10.57 29.15,10.12 29.99,9.69 30.84,9.28 31.7,8.89 32.56,8.52 33.43,8.16 34.31,7.82 35.2,7.5 36.09,7.2 36.99,6.92 37.9,6.66 38.81,6.41 39.72,6.19 40.64,5.98 41.57,5.8 42.5,5.63 43.43,5.48 44.36,5.35 45.3,5.25 46.23,5.16 47.17,5.09 48.12,5.04 49.06,5.01 50,5 50.94,5.01 51.88,5.04 52.83,5.09 53.77,5.16 54.7,5.25 55.64,5.35 56.57,5.48 57.5,5.63 58.43,5.8 59.36,5.98 60.28,6.19 61.19,6.41 62.1,6.66 63.01,6.92 63.91,7.2 64.8,7.5 65.69,7.82 66.57,8.16 67.44,8.52 68.3,8.89 69.16,9.28 70.01,9.69 70.85,10.12 71.68,10.57 72.5,11.03 73.31,11.51 74.11,12.01 74.9,12.52 75.68,13.05 76.45,13.59 77.21,14.16 77.95,14.73 78.68,15.33 79.4,15.94 80.11,16.56 80.8,17.2 81.48,17.85 82.15,18.52 82.8,19.2 83.44,19.89 84.06,20.6 84.67,21.32 85.27,22.05 85.84,22.79 86.41,23.55 86.95,24.32 87.48,25.1 87.99,25.89 88.49,26.69 88.97,27.5 89.43,28.32 89.88,29.15 90.31,29.99 90.72,30.84 91.11,31.7 91.48,32.56 91.84,33.43 92.18,34.31 92.5,35.2 92.8,36.09 93.08,36.99 93.34,37.9 93.59,38.81 93.81,39.72 94.02,40.64 94.2,41.57 94.37,42.5 94.52,43.43 94.65,44.36 94.75,45.3 94.84,46.23 94.91,47.17 94.96,48.12 94.99,49.06 95,50 94.99,50.94 94.96,51.88 94.91,52.83 94.84,53.77 94.75,54.7 94.65,55.64 94.52,56.57 94.37,57.5 94.2,58.43 94.02,59.36 93.81,60.28 93.59,61.19 93.34,62.1 93.08,63.01 92.8,63.91 92.5,64.8 92.18,65.69 91.84,66.57 91.48,67.44 91.11,68.3 90.72,69.16 90.31,70.01 89.88,70.85 89.43,71.68 88.97,72.5 88.49,73.31 87.99,74.11 87.48,74.9 86.95,75.68 86.41,76.45 85.84,77.21 85.27,77.95 84.67,78.68 84.06,79.4 83.44,80.11 82.8,80.8 82.15,81.48 81.48,82.15 80.8,82.8 80.11,83.44 79.4,84.06 78.68,84.67 77.95,85.27 77.21,85.84 76.45,86.41 75.68,86.95 74.9,87.48 74.11,87.99 73.31,88.49 72.5,88.97 71.68,89.43 70.85,89.88 70.01,90.31 69.16,90.72 68.3,91.11 67.44,91.48 66.57,91.84 65.69,92.18 64.8,92.5 63.91,92.8 63.01,93.08 62.1,93.34 61.19,93.59 60.28,93.81 59.36,94.02 58.43,94.2 57.5,94.37 56.57,94.52 55.64,94.65 54.7,94.75 53.77,94.84 52.83,94.91 51.88,94.96 50.94,94.99 50,95 49.06,94.99 48.12,94.96 47.17,94.91 46.23,94.84 45.3,94.75 44.36,94.65 43.43,94.52 42.5,94.37 41.57,94.2 40.64,94.02 39.72,93.81 38.81,93.59 37.9,93.34 36.99,93.08 36.09,92.8 35.2,92.5 34.31,92.18 33.43,91.84 32.56,91.48 31.7,91.11 30.84,90.72 29.99,90.31 29.15,89.88 28.32,89.43 27.5,88.97 26.69,88.49 25.89,87.99" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol></svg>

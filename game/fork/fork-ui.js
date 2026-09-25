@@ -185,7 +185,7 @@ function status(q, lines) {
 function foot() {
   const busy = !!ui.playing, fixed = leafFixed();
   return h('div', { class: 'foot' },
-    h('p', { class: 'tally' }, E.countsSummary(E.counts(ui.walk))),
+    h('p', { class: 'tally' }, E.countsSummary(E.counts(ui.walk)), ' · ', why('short', 'risk or uncertainty?')),
     h('div', { class: 'row' },
       h('button', { class: 'primary', 'data-k': 'gap', disabled: busy, onclick: openClose }, 'Close the gap'),
       h('button', { 'data-k': 'c100', disabled: busy, 'aria-disabled': fixed ? 'true' : null, title: fixed ? E.TEXT.fixed : null, onclick: openCast100 }, 'Cast 100'),
@@ -363,7 +363,7 @@ function openLanding(opts = {}) {
     }
     if (L.burden === 'flipped' && L.burdenLeaf) el.append(h('p', null, E.burdenText(nm(L.burdenLeaf), L.gateCast), ' ', why('burden')));
     else if (L.burden === 'unclear') el.append(h('p', { class: 'small' }, E.TEXT.gateUnknown));
-    else el.append(h('p', { class: 'small' }, (L.gateCast ? 'The coins put the gate at no. ' : '') + E.TEXT.gateNo));
+    else el.append(h('p', { class: 'small' }, (L.gateCast ? 'The casts put the gate at no. ' : '') + E.TEXT.gateNo));
     if (L.relatingLeaf) el.append(h('p', null, E.relatingText(nm(L.relatingLeaf)) + '.'));
     const raceHow = ui.walk.lines[4].how;
     el.append(h('p', { class: 'small' }, 'The race: ' + E.answerWord(L.answers.race) + (E.isDevice(raceHow) ? ' (' + E.TEXT.castTag + ')' : '') + '. ' + E.TEXT.race));
@@ -466,7 +466,7 @@ function runCast100(d, res) {
     h('p', null, h('b', null, E.TEXT.riskAsk)),
     h('div', { class: 'row' }, Object.keys(E.RISK_PICKS).map(p => h('button', { onclick: () => {
       out.hidden = false; out.textContent = E.riskReply(p, d) + ' ';
-      out.append(why('urn', 'the urn'), ' · ', why('slicing', 'cutting the question'), ' · ', why('coin-metaphor', 'is a coin a good metaphor?'));
+      out.append(why('short', 'risk or uncertainty?'), ' · ', why('urn', 'the urn'), ' · ', why('slicing', 'cutting the question'), ' · ', why('coin-metaphor', 'is a coin a good metaphor?'));
     } }, cap(E.RISK_PICKS[p])))),
     out);
 }
