@@ -850,6 +850,19 @@
             gap: 0.5rem;
             justify-content: center;
             align-items: center;
+            /* never wider than the column: its widest child (the Group-by select) sets its
+               min-content width, and at 375px that pushed the As-If page to 455px */
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        /* A <select> is as wide as its longest option ("⧉ Group: <an As-If axis name>", a film's
+           section label in "Show as"), which ran the page past a phone's width. Cap every select
+           in the viewer at its row; the chosen option's text is cut inside the box instead. */
+        select {
+            max-width: 100%;
+            min-width: 0;
+            text-overflow: ellipsis;
         }
 
         /* "Group by" axis selector — drives what the pills represent */
@@ -1435,6 +1448,9 @@
         /* Modal content sections */
         .modal-body {
             padding: 1.5rem;
+            /* a bare URL (a Wikimedia Commons file, a paper's link) is one unbreakable word and ran
+               an opened card up to 400px past a phone's edge; break it anywhere instead */
+            overflow-wrap: anywhere;
         }
 
         .modal-title {
@@ -4089,16 +4105,16 @@
                     </div>
                 `;
 
-                // In selection mode, clicking toggles selection; otherwise opens modal
-                // Course items redirect to course-viewer instead of opening modal
-                const isCourseItem = item.grammar_type === 'course' || grammarType === 'course';
+                // In selection mode, clicking toggles selection; otherwise opens modal.
+                // A course item opens its own course page when it names one (metadata.course_url);
+                // otherwise it opens like any card. (The tarot site's fallback, a course-viewer page
+                // under /pages/courses/, does not exist here: every course card clicked into a 404.)
+                const courseUrl = (item.grammar_type === 'course' || grammarType === 'course') ? (item.metadata?.course_url || '') : '';
+                const isCourseItem = !!courseUrl;
                 if (isSelectionMode) {
                     card.addEventListener('click', () => handleSelectionClick(item));
                 } else if (isCourseItem) {
-                    const gId = new URLSearchParams(window.location.search).get('id') || '';
-                    const courseUrl = item.metadata?.course_url ||
-                        `${window.location.origin}/pages/courses/course-viewer.html?grammar_id=${gId}&item=${item.id}`;
-                    card.addEventListener('click', () => window.open(courseUrl, '_blank'));
+                    card.addEventListener('click', () => window.open(courseUrl, '_blank', 'noopener'));
                     card.style.cursor = 'pointer';
                 } else {
                     card.addEventListener('click', () => openModal(item));
@@ -4293,7 +4309,9 @@
                 // click-through behavior automatically. Existing items
                 // with metadata.url / metadata.youtube_url / metadata.video_url
                 // continue to work as before.
-                const isCourseItem = item.grammar_type === 'course' || grammarType === 'course';
+                // (a course item goes to its course page only when it names one; see renderGrid)
+                const courseUrl = (item.grammar_type === 'course' || grammarType === 'course') ? (item.metadata?.course_url || '') : '';
+                const isCourseItem = !!courseUrl;
                 const externalUrl = item.metadata?.url
                     || item.metadata?.youtube_url
                     || item.metadata?.video_url
@@ -4377,10 +4395,7 @@
                 // clicking "Analogous course:" inside the description
                 // opens THAT link, not the card's main link.
                 if (isCourseItem) {
-                    const gId = new URLSearchParams(window.location.search).get('id') || '';
-                    const courseUrl = item.metadata?.course_url ||
-                        `${window.location.origin}/pages/courses/course-viewer.html?grammar_id=${gId}&item=${item.id}`;
-                    card.addEventListener('click', () => window.open(courseUrl, '_blank'));
+                    card.addEventListener('click', () => window.open(courseUrl, '_blank', 'noopener'));
                 } else if (isExternalLink) {
                     card.style.cursor = 'pointer';
                     card.addEventListener('click', (e) => {

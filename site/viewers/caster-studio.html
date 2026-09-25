@@ -487,6 +487,18 @@ function b64urlEncode(str){ return btoa(unescape(encodeURIComponent(str))).repla
 function b64urlDecode(str){ return decodeURIComponent(escape(atob(String(str).replace(/-/g,'+').replace(/_/g,'/')))); }
 
 const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// True for an absolute link to another host. Relative links (another card, a glossary entry) and
+// this site's own absolute links (learning.recursive.eco, or wherever it is being served) are on-site.
+const SITE_HOSTS = [location.host, 'learning.recursive.eco'];
+const offSite = u => {
+  if (!/^(https?:)?\/\//i.test(u || '')) return false;
+  try { return !SITE_HOSTS.includes(new URL(u, location.href).host); } catch (_) { return true; }
+};
+// A link inside a drawn card's entry: on-site it opens in this tab (Back returns to the reading; see
+// saveReading below); off-site it opens a new tab and says so with ↗, as the rest of the site does.
+const mdLink = (url, text) => offSite(url)
+  ? `<a href="${url}" target="_blank" rel="noopener noreferrer" title="Opens in a new tab">${text} ↗</a>`
+  : `<a href="${url}">${text}</a>`;
 // Minimal markdown for card text: **bold**, `code`, [text](url), bare URLs, line breaks.
 // Card sections used to render through esc() alone, so every research/source link in them
 // showed as literal "[label](https://…)" instead of something you can click.
@@ -495,10 +507,10 @@ const mdLite = s => {
   t = t.replace(/(^|\s)(https?:\/\/[^\s<>"']+)/g, (m, pre, url) => {
     const tl = url.match(/[).,;:!?]+$/); const tail = tl ? tl[0] : '';
     if (tail) url = url.slice(0, -tail.length);
-    return `${pre}<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>${tail}`;
+    return `${pre}${mdLink(url, url)}${tail}`;
   });
   t = t.replace(/\[([^\]]+)\]\(\s*(?:<a href="([^"]+)"[^>]*>[^<]*<\/a>|([^)\s]+))\s*\)/g,
-    (m, text, wrapped, plain) => `<a href="${wrapped || plain || ''}" target="_blank" rel="noopener noreferrer">${text}</a>`);
+    (m, text, wrapped, plain) => mdLink(wrapped || plain || '', text));
   return t.replace(/`([^`]+)`/g, '<code>$1</code>')
           .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
           .replace(/\n/g, '<br>');
@@ -564,6 +576,7 @@ const $ = id => document.getElementById(id);
   $('cast').disabled = false;
   if (loadedFromParam) { curSpreadId='custom'; $('spread').value='custom'; setCustomMode(true); renderBoard(); renderCustomList(); }
   else setSpread(curSpreadId);
+  const restored = restoreReading();   // Back from a link in a card's entry: put the reading back
   updateDeckMeta();
   dsel.addEventListener('change', updateDeckMeta);
   ssel.addEventListener('change', e => setSpread(e.target.value));
@@ -615,7 +628,47 @@ const $ = id => document.getElementById(id);
   if (FLOW_ON) checkAssistantModel();   // hint (never a block) when the assistant is on a lightweight model
   // preload the deck-id map (for the per-card "View on recursive.eco" links)
   try { ecoIds = await (await fetch('../grammars/_eco_ids.json')).json(); } catch(_){ ecoIds = { ids:{} }; }
+  // …and the entry that link was followed from, so Back lands where the reader left
+  if (restored && positions[restored.open] && positions[restored.open].card) openCardDetail(positions[restored.open]);
 })();
+
+// ── keep the reading across an on-site link ──
+// A link inside a drawn card's entry (another word, an idea, a source) opens in this tab, so the
+// browser's Back has to bring the reading back. The back/forward cache usually does that by itself;
+// when it does not (the page was evicted, or the browser skipped the cache), the reading saved here
+// on pagehide is put back on a back/forward visit to this same URL. Kept in this tab's
+// sessionStorage only: nothing is sent anywhere, and a fresh visit starts with an empty board.
+const READING_KEY = 'rl-caster-reading';
+let openCardIndex = -1;   // the position whose entry is open (-1: none)
+function saveReading(){
+  try {
+    if (!positions.some(p => p.card)) { sessionStorage.removeItem(READING_KEY); return; }
+    sessionStorage.setItem(READING_KEY, JSON.stringify({
+      url: location.pathname + location.search,
+      spreadId: curSpreadId, deck: $('deck').value, question: $('question').value,
+      revProb: $('revProb').value, name: spreadName, desc: spreadDesc, axes, open: openCardIndex,
+      positions: positions.map(p => ({ label:p.label, meaning:p.meaning, x:p.x, y:p.y, card:p.card || null })),
+    }));
+  } catch(_){}
+}
+function restoreReading(){
+  let nav = ''; try { nav = performance.getEntriesByType('navigation')[0].type; } catch(_){}
+  if (nav !== 'back_forward') return null;
+  let r = null; try { r = JSON.parse(sessionStorage.getItem(READING_KEY) || 'null'); } catch(_){}
+  if (!r || r.url !== location.pathname + location.search || !Array.isArray(r.positions) || !r.positions.length) return null;
+  if ([...$('deck').options].some(o => o.value === r.deck)) $('deck').value = r.deck;
+  curSpreadId = (r.spreadId === 'custom' || spreadsById[r.spreadId]) ? r.spreadId : 'custom';
+  $('spread').value = curSpreadId; setCustomMode(curSpreadId === 'custom');
+  axes = normalizeAxes({ axes: r.axes }); syncAxesInputs();
+  setSpreadIdentity(r.name, r.desc);
+  positions = r.positions.map(p => Object.assign({ id:'p'+(++seq), label:p.label||'', meaning:p.meaning||'', x:+p.x, y:+p.y }, p.card ? { card:p.card } : {}));
+  $('question').value = r.question || '';
+  if (r.revProb != null) { $('revProb').value = r.revProb; $('revPct').textContent = $('revPctEnd').textContent = $('revProb').value + '%'; }
+  $('reshuffle').style.display = 'inline-block'; $('export').classList.add('on');
+  renderBoard(); renderCustomList(); syncJson();
+  return r;
+}
+window.addEventListener('pagehide', saveReading);
 
 function currentPool(){ const v = $('deck').value; return v === ALL ? leaves : (byDeck[v] || []); }
 function updateDeckMeta(){ const v = $('deck').value;
@@ -1475,6 +1528,7 @@ async function loadVoices(){
 let openCardToken = 0;
 async function openCardDetail(p){ const c=p.card; if(!c) return;
   const myToken = ++openCardToken;
+  openCardIndex = positions.indexOf(p);
   const modal=$('cardDetailModal'), body=$('cdmBody');
   $('cdmPos').textContent=p.label||''; $('cdmName').textContent=c.name+(c.reversed?' (reversed)':''); $('cdmDeck').textContent=c.deck||'';
   const img=$('cdmImg'); if(c.image_url){ img.src=c.image_url; img.style.display='block'; img.style.transform=c.reversed?'rotate(180deg)':''; } else img.style.display='none';
@@ -1526,7 +1580,7 @@ async function openCardDetail(p){ const c=p.card; if(!c) return;
     md: mdLite,
   });
 }
-function closeCardDetail(){ $('cardDetailModal').style.display='none'; document.body.style.overflow=''; }
+function closeCardDetail(){ openCardIndex = -1; $('cardDetailModal').style.display='none'; document.body.style.overflow=''; }
 document.addEventListener('DOMContentLoaded',()=>{ $('cdmClose').addEventListener('click',closeCardDetail);
   $('cardDetailModal').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeCardDetail(); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeCardDetail(); }); });
