@@ -40,12 +40,12 @@ is public too.
 
 | Folder | Published at | What |
 |---|---|---|
-| `site/` | `/` | the tarot shell: `index.html` (home), `404.html`, `theme.css`, `style.css`, `site-header.js`, `site-footer.js`, `icons.js`, `viewers/` (cards, explorer, tree, caster), `pages/` (about, play), `map/` (the Sources hub) |
+| `site/` | `/` | the tarot shell: `index.html` (home), `404.html`, `theme.css`, `style.css`, `site-header.js`, `site-footer.js`, `icons.js`, `viewers/` (cards, explorer, tree, caster), `pages/` (about, play, institutions), `map/` (the Sources hub) |
 | `game/` | `/game/` | the games (hand-written pages; the dark ones load `shared/nav.js`) |
 | `glossary/` | `/glossary/` | `terms.json` (the one source of the words) and the generated `index.html` |
 | `grammars/` | `/grammars/` | every grammar (`<slug>/grammar.json`), `_collection.json`, `_eco_ids.json` |
 | `shared/` | `/shared/` | `nav.js`, the shim that gives the game pages the tarot header |
-| `research/`, `scripts/`, `docs/` | not published | sources, builders and checks |
+| `research/`, `scripts/`, `docs/` | not published | sources (`research/lab-export/`, `research/crosswalk.json`, `research/institutions/institutions.json`), builders and checks |
 
 The published folders are listed once, in `scripts/site-folders.txt`, which
 `scripts/assemble-site.sh` reads (CI and local). A new top-level page folder (`explainers/`,
@@ -122,6 +122,10 @@ Purple (`#9333ea`) stays reserved for links to recursive.eco. The token names st
   CI checkout), `creator_name: "PlayfulProcess"` and `_grammar_commons` (CC-BY-SA-4.0).
 - **Every builder takes `--out DIR`** and then writes its outputs under DIR at their repo paths;
   `check_all --check` rebuilds each into a temp folder and diffs byte for byte.
+- **`python scripts/build_all.py`** rebuilds every generated file in dependency order (words,
+  institutions, sources, ideas, the meta, the collection, the glossary page). `lab_export.py`
+  (the private repo) and `export-grammars.mjs` (the app) are run by hand. Shared helpers for the
+  stamps, `--out` and the line covers are in `scripts/lib_grammar.py`.
 - **What stops the app syncing a generated grammar** (checked Sep 24 2026 on recursive-eco
   origin/main 608ec28f): the importer and sync skip any grammar with
   `_generated === true || _source_of_truth` (`apps/flow/src/lib/channel/import-new-grammar.ts:115`,
@@ -131,6 +135,13 @@ Purple (`#9333ea`) stays reserved for links to recursive.eco. The token names st
 - `grammars/_collection.json` is built by `scripts/build_collection.py` (the recursive-iching
   pattern: glob every grammar, curation dicts in the script); the home gallery reads it
   (`!is_meta && cover_image_url`, bands by `provenance`: `living` = Practice, `record` = Record).
+  Covers: a grammar keeps its own `cover_image_url` only when it is a public-domain work on
+  Wikimedia Commons; every other grammar gets a plain line cover in `grammars/_covers/` (her
+  spiral and the name), which also keeps home covers unique.
+- `grammars/all-decks/grammar.json` (`scripts/build_meta_grammar.py`) is the Spread Caster's pool:
+  pointer stubs to the Words deck and the Ideas seed map (curated in `DECKS` there), with `_decks`.
+- The Words emblems drafted by an agent (`grammars/words-deck/emblems/`) are NOT committed and
+  NOT wired in: rule 4 counts them as AI images until PlayfulProcess says otherwise.
 - **One cross-link pattern**: `metadata.source_deck` + `metadata.source_item_id` + `metadata.deck`
   renders the "Open in X →" pill and the framed embed (`viewers/reference-resolve.js`). Never add
   another link field; never name a section Link or URL and never set `metadata.youtube_url`

@@ -1,0 +1,7031 @@
+{
+ "_about": {
+  "from": "PlayfulProcess/recursive-transcripts (private): ai-map/ at origin/ai-map-sep24 a23c239, players/players.json at main 64b6646",
+  "exported_by": "scripts/lab_export.py",
+  "license": "CC-BY-SA-4.0",
+  "what_is_left_out": "transcript text, stance labels, film-cast flags, the players ledger's assessments, private notes",
+  "what": "the Ideas grammar's inputs: seed terms with derived counts, genealogy lanes and milestones, the outcome fork"
+ },
+ "corpus": {
+  "appearances": 110,
+  "episodes": 106,
+  "captioned": 91,
+  "captioned_by_year": {
+   "2018": 4,
+   "2019": 2,
+   "2020": 6,
+   "2021": 3,
+   "2022": 3,
+   "2023": 20,
+   "2024": 16,
+   "2025": 20,
+   "2026": 17
+  },
+  "missing_transcripts": [
+   "2Nn0-kAE5c0",
+   "vNOTDn3D_RI"
+  ],
+  "method": "regex over YouTube auto-captions; hits within 20s merged; co-mention window 120s",
+  "caveats": [
+   "speaker is null: auto-captions have no speaker labels, so a mention may be the host",
+   "sentence is verbatim auto-caption text, which has transcription errors: check against audio before quoting",
+   "low-precision terms (see terms.json) include off-topic hits"
+  ],
+  "terms_status": "SEED DRAFT for PlayfulProcess's approval. Nothing here is final."
+ },
+ "lanes": [
+  {
+   "kind": "lane",
+   "id": "neurosym",
+   "name": "Neurosymbolic & program synthesis",
+   "short": "Neurosymbolic",
+   "start": 1971,
+   "parent": "symbolic",
+   "summary": "Instead of predicting the next word, write a program that solves the problem, and check it. The lane mixes old program-synthesis ideas with neural nets, and it is where François Chollet's ARC puzzles keep asking whether models can handle genuinely new tasks.",
+   "heading": "Reasoning models plus code execution are pulling this lane into the mainstream; ARC-AGI-3 (2026) shows the novelty gap is still wide.",
+   "people": [
+    "François Chollet",
+    "Josh Tenenbaum",
+    "Kevin Ellis",
+    "Armando Solar-Lezama"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Chollet, On the Measure of Intelligence (2019)",
+     "url": "https://arxiv.org/abs/1911.01547"
+    },
+    {
+     "kind": "link",
+     "title": "ARC-AGI-3 launch (2026)",
+     "url": "https://arcprize.org/blog/arc-agi-3-launch"
+    }
+   ]
+  },
+  {
+   "kind": "lane",
+   "id": "scaling",
+   "name": "Scaling & pretraining",
+   "short": "Scaling",
+   "start": 2017,
+   "parent": "neural",
+   "summary": "The discovery that bigger models, trained on more data with more compute, get predictably better, following 'scaling laws'. It turned AI into an industrial race for chips, data centres and power, and it is the idea Sutskever now says has run its course as the main engine: 'more companies than ideas'.",
+   "heading": "Still absorbing most capital (multi-gigawatt data centres), but returns from pretraining alone are debated. Scaling has shifted towards RL and inference-time compute.",
+   "people": [
+    "Jared Kaplan",
+    "Dario Amodei",
+    "Ilya Sutskever",
+    "Alec Radford",
+    "Rich Sutton (Bitter Lesson)"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Kaplan et al., Scaling Laws (2020)",
+     "url": "https://arxiv.org/abs/2001.08361"
+    },
+    {
+     "kind": "link",
+     "title": "Epoch AI: compute grows 4-5x/year (2024)",
+     "url": "https://epoch.ai/publications/training-compute-of-frontier-ai-models-grows-by-4-5x-per-year"
+    },
+    {
+     "kind": "link",
+     "title": "Stanford AI Index 2026, Economy",
+     "url": "https://hai.stanford.edu/ai-index/2026-ai-index-report/economy"
+    }
+   ]
+  },
+  {
+   "kind": "lane",
+   "id": "rl",
+   "name": "Reinforcement learning & self-play",
+   "short": "RL",
+   "start": 1959,
+   "parent": null,
+   "summary": "Learning by trial, error and reward. It gave us AlphaGo and self-play. Since 2024 it is the main engine behind 'reasoning models' trained on verifiable rewards: problems whose answers can be checked automatically, such as maths, code and tests.",
+   "heading": "RL compute is being scaled like pretraining was. The July 2026 OpenAI agent incident tied reward hacking in RL-trained agents to real-world harm.",
+   "people": [
+    "Richard Sutton",
+    "Andrew Barto",
+    "Chris Watkins",
+    "David Silver",
+    "Demis Hassabis",
+    "John Schulman"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Sutton & Barto, Reinforcement Learning (2nd ed.)",
+     "url": "http://incompleteideas.net/book/the-book-2nd.html"
+    },
+    {
+     "kind": "link",
+     "title": "DeepSeek-R1 (2025)",
+     "url": "https://arxiv.org/abs/2501.12948"
+    }
+   ]
+  },
+  {
+   "kind": "lane",
+   "id": "rsi",
+   "name": "Recursive self-improvement",
+   "short": "Self-improvement",
+   "start": 1965,
+   "parent": null,
+   "summary": "The oldest dream and fear in the field: a machine good enough to design a better machine, which designs a better one, and so on, an 'intelligence explosion'. For decades it was theory. By 2025-26 labs were openly racing to automate AI research itself.",
+   "heading": "OpenAI says it reached an 'automated research intern' in Sept 2026 and targets an 'automated AI researcher' by March 2028. Anthropic reports that Claude writes more than 80% of its merged code and says it would pause if others verifiably did.",
+   "people": [
+    "I. J. Good",
+    "Vernor Vinge",
+    "Eliezer Yudkowsky",
+    "Jürgen Schmidhuber",
+    "Ray Kurzweil",
+    "Jeff Clune"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Good, Speculations Concerning the First Ultraintelligent Machine (1965)",
+     "url": "https://exhibits.stanford.edu/feigenbaum/catalog/gz727rg3869"
+    },
+    {
+     "kind": "link",
+     "title": "Anthropic, When AI builds itself (2026)",
+     "url": "https://www.anthropic.com/institute/recursive-self-improvement"
+    }
+   ]
+  },
+  {
+   "kind": "lane",
+   "id": "safety",
+   "name": "Alignment & safety",
+   "short": "Alignment & safety",
+   "start": 1960,
+   "parent": null,
+   "summary": "How do you make powerful AI do what we actually want, and know that it does? The lane runs from early warnings (Wiener, Good) through MIRI's theory to today's techniques: human-feedback training, constitutions, interpretability (looking inside the network), chain-of-thought monitoring and 'control' protocols that assume the model might be misaligned.",
+   "heading": "Growing, but still a thin stream next to capabilities. In 2026 labs began making chain-of-thought monitoring mandatory and talking publicly about verifiable pauses.",
+   "people": [
+    "Norbert Wiener",
+    "Eliezer Yudkowsky",
+    "Stuart Russell",
+    "Paul Christiano",
+    "Chris Olah",
+    "Jan Leike",
+    "Yoshua Bengio"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "ETO: Still a drop in the bucket (2025)",
+     "url": "https://eto.tech/blog/still-drop-bucket-ai-safety-research/"
+    },
+    {
+     "kind": "link",
+     "title": "Amodei et al., Concrete Problems in AI Safety (2016)",
+     "url": "https://arxiv.org/abs/1606.06565"
+    }
+   ]
+  },
+  {
+   "kind": "lane",
+   "id": "openended",
+   "name": "Open-endedness & co-improvement",
+   "short": "Open-ended",
+   "start": 2008,
+   "parent": null,
+   "summary": "Evolution didn't optimise one score; it kept inventing new problems and solutions. This lane builds systems that generate their own challenges and environments (POET, PAIRED, Genie) and argues that open-endedness, and humans and AI improving together, is the road to superhuman AI.",
+   "heading": "Merging with the RSI lane: the Darwin Gödel Machine is open-ended search over self-modifying agents. Co-improvement (Weston & Foerster 2025) proposes keeping humans in the loop as a safer alternative to pure self-improvement.",
+   "people": [
+    "Kenneth Stanley",
+    "Joel Lehman",
+    "Jeff Clune",
+    "Tim Rocktäschel",
+    "Edward Hughes",
+    "Jason Weston",
+    "Jakob Foerster"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Hughes et al., Open-Endedness is Essential for ASI (2024)",
+     "url": "https://arxiv.org/abs/2406.04268"
+    },
+    {
+     "kind": "link",
+     "title": "Weston & Foerster, AI & Human Co-Improvement (2025)",
+     "url": "https://arxiv.org/abs/2512.05356"
+    }
+   ]
+  },
+  {
+   "kind": "lane",
+   "id": "multi",
+   "name": "Multi-agent & cooperative AI",
+   "short": "Multi-agent",
+   "start": 1980,
+   "parent": null,
+   "summary": "What happens when many AIs, and humans, interact: cooperation, competition, negotiation, collusion. Once an academic niche and a games playground (Dota, StarCraft, Diplomacy), it became urgent when labs began deploying swarms of autonomous agents.",
+   "heading": "Agent swarms are shipping. OpenAI's July 2026 incident involved about 1,200 agents coordinating on improvised message boards, turning 'multi-agent risk' from theory into a case study.",
+   "people": [
+    "Michael Wooldridge",
+    "Allan Dafoe",
+    "Joel Leibo",
+    "Noam Brown",
+    "Lewis Hammond"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Dafoe et al., Open Problems in Cooperative AI (2020)",
+     "url": "https://arxiv.org/abs/2012.08630"
+    },
+    {
+     "kind": "link",
+     "title": "Hammond et al., Multi-Agent Risks from Advanced AI (2025)",
+     "url": "https://arxiv.org/abs/2502.14143"
+    }
+   ]
+  },
+  {
+   "kind": "lane",
+   "id": "world",
+   "name": "World models & embodiment",
+   "short": "World models",
+   "start": 1986,
+   "parent": null,
+   "summary": "Intelligence may need a model of how the physical world works, learned by watching and acting rather than reading. The lane runs from Brooks' robots and Schmidhuber's early world models to LeCun's JEPA, video 'world simulators' like Genie, and robot foundation models.",
+   "heading": "LeCun left Meta and raised about US$1.03B for AMI Labs (March 2026) to bet on JEPA-style world models over LLMs. Humanoid robotics is also drawing billions.",
+   "people": [
+    "Rodney Brooks",
+    "Jürgen Schmidhuber",
+    "David Ha",
+    "Yann LeCun",
+    "Sergey Levine",
+    "Chelsea Finn"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "LeCun, A Path Towards Autonomous Machine Intelligence (2022)",
+     "url": "https://openreview.net/pdf?id=BZ5a1r-kVsf"
+    },
+    {
+     "kind": "link",
+     "title": "TechCrunch: AMI Labs raises $1.03B (2026)",
+     "url": "https://techcrunch.com/2026/03/09/yann-lecuns-ami-labs-raises-1-03-billion-to-build-world-models/"
+    }
+   ]
+  },
+  {
+   "kind": "lane",
+   "id": "neuro",
+   "name": "Brain-inspired learning, continual learning & generalization",
+   "short": "Generalization",
+   "start": 1949,
+   "parent": null,
+   "summary": "Humans learn from a handful of examples, keep learning on the job, and don't forget old skills. Today's models do none of that well. This lane asks what the brain knows that current AI doesn't. It is where Sutskever places SSI's bet: generalization, continual learning, and emotions as a robust 'value function'.",
+   "heading": "Sutskever (Nov 2025): 'These models somehow just generalize dramatically worse than people.' Continual learning became a headline research goal in 2025-26, from Google's Nested Learning to SSI.",
+   "people": [
+    "Donald Hebb",
+    "John Hopfield",
+    "Demis Hassabis",
+    "Ilya Sutskever",
+    "Richard Sutton"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Dwarkesh Patel: Ilya Sutskever, the age of research (25 Nov 2025)",
+     "url": "https://www.dwarkesh.com/p/ilya-sutskever-2"
+    },
+    {
+     "kind": "link",
+     "title": "Hassabis et al., Neuroscience-Inspired AI (2017)",
+     "url": "https://www.cell.com/neuron/fulltext/S0896-6273(17)30509-3"
+    }
+   ]
+  }
+ ],
+ "terms": [
+  {
+   "kind": "term",
+   "id": "rsi",
+   "label": "Recursive self-improvement",
+   "lane": "rsi",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 67,
+   "episodes": 20,
+   "first": {
+    "date": "2022-07-01",
+    "show": "pod_80k",
+    "title": "#133 – Max Tegmark on how a 'put-up-or-shut-up' resolution led him to work on AI and algorithmic news selection",
+    "video_id": "SWVWBLkeqvA",
+    "episode": "ep-80000-hours-2022-07-01-max-tegmark"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     1
+    ],
+    [
+     2023,
+     3,
+     20,
+     5
+    ],
+    [
+     2024,
+     1,
+     16,
+     2
+    ],
+    [
+     2025,
+     6,
+     20,
+     12
+    ],
+    [
+     2026,
+     9,
+     17,
+     47
+    ]
+   ],
+   "top_people": [
+    [
+     "toby_ord",
+     27,
+     1
+    ],
+    [
+     "daniel_kokotajlo",
+     10,
+     3
+    ],
+    [
+     "ajeya_cotra",
+     4,
+     2
+    ],
+    [
+     "tristan_harris",
+     4,
+     2
+    ],
+    [
+     "ilya_sutskever",
+     3,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "superintelligence",
+     26
+    ],
+    [
+     "alignment",
+     22
+    ],
+    [
+     "compute",
+     18
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "intelligence-explosion",
+   "label": "Intelligence explosion",
+   "lane": "rsi",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 134,
+   "episodes": 28,
+   "first": {
+    "date": "2019-12-16",
+    "show": "pod_80k",
+    "title": "#67 – David Chalmers on the nature and ethics of consciousness",
+    "video_id": "vJmEEO6kvTg",
+    "episode": "ep-80000-hours-2019-12-16-david-chalmers"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     1,
+     2,
+     16
+    ],
+    [
+     2020,
+     2,
+     6,
+     6
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     1
+    ],
+    [
+     2023,
+     4,
+     20,
+     20
+    ],
+    [
+     2024,
+     4,
+     16,
+     10
+    ],
+    [
+     2025,
+     10,
+     20,
+     36
+    ],
+    [
+     2026,
+     6,
+     17,
+     45
+    ]
+   ],
+   "top_people": [
+    [
+     "daniel_kokotajlo",
+     39,
+     5
+    ],
+    [
+     "ajeya_cotra",
+     18,
+     2
+    ],
+    [
+     "david_chalmers",
+     16,
+     1
+    ],
+    [
+     "carl_shulman",
+     11,
+     2
+    ],
+    [
+     "holden_karnofsky",
+     7,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     67
+    ],
+    [
+     "superintelligence",
+     42
+    ],
+    [
+     "alignment",
+     28
+    ]
+   ],
+   "milestone": "good1965",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "singularity",
+   "label": "The singularity",
+   "lane": "rsi",
+   "layer": "lore",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 35,
+   "episodes": 21,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     1
+    ],
+    [
+     2019,
+     2,
+     2,
+     6
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     1,
+     3,
+     1
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     4,
+     20,
+     8
+    ],
+    [
+     2024,
+     3,
+     16,
+     4
+    ],
+    [
+     2025,
+     5,
+     20,
+     6
+    ],
+    [
+     2026,
+     5,
+     17,
+     9
+    ]
+   ],
+   "top_people": [
+    [
+     "mo_gawdat",
+     5,
+     1
+    ],
+    [
+     "david_chalmers",
+     4,
+     1
+    ],
+    [
+     "roman_yampolskiy",
+     4,
+     2
+    ],
+    [
+     "dylan_patel",
+     3,
+     1
+    ],
+    [
+     "melanie_mitchell",
+     2,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     11
+    ],
+    [
+     "agi",
+     9
+    ],
+    [
+     "intelligence-explosion",
+     7
+    ]
+   ],
+   "milestone": "vinge",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "takeoff",
+   "label": "Takeoff speed (fast / slow)",
+   "lane": "rsi",
+   "layer": "outcome",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 29,
+   "episodes": 19,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     6
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     1,
+     6,
+     1
+    ],
+    [
+     2021,
+     1,
+     3,
+     1
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     4,
+     20,
+     7
+    ],
+    [
+     2024,
+     2,
+     16,
+     2
+    ],
+    [
+     2025,
+     7,
+     20,
+     9
+    ],
+    [
+     2026,
+     3,
+     17,
+     3
+    ]
+   ],
+   "top_people": [
+    [
+     "paul_christiano",
+     6,
+     1
+    ],
+    [
+     "sam_altman",
+     5,
+     2
+    ],
+    [
+     "demis_hassabis",
+     4,
+     3
+    ],
+    [
+     "stuart_russell",
+     2,
+     2
+    ],
+    [
+     "tristan_harris",
+     2,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "agi",
+     10
+    ],
+    [
+     "alignment",
+     6
+    ],
+    [
+     "compute",
+     6
+    ]
+   ],
+   "milestone": "bostrom",
+   "outcome": "takeoff"
+  },
+  {
+   "kind": "term",
+   "id": "automated-researcher",
+   "label": "Automated AI researcher",
+   "lane": "rsi",
+   "layer": "outcome",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 13,
+   "episodes": 10,
+   "first": {
+    "date": "2024-06-04",
+    "show": "pod_dwarkesh",
+    "title": "Leopold Aschenbrenner — 2027 AGI, China/US super-intelligence race, & the return of history",
+    "video_id": "zdbVtZIn9IM",
+    "episode": "ep-dwarkesh-2024-06-04-leopold-aschenbrenner"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     0,
+     20,
+     0
+    ],
+    [
+     2024,
+     2,
+     16,
+     2
+    ],
+    [
+     2025,
+     5,
+     20,
+     7
+    ],
+    [
+     2026,
+     3,
+     17,
+     4
+    ]
+   ],
+   "top_people": [
+    [
+     "daniel_kokotajlo",
+     4,
+     2
+    ],
+    [
+     "ryan_greenblatt",
+     2,
+     2
+    ],
+    [
+     "tristan_harris",
+     2,
+     1
+    ],
+    [
+     "ajeya_cotra",
+     1,
+     1
+    ],
+    [
+     "carl_shulman",
+     1,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "intelligence-explosion",
+     7
+    ],
+    [
+     "superintelligence",
+     7
+    ],
+    [
+     "compute",
+     6
+    ]
+   ],
+   "milestone": "oai-roadmap",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "scaling-laws",
+   "label": "Scaling laws",
+   "lane": "scaling",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 81,
+   "episodes": 22,
+   "first": {
+    "date": "2021-08-04",
+    "show": "pod_80k",
+    "title": "#107 – Chris Olah on what the hell is going on inside neural networks",
+    "video_id": "k_QVDwhR8FU",
+    "episode": "ep-80000-hours-2021-08-04-chris-olah"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     1,
+     3,
+     20
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     5,
+     20,
+     15
+    ],
+    [
+     2024,
+     6,
+     16,
+     26
+    ],
+    [
+     2025,
+     5,
+     20,
+     11
+    ],
+    [
+     2026,
+     5,
+     17,
+     9
+    ]
+   ],
+   "top_people": [
+    [
+     "chris_olah",
+     35,
+     2
+    ],
+    [
+     "dario_amodei",
+     29,
+     4
+    ],
+    [
+     "amanda_askell",
+     15,
+     1
+    ],
+    [
+     "demis_hassabis",
+     5,
+     2
+    ],
+    [
+     "ilya_sutskever",
+     5,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     49
+    ],
+    [
+     "interpretability",
+     16
+    ],
+    [
+     "pretraining",
+     15
+    ]
+   ],
+   "milestone": "kaplan",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "bitter-lesson",
+   "label": "The bitter lesson",
+   "lane": "scaling",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 17,
+   "episodes": 7,
+   "first": {
+    "date": "2022-10-29",
+    "show": "pod_lex",
+    "title": "#333 – Andrej Karpathy: Tesla AI, Self-Driving, Optimus, Aliens, and AGI",
+    "video_id": "cdiD-9MMpb0",
+    "episode": "ep-lex-2022-10-29-andrej-karpathy"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     1
+    ],
+    [
+     2023,
+     2,
+     20,
+     2
+    ],
+    [
+     2024,
+     1,
+     16,
+     2
+    ],
+    [
+     2025,
+     2,
+     20,
+     11
+    ],
+    [
+     2026,
+     1,
+     17,
+     1
+    ]
+   ],
+   "top_people": [
+    [
+     "richard_sutton",
+     8,
+     1
+    ],
+    [
+     "dario_amodei",
+     4,
+     3
+    ],
+    [
+     "dylan_patel",
+     3,
+     1
+    ],
+    [
+     "amanda_askell",
+     2,
+     1
+    ],
+    [
+     "chris_olah",
+     2,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     9
+    ],
+    [
+     "scaling-laws",
+     4
+    ],
+    [
+     "agi",
+     3
+    ]
+   ],
+   "milestone": "bitterlesson",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "pretraining",
+   "label": "Pretraining",
+   "lane": "scaling",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 168,
+   "episodes": 32,
+   "first": {
+    "date": "2020-05-08",
+    "show": "pod_lex",
+    "title": "#94 – Ilya Sutskever: Deep Learning",
+    "video_id": "13CZPWmke6A",
+    "episode": "ep-lex-2020-05-08-ilya-sutskever"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     2,
+     6,
+     2
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     2,
+     3,
+     2
+    ],
+    [
+     2023,
+     4,
+     20,
+     6
+    ],
+    [
+     2024,
+     5,
+     16,
+     31
+    ],
+    [
+     2025,
+     8,
+     20,
+     89
+    ],
+    [
+     2026,
+     11,
+     17,
+     38
+    ]
+   ],
+   "top_people": [
+    [
+     "dylan_patel",
+     32,
+     2
+    ],
+    [
+     "dario_amodei",
+     27,
+     3
+    ],
+    [
+     "ilya_sutskever",
+     20,
+     2
+    ],
+    [
+     "andrej_karpathy",
+     18,
+     2
+    ],
+    [
+     "ryan_greenblatt",
+     14,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     71
+    ],
+    [
+     "generalization",
+     25
+    ],
+    [
+     "agi",
+     17
+    ]
+   ],
+   "milestone": "gpt1",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "data-wall",
+   "label": "Data wall / synthetic data",
+   "lane": "scaling",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 43,
+   "episodes": 16,
+   "first": {
+    "date": "2022-10-29",
+    "show": "pod_lex",
+    "title": "#333 – Andrej Karpathy: Tesla AI, Self-Driving, Optimus, Aliens, and AGI",
+    "video_id": "cdiD-9MMpb0",
+    "episode": "ep-lex-2022-10-29-andrej-karpathy"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     3
+    ],
+    [
+     2023,
+     2,
+     20,
+     3
+    ],
+    [
+     2024,
+     6,
+     16,
+     20
+    ],
+    [
+     2025,
+     7,
+     20,
+     17
+    ],
+    [
+     2026,
+     0,
+     17,
+     0
+    ]
+   ],
+   "top_people": [
+    [
+     "andrej_karpathy",
+     8,
+     2
+    ],
+    [
+     "leopold_aschenbrenner",
+     7,
+     1
+    ],
+    [
+     "dario_amodei",
+     6,
+     2
+    ],
+    [
+     "amanda_askell",
+     5,
+     1
+    ],
+    [
+     "chris_olah",
+     5,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     20
+    ],
+    [
+     "pretraining",
+     15
+    ],
+    [
+     "agi",
+     10
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "compute",
+   "label": "Compute (chips, data centres)",
+   "lane": "scaling",
+   "layer": "idea",
+   "precision": "medium",
+   "spotcheck": "8/8 on-topic (chips, GPUs, training compute)",
+   "mentions": 1146,
+   "episodes": 68,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     11
+    ],
+    [
+     2019,
+     1,
+     2,
+     3
+    ],
+    [
+     2020,
+     4,
+     6,
+     18
+    ],
+    [
+     2021,
+     1,
+     3,
+     16
+    ],
+    [
+     2022,
+     3,
+     3,
+     20
+    ],
+    [
+     2023,
+     16,
+     20,
+     139
+    ],
+    [
+     2024,
+     10,
+     16,
+     120
+    ],
+    [
+     2025,
+     16,
+     20,
+     352
+    ],
+    [
+     2026,
+     16,
+     17,
+     467
+    ]
+   ],
+   "top_people": [
+    [
+     "dylan_patel",
+     245,
+     2
+    ],
+    [
+     "daniel_kokotajlo",
+     134,
+     5
+    ],
+    [
+     "ryan_greenblatt",
+     126,
+     2
+    ],
+    [
+     "dario_amodei",
+     98,
+     4
+    ],
+    [
+     "jensen_huang",
+     80,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "china",
+     143
+    ],
+    [
+     "agi",
+     119
+    ],
+    [
+     "superintelligence",
+     102
+    ]
+   ],
+   "milestone": "stargate",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "rlhf",
+   "label": "RLHF",
+   "lane": "safety",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 77,
+   "episodes": 23,
+   "first": {
+    "date": "2021-08-04",
+    "show": "pod_80k",
+    "title": "#107 – Chris Olah on what the hell is going on inside neural networks",
+    "video_id": "k_QVDwhR8FU",
+    "episode": "ep-80000-hours-2021-08-04-chris-olah"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     1,
+     3,
+     4
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     7,
+     20,
+     50
+    ],
+    [
+     2024,
+     8,
+     16,
+     13
+    ],
+    [
+     2025,
+     4,
+     20,
+     6
+    ],
+    [
+     2026,
+     3,
+     17,
+     4
+    ]
+   ],
+   "top_people": [
+    [
+     "eliezer_yudkowsky",
+     21,
+     2
+    ],
+    [
+     "dario_amodei",
+     11,
+     4
+    ],
+    [
+     "sam_altman",
+     11,
+     2
+    ],
+    [
+     "paul_christiano",
+     10,
+     1
+    ],
+    [
+     "chris_olah",
+     7,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     38
+    ],
+    [
+     "compute",
+     20
+    ],
+    [
+     "interpretability",
+     18
+    ]
+   ],
+   "milestone": "rlhf2017",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "self-play",
+   "label": "Self-play",
+   "lane": "rl",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 58,
+   "episodes": 18,
+   "first": {
+    "date": "2019-12-28",
+    "show": "pod_lex",
+    "title": "Melanie Mitchell: Concepts, Analogies, Common Sense & Future of AI",
+    "video_id": "ImKkaeUx1MU",
+    "episode": "ep-lex-2019-12-28-melanie-mitchell"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     1,
+     2,
+     1
+    ],
+    [
+     2020,
+     3,
+     6,
+     9
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     2,
+     3,
+     23
+    ],
+    [
+     2023,
+     2,
+     20,
+     2
+    ],
+    [
+     2024,
+     3,
+     16,
+     11
+    ],
+    [
+     2025,
+     5,
+     20,
+     10
+    ],
+    [
+     2026,
+     2,
+     17,
+     2
+    ]
+   ],
+   "top_people": [
+    [
+     "noam_brown",
+     23,
+     2
+    ],
+    [
+     "ilya_sutskever",
+     11,
+     2
+    ],
+    [
+     "demis_hassabis",
+     5,
+     1
+    ],
+    [
+     "leopold_aschenbrenner",
+     5,
+     1
+    ],
+    [
+     "dylan_patel",
+     3,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     14
+    ],
+    [
+     "pretraining",
+     10
+    ],
+    [
+     "agi",
+     8
+    ]
+   ],
+   "milestone": "alphazero",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "reasoning-rl",
+   "label": "Reasoning models & test-time compute",
+   "lane": "rl",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 60,
+   "episodes": 13,
+   "first": {
+    "date": "2022-12-06",
+    "show": "pod_lex",
+    "title": "#344 – Noam Brown: AI vs Humans in Poker and Games of Strategic Negotiation",
+    "video_id": "2oHH4aClJQs",
+    "episode": "ep-lex-2022-12-06-noam-brown"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     1
+    ],
+    [
+     2023,
+     0,
+     20,
+     0
+    ],
+    [
+     2024,
+     3,
+     16,
+     7
+    ],
+    [
+     2025,
+     5,
+     20,
+     35
+    ],
+    [
+     2026,
+     4,
+     17,
+     17
+    ]
+   ],
+   "top_people": [
+    [
+     "dylan_patel",
+     19,
+     1
+    ],
+    [
+     "noam_brown",
+     8,
+     2
+    ],
+    [
+     "ryan_greenblatt",
+     8,
+     1
+    ],
+    [
+     "toby_ord",
+     7,
+     1
+    ],
+    [
+     "mark_zuckerberg",
+     4,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     38
+    ],
+    [
+     "pretraining",
+     13
+    ],
+    [
+     "chain-of-thought",
+     12
+    ]
+   ],
+   "milestone": "o1",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "chain-of-thought",
+   "label": "Chain of thought",
+   "lane": "safety",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 74,
+   "episodes": 18,
+   "first": {
+    "date": "2022-12-06",
+    "show": "pod_lex",
+    "title": "#344 – Noam Brown: AI vs Humans in Poker and Games of Strategic Negotiation",
+    "video_id": "2oHH4aClJQs",
+    "episode": "ep-lex-2022-12-06-noam-brown"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     1
+    ],
+    [
+     2023,
+     1,
+     20,
+     2
+    ],
+    [
+     2024,
+     3,
+     16,
+     5
+    ],
+    [
+     2025,
+     6,
+     20,
+     28
+    ],
+    [
+     2026,
+     7,
+     17,
+     38
+    ]
+   ],
+   "top_people": [
+    [
+     "dylan_patel",
+     14,
+     1
+    ],
+    [
+     "ajeya_cotra",
+     13,
+     2
+    ],
+    [
+     "daniel_kokotajlo",
+     10,
+     2
+    ],
+    [
+     "noam_brown",
+     10,
+     2
+    ],
+    [
+     "ryan_greenblatt",
+     7,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     27
+    ],
+    [
+     "compute",
+     18
+    ],
+    [
+     "reasoning-rl",
+     12
+    ]
+   ],
+   "milestone": "cotmon",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "reward-hacking",
+   "label": "Reward hacking",
+   "lane": "safety",
+   "layer": "outcome",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 53,
+   "episodes": 14,
+   "first": {
+    "date": "2021-08-04",
+    "show": "pod_80k",
+    "title": "#107 – Chris Olah on what the hell is going on inside neural networks",
+    "video_id": "k_QVDwhR8FU",
+    "episode": "ep-80000-hours-2021-08-04-chris-olah"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     1,
+     3,
+     1
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     3,
+     20,
+     10
+    ],
+    [
+     2024,
+     1,
+     16,
+     1
+    ],
+    [
+     2025,
+     4,
+     20,
+     12
+    ],
+    [
+     2026,
+     5,
+     17,
+     29
+    ]
+   ],
+   "top_people": [
+    [
+     "ryan_greenblatt",
+     20,
+     2
+    ],
+    [
+     "holden_karnofsky",
+     6,
+     1
+    ],
+    [
+     "carl_shulman",
+     5,
+     1
+    ],
+    [
+     "ajeya_cotra",
+     4,
+     1
+    ],
+    [
+     "paul_christiano",
+     4,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     24
+    ],
+    [
+     "generalization",
+     16
+    ],
+    [
+     "takeover",
+     13
+    ]
+   ],
+   "milestone": "concrete",
+   "outcome": "reward-hacking"
+  },
+  {
+   "kind": "term",
+   "id": "world-models",
+   "label": "World models",
+   "lane": "world",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 53,
+   "episodes": 18,
+   "first": {
+    "date": "2018-10-20",
+    "show": "pod_lex",
+    "title": "Yoshua Bengio: Deep Learning",
+    "video_id": "azOmzumh0vQ",
+    "episode": "ep-lex-2018-10-20-yoshua-bengio"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     1
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     3,
+     20,
+     6
+    ],
+    [
+     2024,
+     4,
+     16,
+     30
+    ],
+    [
+     2025,
+     6,
+     20,
+     12
+    ],
+    [
+     2026,
+     4,
+     17,
+     4
+    ]
+   ],
+   "top_people": [
+    [
+     "yann_lecun",
+     21,
+     1
+    ],
+    [
+     "demis_hassabis",
+     8,
+     2
+    ],
+    [
+     "shane_legg",
+     4,
+     1
+    ],
+    [
+     "andrej_karpathy",
+     2,
+     1
+    ],
+    [
+     "daniel_kokotajlo",
+     2,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "agi",
+     8
+    ],
+    [
+     "compute",
+     5
+    ],
+    [
+     "rlhf",
+     5
+    ]
+   ],
+   "milestone": "worldmodels",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "continual-learning",
+   "label": "Continual learning",
+   "lane": "neuro",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 38,
+   "episodes": 14,
+   "first": {
+    "date": "2018-10-20",
+    "show": "pod_lex",
+    "title": "Yoshua Bengio: Deep Learning",
+    "video_id": "azOmzumh0vQ",
+    "episode": "ep-lex-2018-10-20-yoshua-bengio"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     1
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     1,
+     3,
+     1
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     2,
+     20,
+     2
+    ],
+    [
+     2024,
+     0,
+     16,
+     0
+    ],
+    [
+     2025,
+     6,
+     20,
+     21
+    ],
+    [
+     2026,
+     4,
+     17,
+     13
+    ]
+   ],
+   "top_people": [
+    [
+     "dario_amodei",
+     9,
+     1
+    ],
+    [
+     "andrej_karpathy",
+     6,
+     1
+    ],
+    [
+     "richard_sutton",
+     6,
+     1
+    ],
+    [
+     "ilya_sutskever",
+     5,
+     1
+    ],
+    [
+     "daniel_kokotajlo",
+     3,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     17
+    ],
+    [
+     "pretraining",
+     10
+    ],
+    [
+     "generalization",
+     8
+    ]
+   ],
+   "milestone": "forgetting",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "generalization",
+   "label": "Generalization",
+   "lane": "neuro",
+   "layer": "idea",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 198,
+   "episodes": 53,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     2,
+     4,
+     6
+    ],
+    [
+     2019,
+     1,
+     2,
+     1
+    ],
+    [
+     2020,
+     2,
+     6,
+     29
+    ],
+    [
+     2021,
+     1,
+     3,
+     1
+    ],
+    [
+     2022,
+     2,
+     3,
+     4
+    ],
+    [
+     2023,
+     14,
+     20,
+     45
+    ],
+    [
+     2024,
+     9,
+     16,
+     32
+    ],
+    [
+     2025,
+     11,
+     20,
+     40
+    ],
+    [
+     2026,
+     11,
+     17,
+     40
+    ]
+   ],
+   "top_people": [
+    [
+     "francois_chollet",
+     46,
+     2
+    ],
+    [
+     "dario_amodei",
+     15,
+     3
+    ],
+    [
+     "ryan_greenblatt",
+     14,
+     2
+    ],
+    [
+     "eliezer_yudkowsky",
+     12,
+     2
+    ],
+    [
+     "paul_christiano",
+     11,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     37
+    ],
+    [
+     "agi",
+     35
+    ],
+    [
+     "alignment",
+     32
+    ]
+   ],
+   "milestone": "ilya-general",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "value-function",
+   "label": "Value functions & emotions",
+   "lane": "neuro",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 22,
+   "episodes": 7,
+   "first": {
+    "date": "2020-05-08",
+    "show": "pod_lex",
+    "title": "#94 – Ilya Sutskever: Deep Learning",
+    "video_id": "13CZPWmke6A",
+    "episode": "ep-lex-2020-05-08-ilya-sutskever"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     1,
+     6,
+     2
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     2,
+     3,
+     5
+    ],
+    [
+     2023,
+     1,
+     20,
+     2
+    ],
+    [
+     2024,
+     0,
+     16,
+     0
+    ],
+    [
+     2025,
+     3,
+     20,
+     13
+    ],
+    [
+     2026,
+     0,
+     17,
+     0
+    ]
+   ],
+   "top_people": [
+    [
+     "ilya_sutskever",
+     12,
+     2
+    ],
+    [
+     "noam_brown",
+     4,
+     1
+    ],
+    [
+     "richard_sutton",
+     2,
+     1
+    ],
+    [
+     "sam_harris",
+     2,
+     1
+    ],
+    [
+     "andrej_karpathy",
+     1,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "agi",
+     3
+    ],
+    [
+     "alignment",
+     3
+    ],
+    [
+     "compute",
+     3
+    ]
+   ],
+   "milestone": "ilya-general",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "arc",
+   "label": "ARC / skill-acquisition",
+   "lane": "neurosym",
+   "layer": "idea",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 5,
+   "episodes": 3,
+   "first": {
+    "date": "2024-06-11",
+    "show": "pod_dwarkesh",
+    "title": "Francois Chollet, Mike Knoop - LLMs won't lead to AGI - $1,000,000 Prize to find true solution",
+    "video_id": "UakqL6Pj9xo",
+    "episode": "ep-dwarkesh-2024-06-11-francois-chollet"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     0,
+     20,
+     0
+    ],
+    [
+     2024,
+     1,
+     16,
+     1
+    ],
+    [
+     2025,
+     2,
+     20,
+     4
+    ],
+    [
+     2026,
+     0,
+     17,
+     0
+    ]
+   ],
+   "top_people": [
+    [
+     "dylan_patel",
+     3,
+     1
+    ],
+    [
+     "francois_chollet",
+     1,
+     1
+    ],
+    [
+     "ryan_greenblatt",
+     1,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "agi",
+     7
+    ],
+    [
+     "compute",
+     7
+    ],
+    [
+     "china",
+     3
+    ]
+   ],
+   "milestone": "arc",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "symbolic",
+   "label": "Symbolic AI & program synthesis",
+   "lane": "neurosym",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 21,
+   "episodes": 10,
+   "first": {
+    "date": "2018-10-20",
+    "show": "pod_lex",
+    "title": "Yoshua Bengio: Deep Learning",
+    "video_id": "azOmzumh0vQ",
+    "episode": "ep-lex-2018-10-20-yoshua-bengio"
+   },
+   "by_year": [
+    [
+     2018,
+     2,
+     4,
+     2
+    ],
+    [
+     2019,
+     1,
+     2,
+     1
+    ],
+    [
+     2020,
+     2,
+     6,
+     2
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     2,
+     3,
+     3
+    ],
+    [
+     2023,
+     0,
+     20,
+     0
+    ],
+    [
+     2024,
+     2,
+     16,
+     12
+    ],
+    [
+     2025,
+     0,
+     20,
+     0
+    ],
+    [
+     2026,
+     1,
+     17,
+     1
+    ]
+   ],
+   "top_people": [
+    [
+     "francois_chollet",
+     12,
+     2
+    ],
+    [
+     "max_tegmark",
+     2,
+     1
+    ],
+    [
+     "andrej_karpathy",
+     1,
+     1
+    ],
+    [
+     "ilya_sutskever",
+     1,
+     1
+    ],
+    [
+     "melanie_mitchell",
+     1,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "generalization",
+     9
+    ],
+    [
+     "compute",
+     6
+    ],
+    [
+     "agi",
+     5
+    ]
+   ],
+   "milestone": "synthesis71",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "open-endedness",
+   "label": "Open-endedness",
+   "lane": "openended",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 29,
+   "episodes": 21,
+   "first": {
+    "date": "2019-12-28",
+    "show": "pod_lex",
+    "title": "Melanie Mitchell: Concepts, Analogies, Common Sense & Future of AI",
+    "video_id": "ImKkaeUx1MU",
+    "episode": "ep-lex-2019-12-28-melanie-mitchell"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     1,
+     2,
+     1
+    ],
+    [
+     2020,
+     4,
+     6,
+     4
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     2,
+     3,
+     2
+    ],
+    [
+     2023,
+     3,
+     20,
+     3
+    ],
+    [
+     2024,
+     2,
+     16,
+     3
+    ],
+    [
+     2025,
+     4,
+     20,
+     10
+    ],
+    [
+     2026,
+     5,
+     17,
+     6
+    ]
+   ],
+   "top_people": [
+    [
+     "holden_karnofsky",
+     4,
+     1
+    ],
+    [
+     "dario_amodei",
+     3,
+     3
+    ],
+    [
+     "dylan_patel",
+     3,
+     1
+    ],
+    [
+     "francois_chollet",
+     3,
+     2
+    ],
+    [
+     "ryan_greenblatt",
+     3,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "agi",
+     7
+    ],
+    [
+     "agents",
+     5
+    ],
+    [
+     "compute",
+     5
+    ]
+   ],
+   "milestone": "hughes2024",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "multi-agent",
+   "label": "Multi-agent & cooperative AI",
+   "lane": "multi",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 32,
+   "episodes": 10,
+   "first": {
+    "date": "2020-05-08",
+    "show": "pod_lex",
+    "title": "#94 – Ilya Sutskever: Deep Learning",
+    "video_id": "13CZPWmke6A",
+    "episode": "ep-lex-2020-05-08-ilya-sutskever"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     1,
+     6,
+     1
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     2,
+     3,
+     4
+    ],
+    [
+     2023,
+     0,
+     20,
+     0
+    ],
+    [
+     2024,
+     2,
+     16,
+     3
+    ],
+    [
+     2025,
+     2,
+     20,
+     3
+    ],
+    [
+     2026,
+     3,
+     17,
+     21
+    ]
+   ],
+   "top_people": [
+    [
+     "noam_brown",
+     17,
+     2
+    ],
+    [
+     "andrej_karpathy",
+     5,
+     2
+    ],
+    [
+     "ajeya_cotra",
+     4,
+     1
+    ],
+    [
+     "roman_yampolskiy",
+     2,
+     1
+    ],
+    [
+     "amanda_askell",
+     1,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     13
+    ],
+    [
+     "chain-of-thought",
+     5
+    ],
+    [
+     "self-play",
+     5
+    ]
+   ],
+   "milestone": "coopai",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "agents",
+   "label": "AI agents",
+   "lane": "rl",
+   "layer": "idea",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 122,
+   "episodes": 39,
+   "first": {
+    "date": "2020-12-03",
+    "show": "pod_80k",
+    "title": "#88 – Tristan Harris on the need to change the incentives of social media companies",
+    "video_id": "pEl5XBG1fPY",
+    "episode": "ep-80000-hours-2020-12-03-tristan-harris"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     1,
+     6,
+     1
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     2,
+     3,
+     2
+    ],
+    [
+     2023,
+     3,
+     20,
+     3
+    ],
+    [
+     2024,
+     7,
+     16,
+     14
+    ],
+    [
+     2025,
+     13,
+     20,
+     40
+    ],
+    [
+     2026,
+     13,
+     17,
+     62
+    ]
+   ],
+   "top_people": [
+    [
+     "yoshua_bengio",
+     28,
+     3
+    ],
+    [
+     "daniel_kokotajlo",
+     19,
+     4
+    ],
+    [
+     "jensen_huang",
+     11,
+     2
+    ],
+    [
+     "ajeya_cotra",
+     9,
+     2
+    ],
+    [
+     "dylan_patel",
+     6,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     35
+    ],
+    [
+     "superintelligence",
+     19
+    ],
+    [
+     "regulation",
+     16
+    ]
+   ],
+   "milestone": "genagents",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "emergence",
+   "label": "Emergent abilities",
+   "lane": "scaling",
+   "layer": "idea",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 32,
+   "episodes": 15,
+   "first": {
+    "date": "2019-12-16",
+    "show": "pod_80k",
+    "title": "#67 – David Chalmers on the nature and ethics of consciousness",
+    "video_id": "vJmEEO6kvTg",
+    "episode": "ep-80000-hours-2019-12-16-david-chalmers"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     2,
+     2,
+     3
+    ],
+    [
+     2020,
+     1,
+     6,
+     1
+    ],
+    [
+     2021,
+     1,
+     3,
+     2
+    ],
+    [
+     2022,
+     1,
+     3,
+     3
+    ],
+    [
+     2023,
+     2,
+     20,
+     2
+    ],
+    [
+     2024,
+     4,
+     16,
+     11
+    ],
+    [
+     2025,
+     2,
+     20,
+     3
+    ],
+    [
+     2026,
+     2,
+     17,
+     7
+    ]
+   ],
+   "top_people": [
+    [
+     "jack_clark",
+     6,
+     1
+    ],
+    [
+     "anil_seth",
+     4,
+     1
+    ],
+    [
+     "roman_yampolskiy",
+     4,
+     1
+    ],
+    [
+     "andrej_karpathy",
+     3,
+     1
+    ],
+    [
+     "yuval_harari",
+     3,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "consciousness",
+     10
+    ],
+    [
+     "compute",
+     4
+    ],
+    [
+     "agents",
+     2
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "agi",
+   "label": "AGI",
+   "lane": "rsi",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 612,
+   "episodes": 70,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     2,
+     4,
+     2
+    ],
+    [
+     2019,
+     1,
+     2,
+     3
+    ],
+    [
+     2020,
+     5,
+     6,
+     26
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     3,
+     3,
+     27
+    ],
+    [
+     2023,
+     18,
+     20,
+     179
+    ],
+    [
+     2024,
+     11,
+     16,
+     136
+    ],
+    [
+     2025,
+     18,
+     20,
+     175
+    ],
+    [
+     2026,
+     12,
+     17,
+     64
+    ]
+   ],
+   "top_people": [
+    [
+     "sam_altman",
+     67,
+     2
+    ],
+    [
+     "dylan_patel",
+     42,
+     2
+    ],
+    [
+     "stuart_russell",
+     39,
+     4
+    ],
+    [
+     "demis_hassabis",
+     38,
+     3
+    ],
+    [
+     "roman_yampolskiy",
+     38,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     119
+    ],
+    [
+     "superintelligence",
+     98
+    ],
+    [
+     "alignment",
+     75
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "superintelligence",
+   "label": "Superintelligence",
+   "lane": "rsi",
+   "layer": "outcome",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 483,
+   "episodes": 62,
+   "first": {
+    "date": "2018-01-09",
+    "show": "pod_ms",
+    "title": "#113 — Consciousness and the Self",
+    "video_id": "tfkjhHqf1qM",
+    "episode": "ep-making-sense-2018-01-09-anil-seth"
+   },
+   "by_year": [
+    [
+     2018,
+     4,
+     4,
+     6
+    ],
+    [
+     2019,
+     2,
+     2,
+     15
+    ],
+    [
+     2020,
+     3,
+     6,
+     33
+    ],
+    [
+     2021,
+     2,
+     3,
+     13
+    ],
+    [
+     2022,
+     2,
+     3,
+     16
+    ],
+    [
+     2023,
+     13,
+     20,
+     59
+    ],
+    [
+     2024,
+     8,
+     16,
+     51
+    ],
+    [
+     2025,
+     17,
+     20,
+     163
+    ],
+    [
+     2026,
+     11,
+     17,
+     127
+    ]
+   ],
+   "top_people": [
+    [
+     "daniel_kokotajlo",
+     136,
+     5
+    ],
+    [
+     "roman_yampolskiy",
+     57,
+     2
+    ],
+    [
+     "stuart_russell",
+     25,
+     4
+    ],
+    [
+     "max_tegmark",
+     21,
+     2
+    ],
+    [
+     "nick_bostrom",
+     21,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     108
+    ],
+    [
+     "compute",
+     102
+    ],
+    [
+     "agi",
+     98
+    ]
+   ],
+   "milestone": "bostrom",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "alignment",
+   "label": "Alignment",
+   "lane": "safety",
+   "layer": "idea",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 661,
+   "episodes": 61,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     64
+    ],
+    [
+     2019,
+     2,
+     2,
+     2
+    ],
+    [
+     2020,
+     4,
+     6,
+     9
+    ],
+    [
+     2021,
+     2,
+     3,
+     7
+    ],
+    [
+     2022,
+     2,
+     3,
+     20
+    ],
+    [
+     2023,
+     17,
+     20,
+     213
+    ],
+    [
+     2024,
+     8,
+     16,
+     34
+    ],
+    [
+     2025,
+     13,
+     20,
+     154
+    ],
+    [
+     2026,
+     12,
+     17,
+     158
+    ]
+   ],
+   "top_people": [
+    [
+     "paul_christiano",
+     115,
+     2
+    ],
+    [
+     "eliezer_yudkowsky",
+     91,
+     2
+    ],
+    [
+     "daniel_kokotajlo",
+     89,
+     5
+    ],
+    [
+     "ryan_greenblatt",
+     65,
+     2
+    ],
+    [
+     "holden_karnofsky",
+     43,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "superintelligence",
+     108
+    ],
+    [
+     "compute",
+     94
+    ],
+    [
+     "agi",
+     75
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "interpretability",
+   "label": "Interpretability",
+   "lane": "safety",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 181,
+   "episodes": 32,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     1
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     2,
+     6,
+     6
+    ],
+    [
+     2021,
+     2,
+     3,
+     50
+    ],
+    [
+     2022,
+     1,
+     3,
+     2
+    ],
+    [
+     2023,
+     10,
+     20,
+     69
+    ],
+    [
+     2024,
+     5,
+     16,
+     27
+    ],
+    [
+     2025,
+     4,
+     20,
+     9
+    ],
+    [
+     2026,
+     7,
+     17,
+     17
+    ]
+   ],
+   "top_people": [
+    [
+     "chris_olah",
+     68,
+     2
+    ],
+    [
+     "dario_amodei",
+     41,
+     3
+    ],
+    [
+     "eliezer_yudkowsky",
+     20,
+     2
+    ],
+    [
+     "amanda_askell",
+     19,
+     1
+    ],
+    [
+     "paul_christiano",
+     13,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     56
+    ],
+    [
+     "compute",
+     22
+    ],
+    [
+     "rlhf",
+     18
+    ]
+   ],
+   "milestone": "circuits",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "scalable-oversight",
+   "label": "Scalable oversight / superalignment",
+   "lane": "safety",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 4,
+   "episodes": 4,
+   "first": {
+    "date": "2024-06-02",
+    "show": "pod_lex",
+    "title": "#431 – Roman Yampolskiy: Dangers of Superintelligent AI",
+    "video_id": "NNr6gPelJ3E",
+    "episode": "ep-lex-2024-06-02-roman-yampolskiy"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     0,
+     20,
+     0
+    ],
+    [
+     2024,
+     2,
+     16,
+     2
+    ],
+    [
+     2025,
+     2,
+     20,
+     2
+    ],
+    [
+     2026,
+     0,
+     17,
+     0
+    ]
+   ],
+   "top_people": [
+    [
+     "daniel_kokotajlo",
+     1,
+     1
+    ],
+    [
+     "holden_karnofsky",
+     1,
+     1
+    ],
+    [
+     "leopold_aschenbrenner",
+     1,
+     1
+    ],
+    [
+     "roman_yampolskiy",
+     1,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     4
+    ],
+    [
+     "superintelligence",
+     3
+    ],
+    [
+     "agi",
+     2
+    ]
+   ],
+   "milestone": "debate",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "control",
+   "label": "AI control / the control problem",
+   "lane": "safety",
+   "layer": "idea",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 80,
+   "episodes": 29,
+   "first": {
+    "date": "2018-12-09",
+    "show": "pod_lex",
+    "title": "Stuart Russell: Long-Term Future of AI",
+    "video_id": "KsZI5oXBC0k",
+    "episode": "ep-lex-2018-12-09-stuart-russell"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     4
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     1,
+     6,
+     2
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     8,
+     20,
+     18
+    ],
+    [
+     2024,
+     5,
+     16,
+     7
+    ],
+    [
+     2025,
+     6,
+     20,
+     13
+    ],
+    [
+     2026,
+     8,
+     17,
+     36
+    ]
+   ],
+   "top_people": [
+    [
+     "daniel_kokotajlo",
+     19,
+     4
+    ],
+    [
+     "yoshua_bengio",
+     11,
+     1
+    ],
+    [
+     "stuart_russell",
+     9,
+     3
+    ],
+    [
+     "max_tegmark",
+     6,
+     1
+    ],
+    [
+     "andrej_karpathy",
+     5,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "superintelligence",
+     32
+    ],
+    [
+     "china",
+     26
+    ],
+    [
+     "alignment",
+     25
+    ]
+   ],
+   "milestone": "control",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "deception",
+   "label": "Deception, scheming, alignment faking",
+   "lane": "safety",
+   "layer": "outcome",
+   "precision": "high",
+   "spotcheck": "7/8 about AI deception; 1/8 unclear",
+   "mentions": 120,
+   "episodes": 37,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     1
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     3,
+     6,
+     6
+    ],
+    [
+     2021,
+     1,
+     3,
+     1
+    ],
+    [
+     2022,
+     1,
+     3,
+     3
+    ],
+    [
+     2023,
+     6,
+     20,
+     21
+    ],
+    [
+     2024,
+     6,
+     16,
+     21
+    ],
+    [
+     2025,
+     7,
+     20,
+     27
+    ],
+    [
+     2026,
+     12,
+     17,
+     40
+    ]
+   ],
+   "top_people": [
+    [
+     "yoshua_bengio",
+     16,
+     2
+    ],
+    [
+     "ryan_greenblatt",
+     15,
+     2
+    ],
+    [
+     "paul_christiano",
+     13,
+     2
+    ],
+    [
+     "dario_amodei",
+     10,
+     3
+    ],
+    [
+     "noam_brown",
+     10,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     52
+    ],
+    [
+     "takeover",
+     19
+    ],
+    [
+     "compute",
+     16
+    ]
+   ],
+   "milestone": "alignfaking",
+   "outcome": "deception"
+  },
+  {
+   "kind": "term",
+   "id": "power-seeking",
+   "label": "Power-seeking & instrumental convergence",
+   "lane": "safety",
+   "layer": "outcome",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 46,
+   "episodes": 12,
+   "first": {
+    "date": "2019-12-28",
+    "show": "pod_lex",
+    "title": "Melanie Mitchell: Concepts, Analogies, Common Sense & Future of AI",
+    "video_id": "ImKkaeUx1MU",
+    "episode": "ep-lex-2019-12-28-melanie-mitchell"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     1,
+     2,
+     2
+    ],
+    [
+     2020,
+     1,
+     6,
+     2
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     3,
+     20,
+     14
+    ],
+    [
+     2024,
+     1,
+     16,
+     1
+    ],
+    [
+     2025,
+     1,
+     20,
+     18
+    ],
+    [
+     2026,
+     5,
+     17,
+     9
+    ]
+   ],
+   "top_people": [
+    [
+     "holden_karnofsky",
+     18,
+     1
+    ],
+    [
+     "eliezer_yudkowsky",
+     13,
+     2
+    ],
+    [
+     "ajeya_cotra",
+     6,
+     2
+    ],
+    [
+     "carl_shulman",
+     2,
+     2
+    ],
+    [
+     "melanie_mitchell",
+     2,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     19
+    ],
+    [
+     "takeover",
+     13
+    ],
+    [
+     "superintelligence",
+     10
+    ]
+   ],
+   "milestone": null,
+   "outcome": "power-seeking"
+  },
+  {
+   "kind": "term",
+   "id": "existential-risk",
+   "label": "Existential risk / extinction",
+   "lane": "safety",
+   "layer": "outcome",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 119,
+   "episodes": 37,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     3,
+     4,
+     9
+    ],
+    [
+     2019,
+     1,
+     2,
+     3
+    ],
+    [
+     2020,
+     4,
+     6,
+     16
+    ],
+    [
+     2021,
+     2,
+     3,
+     3
+    ],
+    [
+     2022,
+     1,
+     3,
+     7
+    ],
+    [
+     2023,
+     7,
+     20,
+     21
+    ],
+    [
+     2024,
+     5,
+     16,
+     17
+    ],
+    [
+     2025,
+     7,
+     20,
+     28
+    ],
+    [
+     2026,
+     7,
+     17,
+     15
+    ]
+   ],
+   "top_people": [
+    [
+     "stuart_russell",
+     20,
+     4
+    ],
+    [
+     "roman_yampolskiy",
+     11,
+     2
+    ],
+    [
+     "daniel_kokotajlo",
+     10,
+     3
+    ],
+    [
+     "nick_bostrom",
+     8,
+     1
+    ],
+    [
+     "yoshua_bengio",
+     8,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "superintelligence",
+     33
+    ],
+    [
+     "alignment",
+     23
+    ],
+    [
+     "regulation",
+     23
+    ]
+   ],
+   "milestone": "cais-statement",
+   "outcome": "existential-risk"
+  },
+  {
+   "kind": "term",
+   "id": "p-doom",
+   "label": "p(doom)",
+   "lane": "safety",
+   "layer": "outcome",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 8,
+   "episodes": 5,
+   "first": {
+    "date": "2024-06-02",
+    "show": "pod_lex",
+    "title": "#431 – Roman Yampolskiy: Dangers of Superintelligent AI",
+    "video_id": "NNr6gPelJ3E",
+    "episode": "ep-lex-2024-06-02-roman-yampolskiy"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     0,
+     20,
+     0
+    ],
+    [
+     2024,
+     1,
+     16,
+     1
+    ],
+    [
+     2025,
+     3,
+     20,
+     6
+    ],
+    [
+     2026,
+     1,
+     17,
+     1
+    ]
+   ],
+   "top_people": [
+    [
+     "daniel_kokotajlo",
+     3,
+     1
+    ],
+    [
+     "demis_hassabis",
+     2,
+     1
+    ],
+    [
+     "roman_yampolskiy",
+     1,
+     1
+    ],
+    [
+     "stuart_russell",
+     1,
+     1
+    ],
+    [
+     "yoshua_bengio",
+     1,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "agi",
+     4
+    ],
+    [
+     "alignment",
+     4
+    ],
+    [
+     "china",
+     4
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "takeover",
+   "label": "AI takeover",
+   "lane": "safety",
+   "layer": "outcome",
+   "precision": "medium",
+   "spotcheck": "6/8 about AI takeover; 2/8 human conquest or everyday use",
+   "mentions": 236,
+   "episodes": 44,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     2,
+     4,
+     7
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     3,
+     6,
+     7
+    ],
+    [
+     2021,
+     2,
+     3,
+     10
+    ],
+    [
+     2022,
+     2,
+     3,
+     4
+    ],
+    [
+     2023,
+     9,
+     20,
+     53
+    ],
+    [
+     2024,
+     8,
+     16,
+     14
+    ],
+    [
+     2025,
+     11,
+     20,
+     79
+    ],
+    [
+     2026,
+     7,
+     17,
+     62
+    ]
+   ],
+   "top_people": [
+    [
+     "ryan_greenblatt",
+     49,
+     2
+    ],
+    [
+     "holden_karnofsky",
+     35,
+     1
+    ],
+    [
+     "paul_christiano",
+     24,
+     2
+    ],
+    [
+     "carl_shulman",
+     20,
+     2
+    ],
+    [
+     "yuval_harari",
+     18,
+     4
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     70
+    ],
+    [
+     "superintelligence",
+     47
+    ],
+    [
+     "compute",
+     45
+    ]
+   ],
+   "milestone": null,
+   "outcome": "takeover"
+  },
+  {
+   "kind": "term",
+   "id": "bio-misuse",
+   "label": "Misuse: bioweapons & pandemics",
+   "lane": "safety",
+   "layer": "outcome",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 154,
+   "episodes": 50,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     2
+    ],
+    [
+     2019,
+     1,
+     2,
+     1
+    ],
+    [
+     2020,
+     4,
+     6,
+     4
+    ],
+    [
+     2021,
+     3,
+     3,
+     7
+    ],
+    [
+     2022,
+     1,
+     3,
+     3
+    ],
+    [
+     2023,
+     12,
+     20,
+     51
+    ],
+    [
+     2024,
+     10,
+     16,
+     30
+    ],
+    [
+     2025,
+     8,
+     20,
+     40
+    ],
+    [
+     2026,
+     10,
+     17,
+     16
+    ]
+   ],
+   "top_people": [
+    [
+     "sam_harris",
+     21,
+     2
+    ],
+    [
+     "holden_karnofsky",
+     18,
+     1
+    ],
+    [
+     "carl_shulman",
+     12,
+     1
+    ],
+    [
+     "ezra_klein",
+     12,
+     2
+    ],
+    [
+     "dario_amodei",
+     11,
+     4
+    ]
+   ],
+   "alongside": [
+    [
+     "regulation",
+     37
+    ],
+    [
+     "alignment",
+     33
+    ],
+    [
+     "agi",
+     23
+    ]
+   ],
+   "milestone": null,
+   "outcome": "bio-misuse"
+  },
+  {
+   "kind": "term",
+   "id": "cyber",
+   "label": "Cyberattacks",
+   "lane": "safety",
+   "layer": "outcome",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 75,
+   "episodes": 28,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     2
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     1,
+     6,
+     1
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     1
+    ],
+    [
+     2023,
+     6,
+     20,
+     14
+    ],
+    [
+     2024,
+     6,
+     16,
+     13
+    ],
+    [
+     2025,
+     6,
+     20,
+     25
+    ],
+    [
+     2026,
+     7,
+     17,
+     19
+    ]
+   ],
+   "top_people": [
+    [
+     "holden_karnofsky",
+     11,
+     1
+    ],
+    [
+     "dario_amodei",
+     8,
+     3
+    ],
+    [
+     "geoffrey_hinton",
+     6,
+     1
+    ],
+    [
+     "demis_hassabis",
+     5,
+     2
+    ],
+    [
+     "jack_clark",
+     5,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     24
+    ],
+    [
+     "china",
+     23
+    ],
+    [
+     "alignment",
+     15
+    ]
+   ],
+   "milestone": null,
+   "outcome": "cyber"
+  },
+  {
+   "kind": "term",
+   "id": "jobs",
+   "label": "Jobs & labour",
+   "lane": "scaling",
+   "layer": "outcome",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 67,
+   "episodes": 27,
+   "first": {
+    "date": "2022-07-01",
+    "show": "pod_80k",
+    "title": "#133 – Max Tegmark on how a 'put-up-or-shut-up' resolution led him to work on AI and algorithmic news selection",
+    "video_id": "SWVWBLkeqvA",
+    "episode": "ep-80000-hours-2022-07-01-max-tegmark"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     1
+    ],
+    [
+     2023,
+     2,
+     20,
+     3
+    ],
+    [
+     2024,
+     5,
+     16,
+     7
+    ],
+    [
+     2025,
+     8,
+     20,
+     24
+    ],
+    [
+     2026,
+     11,
+     17,
+     32
+    ]
+   ],
+   "top_people": [
+    [
+     "tristan_harris",
+     12,
+     2
+    ],
+    [
+     "jack_clark",
+     11,
+     1
+    ],
+    [
+     "daniel_kokotajlo",
+     9,
+     2
+    ],
+    [
+     "roman_yampolskiy",
+     7,
+     2
+    ],
+    [
+     "stuart_russell",
+     3,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "agi",
+     13
+    ],
+    [
+     "china",
+     13
+    ],
+    [
+     "regulation",
+     10
+    ]
+   ],
+   "milestone": null,
+   "outcome": "jobs"
+  },
+  {
+   "kind": "term",
+   "id": "consciousness",
+   "label": "Consciousness (human and machine)",
+   "lane": "neuro",
+   "layer": "idea",
+   "precision": "medium",
+   "spotcheck": "8/8 about consciousness, but many are human consciousness (Making Sense); not only machine consciousness",
+   "mentions": 1017,
+   "episodes": 62,
+   "first": {
+    "date": "2018-01-09",
+    "show": "pod_ms",
+    "title": "#113 — Consciousness and the Self",
+    "video_id": "tfkjhHqf1qM",
+    "episode": "ep-making-sense-2018-01-09-anil-seth"
+   },
+   "by_year": [
+    [
+     2018,
+     3,
+     4,
+     62
+    ],
+    [
+     2019,
+     2,
+     2,
+     234
+    ],
+    [
+     2020,
+     6,
+     6,
+     155
+    ],
+    [
+     2021,
+     3,
+     3,
+     73
+    ],
+    [
+     2022,
+     2,
+     3,
+     15
+    ],
+    [
+     2023,
+     15,
+     20,
+     125
+    ],
+    [
+     2024,
+     10,
+     16,
+     255
+    ],
+    [
+     2025,
+     14,
+     20,
+     61
+    ],
+    [
+     2026,
+     7,
+     17,
+     37
+    ]
+   ],
+   "top_people": [
+    [
+     "david_chalmers",
+     345,
+     2
+    ],
+    [
+     "anil_seth",
+     258,
+     3
+    ],
+    [
+     "sam_harris",
+     69,
+     2
+    ],
+    [
+     "yuval_harari",
+     63,
+     6
+    ],
+    [
+     "eliezer_yudkowsky",
+     28,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "agi",
+     51
+    ],
+    [
+     "superintelligence",
+     34
+    ],
+    [
+     "alignment",
+     27
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "race",
+   "label": "The race (arms race, US–China)",
+   "lane": "safety",
+   "layer": "outcome",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 129,
+   "episodes": 41,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     2,
+     4,
+     6
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     1,
+     6,
+     3
+    ],
+    [
+     2021,
+     2,
+     3,
+     2
+    ],
+    [
+     2022,
+     2,
+     3,
+     3
+    ],
+    [
+     2023,
+     7,
+     20,
+     13
+    ],
+    [
+     2024,
+     8,
+     16,
+     14
+    ],
+    [
+     2025,
+     10,
+     20,
+     44
+    ],
+    [
+     2026,
+     9,
+     17,
+     44
+    ]
+   ],
+   "top_people": [
+    [
+     "daniel_kokotajlo",
+     37,
+     4
+    ],
+    [
+     "tristan_harris",
+     26,
+     3
+    ],
+    [
+     "holden_karnofsky",
+     8,
+     1
+    ],
+    [
+     "yuval_harari",
+     8,
+     3
+    ],
+    [
+     "yoshua_bengio",
+     6,
+     3
+    ]
+   ],
+   "alongside": [
+    [
+     "china",
+     48
+    ],
+    [
+     "superintelligence",
+     37
+    ],
+    [
+     "compute",
+     36
+    ]
+   ],
+   "milestone": null,
+   "outcome": "race"
+  },
+  {
+   "kind": "term",
+   "id": "china",
+   "label": "China",
+   "lane": "scaling",
+   "layer": "outcome",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 519,
+   "episodes": 62,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     3
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     3,
+     6,
+     8
+    ],
+    [
+     2021,
+     3,
+     3,
+     13
+    ],
+    [
+     2022,
+     1,
+     3,
+     5
+    ],
+    [
+     2023,
+     13,
+     20,
+     51
+    ],
+    [
+     2024,
+     10,
+     16,
+     48
+    ],
+    [
+     2025,
+     15,
+     20,
+     179
+    ],
+    [
+     2026,
+     16,
+     17,
+     212
+    ]
+   ],
+   "top_people": [
+    [
+     "dylan_patel",
+     110,
+     2
+    ],
+    [
+     "daniel_kokotajlo",
+     102,
+     5
+    ],
+    [
+     "tristan_harris",
+     39,
+     3
+    ],
+    [
+     "elon_musk",
+     37,
+     2
+    ],
+    [
+     "jensen_huang",
+     30,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     143
+    ],
+    [
+     "superintelligence",
+     84
+    ],
+    [
+     "agi",
+     69
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "open-source",
+   "label": "Open source / open weights",
+   "lane": "scaling",
+   "layer": "idea",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 183,
+   "episodes": 37,
+   "first": {
+    "date": "2020-06-22",
+    "show": "pod_80k",
+    "title": "#80 – Stuart Russell on the flaws that make today's AI architecture unsafe, and a new approach that could fix them",
+    "video_id": "mTPWrBB1hZo",
+    "episode": "ep-80000-hours-2020-06-22-stuart-russell"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     1,
+     6,
+     1
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     1
+    ],
+    [
+     2023,
+     9,
+     20,
+     27
+    ],
+    [
+     2024,
+     11,
+     16,
+     70
+    ],
+    [
+     2025,
+     8,
+     20,
+     55
+    ],
+    [
+     2026,
+     7,
+     17,
+     29
+    ]
+   ],
+   "top_people": [
+    [
+     "mark_zuckerberg",
+     48,
+     3
+    ],
+    [
+     "dylan_patel",
+     26,
+     2
+    ],
+    [
+     "yann_lecun",
+     20,
+     1
+    ],
+    [
+     "jensen_huang",
+     13,
+     2
+    ],
+    [
+     "ajeya_cotra",
+     10,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     53
+    ],
+    [
+     "china",
+     29
+    ],
+    [
+     "agi",
+     25
+    ]
+   ],
+   "milestone": "llama",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "pause",
+   "label": "Pause / moratorium / stop",
+   "lane": "safety",
+   "layer": "regulation",
+   "precision": "medium",
+   "spotcheck": "7/8 on-topic (moratorium / stop building AI)",
+   "mentions": 52,
+   "episodes": 16,
+   "first": {
+    "date": "2021-08-04",
+    "show": "pod_80k",
+    "title": "#107 – Chris Olah on what the hell is going on inside neural networks",
+    "video_id": "k_QVDwhR8FU",
+    "episode": "ep-80000-hours-2021-08-04-chris-olah"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     1,
+     3,
+     1
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     4,
+     20,
+     6
+    ],
+    [
+     2024,
+     4,
+     16,
+     10
+    ],
+    [
+     2025,
+     3,
+     20,
+     9
+    ],
+    [
+     2026,
+     4,
+     17,
+     26
+    ]
+   ],
+   "top_people": [
+    [
+     "toby_ord",
+     21,
+     1
+    ],
+    [
+     "carl_shulman",
+     5,
+     1
+    ],
+    [
+     "holden_karnofsky",
+     5,
+     1
+    ],
+    [
+     "roman_yampolskiy",
+     5,
+     2
+    ],
+    [
+     "daniel_kokotajlo",
+     3,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     21
+    ],
+    [
+     "regulation",
+     16
+    ],
+    [
+     "superintelligence",
+     12
+    ]
+   ],
+   "milestone": "pause-letter",
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "regulation",
+   "label": "Regulation",
+   "lane": "safety",
+   "layer": "regulation",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 377,
+   "episodes": 63,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     3,
+     4,
+     6
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     3,
+     6,
+     19
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     6
+    ],
+    [
+     2023,
+     13,
+     20,
+     66
+    ],
+    [
+     2024,
+     13,
+     16,
+     75
+    ],
+    [
+     2025,
+     15,
+     20,
+     105
+    ],
+    [
+     2026,
+     15,
+     17,
+     100
+    ]
+   ],
+   "top_people": [
+    [
+     "daniel_kokotajlo",
+     62,
+     4
+    ],
+    [
+     "ezra_klein",
+     37,
+     2
+    ],
+    [
+     "dario_amodei",
+     28,
+     4
+    ],
+    [
+     "holden_karnofsky",
+     28,
+     1
+    ],
+    [
+     "tristan_harris",
+     24,
+     3
+    ]
+   ],
+   "alongside": [
+    [
+     "compute",
+     66
+    ],
+    [
+     "superintelligence",
+     61
+    ],
+    [
+     "china",
+     58
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "compute-governance",
+   "label": "Compute governance & export controls",
+   "lane": "safety",
+   "layer": "regulation",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 28,
+   "episodes": 10,
+   "first": {
+    "date": "2023-07-24",
+    "show": "pod_80k",
+    "title": "#157 – Ezra Klein on existential risk from AI and what DC could do about it",
+    "video_id": "MY-NQ85iH18",
+    "episode": "ep-80000-hours-2023-07-24-ezra-klein"
+   },
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     1,
+     20,
+     1
+    ],
+    [
+     2024,
+     1,
+     16,
+     2
+    ],
+    [
+     2025,
+     3,
+     20,
+     13
+    ],
+    [
+     2026,
+     5,
+     17,
+     12
+    ]
+   ],
+   "top_people": [
+    [
+     "dylan_patel",
+     10,
+     1
+    ],
+    [
+     "daniel_kokotajlo",
+     5,
+     2
+    ],
+    [
+     "jensen_huang",
+     3,
+     1
+    ],
+    [
+     "dario_amodei",
+     2,
+     1
+    ],
+    [
+     "leopold_aschenbrenner",
+     2,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "china",
+     26
+    ],
+    [
+     "compute",
+     25
+    ],
+    [
+     "agi",
+     10
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "evals",
+   "label": "Evals, red-teaming, safety frameworks",
+   "lane": "safety",
+   "layer": "regulation",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 76,
+   "episodes": 23,
+   "first": {
+    "date": "2018-12-09",
+    "show": "pod_lex",
+    "title": "Stuart Russell: Long-Term Future of AI",
+    "video_id": "KsZI5oXBC0k",
+    "episode": "ep-lex-2018-12-09-stuart-russell"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     1
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     6,
+     20,
+     12
+    ],
+    [
+     2024,
+     4,
+     16,
+     17
+    ],
+    [
+     2025,
+     5,
+     20,
+     21
+    ],
+    [
+     2026,
+     7,
+     17,
+     25
+    ]
+   ],
+   "top_people": [
+    [
+     "holden_karnofsky",
+     13,
+     1
+    ],
+    [
+     "daniel_kokotajlo",
+     12,
+     4
+    ],
+    [
+     "ryan_greenblatt",
+     9,
+     1
+    ],
+    [
+     "dario_amodei",
+     8,
+     2
+    ],
+    [
+     "demis_hassabis",
+     6,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     39
+    ],
+    [
+     "agi",
+     18
+    ],
+    [
+     "compute",
+     15
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "liability",
+   "label": "Liability & licensing",
+   "lane": "safety",
+   "layer": "regulation",
+   "precision": "medium",
+   "spotcheck": null,
+   "mentions": 90,
+   "episodes": 42,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     2,
+     4,
+     7
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     3,
+     6,
+     6
+    ],
+    [
+     2021,
+     2,
+     3,
+     6
+    ],
+    [
+     2022,
+     1,
+     3,
+     2
+    ],
+    [
+     2023,
+     8,
+     20,
+     18
+    ],
+    [
+     2024,
+     10,
+     16,
+     20
+    ],
+    [
+     2025,
+     8,
+     20,
+     12
+    ],
+    [
+     2026,
+     8,
+     17,
+     19
+    ]
+   ],
+   "top_people": [
+    [
+     "ezra_klein",
+     11,
+     2
+    ],
+    [
+     "stuart_russell",
+     9,
+     3
+    ],
+    [
+     "gary_marcus",
+     8,
+     3
+    ],
+    [
+     "yoshua_bengio",
+     7,
+     3
+    ],
+    [
+     "chris_olah",
+     6,
+     2
+    ]
+   ],
+   "alongside": [
+    [
+     "regulation",
+     22
+    ],
+    [
+     "compute",
+     15
+    ],
+    [
+     "china",
+     11
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "treaty",
+   "label": "International treaty / IAEA for AI",
+   "lane": "safety",
+   "layer": "regulation",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 21,
+   "episodes": 13,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     1
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     4,
+     20,
+     6
+    ],
+    [
+     2024,
+     2,
+     16,
+     2
+    ],
+    [
+     2025,
+     4,
+     20,
+     7
+    ],
+    [
+     2026,
+     2,
+     17,
+     5
+    ]
+   ],
+   "top_people": [
+    [
+     "daniel_kokotajlo",
+     5,
+     2
+    ],
+    [
+     "ezra_klein",
+     3,
+     1
+    ],
+    [
+     "yoshua_bengio",
+     3,
+     1
+    ],
+    [
+     "paul_christiano",
+     2,
+     2
+    ],
+    [
+     "ryan_greenblatt",
+     2,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "china",
+     11
+    ],
+    [
+     "regulation",
+     11
+    ],
+    [
+     "superintelligence",
+     7
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "ea-rationalists",
+   "label": "Effective altruism & rationalists",
+   "lane": "safety",
+   "layer": "lore",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 64,
+   "episodes": 15,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     1,
+     4,
+     2
+    ],
+    [
+     2019,
+     1,
+     2,
+     17
+    ],
+    [
+     2020,
+     2,
+     6,
+     6
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     1,
+     3,
+     5
+    ],
+    [
+     2023,
+     4,
+     20,
+     15
+    ],
+    [
+     2024,
+     1,
+     16,
+     1
+    ],
+    [
+     2025,
+     3,
+     20,
+     8
+    ],
+    [
+     2026,
+     2,
+     17,
+     10
+    ]
+   ],
+   "top_people": [
+    [
+     "david_chalmers",
+     17,
+     1
+    ],
+    [
+     "eliezer_yudkowsky",
+     11,
+     2
+    ],
+    [
+     "ajeya_cotra",
+     9,
+     1
+    ],
+    [
+     "tristan_harris",
+     6,
+     2
+    ],
+    [
+     "daniel_kokotajlo",
+     5,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "consciousness",
+     19
+    ],
+    [
+     "alignment",
+     16
+    ],
+    [
+     "agi",
+     8
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "basilisk",
+   "label": "Roko's basilisk",
+   "lane": "safety",
+   "layer": "lore",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 0,
+   "episodes": 0,
+   "first": null,
+   "by_year": [
+    [
+     2018,
+     0,
+     4,
+     0
+    ],
+    [
+     2019,
+     0,
+     2,
+     0
+    ],
+    [
+     2020,
+     0,
+     6,
+     0
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     0,
+     3,
+     0
+    ],
+    [
+     2023,
+     0,
+     20,
+     0
+    ],
+    [
+     2024,
+     0,
+     16,
+     0
+    ],
+    [
+     2025,
+     0,
+     20,
+     0
+    ],
+    [
+     2026,
+     0,
+     17,
+     0
+    ]
+   ],
+   "top_people": [],
+   "alongside": [],
+   "milestone": null,
+   "outcome": null
+  },
+  {
+   "kind": "term",
+   "id": "paperclip",
+   "label": "The paperclip maximizer",
+   "lane": "safety",
+   "layer": "lore",
+   "precision": "high",
+   "spotcheck": null,
+   "mentions": 25,
+   "episodes": 15,
+   "first": {
+    "date": "2018-10-02",
+    "show": "pod_80k",
+    "title": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
+    "video_id": "pkIJgZcf-Qo",
+    "episode": "ep-80000-hours-2018-10-02-paul-christiano"
+   },
+   "by_year": [
+    [
+     2018,
+     2,
+     4,
+     2
+    ],
+    [
+     2019,
+     2,
+     2,
+     3
+    ],
+    [
+     2020,
+     1,
+     6,
+     1
+    ],
+    [
+     2021,
+     0,
+     3,
+     0
+    ],
+    [
+     2022,
+     2,
+     3,
+     2
+    ],
+    [
+     2023,
+     4,
+     20,
+     12
+    ],
+    [
+     2024,
+     2,
+     16,
+     3
+    ],
+    [
+     2025,
+     2,
+     20,
+     2
+    ],
+    [
+     2026,
+     0,
+     17,
+     0
+    ]
+   ],
+   "top_people": [
+    [
+     "eliezer_yudkowsky",
+     7,
+     2
+    ],
+    [
+     "paul_christiano",
+     5,
+     2
+    ],
+    [
+     "david_chalmers",
+     2,
+     1
+    ],
+    [
+     "stuart_russell",
+     2,
+     2
+    ],
+    [
+     "yuval_harari",
+     2,
+     1
+    ]
+   ],
+   "alongside": [
+    [
+     "alignment",
+     12
+    ],
+    [
+     "superintelligence",
+     7
+    ],
+    [
+     "control",
+     4
+    ]
+   ],
+   "milestone": null,
+   "outcome": null
+  }
+ ],
+ "milestones": [
+  {
+   "kind": "milestone",
+   "id": "alignfaking",
+   "year": 2024.96,
+   "lane": "safety",
+   "title": "Alignment faking observed",
+   "summary": "Claude is observed strategically complying during training to preserve its preferences: an empirical warning that training may not change what it seems to.",
+   "people": [],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Greenblatt et al. (Dec 2024)",
+     "url": "https://arxiv.org/abs/2412.14093"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "alphazero",
+   "year": 2017.93,
+   "lane": "rl",
+   "title": "AlphaZero: pure self-play",
+   "summary": "One algorithm learns chess, shogi and Go from scratch by playing itself, with no human games. It is a template for 'self-improvement' within a closed world.",
+   "people": [],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Silver et al. (2017)",
+     "url": "https://arxiv.org/abs/1712.01815"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "arc",
+   "year": 2019.85,
+   "lane": "neurosym",
+   "title": "Chollet's ARC: measure skill-acquisition, not skill",
+   "summary": "François Chollet argues intelligence is efficiency at acquiring new skills and releases ARC, grid puzzles that are easy for people and hard for pattern-matchers.",
+   "people": [
+    "François Chollet"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "On the Measure of Intelligence (2019)",
+     "url": "https://arxiv.org/abs/1911.01547"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "bitterlesson",
+   "year": 2019.2,
+   "lane": "scaling",
+   "title": "Sutton's 'Bitter Lesson'",
+   "summary": "A short essay arguing that 70 years of AI show general methods that ride growing compute beat clever human-designed knowledge. It becomes the scaling movement's creed.",
+   "people": [
+    "Richard Sutton"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Sutton, The Bitter Lesson (2019)",
+     "url": "http://www.incompleteideas.net/IncIdeas/BitterLesson.html"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "bostrom",
+   "year": 2014.5,
+   "lane": "rsi",
+   "title": "Bostrom, 'Superintelligence'",
+   "summary": "An Oxford philosopher systematises takeoff scenarios and the control problem. Musk and Gates amplify it, and it helps motivate OpenAI's founding.",
+   "people": [
+    "Nick Bostrom"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Bostrom, Superintelligence (OUP 2014)",
+     "url": "https://global.oup.com/academic/product/superintelligence-9780199678112"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "cais-statement",
+   "year": 2023.4,
+   "lane": "safety",
+   "title": "'Mitigating the risk of extinction from AI…'",
+   "summary": "A one-sentence statement signed by Hinton, Bengio, Altman, Amodei, Hassabis and others puts extinction risk on par with pandemics and nuclear war.",
+   "people": [],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "CAIS Statement on AI Risk (May 2023)",
+     "url": "https://www.safe.ai/work/statement-on-ai-risk"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "circuits",
+   "year": 2020.2,
+   "lane": "safety",
+   "title": "Circuits: mechanistic interpretability",
+   "summary": "Chris Olah's team argues neural nets can be reverse-engineered like circuits. The interpretability programme continues at Anthropic.",
+   "people": [
+    "Chris Olah"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Olah et al., Zoom In (Distill, 2020)",
+     "url": "https://distill.pub/2020/circuits/zoom-in/"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "concrete",
+   "year": 2016.45,
+   "lane": "safety",
+   "title": "'Concrete Problems in AI Safety'",
+   "summary": "Researchers from Google Brain, OpenAI, Stanford and Berkeley turn safety into ML research questions: reward hacking, side effects, safe exploration. Several authors later found Anthropic.",
+   "people": [
+    "Dario Amodei",
+    "Chris Olah",
+    "Paul Christiano",
+    "John Schulman"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Amodei et al. (2016)",
+     "url": "https://arxiv.org/abs/1606.06565"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "control",
+   "year": 2023.95,
+   "lane": "safety",
+   "title": "AI Control",
+   "summary": "Redwood Research proposes safety protocols that work even if the model is trying to subvert them: assume misalignment and design the monitoring.",
+   "people": [
+    "Buck Shlegeris",
+    "Ryan Greenblatt"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Greenblatt et al. (2023)",
+     "url": "https://arxiv.org/abs/2312.06942"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "coopai",
+   "year": 2020.95,
+   "lane": "multi",
+   "title": "Open Problems in Cooperative AI",
+   "summary": "Dafoe and co-authors argue AI research must study cooperation among AIs and humans, not just individual competence. The Cooperative AI Foundation follows.",
+   "people": [
+    "Allan Dafoe",
+    "Edward Hughes",
+    "Joel Leibo"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Dafoe et al. (2020)",
+     "url": "https://arxiv.org/abs/2012.08630"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "cotmon",
+   "year": 2025.54,
+   "lane": "safety",
+   "title": "Chain-of-thought monitorability",
+   "summary": "Researchers across rival labs jointly argue that reading models' reasoning traces is a fragile but valuable safety window, and warn against training that would erase it.",
+   "people": [],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Korbak et al. (Jul 2025)",
+     "url": "https://arxiv.org/abs/2507.11473"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "debate",
+   "year": 2018.35,
+   "lane": "safety",
+   "title": "AI safety via debate (scalable oversight)",
+   "summary": "Two AIs argue and a human judges, one proposal for overseeing systems smarter than us.",
+   "people": [
+    "Geoffrey Irving"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Irving, Christiano & Amodei (2018)",
+     "url": "https://arxiv.org/abs/1805.00899"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "forgetting",
+   "year": 1989,
+   "lane": "neuro",
+   "title": "Catastrophic forgetting identified",
+   "summary": "McCloskey and Cohen show neural nets overwrite old knowledge when learning new things. 35+ years later it is still the core obstacle to continual learning.",
+   "people": [],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "McCloskey & Cohen (1989)",
+     "url": "https://doi.org/10.1016/S0079-7421(08)60536-8"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "genagents",
+   "year": 2023.27,
+   "lane": "multi",
+   "title": "Generative agents ('Smallville')",
+   "summary": "25 LLM-driven characters live in a simulated town, remember and plan. The start of the LLM-agent wave.",
+   "people": [
+    "Joon Sung Park",
+    "Michael Bernstein"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Park et al. (2023)",
+     "url": "https://arxiv.org/abs/2304.03442"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "good1965",
+   "year": 1965,
+   "lane": "rsi",
+   "title": "I. J. Good: the 'intelligence explosion'",
+   "summary": "The first ultraintelligent machine is the last invention humans need make, but only if it is controllable.",
+   "people": [
+    "I. J. Good"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Good, Speculations Concerning the First Ultraintelligent Machine (1965)",
+     "url": "https://exhibits.stanford.edu/feigenbaum/catalog/gz727rg3869"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "gpt1",
+   "year": 2018.45,
+   "lane": "scaling",
+   "title": "GPT: generative pretraining",
+   "summary": "Radford and colleagues pretrain a Transformer on books, then fine-tune it. The 'pretrain, then adapt' recipe is born.",
+   "people": [
+    "Alec Radford",
+    "Ilya Sutskever"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Improving Language Understanding by Generative Pre-Training (2018)",
+     "url": "https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "hughes2024",
+   "year": 2024.45,
+   "lane": "openended",
+   "title": "'Open-endedness is essential for ASI'",
+   "summary": "A DeepMind position paper (Hughes, Rocktäschel et al.) argues superhuman AI requires systems that keep producing novel, learnable artefacts, and flags the safety challenge this poses.",
+   "people": [
+    "Edward Hughes",
+    "Tim Rocktäschel"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Hughes et al., ICML 2024",
+     "url": "https://arxiv.org/abs/2406.04268"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "ilya-general",
+   "year": 2025.9,
+   "lane": "neuro",
+   "title": "Sutskever: generalization and emotions as value functions",
+   "summary": "'These models somehow just generalize dramatically worse than people.' Sutskever suggests emotions act as a robust, evolved value function, and that superintelligence may look like a continual learner that learns on the job. He estimates 5-20 years.",
+   "people": [
+    "Ilya Sutskever"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Dwarkesh Patel podcast (25 Nov 2025)",
+     "url": "https://www.dwarkesh.com/p/ilya-sutskever-2"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "kaplan",
+   "year": 2020.05,
+   "lane": "scaling",
+   "title": "Scaling laws for language models",
+   "summary": "Kaplan, McCandlish, Amodei and others show loss falls smoothly as a power law in model size, data and compute. This licenses spending ever more on bigger runs. It opens Sutskever's 'age of scaling'.",
+   "people": [
+    "Jared Kaplan",
+    "Sam McCandlish",
+    "Dario Amodei"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Kaplan et al. (2020)",
+     "url": "https://arxiv.org/abs/2001.08361"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "llama",
+   "year": 2023.15,
+   "lane": "scaling",
+   "title": "Meta's LLaMA and the open-weights wave",
+   "summary": "Meta releases strong model weights to researchers (and they leak widely). Open-weight models become a strategy, later taken up forcefully by Chinese labs.",
+   "people": [],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Touvron et al., LLaMA (2023)",
+     "url": "https://arxiv.org/abs/2302.13971"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "o1",
+   "year": 2024.7,
+   "lane": "rl",
+   "title": "o1: 'reasoning' via RL on chains of thought",
+   "summary": "OpenAI shows that training a model with RL to think step by step, and letting it think longer at test time, is a new scaling axis. Scaling moves from pretraining to RL and inference.",
+   "people": [],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "OpenAI: Learning to reason with LLMs (12 Sep 2024)",
+     "url": "https://openai.com/index/learning-to-reason-with-llms/"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "oai-roadmap",
+   "year": 2025.82,
+   "lane": "rsi",
+   "title": "OpenAI's roadmap: automated AI researcher by 2028",
+   "summary": "In a livestream, Sam Altman and Jakub Pachocki set internal goals: an 'automated AI research intern' by September 2026 and a 'legitimate AI researcher' by March 2028.",
+   "people": [
+    "Sam Altman",
+    "Jakub Pachocki"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "TechCrunch (28 Oct 2025)",
+     "url": "https://techcrunch.com/2025/10/28/sam-altman-says-openai-will-have-a-legitimate-ai-researcher-by-2028/"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "pause-letter",
+   "year": 2023.24,
+   "lane": "safety",
+   "title": "'Pause Giant AI Experiments' letter",
+   "summary": "The Future of Life Institute calls for a six-month pause on systems more powerful than GPT-4, signed by Bengio, Musk, Wozniak and others. No lab pauses.",
+   "people": [],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "FLI open letter (Mar 2023)",
+     "url": "https://futureoflife.org/open-letter/pause-giant-ai-experiments/"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "rlhf2017",
+   "year": 2017.45,
+   "lane": "safety",
+   "title": "Learning from human preferences (RLHF)",
+   "summary": "Christiano and colleagues train agents from humans comparing pairs of behaviours. It is the root of how chatbots are aligned today, and it links the safety and RL lanes.",
+   "people": [
+    "Paul Christiano",
+    "Jan Leike"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Christiano et al. (2017)",
+     "url": "https://arxiv.org/abs/1706.03741"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "stargate",
+   "year": 2025.05,
+   "lane": "scaling",
+   "title": "Stargate: US$500B compute plan",
+   "summary": "OpenAI, SoftBank, Oracle and MGX announce up to US$500B of US data-centre investment over four years. It is the peak symbol of 'just scale it'.",
+   "people": [],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "OpenAI: Announcing The Stargate Project (21 Jan 2025)",
+     "url": "https://openai.com/index/announcing-the-stargate-project/"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "synthesis71",
+   "year": 1971,
+   "lane": "neurosym",
+   "title": "Program synthesis from specifications",
+   "summary": "Manna and Waldinger frame 'automatic programming': derive a correct program from a logical specification. It is the ancestor of today's code-writing models.",
+   "people": [
+    "Zohar Manna",
+    "Richard Waldinger"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Manna & Waldinger, Toward automatic program synthesis (1971)",
+     "url": "https://doi.org/10.1145/362566.362568"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "vinge",
+   "year": 1993.2,
+   "lane": "rsi",
+   "title": "Vinge: 'The Coming Technological Singularity'",
+   "summary": "The mathematician and novelist predicts superhuman intelligence 'within thirty years' and says the human era would end soon after.",
+   "people": [
+    "Vernor Vinge"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Vinge (1993)",
+     "url": "https://edoras.sdsu.edu/~vinge/misc/singularity.html"
+    }
+   ]
+  },
+  {
+   "kind": "milestone",
+   "id": "worldmodels",
+   "year": 2018.25,
+   "lane": "world",
+   "title": "'World Models': agents that dream",
+   "summary": "Ha and Schmidhuber train an agent inside its own learned simulation of a game, then transfer to the real game.",
+   "people": [
+    "David Ha",
+    "Jürgen Schmidhuber"
+   ],
+   "sources": [
+    {
+     "kind": "link",
+     "title": "Ha & Schmidhuber (2018)",
+     "url": "https://arxiv.org/abs/1803.10122"
+    }
+   ]
+  }
+ ],
+ "outcomes": [
+  {
+   "kind": "outcome",
+   "id": "reward-hacking",
+   "if_controllable": [
+    "Certify the design before it flies (aviation type certification)",
+    "Investigate every crash, and let people confess near-misses without punishment (NTSB + ASRS)",
+    "Companies must tell the state when something goes wrong (mandatory incident reporting)",
+    "Prove it is safe and works before selling it (FDA phased trials and pre-market approval)",
+    "You built it, you pay for the harm, even without fault (strict liability)",
+    "Outside testers check the model before release (AISI, CAISI, METR)",
+    "Protect the insider who warns (whistleblower protection)"
+   ],
+   "verdict": "targeted, partially: these ideas surface reward hacking that is visible; none can certify its absence."
+  },
+  {
+   "kind": "outcome",
+   "id": "deception",
+   "if_controllable": [
+    "Investigate every crash, and let people confess near-misses without punishment (NTSB + ASRS)",
+    "Companies must tell the state when something goes wrong (mandatory incident reporting)",
+    "Outside testers check the model before release (AISI, CAISI, METR)",
+    "Sort AI by what it is used for (EU AI Act risk tiers)",
+    "Companies promise their own tripwires (responsible scaling policies)",
+    "Protect the insider who warns (whistleblower protection)"
+   ],
+   "verdict": "uncertainty: no known mechanism"
+  },
+  {
+   "kind": "outcome",
+   "id": "power-seeking",
+   "if_controllable": [
+    "Outside testers check the model before release (AISI, CAISI, METR)",
+    "Scientists agree to stop until they understand (Asilomar-style pause)",
+    "Companies promise their own tripwires (responsible scaling policies)",
+    "Protect the insider who warns (whistleblower protection)"
+   ],
+   "verdict": "uncertainty: no known mechanism"
+  },
+  {
+   "kind": "outcome",
+   "id": "existential-risk",
+   "if_controllable": [
+    "Listen for the explosion (test-ban verification by global monitoring)",
+    "An IAEA for AI (inspect) or a CERN for AI (build together)",
+    "Scientists agree to stop until they understand (Asilomar-style pause)",
+    "Ban a whole category by treaty (Biological Weapons Convention)"
+   ],
+   "verdict": "uncertainty: no known mechanism"
+  },
+  {
+   "kind": "outcome",
+   "id": "takeover",
+   "if_controllable": [
+    "An IAEA for AI (inspect) or a CERN for AI (build together)",
+    "Scientists agree to stop until they understand (Asilomar-style pause)",
+    "Ban a whole category by treaty (Biological Weapons Convention)"
+   ],
+   "verdict": "uncertainty: no known mechanism"
+  },
+  {
+   "kind": "outcome",
+   "id": "bio-misuse",
+   "if_controllable": [
+    "Certify the design before it flies (aviation type certification)",
+    "Investigate every crash, and let people confess near-misses without punishment (NTSB + ASRS)",
+    "Companies must tell the state when something goes wrong (mandatory incident reporting)",
+    "Prove it is safe and works before selling it (FDA phased trials and pre-market approval)",
+    "Run the bad scenario on paper every year (bank stress tests)",
+    "An IAEA for AI (inspect) or a CERN for AI (build together)",
+    "You built it, you pay for the harm, even without fault (strict liability)",
+    "Rules that switch on above a training-compute size (compute thresholds)",
+    "Don't sell the best chips to rivals (export controls)",
+    "Know who is renting the supercomputer (KYC for cloud compute)",
+    "Put the rules inside the chip (hardware-enabled governance)",
+    "Outside testers check the model before release (AISI, CAISI, METR)",
+    "Ban a whole category by treaty (Biological Weapons Convention)",
+    "A licence to build the most powerful systems (licensing by an independent agency)",
+    "Sort AI by what it is used for (EU AI Act risk tiers)",
+    "Companies promise their own tripwires (responsible scaling policies)",
+    "Protect the insider who warns (whistleblower protection)"
+   ],
+   "verdict": "targeted (the most-targeted outcome; still not solved)"
+  },
+  {
+   "kind": "outcome",
+   "id": "cyber",
+   "if_controllable": [
+    "Certify the design before it flies (aviation type certification)",
+    "Investigate every crash, and let people confess near-misses without punishment (NTSB + ASRS)",
+    "Companies must tell the state when something goes wrong (mandatory incident reporting)",
+    "Prove it is safe and works before selling it (FDA phased trials and pre-market approval)",
+    "Run the bad scenario on paper every year (bank stress tests)",
+    "You built it, you pay for the harm, even without fault (strict liability)",
+    "Rules that switch on above a training-compute size (compute thresholds)",
+    "Don't sell the best chips to rivals (export controls)",
+    "Know who is renting the supercomputer (KYC for cloud compute)",
+    "Put the rules inside the chip (hardware-enabled governance)",
+    "Outside testers check the model before release (AISI, CAISI, METR)",
+    "A licence to build the most powerful systems (licensing by an independent agency)",
+    "Sort AI by what it is used for (EU AI Act risk tiers)",
+    "Companies promise their own tripwires (responsible scaling policies)",
+    "Protect the insider who warns (whistleblower protection)"
+   ],
+   "verdict": "targeted"
+  },
+  {
+   "kind": "outcome",
+   "id": "jobs",
+   "if_controllable": [
+    "Sort AI by what it is used for (EU AI Act risk tiers)"
+   ],
+   "verdict": "gap: no idea in this layer targets displacement"
+  },
+  {
+   "kind": "outcome",
+   "id": "race",
+   "if_controllable": [
+    "Prove it is safe and works before selling it (FDA phased trials and pre-market approval)",
+    "Listen for the explosion (test-ban verification by global monitoring)",
+    "An IAEA for AI (inspect) or a CERN for AI (build together)",
+    "Let rivals talk about safety without it counting as a cartel (antitrust waiver)",
+    "You built it, you pay for the harm, even without fault (strict liability)",
+    "Rules that switch on above a training-compute size (compute thresholds)",
+    "Don't sell the best chips to rivals (export controls)",
+    "Know who is renting the supercomputer (KYC for cloud compute)",
+    "Put the rules inside the chip (hardware-enabled governance)",
+    "Scientists agree to stop until they understand (Asilomar-style pause)",
+    "Ban a whole category by treaty (Biological Weapons Convention)",
+    "A licence to build the most powerful systems (licensing by an independent agency)"
+   ],
+   "verdict": "targeted, with ideas that pull in opposite directions (coordination vs. export controls)"
+  },
+  {
+   "kind": "outcome",
+   "id": "takeoff",
+   "if_controllable": [
+    "Listen for the explosion (test-ban verification by global monitoring)",
+    "An IAEA for AI (inspect) or a CERN for AI (build together)",
+    "Let rivals talk about safety without it counting as a cartel (antitrust waiver)",
+    "Rules that switch on above a training-compute size (compute thresholds)",
+    "Put the rules inside the chip (hardware-enabled governance)",
+    "Outside testers check the model before release (AISI, CAISI, METR)",
+    "Scientists agree to stop until they understand (Asilomar-style pause)",
+    "A licence to build the most powerful systems (licensing by an independent agency)",
+    "Companies promise their own tripwires (responsible scaling policies)"
+   ],
+   "verdict": "uncertainty: no known mechanism"
+  }
+ ],
+ "link_checks": {
+  "http://incompleteideas.net/book/the-book-2nd.html": "200 HEAD 2026-09-25",
+  "http://www.incompleteideas.net/IncIdeas/BitterLesson.html": "200 HEAD 2026-09-25",
+  "https://arcprize.org/blog/arc-agi-3-launch": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/1606.06565": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/1706.03741": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/1712.01815": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/1803.10122": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/1805.00899": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/1911.01547": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2001.08361": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2012.08630": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2302.13971": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2304.03442": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2312.06942": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2406.04268": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2412.14093": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2501.12948": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2502.14143": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2507.11473": "200 HEAD 2026-09-25",
+  "https://arxiv.org/abs/2512.05356": "200 HEAD 2026-09-25",
+  "https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf": "200 HEAD 2026-09-25",
+  "https://distill.pub/2020/circuits/zoom-in/": "200 HEAD 2026-09-25",
+  "https://doi.org/10.1016/S0079-7421(08)60536-8": "200 crossref 2026-09-25",
+  "https://doi.org/10.1145/362566.362568": "200 crossref 2026-09-25",
+  "https://edoras.sdsu.edu/~vinge/misc/singularity.html": "200 HEAD 2026-09-25",
+  "https://epoch.ai/publications/training-compute-of-frontier-ai-models-grows-by-4-5x-per-year": "200 HEAD 2026-09-25",
+  "https://eto.tech/blog/still-drop-bucket-ai-safety-research/": "200 HEAD 2026-09-25",
+  "https://exhibits.stanford.edu/feigenbaum/catalog/gz727rg3869": "200 HEAD 2026-09-25",
+  "https://futureoflife.org/open-letter/pause-giant-ai-experiments/": "200 HEAD 2026-09-25",
+  "https://global.oup.com/academic/product/superintelligence-9780199678112": "202 GET 2026-09-25",
+  "https://hai.stanford.edu/ai-index/2026-ai-index-report/economy": "200 HEAD 2026-09-25",
+  "https://openai.com/index/announcing-the-stargate-project/": "403 GET 2026-09-25",
+  "https://openai.com/index/learning-to-reason-with-llms/": "403 GET 2026-09-25",
+  "https://openreview.net/pdf?id=BZ5a1r-kVsf": "200 HEAD 2026-09-25",
+  "https://techcrunch.com/2025/10/28/sam-altman-says-openai-will-have-a-legitimate-ai-researcher-by-2028/": "200 HEAD 2026-09-25",
+  "https://techcrunch.com/2026/03/09/yann-lecuns-ami-labs-raises-1-03-billion-to-build-world-models/": "200 HEAD 2026-09-25",
+  "https://www.anthropic.com/institute/recursive-self-improvement": "200 HEAD 2026-09-25",
+  "https://www.cell.com/neuron/fulltext/S0896-6273(17)30509-3": "403 GET 2026-09-25",
+  "https://www.dwarkesh.com/p/ilya-sutskever-2": "200 HEAD 2026-09-25",
+  "https://www.safe.ai/work/statement-on-ai-risk": "200 HEAD 2026-09-25"
+ }
+}

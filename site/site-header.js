@@ -59,9 +59,10 @@
   const WORDS_MENU = [
     [PFX + 'glossary/',                                                     'The glossary'],
     [PFX + 'viewers/cards.html?src=' + WORDS,                               'Words as cards'],
-    [PFX + 'viewers/caster-studio.html?spread=before-you-delegate',         'Cast: Before you delegate'],
-    [PFX + 'viewers/caster-studio.html?spread=the-fork',                    'Cast: The fork'],
-    [PFX + 'viewers/caster-studio.html?spread=single',                      'A single draw'],
+    [PFX + 'viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=before-you-delegate', 'Cast: Before you delegate'],
+    [PFX + 'viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=the-fork',            'Cast: The fork'],
+    [PFX + 'viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=what-held',           'Cast: What held'],
+    [PFX + 'viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=single',              'A single draw'],
     [PFX + 'viewers/explorer.html?src=' + WORDS,                            'Explore the words'],
   ];
   const SOURCES_MENU = [
@@ -69,13 +70,14 @@
     [PFX + 'viewers/cards.html?src=' + SOURCES + '&item=suit-podcasts#groupby=suit', 'Podcasts'],
     [PFX + 'viewers/cards.html?src=' + SOURCES + '&item=suit-papers#groupby=suit',   'Papers &amp; books'],
     [PFX + 'viewers/cards.html?src=' + SOURCES + '&item=suit-people#groupby=suit',   'People'],
-    [PFX + 'viewers/cards.html?src=' + INSTITUTIONS + '&layout=thumbnails', 'Institutions'],
+    [PFX + 'pages/institutions.html',                                       'Institutions'],
     [PFX + 'viewers/tree-viewer.html?src=' + SOURCES,                       'Tree of sources'],
   ];
   const IDEAS_MENU = [
     [PFX + 'viewers/cards.html?src=' + IDEAS,                               'Ideas as cards'],
     [PFX + 'viewers/tree-viewer.html?src=' + IDEAS,                         'Ideas by lane'],
     [PFX + 'viewers/explorer.html?src=' + IDEAS,                            'Explore the ideas'],
+    [PFX + 'viewers/caster-studio.html?src=../grammars/ideas-of-alignment/grammar.json&spread=single', 'Draw one idea'],
   ];
   const PLAY_MENU = [
     [PFX + 'game/as-if.html',          'As-If'],
@@ -86,9 +88,10 @@
     [PFX + 'pages/play.html',          'All games →'],
   ];
   // [key, label, href, cssClass, external?] — tarot's TOOLS slot. Institutions sits where tarot
-  // has Shop: each card there is a link out to an institution's own site.
+  // has Shop: pages/institutions.html (tarot's shop.html layout), where each card links out to an
+  // institution's own site. It reads the INSTITUTIONS grammar; the cards view is linked from it.
   const TOOLS = [
-    ['institutions', 'Institutions', PFX + 'viewers/cards.html?src=' + INSTITUTIONS + '&layout=thumbnails', 't-shop'],
+    ['institutions', 'Institutions', PFX + 'pages/institutions.html', 't-shop'],
     ['github', 'GitHub ↗',  'https://github.com/PlayfulProcess/recursive-learning', 't-github', true],
   ];
   const KEYS = ['home', 'words', 'sources', 'ideas', 'play', 'institutions'];

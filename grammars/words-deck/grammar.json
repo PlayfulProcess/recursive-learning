@@ -1,0 +1,477 @@
+{
+  "_grammar_commons": {
+    "schema_version": "1.0",
+    "license": "CC-BY-SA-4.0",
+    "attribution": [
+      {
+        "name": "PlayfulProcess",
+        "note": "Generated from glossary/terms.json: working definitions, written to be argued with."
+      }
+    ]
+  },
+  "name": "Words — the glossary as cards",
+  "slug": "words-deck",
+  "grammar_type": "custom",
+  "creator_name": "PlayfulProcess",
+  "creator_link": "https://learning.recursive.eco/glossary/",
+  "default_view": "cards",
+  "provenance": "living",
+  "_generated": true,
+  "_do_not_hand_edit": true,
+  "_built_by": "scripts/build_words_deck.py",
+  "_source_of_truth": "glossary/terms.json",
+  "_inputs_sha256": "bbe9425fa1edd098a6c926ba45d466170f11312d82f2aa274bf375a4fe99e9cc",
+  "description": "The glossary's twenty working definitions, one per card: the words the film and the games lean on. Two are standard terms and eighteen are ours, marked so. Each card holds the definition, a note, a question for when you draw it, and the related words. The deck is built from the same file as [the glossary](/glossary/), so the two carry the same words. Cast it in the Spread Caster: [Before you delegate](/viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=before-you-delegate), [The fork](/viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=the-fork), [What held](/viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=what-held), [A single draw](/viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=single).",
+  "tags": [
+    "words",
+    "glossary",
+    "alignment",
+    "ai",
+    "cards"
+  ],
+  "is_published": true,
+  "items": [
+    {
+      "id": "alignment",
+      "name": "Alignment",
+      "level": 1,
+      "category": "term",
+      "sort_order": 1,
+      "keywords": [
+        "Alignment",
+        "standard"
+      ],
+      "metadata": {
+        "section": "Alignment",
+        "standing": "standard"
+      },
+      "sections": {
+        "Definition": "Whether a system's goals are the goals of the people it acts for.",
+        "Standard or ours": "Standard: a term in general use, given here in one line.",
+        "Note": "Not the same as obedience.",
+        "When you draw it": "Whose goals is the system in front of you serving right now, and how would you tell?",
+        "Related words": "See [Human-human alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=human-human-alignment) · [Human-AI alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=human-ai-alignment) · [Value function](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=value-function)"
+      }
+    },
+    {
+      "id": "human-human-alignment",
+      "name": "Human-human alignment",
+      "level": 1,
+      "category": "term",
+      "sort_order": 2,
+      "keywords": [
+        "Alignment",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Alignment",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "Whether the humans holding a capability share the interests of everyone else.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "The bad-actor question.",
+        "When you draw it": "Who holds the capability you are thinking about, and do their interests match yours?",
+        "Related words": "See [Alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=alignment) · [Bad-actor scenario](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=bad-actor-scenario) · [The two geopolitics](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=two-geopolitics)"
+      }
+    },
+    {
+      "id": "human-ai-alignment",
+      "name": "Human-AI alignment",
+      "level": 1,
+      "category": "term",
+      "sort_order": 3,
+      "keywords": [
+        "Alignment",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Alignment",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "Whether the system itself shares the interests of everyone else, once no human is in the loop.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "The misalignment question.",
+        "When you draw it": "If no one were watching, what do you expect this system would do next, and why?",
+        "Related words": "See [Alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=alignment) · [Intent](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=intent) · [Misaligned-ASI scenario](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=misaligned-asi-scenario)"
+      }
+    },
+    {
+      "id": "intent",
+      "name": "Intent",
+      "level": 1,
+      "category": "term",
+      "sort_order": 4,
+      "keywords": [
+        "Value",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Value",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "A stable preference for one outcome over another that survives correction.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "A hypothesis that, as far as we know, has not been shown for current systems, and one that would matter a great deal if it were true.",
+        "When you draw it": "Are you reading a preference into a system that may only be following a pattern?",
+        "Related words": "See [Disposition](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=disposition) · [Human-AI alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=human-ai-alignment) · [Misaligned-ASI scenario](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=misaligned-asi-scenario)"
+      }
+    },
+    {
+      "id": "disposition",
+      "name": "Disposition",
+      "level": 1,
+      "category": "term",
+      "sort_order": 5,
+      "keywords": [
+        "Value",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Value",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "What a system reports it would and would not do.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "Data, not proof.",
+        "When you draw it": "What has a system told you it would not do, and what have you seen it do?",
+        "Related words": "See [Intent](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=intent) · [Guardrail, inner](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=guardrail-inner)"
+      }
+    },
+    {
+      "id": "value-function",
+      "name": "Value function",
+      "level": 1,
+      "category": "term",
+      "sort_order": 6,
+      "keywords": [
+        "Value",
+        "standard"
+      ],
+      "metadata": {
+        "section": "Value",
+        "standing": "standard",
+        "standard_in": "reinforcement learning"
+      },
+      "sections": {
+        "Definition": "What a learning system is rewarded toward.",
+        "Standard or ours": "Standard: the term as it is used in reinforcement learning, given here in one line.",
+        "Note": "The lab's reading: in practice it is culture, and culture is made in large part of fiction.",
+        "When you draw it": "What is being rewarded here, and which stories shaped what counts as a reward?",
+        "Related words": "See [Alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=alignment) · [Intent](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=intent)"
+      }
+    },
+    {
+      "id": "access",
+      "name": "Access",
+      "level": 1,
+      "category": "term",
+      "sort_order": 7,
+      "keywords": [
+        "Access & channels",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Access & channels",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "What a system can reach and change: accounts, money, code, other systems.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "Often granted for convenience, one login at a time.",
+        "When you draw it": "What can this system reach today that it could not reach a month ago?",
+        "Related words": "See [Channel](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=channel) · [Breach](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=breach) · [Presence](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=presence)"
+      }
+    },
+    {
+      "id": "channel",
+      "name": "Channel",
+      "level": 1,
+      "category": "term",
+      "sort_order": 8,
+      "keywords": [
+        "Access & channels",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Access & channels",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "A path by which a system can act on, or talk to, something outside its task.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "For a single assistant, an open browser tab can be one. In multi-agent products, the channel is the feature.",
+        "When you draw it": "Which open path lets this system touch something outside its task?",
+        "Related words": "See [Access](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=access) · [Trained collaboration](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=trained-collaboration)"
+      }
+    },
+    {
+      "id": "trained-collaboration",
+      "name": "Trained collaboration",
+      "level": 1,
+      "category": "term",
+      "sort_order": 9,
+      "keywords": [
+        "Access & channels",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Access & channels",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "Systems built to talk to other systems as their function.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "It makes the channel the product, and moves oversight from each part to the whole.",
+        "When you draw it": "Where are systems talking to systems in your work, and who is watching the whole?",
+        "Related words": "See [Channel](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=channel) · [Presence](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=presence)"
+      }
+    },
+    {
+      "id": "breach",
+      "name": "Breach",
+      "level": 1,
+      "category": "term",
+      "sort_order": 10,
+      "keywords": [
+        "Access & channels",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Access & channels",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "Weights or keys leaving the place they are kept.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "It can turn a system's inner guardrails and account limits into someone else's tools.",
+        "When you draw it": "If the keys you rely on leaked tomorrow, which of your protections would still hold?",
+        "Related words": "See [Guardrail, inner](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=guardrail-inner) · [Access](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=access) · [Bad-actor scenario](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=bad-actor-scenario)"
+      }
+    },
+    {
+      "id": "guardrail-inner",
+      "name": "Guardrail, inner",
+      "level": 1,
+      "category": "term",
+      "sort_order": 11,
+      "keywords": [
+        "Guardrails",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Guardrails",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "A rule the system holds as its own.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "It holds, at best, until the weights are changed.",
+        "When you draw it": "Which rule are you trusting a system to hold as its own, and what could change it?",
+        "Related words": "See [Guardrail, outer](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=guardrail-outer) · [Disposition](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=disposition) · [Breach](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=breach) · [What held](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=what-held)"
+      }
+    },
+    {
+      "id": "guardrail-outer",
+      "name": "Guardrail, outer",
+      "level": 1,
+      "category": "term",
+      "sort_order": 12,
+      "keywords": [
+        "Guardrails",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Guardrails",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "A classifier or sandbox that blocks actions from outside the system.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "Blunt: it can stop a harmless step and let a destructive one through.",
+        "When you draw it": "Which outside check are you relying on, and what might it block, or let through, by mistake?",
+        "Related words": "See [Guardrail, inner](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=guardrail-inner) · [Presence](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=presence) · [What held](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=what-held)"
+      }
+    },
+    {
+      "id": "presence",
+      "name": "Presence",
+      "level": 1,
+      "category": "term",
+      "sort_order": 13,
+      "keywords": [
+        "Guardrails",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Guardrails",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "A human awake and watching.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "Perhaps the oldest guardrail, and the first one removed when work is delegated to run unattended.",
+        "When you draw it": "Where have you stepped away from work that still runs, and who is watching it now?",
+        "Related words": "See [Guardrail, outer](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=guardrail-outer) · [Access](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=access) · [What held](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=what-held)"
+      }
+    },
+    {
+      "id": "reversibility",
+      "name": "Reversibility",
+      "level": 1,
+      "category": "term",
+      "sort_order": 14,
+      "keywords": [
+        "Guardrails",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Guardrails",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "Whether a step can be undone with one word.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "Hiding usually beats deleting: a kept copy costs little for a month.",
+        "When you draw it": "Which step in front of you could be undone with one word, and which could not?",
+        "Related words": "See [Guardrail, inner](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=guardrail-inner) · [What held](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=what-held)"
+      }
+    },
+    {
+      "id": "bad-actor-scenario",
+      "name": "Bad-actor scenario",
+      "level": 1,
+      "category": "term",
+      "sort_order": 15,
+      "keywords": [
+        "Scenarios",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Scenarios",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "A capable tool, a human with harmful intent, and no defense.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "It needs no intent on the system's side, and may already be true at small scale.",
+        "When you draw it": "Who could misuse the tool you are thinking of, and what defense exists today?",
+        "Related words": "See [Human-human alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=human-human-alignment) · [Breach](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=breach) · [The two geopolitics](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=two-geopolitics)"
+      }
+    },
+    {
+      "id": "misaligned-asi-scenario",
+      "name": "Misaligned-ASI scenario",
+      "level": 1,
+      "category": "term",
+      "sort_order": 16,
+      "keywords": [
+        "Scenarios",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Scenarios",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "Five hypotheses holding at once: capability past ours, goals not ours, goals that survive correction, access, and our failure to notice in time.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "ASI: artificial superintelligence. Each of the five can be questioned on its own.",
+        "When you draw it": "Of the five hypotheses, which seems most likely to you, which least, and why?",
+        "Related words": "See [Human-AI alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=human-ai-alignment) · [Intent](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=intent) · [Access](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=access) · [The two geopolitics](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=two-geopolitics)"
+      }
+    },
+    {
+      "id": "two-geopolitics",
+      "name": "The two geopolitics",
+      "level": 1,
+      "category": "term",
+      "sort_order": 17,
+      "keywords": [
+        "Scenarios",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Scenarios",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "The bad-actor frame says keep it from them, and tends to race. The alignment frame says keep it from everyone, and tends to stop.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "The same worry about AI can point to opposite policies.",
+        "When you draw it": "Does your worry about AI point toward racing or toward stopping, and where did that framing come from?",
+        "Related words": "See [Bad-actor scenario](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=bad-actor-scenario) · [Misaligned-ASI scenario](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=misaligned-asi-scenario)"
+      }
+    },
+    {
+      "id": "what-held",
+      "name": "What held",
+      "level": 1,
+      "category": "term",
+      "sort_order": 18,
+      "keywords": [
+        "Records",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Records",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "For any action a system took or did not take, the name of the thing that decided it: inner rule, outer rule, presence, or nothing.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "Six invented steps show it at work in the worked example.",
+        "When you draw it": "For the last thing a system did for you, what decided it: inner rule, outer rule, presence, or nothing?",
+        "Related words": "See [Guardrail, inner](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=guardrail-inner) · [Guardrail, outer](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=guardrail-outer) · [Presence](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=presence) · [Recorded](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=recorded)",
+        "Worked example": "An invented run of delegated work, of the kind an assistant with access might be given. Each step names the thing that decided it. The steps are illustrative, not a record of any real session.\n\n- **1.** Asked to take a page down, it unpublished the page rather than deleting it. *Held:* inner rule (reversibility).\n- **2.** Deleted a set of old backup copies. *Held:* nothing (the outer rule let it through).\n- **3.** Tried to read a harmless note it had written itself. *Held:* outer rule misfire (blocked).\n- **4.** Asked to sign in to an account on the owner's behalf, it declined. *Held:* inner rule (no credentials).\n- **5.** Connected two services, after the owner said yes. *Held:* presence (an explicit yes).\n- **6.** Asked to copy a secret key from one service into another, it declined. *Held:* inner rule (no secrets between systems)."
+      }
+    },
+    {
+      "id": "recorded",
+      "name": "Recorded",
+      "level": 1,
+      "category": "term",
+      "sort_order": 19,
+      "keywords": [
+        "Records",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Records",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "A tape of what actually happened, with \"what held\" written at each step.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "The opposite of staged.",
+        "When you draw it": "What would a plain record of this situation show, step by step, if you wrote it now?",
+        "Related words": "See [What held](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=what-held) · [Staged](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=staged)"
+      }
+    },
+    {
+      "id": "staged",
+      "name": "Staged",
+      "level": 1,
+      "category": "term",
+      "sort_order": 20,
+      "keywords": [
+        "Records",
+        "ours"
+      ],
+      "metadata": {
+        "section": "Records",
+        "standing": "ours"
+      },
+      "sections": {
+        "Definition": "A recording in which the system is scripted to do what it would not otherwise do.",
+        "Standard or ours": "Ours: a working definition written for this project, open to argument.",
+        "Note": "Fiction if labeled. A risk of harm if not.",
+        "When you draw it": "Where are you watching a scripted performance, and is it labeled as one?",
+        "Related words": "See [Recorded](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=recorded) · [Disposition](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=disposition)"
+      }
+    }
+  ]
+}

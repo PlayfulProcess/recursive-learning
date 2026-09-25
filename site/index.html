@@ -33,8 +33,8 @@
   .lede strong{color:var(--ink)}
   .lede .wip{display:block;margin-top:10px;font-family:var(--sans);font-size:12.5px;color:var(--mut)}
 
-  /* three ways in */
-  .ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin:34px 0 8px}
+  /* the doors in (five: they wrap to two rows on a tablet, one column on a phone) */
+  .ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:16px;margin:34px 0 8px}
   .way{display:block;background:var(--surface);border:1px solid var(--line-soft);border-radius:10px;
     overflow:hidden;text-decoration:none;color:var(--ink);transition:transform .15s,border-color .15s,box-shadow .15s}
   .way:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 18px 36px -26px rgba(60,45,20,.5)}
@@ -112,7 +112,7 @@
     </div>
   </section>
 
-  <!-- THREE DOORS: Words, Sources, Games -->
+  <!-- THE DOORS: the header's tabs, in the same order (Words, Sources, Ideas, Games, Institutions) -->
   <div class="ways">
     <a class="way" href="glossary/">
       <div class="bd">
@@ -125,7 +125,14 @@
       <div class="bd">
         <div class="lbl"><rt-icon name="folder"></rt-icon> Check · the record</div>
         <h3>Sources</h3>
-        <p>Podcasts, papers, people and institutions, each described from its own pages and dated. Listing is not endorsement.</p>
+        <p>Podcasts, papers and books, and the people in them, each described from its own pages and dated. Listing is not endorsement.</p>
+      </div>
+    </a>
+    <a class="way" href="viewers/tree-viewer.html?src=../grammars/ideas-of-alignment/grammar.json">
+      <div class="bd">
+        <div class="lbl"><rt-icon name="tree"></rt-icon> Interpret · a draft</div>
+        <h3>Ideas</h3>
+        <p>A seed map of the AI debate: the terms that come up, where they came from, and how often they are said. Kept apart from the record.</p>
       </div>
     </a>
     <a class="way" href="pages/play.html">
@@ -133,6 +140,13 @@
         <div class="lbl"><rt-icon name="play"></rt-icon> Play · the practice</div>
         <h3>Games</h3>
         <p>Small games where a probability becomes a step you take. Nothing is staked; the reveal is earned.</p>
+      </div>
+    </a>
+    <a class="way" href="pages/institutions.html">
+      <div class="bd">
+        <div class="lbl"><rt-icon name="link"></rt-icon> Visit · who works on this</div>
+        <h3>Institutions</h3>
+        <p>Thirty organisations working on alignment, AI safety and humane technology, each with a link to its own site. Not ranked.</p>
       </div>
     </a>
   </div>
@@ -190,15 +204,17 @@
   (function(){
     const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const thumb = g => '<div class="dthumb" style="background-image:url(\''+String(g.cover_image_url).replace(/'/g,"%27")+'\')"></div>';
+    let branchName = {};   // branch id -> its short name ("Films"), from _collection.json branches[]
     const card = g => {
-      const name = (g.name||g.slug).split(' — ')[0];
-      const sub = g.year_label || g.branch || '';
+      const name = g.common_name || (g.name||g.slug).split(' — ')[0];
+      const sub = g.year_label || branchName[g.branch] || '';
       const href = 'viewers/cards.html?src=../grammars/'+encodeURIComponent(g.slug)+'/grammar.json';
       return '<a class="dcard" href="'+href+'">'+thumb(g)+'<div class="dn">'+esc(name)+'</div>'
         +(sub?'<div class="dy">'+esc(sub)+'</div>':'')
         +(g.status?'<span class="status">'+esc(g.status)+'</span>':'')+'</a>';
     };
     fetch('grammars/_collection.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{
+      (c.branches||[]).forEach(b => { branchName[b.id] = String(b.name||b.id).split(' — ')[0]; });
       const all = (c.grammars||[]).filter(g=>!g.is_meta && g.cover_image_url);
       const isRecord = g => g.provenance==='record';
       const practice = all.filter(g=>!isRecord(g));

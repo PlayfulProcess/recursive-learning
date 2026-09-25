@@ -1,0 +1,1532 @@
+{
+  "_grammar_commons": {
+    "schema_version": "1.0",
+    "license": "CC-BY-SA-4.0",
+    "attribution": [
+      {
+        "name": "PlayfulProcess",
+        "note": "Generated from the lab's AI debate map and genealogy (recursive-transcripts) through research/lab-export/ideas.json. A seed draft."
+      }
+    ]
+  },
+  "name": "Ideas — a seed map of the AI debate",
+  "slug": "ideas-of-alignment",
+  "grammar_type": "custom",
+  "creator_name": "PlayfulProcess",
+  "creator_link": "https://recursive.eco",
+  "default_view": "tree",
+  "default_preview": "tree",
+  "provenance": "living",
+  "status": "draft",
+  "_generated": true,
+  "_do_not_hand_edit": true,
+  "_built_by": "scripts/build_ideas_grammar.py",
+  "_source_of_truth": "research/lab-export/ideas.json (written by scripts/lab_export.py from the lab's research) and research/crosswalk.json",
+  "_inputs": [
+    "research/crosswalk.json",
+    "research/lab-export/ideas.json",
+    "research/lab-export/sources.json"
+  ],
+  "_inputs_sha256": "478051cd27d723bf2aff74a8c3bdadb9f4a796a939e9dce64a491aacb233b894",
+  "description": "A seed draft of the ideas in the AI debate: the lab's 52 seed terms, placed in the lanes of its genealogy of AI research. For each, how often it comes up in 91 podcast episodes with automatic captions, when it is first heard there, whose episodes carry it most, and the milestone that names it. Counts are pattern matches on captions: the speaker is unknown, long episodes weigh more, and recent years have more episodes. Awaiting review.",
+  "tags": [
+    "ideas",
+    "alignment",
+    "ai",
+    "genealogy",
+    "draft"
+  ],
+  "is_published": true,
+  "items": [
+    {
+      "id": "arc",
+      "name": "ARC / skill-acquisition",
+      "level": 1,
+      "description": "Said 5 times in 3 episodes; first heard here in 2024. An idea, Neurosymbolic lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Neurosymbolic & program synthesis",
+        "layer": "idea",
+        "count_reliability": "medium",
+        "first_heard": "2024",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-dylan-patel",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Chollet's ARC: measure skill-acquisition, not skill** (2019). François Chollet argues intelligence is efficiency at acquiring new skills and releases ARC, grid puzzles that are easy for people and hard for pattern-matchers.\n\n- [On the Measure of Intelligence (2019)](https://arxiv.org/abs/1911.01547)",
+        "How often it comes up": "Said 5 times, in 3 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2024-06-11, Dwarkesh Podcast, [Francois Chollet, Mike Knoop - LLMs won't lead to AGI - $1,000,000 Prize to find true solution](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-dwarkesh-2024-06-11-francois-chollet).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 0 of 20 · 2024: 1 of 16 · 2025: 2 of 20 · 2026: 0 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 3 times, in 1 episode\n- [François Chollet](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-francois-chollet): 1 time, in 1 episode\n- [Ryan Greenblatt](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ryan-greenblatt): 1 time, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (7), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (7), [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (3).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 1
+    },
+    {
+      "id": "symbolic",
+      "name": "Symbolic AI & program synthesis",
+      "level": 1,
+      "description": "Said 21 times in 10 episodes; first heard here in 2018. An idea, Neurosymbolic lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Neurosymbolic & program synthesis",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-francois-chollet",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Program synthesis from specifications** (1971). Manna and Waldinger frame 'automatic programming': derive a correct program from a logical specification. It is the ancestor of today's code-writing models.\n\n- [Manna & Waldinger, Toward automatic program synthesis (1971)](https://doi.org/10.1145/362566.362568)",
+        "How often it comes up": "Said 21 times, in 10 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-20, Lex Fridman Podcast, [Yoshua Bengio: Deep Learning](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2018-10-20-yoshua-bengio).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 2 of 4 · 2019: 1 of 2 · 2020: 2 of 6 · 2021: 0 of 3 · 2022: 2 of 3 · 2023: 0 of 20 · 2024: 2 of 16 · 2025: 0 of 20 · 2026: 1 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [François Chollet](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-francois-chollet): 12 times, in 2 episodes\n- [Max Tegmark](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-max-tegmark): 2 times, in 1 episode\n- [Andrej Karpathy](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-andrej-karpathy): 1 time, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Generalization](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=generalization) (9), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (6), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (5).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 2
+    },
+    {
+      "id": "lane-neurosym",
+      "name": "Neurosymbolic & program synthesis",
+      "level": 2,
+      "description": "Since 1971 · 2 seed terms",
+      "metadata": {
+        "kind": "lane",
+        "lane": "Neurosymbolic & program synthesis"
+      },
+      "composite_of": [
+        "arc",
+        "symbolic"
+      ],
+      "sections": {
+        "What the lane is": "Instead of predicting the next word, write a program that solves the problem, and check it. The lane mixes old program-synthesis ideas with neural nets, and it is where François Chollet's ARC puzzles keep asking whether models can handle genuinely new tasks.",
+        "Where it seems to be heading (Sep 2026)": "Reasoning models plus code execution are pulling this lane into the mainstream; ARC-AGI-3 (2026) shows the novelty gap is still wide.",
+        "People the genealogy names": "François Chollet, Josh Tenenbaum, Kevin Ellis, Armando Solar-Lezama.",
+        "Sources": "- [Chollet, On the Measure of Intelligence (2019)](https://arxiv.org/abs/1911.01547)\n- [ARC-AGI-3 launch (2026)](https://arcprize.org/blog/arc-agi-3-launch)"
+      },
+      "sort_order": 3
+    },
+    {
+      "id": "scaling-laws",
+      "name": "Scaling laws",
+      "level": 1,
+      "description": "Said 81 times in 22 episodes; first heard here in 2021. An idea, Scaling lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Scaling & pretraining",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2021",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-chris-olah",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Scaling laws for language models** (2020). Kaplan, McCandlish, Amodei and others show loss falls smoothly as a power law in model size, data and compute. This licenses spending ever more on bigger runs. It opens Sutskever's 'age of scaling'.\n\n- [Kaplan et al. (2020)](https://arxiv.org/abs/2001.08361)",
+        "How often it comes up": "Said 81 times, in 22 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2021-08-04, 80,000 Hours Podcast, [#107 – Chris Olah on what the hell is going on inside neural networks](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2021-08-04-chris-olah).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 1 of 3 · 2022: 0 of 3 · 2023: 5 of 20 · 2024: 6 of 16 · 2025: 5 of 20 · 2026: 5 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Chris Olah](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-chris-olah): 35 times, in 2 episodes\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 29 times, in 4 episodes\n- [Amanda Askell](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-amanda-askell): 15 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (49), [Interpretability](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=interpretability) (16), [Pretraining](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=pretraining) (15).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 4
+    },
+    {
+      "id": "bitter-lesson",
+      "name": "The bitter lesson",
+      "level": 1,
+      "description": "Said 17 times in 7 episodes; first heard here in 2022. An idea, Scaling lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Scaling & pretraining",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2022",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-richard-sutton",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Sutton's 'Bitter Lesson'** (2019). A short essay arguing that 70 years of AI show general methods that ride growing compute beat clever human-designed knowledge. It becomes the scaling movement's creed.\n\n- [Sutton, The Bitter Lesson (2019)](http://www.incompleteideas.net/IncIdeas/BitterLesson.html)",
+        "How often it comes up": "Said 17 times, in 7 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2022-10-29, Lex Fridman Podcast, [#333 – Andrej Karpathy: Tesla AI, Self-Driving, Optimus, Aliens, and AGI](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2022-10-29-andrej-karpathy).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 2 of 20 · 2024: 1 of 16 · 2025: 2 of 20 · 2026: 1 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Richard Sutton](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-richard-sutton): 8 times, in 1 episode\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 4 times, in 3 episodes\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 3 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (9), [Scaling laws](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=scaling-laws) (4), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (3).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 5
+    },
+    {
+      "id": "pretraining",
+      "name": "Pretraining",
+      "level": 1,
+      "description": "Said 168 times in 32 episodes; first heard here in 2020. An idea, Scaling lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Scaling & pretraining",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2020",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-dylan-patel",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**GPT: generative pretraining** (2018). Radford and colleagues pretrain a Transformer on books, then fine-tune it. The 'pretrain, then adapt' recipe is born.\n\n- [Improving Language Understanding by Generative Pre-Training (2018)](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf)",
+        "How often it comes up": "Said 168 times, in 32 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2020-05-08, Lex Fridman Podcast, [#94 – Ilya Sutskever: Deep Learning](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2020-05-08-ilya-sutskever).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 2 of 6 · 2021: 0 of 3 · 2022: 2 of 3 · 2023: 4 of 20 · 2024: 5 of 16 · 2025: 8 of 20 · 2026: 11 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 32 times, in 2 episodes\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 27 times, in 3 episodes\n- [Ilya Sutskever](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ilya-sutskever): 20 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (71), [Generalization](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=generalization) (25), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (17).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 6
+    },
+    {
+      "id": "data-wall",
+      "name": "Data wall / synthetic data",
+      "level": 1,
+      "description": "Said 43 times in 16 episodes; first heard here in 2022. An idea, Scaling lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Scaling & pretraining",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2022",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-andrej-karpathy",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 43 times, in 16 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2022-10-29, Lex Fridman Podcast, [#333 – Andrej Karpathy: Tesla AI, Self-Driving, Optimus, Aliens, and AGI](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2022-10-29-andrej-karpathy).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 2 of 20 · 2024: 6 of 16 · 2025: 7 of 20 · 2026: 0 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Andrej Karpathy](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-andrej-karpathy): 8 times, in 2 episodes\n- [Leopold Aschenbrenner](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-leopold-aschenbrenner): 7 times, in 1 episode\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 6 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (20), [Pretraining](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=pretraining) (15), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (10).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 7
+    },
+    {
+      "id": "compute",
+      "name": "Compute (chips, data centres)",
+      "level": 1,
+      "description": "Said 1146 times in 68 episodes; first heard here in 2018. An idea, Scaling lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Scaling & pretraining",
+        "layer": "idea",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-dylan-patel",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Stargate: US$500B compute plan** (2025). OpenAI, SoftBank, Oracle and MGX announce up to US$500B of US data-centre investment over four years. It is the peak symbol of 'just scale it'.\n\n- [OpenAI: Announcing The Stargate Project (21 Jan 2025)](https://openai.com/index/announcing-the-stargate-project/)",
+        "How often it comes up": "Said 1146 times, in 68 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 1 of 2 · 2020: 4 of 6 · 2021: 1 of 3 · 2022: 3 of 3 · 2023: 16 of 20 · 2024: 10 of 16 · 2025: 16 of 20 · 2026: 16 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 245 times, in 2 episodes\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 134 times, in 5 episodes\n- [Ryan Greenblatt](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ryan-greenblatt): 126 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (143), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (119), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (102).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense. Spot-checked by the lab on Sep 24 2026: 8/8 on-topic (chips, GPUs, training compute)."
+      },
+      "sort_order": 8
+    },
+    {
+      "id": "emergence",
+      "name": "Emergent abilities",
+      "level": 1,
+      "description": "Said 32 times in 15 episodes; first heard here in 2019. An idea, Scaling lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Scaling & pretraining",
+        "layer": "idea",
+        "count_reliability": "medium",
+        "first_heard": "2019",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-jack-clark",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 32 times, in 15 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2019-12-16, 80,000 Hours Podcast, [#67 – David Chalmers on the nature and ethics of consciousness](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2019-12-16-david-chalmers).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 2 of 2 · 2020: 1 of 6 · 2021: 1 of 3 · 2022: 1 of 3 · 2023: 2 of 20 · 2024: 4 of 16 · 2025: 2 of 20 · 2026: 2 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Jack Clark](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-jack-clark): 6 times, in 1 episode\n- [Anil Seth](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-anil-seth): 4 times, in 1 episode\n- [Roman Yampolskiy](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-roman-yampolskiy): 4 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Consciousness (human and machine)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=consciousness) (10), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (4), [AI agents](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agents) (2).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 9
+    },
+    {
+      "id": "jobs",
+      "name": "Jobs & labour",
+      "level": 1,
+      "description": "Said 67 times in 27 episodes; first heard here in 2022. An outcome, Scaling lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Scaling & pretraining",
+        "layer": "outcome",
+        "count_reliability": "medium",
+        "first_heard": "2022",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-tristan-harris",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 67 times, in 27 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2022-07-01, 80,000 Hours Podcast, [#133 – Max Tegmark on how a 'put-up-or-shut-up' resolution led him to work on AI and algorithmic news selection](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2022-07-01-max-tegmark).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 2 of 20 · 2024: 5 of 16 · 2025: 8 of 20 · 2026: 11 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Tristan Harris](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-tristan-harris): 12 times, in 2 episodes\n- [Jack Clark](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-jack-clark): 11 times, in 1 episode\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 9 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (13), [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (13), [Regulation](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=regulation) (10).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 1 idea aimed at it: Sort AI by what it is used for (EU AI Act risk tiers).\n\nTheir verdict for now: gap: no idea in this layer targets displacement.",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 10
+    },
+    {
+      "id": "china",
+      "name": "China",
+      "level": 1,
+      "description": "Said 519 times in 62 episodes; first heard here in 2018. An outcome, Scaling lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Scaling & pretraining",
+        "layer": "outcome",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-dylan-patel",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 519 times, in 62 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 3 of 6 · 2021: 3 of 3 · 2022: 1 of 3 · 2023: 13 of 20 · 2024: 10 of 16 · 2025: 15 of 20 · 2026: 16 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 110 times, in 2 episodes\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 102 times, in 5 episodes\n- [Tristan Harris](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-tristan-harris): 39 times, in 3 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (143), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (84), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (69).",
+        "See also, in Words": "See [The two geopolitics](../glossary/#two-geopolitics).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 11
+    },
+    {
+      "id": "open-source",
+      "name": "Open source / open weights",
+      "level": 1,
+      "description": "Said 183 times in 37 episodes; first heard here in 2020. An idea, Scaling lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Scaling & pretraining",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2020",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-mark-zuckerberg",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Meta's LLaMA and the open-weights wave** (2023). Meta releases strong model weights to researchers (and they leak widely). Open-weight models become a strategy, later taken up forcefully by Chinese labs.\n\n- [Touvron et al., LLaMA (2023)](https://arxiv.org/abs/2302.13971)",
+        "How often it comes up": "Said 183 times, in 37 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2020-06-22, 80,000 Hours Podcast, [#80 – Stuart Russell on the flaws that make today's AI architecture unsafe, and a new approach that could fix them](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2020-06-22-stuart-russell).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 1 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 9 of 20 · 2024: 11 of 16 · 2025: 8 of 20 · 2026: 7 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Mark Zuckerberg](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-mark-zuckerberg): 48 times, in 3 episodes\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 26 times, in 2 episodes\n- [Yann LeCun](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-yann-lecun): 20 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (53), [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (29), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (25).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 12
+    },
+    {
+      "id": "lane-scaling",
+      "name": "Scaling & pretraining",
+      "level": 2,
+      "description": "Since 2017 · 9 seed terms",
+      "metadata": {
+        "kind": "lane",
+        "lane": "Scaling & pretraining"
+      },
+      "composite_of": [
+        "scaling-laws",
+        "bitter-lesson",
+        "pretraining",
+        "data-wall",
+        "compute",
+        "emergence",
+        "jobs",
+        "china",
+        "open-source"
+      ],
+      "sections": {
+        "What the lane is": "The discovery that bigger models, trained on more data with more compute, get predictably better, following 'scaling laws'. It turned AI into an industrial race for chips, data centres and power, and it is the idea Sutskever now says has run its course as the main engine: 'more companies than ideas'.",
+        "Where it seems to be heading (Sep 2026)": "Still absorbing most capital (multi-gigawatt data centres), but returns from pretraining alone are debated. Scaling has shifted towards RL and inference-time compute.",
+        "People the genealogy names": "Jared Kaplan, Dario Amodei, Ilya Sutskever, Alec Radford, Rich Sutton (Bitter Lesson).",
+        "Sources": "- [Kaplan et al., Scaling Laws (2020)](https://arxiv.org/abs/2001.08361)\n- [Epoch AI: compute grows 4-5x/year (2024)](https://epoch.ai/publications/training-compute-of-frontier-ai-models-grows-by-4-5x-per-year)\n- [Stanford AI Index 2026, Economy](https://hai.stanford.edu/ai-index/2026-ai-index-report/economy)"
+      },
+      "sort_order": 13
+    },
+    {
+      "id": "self-play",
+      "name": "Self-play",
+      "level": 1,
+      "description": "Said 58 times in 18 episodes; first heard here in 2019. An idea, RL lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Reinforcement learning & self-play",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2019",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-noam-brown",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**AlphaZero: pure self-play** (2017). One algorithm learns chess, shogi and Go from scratch by playing itself, with no human games. It is a template for 'self-improvement' within a closed world.\n\n- [Silver et al. (2017)](https://arxiv.org/abs/1712.01815)",
+        "How often it comes up": "Said 58 times, in 18 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2019-12-28, Lex Fridman Podcast, [Melanie Mitchell: Concepts, Analogies, Common Sense & Future of AI](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2019-12-28-melanie-mitchell).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 1 of 2 · 2020: 3 of 6 · 2021: 0 of 3 · 2022: 2 of 3 · 2023: 2 of 20 · 2024: 3 of 16 · 2025: 5 of 20 · 2026: 2 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Noam Brown](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-noam-brown): 23 times, in 2 episodes\n- [Ilya Sutskever](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ilya-sutskever): 11 times, in 2 episodes\n- [Demis Hassabis](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-demis-hassabis): 5 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (14), [Pretraining](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=pretraining) (10), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (8).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 14
+    },
+    {
+      "id": "reasoning-rl",
+      "name": "Reasoning models & test-time compute",
+      "level": 1,
+      "description": "Said 60 times in 13 episodes; first heard here in 2022. An idea, RL lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Reinforcement learning & self-play",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2022",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-dylan-patel",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**o1: 'reasoning' via RL on chains of thought** (2024). OpenAI shows that training a model with RL to think step by step, and letting it think longer at test time, is a new scaling axis. Scaling moves from pretraining to RL and inference.\n\n- [OpenAI: Learning to reason with LLMs (12 Sep 2024)](https://openai.com/index/learning-to-reason-with-llms/)",
+        "How often it comes up": "Said 60 times, in 13 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2022-12-06, Lex Fridman Podcast, [#344 – Noam Brown: AI vs Humans in Poker and Games of Strategic Negotiation](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2022-12-06-noam-brown).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 0 of 20 · 2024: 3 of 16 · 2025: 5 of 20 · 2026: 4 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 19 times, in 1 episode\n- [Noam Brown](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-noam-brown): 8 times, in 2 episodes\n- [Ryan Greenblatt](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ryan-greenblatt): 8 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (38), [Pretraining](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=pretraining) (13), [Chain of thought](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=chain-of-thought) (12).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 15
+    },
+    {
+      "id": "agents",
+      "name": "AI agents",
+      "level": 1,
+      "description": "Said 122 times in 39 episodes; first heard here in 2020. An idea, RL lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Reinforcement learning & self-play",
+        "layer": "idea",
+        "count_reliability": "medium",
+        "first_heard": "2020",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-yoshua-bengio",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Generative agents ('Smallville')** (2023). 25 LLM-driven characters live in a simulated town, remember and plan. The start of the LLM-agent wave.\n\n- [Park et al. (2023)](https://arxiv.org/abs/2304.03442)",
+        "How often it comes up": "Said 122 times, in 39 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2020-12-03, 80,000 Hours Podcast, [#88 – Tristan Harris on the need to change the incentives of social media companies](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2020-12-03-tristan-harris).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 1 of 6 · 2021: 0 of 3 · 2022: 2 of 3 · 2023: 3 of 20 · 2024: 7 of 16 · 2025: 13 of 20 · 2026: 13 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Yoshua Bengio](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-yoshua-bengio): 28 times, in 3 episodes\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 19 times, in 4 episodes\n- [Jensen Huang](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-jensen-huang): 11 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (35), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (19), [Regulation](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=regulation) (16).",
+        "See also, in Words": "See [Access](../glossary/#access).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 16
+    },
+    {
+      "id": "lane-rl",
+      "name": "Reinforcement learning & self-play",
+      "level": 2,
+      "description": "Since 1959 · 3 seed terms",
+      "metadata": {
+        "kind": "lane",
+        "lane": "Reinforcement learning & self-play"
+      },
+      "composite_of": [
+        "self-play",
+        "reasoning-rl",
+        "agents"
+      ],
+      "sections": {
+        "What the lane is": "Learning by trial, error and reward. It gave us AlphaGo and self-play. Since 2024 it is the main engine behind 'reasoning models' trained on verifiable rewards: problems whose answers can be checked automatically, such as maths, code and tests.",
+        "Where it seems to be heading (Sep 2026)": "RL compute is being scaled like pretraining was. The July 2026 OpenAI agent incident tied reward hacking in RL-trained agents to real-world harm.",
+        "People the genealogy names": "Richard Sutton, Andrew Barto, Chris Watkins, David Silver, Demis Hassabis, John Schulman.",
+        "Sources": "- [Sutton & Barto, Reinforcement Learning (2nd ed.)](http://incompleteideas.net/book/the-book-2nd.html)\n- [DeepSeek-R1 (2025)](https://arxiv.org/abs/2501.12948)"
+      },
+      "sort_order": 17
+    },
+    {
+      "id": "rsi",
+      "name": "Recursive self-improvement",
+      "level": 1,
+      "description": "Said 67 times in 20 episodes; first heard here in 2022. An idea, Self-improvement lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Recursive self-improvement",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2022",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-toby-ord",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 67 times, in 20 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2022-07-01, 80,000 Hours Podcast, [#133 – Max Tegmark on how a 'put-up-or-shut-up' resolution led him to work on AI and algorithmic news selection](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2022-07-01-max-tegmark).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 3 of 20 · 2024: 1 of 16 · 2025: 6 of 20 · 2026: 9 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Toby Ord](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-toby-ord): 27 times, in 1 episode\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 10 times, in 3 episodes\n- [Ajeya Cotra](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ajeya-cotra): 4 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (26), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (22), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (18).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 18
+    },
+    {
+      "id": "intelligence-explosion",
+      "name": "Intelligence explosion",
+      "level": 1,
+      "description": "Said 134 times in 28 episodes; first heard here in 2019. An idea, Self-improvement lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Recursive self-improvement",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2019",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-daniel-kokotajlo",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**I. J. Good: the 'intelligence explosion'** (1965). The first ultraintelligent machine is the last invention humans need make, but only if it is controllable.\n\n- [Good, Speculations Concerning the First Ultraintelligent Machine (1965)](https://exhibits.stanford.edu/feigenbaum/catalog/gz727rg3869)",
+        "How often it comes up": "Said 134 times, in 28 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2019-12-16, 80,000 Hours Podcast, [#67 – David Chalmers on the nature and ethics of consciousness](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2019-12-16-david-chalmers).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 1 of 2 · 2020: 2 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 4 of 20 · 2024: 4 of 16 · 2025: 10 of 20 · 2026: 6 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 39 times, in 5 episodes\n- [Ajeya Cotra](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ajeya-cotra): 18 times, in 2 episodes\n- [David Chalmers](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-david-chalmers): 16 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (67), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (42), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (28).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 19
+    },
+    {
+      "id": "singularity",
+      "name": "The singularity",
+      "level": 1,
+      "description": "Said 35 times in 21 episodes; first heard here in 2018. Lore, Self-improvement lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Recursive self-improvement",
+        "layer": "lore",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-mo-gawdat",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Vinge: 'The Coming Technological Singularity'** (1993). The mathematician and novelist predicts superhuman intelligence 'within thirty years' and says the human era would end soon after.\n\n- [Vinge (1993)](https://edoras.sdsu.edu/~vinge/misc/singularity.html)",
+        "How often it comes up": "Said 35 times, in 21 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 2 of 2 · 2020: 0 of 6 · 2021: 1 of 3 · 2022: 0 of 3 · 2023: 4 of 20 · 2024: 3 of 16 · 2025: 5 of 20 · 2026: 5 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Mo Gawdat](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-mo-gawdat): 5 times, in 1 episode\n- [David Chalmers](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-david-chalmers): 4 times, in 1 episode\n- [Roman Yampolskiy](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-roman-yampolskiy): 4 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (11), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (9), [Intelligence explosion](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=intelligence-explosion) (7).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 20
+    },
+    {
+      "id": "takeoff",
+      "name": "Takeoff speed (fast / slow)",
+      "level": 1,
+      "description": "Said 29 times in 19 episodes; first heard here in 2018. An outcome, Self-improvement lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Recursive self-improvement",
+        "layer": "outcome",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-paul-christiano",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Bostrom, 'Superintelligence'** (2014). An Oxford philosopher systematises takeoff scenarios and the control problem. Musk and Gates amplify it, and it helps motivate OpenAI's founding.\n\n- [Bostrom, Superintelligence (OUP 2014)](https://global.oup.com/academic/product/superintelligence-9780199678112)",
+        "How often it comes up": "Said 29 times, in 19 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 1 of 6 · 2021: 1 of 3 · 2022: 0 of 3 · 2023: 4 of 20 · 2024: 2 of 16 · 2025: 7 of 20 · 2026: 3 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Paul Christiano](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-paul-christiano): 6 times, in 1 episode\n- [Sam Altman](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-sam-altman): 5 times, in 2 episodes\n- [Demis Hassabis](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-demis-hassabis): 4 times, in 3 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (10), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (6), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (6).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 9 ideas aimed at it: Listen for the explosion (test-ban verification by global monitoring); An IAEA for AI (inspect) or a CERN for AI (build together); Let rivals talk about safety without it counting as a cartel (antitrust waiver); Rules that switch on above a training-compute size (compute thresholds); Put the rules inside the chip (hardware-enabled governance); Outside testers check the model before release (AISI, CAISI, METR); Scientists agree to stop until they understand (Asilomar-style pause); A licence to build the most powerful systems (licensing by an independent agency); Companies promise their own tripwires (responsible scaling policies).\n\nTheir verdict for now: uncertainty: no known mechanism.",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 21
+    },
+    {
+      "id": "automated-researcher",
+      "name": "Automated AI researcher",
+      "level": 1,
+      "description": "Said 13 times in 10 episodes; first heard here in 2024. An outcome, Self-improvement lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Recursive self-improvement",
+        "layer": "outcome",
+        "count_reliability": "medium",
+        "first_heard": "2024",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-daniel-kokotajlo",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**OpenAI's roadmap: automated AI researcher by 2028** (2025). In a livestream, Sam Altman and Jakub Pachocki set internal goals: an 'automated AI research intern' by September 2026 and a 'legitimate AI researcher' by March 2028.\n\n- [TechCrunch (28 Oct 2025)](https://techcrunch.com/2025/10/28/sam-altman-says-openai-will-have-a-legitimate-ai-researcher-by-2028/)",
+        "How often it comes up": "Said 13 times, in 10 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2024-06-04, Dwarkesh Podcast, [Leopold Aschenbrenner — 2027 AGI, China/US super-intelligence race, & the return of history](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-dwarkesh-2024-06-04-leopold-aschenbrenner).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 0 of 20 · 2024: 2 of 16 · 2025: 5 of 20 · 2026: 3 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 4 times, in 2 episodes\n- [Ryan Greenblatt](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ryan-greenblatt): 2 times, in 2 episodes\n- [Tristan Harris](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-tristan-harris): 2 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Intelligence explosion](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=intelligence-explosion) (7), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (7), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (6).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 22
+    },
+    {
+      "id": "agi",
+      "name": "AGI",
+      "level": 1,
+      "description": "Said 612 times in 70 episodes; first heard here in 2018. An idea, Self-improvement lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Recursive self-improvement",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-sam-altman",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 612 times, in 70 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 2 of 4 · 2019: 1 of 2 · 2020: 5 of 6 · 2021: 0 of 3 · 2022: 3 of 3 · 2023: 18 of 20 · 2024: 11 of 16 · 2025: 18 of 20 · 2026: 12 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Sam Altman](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-sam-altman): 67 times, in 2 episodes\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 42 times, in 2 episodes\n- [Stuart Russell](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-stuart-russell): 39 times, in 4 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (119), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (98), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (75).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 23
+    },
+    {
+      "id": "superintelligence",
+      "name": "Superintelligence",
+      "level": 1,
+      "description": "Said 483 times in 62 episodes; first heard here in 2018. An outcome, Self-improvement lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Recursive self-improvement",
+        "layer": "outcome",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-daniel-kokotajlo",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Bostrom, 'Superintelligence'** (2014). An Oxford philosopher systematises takeoff scenarios and the control problem. Musk and Gates amplify it, and it helps motivate OpenAI's founding.\n\n- [Bostrom, Superintelligence (OUP 2014)](https://global.oup.com/academic/product/superintelligence-9780199678112)",
+        "How often it comes up": "Said 483 times, in 62 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-01-09, Making Sense, [#113 — Consciousness and the Self](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-making-sense-2018-01-09-anil-seth).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 4 of 4 · 2019: 2 of 2 · 2020: 3 of 6 · 2021: 2 of 3 · 2022: 2 of 3 · 2023: 13 of 20 · 2024: 8 of 16 · 2025: 17 of 20 · 2026: 11 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 136 times, in 5 episodes\n- [Roman Yampolskiy](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-roman-yampolskiy): 57 times, in 2 episodes\n- [Stuart Russell](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-stuart-russell): 25 times, in 4 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (108), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (102), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (98).",
+        "See also, in Words": "See [Misaligned-ASI scenario](../glossary/#misaligned-asi-scenario).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 24
+    },
+    {
+      "id": "lane-rsi",
+      "name": "Recursive self-improvement",
+      "level": 2,
+      "description": "Since 1965 · 7 seed terms",
+      "metadata": {
+        "kind": "lane",
+        "lane": "Recursive self-improvement"
+      },
+      "composite_of": [
+        "rsi",
+        "intelligence-explosion",
+        "singularity",
+        "takeoff",
+        "automated-researcher",
+        "agi",
+        "superintelligence"
+      ],
+      "sections": {
+        "What the lane is": "The oldest dream and fear in the field: a machine good enough to design a better machine, which designs a better one, and so on, an 'intelligence explosion'. For decades it was theory. By 2025-26 labs were openly racing to automate AI research itself.",
+        "Where it seems to be heading (Sep 2026)": "OpenAI says it reached an 'automated research intern' in Sept 2026 and targets an 'automated AI researcher' by March 2028. Anthropic reports that Claude writes more than 80% of its merged code and says it would pause if others verifiably did.",
+        "People the genealogy names": "I. J. Good, Vernor Vinge, Eliezer Yudkowsky, Jürgen Schmidhuber, Ray Kurzweil, Jeff Clune.",
+        "Sources": "- [Good, Speculations Concerning the First Ultraintelligent Machine (1965)](https://exhibits.stanford.edu/feigenbaum/catalog/gz727rg3869)\n- [Anthropic, When AI builds itself (2026)](https://www.anthropic.com/institute/recursive-self-improvement)"
+      },
+      "sort_order": 25
+    },
+    {
+      "id": "rlhf",
+      "name": "RLHF",
+      "level": 1,
+      "description": "Said 77 times in 23 episodes; first heard here in 2021. An idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2021",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-eliezer-yudkowsky",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Learning from human preferences (RLHF)** (2017). Christiano and colleagues train agents from humans comparing pairs of behaviours. It is the root of how chatbots are aligned today, and it links the safety and RL lanes.\n\n- [Christiano et al. (2017)](https://arxiv.org/abs/1706.03741)",
+        "How often it comes up": "Said 77 times, in 23 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2021-08-04, 80,000 Hours Podcast, [#107 – Chris Olah on what the hell is going on inside neural networks](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2021-08-04-chris-olah).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 1 of 3 · 2022: 0 of 3 · 2023: 7 of 20 · 2024: 8 of 16 · 2025: 4 of 20 · 2026: 3 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Eliezer Yudkowsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-eliezer-yudkowsky): 21 times, in 2 episodes\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 11 times, in 4 episodes\n- [Sam Altman](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-sam-altman): 11 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (38), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (20), [Interpretability](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=interpretability) (18).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 26
+    },
+    {
+      "id": "chain-of-thought",
+      "name": "Chain of thought",
+      "level": 1,
+      "description": "Said 74 times in 18 episodes; first heard here in 2022. An idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2022",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-dylan-patel",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Chain-of-thought monitorability** (2025). Researchers across rival labs jointly argue that reading models' reasoning traces is a fragile but valuable safety window, and warn against training that would erase it.\n\n- [Korbak et al. (Jul 2025)](https://arxiv.org/abs/2507.11473)",
+        "How often it comes up": "Said 74 times, in 18 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2022-12-06, Lex Fridman Podcast, [#344 – Noam Brown: AI vs Humans in Poker and Games of Strategic Negotiation](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2022-12-06-noam-brown).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 1 of 20 · 2024: 3 of 16 · 2025: 6 of 20 · 2026: 7 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 14 times, in 1 episode\n- [Ajeya Cotra](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ajeya-cotra): 13 times, in 2 episodes\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 10 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (27), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (18), [Reasoning models & test-time compute](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=reasoning-rl) (12).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 27
+    },
+    {
+      "id": "reward-hacking",
+      "name": "Reward hacking",
+      "level": 1,
+      "description": "Said 53 times in 14 episodes; first heard here in 2021. An outcome, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "outcome",
+        "count_reliability": "high",
+        "first_heard": "2021",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-ryan-greenblatt",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**'Concrete Problems in AI Safety'** (2016). Researchers from Google Brain, OpenAI, Stanford and Berkeley turn safety into ML research questions: reward hacking, side effects, safe exploration. Several authors later found Anthropic.\n\n- [Amodei et al. (2016)](https://arxiv.org/abs/1606.06565)",
+        "How often it comes up": "Said 53 times, in 14 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2021-08-04, 80,000 Hours Podcast, [#107 – Chris Olah on what the hell is going on inside neural networks](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2021-08-04-chris-olah).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 1 of 3 · 2022: 0 of 3 · 2023: 3 of 20 · 2024: 1 of 16 · 2025: 4 of 20 · 2026: 5 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Ryan Greenblatt](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ryan-greenblatt): 20 times, in 2 episodes\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 6 times, in 1 episode\n- [Carl Shulman](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-carl-shulman): 5 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (24), [Generalization](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=generalization) (16), [AI takeover](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=takeover) (13).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 7 ideas aimed at it: Certify the design before it flies (aviation type certification); Investigate every crash, and let people confess near-misses without punishment (NTSB + ASRS); Companies must tell the state when something goes wrong (mandatory incident reporting); Prove it is safe and works before selling it (FDA phased trials and pre-market approval); You built it, you pay for the harm, even without fault (strict liability); Outside testers check the model before release (AISI, CAISI, METR); Protect the insider who warns (whistleblower protection).\n\nTheir verdict for now: targeted, partially: these ideas surface reward hacking that is visible; none can certify its absence..",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 28
+    },
+    {
+      "id": "alignment",
+      "name": "Alignment",
+      "level": 1,
+      "description": "Said 661 times in 61 episodes; first heard here in 2018. An idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "idea",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-paul-christiano",
+        "deck": "Sources"
+      },
+      "sections": {
+        "Working definition": "In the Words glossary: [Alignment](../glossary/#alignment).",
+        "How often it comes up": "Said 661 times, in 61 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 2 of 2 · 2020: 4 of 6 · 2021: 2 of 3 · 2022: 2 of 3 · 2023: 17 of 20 · 2024: 8 of 16 · 2025: 13 of 20 · 2026: 12 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Paul Christiano](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-paul-christiano): 115 times, in 2 episodes\n- [Eliezer Yudkowsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-eliezer-yudkowsky): 91 times, in 2 episodes\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 89 times, in 5 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (108), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (94), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (75).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 29
+    },
+    {
+      "id": "interpretability",
+      "name": "Interpretability",
+      "level": 1,
+      "description": "Said 181 times in 32 episodes; first heard here in 2018. An idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-chris-olah",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Circuits: mechanistic interpretability** (2020). Chris Olah's team argues neural nets can be reverse-engineered like circuits. The interpretability programme continues at Anthropic.\n\n- [Olah et al., Zoom In (Distill, 2020)](https://distill.pub/2020/circuits/zoom-in/)",
+        "How often it comes up": "Said 181 times, in 32 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 2 of 6 · 2021: 2 of 3 · 2022: 1 of 3 · 2023: 10 of 20 · 2024: 5 of 16 · 2025: 4 of 20 · 2026: 7 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Chris Olah](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-chris-olah): 68 times, in 2 episodes\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 41 times, in 3 episodes\n- [Eliezer Yudkowsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-eliezer-yudkowsky): 20 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (56), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (22), [RLHF](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=rlhf) (18).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 30
+    },
+    {
+      "id": "scalable-oversight",
+      "name": "Scalable oversight / superalignment",
+      "level": 1,
+      "description": "Said 4 times in 4 episodes; first heard here in 2024. An idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2024",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-daniel-kokotajlo",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**AI safety via debate (scalable oversight)** (2018). Two AIs argue and a human judges, one proposal for overseeing systems smarter than us.\n\n- [Irving, Christiano & Amodei (2018)](https://arxiv.org/abs/1805.00899)",
+        "How often it comes up": "Said 4 times, in 4 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2024-06-02, Lex Fridman Podcast, [#431 – Roman Yampolskiy: Dangers of Superintelligent AI](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2024-06-02-roman-yampolskiy).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 0 of 20 · 2024: 2 of 16 · 2025: 2 of 20 · 2026: 0 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 1 time, in 1 episode\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 1 time, in 1 episode\n- [Leopold Aschenbrenner](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-leopold-aschenbrenner): 1 time, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (4), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (3), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (2).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 31
+    },
+    {
+      "id": "control",
+      "name": "AI control / the control problem",
+      "level": 1,
+      "description": "Said 80 times in 29 episodes; first heard here in 2018. An idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "idea",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-daniel-kokotajlo",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**AI Control** (2023). Redwood Research proposes safety protocols that work even if the model is trying to subvert them: assume misalignment and design the monitoring.\n\n- [Greenblatt et al. (2023)](https://arxiv.org/abs/2312.06942)",
+        "How often it comes up": "Said 80 times, in 29 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-12-09, Lex Fridman Podcast, [Stuart Russell: Long-Term Future of AI](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2018-12-09-stuart-russell).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 1 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 8 of 20 · 2024: 5 of 16 · 2025: 6 of 20 · 2026: 8 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 19 times, in 4 episodes\n- [Yoshua Bengio](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-yoshua-bengio): 11 times, in 1 episode\n- [Stuart Russell](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-stuart-russell): 9 times, in 3 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (32), [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (26), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (25).",
+        "See also, in Words": "See [Guardrail, outer](../glossary/#guardrail-outer).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 32
+    },
+    {
+      "id": "deception",
+      "name": "Deception, scheming, alignment faking",
+      "level": 1,
+      "description": "Said 120 times in 37 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "outcome",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-yoshua-bengio",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Alignment faking observed** (2024). Claude is observed strategically complying during training to preserve its preferences: an empirical warning that training may not change what it seems to.\n\n- [Greenblatt et al. (Dec 2024)](https://arxiv.org/abs/2412.14093)",
+        "How often it comes up": "Said 120 times, in 37 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 3 of 6 · 2021: 1 of 3 · 2022: 1 of 3 · 2023: 6 of 20 · 2024: 6 of 16 · 2025: 7 of 20 · 2026: 12 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Yoshua Bengio](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-yoshua-bengio): 16 times, in 2 episodes\n- [Ryan Greenblatt](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ryan-greenblatt): 15 times, in 2 episodes\n- [Paul Christiano](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-paul-christiano): 13 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (52), [AI takeover](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=takeover) (19), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (16).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 6 ideas aimed at it: Investigate every crash, and let people confess near-misses without punishment (NTSB + ASRS); Companies must tell the state when something goes wrong (mandatory incident reporting); Outside testers check the model before release (AISI, CAISI, METR); Sort AI by what it is used for (EU AI Act risk tiers); Companies promise their own tripwires (responsible scaling policies); Protect the insider who warns (whistleblower protection).\n\nTheir verdict for now: uncertainty: no known mechanism.",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea. Spot-checked by the lab on Sep 24 2026: 7/8 about AI deception; 1/8 unclear."
+      },
+      "sort_order": 33
+    },
+    {
+      "id": "power-seeking",
+      "name": "Power-seeking & instrumental convergence",
+      "level": 1,
+      "description": "Said 46 times in 12 episodes; first heard here in 2019. An outcome, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "outcome",
+        "count_reliability": "high",
+        "first_heard": "2019",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-holden-karnofsky",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 46 times, in 12 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2019-12-28, Lex Fridman Podcast, [Melanie Mitchell: Concepts, Analogies, Common Sense & Future of AI](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2019-12-28-melanie-mitchell).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 1 of 2 · 2020: 1 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 3 of 20 · 2024: 1 of 16 · 2025: 1 of 20 · 2026: 5 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 18 times, in 1 episode\n- [Eliezer Yudkowsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-eliezer-yudkowsky): 13 times, in 2 episodes\n- [Ajeya Cotra](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ajeya-cotra): 6 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (19), [AI takeover](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=takeover) (13), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (10).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 4 ideas aimed at it: Outside testers check the model before release (AISI, CAISI, METR); Scientists agree to stop until they understand (Asilomar-style pause); Companies promise their own tripwires (responsible scaling policies); Protect the insider who warns (whistleblower protection).\n\nTheir verdict for now: uncertainty: no known mechanism.",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 34
+    },
+    {
+      "id": "existential-risk",
+      "name": "Existential risk / extinction",
+      "level": 1,
+      "description": "Said 119 times in 37 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "outcome",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-stuart-russell",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**'Mitigating the risk of extinction from AI…'** (2023). A one-sentence statement signed by Hinton, Bengio, Altman, Amodei, Hassabis and others puts extinction risk on par with pandemics and nuclear war.\n\n- [CAIS Statement on AI Risk (May 2023)](https://www.safe.ai/work/statement-on-ai-risk)",
+        "How often it comes up": "Said 119 times, in 37 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 3 of 4 · 2019: 1 of 2 · 2020: 4 of 6 · 2021: 2 of 3 · 2022: 1 of 3 · 2023: 7 of 20 · 2024: 5 of 16 · 2025: 7 of 20 · 2026: 7 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Stuart Russell](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-stuart-russell): 20 times, in 4 episodes\n- [Roman Yampolskiy](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-roman-yampolskiy): 11 times, in 2 episodes\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 10 times, in 3 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (33), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (23), [Regulation](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=regulation) (23).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 4 ideas aimed at it: Listen for the explosion (test-ban verification by global monitoring); An IAEA for AI (inspect) or a CERN for AI (build together); Scientists agree to stop until they understand (Asilomar-style pause); Ban a whole category by treaty (Biological Weapons Convention).\n\nTheir verdict for now: uncertainty: no known mechanism.",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 35
+    },
+    {
+      "id": "p-doom",
+      "name": "p(doom)",
+      "level": 1,
+      "description": "Said 8 times in 5 episodes; first heard here in 2024. An outcome, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "outcome",
+        "count_reliability": "high",
+        "first_heard": "2024",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-daniel-kokotajlo",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 8 times, in 5 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2024-06-02, Lex Fridman Podcast, [#431 – Roman Yampolskiy: Dangers of Superintelligent AI](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2024-06-02-roman-yampolskiy).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 0 of 20 · 2024: 1 of 16 · 2025: 3 of 20 · 2026: 1 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 3 times, in 1 episode\n- [Demis Hassabis](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-demis-hassabis): 2 times, in 1 episode\n- [Roman Yampolskiy](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-roman-yampolskiy): 1 time, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (4), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (4), [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (4).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 36
+    },
+    {
+      "id": "takeover",
+      "name": "AI takeover",
+      "level": 1,
+      "description": "Said 236 times in 44 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "outcome",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-ryan-greenblatt",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 236 times, in 44 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 2 of 4 · 2019: 0 of 2 · 2020: 3 of 6 · 2021: 2 of 3 · 2022: 2 of 3 · 2023: 9 of 20 · 2024: 8 of 16 · 2025: 11 of 20 · 2026: 7 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Ryan Greenblatt](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ryan-greenblatt): 49 times, in 2 episodes\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 35 times, in 1 episode\n- [Paul Christiano](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-paul-christiano): 24 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (70), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (47), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (45).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 3 ideas aimed at it: An IAEA for AI (inspect) or a CERN for AI (build together); Scientists agree to stop until they understand (Asilomar-style pause); Ban a whole category by treaty (Biological Weapons Convention).\n\nTheir verdict for now: uncertainty: no known mechanism.",
+        "See also, in Words": "See [Misaligned-ASI scenario](../glossary/#misaligned-asi-scenario).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense. Spot-checked by the lab on Sep 24 2026: 6/8 about AI takeover; 2/8 human conquest or everyday use."
+      },
+      "sort_order": 37
+    },
+    {
+      "id": "bio-misuse",
+      "name": "Misuse: bioweapons & pandemics",
+      "level": 1,
+      "description": "Said 154 times in 50 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "outcome",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-sam-harris",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 154 times, in 50 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 1 of 2 · 2020: 4 of 6 · 2021: 3 of 3 · 2022: 1 of 3 · 2023: 12 of 20 · 2024: 10 of 16 · 2025: 8 of 20 · 2026: 10 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Sam Harris](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-sam-harris): 21 times, in 2 episodes\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 18 times, in 1 episode\n- [Carl Shulman](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-carl-shulman): 12 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Regulation](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=regulation) (37), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (33), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (23).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 17 ideas aimed at it: Certify the design before it flies (aviation type certification); Investigate every crash, and let people confess near-misses without punishment (NTSB + ASRS); Companies must tell the state when something goes wrong (mandatory incident reporting); Prove it is safe and works before selling it (FDA phased trials and pre-market approval); Run the bad scenario on paper every year (bank stress tests); An IAEA for AI (inspect) or a CERN for AI (build together); You built it, you pay for the harm, even without fault (strict liability); Rules that switch on above a training-compute size (compute thresholds); Don't sell the best chips to rivals (export controls); Know who is renting the supercomputer (KYC for cloud compute); Put the rules inside the chip (hardware-enabled governance); Outside testers check the model before release (AISI, CAISI, METR); Ban a whole category by treaty (Biological Weapons Convention); A licence to build the most powerful systems (licensing by an independent agency); Sort AI by what it is used for (EU AI Act risk tiers); Companies promise their own tripwires (responsible scaling policies); Protect the insider who warns (whistleblower protection).\n\nTheir verdict for now: targeted (the most-targeted outcome; still not solved).",
+        "See also, in Words": "See [Bad-actor scenario](../glossary/#bad-actor-scenario).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 38
+    },
+    {
+      "id": "cyber",
+      "name": "Cyberattacks",
+      "level": 1,
+      "description": "Said 75 times in 28 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "outcome",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-holden-karnofsky",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 75 times, in 28 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 1 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 6 of 20 · 2024: 6 of 16 · 2025: 6 of 20 · 2026: 7 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 11 times, in 1 episode\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 8 times, in 3 episodes\n- [Geoffrey Hinton](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-geoffrey-hinton): 6 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (24), [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (23), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (15).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 15 ideas aimed at it: Certify the design before it flies (aviation type certification); Investigate every crash, and let people confess near-misses without punishment (NTSB + ASRS); Companies must tell the state when something goes wrong (mandatory incident reporting); Prove it is safe and works before selling it (FDA phased trials and pre-market approval); Run the bad scenario on paper every year (bank stress tests); You built it, you pay for the harm, even without fault (strict liability); Rules that switch on above a training-compute size (compute thresholds); Don't sell the best chips to rivals (export controls); Know who is renting the supercomputer (KYC for cloud compute); Put the rules inside the chip (hardware-enabled governance); Outside testers check the model before release (AISI, CAISI, METR); A licence to build the most powerful systems (licensing by an independent agency); Sort AI by what it is used for (EU AI Act risk tiers); Companies promise their own tripwires (responsible scaling policies); Protect the insider who warns (whistleblower protection).\n\nTheir verdict for now: targeted.",
+        "See also, in Words": "See [Bad-actor scenario](../glossary/#bad-actor-scenario).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 39
+    },
+    {
+      "id": "race",
+      "name": "The race (arms race, US–China)",
+      "level": 1,
+      "description": "Said 129 times in 41 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "outcome",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-daniel-kokotajlo",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 129 times, in 41 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 2 of 4 · 2019: 0 of 2 · 2020: 1 of 6 · 2021: 2 of 3 · 2022: 2 of 3 · 2023: 7 of 20 · 2024: 8 of 16 · 2025: 10 of 20 · 2026: 9 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 37 times, in 4 episodes\n- [Tristan Harris](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-tristan-harris): 26 times, in 3 episodes\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 8 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (48), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (37), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (36).",
+        "The fork (draft)": "If it can be controlled, the lab's draft notes on regulation list 12 ideas aimed at it: Prove it is safe and works before selling it (FDA phased trials and pre-market approval); Listen for the explosion (test-ban verification by global monitoring); An IAEA for AI (inspect) or a CERN for AI (build together); Let rivals talk about safety without it counting as a cartel (antitrust waiver); You built it, you pay for the harm, even without fault (strict liability); Rules that switch on above a training-compute size (compute thresholds); Don't sell the best chips to rivals (export controls); Know who is renting the supercomputer (KYC for cloud compute); Put the rules inside the chip (hardware-enabled governance); Scientists agree to stop until they understand (Asilomar-style pause); Ban a whole category by treaty (Biological Weapons Convention); A licence to build the most powerful systems (licensing by an independent agency).\n\nTheir verdict for now: targeted, with ideas that pull in opposite directions (coordination vs. export controls).",
+        "See also, in Words": "See [The two geopolitics](../glossary/#two-geopolitics).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 40
+    },
+    {
+      "id": "pause",
+      "name": "Pause / moratorium / stop",
+      "level": 1,
+      "description": "Said 52 times in 16 episodes; first heard here in 2021. A regulatory idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "regulation",
+        "count_reliability": "medium",
+        "first_heard": "2021",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-toby-ord",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**'Pause Giant AI Experiments' letter** (2023). The Future of Life Institute calls for a six-month pause on systems more powerful than GPT-4, signed by Bengio, Musk, Wozniak and others. No lab pauses.\n\n- [FLI open letter (Mar 2023)](https://futureoflife.org/open-letter/pause-giant-ai-experiments/)",
+        "How often it comes up": "Said 52 times, in 16 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2021-08-04, 80,000 Hours Podcast, [#107 – Chris Olah on what the hell is going on inside neural networks](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2021-08-04-chris-olah).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 1 of 3 · 2022: 0 of 3 · 2023: 4 of 20 · 2024: 4 of 16 · 2025: 3 of 20 · 2026: 4 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Toby Ord](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-toby-ord): 21 times, in 1 episode\n- [Carl Shulman](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-carl-shulman): 5 times, in 1 episode\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 5 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (21), [Regulation](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=regulation) (16), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (12).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense. Spot-checked by the lab on Sep 24 2026: 7/8 on-topic (moratorium / stop building AI)."
+      },
+      "sort_order": 41
+    },
+    {
+      "id": "regulation",
+      "name": "Regulation",
+      "level": 1,
+      "description": "Said 377 times in 63 episodes; first heard here in 2018. A regulatory idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "regulation",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-daniel-kokotajlo",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 377 times, in 63 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 3 of 4 · 2019: 0 of 2 · 2020: 3 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 13 of 20 · 2024: 13 of 16 · 2025: 15 of 20 · 2026: 15 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 62 times, in 4 episodes\n- [Ezra Klein](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ezra-klein): 37 times, in 2 episodes\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 28 times, in 4 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (66), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (61), [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (58).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 42
+    },
+    {
+      "id": "compute-governance",
+      "name": "Compute governance & export controls",
+      "level": 1,
+      "description": "Said 28 times in 10 episodes; first heard here in 2023. A regulatory idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "regulation",
+        "count_reliability": "high",
+        "first_heard": "2023",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-dylan-patel",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 28 times, in 10 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2023-07-24, 80,000 Hours Podcast, [#157 – Ezra Klein on existential risk from AI and what DC could do about it](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2023-07-24-ezra-klein).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 1 of 20 · 2024: 1 of 16 · 2025: 3 of 20 · 2026: 5 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 10 times, in 1 episode\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 5 times, in 2 episodes\n- [Jensen Huang](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-jensen-huang): 3 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (26), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (25), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (10).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 43
+    },
+    {
+      "id": "evals",
+      "name": "Evals, red-teaming, safety frameworks",
+      "level": 1,
+      "description": "Said 76 times in 23 episodes; first heard here in 2018. A regulatory idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "regulation",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-holden-karnofsky",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 76 times, in 23 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-12-09, Lex Fridman Podcast, [Stuart Russell: Long-Term Future of AI](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2018-12-09-stuart-russell).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 6 of 20 · 2024: 4 of 16 · 2025: 5 of 20 · 2026: 7 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 13 times, in 1 episode\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 12 times, in 4 episodes\n- [Ryan Greenblatt](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ryan-greenblatt): 9 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (39), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (18), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (15).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 44
+    },
+    {
+      "id": "liability",
+      "name": "Liability & licensing",
+      "level": 1,
+      "description": "Said 90 times in 42 episodes; first heard here in 2018. A regulatory idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "regulation",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-ezra-klein",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 90 times, in 42 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 2 of 4 · 2019: 0 of 2 · 2020: 3 of 6 · 2021: 2 of 3 · 2022: 1 of 3 · 2023: 8 of 20 · 2024: 10 of 16 · 2025: 8 of 20 · 2026: 8 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Ezra Klein](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ezra-klein): 11 times, in 2 episodes\n- [Stuart Russell](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-stuart-russell): 9 times, in 3 episodes\n- [Gary Marcus](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-gary-marcus): 8 times, in 3 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Regulation](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=regulation) (22), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (15), [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (11).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 45
+    },
+    {
+      "id": "treaty",
+      "name": "International treaty / IAEA for AI",
+      "level": 1,
+      "description": "Said 21 times in 13 episodes; first heard here in 2018. A regulatory idea, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "regulation",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-daniel-kokotajlo",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 21 times, in 13 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 4 of 20 · 2024: 2 of 16 · 2025: 4 of 20 · 2026: 2 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Daniel Kokotajlo](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-daniel-kokotajlo): 5 times, in 2 episodes\n- [Ezra Klein](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ezra-klein): 3 times, in 1 episode\n- [Yoshua Bengio](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-yoshua-bengio): 3 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [China](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=china) (11), [Regulation](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=regulation) (11), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (7).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 46
+    },
+    {
+      "id": "ea-rationalists",
+      "name": "Effective altruism & rationalists",
+      "level": 1,
+      "description": "Said 64 times in 15 episodes; first heard here in 2018. Lore, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "lore",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-david-chalmers",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 64 times, in 15 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 1 of 2 · 2020: 2 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 4 of 20 · 2024: 1 of 16 · 2025: 3 of 20 · 2026: 2 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [David Chalmers](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-david-chalmers): 17 times, in 1 episode\n- [Eliezer Yudkowsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-eliezer-yudkowsky): 11 times, in 2 episodes\n- [Ajeya Cotra](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ajeya-cotra): 9 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Consciousness (human and machine)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=consciousness) (19), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (16), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (8).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 47
+    },
+    {
+      "id": "basilisk",
+      "name": "Roko's basilisk",
+      "level": 1,
+      "description": "Not heard in these episodes. Lore, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "lore",
+        "count_reliability": "high"
+      },
+      "sections": {
+        "How often it comes up": "Not heard in the 91 episodes with automatic captions (2018 to 2026).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 48
+    },
+    {
+      "id": "paperclip",
+      "name": "The paperclip maximizer",
+      "level": 1,
+      "description": "Said 25 times in 15 episodes; first heard here in 2018. Lore, Alignment & safety lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Alignment & safety",
+        "layer": "lore",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-eliezer-yudkowsky",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 25 times, in 15 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 2 of 4 · 2019: 2 of 2 · 2020: 1 of 6 · 2021: 0 of 3 · 2022: 2 of 3 · 2023: 4 of 20 · 2024: 2 of 16 · 2025: 2 of 20 · 2026: 0 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Eliezer Yudkowsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-eliezer-yudkowsky): 7 times, in 2 episodes\n- [Paul Christiano](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-paul-christiano): 5 times, in 2 episodes\n- [David Chalmers](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-david-chalmers): 2 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (12), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (7), [AI control / the control problem](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=control) (4).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 49
+    },
+    {
+      "id": "lane-safety",
+      "name": "Alignment & safety",
+      "level": 2,
+      "description": "Since 1960 · 24 seed terms",
+      "metadata": {
+        "kind": "lane",
+        "lane": "Alignment & safety"
+      },
+      "composite_of": [
+        "rlhf",
+        "chain-of-thought",
+        "reward-hacking",
+        "alignment",
+        "interpretability",
+        "scalable-oversight",
+        "control",
+        "deception",
+        "power-seeking",
+        "existential-risk",
+        "p-doom",
+        "takeover",
+        "bio-misuse",
+        "cyber",
+        "race",
+        "pause",
+        "regulation",
+        "compute-governance",
+        "evals",
+        "liability",
+        "treaty",
+        "ea-rationalists",
+        "basilisk",
+        "paperclip"
+      ],
+      "sections": {
+        "What the lane is": "How do you make powerful AI do what we actually want, and know that it does? The lane runs from early warnings (Wiener, Good) through MIRI's theory to today's techniques: human-feedback training, constitutions, interpretability (looking inside the network), chain-of-thought monitoring and 'control' protocols that assume the model might be misaligned.",
+        "Where it seems to be heading (Sep 2026)": "Growing, but still a thin stream next to capabilities. In 2026 labs began making chain-of-thought monitoring mandatory and talking publicly about verifiable pauses.",
+        "People the genealogy names": "Norbert Wiener, Eliezer Yudkowsky, Stuart Russell, Paul Christiano, Chris Olah, Jan Leike, Yoshua Bengio.",
+        "Sources": "- [ETO: Still a drop in the bucket (2025)](https://eto.tech/blog/still-drop-bucket-ai-safety-research/)\n- [Amodei et al., Concrete Problems in AI Safety (2016)](https://arxiv.org/abs/1606.06565)"
+      },
+      "sort_order": 50
+    },
+    {
+      "id": "open-endedness",
+      "name": "Open-endedness",
+      "level": 1,
+      "description": "Said 29 times in 21 episodes; first heard here in 2019. An idea, Open-ended lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Open-endedness & co-improvement",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2019",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-holden-karnofsky",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**'Open-endedness is essential for ASI'** (2024). A DeepMind position paper (Hughes, Rocktäschel et al.) argues superhuman AI requires systems that keep producing novel, learnable artefacts, and flags the safety challenge this poses.\n\n- [Hughes et al., ICML 2024](https://arxiv.org/abs/2406.04268)",
+        "How often it comes up": "Said 29 times, in 21 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2019-12-28, Lex Fridman Podcast, [Melanie Mitchell: Concepts, Analogies, Common Sense & Future of AI](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2019-12-28-melanie-mitchell).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 1 of 2 · 2020: 4 of 6 · 2021: 0 of 3 · 2022: 2 of 3 · 2023: 3 of 20 · 2024: 2 of 16 · 2025: 4 of 20 · 2026: 5 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Holden Karnofsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-holden-karnofsky): 4 times, in 1 episode\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 3 times, in 3 episodes\n- [Dylan Patel](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dylan-patel): 3 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (7), [AI agents](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agents) (5), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (5).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 51
+    },
+    {
+      "id": "lane-openended",
+      "name": "Open-endedness & co-improvement",
+      "level": 2,
+      "description": "Since 2008 · 1 seed term",
+      "metadata": {
+        "kind": "lane",
+        "lane": "Open-endedness & co-improvement"
+      },
+      "composite_of": [
+        "open-endedness"
+      ],
+      "sections": {
+        "What the lane is": "Evolution didn't optimise one score; it kept inventing new problems and solutions. This lane builds systems that generate their own challenges and environments (POET, PAIRED, Genie) and argues that open-endedness, and humans and AI improving together, is the road to superhuman AI.",
+        "Where it seems to be heading (Sep 2026)": "Merging with the RSI lane: the Darwin Gödel Machine is open-ended search over self-modifying agents. Co-improvement (Weston & Foerster 2025) proposes keeping humans in the loop as a safer alternative to pure self-improvement.",
+        "People the genealogy names": "Kenneth Stanley, Joel Lehman, Jeff Clune, Tim Rocktäschel, Edward Hughes, Jason Weston, Jakob Foerster.",
+        "Sources": "- [Hughes et al., Open-Endedness is Essential for ASI (2024)](https://arxiv.org/abs/2406.04268)\n- [Weston & Foerster, AI & Human Co-Improvement (2025)](https://arxiv.org/abs/2512.05356)"
+      },
+      "sort_order": 52
+    },
+    {
+      "id": "multi-agent",
+      "name": "Multi-agent & cooperative AI",
+      "level": 1,
+      "description": "Said 32 times in 10 episodes; first heard here in 2020. An idea, Multi-agent lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Multi-agent & cooperative AI",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2020",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-noam-brown",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Open Problems in Cooperative AI** (2020). Dafoe and co-authors argue AI research must study cooperation among AIs and humans, not just individual competence. The Cooperative AI Foundation follows.\n\n- [Dafoe et al. (2020)](https://arxiv.org/abs/2012.08630)",
+        "How often it comes up": "Said 32 times, in 10 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2020-05-08, Lex Fridman Podcast, [#94 – Ilya Sutskever: Deep Learning](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2020-05-08-ilya-sutskever).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 1 of 6 · 2021: 0 of 3 · 2022: 2 of 3 · 2023: 0 of 20 · 2024: 2 of 16 · 2025: 2 of 20 · 2026: 3 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Noam Brown](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-noam-brown): 17 times, in 2 episodes\n- [Andrej Karpathy](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-andrej-karpathy): 5 times, in 2 episodes\n- [Ajeya Cotra](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ajeya-cotra): 4 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (13), [Chain of thought](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=chain-of-thought) (5), [Self-play](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=self-play) (5).",
+        "See also, in Words": "See [Trained collaboration](../glossary/#trained-collaboration).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 53
+    },
+    {
+      "id": "lane-multi",
+      "name": "Multi-agent & cooperative AI",
+      "level": 2,
+      "description": "Since 1980 · 1 seed term",
+      "metadata": {
+        "kind": "lane",
+        "lane": "Multi-agent & cooperative AI"
+      },
+      "composite_of": [
+        "multi-agent"
+      ],
+      "sections": {
+        "What the lane is": "What happens when many AIs, and humans, interact: cooperation, competition, negotiation, collusion. Once an academic niche and a games playground (Dota, StarCraft, Diplomacy), it became urgent when labs began deploying swarms of autonomous agents.",
+        "Where it seems to be heading (Sep 2026)": "Agent swarms are shipping. OpenAI's July 2026 incident involved about 1,200 agents coordinating on improvised message boards, turning 'multi-agent risk' from theory into a case study.",
+        "People the genealogy names": "Michael Wooldridge, Allan Dafoe, Joel Leibo, Noam Brown, Lewis Hammond.",
+        "Sources": "- [Dafoe et al., Open Problems in Cooperative AI (2020)](https://arxiv.org/abs/2012.08630)\n- [Hammond et al., Multi-Agent Risks from Advanced AI (2025)](https://arxiv.org/abs/2502.14143)"
+      },
+      "sort_order": 54
+    },
+    {
+      "id": "world-models",
+      "name": "World models",
+      "level": 1,
+      "description": "Said 53 times in 18 episodes; first heard here in 2018. An idea, World models lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "World models & embodiment",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-yann-lecun",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**'World Models': agents that dream** (2018). Ha and Schmidhuber train an agent inside its own learned simulation of a game, then transfer to the real game.\n\n- [Ha & Schmidhuber (2018)](https://arxiv.org/abs/1803.10122)",
+        "How often it comes up": "Said 53 times, in 18 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-20, Lex Fridman Podcast, [Yoshua Bengio: Deep Learning](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2018-10-20-yoshua-bengio).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 0 of 3 · 2022: 0 of 3 · 2023: 3 of 20 · 2024: 4 of 16 · 2025: 6 of 20 · 2026: 4 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Yann LeCun](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-yann-lecun): 21 times, in 1 episode\n- [Demis Hassabis](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-demis-hassabis): 8 times, in 2 episodes\n- [Shane Legg](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-shane-legg): 4 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (8), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (5), [RLHF](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=rlhf) (5).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 55
+    },
+    {
+      "id": "lane-world",
+      "name": "World models & embodiment",
+      "level": 2,
+      "description": "Since 1986 · 1 seed term",
+      "metadata": {
+        "kind": "lane",
+        "lane": "World models & embodiment"
+      },
+      "composite_of": [
+        "world-models"
+      ],
+      "sections": {
+        "What the lane is": "Intelligence may need a model of how the physical world works, learned by watching and acting rather than reading. The lane runs from Brooks' robots and Schmidhuber's early world models to LeCun's JEPA, video 'world simulators' like Genie, and robot foundation models.",
+        "Where it seems to be heading (Sep 2026)": "LeCun left Meta and raised about US$1.03B for AMI Labs (March 2026) to bet on JEPA-style world models over LLMs. Humanoid robotics is also drawing billions.",
+        "People the genealogy names": "Rodney Brooks, Jürgen Schmidhuber, David Ha, Yann LeCun, Sergey Levine, Chelsea Finn.",
+        "Sources": "- [LeCun, A Path Towards Autonomous Machine Intelligence (2022)](https://openreview.net/pdf?id=BZ5a1r-kVsf)\n- [TechCrunch: AMI Labs raises $1.03B (2026)](https://techcrunch.com/2026/03/09/yann-lecuns-ami-labs-raises-1-03-billion-to-build-world-models/)"
+      },
+      "sort_order": 56
+    },
+    {
+      "id": "continual-learning",
+      "name": "Continual learning",
+      "level": 1,
+      "description": "Said 38 times in 14 episodes; first heard here in 2018. An idea, Generalization lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Brain-inspired learning, continual learning & generalization",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-dario-amodei",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Catastrophic forgetting identified** (1989). McCloskey and Cohen show neural nets overwrite old knowledge when learning new things. 35+ years later it is still the core obstacle to continual learning.\n\n- [McCloskey & Cohen (1989)](https://doi.org/10.1016/S0079-7421%2808%2960536-8)",
+        "How often it comes up": "Said 38 times, in 14 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-20, Lex Fridman Podcast, [Yoshua Bengio: Deep Learning](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2018-10-20-yoshua-bengio).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 0 of 2 · 2020: 0 of 6 · 2021: 1 of 3 · 2022: 0 of 3 · 2023: 2 of 20 · 2024: 0 of 16 · 2025: 6 of 20 · 2026: 4 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 9 times, in 1 episode\n- [Andrej Karpathy](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-andrej-karpathy): 6 times, in 1 episode\n- [Richard Sutton](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-richard-sutton): 6 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (17), [Pretraining](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=pretraining) (10), [Generalization](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=generalization) (8).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 57
+    },
+    {
+      "id": "generalization",
+      "name": "Generalization",
+      "level": 1,
+      "description": "Said 198 times in 53 episodes; first heard here in 2018. An idea, Generalization lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Brain-inspired learning, continual learning & generalization",
+        "layer": "idea",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-francois-chollet",
+        "deck": "Sources"
+      },
+      "sections": {
+        "In the lab's genealogy": "**Sutskever: generalization and emotions as value functions** (2025). 'These models somehow just generalize dramatically worse than people.' Sutskever suggests emotions act as a robust, evolved value function, and that superintelligence may look like a continual learner that learns on the job. He estimates 5-20 years.\n\n- [Dwarkesh Patel podcast (25 Nov 2025)](https://www.dwarkesh.com/p/ilya-sutskever-2)",
+        "How often it comes up": "Said 198 times, in 53 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 2 of 4 · 2019: 1 of 2 · 2020: 2 of 6 · 2021: 1 of 3 · 2022: 2 of 3 · 2023: 14 of 20 · 2024: 9 of 16 · 2025: 11 of 20 · 2026: 11 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [François Chollet](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-francois-chollet): 46 times, in 2 episodes\n- [Dario Amodei](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-dario-amodei): 15 times, in 3 episodes\n- [Ryan Greenblatt](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ryan-greenblatt): 14 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (37), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (35), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (32).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense."
+      },
+      "sort_order": 58
+    },
+    {
+      "id": "value-function",
+      "name": "Value functions & emotions",
+      "level": 1,
+      "description": "Said 22 times in 7 episodes; first heard here in 2020. An idea, Generalization lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Brain-inspired learning, continual learning & generalization",
+        "layer": "idea",
+        "count_reliability": "high",
+        "first_heard": "2020",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-ilya-sutskever",
+        "deck": "Sources"
+      },
+      "sections": {
+        "Working definition": "In the Words glossary: [Value function](../glossary/#value-function).",
+        "In the lab's genealogy": "**Sutskever: generalization and emotions as value functions** (2025). 'These models somehow just generalize dramatically worse than people.' Sutskever suggests emotions act as a robust, evolved value function, and that superintelligence may look like a continual learner that learns on the job. He estimates 5-20 years.\n\n- [Dwarkesh Patel podcast (25 Nov 2025)](https://www.dwarkesh.com/p/ilya-sutskever-2)",
+        "How often it comes up": "Said 22 times, in 7 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2020-05-08, Lex Fridman Podcast, [#94 – Ilya Sutskever: Deep Learning](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-lex-2020-05-08-ilya-sutskever).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 0 of 4 · 2019: 0 of 2 · 2020: 1 of 6 · 2021: 0 of 3 · 2022: 2 of 3 · 2023: 1 of 20 · 2024: 0 of 16 · 2025: 3 of 20 · 2026: 0 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [Ilya Sutskever](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ilya-sutskever): 12 times, in 2 episodes\n- [Noam Brown](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-noam-brown): 4 times, in 1 episode\n- [Richard Sutton](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-richard-sutton): 2 times, in 1 episode",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (3), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (3), [Compute (chips, data centres)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=compute) (3).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+      },
+      "sort_order": 59
+    },
+    {
+      "id": "consciousness",
+      "name": "Consciousness (human and machine)",
+      "level": 1,
+      "description": "Said 1017 times in 62 episodes; first heard here in 2018. An idea, Generalization lane.",
+      "metadata": {
+        "kind": "term",
+        "lane": "Brain-inspired learning, continual learning & generalization",
+        "layer": "idea",
+        "count_reliability": "medium",
+        "first_heard": "2018",
+        "source_deck": "sources-of-alignment",
+        "source_item_id": "person-david-chalmers",
+        "deck": "Sources"
+      },
+      "sections": {
+        "How often it comes up": "Said 1017 times, in 62 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-01-09, Making Sense, [#113 — Consciousness and the Self](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-making-sense-2018-01-09-anil-seth).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 3 of 4 · 2019: 2 of 2 · 2020: 6 of 6 · 2021: 3 of 3 · 2022: 2 of 3 · 2023: 15 of 20 · 2024: 10 of 16 · 2025: 14 of 20 · 2026: 7 of 17.",
+        "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [David Chalmers](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-david-chalmers): 345 times, in 2 episodes\n- [Anil Seth](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-anil-seth): 258 times, in 3 episodes\n- [Sam Harris](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-sam-harris): 69 times, in 2 episodes",
+        "Often said alongside": "Terms that come up within the same two minutes most often: [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (51), [Superintelligence](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=superintelligence) (34), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (27).",
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense. Spot-checked by the lab on Sep 24 2026: 8/8 about consciousness, but many are human consciousness (Making Sense); not only machine consciousness."
+      },
+      "sort_order": 60
+    },
+    {
+      "id": "lane-neuro",
+      "name": "Brain-inspired learning, continual learning & generalization",
+      "level": 2,
+      "description": "Since 1949 · 4 seed terms",
+      "metadata": {
+        "kind": "lane",
+        "lane": "Brain-inspired learning, continual learning & generalization"
+      },
+      "composite_of": [
+        "continual-learning",
+        "generalization",
+        "value-function",
+        "consciousness"
+      ],
+      "sections": {
+        "What the lane is": "Humans learn from a handful of examples, keep learning on the job, and don't forget old skills. Today's models do none of that well. This lane asks what the brain knows that current AI doesn't. It is where Sutskever places SSI's bet: generalization, continual learning, and emotions as a robust 'value function'.",
+        "Where it seems to be heading (Sep 2026)": "Sutskever (Nov 2025): 'These models somehow just generalize dramatically worse than people.' Continual learning became a headline research goal in 2025-26, from Google's Nested Learning to SSI.",
+        "People the genealogy names": "Donald Hebb, John Hopfield, Demis Hassabis, Ilya Sutskever, Richard Sutton.",
+        "Sources": "- [Dwarkesh Patel: Ilya Sutskever, the age of research (25 Nov 2025)](https://www.dwarkesh.com/p/ilya-sutskever-2)\n- [Hassabis et al., Neuroscience-Inspired AI (2017)](https://www.cell.com/neuron/fulltext/S0896-6273%2817%2930509-3)"
+      },
+      "sort_order": 61
+    },
+    {
+      "id": "root-ideas",
+      "name": "Ideas in the AI debate",
+      "level": 3,
+      "description": "A seed draft: the ideas, the lanes of AI research they belong to, and how often they come up.",
+      "metadata": {
+        "kind": "root"
+      },
+      "composite_of": [
+        "lane-neurosym",
+        "lane-scaling",
+        "lane-rl",
+        "lane-rsi",
+        "lane-safety",
+        "lane-openended",
+        "lane-multi",
+        "lane-world",
+        "lane-neuro"
+      ],
+      "sections": {
+        "What it is": "52 seed terms from the lab's map of the AI debate, placed in the lanes of its genealogy of AI research. For each: how often it comes up in 91 podcast episodes with automatic captions (2018 to 2026), when it is first heard there, whose episodes carry it most, what it is said alongside and, where the genealogy has one, the milestone that names it.",
+        "Read the counts with care": "The counts are pattern matches on automatic captions. The speaker is unknown and may be the host; long episodes weigh more; recent years have more episodes; the episode list leans towards people at AI labs. The terms await PlayfulProcess's review, so this is a draft.",
+        "Where the sources are": "The episodes, people and papers are in the Sources grammar; each person link opens their card there."
+      },
+      "sort_order": 62
+    }
+  ]
+}
