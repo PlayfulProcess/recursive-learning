@@ -7,6 +7,7 @@ from common import REPO, rpath, jload, jsave
 
 OUT = os.path.join(REPO, "explainers", "model-affect", "data")
 GH = "https://github.com/PlayfulProcess/recursive-learning/blob"
+TREE = "https://github.com/PlayfulProcess/recursive-learning/tree"
 TEST_TEXT = {
     "valence": "comments people tagged with a pleasant emotion vs an unpleasant one",
     "arousal": "high-energy vs low-energy emotions of the same kind (anger, fear, nervousness vs sadness, grief, "
@@ -31,6 +32,7 @@ def r2(x):
 def main():
     M = jload(rpath("metrics.json")); T = jload(rpath("traces.json")); L = jload(rpath("layer.json"))
     pre = jload(rpath("prereg.json")) if os.path.exists(rpath("prereg.json")) else {}
+    pub = jload(rpath("publish.json")) if os.path.exists(rpath("publish.json")) else {}   # the commit that holds results.md
     tests = M["tests"]
     readable = [c for c in IDS if tests[c]["state"] == "readable"]
     axis_ok = {a: tests[a]["state"] == "readable" for a in AXES}
@@ -114,9 +116,12 @@ def main():
             "p0_cv": M["p0"], "negation": {k: M["negation"][k] for k in ["n", "moved_as_expected", "fraction"]} if M.get("negation") else None,
             "readable": readable, "axes_ok": axis_ok,
             "n_passed": sum(1 for t in tests.values() if t["state"] == "readable"),
-            "code_url": f"{GH}/{pre.get('commit', 'lab/model-affect')}/lab/model-affect",
-            "results_url": f"{GH}/lab/model-affect/lab/model-affect/results.md",
+            "code_url": f"{TREE}/{pre.get('commit', 'lab/model-affect')}/lab/model-affect",
+            "results_url": f"{GH}/{pub.get('results_commit', 'lab/model-affect')}/lab/model-affect/results.md",
+            "lab_url": f"{TREE}/{pub.get('results_commit', 'lab/model-affect')}/lab/model-affect",
             "runs": [{"id": k, "title": v["title"]} for k, v in T["runs"].items()],
+            "deviations": "No frozen file changed after the pre-registration. How the run was executed on a busy, shared "
+                          "machine (parallel lanes, one-thread pools, an early copy of the directions) is in the results.",
             "generated": datetime.date.today().isoformat()}
     jsave(r2(meta), os.path.join(OUT, "meta.json"))
     print("exported", sorted(os.listdir(OUT)), "readable:", readable, "axes:", axis_ok)

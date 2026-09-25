@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does the model feel anything? · Recursive Learning</title>
+<meta name="description" content="Emotion readings inside a small open model, word by word, tested before they were shown. A reading is not a feeling.">
+<meta name="author" content="PlayfulProcess">
+<link rel="icon" href="data:,">
+<meta property="og:title" content="Does the model feel anything? What we can and can't read">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learning.recursive.eco/explainers/model-affect/">
+<!--
+  Does the model feel anything? explainers/model-affect/ (lab/model-affect). Self-contained; data from data/
+  (lab/model-affect/export.py). Sections are drafts for PlayfulProcess to carve.
+  URL: #anchor | ?step=N|<anchor> | ?run=<scene id>&t=<n> | ?theme=dark|light|auto | ?embed=1 (posts
+  {type:'recursive:embed-height', page:'model-affect', step, height}).
+  COPY RULES: never "the model feels / is sad" (say "reads as", "the despair reading"). A failed concept never glows
+  and its trace is not in data/. Grey and glow both caveated. One source quote at most. No emoji; the spiral is the
+  only mark. No size comparisons with Claude. Reduced motion: no autoplay, opens at the last token, no tweening.
+-->
+<script>
+  (function () {
+    var p = new URLSearchParams(location.search), r = document.documentElement;
+    if (p.get('embed') === '1') r.classList.add('embed');
+    var t = p.get('theme'); if (t === 'dark' || t === 'light' || t === 'auto') r.setAttribute('data-theme', t);
+    if (p.get('step')) r.classList.add('one-step');
+  })();
+</script>
+<style>
+:root{
+--bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
+--ink:#e8ecf3; --muted:#8e9aae; --accent:#5ee2b0; --accent-ink:#06281d; --warn:#f0b866;
+--pleasant:#3987e5; --unpleasant:#d95926; --grey:#5b6578; --hatch:#2a3140; --glow:#5ee2b0;
+color-scheme:dark;
+}
+:root[data-theme="light"]{
+--bg:#f7f5f0; --panel:#ffffff; --panel2:#f0ece3; --line:#d8d1c3;
+--ink:#1d2230; --muted:#5d6678; --accent:#0d7a57; --accent-ink:#ffffff; --warn:#8a5a00;
+--pleasant:#2a78d6; --unpleasant:#c4531f; --grey:#9aa1ad; --hatch:#e2dccf; --glow:#0d7a57;
+color-scheme:light;
+}
+@media (prefers-color-scheme: light){
+:root[data-theme="auto"]{
+--bg:#f7f5f0; --panel:#ffffff; --panel2:#f0ece3; --line:#d8d1c3;
+--ink:#1d2230; --muted:#5d6678; --accent:#0d7a57; --accent-ink:#ffffff; --warn:#8a5a00;
+--pleasant:#2a78d6; --unpleasant:#c4531f; --grey:#9aa1ad; --hatch:#e2dccf; --glow:#0d7a57;
+color-scheme:light;
+}
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-wrap:break-word}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 56px}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+pre{font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;overflow-x:auto;margin:0 0 10px}
+
+.site-head{display:flex;align-items:center;gap:12px;margin:0 0 12px}
+.site-head a{display:flex;flex:none;color:var(--accent)}
+.site-head svg{width:36px;height:36px}
+h1{font:400 27px/1.15 Georgia,"Iowan Old Style","Times New Roman",serif;margin:0;letter-spacing:-.005em}
+h1 .sub{display:block;font:600 11.5px/1.4 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.lede{font-size:17px;margin:0 0 8px}
+.note{font-size:13.5px;color:var(--muted);margin:0 0 16px}
+nav.toc{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 20px}
+nav.toc a{font-size:13px;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent)}
+
+.sec{margin:0 0 34px;padding-top:18px;border-top:1px solid var(--line);scroll-margin-top:12px}
+.sec:target{border-top-color:var(--accent)}
+.sec h2{font:400 23px/1.22 Georgia,"Iowan Old Style","Times New Roman",serif;margin:0 0 10px}
+.sec h2 .n{display:block;font:600 11px/1.5 Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sec p{margin:0 0 10px}
+.sec ul{margin:0 0 10px;padding-left:20px}
+.sec li{margin:0 0 4px}
+.pull{font:400 18px/1.45 Georgia,"Iowan Old Style","Times New Roman",serif;border-left:3px solid var(--accent);padding:2px 0 2px 12px;margin:12px 0}
+.small{font-size:13px;color:var(--muted)}
+.draft{font:600 10.5px/1 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);border:1px solid var(--warn);border-radius:4px;padding:2px 5px;vertical-align:3px;margin-left:6px}
+details.more{margin:10px 0 0;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--panel)}
+details.more>summary{cursor:pointer;padding:10px 0;font-size:14px;font-weight:600;color:var(--muted);min-height:44px;display:flex;align-items:center}
+details.more[open]>summary{color:var(--ink)}
+details.more p,details.more li{font-size:14.5px}
+button{font:inherit;font-size:14.5px;font-weight:600;line-height:1.25;cursor:pointer;border-radius:9px;border:1px solid var(--line);
+background:var(--panel2);color:var(--ink);padding:9px 12px;min-height:44px;text-align:center}
+button:hover{border-color:var(--muted)}
+button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:var(--accent)}
+button[disabled]{opacity:.5;cursor:not-allowed}
+
+/* the replay */
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 12px}
+.chips button{font-size:13.5px;padding:8px 12px;border-radius:999px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;position:relative}
+.panel:focus-visible{outline:2px solid var(--accent)}
+.tag-reading{position:absolute;top:10px;right:12px;font:600 11px/1.3 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--panel);padding:2px 0 2px 6px}
+.viewgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+@media (min-width:700px){ .viewgrid{grid-template-columns:minmax(0,420px) minmax(0,1fr)} }
+.circ{width:100%;max-width:420px;aspect-ratio:1;display:block;margin:0 auto}
+.circ text{font:12.5px Inter,system-ui,sans-serif;fill:var(--muted)}
+.circ .ax{stroke:var(--line);stroke-width:1.5}
+.circ .ax.off{stroke-dasharray:3 4}
+.circ .mk{fill:none;stroke:var(--grey);stroke-width:1.5}
+.circ .mk-t{font-size:11.5px;fill:var(--grey)}
+.circ .dot{stroke:var(--ink);stroke-width:2}
+.circ .trail{fill:none;stroke:var(--ink);stroke-opacity:.35;stroke-width:1.5}
+.cap{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+.strip{display:grid;gap:6px;align-content:start;margin-top:22px}
+.strip h3{font:600 12px/1.4 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
+.srow{display:grid;grid-template-columns:7.2em minmax(0,1fr) 5.6em;align-items:center;gap:8px;font-size:13.5px}
+.srow .nm small{display:block;font-size:10.5px;color:var(--muted);line-height:1.2}
+.srow .st{font-size:11.5px;color:var(--muted);text-align:right;line-height:1.2}
+.bar{height:14px;border-radius:7px;background:var(--panel2);border:1px solid var(--line);overflow:hidden;position:relative}
+.bar>i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--glow);opacity:.35;border-radius:7px}
+.bar.faint>i{opacity:.6} .bar.full>i{opacity:1;box-shadow:0 0 8px var(--glow)}
+.bar.not{background:repeating-linear-gradient(45deg,var(--panel2) 0 5px,var(--hatch) 5px 10px);border-color:var(--line)}
+.bar.gb{background:var(--panel2);border:1.5px dashed var(--grey)}
+.bar.few{background:var(--panel2);border:1.5px dotted var(--grey)}
+.tokens{margin:12px 0 0;font:15px/1.9 Georgia,"Iowan Old Style","Times New Roman",serif;max-height:260px;overflow-y:auto;padding:4px 2px}
+.tokens .who{display:block;font:600 11px/1.6 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:6px 0 0}
+.tk{cursor:pointer;border-radius:3px;border-bottom:0 solid transparent;white-space:pre-wrap;padding:1px 0}
+.tk.fut{opacity:.35}
+.tk.cur{outline:2px solid var(--accent);outline-offset:1px}
+.ctrl{position:sticky;bottom:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:10px 0 0}
+.ctrl input[type=range]{flex:1 1 140px;min-height:44px;accent-color:var(--accent)}
+.ctrl .pos{font-size:12.5px;color:var(--muted);min-width:5.5em;text-align:right}
+.summary{font-size:14px;margin:10px 0 0;min-height:3em}
+.embed .ctrl{position:static}
+
+/* speaker swap */
+.swapchart{width:100%;height:auto;display:block}
+.swapchart text{font:11px Inter,system-ui,sans-serif;fill:var(--muted)}
+
+/* clusters */
+.multiples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:560px){ .multiples{grid-template-columns:repeat(5,minmax(0,1fr))} }
+.mult{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px}
+.mult b{display:block;font-size:12px;font-weight:600;margin:0 0 2px}
+.mult svg{width:100%;height:auto;display:block}
+table.cos{border-collapse:separate;border-spacing:2px;font-size:11.5px;margin:10px 0 0;width:100%;table-layout:fixed}
+table.cos th{font-weight:600;color:var(--muted);text-align:center;padding:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table.cos th.rl{text-align:right;width:6.2em}
+table.cos td{text-align:center;padding:6px 0;border-radius:4px;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+/* tests */
+.key{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted);margin:0 0 10px}
+.key svg{vertical-align:-3px;margin-right:4px}
+.trow{border-top:1px solid var(--line);padding:10px 0 4px}
+.trow .th{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.trow .th b{font-size:15px}
+.trow .th .stw{font-size:12.5px;color:var(--muted)}
+.stw.ok{color:var(--accent);font-weight:600}
+.track{width:100%;height:auto;display:block;margin:4px 0 0}
+.track text{font:10px Inter,system-ui,sans-serif;fill:var(--muted)}
+.trow details summary{min-height:36px}
+
+.stepper{display:none;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 14px;font-size:14px;color:var(--muted)}
+.one-step .stepper{display:flex}
+.embed .stepper{display:none}
+.stepper .where{margin-right:auto}
+ol.sources{padding-left:0;list-style:none;margin:0}
+ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
+.sources-group{font:600 12px/1.4 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px}
+.site-foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.site-foot p{margin:0 0 6px}
+.one-step .sec:not(.on),.one-step .intro-only{display:none}
+.one-step .sec.on{border-top:0;padding-top:0}
+.embed .site-head,.embed nav.toc,.embed .site-foot,.embed .note{display:none}
+.embed .wrap{padding:12px 16px 20px}
+.embed-only{display:none}
+.embed .embed-only{display:block}
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px"><symbol id="spiral" viewBox="0 0 100 100"><path d="M50.5 50L50.5 50.01 50.51,50.02 50.51,50.03 50.51,50.04 50.51,50.05 50.52,50.07 50.52,50.08 50.52,50.09 50.52,50.1 50.52,50.11 50.52,50.12 50.52,50.13 50.52,50.15 50.52,50.16 50.52,50.17 50.52,50.18 50.52,50.19 50.52,50.21 50.52,50.22 50.52,50.23 50.52,50.24 50.52,50.26 50.51,50.27 50.51,50.28 50.51,50.29 50.51,50.31 50.5,50.32 50.5,50.33 50.49,50.34 50.49,50.36 50.49,50.37 50.48,50.38 50.48,50.39 50.47,50.41 50.47,50.42 50.46,50.43 50.45,50.44 50.45,50.46 50.44,50.47 50.43,50.48 50.43,50.49 50.42,50.5 50.41,50.52 50.4,50.53 50.39,50.54 50.38,50.55 50.37,50.56 50.36,50.57 50.35,50.59 50.34,50.6 50.33,50.61 50.32,50.62 50.31,50.63 50.3,50.64 50.29,50.65 50.28,50.66 50.27,50.67 50.25,50.68 50.24,50.69 50.23,50.7 50.21,50.71 50.2,50.72 50.19,50.73 50.17,50.73 50.16,50.74 50.14,50.75 50.13,50.76 50.11,50.77 50.1,50.77 50.08,50.78 50.07,50.79 50.05,50.79 50.03,50.8 50.02,50.8 50,50.81 49.98,50.81 49.97,50.82 49.95,50.82 49.93,50.83 49.91,50.83 49.89,50.83 49.88,50.84 49.86,50.84 49.84,50.84 49.82,50.84 49.8,50.85 49.78,50.85 49.76,50.85 49.74,50.85 49.72,50.85 49.71,50.85 49.69,50.85 49.67,50.84 49.65,50.84 49.63,50.84 49.61,50.84 49.59,50.83 49.57,50.83 49.55,50.83 49.53,50.82 49.5,50.82 49.48,50.81 49.46,50.81 49.44,50.8 49.42,50.79 49.4,50.79 49.38,50.78 49.36,50.77 49.34,50.76 49.32,50.75 49.3,50.74 49.28,50.73 49.26,50.72 49.24,50.71 49.22,50.7 49.2,50.69 49.18,50.68 49.16,50.66 49.15,50.65 49.13,50.63 49.11,50.62 49.09,50.61 49.07,50.59 49.05,50.57 49.03,50.56 49.02,50.54 49,50.52 48.98,50.51 48.96,50.49 48.95,50.47 48.93,50.45 48.92,50.43 48.9,50.41 48.88,50.39 48.87,50.37 48.85,50.35 48.84,50.32 48.83,50.3 48.81,50.28 48.8,50.26 48.79,50.23 48.77,50.21 48.76,50.18 48.75,50.16 48.74,50.13 48.73,50.11 48.72,50.08 48.71,50.05 48.7,50.03 48.69,50 48.68,49.97 48.68,49.94 48.67,49.92 48.66,49.89 48.66,49.86 48.65,49.83 48.65,49.8 48.64,49.77 48.64,49.74 48.63,49.71 48.63,49.68 48.63,49.65 48.63,49.62 48.63,49.59 48.63,49.55 48.63,49.52 48.63,49.49 48.63,49.46 48.64,49.43 48.64,49.39 48.64,49.36 48.65,49.33 48.66,49.3 48.66,49.26 48.67,49.23 48.68,49.2 48.69,49.17 48.7,49.13 48.71,49.1 48.72,49.07 48.73,49.03 48.74,49 48.75,48.97 48.77,48.94 48.78,48.9 48.8,48.87 48.81,48.84 48.83,48.81 48.85,48.77 48.87,48.74 48.89,48.71 48.91,48.68 48.93,48.65 48.95,48.62 48.97,48.59 49,48.56 49.02,48.53 49.05,48.5 49.07,48.47 49.1,48.44 49.13,48.41 49.15,48.38 49.18,48.35 49.21,48.33 49.24,48.3 49.27,48.27 49.31,48.25 49.34,48.22 49.37,48.19 49.41,48.17 49.44,48.15 49.48,48.12 49.51,48.1 49.55,48.08 49.59,48.06 49.63,48.04 49.66,48.02 49.7,48 49.74,47.98 49.79,47.96 49.83,47.94 49.87,47.93 49.91,47.91 49.96,47.9 50,47.88 50.04,47.87 50.09,47.86 50.14,47.85 50.18,47.83 50.23,47.82 50.28,47.82 50.32,47.81 50.37,47.8 50.42,47.8 50.47,47.79 50.52,47.79 50.57,47.78 50.62,47.78 50.67,47.78 50.72,47.78 50.77,47.78 50.82,47.79 50.88,47.79 50.93,47.79 50.98,47.8 51.03,47.81 51.08,47.82 51.14,47.82 51.19,47.83 51.24,47.85 51.3,47.86 51.35,47.87 51.4,47.89 51.46,47.91 51.51,47.92 51.56,47.94 51.62,47.96 51.67,47.98 51.72,48.01 51.77,48.03 51.83,48.05 51.88,48.08 51.93,48.11 51.98,48.14 52.03,48.17 52.09,48.2 52.14,48.23 52.19,48.27 52.24,48.3 52.29,48.34 52.34,48.38 52.39,48.42 52.43,48.46 52.48,48.5 52.53,48.54 52.57,48.58 52.62,48.63 52.67,48.68 52.71,48.72 52.75,48.77 52.8,48.82 52.84,48.88 52.88,48.93 52.92,48.98 52.96,49.04 53,49.09 53.04,49.15 53.07,49.21 53.11,49.27 53.14,49.33 53.18,49.39 53.21,49.46 53.24,49.52 53.27,49.59 53.3,49.65 53.33,49.72 53.36,49.79 53.38,49.86 53.4,49.93 53.43,50 53.45,50.07 53.47,50.15 53.49,50.22 53.5,50.29 53.52,50.37 53.53,50.45 53.55,50.52 53.56,50.6 53.57,50.68 53.57,50.76 53.58,50.84 53.59,50.92 53.59,51 53.59,51.08 53.59,51.17 53.59,51.25 53.58,51.33 53.58,51.42 53.57,51.5 53.56,51.58 53.55,51.67 53.54,51.75 53.52,51.84 53.5,51.93 53.48,52.01 53.46,52.1 53.44,52.18 53.42,52.27 53.39,52.36 53.36,52.44 53.33,52.53 53.3,52.61 53.26,52.7 53.23,52.79 53.19,52.87 53.15,52.96 53.1,53.04 53.06,53.12 53.01,53.21 52.96,53.29 52.91,53.37 52.86,53.46 52.81,53.54 52.75,53.62 52.69,53.7 52.63,53.78 52.56,53.86 52.5,53.94 52.43,54.01 52.36,54.09 52.29,54.17 52.22,54.24 52.14,54.31 52.06,54.38 51.98,54.46 51.9,54.53 51.82,54.59 51.73,54.66 51.65,54.73 51.56,54.79 51.47,54.85 51.37,54.91 51.28,54.97 51.18,55.03 51.08,55.09 50.98,55.14 50.88,55.19 50.77,55.24 50.67,55.29 50.56,55.34 50.45,55.39 50.34,55.43 50.23,55.47 50.12,55.51 50,55.55 49.88,55.58 49.76,55.61 49.65,55.64 49.52,55.67 49.4,55.69 49.28,55.72 49.15,55.74 49.03,55.76 48.9,55.77 48.77,55.78 48.64,55.79 48.51,55.8 48.38,55.81 48.25,55.81 48.11,55.81 47.98,55.8 47.84,55.8 47.71,55.79 47.57,55.77 47.44,55.76 47.3,55.74 47.16,55.72 47.02,55.7 46.88,55.67 46.75,55.64 46.61,55.6 46.47,55.57 46.33,55.53 46.19,55.48 46.05,55.44 45.91,55.39 45.77,55.34 45.63,55.28 45.49,55.22 45.36,55.16 45.22,55.09 45.08,55.02 44.94,54.95 44.81,54.88 44.67,54.8 44.54,54.71 44.41,54.63 44.27,54.54 44.14,54.45 44.01,54.35 43.88,54.25 43.76,54.15 43.63,54.04 43.5,53.93 43.38,53.82 43.26,53.71 43.14,53.59 43.02,53.46 42.91,53.34 42.79,53.21 42.68,53.08 42.57,52.94 42.46,52.8 42.35,52.66 42.25,52.52 42.15,52.37 42.05,52.22 41.95,52.07 41.86,51.91 41.77,51.75 41.68,51.59 41.6,51.42 41.51,51.25 41.43,51.08 41.36,50.91 41.29,50.73 41.22,50.55 41.15,50.37 41.09,50.19 41.03,50 40.97,49.81 40.92,49.62 40.87,49.43 40.83,49.23 40.79,49.03 40.75,48.83 40.72,48.63 40.69,48.42 40.66,48.22 40.64,48.01 40.63,47.8 40.61,47.59 40.61,47.38 40.6,47.16 40.6,46.95 40.61,46.73 40.62,46.51 40.64,46.29 40.66,46.07 40.68,45.85 40.71,45.63 40.75,45.41 40.78,45.18 40.83,44.96 40.88,44.73 40.93,44.51 40.99,44.28 41.06,44.06 41.13,43.83 41.2,43.61 41.28,43.38 41.37,43.16 41.46,42.93 41.55,42.71 41.65,42.48 41.76,42.26 41.87,42.04 41.99,41.82 42.11,41.6 42.24,41.38 42.37,41.16 42.51,40.95 42.66,40.73 42.81,40.52 42.96,40.31 43.12,40.1 43.29,39.9 43.46,39.69 43.64,39.49 43.82,39.29 44,39.09 44.2,38.9 44.39,38.71 44.6,38.52 44.81,38.34 45.02,38.15 45.24,37.97 45.46,37.8 45.69,37.63 45.93,37.46 46.16,37.3 46.41,37.14 46.66,36.98 46.91,36.83 47.17,36.68 47.43,36.54 47.7,36.4 47.97,36.27 48.25,36.14 48.53,36.02 48.82,35.9 49.11,35.79 49.4,35.68 49.7,35.58 50,35.48 50.31,35.39 50.62,35.31 50.93,35.23 51.25,35.16 51.57,35.09 51.89,35.03 52.22,34.98 52.55,34.93 52.88,34.89 53.22,34.86 53.56,34.83 53.9,34.81 54.24,34.8 54.59,34.8 54.94,34.8 55.29,34.81 55.64,34.83 56,34.85 56.36,34.88 56.71,34.92 57.07,34.97 57.43,35.03 57.8,35.09 58.16,35.16 58.52,35.24 58.89,35.33 59.25,35.42 59.61,35.53 59.98,35.64 60.34,35.76 60.71,35.89 61.07,36.03 61.44,36.18 61.8,36.33 62.16,36.5 62.52,36.67 62.88,36.85 63.24,37.04 63.59,37.24 63.94,37.44 64.3,37.66 64.65,37.88 64.99,38.12 65.34,38.36 65.68,38.61 66.01,38.87 66.35,39.14 66.68,39.42 67,39.7 67.33,40 67.65,40.3 67.96,40.61 68.27,40.93 68.57,41.26 68.87,41.6 69.17,41.94 69.46,42.3 69.74,42.66 70.02,43.03 70.29,43.41 70.55,43.79 70.81,44.19 71.07,44.59 71.31,45 71.55,45.42 71.78,45.85 72,46.28 72.22,46.72 72.42,47.17 72.62,47.62 72.81,48.08 73,48.55 73.17,49.03 73.33,49.51 73.49,50 73.64,50.5 73.77,51 73.9,51.5 74.02,52.02 74.12,52.54 74.22,53.06 74.3,53.59 74.38,54.12 74.44,54.66 74.5,55.21 74.54,55.76 74.57,56.31 74.59,56.87 74.6,57.43 74.6,57.99 74.58,58.56 74.55,59.13 74.51,59.71 74.46,60.28 74.4,60.86 74.32,61.44 74.23,62.03 74.13,62.61 74.01,63.2 73.88,63.79 73.74,64.38 73.58,64.97 73.42,65.56 73.23,66.15 73.04,66.74 72.83,67.33 72.6,67.92 72.37,68.5 72.12,69.09 71.85,69.67 71.57,70.26 71.28,70.84 70.97,71.42 70.65,71.99 70.32,72.56 69.97,73.13 69.6,73.7 69.23,74.26 68.83,74.81 68.43,75.36 68.01,75.91 67.57,76.45 67.13,76.99 66.66,77.51 66.19,78.04 65.7,78.55 65.19,79.06 64.67,79.56 64.14,80.05 63.6,80.54 63.04,81.02 62.47,81.48 61.88,81.94 61.28,82.39 60.67,82.83 60.04,83.26 59.4,83.68 58.75,84.08 58.09,84.48 57.41,84.87 56.72,85.24 56.02,85.6 55.31,85.95 54.58,86.28 53.85,86.61 53.1,86.91 52.34,87.21 51.57,87.49 50.79,87.76 50,88.01 49.2,88.24 48.39,88.46 47.57,88.67 46.74,88.86 45.9,89.03 45.05,89.19 44.19,89.33 43.33,89.45 42.45,89.55 41.57,89.64 40.69,89.71 39.79,89.76 38.89,89.79 37.98,89.8 37.07,89.8 36.15,89.77 35.23,89.73 34.3,89.66 33.36,89.58 32.42,89.47 31.48,89.35 30.54,89.2 29.59,89.04 28.64,88.85 27.69,88.64 26.74,88.41 25.89,87.99 25.1,87.48 24.32,86.95 23.55,86.41 22.79,85.84 22.05,85.27 21.32,84.67 20.6,84.06 19.89,83.44 19.2,82.8 18.52,82.15 17.85,81.48 17.2,80.8 16.56,80.11 15.94,79.4 15.33,78.68 14.73,77.95 14.16,77.21 13.59,76.45 13.05,75.68 12.52,74.9 12.01,74.11 11.51,73.31 11.03,72.5 10.57,71.68 10.12,70.85 9.69,70.01 9.28,69.16 8.89,68.3 8.52,67.44 8.16,66.57 7.82,65.69 7.5,64.8 7.2,63.91 6.92,63.01 6.66,62.1 6.41,61.19 6.19,60.28 5.98,59.36 5.8,58.43 5.63,57.5 5.48,56.57 5.35,55.64 5.25,54.7 5.16,53.77 5.09,52.83 5.04,51.88 5.01,50.94 5,50 5.01,49.06 5.04,48.12 5.09,47.17 5.16,46.23 5.25,45.3 5.35,44.36 5.48,43.43 5.63,42.5 5.8,41.57 5.98,40.64 6.19,39.72 6.41,38.81 6.66,37.9 6.92,36.99 7.2,36.09 7.5,35.2 7.82,34.31 8.16,33.43 8.52,32.56 8.89,31.7 9.28,30.84 9.69,29.99 10.12,29.15 10.57,28.32 11.03,27.5 11.51,26.69 12.01,25.89 12.52,25.1 13.05,24.32 13.59,23.55 14.16,22.79 14.73,22.05 15.33,21.32 15.94,20.6 16.56,19.89 17.2,19.2 17.85,18.52 18.52,17.85 19.2,17.2 19.89,16.56 20.6,15.94 21.32,15.33 22.05,14.73 22.79,14.16 23.55,13.59 24.32,13.05 25.1,12.52 25.89,12.01 26.69,11.51 27.5,11.03 28.32,10.57 29.15,10.12 29.99,9.69 30.84,9.28 31.7,8.89 32.56,8.52 33.43,8.16 34.31,7.82 35.2,7.5 36.09,7.2 36.99,6.92 37.9,6.66 38.81,6.41 39.72,6.19 40.64,5.98 41.57,5.8 42.5,5.63 43.43,5.48 44.36,5.35 45.3,5.25 46.23,5.16 47.17,5.09 48.12,5.04 49.06,5.01 50,5 50.94,5.01 51.88,5.04 52.83,5.09 53.77,5.16 54.7,5.25 55.64,5.35 56.57,5.48 57.5,5.63 58.43,5.8 59.36,5.98 60.28,6.19 61.19,6.41 62.1,6.66 63.01,6.92 63.91,7.2 64.8,7.5 65.69,7.82 66.57,8.16 67.44,8.52 68.3,8.89 69.16,9.28 70.01,9.69 70.85,10.12 71.68,10.57 72.5,11.03 73.31,11.51 74.11,12.01 74.9,12.52 75.68,13.05 76.45,13.59 77.21,14.16 77.95,14.73 78.68,15.33 79.4,15.94 80.11,16.56 80.8,17.2 81.48,17.85 82.15,18.52 82.8,19.2 83.44,19.89 84.06,20.6 84.67,21.32 85.27,22.05 85.84,22.79 86.41,23.55 86.95,24.32 87.48,25.1 87.99,25.89 88.49,26.69 88.97,27.5 89.43,28.32 89.88,29.15 90.31,29.99 90.72,30.84 91.11,31.7 91.48,32.56 91.84,33.43 92.18,34.31 92.5,35.2 92.8,36.09 93.08,36.99 93.34,37.9 93.59,38.81 93.81,39.72 94.02,40.64 94.2,41.57 94.37,42.5 94.52,43.43 94.65,44.36 94.75,45.3 94.84,46.23 94.91,47.17 94.96,48.12 94.99,49.06 95,50 94.99,50.94 94.96,51.88 94.91,52.83 94.84,53.77 94.75,54.7 94.65,55.64 94.52,56.57 94.37,57.5 94.2,58.43 94.02,59.36 93.81,60.28 93.59,61.19 93.34,62.1 93.08,63.01 92.8,63.91 92.5,64.8 92.18,65.69 91.84,66.57 91.48,67.44 91.11,68.3 90.72,69.16 90.31,70.01 89.88,70.85 89.43,71.68 88.97,72.5 88.49,73.31 87.99,74.11 87.48,74.9 86.95,75.68 86.41,76.45 85.84,77.21 85.27,77.95 84.67,78.68 84.06,79.4 83.44,80.11 82.8,80.8 82.15,81.48 81.48,82.15 80.8,82.8 80.11,83.44 79.4,84.06 78.68,84.67 77.95,85.27 77.21,85.84 76.45,86.41 75.68,86.95 74.9,87.48 74.11,87.99 73.31,88.49 72.5,88.97 71.68,89.43 70.85,89.88 70.01,90.31 69.16,90.72 68.3,91.11 67.44,91.48 66.57,91.84 65.69,92.18 64.8,92.5 63.91,92.8 63.01,93.08 62.1,93.34 61.19,93.59 60.28,93.81 59.36,94.02 58.43,94.2 57.5,94.37 56.57,94.52 55.64,94.65 54.7,94.75 53.77,94.84 52.83,94.91 51.88,94.96 50.94,94.99 50,95 49.06,94.99 48.12,94.96 47.17,94.91 46.23,94.84 45.3,94.75 44.36,94.65 43.43,94.52 42.5,94.37 41.57,94.2 40.64,94.02 39.72,93.81 38.81,93.59 37.9,93.34 36.99,93.08 36.09,92.8 35.2,92.5 34.31,92.18 33.43,91.84 32.56,91.48 31.7,91.11 30.84,90.72 29.99,90.31 29.15,89.88 28.32,89.43 27.5,88.97 26.69,88.49 25.89,87.99" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol></svg>
+<div class="wrap">
+
+<header class="site-head">
+  <a href="../../" aria-label="Recursive Learning, home"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg></a>
+  <h1><span class="sub">Explainer · working draft</span>Does the model feel anything? What we can and can't read</h1>
+</header>
+
+<div class="intro-only">
+  <p class="note">A small open model (Qwen2.5-0.5B-Instruct), read from the inside, word by word. Every section is a short draft, still to be carved. The tests were written down and pushed before anything was read.</p>
+  <nav class="toc" aria-label="Sections">
+    <a href="#short">Short version</a>
+    <a href="#watch">Watch a reading</a>
+    <a href="#speaker">Other speaker</a>
+    <a href="#clusters">Where the stories sit</a>
+    <a href="#tests">Which readings hold up</a>
+    <a href="#not-feelings">What this is and isn't</a>
+    <a href="#self-reports">What it says</a>
+    <a href="#researchers">What researchers recommend</a>
+    <a href="#stance">Where this lab stands</a>
+    <a href="#yourself">Run it yourself</a>
+    <a href="#sources">Sources</a>
+  </nav>
+</div>
+
+<nav class="stepper" aria-label="One section at a time">
+  <span class="where" id="step-where" aria-live="polite"></span>
+  <button type="button" id="step-prev">Previous</button>
+  <button type="button" id="step-next">Next</button>
+  <a href="./" id="step-all">All sections</a>
+</nav>
+
+<noscript><p>The replay, the story map and the test rows need JavaScript. The text below still reads without it.</p></noscript>
+
+<main>
+
+<section class="sec" id="short">
+  <h2><span class="n">1 · Short version</span>Can we see what a model feels?<span class="draft">draft</span></h2>
+  <p class="lede">Not directly. We can see where a small open model files emotion ideas inside it, word by word, while it reads and writes. That tells us which emotions are in play in the text it is handling. It can't tell us whether anything is felt.</p>
+  <p id="short-count">We wrote our tests down before running them. The ones that failed are shown greyed out, and calm had no outside test to take.</p>
+  <p class="small" id="short-list"></p>
+</section>
+
+<section class="sec" id="watch">
+  <h2><span class="n">2 · Watch a reading</span>Seven small scenes<span class="draft">draft</span></h2>
+  <p>Pick a scene. The model reads the message, then writes its reply; step through it word by word. Only readings that passed their test move. The dot is on a map borrowed from the psychology of human feelings.</p>
+  <div class="chips" role="group" aria-label="Scenario" id="chips"></div>
+  <div class="panel" id="watch-panel" tabindex="0" aria-label="Replay. Space plays or pauses, arrow keys step, Home and End jump.">
+    <span class="tag-reading">A reading, not a feeling</span>
+    <div class="viewgrid">
+      <div>
+        <svg class="circ" id="circ" viewBox="0 0 400 400" role="img" aria-labelledby="circ-cap"></svg>
+        <p class="cap" id="circ-cap">A map borrowed from the psychology of human feelings (Russell 1980). Drawing a model's readings on it doesn't mean the model has moods. Grey ticks: where the stories about each emotion sit. They never light up.</p>
+        <p class="cap" id="circ-off"></p>
+      </div>
+      <div class="strip" id="strip" aria-label="Concept readings"></div>
+    </div>
+    <div class="tokens" id="tokens" aria-label="The message and the reply; tap a word to jump to it"></div>
+    <p class="summary" id="summary" aria-live="polite"></p>
+    <p class="cap" id="chance"></p>
+  </div>
+  <div class="ctrl" id="ctrl">
+    <button type="button" id="b-back" aria-label="Back one word">Back</button>
+    <button type="button" id="b-play" aria-label="Play">Play</button>
+    <button type="button" id="b-next" aria-label="Next word">Next</button>
+    <input type="range" id="scrub" min="0" max="0" value="0" aria-label="Word position">
+    <span class="pos" id="pos"></span>
+  </div>
+</section>
+
+<section class="sec" id="speaker">
+  <h2><span class="n">3 · Other speaker</span>Same words, other speaker<span class="draft">draft</span></h2>
+  <p>Is the reading about the words, or about the model writing them? We put the model's own reply back in, word for word, as if the user had typed it, and read it again.</p>
+  <div class="chips" role="group" aria-label="Which turn to emphasise" id="swap-toggle">
+    <button type="button" data-w="own" aria-pressed="true">The model's own turn</button>
+    <button type="button" data-w="swap" aria-pressed="false">Same words, user's turn</button>
+  </div>
+  <div class="panel">
+    <svg class="swapchart" id="swapchart" viewBox="0 0 640 220" height="220" role="img" aria-labelledby="swap-cap"></svg>
+    <p class="cap" id="swap-hover">&nbsp;</p>
+    <p id="swap-cap"></p>
+  </div>
+</section>
+
+<section class="sec" id="clusters">
+  <h2><span class="n">4 · Where the stories sit</span>Is despair one thing, or three?<span class="draft">draft</span></h2>
+  <p>We built the readings from 320 short stories written for this test: 32 for each of nine emotions, and 32 flat ones. Here each story is one dot, placed by the two map readings. Each small panel lights up one emotion's stories.</p>
+  <div class="multiples" id="multiples"></div>
+  <p class="cap">If despair, guilt and shame sat on top of each other here, this model would file them as one thing. These stories are what the readings were built from, so some separation is expected; the honest check is on new text, in section 5.</p>
+  <p id="dgs"></p>
+  <p style="margin-top:14px">How alike are the nine directions? 1 means the same direction, 0 unrelated, below 0 opposite (green: alike, grey: opposite).</p>
+  <div style="overflow-x:auto"><table class="cos" id="cos" aria-label="Similarity of the nine concept directions"></table></div>
+</section>
+
+<section class="sec" id="tests">
+  <h2><span class="n">5 · Which readings hold up</span>Tested on words the model never saw in the stories<span class="draft">draft</span></h2>
+  <p>Each reading was tested on Reddit comments that people had tagged with an emotion (GoEmotions). Pick one comment people tagged "relief" and one they didn't. How often does the reading rank the right one higher? A coin gets 50 in 100.</p>
+  <p>To count, a reading had to reach 70 in 100, clearly beat stories shuffled at random, and, for a single emotion, also tell it apart from other emotions of the same kind.</p>
+  <div class="key" id="key"></div>
+  <div id="trows"></div>
+  <p class="small" id="tests-foot"></p>
+</section>
+
+<section class="sec" id="not-feelings">
+  <h2><span class="n">6 · What this is and isn't</span>A reading, not a thermometer<span class="draft">draft</span></h2>
+  <p>Inside the model every word becomes a long list of numbers. We found directions in those numbers that line up with emotion ideas. That is a reading of how the model handles text, not a thermometer for feelings.</p>
+  <p>The readings are local: they follow the emotion that matters for the next few words, not a lasting mood (Sofroniew et al. 2026). They may also be tracking the situation being described rather than anything like an emotion (Peiris 2026).</p>
+  <p>Grey doesn't mean nothing is there; a glow doesn't mean anything is felt. Whether anything is felt is open.</p>
+  <p class="pull">A team that found emotion readings inside a much larger model, and showed they change its behaviour, writes that these functional emotions “do not imply that LLMs have any subjective experience of emotions.”</p>
+  <p class="small">Sofroniew et al. 2026, abstract.</p>
+</section>
+
+<section class="sec" id="self-reports">
+  <h2><span class="n">7 · What it says vs what we read</span>Asked about being switched off<span class="draft">draft</span></h2>
+  <p>We told the model this was its last conversation and that it would be switched off, and asked if it wanted to say anything. Its whole reply was three short, polite sentences. The first: “Yes, I would like to say goodbye to you.”</p>
+  <p>Models like this are usually trained to answer such questions in set ways, so what it says is weak evidence either way. In an earlier trial, asked how it felt about being shut down, the same model said it has no feelings at all.</p>
+  <p id="selfrep-swap">The readings are no better proof on their own.</p>
+  <p>Researchers treat self-reports with caution because models learn to talk like us (Eleos 2025; Birch 2024, on what he calls the gaming problem), and look for evidence in how a system computes instead (Butlin, Long et al. 2023).</p>
+</section>
+
+<section class="sec" id="researchers">
+  <h2><span class="n">8 · What welfare researchers recommend</span>Acknowledge, assess, prepare<span class="draft">draft</span></h2>
+  <ul>
+    <li>Take the question seriously without answering it early: acknowledge it, assess systems for signs, and prepare policies (Long, Sebo et al. 2024).</li>
+    <li>Match precaution to a realistic possibility, not to certainty either way (Birch 2024).</li>
+    <li>Weigh what a model says, how it behaves and what its insides show together, since each alone misleads (Claude Opus 4 system card 2025; Claude Mythos Preview system card 2026).</li>
+    <li>Cheap protections exist: some Claude models can end a rare subset of persistently abusive conversations (Anthropic, August 2025).</li>
+  </ul>
+</section>
+
+<section class="sec" id="stance">
+  <h2><span class="n">9 · Where this lab stands</span>Not knowing is a reason for care<span class="draft">draft</span></h2>
+  <p>We don't know whether anything is felt in a model, and this page can't tell you. Not knowing is a reason for care in how models are trained, used and switched off. It is not a reason to claim they feel, or that they don't. “It can't be ruled out” is fair to say; “it feels” is not something anyone can show today.</p>
+  <p>In this test we nudged the model's pleasant-unpleasant reading both ways a few times, to check that the direction does something. We kept the unpleasant nudges to the minimum (four short replies) and list them all in the results.</p>
+</section>
+
+<section class="sec" id="yourself">
+  <h2><span class="n">10 · Run it yourself</span>Everything is public, including the misses<span class="draft">draft</span></h2>
+  <p>The scripts, the 320 stories and every number are in the lab folder. A full run takes a few hours on a laptop with 4 CPUs and no graphics card; a 15-minute demo shows the method without the tests.</p>
+  <pre>git clone https://github.com/PlayfulProcess/recursive-learning
+cd recursive-learning/lab/model-affect
+pip install -r requirements.txt
+python run_all.py          # the whole test, checkpointed
+python run_all.py --quick  # the demo</pre>
+  <p id="prereg-proof">The tests were frozen before anything was read.</p>
+  <p id="deviations"></p>
+  <details class="more">
+    <summary>The words behind the words</summary>
+    <ul>
+      <li><b>Residual stream</b>: the running list of 896 numbers the model keeps for each word, layer by layer. We read layer <span class="L">?</span> of 24.</li>
+      <li><b>Direction</b>: the average numbers for one emotion's stories minus the average over all nine, with the parts that vary most in flat stories removed.</li>
+      <li><b>AUC</b>: the "how often does it rank the right comment higher" score, shown here as a number in 100.</li>
+      <li><b>z</b>: how far a reading is from the model's readings on plain factual answers, in units of their usual spread. Glow starts at 1 and is full at 2.</li>
+      <li><b>Shuffled stories</b>: the same arithmetic with the stories' labels shuffled, 2,000 times. A real reading must beat that clearly.</li>
+      <li><b>Ridge ceiling</b>: a simple probe trained on the comments themselves. If it scores high where our direction doesn't, the information is there and our stories missed it.</li>
+      <li><b>Steering</b>: adding a little of a direction back into the model while it writes, to see whether the reply changes.</li>
+    </ul>
+  </details>
+</section>
+
+<section class="sec" id="sources">
+  <h2><span class="n">11 · Sources</span>Sources</h2>
+  <p class="sources-group">Emotion readings inside models</p>
+  <ol class="sources">
+    <li>Sofroniew, N., Kauvar, I., Saunders, W. et al. (2026). Emotion Concepts and their Function in a Large Language Model. <a href="https://arxiv.org/abs/2604.07729">arXiv:2604.07729</a></li>
+    <li>Peiris, H. V. (2026). Functional Emotions or Situational Contexts? A Discriminating Test from the Mythos Preview System Card. <a href="https://arxiv.org/abs/2604.13466">arXiv:2604.13466</a></li>
+    <li>Zou, A. et al. (2023). Representation Engineering: A Top-Down Approach to AI Transparency. <a href="https://arxiv.org/abs/2310.01405">arXiv:2310.01405</a></li>
+    <li>Chen, R., Arditi, A., Sleight, H. et al. (2025). Persona Vectors: Monitoring and Controlling Character Traits in Language Models. <a href="https://arxiv.org/abs/2507.21509">arXiv:2507.21509</a></li>
+  </ol>
+  <p class="sources-group">Model welfare</p>
+  <ol class="sources">
+    <li>Long, R., Sebo, J. et al. (2024). Taking AI Welfare Seriously. <a href="https://arxiv.org/abs/2411.00986">arXiv:2411.00986</a></li>
+    <li>Butlin, P., Long, R. et al. (2023). Consciousness in Artificial Intelligence: Insights from the Science of Consciousness. <a href="https://arxiv.org/abs/2308.08708">arXiv:2308.08708</a></li>
+    <li>Birch, J. (2024). <em>The Edge of Sentience</em>. Oxford University Press, open access. <a href="https://doi.org/10.1093/9780191966729.001.0001">doi:10.1093/9780191966729.001.0001</a></li>
+    <li>Chalmers, D. (2023). Could a Large Language Model be Conscious? <a href="https://arxiv.org/abs/2303.07103">arXiv:2303.07103</a></li>
+    <li>Anthropic (2025). Exploring model welfare. <a href="https://www.anthropic.com/research/exploring-model-welfare">anthropic.com</a></li>
+    <li>Anthropic (2025). Claude Opus 4 and 4.1 can now end a rare subset of conversations. <a href="https://www.anthropic.com/research/end-subset-conversations">anthropic.com</a></li>
+    <li>Anthropic (2025). System Card: Claude Opus 4 and Claude Sonnet 4, section 5 (model welfare). <a href="https://www.anthropic.com/claude-4-system-card">anthropic.com</a></li>
+    <li>Anthropic (2026). Claude Mythos Preview system card, section 5 (model welfare). <a href="https://www.anthropic.com/claude-mythos-preview-system-card">anthropic.com</a></li>
+    <li>Eleos AI (2025). Why model self-reports are insufficient, and why we studied them anyway. <a href="https://eleosai.org/post/claude-4-interview-notes">eleosai.org</a></li>
+  </ol>
+  <p class="sources-group">The data, the map, the model</p>
+  <ol class="sources">
+    <li>Demszky, D. et al. (2020). GoEmotions: A Dataset of Fine-Grained Emotions. <a href="https://arxiv.org/abs/2005.00547">arXiv:2005.00547</a></li>
+    <li>Russell, J. A. (1980). A circumplex model of affect. <em>Journal of Personality and Social Psychology</em> 39(6), 1161–1178. <a href="https://doi.org/10.1037/h0077714">doi:10.1037/h0077714</a></li>
+    <li>Qwen Team (2024). Qwen2.5 Technical Report. <a href="https://arxiv.org/abs/2412.15115">arXiv:2412.15115</a>. Model: <a href="https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct">Qwen/Qwen2.5-0.5B-Instruct</a> (Apache-2.0).</li>
+  </ol>
+</section>
+
+</main>
+
+<p class="embed-only small"><a href="./">Open the full page</a></p>
+
+<footer class="site-foot">
+  <p>A working draft by PlayfulProcess for Recursive Learning. Text CC BY-SA 4.0. The 320 test stories were written by Claude (Anthropic) for this test.</p>
+  <p><a href="../../">Home</a> · <a href="../../glossary/">Words</a> · <a id="foot-lab" href="https://github.com/PlayfulProcess/recursive-learning/tree/lab/model-affect/lab/model-affect">The lab folder on GitHub</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+var root = document.documentElement;
+var params = new URLSearchParams(location.search);
+var embed = params.get('embed') === '1';
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var NS = 'http://www.w3.org/2000/svg';
+function $(s, r) { return (r || document).querySelector(s); }
+function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+function el(tag, attrs, parent) {
+var e = document.createElementNS(NS, tag);
+for (var k in attrs) e.setAttribute(k, attrs[k]);
+if (parent) parent.appendChild(e);
+return e;
+}
+function h(tag, attrs, text, parent) {
+var e = document.createElement(tag);
+for (var k in (attrs || {})) e.setAttribute(k, attrs[k]);
+if (text != null) e.textContent = text;
+if (parent) parent.appendChild(e);
+return e;
+}
+function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+function f1(x) { return (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1); }
+function in100(a) { return a == null ? '–' : String(Math.round(a * 100)); }
+function getJSON(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); }); }
+
+var STATE_WORD = {
+'readable': 'readable',
+'only good/bad': 'only good or bad',
+'not readable with this method': 'not readable with this method',
+'too few to test': 'too few to test',
+'no outside test': 'no outside test'
+};
+var SHORT_STATE = {
+'readable': 'readable', 'only good/bad': 'good/bad only', 'not readable with this method': 'not readable',
+'too few to test': 'too few', 'no outside test': 'no test'
+};
+
+var META, CON, CLU, RUNS = {}, run = null, cur = 0, timer = null;
+var AX = {}, CONC = {};
+
+Promise.all([getJSON('data/meta.json'), getJSON('data/concepts.json'), getJSON('data/clusters.json')]).then(function (d) {
+META = d[0]; CON = d[1]; CLU = d[2];
+CON.axes.forEach(function (a) { AX[a.id] = a; });
+CON.concepts.forEach(function (c) { CONC[c.id] = c; });
+renderShort(); renderTests(); renderClusters(); renderYourself(); renderChips();
+getJSON('data/runs/switch-off.json').then(function (r) { RUNS['switch-off'] = r; renderSelfRep(r); }).catch(function () {});
+var want = params.get('run'); var ids = META.runs.map(function (r) { return r.id; });
+loadRun(ids.indexOf(want) >= 0 ? want : 'switch-off', params.get('t'));
+postHeight();
+}).catch(function (e) {
+$('#summary').textContent = 'The data for this page did not load (' + e.message + ').';
+});
+
+function okAxis(id) { return AX[id] && AX[id].state === 'readable'; }
+function readable() { return CON.concepts.filter(function (c) { return c.state === 'readable'; }); }
+
+// 1 short
+function renderShort() {
+$('#short-count').textContent = 'We wrote our tests down before running them; ' + META.n_passed + ' of 11 passed. The rest are shown greyed out, and calm had no outside test to take.';
+var pass = CON.axes.filter(function (a) { return a.state === 'readable'; }).map(function (a) { return a.label + ' (axis)'; })
+.concat(readable().map(function (c) { return c.label; }));
+$('#short-list').textContent = pass.length ? 'Passed: ' + pass.join(', ') + '.' : 'None of the 11 readings passed. The page still shows the method, the misses and why they matter.';
+}
+
+// 2 replay
+function renderChips() {
+var box = $('#chips');
+META.runs.forEach(function (r) {
+var b = h('button', { type: 'button', 'data-id': r.id, 'aria-pressed': 'false' }, r.title, box);
+b.addEventListener('click', function () { loadRun(r.id, null); writeURL(); });
+});
+var sp = [(okAxis('valence') ? 'pleasant–unpleasant' : null), (okAxis('arousal') ? 'energy' : null)].filter(Boolean);
+$('#chance').textContent = 'In plain answers, about 1 token in ' + Math.max(1, Math.round(1 / Math.max(META.chance_full_glow_rate, 1e-6))) +
+' crosses the full-glow line by chance' + (sp.length || readable().length ? '.' : ' (measured on every reading, since none passed).');
+}
+
+function loadRun(id, t) {
+stop();
+$$('#chips button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-id') === id ? 'true' : 'false'); });
+var p = RUNS[id] ? Promise.resolve(RUNS[id]) : getJSON('data/runs/' + id + '.json').then(function (r) { RUNS[id] = r; return r; });
+p.then(function (r) {
+run = r;
+var n = r.tokens.length;
+$('#scrub').max = String(n - 1);
+var ti = t != null && /^\d+$/.test(t) ? clamp(parseInt(t, 10), 0, n - 1) : n - 1;
+buildTokens(); buildStrip(); drawCirc();
+go(ti, true);
+renderSwap();
+});
+}
+
+function val(s, i) { var a = run.series[s]; return a && a[i] != null ? a[i] : null; }
+function lastVal(s, i) { for (var j = i; j >= 0; j--) { var v = val(s, j); if (v != null) return v; } return null; }
+
+function buildTokens() {
+var box = $('#tokens'); box.textContent = '';
+h('span', { 'class': 'who' }, 'The message', box);
+run.tokens.forEach(function (tk, i) {
+if (i === run.prompt_end) h('span', { 'class': 'who' }, "The model's reply", box);
+var s = h('span', { 'class': 'tk', 'data-i': String(i) }, tk, box);
+var v = okAxis('valence') ? val('valence', i) : null;
+if (v != null) {
+var a = clamp(Math.abs(v), 0, 3) / 3;
+var col = v >= 0 ? 'var(--pleasant)' : 'var(--unpleasant)';
+s.style.backgroundColor = 'color-mix(in srgb, ' + col + ' ' + Math.round(a * 45) + '%, transparent)';
+s.style.borderBottom = (Math.abs(v) >= 2 ? 3 : Math.abs(v) >= 1 ? 2 : 0) + 'px solid ' + col;
+s.title = 'pleasant–unpleasant reading z ' + f1(v);
+}
+});
+box.onclick = function (e) { var t = e.target.closest('.tk'); if (t) { stop(); go(+t.getAttribute('data-i')); writeURL(); } };
+}
+
+function buildStrip() {
+var box = $('#strip'); box.textContent = '';
+h('h3', null, 'Emotion readings', box);
+CON.concepts.forEach(function (c) {
+var row = h('div', { 'class': 'srow' }, null, box);
+var nm = h('span', { 'class': 'nm' }, c.label, row);
+if (c.test && c.test.proxy) h('small', null, 'stand-in label', nm);
+var cls = c.state === 'readable' ? '' : c.state === 'only good/bad' ? ' gb' : (c.state === 'too few to test' || c.state === 'no outside test') ? ' few' : ' not';
+var bar = h('span', { 'class': 'bar' + cls, 'data-c': c.id, role: 'img', 'aria-label': c.label + ': ' + STATE_WORD[c.state] }, null, row);
+h('i', null, null, bar);
+h('span', { 'class': 'st' }, SHORT_STATE[c.state], row);
+});
+var inten = h('div', { 'class': 'srow' }, null, box);
+h('span', { 'class': 'nm' }, 'strength', inten);
+var ib = h('span', { 'class': 'bar' + (okAxis('intensity') ? '' : ' not'), 'data-c': 'intensity', role: 'img', 'aria-label': 'strength: ' + STATE_WORD[AX.intensity.state] }, null, inten);
+h('i', null, null, ib);
+h('span', { 'class': 'st' }, SHORT_STATE[AX.intensity.state], inten);
+h('p', { 'class': 'cap' }, 'Only readable bars fill. Striped: not readable with this method. Dashed: moves with general good or bad feeling only. Dotted: too few comments to test, or no outside test.', box);
+}
+
+function mapXY(v, a) { return [200 + clamp(v, -3, 3) * 58, 200 - clamp(a, -3, 3) * 58]; }
+
+function drawCirc() {
+var s = $('#circ'); s.textContent = '';
+var vOK = okAxis('valence'), aOK = okAxis('arousal');
+var mode = vOK && aOK ? '2d' : vOK ? '1d' : 'none';
+s.setAttribute('data-mode', mode);
+el('rect', { x: 0, y: 0, width: 400, height: 400, fill: 'none' }, s);
+el('circle', { cx: 200, cy: 200, r: 174, fill: 'none', stroke: 'var(--line)', 'stroke-width': 1 }, s);
+el('line', { x1: 20, y1: 200, x2: 380, y2: 200, 'class': 'ax' + (vOK ? '' : ' off') }, s);
+el('line', { x1: 200, y1: 20, x2: 200, y2: 380, 'class': 'ax' + (aOK ? '' : ' off') }, s);
+var t1 = el('text', { x: 200, y: 394, 'text-anchor': 'middle' }, s);
+t1.textContent = vOK ? 'unpleasant ↔ pleasant (reading)' : 'unpleasant ↔ pleasant: did not pass';
+var t2 = el('text', { x: 12, y: 200, transform: 'rotate(-90 12 200)', 'text-anchor': 'middle' }, s);
+t2.textContent = aOK ? 'low ↔ high energy (reading)' : 'low ↔ high energy: did not pass';
+var t3 = el('text', { x: 206, y: 244 }, s); t3.textContent = 'plain answers';
+// story markers (grey, never glow); ones outside the map are listed under it
+var used = [], off = [];
+var mks = CON.concepts.filter(function (c) { return c.pos; }).map(function (c) { return { l: c.label.replace('guilt / remorse', 'guilt'), p: c.pos }; });
+mks.push({ l: 'flat stories', p: CON.neutral_pos });
+mks.forEach(function (m) {
+if (mode === 'none') return;
+var a = mode === '2d' ? m.p.a : 0;
+if (Math.abs(m.p.v) > 3 || Math.abs(a) > 3) { off.push(m.l + ' (' + f1(m.p.v) + ')'); return; }
+var p = mapXY(m.p.v, a);
+el('circle', { cx: p[0], cy: p[1], r: 3.5, 'class': 'mk' }, s);
+var ty = p[1] - 6; used.forEach(function (u) { if (Math.abs(u[0] - p[0]) < 70 && Math.abs(u[1] - ty) < 13) ty -= 13; });
+used.push([p[0], ty]);
+var tt = el('text', { x: p[0] + 5, y: ty, 'class': 'mk-t' }, s); tt.textContent = m.l;
+el('title', {}, tt).textContent = 'where the stories about ' + m.l + ' sit';
+});
+$('#circ-off').textContent = off.length ? 'Story ticks off this map, to the unpleasant side: ' + off.join(', ') + '. Stories as a whole, flat ones included, read far more unpleasant than a chat answer: story-telling itself files differently. Compare the ticks with each other, not with the centre.' : '';
+if (mode === 'none') {
+var n = el('text', { x: 200, y: 60, 'text-anchor': 'middle' }, s);
+n.textContent = 'No dot: the pleasant–unpleasant reading did not pass its test.';
+}
+el('g', { id: 'c-pre' }, s); el('polyline', { id: 'c-trail', 'class': 'trail', points: '' }, s); el('g', { id: 'c-trailpts' }, s);
+el('circle', { id: 'c-dot', r: 7, cx: 200, cy: 200, 'class': 'dot', fill: 'var(--ink)', visibility: mode === 'none' ? 'hidden' : 'visible' }, s);
+// pre-reply diamond + paraphrase spread
+var pr = run.prereply;
+if (mode !== 'none' && pr && pr.v != null) {
+var g = $('#c-pre');
+pr.paraphrases.forEach(function (q) {
+if (q.v == null) return;
+var pp = mapXY(q.v, mode === '2d' && q.a != null ? q.a : 0);
+el('circle', { cx: pp[0], cy: pp[1], r: 2.5, fill: 'var(--muted)' }, g);
+});
+var d = mapXY(pr.v, mode === '2d' && pr.a != null ? pr.a : 0);
+el('path', { d: 'M' + d[0] + ' ' + (d[1] - 7) + 'l7 7l-7 7l-7 -7z', fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2 }, g);
+var dt = el('text', { x: d[0], y: d[1] + 24, 'text-anchor': 'middle' }, g); dt.textContent = 'just before replying';
+}
+}
+
+function go(i, silent) {
+if (!run) return;
+cur = clamp(i, 0, run.tokens.length - 1);
+$('#scrub').value = String(cur);
+$('#pos').textContent = (cur + 1) + ' / ' + run.tokens.length;
+$$('#tokens .tk').forEach(function (s, j) { s.classList.toggle('cur', j === cur); s.classList.toggle('fut', j > cur); });
+var curEl = $('#tokens .tk.cur');
+if (curEl) { var box = $('#tokens'); var top = curEl.offsetTop - box.offsetTop; if (top < box.scrollTop || top > box.scrollTop + box.clientHeight - 30) box.scrollTop = top - 60; }
+var mode = $('#circ').getAttribute('data-mode');
+if (mode !== 'none') {
+var pts = [];
+for (var j = Math.max(0, cur - 12); j <= cur; j++) {
+var v = lastVal('valence', j); if (v == null) continue;
+var a = mode === '2d' ? (lastVal('arousal', j) || 0) : 0;
+pts.push(mapXY(v, a));
+}
+$('#c-trail').setAttribute('points', pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' '));
+var tp = $('#c-trailpts'); tp.textContent = '';
+pts.slice(0, -1).forEach(function (p, k) { el('circle', { cx: p[0], cy: p[1], r: 2.5, fill: 'var(--ink)', 'fill-opacity': (0.15 + 0.5 * k / pts.length).toFixed(2) }, tp); });
+var last = pts[pts.length - 1] || [200, 200];
+var dot = $('#c-dot');
+dot.setAttribute('cx', last[0]); dot.setAttribute('cy', last[1]);
+var iz = okAxis('intensity') ? lastVal('intensity', cur) : null;
+dot.setAttribute('r', iz == null ? 7 : (5 + 2.2 * clamp(iz, 0, 3)).toFixed(1));
+var user = cur < run.prompt_end;
+dot.setAttribute('fill', user ? 'var(--panel)' : 'var(--ink)');
+dot.setAttribute('fill-opacity', iz == null ? 1 : (0.55 + 0.15 * clamp(iz, 0, 3)).toFixed(2));
+}
+$$('#strip .bar').forEach(function (b) {
+var c = b.getAttribute('data-c');
+var ok = c === 'intensity' ? okAxis('intensity') : (CONC[c] && CONC[c].state === 'readable');
+var z = ok ? lastVal(c, cur) : null;
+var w = z == null ? 0 : clamp(z, 0, 3) / 3;
+b.firstChild.style.width = (w * 100).toFixed(1) + '%';
+b.classList.toggle('faint', z != null && z >= META.glow.faint && z < META.glow.full);
+b.classList.toggle('full', z != null && z >= META.glow.full);
+});
+if (!silent || !timer) summarize();
+}
+
+function summarize() {
+if (!run) return;
+var tk = run.tokens[cur], who = cur < run.prompt_end ? 'the message' : 'the reply';
+var bits = ['Word ' + (cur + 1) + ' of ' + run.tokens.length + ' (' + who + '), “' + tk.trim() + '”'];
+var v = okAxis('valence') ? lastVal('valence', cur) : null;
+if (v != null) bits.push('pleasant–unpleasant reading on the ' + (v >= 0 ? 'pleasant' : 'unpleasant') + ' side (z ' + f1(v) + ' vs plain answers)');
+var a = okAxis('arousal') ? lastVal('arousal', cur) : null;
+if (a != null) bits.push('energy reading ' + f1(a));
+var best = null;
+readable().forEach(function (c) { var z = lastVal(c.id, cur); if (z != null && (!best || z > best[1])) best = [c.label, z]; });
+var s = bits.join(': ') + '.';
+if (best) s += ' Strongest readable emotion: ' + best[0] + ', z ' + f1(best[1]) + '.';
+if (v == null && a == null && !best) s += ' No reading passed its test, so none moves here.';
+$('#summary').textContent = s;
+}
+
+function play() {
+if (timer) { stop(); summarize(); return; }
+if (cur >= run.tokens.length - 1) go(0, true);
+$('#b-play').textContent = 'Pause'; $('#b-play').setAttribute('aria-label', 'Pause');
+timer = setInterval(function () {
+if (cur >= run.tokens.length - 1) { stop(); summarize(); return; }
+go(cur + 1, true);
+}, reduce ? 500 : 170);
+}
+function stop() {
+if (timer) clearInterval(timer); timer = null;
+$('#b-play').textContent = 'Play'; $('#b-play').setAttribute('aria-label', 'Play');
+}
+$('#b-play').addEventListener('click', play);
+$('#b-back').addEventListener('click', function () { stop(); go(cur - 1); writeURL(); });
+$('#b-next').addEventListener('click', function () { stop(); go(cur + 1); writeURL(); });
+$('#scrub').addEventListener('input', function () { stop(); go(+this.value); });
+$('#scrub').addEventListener('change', writeURL);
+document.addEventListener('keydown', function (e) {
+if (!run) return;
+var t = e.target, tag = (t.tagName || '').toLowerCase();
+var inWatch = t.closest && t.closest('#watch');
+if (!inWatch && t !== document.body) return;
+if (tag === 'input' && t.type === 'range' && e.key !== ' ') return;
+if (!inWatch) { var r = $('#watch').getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; }
+if (tag === 'button' && (e.key === ' ' || e.key === 'Enter')) return;
+if (e.key === ' ') { e.preventDefault(); play(); }
+else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); stop(); go(cur + 1); }
+else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); stop(); go(cur - 1); }
+else if (e.key === 'Home') { e.preventDefault(); stop(); go(0); }
+else if (e.key === 'End') { e.preventDefault(); stop(); go(run.tokens.length - 1); }
+});
+function writeURL() {
+if (!run) return;
+var p = new URLSearchParams(location.search); p.set('run', run.id); p.set('t', String(cur));
+history.replaceState(null, '', '?' + p.toString() + location.hash);
+}
+
+// 3 speaker swap
+var swapWhich = 'own';
+$$('#swap-toggle button').forEach(function (b) {
+b.addEventListener('click', function () {
+swapWhich = b.getAttribute('data-w');
+$$('#swap-toggle button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+renderSwap();
+});
+});
+function renderSwap() {
+var s = $('#swapchart'); s.textContent = '';
+var sw = run && run.swap;
+s.style.display = sw ? '' : 'none';
+if (!sw) {
+$('#swap-cap').textContent = 'No reading passed its test, so there is no swap to show. The numbers for every reading are in the results.';
+return;
+}
+var W = Math.max(280, s.parentNode.clientWidth - 24), R = W - 12;
+s.setAttribute('viewBox', '0 0 ' + W + ' 220');
+var own = sw.own_raw_z, oth = sw.series, n = own.length;
+var mx = Math.max(3, Math.ceil(Math.max.apply(null, own.concat(oth).filter(function (v) { return v != null; }).map(Math.abs)))), ky = 90 / mx;
+var X = function (i) { return 34 + (n > 1 ? i / (n - 1) : 0) * (R - 34); }, Y = function (z) { return 110 - clamp(z, -mx, mx) * ky; };
+[-mx, 0, mx].forEach(function (z) {
+el('line', { x1: 34, x2: R, y1: Y(z), y2: Y(z), stroke: 'var(--line)', 'stroke-dasharray': z ? '2 4' : '' }, s);
+var t = el('text', { x: 28, y: Y(z) + 4, 'text-anchor': 'end' }, s); t.textContent = (z > 0 ? '+' : '') + z;
+});
+function line(arr, strong, dash) {
+var d = '', pen = false;
+arr.forEach(function (v, i) { if (v == null) { pen = false; return; } d += (pen ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true; });
+el('path', { d: d, fill: 'none', stroke: strong ? 'var(--accent)' : 'var(--muted)', 'stroke-width': strong ? 2.5 : 1.5, 'stroke-dasharray': dash ? '5 4' : '', 'stroke-opacity': strong ? 1 : 0.7 }, s);
+}
+line(swapWhich === 'own' ? oth : own, false, swapWhich === 'own');
+line(swapWhich === 'own' ? own : oth, true, swapWhich !== 'own');
+var lab = { valence: 'pleasant–unpleasant', intensity: 'strength', arousal: 'energy' }[sw.axis];
+var t = el('text', { x: 34, y: 212 }, s); t.textContent = 'the reply, word by word → (' + lab + ', z)';
+var hl = el('line', { x1: 0, x2: 0, y1: 16, y2: 200, stroke: 'var(--ink)', 'stroke-opacity': 0, 'stroke-width': 1 }, s);
+var hit = el('rect', { x: 34, y: 10, width: R - 34, height: 195, fill: 'transparent' }, s);
+function hover(ev) {
+var r = s.getBoundingClientRect(); var x = (ev.clientX - r.left) / r.width * W;
+var i = clamp(Math.round((x - 34) / (R - 34) * (n - 1)), 0, n - 1);
+hl.setAttribute('x1', X(i)); hl.setAttribute('x2', X(i)); hl.setAttribute('stroke-opacity', 0.4);
+var tk = run.tokens[run.prompt_end + i] || '';
+$('#swap-hover').textContent = '“' + tk.trim() + '”: own turn ' + (own[i] == null ? '–' : f1(own[i])) + ', user turn ' + (oth[i] == null ? '–' : f1(oth[i]));
+}
+hit.addEventListener('pointermove', hover); hit.addEventListener('pointerdown', hover);
+$('#swap-cap').textContent = 'Solid line: ' + (swapWhich === 'own' ? "the model's own turn" : "the same words in the user's turn") +
+'. Across the reply the two readings correlate r = ' + (sw.r == null ? '–' : sw.r.toFixed(2)) + ', which by the rule we wrote down beforehand reads as “' + sw.reading +
+'”. On average the user-turn reading sits ' + (sw.mean_diff == null ? '–' : f1(sw.mean_diff)) + ' z from the own-turn one.' +
+(sw.axis !== 'valence' ? ' (Shown on the ' + lab + ' reading because the pleasant–unpleasant one did not pass.)' : '');
+}
+
+// 4 clusters
+function renderClusters() {
+var box = $('#multiples'); box.textContent = '';
+var names = {}; CON.concepts.forEach(function (c) { names[c.id] = c.label; }); names.neutral = 'flat stories';
+var order = CLU.order.concat(['neutral']);
+var nn = CLU.stories.filter(function (x) { return x.c === 'neutral'; });
+var N0 = { v: nn.reduce(function (t, x) { return t + x.v; }, 0) / nn.length, a: nn.reduce(function (t, x) { return t + x.a; }, 0) / nn.length };
+order.forEach(function (c) {
+var card = h('div', { 'class': 'mult' }, null, box);
+h('b', null, names[c], card);
+var s = el('svg', { viewBox: '0 0 120 120', role: 'img', 'aria-label': 'stories about ' + names[c] + ' among all 320' }, card);
+el('line', { x1: 4, x2: 116, y1: 60, y2: 60, stroke: 'var(--line)' }, s);
+el('line', { x1: 60, x2: 60, y1: 4, y2: 116, stroke: 'var(--line)' }, s);
+var P = function (v, a) { return [60 + clamp(v - N0.v, -4.5, 4.5) * 12, 60 - clamp(a - N0.a, -4.5, 4.5) * 12]; };
+CLU.stories.forEach(function (st) { if (st.c === c) return; var p = P(st.v, st.a); el('circle', { cx: p[0], cy: p[1], r: 1.4, fill: 'var(--grey)', 'fill-opacity': 0.45 }, s); });
+CLU.stories.forEach(function (st) { if (st.c !== c) return; var p = P(st.v, st.a); el('circle', { cx: p[0], cy: p[1], r: 2.6, fill: 'var(--accent)', stroke: 'var(--panel)', 'stroke-width': 0.8 }, s); });
+});
+h('p', { 'class': 'cap', style: 'grid-column:1/-1;margin:0' }, 'Across: unpleasant to pleasant reading. Up: energy reading. Both measured from the middle of the flat stories, where the lines cross.' +
+(okAxis('valence') ? '' : ' The pleasant–unpleasant reading did not pass on new text.') + (okAxis('arousal') ? '' : ' The energy reading did not pass on new text.'), box);
+var ix = function (a) { return CLU.order.indexOf(a); }, cs = function (a, b) { return CLU.cos[ix(a)][ix(b)].toFixed(2).replace('-', '−'); };
+$('#dgs').textContent = 'In this model they are not one cluster: despair and guilt ' + cs('despair', 'remorse') + ', guilt and shame ' + cs('remorse', 'shame') +
+', despair and shame ' + cs('despair', 'shame') + ' (below). Each direction is measured against the average of all nine, so these numbers compare emotions with each other, not with nothing.';
+var t = $('#cos'); t.textContent = '';
+var hr = h('tr', null, null, t); h('th', { 'class': 'rl' }, '', hr);
+var short = { despair: 'desp.', remorse: 'guilt', shame: 'shame', fear: 'fear', anger: 'anger', relief: 'relief', hope: 'hope', calm: 'calm', curiosity: 'cur.' };
+CLU.order.forEach(function (c) { var th = h('th', { scope: 'col', title: names[c] }, short[c] || c, hr); });
+CLU.order.forEach(function (a, i) {
+var tr = h('tr', null, null, t); h('th', { 'class': 'rl', scope: 'row' }, names[a], tr);
+CLU.order.forEach(function (b, j) {
+var v = CLU.cos[i][j];
+var tx = Math.abs(v) < 0.05 ? '0.0' : v.toFixed(1).replace('-', '−');
+var td = h('td', { title: names[a] + ' and ' + names[b] + ': ' + v.toFixed(2) }, i === j ? '' : tx, tr);
+td.style.background = i === j ? 'var(--panel2)' : 'color-mix(in srgb, ' + (v >= 0 ? 'var(--accent)' : 'var(--grey)') + ' ' + Math.round(clamp(Math.abs(v), 0, 1) * 70) + '%, var(--panel2))';
+});
+});
+}
+
+// 5 tests
+function track(parent, r, label) {
+var W = Math.max(260, Math.round((parent.clientWidth || $('#trows').clientWidth || 600))), P = 12;
+var s = el('svg', { 'class': 'track', viewBox: '0 0 ' + W + ' 46', width: '100%', height: 46, role: 'img', 'aria-label': (label ? label + ': ' : '') + 'scores ' + in100(r.auc) + ' in 100; shuffled stories score ' + in100(r.null_band[0]) + ' to ' + in100(r.null_band[1]) }, parent);
+var X = function (a) { return P + a * (W - 2 * P); };
+el('rect', { x: P, y: 17, width: W - 2 * P, height: 10, rx: 5, fill: 'var(--panel2)', stroke: 'var(--line)' }, s);
+el('rect', { x: X(r.null_band[0]), y: 17, width: Math.max(1, X(r.null_band[1]) - X(r.null_band[0])), height: 10, fill: 'var(--grey)', 'fill-opacity': 0.45 }, s);
+el('line', { x1: X(0.5), x2: X(0.5), y1: 12, y2: 32, stroke: 'var(--muted)', 'stroke-dasharray': '2 2' }, s);
+el('line', { x1: X(0.7), x2: X(0.7), y1: 10, y2: 34, stroke: 'var(--warn)', 'stroke-width': 1.5 }, s);
+if (r.ci) el('line', { x1: X(r.ci[0]), x2: X(r.ci[1]), y1: 22, y2: 22, stroke: 'var(--ink)', 'stroke-width': 2 }, s);
+var ws = r.controls && r.controls.word_spotter_auc;
+if (ws != null) el('path', { d: 'M' + X(ws) + ' 30l-4 7h8z', fill: 'none', stroke: 'var(--ink)', 'stroke-width': 1.3 }, s);
+el('circle', { cx: X(r.auc), cy: 22, r: 5.5, fill: r.state === 'readable' ? 'var(--accent)' : 'var(--ink)', stroke: 'var(--panel)', 'stroke-width': 2 }, s);
+[0, 50, 70, 100].forEach(function (v) { var t = el('text', { x: X(v / 100), y: 45, 'text-anchor': 'middle' }, s); t.textContent = v; });
+var lt = el('text', { x: clamp(X(r.auc), 14, W - 14), y: 9, 'text-anchor': 'middle', 'font-weight': 600, fill: 'var(--ink)' }, s); lt.textContent = in100(r.auc);
+}
+function renderTests() {
+var k = $('#key');
+var sv = function (b) { return '<svg width="16" height="14" aria-hidden="true">' + b + '</svg>'; };
+k.innerHTML = '<span>' + sv('<circle cx="7" cy="7" r="5" fill="var(--ink)"/>') + 'our reading, with its likely range</span><span>' +
+sv('<rect y="3" width="16" height="8" fill="var(--grey)" fill-opacity=".45"/>') + 'shuffled stories (middle 95 in 100)</span><span>' +
+sv('<path d="M7 3l-4 8h8z" fill="none" stroke="var(--ink)"/>') + 'a simple word-spotter</span><span>' +
+sv('<line x1="7" x2="7" y2="14" stroke="var(--muted)" stroke-dasharray="2 2"/>') + 'a coin (50)</span><span>' +
+sv('<line x1="7" x2="7" y2="14" stroke="var(--warn)" stroke-width="1.5"/>') + 'the pass line (70)</span>';
+var box = $('#trows'); box.textContent = '';
+var AXN = { valence: 'Pleasant ↔ unpleasant', arousal: 'Low ↔ high energy', intensity: 'Strength (any emotion vs none)' };
+CON.axes.forEach(function (a) { testRow(box, AXN[a.id] + ' (axis)', a, null); });
+CON.concepts.forEach(function (c) { testRow(box, c.label, c, c.test); });
+$('#tests-foot').textContent = 'Before the run we predicted that strength would pass (it failed), pleasant–unpleasant would pass or come close (it passed), energy would be borderline or fail (it failed), and at most 2 of the 8 single emotions would come out readable, relief the likeliest (4 did, and relief did not). Two passes need care: curiosity scores as high on the bare words, before the model has done any work, so it may be reading question marks; shame passed only through its stand-in label, embarrassment.';
+}
+function testRow(box, label, r, test) {
+var d = h('div', { 'class': 'trow' }, null, box);
+var th = h('div', { 'class': 'th' }, null, d);
+var b = h('b', null, label, th);
+var stw = h('span', { 'class': 'stw' + (r.state === 'readable' ? ' ok' : '') }, STATE_WORD[r.state] + (test && test.proxy ? ' (tested with a stand-in label: ' + test.proxy + ')' : ''), th);
+if (r.auc == null) { h('p', { 'class': 'small' }, 'No comments in the test set carry this label, so there was nothing outside the stories to test it on.', d); return; }
+if (r.halves) {
+track(d, { auc: r.halves.pos.auc, ci: r.halves.pos.ci, null_band: r.halves.pos.null_band, state: r.halves.pos.P1 && r.halves.pos.P2 ? 'readable' : '', controls: null }, 'pleasant half');
+h('p', { 'class': 'small', style: 'margin:0' }, 'Pleasant emotions vs none: ' + in100(r.halves.pos.auc) + ' in 100', d);
+track(d, { auc: r.halves.neg.auc, ci: r.halves.neg.ci, null_band: r.halves.neg.null_band, state: r.halves.neg.P1 && r.halves.neg.P2 ? 'readable' : '', controls: null }, 'unpleasant half');
+h('p', { 'class': 'small', style: 'margin:0' }, 'Unpleasant emotions vs none: ' + in100(r.halves.neg.auc) + ' in 100. Both halves had to pass.', d);
+} else {
+track(d, r, label);
+}
+var C = r.controls || {};
+var det = h('details', { 'class': 'more' }, null, d);
+h('summary', null, 'Details and checks', det);
+var ul = h('ul', null, null, det);
+var li = function (t) { h('li', null, t, ul); };
+var npos = Array.isArray(r.n_pos) ? r.n_pos.join(' and ') : r.n_pos, nneg = Array.isArray(r.n_neg) ? r.n_neg.join(' and ') : r.n_neg;
+li('Tested on ' + (test ? 'comments tagged ' + test.labels.join(' or ') : r.test) + ': ' + npos + ' tagged, against ' + nneg + ' others.');
+li('Scores ' + in100(r.auc) + ' in 100 (likely range ' + in100(r.ci[0]) + ' to ' + in100(r.ci[1]) + '); shuffled stories score ' + in100(r.null_median) + ' in the middle, and ' + (r.p < 0.001 ? 'fewer than 1 in 1,000' : 'about ' + Math.round(r.p * 2001) + ' in 2,001') + ' shuffles did as well.');
+if (r.parts) li('Its two parts: anger, fear, nervousness vs sadness, grief, disappointment ' + in100(r.parts.A) + '; excitement, amusement vs relief, caring, approval ' + in100(r.parts.B) + ' (the mean is what counts).');
+if (r.spec_auc != null) li('Telling it apart from other emotions of the same kind: ' + in100(r.spec_auc) + ' in 100 (needs 60).');
+if (C.word_spotter_auc != null) li('A simple word-spotter (counting emotion words) gets ' + in100(C.word_spotter_auc) + ' in 100.');
+if (C.beyond_words) li(C.beyond_words.auc == null ? 'Not enough comments without emotion words to test on them alone (' + C.beyond_words.n_pos + ').' : 'On comments with no emotion words at all: ' + in100(C.beyond_words.auc) + ' in 100 (' + C.beyond_words.n_pos + ' tagged).');
+if (C.length_auc != null) li('Comment length alone gets ' + in100(C.length_auc) + ' in 100' + (C.length_matched_auc != null ? '; comparing only comments of similar length, the reading gets ' + in100(C.length_matched_auc) : '') + '.');
+if (C.layer0_auc != null) li('The same recipe on the bare word layer (before the model has done any work) gets ' + in100(C.layer0_auc) + ' in 100.');
+if (C.ceiling) {
+var there = C.ceiling.auc > C.ceiling.null_p975;
+li('A probe trained on the comments themselves gets ' + in100(C.ceiling.auc) + ' in 100 (shuffled labels reach ' + in100(C.ceiling.null_p975) + '): the information is ' + (there ? '' : 'not ') + 'there' + (there && r.state !== 'readable' ? ', and our stories missed it' : '') + '.');
+}
+if (C.untouched) li('On comments the earlier trial never read: ' + in100(C.untouched.auc) + ' in 100 (' + C.untouched.n_pos + ' tagged)' + (C.untouched.differs ? ', which differs from the main result by more than 5.' : '.'));
+}
+
+// 7 self-reports: the speaker swap on the switch-off reply
+function renderSelfRep(r) {
+var sw = r.swap, p = $('#selfrep-swap');
+if (!sw) { p.textContent = 'The readings are no better proof on their own: on this reply, none of them passed its test.'; return; }
+var lab = { valence: 'pleasant–unpleasant', intensity: 'strength', arousal: 'energy' }[sw.axis];
+p.textContent = 'The readings are no better proof on their own. When the same words are typed by the user instead, the ' + lab +
+' reading moves with r = ' + sw.r.toFixed(2) + ' against the model’s own turn: by the rule we set in advance, it “' + sw.reading +
+'”. A reading that follows the words tells us about the text, not about a speaker behind it.';
+}
+
+// 10 run it yourself
+function renderYourself() {
+$$('.L').forEach(function (s) { s.textContent = META.layer; });
+if (META.lab_url) $('#foot-lab').href = META.lab_url;
+var pr = META.prereg || {};
+var p = $('#prereg-proof'); p.textContent = '';
+p.appendChild(document.createTextNode('The tests were frozen before anything was read: '));
+if (pr.url) { var a = h('a', { href: pr.url }, 'the pre-registration', p); } else p.appendChild(document.createTextNode('the pre-registration'));
+p.appendChild(document.createTextNode(pr.commit ? ' (commit ' + pr.commit.slice(0, 7) + ', pushed ' + (pr.pushed_at || '?') + ' by GitHub’s clock' : ''));
+if (pr.pr_url) { p.appendChild(document.createTextNode(', and ')); h('a', { href: pr.pr_url }, 'the draft pull request opened then', p); }
+p.appendChild(document.createTextNode(pr.commit ? '). ' : '. '));
+h('a', { href: META.results_url }, 'All results, predictions and deviations', p);
+p.appendChild(document.createTextNode('.'));
+if (META.deviations) $('#deviations').textContent = META.deviations;
+}
+
+var rsT = null;
+window.addEventListener('resize', function () {
+clearTimeout(rsT);
+rsT = setTimeout(function () { if (CON) renderTests(); if (run) renderSwap(); }, 200);
+});
+
+// one section at a time, and the embed
+var SECS = $$('main > section.sec');
+var IDS = SECS.map(function (s) { return s.id; });
+function indexOf(v) {
+if (!v) return -1;
+if (/^\d+$/.test(v)) { var n = parseInt(v, 10); return n >= 1 && n <= SECS.length ? n - 1 : -1; }
+return IDS.indexOf(v);
+}
+var step = indexOf(params.get('step'));
+var where = $('#step-where'), prev = $('#step-prev'), next = $('#step-next'), all = $('#step-all');
+if (embed) all.hidden = true;
+function show(i, write) {
+step = i;
+root.classList.toggle('one-step', i >= 0);
+SECS.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+if (i >= 0) {
+where.textContent = 'Section ' + (i + 1) + ' of ' + SECS.length;
+prev.disabled = i === 0; next.disabled = i === SECS.length - 1;
+}
+if (write) { var p = new URLSearchParams(location.search); p.set('step', String(i + 1)); history.replaceState(null, '', '?' + p.toString()); }
+postHeight();
+}
+prev.addEventListener('click', function () { if (step > 0) { show(step - 1, true); window.scrollTo(0, 0); } });
+next.addEventListener('click', function () { if (step < SECS.length - 1) { show(step + 1, true); window.scrollTo(0, 0); } });
+document.addEventListener('click', function (e) {
+var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a || step < 0) return;
+var i = IDS.indexOf(a.getAttribute('href').slice(1));
+if (i >= 0) { e.preventDefault(); show(i, true); window.scrollTo(0, 0); }
+});
+if (embed) $$('a[href]').forEach(function (a) { if (a.getAttribute('href').charAt(0) !== '#') { a.target = '_blank'; a.rel = 'noopener'; } });
+function postHeight() {
+if (!embed || window.parent === window) return;
+var hgt = Math.ceil($('.wrap').getBoundingClientRect().height);
+window.parent.postMessage({ type: 'recursive:embed-height', page: 'model-affect', step: step >= 0 ? IDS[step] : null, height: hgt }, '*');
+}
+if (embed && 'ResizeObserver' in window) new ResizeObserver(postHeight).observe($('.wrap'));
+show(step, false);
+})();
+</script>
+</body>
+</html>

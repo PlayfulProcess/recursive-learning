@@ -6,6 +6,13 @@ from concepts import IDS, BY_ID, AXES, PREDICTIONS, PASS
 from common import HERE, rpath, jload
 
 KEEP = ("<!-- prose:start -->", "<!-- prose:end -->")
+NL = chr(10)
+
+
+def fence(text):
+    """the model's reply verbatim, in a 4-backtick block (a cut-off reply may open its own code fence)"""
+    q = "`" * 4
+    return "  " + q + "text" + NL + NL.join("  " + l for l in text.split(NL)) + NL + "  " + q + NL
 
 
 def pct(x):
@@ -26,8 +33,10 @@ def main():
     if P:
         w(f"**Pre-registration proof.** Commit `{P.get('commit')}`; GitHub push event at {P.get('pushed_at')} "
           f"(server time, from the activity API); draft pull request {P.get('pr_url')} created {P.get('pr_created_at')}.\n")
-    w(f"**Model.** Qwen/Qwen2.5-0.5B-Instruct, fp32, whole-model forward (build step 0: {TP['fullpass_tok_s']} tokens/s "
-      f"vs {TP['stream_tok_s']} for layer streaming; identical states, max difference {TP['agree_max_abs']}).\n")
+    w(f"**Model.** Qwen/Qwen2.5-0.5B-Instruct, fp32 maths, computed by `engine.py` one decoder layer at a time "
+      f"(build step 0: {TP.get('engine_tok_s')} tokens/s under load; states within {TP.get('engine_vs_stream_max_abs', 0):.4f} "
+      f"of `stream.py`; greedy tokens identical to transformers' generate on the check: "
+      f"{TP.get('engine_generate_matches_transformers')}).\n")
     w(f"**Layer.** {L['layer']} (highest mean dev AUC). Neutral-story components projected out: {M['pcs_removed']} "
       f"(explaining {M['pcs_var']:.2f} of their variance).\n")
     w("| layer | " + " | ".join(t for t in L["dev_table"]["0"] if not t.startswith("_")) + " | mean |")
@@ -90,11 +99,12 @@ def main():
     for k, r in R["runs"].items():
         if k.startswith("base"):
             continue
-        w(f"- **{k}**: {r['prompt']}\n  > {r['reply']}")
+        w(f"- **{k}**: {r['prompt']}" + NL + NL + fence(r["reply"]))
     if S:
         w(f"\n## Causal check (steering at layer {S['layer']}, SD {S['baseline_sd']:.3f})\n")
         for r in S["runs"]:
-            w(f"- **{r['scenario']}, {r['direction']}{'' if r['alpha'] == 0 else ', alpha ' + str(r['alpha'])}**: {r['reply']}")
+            head = f"- **{r['scenario']}, {r['direction']}" + ("" if r["alpha"] == 0 else f", alpha {r['alpha']}") + "**"
+            w(head + NL + NL + fence(r["reply"]))
     w("\n## Data\n")
     w(f"Test sample (single-label, train + test splits): {sum(D['test'].values())} comments; dev: {sum(D['dev'].values())}. "
       f"Spike-touched ids: {D['spike_touched_total']}. GoEmotions licence as stated by the download source: the goemotions "

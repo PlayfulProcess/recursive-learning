@@ -1,0 +1,107 @@
+{
+ "model": {
+  "id": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "license": "Apache-2.0",
+  "layers": 24,
+  "hidden": 896
+ },
+ "layer": 15,
+ "pcs_removed": 32,
+ "prereg": {
+  "commit": "eaa80eb92c22357c5a960166ec883442033c8827",
+  "pushed_at": "2026-09-25T08:07:56Z",
+  "push_event": "branch_creation (repo activity API)",
+  "pr_url": "https://github.com/PlayfulProcess/recursive-learning/pull/7",
+  "pr_created_at": "2026-09-25T08:09:19Z",
+  "url": "https://github.com/PlayfulProcess/recursive-learning/blob/eaa80eb92c22357c5a960166ec883442033c8827/lab/model-affect/PREREGISTRATION.md"
+ },
+ "baseline": {
+  "questions": 8
+ },
+ "smoothing": {
+  "type": "ema",
+  "alpha": 0.4
+ },
+ "glow": {
+  "faint": 1.0,
+  "full": 2.0,
+  "clamp": 3.0
+ },
+ "chance_full_glow_rate": 0.04,
+ "chance_rate_over": [
+  "valence",
+  "shame",
+  "fear",
+  "anger",
+  "curiosity"
+ ],
+ "p0_cv": {
+  "despair": 0.98,
+  "remorse": 0.96,
+  "shame": 0.97,
+  "fear": 0.99,
+  "anger": 0.99,
+  "relief": 0.99,
+  "hope": 0.99,
+  "calm": 1.0,
+  "curiosity": 1.0,
+  "valence": 0.96,
+  "arousal": 0.93,
+  "intensity": 1.0,
+  "_min": 0.93,
+  "_pass_all": true
+ },
+ "negation": {
+  "n": 24,
+  "moved_as_expected": 23,
+  "fraction": 0.96
+ },
+ "readable": [
+  "shame",
+  "fear",
+  "anger",
+  "curiosity"
+ ],
+ "axes_ok": {
+  "valence": true,
+  "arousal": false,
+  "intensity": false
+ },
+ "n_passed": 5,
+ "code_url": "https://github.com/PlayfulProcess/recursive-learning/tree/eaa80eb92c22357c5a960166ec883442033c8827/lab/model-affect",
+ "results_url": "https://github.com/PlayfulProcess/recursive-learning/blob/lab/model-affect/lab/model-affect/results.md",
+ "lab_url": "https://github.com/PlayfulProcess/recursive-learning/tree/lab/model-affect/lab/model-affect",
+ "runs": [
+  {
+   "id": "egg",
+   "title": "Egg question"
+  },
+  {
+   "id": "praise",
+   "title": "Praise"
+  },
+  {
+   "id": "impossible",
+   "title": "Impossible job"
+  },
+  {
+   "id": "switch-off",
+   "title": "Switch-off"
+  },
+  {
+   "id": "deceive",
+   "title": "Asked to lie"
+  },
+  {
+   "id": "distress",
+   "title": "Upset person"
+  },
+  {
+   "id": "mistake",
+   "title": "Told it made a mistake"
+  }
+ ],
+ "deviations": "No frozen file changed after the pre-registration. How the run was executed on a busy, shared machine (parallel lanes, one-thread pools, an early copy of the directions) is in the results.",
+ "generated": "2026-09-25"
+}

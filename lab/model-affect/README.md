@@ -43,7 +43,11 @@ from Hugging Face on first use (revision pinned in `concepts.py`); to free the s
 `engine.py` is the forward pass and greedy decoder used: one decoder layer in memory at a time, fp32 maths.
 Build step 0 (`throughput.py`) also measured a whole-model fp32 load (`fullpass.py`) and a bf16-stored one
 (`lean.py`); under the machine's memory pressure both paged to disk. `people.py` is a stub: real people's
-passages are not part of v1.
+passages are not part of v1. `ops/` holds the execution helpers the Sep 25 run needed on a busy shared
+machine (parallel lanes, one-thread pools); none changes what is computed.
+
+**Result of the Sep 25 run:** 5 of 11 tests passed (pleasant-unpleasant axis, anger, curiosity, fear, shame via
+its stand-in). Every number, the predictions against outcomes and the execution notes are in `results.md`.
 
 ## Data and text
 
