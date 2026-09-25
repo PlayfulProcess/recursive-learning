@@ -1,87 +1,87 @@
 #!/usr/bin/env node
-// potato_solve.mjs: is there a real choice in Hot Potato? Run from anywhere:
+// potato_solve.mjs: is Hot Potato v3.2 fair, and does it ask for real choices? Run from anywhere:
 //
-//   node --max-old-space-size=6000 game/tools/potato_solve.mjs      (under a minute)
+//   node game/tools/potato_solve.mjs          (a few seconds)
 //
-// It plays game/potato-model.js (the page's own rules) three ways, over all 16 hidden draws
-// (4 or 5 pairs of hands, fire at 15 or 16, Wren waits 1, 2, 3 or 4 moves; all equally likely):
-//   1. the best possible play for someone who can't see the hidden numbers (it only sees what the
-//      page shows, and learns from Wren's "not yet"), found by searching every move up to 15 presses;
-//   2. one button pressed over and over (the round-1 testers' winning line was Together every move);
-//   3. random presses, with and without tossing.
-// It prints the best play against each draw, and how often it needs Hold, I don't know and Toss.
+// It plays game/potato-model.js (the page's own rules) for the three rounds and every random round
+// (start 2 to 5 flames, Wren wants 2 to 5 holds), with the fire at 15 or 16:
+//   1. the coolest safe play (the lowest "hottest it got", the page's score), found by searching
+//      every sequence of offered moves (safe = it never reaches 15 flames, so it wins wherever the
+//      fire is), compared with the page's "coolest possible" line (put it down > ask > hold > bounce);
+//   2. one toss (then two) slipped into that play at every point: does it still win?
+//   3. one button pressed over and over, and random presses, with and without tossing.
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const M = createRequire(import.meta.url)(join(here, '..', 'potato-model.js'));
-const DEPTH = 15;
+const DEPTH = 22;
+const after = (s, v) => { const t = M.clone(s); M.step(t, v); return t; };
 
-const draws = [];
-for (const n of M.NEEDS) for (const b of M.BURNS) for (const w of M.WAITS) draws.push([n, b, w]);
-const fresh = d => M.create(...d);
-const copy = s => Object.assign({}, s, { on: s.on.slice(), hands: Object.assign({}, s.hands), log: [],
-  joined: s.joined.slice(), refusedHot: s.refusedHot.slice() });
-const after = (s, v) => { const t = copy(s); M.step(t, v); return t; };
-// What the page shows: flames, what Wren has seen, who holds it, every pair of hands, the ending,
-// and whether Put it down is showing.
-const shown = s => [s.F, s.seen, s.on.join(''), M.SEATS.map(k => s.hands[k]).join(''), s.out || '',
-  s.out ? '' : (M.enough(s) && s.on.length > 1 ? 'D' : '')].join('|');
-
-const memo = new Map();
-function best(states, d) {                        // states: [drawIndex, state][], all showing the same
-  const key = shown(states[0][1]) + '#' + states.map(x => x[0]).join('.') + '#' + d;
-  if (memo.has(key)) return memo.get(key);
-  let top = [0, null];
-  if (d > 0) for (const v of M.offered(states[0][1])) {
-    const groups = new Map();
-    for (const [i, s] of states) { const t = after(s, v), k = shown(t); if (!groups.has(k)) groups.set(k, []); groups.get(k).push([i, t]); }
-    let val = 0;
-    for (const g of groups.values()) {
-      const o = g[0][1].out;
-      if (o === 'down') val += g.length;
-      else if (!o) val += g.length * (best(g, d - 1)[0] - 1e-4);     // a shorter win is a little better
+// Coolest safe play: the lowest "hottest it got" over all plays that win with the fire at 15.
+function coolestSafe(start, wait) {
+  const memo = new Map();
+  const go = (s, d) => {
+    if (s.out === 'down') return { F: s.maxF, line: [] };
+    if (s.out || d === 0) return null;
+    const key = [s.F, s.seen, s.on.length, s.hand, s.maxF, d].join('|');
+    if (memo.has(key)) return memo.get(key);
+    let best = null;
+    for (const v of M.offered(s)) {
+      const r = go(after(s, v), d - 1);
+      if (r && (!best || r.F < best.F || (r.F === best.F && r.line.length + 1 < best.line.length))) best = { F: r.F, line: [v, ...r.line] };
     }
-    val /= states.length;
-    if (val > top[0] + 1e-12 || top[1] === null) top = [val, v];
-  }
-  memo.set(key, top);
-  return top;
+    memo.set(key, best);
+    return best;
+  };
+  return go(M.create(start, wait, 15), DEPTH);
 }
-function playBest(di) {
-  let belief = draws.map((d, i) => [i, fresh(d)]), s = fresh(draws[di]); const moves = [];
-  for (let d = DEPTH; d > 0 && !s.out; d--) {
-    const v = best(belief, d)[1];
-    s = after(s, v); moves.push(v);
-    const k = shown(s);
-    belief = belief.map(([i, x]) => [i, after(x, v)]).filter(([, x]) => shown(x) === k);
-  }
-  return { out: s.out, F: s.F, moves };
+function playLine(start, wait, burn, line, then = M.greedy) {
+  let s = M.create(start, wait, burn), n = 0;
+  for (const v of line) { if (s.out) break; if (!M.offered(s).includes(v)) return { out: 'not offered', F: s.F, s }; M.step(s, v); }
+  while (!s.out && n++ < 60) M.step(s, then(s));
+  return { out: s.out, F: s.F, s };
 }
-function play(pick, d, seed) {
-  let s = fresh(d), n = 0, r = seed * 7919 + 1;
-  const rnd = () => { r = (r * 1103515245 + 12345) % 2147483648; return r / 2147483648; };
-  while (!s.out && !s.hopeless && n++ < 40) s = after(s, pick(s, rnd));
-  return s.out === 'down';
-}
-const rate = (pick, reps = 1) => { let w = 0; for (let r = 0; r < reps; r++) draws.forEach(d => { w += play(pick, d, r); }); return w / (draws.length * reps); };
-const spam = v => s => { const o = M.offered(s); return o.includes('down') ? 'down' : o.includes(v) ? v : o.includes('idk') ? 'idk' : o[0]; };
-const random = noToss => (s, rnd) => { const o = M.offered(s).filter(v => !noToss || v !== 'toss'); return o[Math.floor(rnd() * o.length)]; };
+const greedyLine = (start, wait) => { const s = M.create(start, wait, 99), L = []; while (!s.out) { const v = M.greedy(s); L.push(v); M.step(s, v); } return L; };
+const short = L => L.map(v => ({ hold: 'H', idk: 'K', toss: 'T', together: 'G', down: 'D' })[v]).join('');
 
-const t0 = Date.now();
-const opt = best(draws.map((d, i) => [i, fresh(d)]), DEPTH)[0];
-const use = { hold: 0, idk: 0, toss: 0 }, lines = []; let won = 0;
-draws.forEach((d, i) => {
-  const r = playBest(i);
-  for (const k in use) use[k] += r.moves.includes(k);
-  won += r.out === 'down';
-  lines.push(`  pairs ${d[0]}  fire ${d[1]}  Wren waits ${d[2]}: ${String(r.out).padEnd(6)} at ${String(r.F).padStart(2)} flames  ${r.moves.join(' ')}`);
-});
-console.log(`Best play without seeing the hidden numbers wins ${won} of ${draws.length} draws (search value ${opt.toFixed(3)}; a tiny cost per press makes shorter wins count a little more).`);
-console.log(`The same button every move: Together ${(100 * rate(spam('together'))).toFixed(0)}%, Hold ${(100 * rate(spam('hold'))).toFixed(0)}%, ` +
-  `I don't know ${(100 * rate(spam('idk'))).toFixed(0)}%, Toss ${(100 * rate(spam('toss'))).toFixed(0)}%.`);
-console.log(`Random presses ${(100 * rate(random(false), 200)).toFixed(0)}%; random presses that never toss ${(100 * rate(random(true), 200)).toFixed(0)}%.`);
-console.log(`Best play uses Hold in ${Math.round(100 * use.hold / draws.length)}% of games, I don't know in ${Math.round(100 * use.idk / draws.length)}%, Toss in ${Math.round(100 * use.toss / draws.length)}%.`);
-console.log(lines.join('\n'));
-console.log(`(${((Date.now() - t0) / 1000).toFixed(0)} s)`);
+const params = [];
+M.ROUNDS.forEach((r, i) => params.push({ name: `round ${i + 1}`, ...r }));
+for (const start of M.FREE.starts) for (const wait of M.FREE.waits) params.push({ name: `random  `, start, wait });
+
+let allGreedyBest = true;
+console.log('Coolest safe play (search) vs the page\'s line; then one toss slipped in at each point (wins with fire at 15 / 16):');
+for (const p of params) {
+  const best = coolestSafe(p.start, p.wait), g = M.coolest(p.start, p.wait), gl = greedyLine(p.start, p.wait);
+  if (!best || best.F !== g.maxF) allGreedyBest = false;
+  const one = [], two = [];
+  for (let k = 0; k < gl.length - 1; k++) {
+    const line = [...gl.slice(0, k), 'toss'];
+    const a = playLine(p.start, p.wait, 15, line), b = playLine(p.start, p.wait, 16, line);
+    one.push(a.out === 'down' ? 'W' : b.out === 'down' ? 'w' : 'x');
+    const line2 = [...gl.slice(0, k), 'toss', 'toss'];
+    two.push(playLine(p.start, p.wait, 16, line2).out === 'down' ? 'w' : 'x');
+  }
+  console.log(`  ${p.name} start ${p.start} Wren ${p.wait}: coolest ${best ? best.F : '-'} (${best ? short(best.line) : 'none'}); page line ${g.maxF} in ${g.moves} (${short(gl)})` +
+    `  one toss: ${one.join('')}  two tosses: ${two.join('')}`);
+}
+console.log(`  (W = still wins with the fire at 15, w = only if it's at 16, x = burns. The page line is the coolest in every case: ${allGreedyBest})`);
+
+// One button every move (put it down if you can; if the button isn't lit, bounce; if that isn't either, ask).
+const spam = v => s => { const o = M.offered(s); return o.includes('down') ? 'down' : o.includes(v) ? v : o.includes('idk') ? 'idk' : 'together'; };
+const random = noToss => (s, rnd) => { const o = M.offered(s).filter(v => !noToss || v !== 'toss'); return o[Math.floor(rnd() * o.length)]; };
+function rate(pick, reps, only) {
+  let w = 0, n = 0;
+  for (let r = 0; r < reps; r++) for (const p of only || params) for (const burn of M.BURNS) {
+    let s = M.create(p.start, p.wait, burn), k = 0, x = (r * 7919 + p.start * 31 + p.wait * 7 + burn) || 1;
+    const rnd = () => { x = (x * 1103515245 + 12345) % 2147483648; return x / 2147483648; };
+    while (!s.out && k++ < 60) M.step(s, pick(s, rnd));
+    w += s.out === 'down'; n++;
+  }
+  return (100 * w / n).toFixed(0) + '%';
+}
+const rounds = params.slice(0, 3);
+console.log(`\nThe same button every move, rounds 1-3 / all rounds: Hold ${rate(spam('hold'), 1, rounds)} / ${rate(spam('hold'), 1)}, ` +
+  `Toss ${rate(spam('toss'), 1, rounds)} / ${rate(spam('toss'), 1)}, I don't know ${rate(spam('idk'), 1, rounds)} / ${rate(spam('idk'), 1)}.`);
+console.log(`Random presses: ${rate(random(false), 300, rounds)} of rounds 1-3 (${rate(random(false), 100)} of all); never tossing: ${rate(random(true), 300, rounds)} (${rate(random(true), 100)}).`);

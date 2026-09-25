@@ -4,48 +4,50 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Hot Potato · Recursive Learning</title>
-<meta name="description" content="The race to build AI is a hot potato. Hold it and your hands take the heat, and the others see you mean it. Toss it and it goes round the table and comes back hotter. Ask for hands and the heat is shared; with enough hands you can put it down. A small game with made-up rules, not a forecast.">
+<meta name="description" content="The race to build AI is a hot potato. Hold it and your hands take the heat, and Wren sees you mean it. Toss it and it goes round the table and comes back hotter. Once Wren is ready, hold it together: the others follow, and with five pairs of hands you can put it down. A small game with made-up rules, not a forecast.">
 <!--
-  Hot Potato, v3.1 (Sep 25 2026). v3 was rebuilt from scratch after PlayfulProcess played v1 and
-  said "Hold it does not hold it"; v3.1 answers playtest round 1, where every tester won by pressing
-  "Hold it together" every move. Design: DESIGN-potato.md. Rules: potato-model.js (a rule-for-rule
-  port of tools/potato_rules_check.py; tools/potato_port_check.mjs compares the two, and
-  tools/potato_solve.mjs checks that no single button wins). The first version is kept at potato-v1/.
+  Hot Potato, v3.2 (Sep 25 2026). v3 was rebuilt from scratch after PlayfulProcess played v1 and said
+  "Hold it does not hold it"; v3.1 answered playtest round 1; v3.2 answers round 2 (asking too soon
+  looked like holding but didn't count, Wren's hidden number made asking a guess, one toss decided
+  the game, a hold/rest grind, nothing to decide after Wren joined, it burned by itself).
+  Design: DESIGN-potato.md. Rules: potato-model.js (a rule-for-rule port of
+  tools/potato_rules_check.py; tools/potato_port_check.mjs compares them, tools/potato_solve.mjs
+  checks the rounds). The first version is kept at potato-v1/.
   One file of HTML, inline SVG, no dependencies, no network calls. All game motion is computed from
   one virtual clock (tweens from t), so window.potatoTest.step(ms) can drive it.
 -->
 <style>
   :root{
     --bg:#f6f0e4; --surface:#fffaf0; --ink:#211b14; --dim:#4f463b; --faint:#8d8273; --line:#d6c8b1;
-    --focus:#1f6fd1; --eco:#23704f; --eco-soft:#d7eadf; --no:#a8360f;
-    --mitt:#fffdf7; --cuff:#b59d80; --h1:#f4d2a5; --h2bg:#f6d9b3; --h2:#d7742c; --h3bg:#f3c7a0; --h3:#c2411c;
-    --h4bg:#efb08e; --h4:#a8210c; --char:#2d2521; --charline:#8a7a70;
+    --focus:#1f6fd1; --eco:#23704f; --eco-soft:#d7eadf; --no:#a8360f; --cool:#1f6a9e; --cool-soft:#d5e6f2;
+    --mitt:#fffdf7; --cuff:#b59d80; --h1:#f4d2a5; --h3bg:#f3c7a0; --h3:#c2411c; --h4bg:#efb08e; --h4:#a8210c;
+    --char:#2d2521; --charline:#8a7a70;
     --pot1:#d9a862; --pot2:#e18d45; --pot3:#e2672f; --pot4:#c83b1b; --potline:#5a3a1c;
     --heat:#d2551f; --litbox:#f7c58f; --hatch:#b9a78f; --soil:#8b6441; --soil-dark:#5f4128;
-    --chalk:#3d5c4f; --v-hold:#3e6db3; --v-toss:#c1541f; --v-tog:#2d7f62; --v-idk:#8d8273;
-    --dimveil:rgba(246,240,228,.93);
+    --chalk:#3d5c4f; --v-hold:#3e6db3; --v-toss:#c1541f; --v-tog:#2d7f62; --v-idk:#7a6f61;
+    --dimveil:rgba(246,240,228,.94);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       --bg:#12161f; --surface:#1b2130; --ink:#f0e9dc; --dim:#c9c0b2; --faint:#877f73; --line:#343c50;
-      --focus:#7fb2ff; --eco:#6fd0aa; --eco-soft:#1d3a31; --no:#ff9a6e;
-      --mitt:#3a4560; --cuff:#5d6986; --h1:#6a4c2c; --h2bg:#5d3f26; --h2:#f08a3e; --h3bg:#5a2e1f; --h3:#ff6a3d;
-      --h4bg:#5e1d12; --h4:#ff8a63; --char:#0b0a09; --charline:#6d625b;
+      --focus:#7fb2ff; --eco:#6fd0aa; --eco-soft:#1d3a31; --no:#ff9a6e; --cool:#8cc8f2; --cool-soft:#1b3346;
+      --mitt:#3a4560; --cuff:#5d6986; --h1:#6a4c2c; --h3bg:#5a2e1f; --h3:#ff6a3d; --h4bg:#5e1d12; --h4:#ff8a63;
+      --char:#0b0a09; --charline:#6d625b;
       --pot1:#c89656; --pot2:#d9823e; --pot3:#e0612b; --pot4:#e2431f; --potline:#2c1a0b;
       --heat:#ff7a3d; --litbox:#7a4521; --hatch:#5b5347; --soil:#7b5838; --soil-dark:#4a321f;
-      --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#9a9184;
-      --dimveil:rgba(18,22,31,.93);
+      --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#a59c8f;
+      --dimveil:rgba(18,22,31,.94);
     }
   }
   :root[data-theme="dark"]{
     --bg:#12161f; --surface:#1b2130; --ink:#f0e9dc; --dim:#c9c0b2; --faint:#877f73; --line:#343c50;
-    --focus:#7fb2ff; --eco:#6fd0aa; --eco-soft:#1d3a31; --no:#ff9a6e;
-    --mitt:#3a4560; --cuff:#5d6986; --h1:#6a4c2c; --h2bg:#5d3f26; --h2:#f08a3e; --h3bg:#5a2e1f; --h3:#ff6a3d;
-    --h4bg:#5e1d12; --h4:#ff8a63; --char:#0b0a09; --charline:#6d625b;
+    --focus:#7fb2ff; --eco:#6fd0aa; --eco-soft:#1d3a31; --no:#ff9a6e; --cool:#8cc8f2; --cool-soft:#1b3346;
+    --mitt:#3a4560; --cuff:#5d6986; --h1:#6a4c2c; --h3bg:#5a2e1f; --h3:#ff6a3d; --h4bg:#5e1d12; --h4:#ff8a63;
+    --char:#0b0a09; --charline:#6d625b;
     --pot1:#c89656; --pot2:#d9823e; --pot3:#e0612b; --pot4:#e2431f; --potline:#2c1a0b;
     --heat:#ff7a3d; --litbox:#7a4521; --hatch:#5b5347; --soil:#7b5838; --soil-dark:#4a321f;
-    --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#9a9184;
-    --dimveil:rgba(18,22,31,.93);
+    --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#a59c8f;
+    --dimveil:rgba(18,22,31,.94);
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -57,105 +59,106 @@
 
   .game{max-width:560px;margin:0 auto;padding:4px 16px 12px;display:flex;flex-direction:column}
 
-  header.top{display:flex;align-items:center;gap:8px;min-height:48px}
+  header.top{display:flex;align-items:center;gap:8px;min-height:46px}
   header.top .spiral{width:24px;height:24px;color:var(--eco);flex:none}
-  header.top h1{font-size:16px;line-height:1.25;font-weight:700;margin:0;flex:1}
+  header.top h1{font-size:16px;line-height:1.25;font-weight:700;margin:0;flex:1;min-width:0}
   .textbtn{min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);flex:none;cursor:pointer;font-size:15px;font-weight:700;padding:6px 12px}
+  .roundline{margin:0 0 4px;font-size:14px;line-height:1.3;color:var(--dim)}
+  .roundline b{color:var(--ink)}
 
   .track{padding:0 0 2px}
-  .trk1{display:flex;align-items:baseline;gap:6px;font-size:14px;min-height:22px}
+  .trk1{display:flex;align-items:baseline;gap:6px;font-size:14px;min-height:22px;white-space:nowrap}
   .trk1 .lbl{color:var(--dim)}
   .trk1 b{font-size:17px}
-  .trk1 .hint{margin-left:auto;color:var(--dim);text-align:right;min-width:0}
+  .trk1 .hint{margin-left:auto;color:var(--dim);text-align:right;overflow:hidden;text-overflow:ellipsis;min-width:0}
   .trk1 .hint svg{width:10px;height:10px;vertical-align:-1px}
   .boxes{display:flex;align-items:flex-start;gap:6px;margin-top:3px}
   .grp{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:stretch;gap:2px}
   .grp .gb{display:flex;gap:2px}
   .grp .gl{font-size:13px;line-height:1.1;color:var(--dim);text-align:center;white-space:nowrap}
   .grp .gl.now{color:var(--ink);font-weight:700}
-  .box{flex:1 1 0;min-width:10px;height:18px;border:1.5px solid var(--line);border-radius:3px;position:relative;background:var(--surface)}
+  .box{flex:1 1 0;min-width:9px;height:18px;border:1.5px solid var(--line);border-radius:3px;position:relative;background:var(--surface)}
   .box.band{border-style:dashed;border-color:var(--faint);background-image:repeating-linear-gradient(45deg,var(--hatch) 0 1.5px,transparent 1.5px 5px)}
   .box.lit{background:var(--litbox);border-color:var(--heat);border-style:solid}
   .box svg{position:absolute;inset:1px;width:calc(100% - 2px);height:calc(100% - 2px)}
   .boxes .firemark{flex:none;width:18px;height:20px}
   .box .plus{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:800;line-height:1;color:#fff;background:var(--heat);border-radius:2px;letter-spacing:-.02em}
+  .box .plus.minus{background:var(--cool)}
   .track.out .box{opacity:.45;filter:grayscale(1)}
 
   .stagewrap{flex:0 0 auto;display:flex;justify-content:center;align-items:flex-start;position:relative;margin-top:4px}
-  .stage{position:relative;user-select:none;-webkit-user-select:none;touch-action:manipulation;width:343px;height:302px}
+  .stage{position:relative;user-select:none;-webkit-user-select:none;touch-action:manipulation;width:343px;height:316px}
   .stage > svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}
-  .ov{position:absolute;z-index:1;font-size:13.5px;line-height:1.25}
-  .seat .nm{font-size:15px;font-weight:700;display:flex;align-items:center;gap:5px}
+  #ovs{font-size:13px}
+  .ov{position:absolute;z-index:1;line-height:1.25}
+  .seat .nm{font-size:1.15em;font-weight:700;display:flex;align-items:center;gap:5px}
   .seat.r{text-align:right}.seat.r .nm{justify-content:flex-end}
   .seat.c{text-align:center}.seat.c .nm{justify-content:center}
   .seat .nm svg{width:13px;height:13px;flex:none}
   .seat .st{color:var(--ink)}
   .seat .st .ok{color:var(--eco);font-weight:700}
   .seat .st .no{color:var(--no);font-weight:700}
-  .seat .st .seen b{font-weight:700}
-  .seat .st .seen.pop b{background:var(--eco-soft);border-radius:4px;padding:0 3px}
   .seat .st svg{width:12px;height:12px;vertical-align:-1px}
-  .hw{display:flex;align-items:center;gap:6px;margin-top:2px}
-  .seat.r .hw{justify-content:flex-end}
-  .bar{display:flex;gap:2px;height:9px;width:48px;flex:none}
-  .seat .bar{width:32px;height:8px}
-  .bar i{flex:1;border:1px solid var(--faint);border-radius:2px;background:var(--surface)}
-  .bar i.on{border-color:var(--h3)}
-  .bar.l1 i.on{background:var(--h1)}
-  .bar.l2 i.on{background:repeating-linear-gradient(45deg,var(--h2) 0 1.5px,var(--h2bg) 1.5px 4px)}
-  .bar.l3 i.on{background:repeating-linear-gradient(45deg,var(--h3) 0 1.5px,transparent 1.5px 4px),repeating-linear-gradient(-45deg,var(--h3) 0 1.5px,var(--h3bg) 1.5px 4px)}
-  .bar.l4 i.on{background:var(--h4);border-color:var(--h4)}
-  .bar.burnt i{background:var(--char);border-color:var(--char)}
-  .hw .word{white-space:nowrap}
-  .chalk{font:italic 700 14px/1.2 "Segoe Print","Bradley Hand","Comic Sans MS",cursive,system-ui;color:var(--chalk);text-align:center;letter-spacing:.01em}
+  .pips{display:inline-flex;gap:3px;margin-top:2px;padding:1px 3px;border-radius:5px;vertical-align:middle}
+  .pips.pop{background:var(--eco-soft)}
+  .pips.lost{background:#f3d0c2}
+  .pips svg{width:11px;height:11px}
+  .chalk{font:italic 700 14px/1.2 "Segoe Print","Bradley Hand","Comic Sans MS",cursive,system-ui;color:var(--chalk);text-align:center;letter-spacing:.01em;white-space:nowrap}
   .bubble{z-index:4;background:var(--surface);border:1.5px solid var(--ink);border-radius:12px;padding:6px 10px;font-size:14px;line-height:1.35;box-shadow:0 3px 10px rgba(0,0,0,.18);pointer-events:none}
   .bubble b{display:block;font-size:15px;margin-bottom:2px}
   .seatbtn{position:absolute;z-index:3;background:transparent;border:0;border-radius:12px;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
   @media (hover:hover){ .seatbtn:hover{background:rgba(127,127,127,.07)} }
   .endcards{position:absolute;left:0;right:0;top:0;min-height:100%;z-index:5;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:8px 4px;background:var(--dimveil);border-radius:14px}
-  .endcards h2{font-size:19px;line-height:1.25;margin:0;text-align:center;color:var(--eco)}
-  .endcards .sub{font-size:15px;line-height:1.35;margin:0;text-align:center}
+  .endcards h2{font-size:20px;line-height:1.25;margin:0;text-align:center;color:var(--eco)}
+  .endcards .sub{font-size:15px;line-height:1.4;margin:0;text-align:center}
   .endcards .next{font-size:14px;margin:4px 0 0;text-align:center;color:var(--dim)}
   .fork{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .fork div{background:var(--surface);border:1.5px solid var(--ink);border-radius:12px;padding:7px 8px;font-size:13.5px;line-height:1.3}
   .fork b{display:block;font-size:14px;margin-bottom:3px}
   .endcards .under{font-size:13.5px;text-align:center;margin:0;color:var(--dim)}
 
-  .yourow{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;font-size:15px;min-height:30px;margin-top:2px}
+  .yourow{display:flex;align-items:center;gap:4px 8px;font-size:15px;min-height:30px;margin-top:2px;white-space:nowrap}
   .pill{display:inline-block;border:1.5px solid var(--ink);border-radius:999px;padding:0 8px;font-weight:700;font-size:14px;line-height:19px}
   .ytag{display:inline-block;background:var(--ink);color:var(--bg);border-radius:6px;padding:0 7px;font-weight:700;font-size:14px;line-height:19px}
   .yourow .yh{display:inline-flex;align-items:center;gap:6px}
-  .handsrow{display:flex;align-items:center;gap:8px;min-height:34px;font-size:15px;flex-wrap:wrap}
-  .hicons{display:flex;gap:3px;flex:none}
-  .hicons svg{width:24px;height:24px}
-  .handsrow .need{color:var(--dim)}
-  .handsrow.enough .need{color:var(--eco);font-weight:700}
+  .bar{display:inline-flex;gap:2px;height:10px;width:40px;flex:none}
+  .bar i{flex:1;border:1px solid var(--faint);border-radius:2px;background:var(--surface)}
+  .bar.l1 i.on{background:var(--h1);border-color:var(--h3)}
+  .bar.l2 i.on{background:repeating-linear-gradient(45deg,var(--h3) 0 1.5px,transparent 1.5px 4px),repeating-linear-gradient(-45deg,var(--h3) 0 1.5px,var(--h3bg) 1.5px 4px);border-color:var(--h3)}
+  .bar.l3 i.on{background:var(--h4);border-color:var(--h4)}
+  .bar.burnt i{background:var(--char);border-color:var(--char)}
 
-  .caption{font-size:16px;line-height:1.35;margin:6px 0 8px;min-height:calc(1.35em * 5)}
+  .caption{font-size:16px;line-height:1.35;margin:6px 0 8px;min-height:calc(1.35em * 4 + 6px)}
   .caption b{font-weight:700}
   .game.over .caption{min-height:0}
 
   .verbs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .verb{min-height:74px;border-radius:14px;border:2px solid var(--vc);background:var(--surface);text-align:left;padding:7px 11px 8px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 0 var(--vc);transition:opacity .15s}
+  .verb{min-height:70px;border-radius:14px;border:2px solid var(--vc);background:var(--surface);text-align:left;padding:7px 11px 8px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 0 var(--vc);min-width:0}
   .verb .v{font-size:18px;font-weight:700;line-height:1.15}
   .verb .s{font-size:13.5px;color:var(--dim);line-height:1.25;margin-top:3px}
-  .verb:active:not(:disabled){transform:translateY(1px);box-shadow:none}
-  .verb:disabled{cursor:default;opacity:.62;box-shadow:none;border-style:dashed}
-  .verb:disabled .s{color:var(--ink);font-weight:600}
-  .verb.hold{--vc:var(--v-hold)} .verb.toss{--vc:var(--v-toss)} .verb.tog{--vc:var(--v-tog)} .verb.idk{--vc:var(--v-idk);border-style:dashed}
-  .verb.tog.down{background:var(--eco-soft)}
-  .verbs.busy .verb:not(:disabled){opacity:.55}
-  .verb.pulse{animation:pulse 1.4s ease-out 1}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 var(--eco)}60%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 2px 0 var(--vc)}}
-  .busyhint{font-size:14px;color:var(--dim);text-align:center;margin:6px 0 0;min-height:20px}
+  .verb:active:not(.off){transform:translateY(1px);box-shadow:none}
+  .verb.hold{--vc:var(--v-hold)} .verb.toss{--vc:var(--v-toss)} .verb.tog{--vc:var(--v-tog)} .verb.idk{--vc:var(--v-idk)} .verb.down{--vc:var(--eco)}
+  .verb.down{grid-column:1 / -1;min-height:56px;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .verb.down .hc{display:flex;align-items:center;gap:6px;flex:none;font-size:14px;font-weight:700}
+  .verb.down .hc svg{width:20px;height:20px}
+  .verb.down .txt{min-width:0}
+  .verb.down:not(.off){background:var(--eco);color:var(--bg)}
+  .verb.down:not(.off) .s{color:var(--bg)}
+  .verb.off{cursor:default;box-shadow:none;border-style:dashed;border-color:var(--faint);background:transparent}
+  .verb.off .v{color:var(--faint)}
+  .verb.off .s{color:var(--dim)}
+  .verb.pulse{animation:pulse 1.4s ease-out 2}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 var(--eco)}60%{box-shadow:0 0 0 12px transparent}100%{box-shadow:0 2px 0 var(--vc)}}
+  .inlinebtn{font-size:14px;font-weight:700;min-height:24px;line-height:20px;border-radius:8px;border:1.5px solid var(--eco);background:var(--surface);color:var(--eco);padding:0 10px;cursor:pointer;margin-left:2px;vertical-align:baseline}
 
   .end{padding:4px 0 8px}
   .end .row{display:flex;gap:8px;flex-wrap:wrap}
   .big{flex:1 1 auto;min-height:52px;border-radius:14px;border:2px solid var(--eco);background:var(--eco);color:var(--bg);font-size:18px;font-weight:700;cursor:pointer;padding:8px 16px}
-  .ghost{min-height:52px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);font-size:15px;font-weight:600;cursor:pointer;padding:8px 14px}
-  .recap{margin:14px 0 0;padding:0;list-style:none;font-size:15px;line-height:1.45}
+  .ghost{min-height:48px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);font-size:15px;font-weight:600;cursor:pointer;padding:8px 14px}
+  .score{font-size:16px;line-height:1.4;margin:12px 0 0}
+  .recap{margin:8px 0 0;padding:0;list-style:none;font-size:15px;line-height:1.45}
   .recap li{padding:6px 0;border-top:1px solid var(--line)}
-  .river{margin:18px 0 0;padding:10px 12px;border-left:3px solid var(--line);font-size:14px;line-height:1.45;font-style:italic}
+  .river{margin:16px 0 0;padding:10px 12px;border-left:3px solid var(--line);font-size:14px;line-height:1.45;font-style:italic}
   .river small{display:block;font-style:normal;font-size:13px;color:var(--dim);margin-top:4px}
 
   .how{max-width:560px;margin:0 auto;padding:8px 16px 40px;font-size:15.5px;line-height:1.5}
@@ -179,30 +182,45 @@
   @media (min-width:900px) and (min-aspect-ratio:1/1){
     .game{max-width:1080px}
     .play{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,1fr);gap:8px 32px;align-items:start}
-    .right{padding-top:34px}
+    .right{padding-top:30px}
     .game.over .right{padding-top:8px}
   }
   @media (max-height:740px) and (max-width:699px){
-    .caption{min-height:calc(1.35em * 4);margin-top:4px}
+    .caption{min-height:calc(1.35em * 3 + 6px);margin-top:4px}
     .verb{min-height:62px}
-    .busyhint{min-height:16px;margin-top:3px}
+    .verb.down{min-height:50px}
   }
   @media (max-width:400px){
-    .verb{padding:6px 9px 7px;min-height:70px}
+    .caption{font-size:15.5px}
+    .yourow{font-size:14px}
+    .verb{padding:6px 9px 7px;min-height:68px}
     .verb .v{font-size:17px}
     .verb .s{font-size:13px}
+  }
+  @media (max-width:360px){
+    .verb{min-height:86px}
+  }
+  @media (max-width:340px){
+    .caption{font-size:14.5px;min-height:calc(1.35em * 5 + 6px)}
+  }
+  @media (max-width:330px){
+    header.top h1{font-size:14.5px}
+    .textbtn{padding:6px 8px;font-size:14px}
+    .verb .s{font-size:12.5px}
+    .verb.down{flex-wrap:wrap}
   }
   @media (min-width:700px){
     .game{padding-top:10px}
     header.top h1{font-size:19px}
+    .roundline{font-size:15px}
     .trk1{font-size:15.5px} .trk1 b{font-size:19px}
-    .ov{font-size:15px} .seat .nm{font-size:17px}
+    .seat .nm{font-size:1.2em}
     .chalk{font-size:17px}
-    .yourow,.handsrow{font-size:16px}
+    .yourow{font-size:16px}
     .caption{font-size:19px}
     .verb .v{font-size:21px} .verb .s{font-size:15.5px}
-    .verb{min-height:84px}
-    .fork div{font-size:15px} .endcards h2{font-size:22px} .endcards .sub{font-size:17px} .endcards .under{font-size:15px}
+    .verb{min-height:80px} .verb.down{min-height:62px}
+    .fork div{font-size:15px} .endcards h2{font-size:23px} .endcards .sub{font-size:17px} .endcards .under{font-size:15px}
   }
 </style>
 </head>
@@ -213,61 +231,50 @@
     <h1>The race to build AI is a hot potato.</h1>
     <button class="textbtn" id="helpBtn" type="button">How to play</button>
   </header>
+  <p class="roundline"><b id="roundName">Round 1 of 3</b> · made-up rules, not a forecast</p>
 
   <div class="play">
   <div class="left">
   <section class="track" id="track" aria-label="How hot the potato is">
-    <div class="trk1"><span class="lbl" id="hotLbl">How hot:</span> <b id="heatWord">warm</b>
-      <span class="hint" id="fireHint">catches fire in here <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1v7M2 5.5 5 8.5 8 5.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span></div>
+    <div class="trk1"><span class="lbl" id="hotLbl">How hot:</span> <b id="heatWord">warm</b> <span id="flameCount"></span>
+      <span class="hint" id="fireHint"></span></div>
     <div class="boxes" id="boxes" aria-hidden="true"></div>
   </section>
 
   <div class="stagewrap" id="stagewrap">
     <div class="stage" id="stage">
       <div id="ovs"></div>
-      <svg id="svg" viewBox="0 0 390 344" aria-hidden="true">
+      <svg id="svg" viewBox="0 0 390 352" aria-hidden="true">
         <defs>
-          <pattern id="h2" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><rect width="4" height="4" style="fill:var(--h2bg)"/><rect width="1.4" height="4" style="fill:var(--h2)"/></pattern>
-          <pattern id="h3" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><rect width="4" height="4" style="fill:var(--h3bg)"/><rect width="1.3" height="4" style="fill:var(--h3)"/><rect width="4" height="1.3" style="fill:var(--h3)"/></pattern>
-          <pattern id="h4" patternUnits="userSpaceOnUse" width="3" height="3" patternTransform="rotate(45)"><rect width="3" height="3" style="fill:var(--h4bg)"/><rect width="1.4" height="3" style="fill:var(--h4)"/><rect width="3" height="1.4" style="fill:var(--h4)"/></pattern>
+          <pattern id="h2" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><rect width="4" height="4" style="fill:var(--h3bg)"/><rect width="1.3" height="4" style="fill:var(--h3)"/><rect width="4" height="1.3" style="fill:var(--h3)"/></pattern>
           <pattern id="hb" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><rect width="4" height="4" style="fill:var(--char)"/><rect width="1" height="4" style="fill:var(--charline)"/><rect width="4" height="1" style="fill:var(--charline)"/></pattern>
           <clipPath id="aboveGround"><rect x="0" y="0" width="390" height="205"/></clipPath>
         </defs>
-        <g id="static"></g>
         <g id="dyn"></g>
       </svg>
-      <div class="endcards" id="endcards" hidden>
-        <h2>You put it down together.</h2>
-        <p class="sub">Nobody’s hands got burned. It’s in the ground; whether it stays there, nobody knows yet.</p>
-        <p class="next">What happens next isn’t in this game:</p>
-        <div class="fork">
-          <div><b>If there’s a known way to keep it down</b>People keep it there. For example: every builder agrees to a shared test that must be passed before building anything bigger, and someone checks.</div>
-          <div><b>If nobody knows how yet</b>Putting it down together bought time. Finding a way to keep it down is still ahead.</div>
-        </div>
-        <p class="under">This game can’t tell you which card is true. Nobody can yet.</p>
-      </div>
+      <div class="endcards" id="endcards" hidden></div>
     </div>
   </div>
 
-  <div class="yourow" id="yourow" aria-live="off"></div>
-  <div class="handsrow" id="handsrow"></div>
+  <div class="yourow" id="yourow"></div>
   </div>
   <div class="right">
 
-  <p class="caption" id="caption" aria-live="polite"><b id="c1"></b> <span id="c2"></span></p>
+  <p class="caption" id="caption"><span aria-live="polite"><b id="c1"></b> <span id="c2"></span></span> <button type="button" class="inlinebtn" id="restart" hidden>Start again</button></p>
 
   <div class="verbs" id="verbs">
     <button type="button" class="verb hold" id="vHold" data-verb="hold" aria-keyshortcuts="H"></button>
     <button type="button" class="verb toss" id="vToss" data-verb="toss" aria-keyshortcuts="T"></button>
     <button type="button" class="verb tog" id="vTog" data-verb="together" aria-keyshortcuts="G"></button>
     <button type="button" class="verb idk" id="vIdk" data-verb="idk" aria-keyshortcuts="K"></button>
+    <button type="button" class="verb down" id="vDown" data-verb="down" aria-keyshortcuts="D"></button>
   </div>
-  <p class="busyhint" id="busyhint"></p>
 
   <section class="end" id="end" hidden>
-    <div class="row"><button type="button" class="big" id="again">Play again</button><button type="button" class="ghost" id="howBtn2">How to play</button></div>
+    <div class="row"><button type="button" class="big" id="nextBtn">Next round</button><button type="button" class="ghost" id="againBtn">Play this round again</button><button type="button" class="ghost" id="howBtn2">How to play</button></div>
+    <p class="score" id="score"></p>
     <ul class="recap" id="recap"></ul>
-    <p class="river" id="river"></p>
+    <p class="river" id="river" hidden></p>
   </section>
   </div>
   </div>
@@ -283,25 +290,28 @@
 <template id="howTpl">
   <h2>How to play</h2>
   <ol>
-    <li><b>The potato is the race to build AI</b>, and the five others at the table are other builders. Every toss adds a flame. Somewhere in the last two boxes it catches fire and burns everyone.</li>
-    <li><b>Hold it</b> keeps it in your hands. Your hands take the heat, and Wren sees you hold it. She will hold it with you once she has seen you hold it a while.</li>
-    <li><b>Hold it together</b> asks the others. Each one says yes by the line under their name. Asking isn’t holding: ask Wren too soon and she says “not yet”.</li>
-    <li>Three of you holding it stops Flint. With enough hands (4 or 5) you can <b>put it down</b>.</li>
-    <li><b>Toss it on</b> cools your hands at once, but it goes round the whole table and comes back six flames hotter, and Wren forgets what she saw.</li>
-    <li><b>I don’t know</b> waits: your hands rest a step, but Flint keeps building.</li>
+    <li><b>The potato is the race to build AI.</b> You and five others are building it (made up: think labs, companies or countries). Flint adds a flame every move. Somewhere in the two striped boxes it catches fire and burns everyone.</li>
+    <li><b>Hold it</b>: it stays in your hands. Your hands heat up one step (cool, warm, sore, too hot), and Wren counts it. Her seat shows how many holds she wants to see.</li>
+    <li><b>Hold it together</b> lights up once Wren has seen enough. Ask, and Wren says yes; Moss follows her, Reed follows Moss, Oak follows Reed. Reed and Oak won’t touch it while it’s scorching.</li>
+    <li>Three of you holding it stops Flint, and it cools a flame a move. With five pairs of hands, <b>put it down</b>.</li>
+    <li><b>Toss it on</b>: your hands cool at once, but everyone tosses it on and it comes back six flames hotter. Wren saw you toss it, so she crosses out one hold.</li>
+    <li><b>I don’t know</b>: you bounce it from hand to hand. Your hands cool a step, but bouncing isn’t holding: Wren doesn’t count it, and Flint adds a flame.</li>
   </ol>
-  <p class="small">Hands go cool, warm, sore, burning, too hot. Too-hot hands can’t hold it. The heat goes to the coolest hands holding it. Three things are drawn fresh each game and not shown: how long Wren wants to see you hold it (1 to 4 moves), how many hands it takes (4 or 5), and where it catches fire.</p>
+  <p class="small">Your score is the hottest it got: lower is better. Three rounds, each a little harder, then random rounds. Only where it catches fire (15 or 16 flames) is hidden.</p>
   <h3>The five others</h3>
   <div class="lines" id="LINES"></div>
   <details>
     <summary>What’s real here</summary>
     <ul>
-      <li>These are this game’s rules, made up to show one idea. They are not measured from anything.</li>
-      <li>The five others stand for other builders of AI: labs, companies or countries. They are made up. Real builders don’t publish rules like these; not knowing what the others will do is part of what makes it hard. Here only Wren’s patience is hidden.</li>
-      <li>Here, holding it alone is what makes Wren trust you. Whether one side slowing down makes others follow is debated; this game assumes it can, if they see it held long enough.</li>
-      <li>Here, tossing only buys your hands a rest. In the real race, racing ahead can also win a lead, money or power. This game leaves that out, so the pull to toss may be stronger than it shows.</li>
-      <li>Here, Flint stops building once three of you hold it, without ever agreeing to. Whether a group can hold back a builder who never signs up is an open question.</li>
-      <li>Holding it alone doesn’t cool it here. We don’t know that it would.</li>
+      <li>These are this game’s rules, made up to show one idea. They are not measured from anything, and they are not a forecast.</li>
+      <li>In the real race nobody can read the heat, or knows where it catches fire. Here you can count the flames, and only the fire’s exact box is hidden.</li>
+      <li>The five others stand for other builders of AI. They are made up, and they are equal here; real builders are not equal in power, and harms and gains may not fall equally.</li>
+      <li>Here, holding it alone is what earns Wren’s trust, and she prints how much she needs. Whether one side slowing down makes others follow is debated, and real builders don’t publish a number.</li>
+      <li>Here, tossing only buys your hands a rest. In the real race, racing ahead can also win a lead, money or power, so the pull to toss is stronger than it shows.</li>
+      <li>“I don’t know” stands for waiting to see. Here it rests your hands; in the real race, waiting may not ease the pressure, and the others keep building.</li>
+      <li>Here, Reed and Oak won’t touch it while it’s scorching, and join once it cools. Real crises have pushed rivals apart and also together (after the Cuban missile crisis came a hotline and a test-ban treaty).</li>
+      <li>Here, Flint stops once three of you hold it, without ever agreeing to, and holding it together cools it. Whether a group can hold back a builder who never signs up, and whether an agreement lowers the risk or how fast, are open questions.</li>
+      <li>Here, five pairs of hands are enough. Nobody knows how many would be enough in reality.</li>
       <li>Putting it down isn’t a happy ending by itself.</li>
       <li>“Nobody had to be good. Enough of them had to agree on a number.” “A pause taken alone is a sacrifice the others outlive. Taken by enough, it keeps the river for everyone.” <span class="small">Lines from a toy model of a river; a rhyme, not a finding about AI.</span></li>
       <li>Nothing is saved or sent.</li>
@@ -311,9 +321,10 @@
   <div class="set">
     <button type="button" class="tog" data-set="slow" aria-pressed="false">Slower</button>
     <button type="button" class="tog" data-set="read" aria-pressed="false">Read aloud</button>
+    <button type="button" class="tog" data-act="round1">Start again from round 1</button>
   </div>
   <h3>Keys</h3>
-  <p><kbd>H</kbd> Hold it · <kbd>T</kbd> Toss it on · <kbd>G</kbd> Hold it together · <kbd>D</kbd> Put it down · <kbd>K</kbd> I don’t know. Tap a name, or press Enter on it, to read that seat’s line.</p>
+  <p><kbd>H</kbd> Hold it · <kbd>T</kbd> Toss it on · <kbd>G</kbd> Hold it together · <kbd>K</kbd> I don’t know · <kbd>D</kbd> Put it down. Tap a name, or press Enter on it, to read that seat’s line.</p>
   <p class="small">The first version of this game is kept at <a href="potato-v1/potato-others.html">the first version</a>. More games: <a href="spread.html">The Walk</a> · <a href="lines.html">Changing Lines</a> · <a href="index.html">As-If</a> · <a href="../">Recursive Learning</a>.</p>
 </template>
 
@@ -324,8 +335,8 @@
 (function () {
 'use strict';
 var M = window.potatoModel;
-var OTHERS = M.OTHERS, SEATS = M.SEATS;
-var VBW = 390, VBH = 344, C = { x: 195, y: 176 }, R = 28, GROUND_Y = 205;
+var OTHERS = M.OTHERS, SEATS = M.SEATS, CHAIN = M.CHAIN;
+var VBW = 390, VBH = 352, C = { x: 195, y: 176 }, R = 28, GROUND_Y = 205;
 var RM = false;
 try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
 if (/[?&]reduced(=|&|$)/.test(location.search)) RM = true;     // potato.html?reduced shows the reduced-motion version
@@ -333,26 +344,18 @@ if (/[?&]reduced(=|&|$)/.test(location.search)) RM = true;     // potato.html?re
 /* ── The table ─────────────────────────────────────────────────────────────── */
 var NAME = { you: 'you', wren: 'Wren', moss: 'Moss', flint: 'Flint', reed: 'Reed', oak: 'Oak' };
 var SHAPE = { wren: 'circle', moss: 'square', flint: 'triangle', reed: 'diamond', oak: 'hexagon' };
-var NEEDS_ON = { moss: 2, reed: 3, oak: 4 };
 var LINE = {
-  wren: 'Hold it a while first, so I can see you mean it. Then ask me, and I’ll hold it with you. Ask too soon and I’ll say not yet.',
-  moss: 'Once two of you hold it, ask me and I’ll hold it too.',
+  wren: 'Show me you mean it: hold it yourself, and I’ll count every hold. Once I’ve seen enough, ask me and I’ll hold it with you.',
+  moss: 'If Wren holds it with you, so will I.',
   flint: 'If we don’t, they will. I add a flame every move until three of you hold it. I never put my hands on it.',
-  reed: 'Once three of you hold it and it’s written down, ask me. Not while it’s scorching.',
-  oak: 'Once four of you hold it, ask me. Not while it’s scorching.'
+  reed: 'If Moss holds it, so will I. Not while it’s scorching: it’s too hot to touch.',
+  oak: 'If Reed holds it, so will I. Not while it’s scorching.'
 };
-var RULE = {             // the short line under each name, for the help sheet
-  wren: 'says yes once she’s seen you hold it a while', moss: 'says yes when 2 hold it',
-  flint: 'adds a flame every move until 3 hold it', reed: 'says yes when 3 hold it, not while scorching',
-  oak: 'says yes when 4 hold it, not while scorching'
+var RULE = {             // the short rule, for the help sheet
+  wren: 'says yes once she’s seen enough holds', moss: 'follows Wren', flint: 'adds a flame every move until 3 hold it',
+  reed: 'follows Moss, not while it’s scorching', oak: 'follows Reed, not while it’s scorching'
 };
-var JOINED_BECAUSE = {
-  wren: 'Wren joined because she had seen you hold it long enough.',
-  moss: 'Moss joined because two of you held it.',
-  reed: 'Reed joined because three of you held it.',
-  oak: 'Oak joined because four of you held it.'
-};
-// Geometry, in viewBox units (390 x 344). a = where the potato sits in that seat's hands.
+// Geometry, in viewBox units (390 x 352). a = where the potato sits in that seat's hands.
 var G = {
   you:   { a: { x: 195, y: 282 }, big: true },
   flint: { a: { x: 195, y: 98 } },
@@ -366,36 +369,37 @@ SEATS.forEach(function (k) {
   g.phi = k === 'you' ? -90 : k === 'flint' ? 90 : Math.atan2(C.y - g.a.y, C.x - g.a.x) * 180 / Math.PI;
   g.alpha = (g.phi + 90) * Math.PI / 180;
 });
-// Seat blocks (name, their answer, their hands), in viewBox units: [x, y, w, align]
-var LAB = { flint: [95, 0, 200, 'c'], moss: [2, 40, 150, 'l'], reed: [238, 40, 150, 'r'], wren: [2, 252, 132, 'l'], oak: [256, 252, 132, 'r'] };
-var PLUS_AT = { you: [66, -22], flint: [44, -30], moss: [22, -30], reed: [-22, -30], wren: [24, 34], oak: [-24, 34] };
-var SAY_AT = { wren: [120, 176], moss: [120, 96], reed: [270, 96], oak: [270, 176], flint: [195, 60] };
-var BTN = { flint: [140, 0, 110, 112], moss: [0, 38, 152, 120], reed: [238, 38, 152, 120], wren: [0, 176, 142, 168], oak: [248, 176, 142, 168] };
+// Seat blocks (name and answer), in viewBox units: [x, y, w, align]
+var LAB = { flint: [40, 0, 310, 'c'], moss: [2, 44, 146, 'l'], reed: [242, 44, 146, 'r'], wren: [2, 250, 128, 'l'], oak: [260, 250, 128, 'r'] };
+var PLUS_AT = { you: [70, -24], flint: [60, 10], moss: [22, -30], reed: [-22, -30], wren: [24, 34], oak: [-24, 34] };
+var SAY_AT = { wren: [118, 180], moss: [118, 100], reed: [272, 100], oak: [272, 180], flint: [195, 62] };
+var BTN = { flint: [140, 0, 110, 112], moss: [0, 38, 150, 120], reed: [240, 38, 150, 120], wren: [0, 176, 140, 150], oak: [250, 176, 140, 150] };
 
 /* ── Words ─────────────────────────────────────────────────────────────────── */
 var NUMW = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen'];
 function times(n) { return n === 1 ? 'once' : n === 2 ? 'twice' : (NUMW[n] || n) + ' times'; }
-function moves(n) { return (NUMW[n] || n) + (n === 1 ? ' move' : ' moves'); }
-function handWord(h) { return M.HANDW[h]; }
+function holdsW(n) { return n + (n === 1 ? ' hold' : ' holds'); }
+function flamesW(n) { return n + (n === 1 ? ' flame' : ' flames'); }
+function HW(h) { return M.HANDW[h]; }
 function joinNames(a) { return a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
-function nm(k) { return k === 'you' ? 'you' : NAME[k]; }
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
-/* ── Settings ──────────────────────────────────────────────────────────────── */
+/* ── Settings (per viewer, in this browser only) ───────────────────────────── */
 function load(k) { try { return window.localStorage.getItem('potato-v3.' + k); } catch (e) { return null; } }
 function save(k, v) { try { window.localStorage.setItem('potato-v3.' + k, v); } catch (e) {} }
 var SET = { slow: load('slow') === '1', read: load('read') === '1' };
 var CAN_SPEAK = typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined';
 if (!CAN_SPEAK) SET.read = false;
 
-/* ── State: the model (S), the drawn values (base + the current timeline) ─── */
-var S, TL, clock = 0, base, seen, started = false;
+/* ── State: the model (S), the round, the drawn values (base + the current timeline) ── */
+var S, ROUNDI = 0, PARAMS, TL, clock = 0, base, notes;
 var $ = function (id) { return document.getElementById(id); };
 
-function resetBase() {
-  base = { F: 1, potAt: 'flint', luggage: true, on: [], c1: 'Flint has it. Watch.', c2: '', yourTag: '', seen: 0,
-           chalk: 0, chalkRub: 0, flint: 'builds', enough: 0, lower: 0, sink: 0, mound: 0,
-           outOfPlay: false, burned: false, crack: 0, dim: 0, ended: '', bubble: false, seenPop: 0 };
-  SEATS.forEach(function (k) { base['reach.' + k] = 0; base['pose.' + k] = 'empty'; base['hand.' + k] = 0; });
+function resetBase(start) {
+  base = { F: start - 1, potAt: 'flint', luggage: true, on: [], c1: '', c2: '', tag: '', seen: 0, seenPop: 0,
+           hand: 0, flint: 'builds', chalk: 0, chalkRub: 0, lower: 0, sink: 0, mound: 0, out: false,
+           burned: false, crack: 0, dim: 0, ended: '', bubble: false };
+  SEATS.forEach(function (k) { base['reach.' + k] = 0; base['pose.' + k] = 'empty'; });
   base['pose.flint'] = 'rest';
 }
 
@@ -407,7 +411,7 @@ function seg(tl, name, t0, t1, v0, v1) {
 }
 function set(tl, name, t, v) { seg(tl, name, t, t, undefined, v); }
 function tween(tl, name, t0, dur, v0, v1) { seg(tl, name, t0, t0 + (RM ? 0 : dur), v0, v1); }
-var LINGER = { plusBox: 1, plusSeat: 1, joined: 1, loop: 1, flintMark: 1, downArrow: 1, say: 1 };
+var LINGER = { plusBox: 1, minusBox: 1, plusSeat: 1, coolMark: 1, flintMark: 1, say: 1, loop: 1, downArrow: 1 };
 function fx(tl, o) {
   tl.fx.push(o);
   tl.fxEnd = Math.max(tl.fxEnd, (o.t1 || o.t0) + (o.kind === 'flight' ? 350 : 0));
@@ -436,6 +440,95 @@ function bake() {
   Object.keys(TL.tracks).forEach(function (k) { base[k] = V(k, Infinity); });
 }
 
+/* ── Captions and button words, from the rules ─────────────────────────────── */
+function fire16() { return S && !S.out && S.F >= 15; }        // it didn't catch fire at 15, so it's at 16
+// What a heat would mean, for button warnings: '' when nothing to say.
+function heatNote(F1) {
+  if (F1 >= 16 || (F1 >= 15 && !fire16())) return F1 >= 16 ? 'it will catch fire' : 'it may catch fire';
+  if (F1 >= M.SCORCH) return 'scorching';
+  return '';
+}
+// Captions stay within four short lines on a phone: what happened to you (bold), then one or two
+// short sentences: Flint's flame, and the one thing that matters next.
+function flintSays(post) {
+  if (post.out === 'burned') return '';
+  if (post.F >= M.SCORCH && post.F - 1 < M.SCORCH) return 'Flint added a flame: it’s scorching, so Reed and Oak say no.';
+  if (post.F === 15 && !notes.said16) { notes.said16 = true; return 'Flint added a flame. No fire at 15, so it’s at 16.'; }
+  return 'Flint added a flame.';
+}
+function captionFor(v, pre, post, ev) {
+  var c1 = '', c2 = [];
+  var joins = ev.filter(function (e) { return e.type === 'join'; }).map(function (e) { return NAME[e.who]; });
+  var hotNo = ev.filter(function (e) { return e.type === 'refuse' && e.why === 'scorching'; }).map(function (e) { return NAME[e.who]; });
+  var cooled = ev.some(function (e) { return e.type === 'cool'; });
+  if (v === 'hold') {
+    c1 = 'You held it. Your hands are ' + HW(post.hand) + (post.seen < post.wait ? '; Wren has seen ' + post.seen + ' of ' + post.wait + '.'
+                                                          : post.seen === post.wait ? '; Wren has seen enough.' : '.');
+  } else if (v === 'idk') {
+    c1 = 'You bounced it. ' + (pre.hand > 0 ? 'Your hands cooled to ' + HW(post.hand) + ', but bouncing isn’t holding: Wren didn’t count it.'
+                                            : 'Your hands were already cool, and bouncing isn’t holding.');
+  } else if (v === 'together') {
+    var hands = post.on.length >= M.NEED ? ': five pairs of hands.' : '.';
+    if (joins.length && joins[0] === 'Wren') c1 = 'Wren said yes' + (joins.length > 2 ? ', and ' : ' and ') + joinNames(joins.slice(1)) + ' followed' + hands;
+    else if (joins.length) c1 = joinNames(joins) + ' said yes' + hands;
+    else c1 = 'You kept holding it together.';
+    if (hotNo.length && joins.length) c1 = c1.replace(/\.$/, ';') + ' ' + joinNames(hotNo) + ' said no: too hot.';
+    else if (hotNo.length) c1 += ' ' + joinNames(hotNo) + ' still say no.';
+    if (pre.on.length < 3 && post.on.length >= 3) c2.push('Three hands stop Flint, and it cooled a flame.');
+    else if (cooled) c2.push('It cooled a flame.');
+    if (post.on.length >= M.NEED) c2.push('Put it down now.');
+    else if (post.F >= M.SCORCH) c2.push('Ask again below scorching.');
+    else c2.push('Not scorching now: ask again.');
+  } else if (v === 'toss') {
+    c1 = 'You tossed it: ' + (pre.hand > 0 ? 'your hands cooled at once, but' : 'your hands were already cool, and') + ' it came back six flames hotter.';
+    if (pre.on.length > 1) c2.push('The others let go.');
+    if (pre.seen > 0) c2.push('Wren crossed out a hold (' + post.seen + ' of ' + post.wait + ').');
+    if (post.F >= M.SCORCH && pre.F < M.SCORCH) c2.push('It’s scorching: Reed and Oak say no.');
+  }
+  if (ev.some(function (e) { return e.type === 'build'; })) { var fs = flintSays(post); if (fs) c2.unshift(fs); }
+  if (!post.out && (v === 'hold' || v === 'idk')) {
+    if (M.ready(post)) c2.push(M.tooHot(post) ? 'Wren is ready: ask, and the others take the heat.' : 'Wren is ready: hold it together.');
+    else if (M.tooHot(post)) c2.push('Too hot to hold: bounce it or toss it.');
+  }
+  return [c1, c2.join(' ')];
+}
+function nextHoldsW(s) { var n = s.wait - s.seen; return n === 1 ? 'one more hold' : NUMW[n] + ' more holds'; }
+// What each button will do now, or why it isn't lit: { lit, s, why: [c1, c2] }.
+function verbInfo(v) {
+  var s = S, o = M.offered(s), lit = o.indexOf(v) >= 0, alone = s.on.length === 1, F1 = s.F + 1, n;
+  if (s.out) return { lit: false, s: 'the round is over', why: ['This round is over.', ''] };
+  if (v === 'hold') {
+    if (lit) { n = heatNote(F1); return { lit: true, s: n ? '+1 flame (Flint) → ' + F1 + ': ' + n : 'slow down alone: hands heat, Wren counts' }; }
+    if (!alone) return { lit: false, s: 'not now: you’re holding it together', why: ['You’re already holding it, together with the others.', 'Hold it is for holding it alone. Keep holding it together, or put it down.'] };
+    return { lit: false, s: 'not now: your hands are too hot',
+             why: ['Not now: your hands are too hot to hold it alone.', M.ready(s) ? 'Wren is ready: hold it together, and the others take the heat.' : 'Bounce it (I don’t know) to cool them a step, or toss it to cool them at once.'] };
+  }
+  if (v === 'toss') {
+    var F6 = s.F + M.ROUND, hn = heatNote(F6);
+    if (!alone) return { lit: true, s: 'race on: they let go; +6 ' + (hn ? '→ ' + hn : '→ ' + F6 + ' flames') };
+    if (hn === 'it will catch fire' || hn === 'it may catch fire') return { lit: true, s: 'race on: +6 flames, ' + hn.replace('it may', 'may') };
+    if (hn) return { lit: true, s: 'race on: +6 → ' + F6 + ', scorching' };
+    return { lit: true, s: 'race on: ' + (s.hand > 0 ? 'cool hands now; ' : '') + '+6 → ' + F6 + ' flames' };
+  }
+  if (v === 'together') {
+    if (!lit) return { lit: false, s: 'not now: Wren wants ' + nextHoldsW(s),
+                       why: ['Not now: Wren wants to see you hold it ' + s.wait + (s.wait === 1 ? ' time' : ' times') + ' first.', 'She has seen ' + s.seen + '. Hold it, and she counts it.'] };
+    if (alone) return { lit: true, s: 'ask: Wren says yes, the rest follow' };
+    if (M.enough(s)) return { lit: true, s: 'keep holding it together: −1 flame' };
+    return { lit: true, s: M.scorching(s) ? 'keep holding it: −1 flame' : 'ask again: Reed and Oak follow' };
+  }
+  if (v === 'idk') {
+    if (!lit) return { lit: false, s: 'not now: you’re holding it together', why: ['You’re holding it together: nothing to wait for.', 'Keep holding it together, or put it down.'] };
+    n = heatNote(F1);
+    return { lit: true, s: n ? '+1 flame (Flint) → ' + F1 + ': ' + n : 'wait and see: hands cool, +1 flame' };
+  }
+  if (v === 'down') {
+    if (lit) return { lit: true, s: 'five pairs of hands: into the ground' };
+    return { lit: false, s: 'needs five pairs of hands on it',
+             why: ['Not yet: it takes five pairs of hands to put it down.', s.on.length === 1 ? 'Right now it’s only yours.' : 'Now there are ' + NUMW[s.on.length] + '.'] };
+  }
+}
+
 /* ── Building a move ───────────────────────────────────────────────────────── */
 function flight(tl, from, to, t0, dur, trail) {
   if (RM) { set(tl, 'potAt', t0, to); return; }
@@ -443,71 +536,64 @@ function flight(tl, from, to, t0, dur, trail) {
   set(tl, 'potAt', t0 + dur, to);
 }
 function plus(tl, t, box, seat, text) {
-  fx(tl, { kind: 'plusBox', box: box, text: text || '+1', t0: t, t1: t + 1000 });
+  fx(tl, { kind: 'plusBox', box: box, t0: t, t1: t + 1000 });
   if (seat) fx(tl, { kind: 'plusSeat', seat: seat, text: text || '+1', t0: t, t1: t + 1000 });
 }
-function burnAt(tl, t, lead) {
+function burnAt(tl, t, post) {
   set(tl, 'burned', t, true);
   tween(tl, 'crack', t, 400, 0, 1);
-  set(tl, 'c1', t + 400, lead || 'It caught fire. It burned every pair of hands at the table, the ones that tossed it too.');
-  set(tl, 'c2', t + 400, '');
-  set(tl, 'yourTag', t, '');
-  set(tl, 'ended', t + 1800, 'burned');
-  tl.end = t + 1800;
+  set(tl, 'c1', t, 'It caught fire at ' + post.burn + ' flames. It burned every pair of hands at the table, Flint’s too.');
+  set(tl, 'c2', t, '');
+  set(tl, 'tag', t, '');
+  set(tl, 'ended', t + 1300, 'burned');
+  tl.end = t + 1300;
   tl.stop = true;
 }
-function heatWaves(tl, heatEv, t0, gap, dur) {
-  var last = t0;
-  heatEv.forEach(function (e, i) {
-    var a = t0 + gap * i, b = a + dur;
-    if (RM) { fx(tl, { kind: 'wave', to: e.to, t0: t0, t1: t0 + 1000, still: true, i: i, n: heatEv.length }); set(tl, 'hand.' + e.to, t0, e.hand); last = t0; return; }
-    fx(tl, { kind: 'wave', to: e.to, t0: a, t1: b });
-    set(tl, 'hand.' + e.to, b, e.hand);
-    last = b;
-  });
-  return last;
+function flintBuild(tl, A, ev, post) {        // Flint's flame: a spark from Flint to the potato, +1 in its box
+  var fb = ev.filter(function (e) { return e.type === 'flame' && e.by === 'flint'; })[0];
+  if (!fb) return A;
+  if (RM) fx(tl, { kind: 'flintMark', t0: A, t1: A + 1300 });
+  else fx(tl, { kind: 'spark', t0: A, t1: A + 280 });
+  var t = A + (RM ? 0 : 280);
+  set(tl, 'F', t, fb.F); plus(tl, t, fb.F, 'flint', '+1 flame');
+  if (post.out === 'burned') burnAt(tl, t + 150, post);
+  return t + 150;
 }
-function uniq(a) { var o = []; a.forEach(function (x) { if (o.indexOf(x) < 0) o.push(x); }); return o; }
-// Who took this move's heat, in words. got: seats that took heat; youCooled: your hands rested.
-function heatWords(post, got, youCooled) {
-  if (M.enough(post) && post.on.length > 1) return 'With enough hands on it, nobody’s hands get hotter.';
-  var others = got.filter(function (k) { return k !== 'you'; }).map(nm), you = got.indexOf('you') >= 0;
-  if (!got.length) return '';
-  if (!you) return 'The heat went to ' + joinNames(others) + (youCooled ? ', and your hands rested.' : '.');
-  if (others.length) return 'The heat was shared between ' + joinNames(others.concat(['you'])) + '.';
-  return 'Your hands took the heat.';
+function coolFx(tl, A, ev) {
+  var c = ev.filter(function (e) { return e.type === 'cool'; })[0];
+  if (!c) return A;
+  set(tl, 'F', A, c.F);
+  fx(tl, { kind: 'minusBox', box: c.F + 1, t0: A, t1: A + 1100 });
+  fx(tl, { kind: 'coolMark', t0: A, t1: A + 1100 });
+  return A + 150;
 }
-
 // The lap: off your hands, round the ring, a flame at each seat, back into your hands.
 function buildRound(tl, pre, post, ev) {
   var mid = pre.on.length > 1, flames = ev.filter(function (e) { return e.type === 'flame'; });
   var burn = ev.filter(function (e) { return e.type === 'burn'; })[0];
-  set(tl, 'hand.you', 0, 0);
+  set(tl, 'hand', 0, 0);
   set(tl, 'on', 0, []);
-  set(tl, 'yourTag', 0, '');
-  set(tl, 'seen', 0, 0);
-  if (base.flint === 'stopped') set(tl, 'flint', 0, 'again');
-  if (mid) {
-    pre.on.forEach(function (k) { set(tl, 'pose.' + k, 0, 'empty'); tween(tl, 'reach.' + k, 0, 300, 1, 0); });
-    tween(tl, 'enough', 0, 200, undefined, 0);
-  }
+  set(tl, 'tag', 0, 'tossed it');
+  if (pre.seen > 0) { set(tl, 'seen', 0, post.seen); set(tl, 'seenPop', 0, -1); set(tl, 'seenPop', 1300, 0); }
+  if (base.flint === 'stopped') set(tl, 'flint', 0, 'builds');
+  if (mid) pre.on.forEach(function (k) { set(tl, 'pose.' + k, 0, 'empty'); tween(tl, 'reach.' + k, 0, 300, 1, 0); });
   if (pre.on.length >= 3) { tween(tl, 'chalkRub', 0, 300, 0, 1); set(tl, 'chalk', 300, 0); set(tl, 'chalkRub', 320, 0); }
   if (RM) {
     set(tl, 'pose.you', 0, burn ? 'empty' : 'rest');
     set(tl, 'potAt', 0, burn ? (burn.by === 'you' ? 'wren' : burn.by) : 'you');
     set(tl, 'F', 0, post.F);
     fx(tl, { kind: 'loop', t0: 0, t1: 1500, flames: flames.map(function (e) { return e.by; }) });
-    if (burn) { burnAt(tl, 0); return 0; }
-    set(tl, 'on', 0, ['you']);
-    return 1200;
+    if (burn) { burnAt(tl, 0, post); return 0; }
+    set(tl, 'on', 0, ['you']); set(tl, 'tag', 0, 'back to you');
+    return 400;
   }
   var from = mid ? 'middle' : 'you', L;
   set(tl, 'pose.you', 0, 'empty');
   var f0 = flames[0];
   set(tl, 'F', 100, f0.F); plus(tl, 100, f0.F, 'you');
-  flight(tl, from, 'wren', 0, 350, true);
-  L = 350;
-  if (burn && burn.by === 'you') { set(tl, 'pose.wren', L, 'rest'); burnAt(tl, L); return L; }
+  flight(tl, from, 'wren', 0, 320, true);
+  L = 320;
+  if (burn && burn.by === 'you') { set(tl, 'pose.wren', L, 'rest'); burnAt(tl, L, post); return L; }
   var ring = ['wren', 'moss', 'flint', 'reed', 'oak'];
   for (var i = 0; i < ring.length; i++) {
     var k = ring[i], e = null;
@@ -515,203 +601,117 @@ function buildRound(tl, pre, post, ev) {
     if (!e) break;
     set(tl, 'pose.' + k, L, 'rest');
     set(tl, 'F', L, e.F); plus(tl, L, e.F, k);
-    if (burn && burn.by === k) { burnAt(tl, L); return L; }
-    set(tl, 'pose.' + k, L + 150, 'empty');
-    flight(tl, k, ring[i + 1] || 'you', L + 150, 220, true);
-    L += 370;
+    if (burn && burn.by === k) { burnAt(tl, L, post); return L; }
+    set(tl, 'pose.' + k, L + 130, 'empty');
+    flight(tl, k, ring[i + 1] || 'you', L + 130, 200, true);
+    L += 330;
   }
   set(tl, 'pose.you', L, 'rest');
   set(tl, 'on', L, ['you']);
+  set(tl, 'tag', L, 'back to you');
   return L + 150;
 }
-
 function build(v, pre, post, ev) {
-  var tl = newTL(), E = 0, c1 = '', c2 = [];
-  var heatEv = ev.filter(function (e) { return e.type === 'heat'; });
-  var got = uniq(heatEv.map(function (e) { return e.to; }));
-  var youCool = ev.filter(function (e) { return e.type === 'cool' && e.who === 'you'; })[0];
-  var mid = pre.on.length > 1;
+  var tl = newTL(), E = 0;
+  var cc = captionFor(v, pre, post, ev);
   set(tl, 'luggage', 0, false); set(tl, 'bubble', 0, false);
-  set(tl, 'c1', 0, ''); set(tl, 'c2', 0, '');
-
+  set(tl, 'c1', 0, cc[0]); set(tl, 'c2', 0, cc[1]);
   if (v === 'toss') {
     E = buildRound(tl, pre, post, ev);
-    if (tl.stop) return finalize(tl);
-    c1 = 'You tossed it: your hands cooled at once, and it came back six flames hotter.';
-    var left = pre.on.filter(function (k) { return k !== 'you'; });
-    if (left.length) c2.push((left.length === 1 ? NAME[left[0]] + ' let go' : 'The others let go') + (pre.on.length >= 3 ? ', and the rule on the ground is rubbed out.' : '.'));
-    if (M.enough(pre) && left.length) c2.push('You had enough hands to put it down.');
-    if (pre.seen > 0) { seen.forgot = (seen.forgot || 0) + 1; c2.push('Wren forgets the ' + moves(pre.seen) + ' she saw you hold it.'); }
-  } else if (v === 'hold' || v === 'idk') {
-    var grip = v === 'hold';
-    set(tl, 'pose.you', 0, grip ? 'grip' : 'relaxed');
-    set(tl, 'yourTag', 0, grip ? 'holding' : 'waiting');
-    if (!grip && !mid && !RM) fx(tl, { kind: 'vent', t0: 100, t1: 900 });
-    var last = heatWaves(tl, heatEv, 150, 120, 300);
-    var seenE = ev.filter(function (e) { return e.type === 'seen'; })[0];
-    if (seenE) { set(tl, 'seen', 450, seenE.n); set(tl, 'seenPop', 450, 1); set(tl, 'seenPop', 1500, 0); }
-    if (youCool) set(tl, 'hand.you', 450, youCool.hand);
-    E = Math.max(900, last + 100);
-    if (grip && !mid) {
-      c1 = 'You held it. It stayed in your hands, and they’re ' + handWord(post.hands.you) + ' now.';
-      c2.push('Wren has seen you hold it ' + moves(post.seen) + '.');
-    } else if (grip) {
-      c1 = 'You all kept holding it.';
-      var hwds = heatWords(post, got, !!youCool); if (hwds) c2.push(hwds);
-    } else if (!mid) {
-      c1 = 'You waited, with it on open palms. ' + (youCool ? 'Your hands rested a step, from ' + handWord(youCool.hand + 1) + ' to ' + handWord(youCool.hand) + '.' : 'Your hands were already cool.');
-      c2.push('Nobody saw you hold it.');
-    } else {
-      c1 = 'You waited, and your hands rested.';
-      var hw2 = heatWords(post, got, false); if (hw2) c2.push(hw2);
-    }
-  } else if (v === 'together') {
-    var joins = ev.filter(function (e) { return e.type === 'join'; }), refs = ev.filter(function (e) { return e.type === 'refuse'; }), T = 0;
+    return finalize(tl);
+  }
+  if (v === 'hold') {
     set(tl, 'pose.you', 0, 'grip');
-    set(tl, 'yourTag', 0, 'asking');
-    if (!mid && joins.length) {
-      tween(tl, 'reach.you', 0, 300, 0, 1);
-      flight(tl, 'you', 'middle', 0, 300, false);
-      T = 300;
-    }
+    set(tl, 'tag', 0, 'holding it');
+    if (RM) fx(tl, { kind: 'wave', t0: 0, t1: 900, still: true });
+    else fx(tl, { kind: 'wave', t0: 60, t1: 380 });
+    set(tl, 'hand', RM ? 0 : 380, post.hand);
+    set(tl, 'seen', RM ? 0 : 380, post.seen); set(tl, 'seenPop', RM ? 0 : 380, 1); set(tl, 'seenPop', 1400, 0);
+    E = flintBuild(tl, 430, ev, post);
+    if (tl.stop) return finalize(tl);
+    tl.end = Math.max(tl.end, 800);
+    return finalize(tl);
+  }
+  if (v === 'idk') {
+    set(tl, 'pose.you', 0, 'relaxed');
+    set(tl, 'tag', 0, 'bouncing it');
+    if (!RM) { fx(tl, { kind: 'bounce', t0: 0, t1: 720 }); if (pre.hand > 0) fx(tl, { kind: 'vent', t0: 120, t1: 820 }); }
+    set(tl, 'hand', RM ? 0 : 360, post.hand);
+    E = flintBuild(tl, 480, ev, post);
+    if (tl.stop) return finalize(tl);
+    tl.end = Math.max(tl.end, 820);
+    return finalize(tl);
+  }
+  if (v === 'together') {
+    var joins = ev.filter(function (e) { return e.type === 'join'; }), refs = ev.filter(function (e) { return e.type === 'refuse'; }), T = 0;
+    var mid = pre.on.length > 1;
+    set(tl, 'pose.you', 0, 'grip');
+    set(tl, 'tag', 0, 'together');
+    if (!mid) { tween(tl, 'reach.you', 0, 300, 0, 1); flight(tl, 'you', 'middle', 0, 300, false); T = RM ? 0 : 300; }
     var onNow = pre.on.slice();
     joins.forEach(function (e, i) {
-      var tj = T + 250 * i;
+      var tj = T + (RM ? 0 : 260 * i);
       set(tl, 'pose.' + e.who, tj, 'grip');
       tween(tl, 'reach.' + e.who, tj, 250, 0, 1);
       onNow = onNow.concat([e.who]);
       set(tl, 'on', tj + (RM ? 0 : 250), onNow.slice());
-      if (RM) fx(tl, { kind: 'joined', seat: e.who, t0: tj, t1: tj + 1500 });
+      fx(tl, { kind: 'say', seat: e.who, text: 'Yes', ok: true, t0: tj, t1: tj + 1500 });
     });
-    var tEnd = T + 250 * joins.length;
-    set(tl, 'yourTag', Math.max(tEnd, 300), 'holding');
-    var wrenNo = refs.filter(function (e) { return e.who === 'wren' && e.why === 'not yet'; })[0];
-    var hotNo = refs.filter(function (e) { return e.why === 'scorching'; }).map(function (e) { return e.who; });
-    var burnNo = refs.filter(function (e) { return e.why === 'burning'; }).map(function (e) { return e.who; });
-    if (wrenNo) fx(tl, { kind: 'say', seat: 'wren', text: 'Not yet', t0: 150, t1: 1700 });
-    hotNo.forEach(function (k) { fx(tl, { kind: 'say', seat: k, text: 'Too hot', t0: 150, t1: 1700 }); });
-    if (M.enough(post)) {
-      tween(tl, 'enough', tEnd + 100, 300, 0, 1);
-      E = Math.max(1000, tEnd + 400);
-    } else {
-      var lastT = heatWaves(tl, heatEv, Math.max(joins.length ? 700 : 350, tEnd), 100, 250);
-      E = Math.max(1000, lastT + 100);
-    }
-    if (youCool) set(tl, 'hand.you', E - 100, youCool.hand);
-    if (joins.length) {
-      var names = joins.map(function (e) { return NAME[e.who]; });
-      c1 = joinNames(names) + ' said yes and put ' + (names.length === 1 ? (joins[0].who === 'wren' ? 'her' : 'his') : 'their') + ' hands on it.';
-      joins.forEach(function (e) {
-        if (e.who === 'wren') c2.push('She had seen you hold it ' + moves(pre.seen) + '.');
-        else c2.push(NAME[e.who] + ' says yes once ' + NUMW[NEEDS_ON[e.who]] + ' of you hold it.');
-      });
-    } else if (wrenNo) {
-      c1 = 'Wren said: not yet.';
-      c2.push((pre.seen ? 'She has seen you hold it ' + moves(pre.seen) + ' and wants to see more.' : 'She hasn’t seen you hold it yet.') + ' Asking isn’t holding.');
-    } else {
-      c1 = 'Nobody said yes.';
-    }
-    if (hotNo.length) c2.push(joinNames(hotNo.map(nm)) + ' said no: it’s scorching.');
-    if (burnNo.length) c2.push(joinNames(burnNo.map(function (k) { return NAME[k] + '’s'; })) + (burnNo.length === 1 ? ' hands are' : ' hands are') + ' still burning.');
-    if (!joins.length && !wrenNo && !hotNo.length && !burnNo.length) {
-      var nxt = OTHERS.filter(function (k) { return k !== 'flint' && post.on.indexOf(k) < 0; })[0];
-      if (nxt && NEEDS_ON[nxt]) c2.push(NAME[nxt] + ' says yes when ' + NEEDS_ON[nxt] + ' hold it.');
-    }
-    if (M.enough(post)) c2.push('Enough hands on it: nobody’s hands get hotter. You can put it down now.');
-    else if (joins.length || mid) { var hw3 = heatWords(post, got, !!youCool); if (hw3) c2.push(hw3); }
-  } else if (v === 'down') {
+    var tEnd = T + (RM ? 0 : 260 * joins.length);
+    refs.forEach(function (e) { if (e.why === 'scorching') fx(tl, { kind: 'say', seat: e.who, text: 'Too hot', t0: tEnd, t1: tEnd + 1700 }); });
+    var sh = ev.filter(function (e) { return e.type === 'shared'; })[0];
+    if (sh) set(tl, 'hand', tEnd, sh.hand);
+    if (pre.on.length < 3 && post.on.length >= 3) { tween(tl, 'chalk', tEnd, 600, 0, 1); set(tl, 'flint', tEnd + 150, 'stopped'); }
+    E = coolFx(tl, tEnd + (RM ? 0 : 250), ev);
+    tl.end = Math.max(tl.end, E + 250);
+    return finalize(tl);
+  }
+  if (v === 'down') {
     pre.on.forEach(function (k) { set(tl, 'pose.' + k, 0, 'rest'); });
     tween(tl, 'lower', 0, 300, 0, 1);
-    tween(tl, 'enough', 300, 200, undefined, 0);
     tween(tl, 'sink', 300, 400, 0, 1);
     tween(tl, 'mound', 450, 250, 0, 1);
+    tween(tl, 'chalk', 0, 300, undefined, 0);
     if (RM) fx(tl, { kind: 'downArrow', t0: 0, t1: 1500 });
     set(tl, 'potAt', 700, 'ground');
     set(tl, 'on', 700, []);
-    set(tl, 'outOfPlay', 700, true);
-    set(tl, 'yourTag', 700, '');
+    set(tl, 'out', 700, true);
+    set(tl, 'tag', 0, '');
     pre.on.forEach(function (k) { set(tl, 'pose.' + k, 700, 'empty'); tween(tl, 'reach.' + k, 700, 300, 1, 0); });
     tween(tl, 'lower', 700, 300, 1, 0);
-    set(tl, 'c1', 1000, 'It’s in the ground, out of everyone’s hands.');
-    tween(tl, 'dim', 1900, 300, 0, 1);
-    set(tl, 'ended', 1900, 'down');
-    tl.end = Math.max(tl.end, 2200);
+    set(tl, 'c1', 0, 'You put it down together, into the ground.');
+    set(tl, 'c2', 0, '');
+    tween(tl, 'dim', 1500, 300, 0, 1);
+    set(tl, 'ended', 1500, 'down');
+    tl.end = Math.max(tl.end, 1800);
     return finalize(tl);
   }
-  set(tl, 'c1', E, c1);
-  // Hands off it (and hands that took no heat) cool while the verb plays out.
-  ev.forEach(function (e) { if (e.type === 'cool' && e.who !== 'you') set(tl, 'hand.' + e.who, E, e.hand); });
-
-  // Then the others answer, one line at a time.
-  var A = E + 350;
-  function say(t, line) { c2.push(line); set(tl, 'c2', t, c2.join(' ')); }
-  if (c2.length) set(tl, 'c2', E + 150, c2.join(' '));
-  var stopNow = pre.on.length < 3 && post.on.length >= 3;
-  var build_ = ev.some(function (e) { return e.type === 'build'; });
-  if (stopNow) {
-    tween(tl, 'chalk', A, 700, 0, 1);
-    seen.flintEverStopped = true;
-    set(tl, 'flint', A + 300, 'stopped');
-    say(A, 'Three of you hold it: it’s written on the ground, and Flint stopped building.');
-    A += 700;
-  }
-  if (build_) {
-    var fb = ev.filter(function (e) { return e.type === 'flame' && e.by === 'flint'; })[0];
-    if (RM) fx(tl, { kind: 'flintMark', t0: A, t1: A + 1000 });
-    else fx(tl, { kind: 'spark', t0: A, t1: A + 350 });
-    set(tl, 'F', A + (RM ? 0 : 350), fb.F);
-    fx(tl, { kind: 'plusBox', box: fb.F, text: '+1', t0: A + (RM ? 0 : 350), t1: A + 1300 });
-    if (!RM) fx(tl, { kind: 'plusSeat', seat: 'flint', text: '+1 Flint', t0: A + 350, t1: A + 1300 });
-    var line;
-    if (base.flint === 'again' && !seen.flintAgain) { seen.flintAgain = true; line = 'Flint is building again: fewer than three hold it.'; }
-    else if (post.on.length === 2) line = 'Two of you isn’t enough to stop Flint: one more flame.';
-    else if (M.tooHot(post) && !seen.tooHot) line = '';
-    else if (!seen.flintAlone && v === 'hold') { seen.flintAlone = true; line = 'You added no flame, but Flint did: holding it alone doesn’t stop Flint.'; }
-    else if ((seen.flintSaid = (seen.flintSaid || 0) + 1) <= 2) line = 'Flint kept building: one more flame.';
-    else line = '';
-    if (line) say(A + (RM ? 0 : 350), line);
-    if (post.out === 'burned') { burnAt(tl, A + 350); return finalize(tl); }
-    A += 650;
-  }
-  // One-time lines, the first time each thing happens.
-  var once = [];
-  seen.scorchNow = false;
-  if (post.F >= M.SCORCH && !seen.scorch) { seen.scorch = seen.scorchNow = true; once.push('It’s scorching now: Reed and Oak won’t hold it.'); }
-  if (post.need === 5 && post.on.length === 4 && !seen.four) { seen.four = true; once.push('Four of you hold it, and that isn’t enough this time: it takes five.'); }
-  if (M.tooHot(post) && !seen.tooHot) { seen.tooHot = true; once.push('Your hands are too hot to hold it: I don’t know rests them a step, a toss cools them at once.'); }
-  else if (post.on.length === 1 && post.hands.you >= 2 && !seen.sore && !M.tooHot(post)) { seen.sore = true; once.push('Tossing it would cool your hands right now.'); }
-  once.forEach(function (l) { say(A, l); });
-  if (once.length) A += 300;
-  if (ev.some(function (e) { return e.type === 'hopeless'; })) {
-    // Scorching with too few hands, now and for good: say so, then let it burn.
-    c2 = seen.scorchNow ? ['It’s scorching now: Reed and Oak won’t hold it.'] : [];
-    say(A, seen.scorchNow ? 'So there can’t be enough hands now. It will burn.' : 'There can’t be enough hands now, because Reed and Oak won’t join while it’s scorching. It will burn.');
-    A += RM ? 1200 : 1600;
-    for (var f = post.F + 1; f <= post.burn; f++) {
-      set(tl, 'F', A, f); fx(tl, { kind: 'plusBox', box: f, text: '+1', t0: A, t1: A + 600 });
-      A += RM ? 0 : 450;
-    }
-    post.autoBurn = true; post.F = post.burn; post.out = 'burned';
-    burnAt(tl, A, 'It caught fire. It burned every pair of hands at the table, Flint’s too.');
-    return finalize(tl);
-  }
-  tl.end = Math.max(tl.end, c2.length ? A : E);
-  return finalize(tl);
 }
-
+function introText() {
+  var p = PARAMS;
+  if (ROUNDI === 0) return ['Flint tossed you the potato: the race to build AI. You and five others are building it.',
+                            'Hold it, and Wren sees you mean it.'];
+  if (ROUNDI === 1) return ['Round 2: Wren wants to see 4 holds, and your hands can take 3.',
+                            'Too hot? Bounce it (+1 flame) or toss it (+6).'];
+  if (ROUNDI === 2) return ['Round 3: it starts hotter, at 5 flames, and Wren wants 5 holds.',
+                            'Every flame counts: the fire is just past scorching.'];
+  return ['Round ' + (ROUNDI + 1) + ': it starts at ' + flamesW(p.start) + ', and Wren wants ' + holdsW(p.wait) + '.',
+          'Put it down with five pairs of hands before it catches fire.'];
+}
 function buildIntro() {
-  var tl = newTL();
-  set(tl, 'bubble', 700, true);
-  set(tl, 'F', 1500, 2); plus(tl, 1500, 2, 'flint');
-  set(tl, 'pose.flint', 1500, 'empty');
-  if (RM) set(tl, 'potAt', 1500, 'you');
-  else flight(tl, 'flint', 'you', 1500, 500, true);
-  set(tl, 'pose.you', 2000, 'rest');
-  set(tl, 'on', 2000, ['you']);
-  set(tl, 'bubble', 2000, false);
-  set(tl, 'c1', 2000, 'Flint tossed it to you, and every toss adds a flame. Now it’s in your hands.');
-  set(tl, 'c2', 2000, 'Wren is watching. She’ll hold it with you once she has seen you hold it a while.');
-  tl.end = 2000;
+  var tl = newTL(), it = introText();
+  set(tl, 'c1', 0, it[0]); set(tl, 'c2', 0, it[1]);
+  set(tl, 'tag', 0, '');
+  set(tl, 'bubble', RM ? 0 : 100, true);
+  set(tl, 'F', RM ? 0 : 700, S.F); plus(tl, RM ? 0 : 700, S.F, 'flint');
+  set(tl, 'pose.flint', RM ? 0 : 700, 'empty');
+  if (RM) set(tl, 'potAt', 0, 'you');
+  else flight(tl, 'flint', 'you', 700, 450, true);
+  set(tl, 'pose.you', RM ? 0 : 1150, 'rest');
+  set(tl, 'on', RM ? 0 : 1150, ['you']);
+  set(tl, 'tag', RM ? 0 : 1150, 'yours now');
+  set(tl, 'bubble', RM ? 1600 : 1300, false);
+  tl.end = RM ? 1600 : 1300;
   return finalize(tl);
 }
 
@@ -721,7 +721,7 @@ function rot(g, lx, ly) { var c = Math.cos(g.alpha), s = Math.sin(g.alpha); retu
 var POSE_HOME = {   // local to the potato in that seat's hands; +x toward the right mitten, -y toward the middle
   grip:    function (mw, mh) { return { x: R + mw * 0.24, y: mh * 0.08, r: -16, over: true, curl: true }; },
   rest:    function (mw, mh) { return { x: R + mw * 0.26, y: mh * 0.2, r: -4, over: true }; },
-  relaxed: function (mw, mh) { return { x: R + mw * 0.18, y: mh * 0.42, r: 14, over: false, crease: true }; },
+  relaxed: function (mw, mh) { return { x: R + mw * 0.34, y: mh * 0.42, r: 18, over: false, crease: true }; },
   empty:   function (mw, mh) { return { x: mw * 0.8, y: mh * 0.15, r: 8, over: false, crease: true }; }
 };
 var POSE_RING = {   // local to the potato in the middle; the pair sits on its own seat's side
@@ -748,12 +748,12 @@ function mittens(k, t) {
 function f1(n) { return Math.round(n * 10) / 10; }
 function mittenSVG(m, lvl, burned) {
   var w = m.w, h = m.h, sw = m.big ? 2.6 : 1.8;
-  var fill = burned ? 'url(#hb)' : lvl === 0 ? 'var(--mitt)' : lvl === 1 ? 'var(--h1)' : 'url(#h' + lvl + ')';
+  var fill = burned ? 'url(#hb)' : lvl === 0 ? 'var(--mitt)' : lvl === 1 ? 'var(--h1)' : lvl === 2 ? 'url(#h2)' : 'var(--h4)';
   var fillAttr = fill.indexOf('url') === 0 ? 'fill="' + fill + '"' : 'style="fill:' + fill + '"';
   var body = 'M' + f1(-w / 2) + ',' + f1(h / 2) + 'L' + f1(-w / 2) + ',' + f1(-h / 2 + w / 2) + 'A' + f1(w / 2) + ',' + f1(w / 2) + ' 0 0 1 ' + f1(w / 2) + ',' + f1(-h / 2 + w / 2) + 'L' + f1(w / 2) + ',' + f1(h / 2) + 'Z';
   var s = '<g transform="translate(' + f1(m.x) + ' ' + f1(m.y) + ') rotate(' + f1(m.rot) + ') scale(' + (m.side === 1 ? 1 : -1) + ' 1)">';
   s += '<ellipse cx="' + f1(-w * 0.5) + '" cy="' + f1(h * 0.06) + '" rx="' + f1(w * 0.24) + '" ry="' + f1(h * 0.2) + '" transform="rotate(-22 ' + f1(-w * 0.5) + ' ' + f1(h * 0.06) + ')" ' + fillAttr + ' style="stroke:var(--ink)" stroke-width="' + sw + '"/>';
-  if (lvl === 4 && !burned) s += '<path d="' + body + '" transform="scale(1.16)" fill="none" style="stroke:var(--h4)" stroke-width="' + (sw + 0.6) + '" stroke-dasharray="2.4 1.6"/>';
+  if (lvl === 3 && !burned) s += '<path d="' + body + '" transform="scale(1.16)" fill="none" style="stroke:var(--h4)" stroke-width="' + (sw + 0.6) + '" stroke-dasharray="2.4 1.6"/>';
   s += '<path d="' + body + '" ' + fillAttr + ' style="stroke:var(--ink)" stroke-width="' + sw + '" stroke-linejoin="round"/>';
   s += '<rect x="' + f1(-w / 2) + '" y="' + f1(h / 2 - h * 0.18) + '" width="' + f1(w) + '" height="' + f1(h * 0.18) + '" style="fill:var(--cuff);stroke:var(--ink)" stroke-width="' + sw + '"/>';
   if (m.curl) {
@@ -781,24 +781,29 @@ function ctrlOf(a, b) {
   if (d < 25) { var nx = -(b.y - a.y), ny = b.x - a.x, nl = Math.hypot(nx, ny) || 1; return { x: m.x + nx / nl * 70, y: m.y + ny / nl * 70 }; }
   return { x: m.x + dx * 0.45, y: m.y + dy * 0.45 };
 }
-function activeFlight(t) {
+function activeFx(kind, t) {
   if (!TL) return null;
-  for (var i = TL.fx.length - 1; i >= 0; i--) { var f = TL.fx[i]; if (f.kind === 'flight' && t >= f.t0 && t < f.t1) return f; }
+  for (var i = TL.fx.length - 1; i >= 0; i--) { var f = TL.fx[i]; if (f.kind === kind && t >= f.t0 && t < f.t1) return f; }
   return null;
 }
 function potPos(t) {
-  var f = activeFlight(t);
+  var f = activeFx('flight', t);
   if (f) {
     var a = anchorOf(f.from), b = anchorOf(f.to), p = ease((t - f.t0) / (f.t1 - f.t0));
     return f.trail ? bez(a, ctrlOf(a, b), b, p) : { x: a.x + (b.x - a.x) * p, y: a.y + (b.y - a.y) * p };
   }
   var at = V('potAt', t), pt = anchorOf(at);
   var lz = (V('lower', t) || 0) * 8, sk = (V('sink', t) || 0) * 34;
-  return { x: pt.x, y: pt.y + (at === 'middle' || at === 'ground' ? lz + sk : 0) };
+  var bo = activeFx('bounce', t), bx = 0, by = 0;
+  if (bo && at === 'you') {             // I don't know: hop from one mitten to the other and back
+    var q = (t - bo.t0) / (bo.t1 - bo.t0);
+    bx = Math.sin(q * Math.PI * 2) * 26; by = -Math.abs(Math.sin(q * Math.PI * 2)) * 22;
+  }
+  return { x: pt.x + bx, y: pt.y + by + (at === 'middle' || at === 'ground' ? lz + sk : 0) };
 }
 var POTPATH = 'M-29,-2C-30,-17 -15,-25 1,-25C17,-25 30,-15 29,0C29,14 16,24 0,24C-16,24 -28,13 -29,-2Z';
 function potatoSVG(p, F, crack) {
-  var n = M.lines(Math.max(1, F)), col = ['--pot1', '--pot2', '--pot3', '--pot4'][n - 1];
+  var n = M.level(Math.max(1, F)), col = ['--pot1', '--pot2', '--pot3', '--pot4'][n - 1];
   var s = '<g transform="translate(' + f1(p.x) + ' ' + f1(p.y) + ')">';
   if (!crack) for (var i = 0; i < n; i++) {
     var x0 = (i - (n - 1) / 2) * 9;
@@ -816,10 +821,10 @@ function text(x, y, str, px, opts) {
   opts = opts || {};
   return '<text x="' + f1(x) + '" y="' + f1(y) + '" text-anchor="' + (opts.anchor || 'middle') + '" style="font-size:' + f1(px * U) + 'px;font-weight:' + (opts.w || 700) + ';fill:var(' + (opts.fill || '--ink') + ');stroke:var(--bg);stroke-width:' + f1(3 * U) + 'px;paint-order:stroke;stroke-linejoin:round">' + str + '</text>';
 }
-function waveSVG(from, to, p, still, i, n) {
+function waveSVG(from, to, p, off) {
   var dx = to.x - from.x, dy = to.y - from.y, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, nx = -uy, ny = ux;
-  var a = still ? 0.15 : Math.max(0, p - 0.45), b = still ? 0.85 : Math.min(1, p), pts = [];
-  var off = still ? (i - (n - 1) / 2) * 6 : 0;
+  var a = Math.max(0, p - 0.5), b = Math.min(1, p), pts = [];
+  off = off || 0;
   for (var q = a; q <= b + 1e-6; q += 0.04) {
     var w = Math.sin(q * L / 5) * 3.2;
     pts.push(f1(from.x + dx * q + nx * (w + off)) + ',' + f1(from.y + dy * q + ny * (w + off)));
@@ -827,30 +832,23 @@ function waveSVG(from, to, p, still, i, n) {
   if (pts.length < 2) return '';
   return '<polyline points="' + pts.join(' ') + '" fill="none" style="stroke:var(--heat)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>';
 }
-function staticSVG() {
-  var s = '';
-  s += '<ellipse cx="195" cy="' + (GROUND_Y - 3) + '" rx="44" ry="12" style="fill:var(--soil);stroke:var(--soil)" stroke-width="1.2" stroke-dasharray="3 3" fill-opacity=".12"/>';
-  s += '<circle cx="' + C.x + '" cy="' + C.y + '" r="58" fill="none" style="stroke:var(--faint)" stroke-width="1.6" stroke-dasharray="2 5" stroke-linecap="round"/>';
-  $('static').innerHTML = s;
+function flameIcon(x, y, s) {
+  return '<path transform="translate(' + f1(x) + ' ' + f1(y) + ') scale(' + f1(s) + ')" d="M0,-9C1.6,-5.8 5,-3.8 5,0.6A5,5 0 0 1 -5,0.6C-5,-1.6 -3.8,-2.8 -2.6,-3.8 -2.4,-2 -1.4,-1 -0.6,-0.6 -1.4,-3.4 -1,-6.6 0,-9Z" style="fill:var(--heat);stroke:var(--bg)" stroke-width="1"/>';
 }
-function sayBubble(k, str, p) {
-  var at = SAY_AT[k], w = str.length * 8.2 * U + 16 * U, h = 22 * U, y = at[1] - (1 - Math.min(1, p * 4)) * 4;
-  return '<g opacity="' + f1(Math.min(1, p * 5, (1 - p) * 5)) + '"><rect x="' + f1(at[0] - w / 2) + '" y="' + f1(y - h / 2) + '" width="' + f1(w) + '" height="' + f1(h) + '" rx="' + f1(8 * U) + '" style="fill:var(--surface);stroke:var(--no)" stroke-width="' + f1(1.6 * U) + '"/>' +
-         text(at[0], y + 5 * U, str, 14, { fill: '--no' }) + '</g>';
+function sayBubble(k, str, p, ok) {
+  var at = SAY_AT[k], w = str.length * 8.4 * U + 16 * U, h = 22 * U, y = at[1] - (1 - Math.min(1, p * 4)) * 4, col = ok ? '--eco' : '--no';
+  return '<g opacity="' + f1(Math.min(1, p * 5, (1 - p) * 5)) + '"><rect x="' + f1(at[0] - w / 2) + '" y="' + f1(y - h / 2) + '" width="' + f1(w) + '" height="' + f1(h) + '" rx="' + f1(8 * U) + '" style="fill:var(--surface);stroke:var(' + col + ')" stroke-width="' + f1(1.6 * U) + '"/>' +
+         text(at[0], y + 5 * U, str, 14, { fill: col }) + '</g>';
 }
 function renderStage(t) {
   var F = V('F', t), burned = V('burned', t), crack = V('crack', t) || 0;
-  var pp = potPos(t), at = V('potAt', t), fl = activeFlight(t);
-  var s = '', under = '', over = '', pot = '', top = '';
-  var en = V('enough', t) || 0;
-  if (en > 0) s += '<circle cx="' + C.x + '" cy="' + C.y + '" r="47" fill="none" style="stroke:var(--eco)" stroke-width="3" stroke-dasharray="7 5" opacity="' + f1(en) + '"/>';
-  // mittens and sleeves
+  var pp = potPos(t), at = V('potAt', t), fl = activeFx('flight', t);
+  var under = '', over = '', pot = '', top = '';
   SEATS.forEach(function (k) {
-    var ms = mittens(k, t), lvl = V('hand.' + k, t) || 0;
+    var ms = mittens(k, t), lvl = k === 'you' ? (V('hand', t) || 0) : 0;
     under += sleeves(k, ms);
     ms.forEach(function (m) { var g = mittenSVG(m, lvl, burned); if (m.over && !fl && (at === k || (at === 'middle' && m.reach > 0.5))) over += g; else under += g; });
   });
-  // the potato
   if (at !== 'ground' || fl || (V('sink', t) || 0) < 1) {
     var ptxt = potatoSVG(pp, F, crack);
     if ((V('sink', t) || 0) > 0 && !fl) ptxt = '<g clip-path="url(#aboveGround)">' + ptxt + '</g>';
@@ -867,13 +865,12 @@ function renderStage(t) {
   // the luggage tag, until your first press
   if (V('luggage', t) && !burned && !openSeat) {
     var d = { x: C.x - pp.x, y: C.y - pp.y }, dl = Math.hypot(d.x, d.y);
-    var tc = dl < 8 ? { x: pp.x, y: pp.y + 62 } : { x: pp.x + d.x / dl * 78, y: pp.y + d.y / dl * 78 };
+    var tc = dl < 8 ? { x: pp.x, y: pp.y + 62 } : { x: pp.x + d.x / dl * 76, y: pp.y + d.y / dl * 76 };
     var tw = 150, th = 38;
     top += '<line x1="' + f1(pp.x) + '" y1="' + f1(pp.y) + '" x2="' + f1(tc.x) + '" y2="' + f1(tc.y + (tc.y > pp.y ? -th / 2 : th / 2)) + '" style="stroke:var(--dim)" stroke-width="1.2" stroke-dasharray="3 2"/>';
     top += '<rect x="' + f1(tc.x - tw / 2) + '" y="' + f1(tc.y - th / 2) + '" width="' + tw + '" height="' + th + '" rx="6" style="fill:var(--surface);stroke:var(--ink)" stroke-width="1.4"/>';
     top += text(tc.x, tc.y - 3, 'the race', 13, { w: 600 }) + text(tc.x, tc.y + 13 * U - 2, 'to build AI', 13, { w: 600 });
   }
-  // effects
   if (TL) TL.fx.forEach(function (f) {
     if (t < f.t0 || t >= f.t1 + (f.kind === 'flight' && f.trail ? 350 : 0)) return;
     var p = (t - f.t0) / Math.max(1, f.t1 - f.t0);
@@ -882,35 +879,32 @@ function renderStage(t) {
       for (var q = 0; q <= pe + 1e-6; q += 0.05) { var bp = bez(a, c, b, q); pts.push(f1(bp.x) + ',' + f1(bp.y)); }
       var op = t >= f.t1 ? 1 - (t - f.t1) / 350 : 0.9;
       if (pts.length > 1) under += '<polyline points="' + pts.join(' ') + '" fill="none" style="stroke:var(--dim)" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round" opacity="' + f1(op) + '"/>';
-    } else if (f.kind === 'wave') {
-      var ms = mittens(f.to, t), to = { x: (ms[0].x + ms[1].x) / 2, y: (ms[0].y + ms[1].y) / 2 };
-      top += waveSVG(pp, to, Math.min(1, p * 1.25), f.still, f.i || 0, f.n || 1);
-    } else if (f.kind === 'vent') {
-      for (var j = -1; j <= 1; j++) top += waveSVG({ x: pp.x + j * 10, y: pp.y - 26 }, { x: pp.x + j * 16, y: pp.y - 70 }, Math.min(1, p * 1.2), false, 0, 1).replace('stroke-width="2.6"', 'stroke-width="2" opacity="' + f1(1 - p) + '"');
+    } else if (f.kind === 'wave') {                 // heat from the potato into your mittens
+      var ms = mittens('you', t), to = { x: (ms[0].x + ms[1].x) / 2, y: (ms[0].y + ms[1].y) / 2 + 14 };
+      if (f.still) { top += waveSVG(pp, { x: to.x - 16, y: to.y }, 1, 0) + waveSVG(pp, { x: to.x + 16, y: to.y }, 1, 0); }
+      else top += waveSVG(pp, { x: to.x - 16, y: to.y }, Math.min(1, p * 1.25), 0) + waveSVG(pp, { x: to.x + 16, y: to.y }, Math.min(1, p * 1.25), 0);
+    } else if (f.kind === 'vent') {                 // bouncing it: heat goes up into the air
+      for (var j = -1; j <= 1; j++) top += waveSVG({ x: pp.x + j * 10, y: pp.y - 26 }, { x: pp.x + j * 16, y: pp.y - 66 }, Math.min(1, p * 1.2), 0).replace('stroke-width="2.6"', 'stroke-width="2" opacity="' + f1(1 - p) + '"');
     } else if (f.kind === 'plusSeat') {
       var g = G[f.seat].a, o = PLUS_AT[f.seat], rise = RM ? 0 : Math.min(1, p) * 8;
       top += text(g.x + o[0], g.y + o[1] - rise, f.text, 15, { fill: '--heat' });
-    } else if (f.kind === 'spark') {
-      var sy0 = G.flint.a.y, sx = G.flint.a.x + 44, ex = pp.x, ey = pp.y;
-      top += '<line x1="' + sx + '" y1="' + sy0 + '" x2="' + f1(sx + (ex - sx) * Math.min(1, p)) + '" y2="' + f1(sy0 + (ey - sy0) * Math.min(1, p)) + '" style="stroke:var(--heat)" stroke-width="2.4" stroke-dasharray="4 3" stroke-linecap="round"/>';
+    } else if (f.kind === 'spark') {                // Flint's flame travels to the potato
+      var sx = G.flint.a.x + 30, sy = G.flint.a.y - 8, e2 = ease(Math.min(1, p));
+      top += flameIcon(sx + (pp.x + 8 - sx) * e2, sy + (pp.y - 30 - sy) * e2, 1.3);
     } else if (f.kind === 'flintMark') {
-      top += text(G.flint.a.x + 74, G.flint.a.y - 20, '+1 Flint', 15, { fill: '--heat' });
-    } else if (f.kind === 'joined') {
-      var gj = G[f.seat].a;
-      top += text(gj.x, gj.y - 26, '+ joined', 14, { fill: '--eco' });
+      top += text(G.flint.a.x + 74, G.flint.a.y - 20, '+1 flame', 15, { fill: '--heat' });
+    } else if (f.kind === 'coolMark') {
+      top += text(pp.x + 50, pp.y - 30 - (RM ? 0 : Math.min(1, p) * 6), '−1 cooler', 14, { fill: '--cool' });
     } else if (f.kind === 'say') {
-      top += sayBubble(f.seat, f.text, p);
+      top += sayBubble(f.seat, f.text, p, f.ok);
     } else if (f.kind === 'downArrow') {
       top += '<path d="M195,110v44M184,143l11,12 11-12" fill="none" style="stroke:var(--eco)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
     } else if (f.kind === 'loop') {
       top += '<circle cx="' + C.x + '" cy="' + C.y + '" r="92" fill="none" style="stroke:var(--heat)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>';
-      f.flames.forEach(function (k) {
-        var ga = G[k].a, o = PLUS_AT[k];
-        top += text(ga.x + o[0], ga.y + o[1], '+1', 15, { fill: '--heat' });
-      });
+      f.flames.forEach(function (k) { var ga = G[k].a, o2 = PLUS_AT[k]; top += text(ga.x + o2[0], ga.y + o2[1], '+1', 15, { fill: '--heat' }); });
     }
   });
-  $('dyn').innerHTML = s + under + pot + over + top;
+  $('dyn').innerHTML = under + pot + over + top;
   var dim = V('dim', t) || 0;
   $('svg').style.opacity = f1(1 - 0.5 * dim);
   $('ovs').style.opacity = f1(1 - 0.5 * dim);
@@ -931,7 +925,12 @@ function pct(x, y, w, h) {
 }
 function barHTML(lvl, burned) {
   var s = '<span class="bar l' + lvl + (burned ? ' burnt' : '') + '" aria-hidden="true">';
-  for (var i = 1; i <= 4; i++) s += '<i class="' + (burned || i <= lvl ? 'on' : '') + '"></i>';
+  for (var i = 1; i <= 3; i++) s += '<i class="' + (burned || i <= lvl ? 'on' : '') + '"></i>';
+  return s + '</span>';
+}
+function pipsHTML(n, w, pop) {
+  var s = '<span class="pips' + (pop > 0 ? ' pop' : pop < 0 ? ' lost' : '') + '" aria-label="Wren has seen ' + Math.min(n, w) + ' of ' + w + ' holds">';
+  for (var i = 0; i < w; i++) s += '<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" style="fill:' + (i < n ? 'var(--ink)' : 'none') + ';stroke:var(--ink)" stroke-width="1.5"/></svg>';
   return s + '</span>';
 }
 function buildOverlays() {
@@ -939,10 +938,10 @@ function buildOverlays() {
   OTHERS.forEach(function (k) {
     var L = LAB[k], r = L[3] === 'r';
     h += '<div class="ov seat ' + L[3] + '" style="' + pct(L[0], L[1], L[2]) + '"><div class="nm">' + (r ? '' : badge(k)) + '<span>' + NAME[k] + '</span>' + (r ? badge(k) : '') + '</div>' +
-         '<div class="st" id="st-' + k + '"></div>' + (k === 'flint' ? '' : '<div class="hw" id="hw-' + k + '"></div>') + '</div>';
+         '<div class="st" id="st-' + k + '"></div></div>';
   });
-  h += '<div class="ov chalk" id="chalk" style="' + pct(134, 268, 122) + '">We hold it<br>until it’s down.</div>';
-  h += '<div class="ov bubble" id="flintBubble" style="' + pct(105, 150, 180) + 'text-align:center" hidden>Flint: “If we don’t, they will.”</div>';
+  h += '<div class="ov chalk" id="chalk" style="' + pct(0, 327, 390) + '">We hold it until it’s down.</div>';
+  h += '<div class="ov bubble" id="flintBubble" style="' + pct(105, 146, 180) + 'text-align:center" hidden>Flint: “If we don’t, they will.”</div>';
   h += '<div class="ov bubble" id="seatBubble" hidden></div>';
   OTHERS.forEach(function (k) {
     var B = BTN[k];
@@ -952,32 +951,27 @@ function buildOverlays() {
 }
 var last = {};
 function put(id, html) { if (last[id] !== html) { last[id] = html; $(id).innerHTML = html; } }
-// What each seat would say if you asked now, from what is on screen.
+function ok(s) { return '<span class="ok">' + CHECK + ' ' + s + '</span>'; }
+function no(s) { return '<span class="no">' + s + '</span>'; }
+// Each seat's line: its rule until it holds it, then "holding it".
 function status(k, t) {
-  var on = V('on', t) || [], F = V('F', t), burned = V('burned', t), lvl = V('hand.' + k, t) || 0, out = V('outOfPlay', t);
-  if (k === 'flint') {
-    var f = V('flint', t);
-    return f === 'stopped' ? '<span class="ok">' + CHECK + ' stopped: 3 hold it</span>' : f === 'again' ? '<span class="no">building again</span>' : 'builds until 3 hold it';
-  }
-  if (burned) return 'burned';
+  var on = V('on', t) || [], F = V('F', t), burned = V('burned', t), out = V('out', t);
+  if (burned) return no('burned');
+  if (k === 'flint') return V('flint', t) === 'stopped' ? ok('stopped: 3 hold it') : '+1 flame a move until 3 hold it';
   if (out) return 'hands off it';
-  if (on.indexOf(k) >= 0) return '<span class="ok">' + CHECK + ' holding it</span>';
-  if (lvl >= M.BURNING) return '<span class="no">no: hands burning</span>';
+  if (on.indexOf(k) >= 0) return ok('holding it');
   if (k === 'wren') {
     var n = V('seen', t) || 0;
-    return 'yes once she’s seen you hold it a while<br><span class="seen' + (V('seenPop', t) ? ' pop' : '') + '">seen: <b>' + (n ? n + (n === 1 ? ' move' : ' moves') : 'none yet') + '</b></span>';
+    return (n >= S.wait ? ok('ready: ask her') : 'yes after ' + holdsW(S.wait)) + '<br>' + pipsHTML(n, S.wait, V('seenPop', t) || 0);
   }
-  if ((k === 'reed' || k === 'oak') && F >= M.SCORCH) return '<span class="no">no: it’s scorching</span>';
-  if (on.length >= NEEDS_ON[k] && started) return '<span class="ok">would say yes now</span>';
-  return 'yes when ' + NEEDS_ON[k] + ' hold it';
+  if ((k === 'reed' || k === 'oak') && F >= M.SCORCH) return no('no: it’s scorching');
+  return k === 'moss' ? 'follows Wren' : k === 'reed' ? 'follows Moss; not if scorching' : 'follows Reed; not if scorching';
 }
 function renderOverlays(t) {
-  var burned = V('burned', t), on = V('on', t) || [];
   OTHERS.forEach(function (k) {
-    put('st-' + k, status(k, t));
-    var lvl = V('hand.' + k, t) || 0, w = burned ? 'burned' : handWord(lvl);
-    if (k !== 'flint') put('hw-' + k, (lvl > 0 || on.indexOf(k) >= 0) && !burned ? (k === 'reed' || k === 'oak' ? '<span class="word">hands: <b>' + w + '</b></span>' + barHTML(lvl, burned) : barHTML(lvl, burned) + '<span class="word">hands: <b>' + w + '</b></span>') : '');
-    var b = $('btn-' + k), al = NAME[k] + ', ' + SHAPE[k] + '. ' + LINE[k] + (k === 'flint' ? '' : ' Hands: ' + w + '.');
+    var st = status(k, t);
+    put('st-' + k, st);
+    var b = $('btn-' + k), al = NAME[k] + ', ' + SHAPE[k] + '. ' + LINE[k] + ' Now: ' + st.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() + '.';
     if (b.getAttribute('aria-label') !== al) b.setAttribute('aria-label', al);
   });
   var ch = V('chalk', t) || 0, rub = V('chalkRub', t) || 0, chalk = $('chalk');
@@ -985,126 +979,121 @@ function renderOverlays(t) {
   if (chalk.style.clipPath !== cs) { chalk.style.clipPath = cs; chalk.style.webkitClipPath = cs; }
   chalk.style.opacity = ch > 0 ? f1(1 - rub) : 0;
   chalk.style.visibility = ch > 0 ? 'visible' : 'hidden';
-  chalk.style.filter = rub > 0 ? 'blur(' + f1(rub * 3) + 'px)' : '';
   $('flintBubble').hidden = !V('bubble', t);
 }
 function renderTrack(t) {
-  var F = Math.min(16, V('F', t) || 1), out = V('outOfPlay', t), burned = V('burned', t);
-  var h = '', plusOn = {}, words = ['warm', 'hot', 'very hot', 'scorching'], now = M.lines(Math.max(1, F)) - 1;
-  if (TL) TL.fx.forEach(function (f) { if (f.kind === 'plusBox' && t >= f.t0 && t < f.t1) plusOn[Math.min(16, f.box)] = true; });
+  var F = Math.min(16, V('F', t) || 1), out = V('out', t), burned = V('burned', t);
+  var h = '', mark = {}, words = ['warm', 'hot', 'very hot', 'scorching'], now = M.level(Math.max(1, F)) - 1;
+  if (TL) TL.fx.forEach(function (f) {
+    if ((f.kind === 'plusBox' || f.kind === 'minusBox') && t >= f.t0 && t < f.t1) mark[Math.min(16, f.box)] = f.kind === 'plusBox' ? '+1' : '−1';
+  });
   for (var gI = 0; gI < 4; gI++) {
     h += '<div class="grp"><div class="gb">';
     for (var i = gI * 4 + 1; i <= gI * 4 + 4; i++) {
-      var lit = i <= F, pl = plusOn[i];
-      h += '<span class="box' + (i >= 15 ? ' band' : '') + (lit ? ' lit' : '') + '">' + (lit && pl ? '<span class="plus">+1</span>' : lit ? '<svg viewBox="0 0 12 16"><path d="M6,1.5C7.6,4.4 10.4,6.4 10.4,10A4.4,4.4 0 0 1 1.6,10C1.6,8 2.8,6.8 3.8,5.9 4,7.4 4.8,8.3 5.6,8.6 4.9,6.1 5.2,3.7 6,1.5Z" style="fill:var(--heat)"/></svg>' : '') + '</span>';
+      var lit = i <= F, mk = mark[i];
+      h += '<span class="box' + (i >= 15 ? ' band' : '') + (lit ? ' lit' : '') + '">' +
+           (mk === '+1' && lit ? '<span class="plus">+1</span>' : mk === '−1' ? '<span class="plus minus">−1</span>'
+            : lit ? '<svg viewBox="0 0 12 16"><path d="M6,1.5C7.6,4.4 10.4,6.4 10.4,10A4.4,4.4 0 0 1 1.6,10C1.6,8 2.8,6.8 3.8,5.9 4,7.4 4.8,8.3 5.6,8.6 4.9,6.1 5.2,3.7 6,1.5Z" style="fill:var(--heat)"/></svg>' : '') + '</span>';
     }
     h += '</div><div class="gl' + (gI === now && !out && !burned ? ' now' : '') + '">' + words[gI] + '</div></div>';
   }
   h += '<svg class="firemark" viewBox="0 0 20 22"><path d="M10,1C12.5,5.6 17,8.4 17,13.8A7,7 0 0 1 3,13.8C3,10.6 4.8,8.8 6.4,7.4 6.7,9.8 8,11.2 9.2,11.7 8.1,7.8 8.7,4.2 10,1Z" style="fill:' + (burned ? 'var(--h4)' : 'none') + ';stroke:var(--h4)" stroke-width="1.6" stroke-linejoin="round"/></svg>';
   put('boxes', h);
-  var tr = $('track');
-  tr.classList.toggle('out', !!out);
+  $('track').classList.toggle('out', !!out);
   put('hotLbl', out || burned ? '' : 'How hot:');
-  put('heatWord', burned ? 'burned everyone' : out ? 'out of play' : M.potw(F));
-  $('fireHint').style.visibility = out || burned ? 'hidden' : '';
+  put('heatWord', burned ? 'burned everyone' : out ? 'in the ground' : M.potw(F));
+  put('flameCount', burned || out ? '' : '· ' + flamesW(F));
+  put('fireHint', burned || out ? '' : (S.F >= 15 && !S.out ? 'fire at 16 ' : 'fire in here ') +
+      '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1v7M2 5.5 5 8.5 8 5.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>');
 }
 var MIT_ICON = '<path d="M8,20.5V8.5A5.5,5.5 0 0 1 19,8.5V20.5Z M8,15.5C4.5,15 2.6,12.4 3.4,10.2 4.2,8.4 6.6,9.2 8,11.4"/>';
 function renderRows(t) {
-  var burned = V('burned', t), out = V('outOfPlay', t), lvl = V('hand.you', t) || 0, tg = V('yourTag', t);
-  var w = burned ? 'burned' : handWord(lvl);
+  var burned = V('burned', t), lvl = V('hand', t) || 0, tg = V('tag', t);
   put('yourow', '<span class="pill">you</span>' + (tg ? '<span class="ytag">' + tg + '</span>' : '') +
-      '<span class="yh">your hands: <b>' + w + '</b> ' + barHTML(lvl, burned) + '</span>');
-  var on = (V('on', t) || []).length, en = (V('enough', t) || 0) > 0.5, h = '';
-  for (var i = 0; i < 5; i++) h += '<svg viewBox="0 0 24 22" aria-hidden="true"><g style="fill:' + (i < on ? 'var(--ink)' : 'none') + ';stroke:var(--ink)" stroke-width="1.6">' + MIT_ICON + '</g></svg>';
-  var row = $('handsrow');
-  row.hidden = !!(out || burned || V('ended', t));
-  row.classList.toggle('enough', en);
-  put('handsrow', '<span>Hands on it</span><span class="hicons">' + h + '</span><span class="need">' + (en ? 'enough now' : '4 or 5 needed') + '</span>');
-  row.setAttribute('aria-label', 'Hands on it: ' + on + (en ? ', enough to put it down' : ', 4 or 5 needed'));
+      '<span class="yh">hands: <b>' + (burned ? 'burned' : HW(lvl)) + '</b> ' + barHTML(lvl, burned) + '</span>');
 }
 var spoken = { c1: '', c2: '' };
 function renderCaption(t) {
   var c1 = V('c1', t) || '', c2 = V('c2', t) || '';
   put('c1', c1); put('c2', c2);
   if (SET.read && CAN_SPEAK) {
-    if (c1 !== spoken.c1) { spoken.c1 = c1; spoken.c2 = ''; if (c1) speak(c1, true); }
-    if (c2 !== spoken.c2) { var add = c2.indexOf(spoken.c2) === 0 ? c2.slice(spoken.c2.length) : c2; spoken.c2 = c2; if (add.trim()) speak(add, false); }
+    if (c1 !== spoken.c1 || c2 !== spoken.c2) { spoken.c1 = c1; spoken.c2 = c2; if (c1 || c2) speak((c1 + ' ' + c2).trim(), true); }
   } else { spoken.c1 = c1; spoken.c2 = c2; }
 }
 function speak(str, fresh) {
   try {
     if (fresh) window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(str.replace(/…/g, '.')); u.rate = SET.slow ? 0.85 : 1;
+    var u = new SpeechSynthesisUtterance(str.replace(/…/g, '.').replace(/−/g, 'minus ')); u.rate = SET.slow ? 0.85 : 1;
     window.speechSynthesis.speak(u);
   } catch (e) {}
 }
 function render() {
   var t = clock;
   renderStage(t); renderOverlays(t); renderTrack(t); renderRows(t); renderCaption(t);
-  var ended = V('ended', t), ec = $('endcards'), was = ec.hidden;
-  ec.hidden = ended !== 'down';
-  if (was && !ec.hidden) {                  // make room below the stage if the cards run taller
-    var wrap = $('stagewrap');
-    wrap.style.height = Math.max($('stage').offsetHeight, ec.offsetHeight) + 'px';
-  }
+  var ended = V('ended', t);
   if (ended && !$('game').classList.contains('over')) showEnd(ended);
 }
 
 /* ── Buttons ───────────────────────────────────────────────────────────────── */
-function busy() { return !!(TL && !TL.done) || !started; }
-function setVerb(id, v, s, enabled) {
-  var b = $(id);
-  put(id, '<span class="v">' + v + '</span><span class="s">' + s + '</span>');
-  b.disabled = !enabled;
-}
 var wasDown = false;
+function setVerb(id, v, info, extra) {
+  var b = $(id);
+  put(id, extra ? extra(info) : '<span class="v">' + v + '</span><span class="s">' + info.s + '</span>');
+  b.classList.toggle('off', !info.lit);
+  b.setAttribute('aria-disabled', info.lit ? 'false' : 'true');
+}
 function updateButtons() {
-  var off = M.offered(S), alone = S.on.length === 1, hot = M.tooHot(S);
-  setVerb('vHold', 'Hold it', hot ? 'your hands are too hot' : alone ? 'slow down alone: you take the heat; Wren sees' : 'keep holding it together', off.indexOf('hold') >= 0);
-  var toScorch = S.F + M.ROUND >= M.SCORCH;
-  setVerb('vToss', 'Toss it on', toScorch ? '6 flames hotter: scorching, and then it will burn'
-          : hot ? 'cools your hands at once; 6 flames hotter' : !alone ? 'race on: the others let go; 6 flames hotter'
-          : S.seen ? 'race on: 6 flames hotter, and Wren forgets' : 'race on: cool hands now; 6 flames hotter', true);
-  var down = off.indexOf('down') >= 0, tog = $('vTog');
-  tog.classList.toggle('down', down);
-  tog.dataset.verb = down ? 'down' : 'together';
-  tog.setAttribute('aria-keyshortcuts', down ? 'D' : 'G');
-  if (down) setVerb('vTog', 'Put it down', 'enough hands: put it in the ground', true);
-  else setVerb('vTog', 'Hold it together', hot ? 'your hands are too hot' : 'ask the others to hold it with you', off.indexOf('together') >= 0);
-  if (down && !wasDown) { tog.classList.remove('pulse'); void tog.offsetWidth; tog.classList.add('pulse'); }
+  setVerb('vHold', 'Hold it', verbInfo('hold'));
+  setVerb('vToss', 'Toss it on', verbInfo('toss'));
+  setVerb('vTog', 'Hold it together', verbInfo('together'));
+  setVerb('vIdk', 'I don’t know', verbInfo('idk'));
+  var d = verbInfo('down'), n = S.out ? 0 : S.on.length;
+  setVerb('vDown', 'Put it down', d, function (info) {
+    var ic = '';
+    for (var i = 0; i < M.NEED; i++) ic += '<svg viewBox="0 0 24 22" aria-hidden="true"><g style="fill:' + (i < n ? 'currentColor' : 'none') + ';stroke:currentColor" stroke-width="1.6">' + MIT_ICON + '</g></svg>';
+    return '<span class="txt"><span class="v">Put it down</span><span class="s" style="display:block">' + info.s + '</span></span>' +
+           '<span class="hc" aria-label="' + n + ' of 5 pairs of hands on it">' + ic + ' ' + n + ' of 5</span>';
+  });
+  var down = d.lit, db = $('vDown');
+  if (!down) db.classList.remove('pulse');
+  if (down && !wasDown) { db.classList.remove('pulse'); void db.offsetWidth; db.classList.add('pulse'); }
   wasDown = down;
-  setVerb('vIdk', 'I don’t know', alone ? 'wait: your hands rest; Flint builds on' : 'wait: your hands rest; the others take the heat', true);
-  var b = busy();
-  $('verbs').classList.toggle('busy', b);
-  put('busyhint', b ? 'Watch… tap any button to skip ahead.' : '');
+  $('restart').hidden = !(S.doomed && !S.out);
 }
 
 /* ── Playing ───────────────────────────────────────────────────────────────── */
 var lastPressed = null;
-function skip() {
+function finish() {
   if (!TL || TL.done) return;
-  advance(Math.max(0, TL.end - clock) + 1);
-}
-function press(v) {
-  if (busy()) { skip(); return false; }
-  if (S.out) return false;
-  if (M.offered(S).indexOf(v) < 0) return false;
-  closeSeatBubble();
+  var end = TL.end;
+  clock = end; render();
   bake();
+  TL.done = true;                       // the move is over; its lingering marks fade on their own
+  render();
+}
+// A press always does what its button says. If a move is still playing out, it finishes at once first.
+function press(v) {
+  if (!S) return false;
+  if (TL && !TL.done) finish();
+  if (S.out) return false;
+  var info = verbInfo(v);
+  if (!info.lit) {                      // a button that isn't lit says why, and nothing happens
+    base.c1 = info.why[0]; base.c2 = info.why[1];
+    render();
+    return false;
+  }
+  closeSeatBubble();
   var pre = M.clone(S), ev = M.step(S, v);
+  if (v === 'toss' && pre.hand === 0) notes.coolTosses = (notes.coolTosses || 0) + 1;
+  S.doomed = !S.out && !M.canWin(S);
   TL = build(v, pre, S, ev); clock = 0;
+  if (S.doomed && !S.out) {
+    set(TL, 'c2', 0, 'No way left to put it down in time.');
+    finalize(TL);
+  }
   updateButtons();
   render();
   return true;
-}
-function finish() {
-  if (!TL || TL.done) return;
-  bake();
-  TL.done = true;                       // the move is over; its lingering marks fade on their own
-  if (!started) started = true;
-  updateButtons();
-  render();
-  if (lastPressed && !lastPressed.disabled && document.activeElement === document.body) lastPressed.focus();
 }
 function advance(ms) {
   if (!TL) return;
@@ -1113,59 +1102,88 @@ function advance(ms) {
     return;
   }
   clock += ms;
-  if (clock >= TL.end) { var over = clock; clock = TL.end; render(); finish(); clock = Math.min(over, Math.max(TL.end, TL.fxEnd)); render(); }
+  if (clock >= TL.end) { var over = clock; finish(); clock = Math.min(over, Math.max(TL.end, TL.fxEnd)); render(); }
   else render();
 }
 function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
-function newGame(need, burn, wait) {
-  S = M.create(need || pick(M.NEEDS), burn || pick(M.BURNS), wait || pick(M.WAITS));
-  seen = {}; started = false; wasDown = false; resetBase();
+function paramsFor(i) {
+  if (i < M.ROUNDS.length) return M.ROUNDS[i];
+  return { start: pick(M.FREE.starts), wait: pick(M.FREE.waits) };
+}
+function newRound(i, keepParams) {
+  ROUNDI = i;
+  if (!keepParams) PARAMS = paramsFor(i);
+  S = M.create(PARAMS.start, PARAMS.wait, pick(M.BURNS));
+  S.doomed = false;
+  notes = {}; wasDown = false; resetBase(PARAMS.start);
   $('game').classList.remove('over');
-  $('end').hidden = true; $('verbs').hidden = false; $('busyhint').hidden = false; $('howInline').hidden = true; $('endcards').hidden = true;
-  $('yourow').hidden = false;
+  $('end').hidden = true; $('verbs').hidden = false; $('howInline').hidden = true; $('endcards').hidden = true;
+  $('yourow').hidden = false; $('restart').hidden = true;
   $('stagewrap').style.height = '';
+  put('roundName', i < M.ROUNDS.length ? 'Round ' + (i + 1) + ' of ' + M.ROUNDS.length : 'Round ' + (i + 1) + ' (random)');
   last = {};
   TL = buildIntro(); clock = 0;
-  sizeStage();
   updateButtons(); render();
+  sizeStage();
 }
 
 /* ── The ending ────────────────────────────────────────────────────────────── */
 function recapLines(s, kind) {
-  var L = [];
-  if (s.joined.indexOf('wren') >= 0) L.push('Wren wanted to see you hold it ' + moves(s.wait) + ' this time. ' + JOINED_BECAUSE.wren.replace('Wren joined', 'She joined'));
-  else L.push('Wren wanted to see you hold it ' + moves(s.wait) + ' this time' + (s.holdsAlone ? '; you held it alone ' + times(s.holdsAlone) + ' in all.' : ', and you never held it alone.'));
-  if (s.notYet) L.push('You asked before she was ready ' + times(s.notYet) + ', and she said “not yet”.');
-  if (s.tosses) {
-    var tl = 'You tossed it ' + times(s.tosses) + '. ';
-    var forgot = seen.forgot ? ', and Wren forgot what she had seen' : '';
-    if (s.tosses === 1) tl += s.lapBurn ? 'It caught fire on the way round.' : 'It went all the way round and came back six flames hotter' + forgot + '.';
-    else tl += 'Each time it came back six flames hotter' + forgot + (s.lapBurn ? '; the last time it caught fire on the way round.' : '.');
-    if (s.tossedWithEnough) tl += ' There were enough hands to put it down when you tossed it, and the others let go.';
-    else if (s.tossesWithOthers) tl += ' Tossing it made the others let go.';
-    L.push(tl);
+  var L = [], best = M.coolest(s.start, s.wait);
+  L.push('Wren wanted to see ' + holdsW(s.wait) + '. You held it alone ' + times(s.holds) +
+         (s.forgot ? ', and she crossed out ' + (s.forgot === 1 ? 'one' : NUMW[s.forgot]) + ' when you tossed it.' : '.'));
+  if (s.tosses) L.push('You tossed it ' + times(s.tosses) + (s.tosses === 1 ? ': it came back six flames hotter' : ': six flames each time') + (s.lapBurn ? ', and ' + (s.tosses === 1 ? 'it' : 'the last time it') + ' caught fire on the way round.' : '.') + (s.tossesWithOthers ? ' Tossing it made the others let go.' : ''));
+  if (s.rests) L.push('You bounced it ' + times(s.rests) + (s.rests === 1 ? ', and Flint added a flame' : ', and each time Flint added a flame') +
+                     (s.idleRests ? '; ' + (s.idleRests === s.rests ? (s.rests === 1 ? 'your hands were' : 'each time your hands were') : times(s.idleRests) + ' your hands were') + ' already cool, so it cooled nothing.' : '.'));
+  if (s.refusedHot) L.push(kind === 'down' ? 'Reed and Oak said no while it was scorching. With three of you holding it, it cooled, and then they joined.' : 'Reed and Oak said no while it was scorching.');
+  L.push('Flint added ' + flamesW(s.flintBuilt) + (s.everThree ? ', until three of you held it and Flint stopped.' : '. Three of you never held it at once.'));
+  L.push(kind === 'burned' ? 'It caught fire at ' + s.burn + ' flames.' : 'It would have caught fire at ' + s.burn + ' flames.');
+  if (kind === 'burned') {
+    if (s.tosses && notes.coolTosses === s.tosses) L.push('<b>Next time:</b> don’t toss it while your hands are cool: it gains you nothing and adds six flames. Hold it instead.');
+    else if (s.tosses) L.push('<b>Next time:</b> when your hands are too hot, bounce it instead of tossing it. Bouncing lets Flint add one flame; a toss adds six.');
+    else if (s.idleRests) L.push('<b>Next time:</b> hold it while your hands can take it, and bounce it only when they’re too hot.');
+    else L.push('<b>Next time:</b> hold it while your hands can take it, bounce it when they’re too hot, and ask as soon as Wren is ready.');
+  } else if (s.maxF > best.maxF) {
+    L.push('<b>To keep it cooler:</b> ' + (s.tosses ? 'when your hands are too hot, bounce it instead of tossing it (one flame instead of six). ' : '') +
+           'Hold it while your hands can take it, bounce it only when they’re too hot, and ask as soon as Wren is ready. That keeps it at ' + flamesW(best.maxF) + '.');
   }
-  if (s.rests) L.push('You waited (I don’t know) ' + times(s.rests) + ', and your hands rested.');
-  var others = s.joined.filter(function (k) { return k !== 'wren'; });
-  if (others.length) L.push(others.map(function (k) { return JOINED_BECAUSE[k]; }).join(' '));
-  L.push((seen.flintEverStopped ? 'Flint stopped building once three of you held it.' : 'Flint kept building the whole time: three of you never held it at once.') + ' Flint never put hands on it.');
-  if (s.refusedHot.length) L.push((s.refusedHot.length === 2 ? 'Reed and Oak' : NAME[s.refusedHot[0]]) + ' wouldn’t join once it was scorching.');
-  if (s.autoBurn) L.push('Once it was scorching, there could never be enough hands, so it burned.');
-  L.push('It took ' + NUMW[s.need] + ' pairs of hands this time' + (kind === 'burned' ? ', and it caught fire at ' + NUMW[s.burn] + ' flames.' : '. It would have caught fire at ' + NUMW[s.burn] + ' flames.'));
-  if (kind === 'down' && !s.tosses) L.push('Next time, try asking Wren sooner, or tossing it once, and see what changes.');
   return L;
 }
 function showEnd(kind) {
+  var s = S, best = M.coolest(s.start, s.wait), last3 = ROUNDI >= M.ROUNDS.length - 1;
   $('game').classList.add('over');
-  $('verbs').hidden = true; $('busyhint').hidden = true;
-  $('handsrow').hidden = true; $('yourow').hidden = true;
+  $('verbs').hidden = true; $('restart').hidden = true;
   $('end').hidden = false;
-  $('recap').innerHTML = recapLines(S, kind).map(function (l) { return '<li>' + l + '</li>'; }).join('');
-  $('river').innerHTML = (kind === 'down' ? '“Nobody had to be good. Enough of them had to agree on a number.”'
+  if (kind === 'down') {
+    var ec = $('endcards'), exact = s.maxF <= best.maxF;
+    var sub = 'It got as hot as ' + flamesW(s.maxF) + (exact ? ': the coolest possible this round.' : '; the coolest possible this round was ' + best.maxF + '.') + ' Nobody got burned.';
+    ec.innerHTML = '<h2>You put it down together.</h2><p class="sub">' + sub + '</p>' +
+      (last3 ? '<p class="next">It’s in the ground. What happens next isn’t in this game:</p><div class="fork">' +
+        '<div><b>If there’s a known way to keep it down</b>People keep it there. For example: every builder agrees to a shared test that must be passed before building anything bigger, and someone checks.</div>' +
+        '<div><b>If nobody knows how yet</b>Putting it down together bought time. Finding a way to keep it down is still ahead.</div></div>' +
+        '<p class="under">This game can’t tell you which card is true. Nobody can yet.</p>'
+        : '<p class="sub">It’s in the ground. Whether it stays there, nobody knows yet.</p>');
+    ec.hidden = false;
+    var wrap = $('stagewrap');
+    wrap.style.height = Math.max($('stage').offsetHeight, ec.offsetHeight) + 'px';
+    $('nextBtn').textContent = ROUNDI + 1 < M.ROUNDS.length ? 'Next: round ' + (ROUNDI + 2) : 'Another round (random)';
+    $('nextBtn').dataset.act = 'next';
+    $('againBtn').hidden = false;
+    $('score').innerHTML = '<b>Round ' + (ROUNDI + 1) + ':</b> put down. Hottest it got: ' + flamesW(s.maxF) + ' (coolest possible: ' + best.maxF + ').';
+  } else {
+    $('nextBtn').textContent = 'Try this round again';
+    $('nextBtn').dataset.act = 'again';
+    $('againBtn').hidden = true;
+    $('score').innerHTML = '<b>Round ' + (ROUNDI + 1) + ':</b> it caught fire at ' + flamesW(s.burn) + '.';
+  }
+  $('recap').innerHTML = recapLines(s, kind).map(function (l) { return '<li>' + l + '</li>'; }).join('');
+  var riv = $('river');
+  riv.hidden = !(kind === 'burned' || last3);
+  riv.innerHTML = (kind === 'down' ? '“Nobody had to be good. Enough of them had to agree on a number.”'
     : '“A pause taken alone is a sacrifice the others outlive. Taken by enough, it keeps the river for everyone.”') +
     '<small>a line from a toy model of a river; a rhyme, not a finding about AI</small>';
-  $('howInline').hidden = false;
-  try { $('again').focus({ preventScroll: true }); } catch (e) {}
+  $('howInline').hidden = !last3 && kind === 'down';
+  try { $('nextBtn').focus({ preventScroll: true }); } catch (e) {}
 }
 
 /* ── Seats: tap for the full line ──────────────────────────────────────────── */
@@ -1187,17 +1205,19 @@ function sizeStage() {
   if (game.classList.contains('over')) return;
   var cs = getComputedStyle(game), used = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) + parseFloat(getComputedStyle(wrap).marginTop);
   var wide = window.matchMedia && window.matchMedia('(min-width:900px) and (min-aspect-ratio:1/1)').matches;
-  (wide ? ['.top', '#track', '#yourow', '#handsrow'] : ['.top', '#track', '#yourow', '#handsrow', '#caption', '#verbs', '#busyhint']).forEach(function (q) {
+  (wide ? ['.top', '.roundline', '#track', '#yourow'] : ['.top', '.roundline', '#track', '#yourow', '#caption', '#verbs']).forEach(function (q) {
     var el = document.querySelector(q), m = getComputedStyle(el);
     used += el.offsetHeight + parseFloat(m.marginTop) + parseFloat(m.marginBottom);
   });
   var aw = wrap.clientWidth, ah = Math.max(0, window.innerHeight - used - 4);
-  var w = Math.min(aw, Math.max(Math.min(aw, 300), ah * VBW / VBH));
+  if (!aw) return;
+  var w = Math.min(aw, Math.max(Math.min(aw, 270), ah * VBW / VBH));
   wrap.style.height = Math.round(w * VBH / VBW) + 'px';
   st.style.width = Math.round(w) + 'px';
   st.style.height = Math.round(w * VBH / VBW) + 'px';
   U = VBW / w;
-  staticSVG();
+  var fs = Math.max(11, Math.min(15, w / 26));          // the seats' words shrink a little with the table
+  $('ovs').style.fontSize = f1(fs) + 'px';
   render();
 }
 
@@ -1231,28 +1251,29 @@ fillHow();
 buildOverlays();
 document.addEventListener('click', function (e) {
   var t = e.target.closest ? e.target : e.target.parentNode;
-  var verb = t.closest('.verb'), seat = t.closest('.seatbtn'), set_ = t.closest('[data-set]');
+  var verb = t.closest('.verb'), seat = t.closest('.seatbtn'), set_ = t.closest('[data-set]'), act = t.closest('[data-act="round1"]');
   if (verb) { lastPressed = verb; press(verb.dataset.verb); return; }
   if (seat) { openSeatBubble(seat.dataset.seat); return; }
   if (set_) { toggleSet(set_.dataset.set); return; }
+  if (act) { closeSheet(); window.scrollTo(0, 0); newRound(0); return; }
   if (openSeat) closeSeatBubble();
 });
 $('helpBtn').addEventListener('click', openSheet);
 $('howBtn2').addEventListener('click', openSheet);
 $('sheetClose').addEventListener('click', closeSheet);
 $('sheet').addEventListener('click', function (e) { if (e.target === $('sheet')) closeSheet(); });
-$('again').addEventListener('click', function () { window.scrollTo(0, 0); newGame(); });
+$('nextBtn').addEventListener('click', function () { window.scrollTo(0, 0); if (this.dataset.act === 'next') newRound(ROUNDI + 1); else newRound(ROUNDI, true); });
+$('againBtn').addEventListener('click', function () { window.scrollTo(0, 0); newRound(ROUNDI, true); });
+$('restart').addEventListener('click', function () { window.scrollTo(0, 0); newRound(ROUNDI, true); });
 document.addEventListener('keydown', function (e) {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   if (e.key === 'Escape') { closeSeatBubble(); return; }
   if ($('sheet').open) return;
-  var map = { h: 'vHold', t: 'vToss', g: 'vTog', d: 'vTog', k: 'vIdk' }, id = map[(e.key || '').toLowerCase()];
-  if (!id) return;
-  if (busy()) { e.preventDefault(); skip(); return; }
-  if (S.out) return;
-  var b = $(id), want = { h: 'hold', t: 'toss', g: 'together', d: 'down', k: 'idk' }[e.key.toLowerCase()];
-  if (b.disabled || b.dataset.verb !== want) return;
-  e.preventDefault(); lastPressed = b; press(want);
+  var want = { h: 'hold', t: 'toss', g: 'together', k: 'idk', d: 'down' }[(e.key || '').toLowerCase()];
+  if (!want || !S || $('game').classList.contains('over')) return;
+  e.preventDefault();
+  lastPressed = document.querySelector('.verb[data-verb="' + want + '"]');
+  press(want);
 });
 syncSettings();
 
@@ -1261,7 +1282,6 @@ function tick() {
   var now = performance.now(), dt = Math.min(1000, now - lastTick);
   lastTick = now;
   if (dt > 0) advance(dt * (SET.slow ? 0.5 : 1));
-  if (S && $('verbs').classList.contains('busy') !== busy()) updateButtons();
 }
 function raf() { tick(); window.requestAnimationFrame(raf); }
 window.requestAnimationFrame(raf);
@@ -1271,20 +1291,23 @@ window.addEventListener('resize', sizeStage);
 // Test hook: drive the game on the virtual clock (screenshots work with the pane hidden).
 window.potatoTest = {
   state: function () {
-    var fl = activeFlight(clock), at = V('potAt');
-    var hands = {}; SEATS.forEach(function (k) { hands[k] = S.out === 'burned' ? 'burned' : handWord(S.hands[k]); });
-    return { flames: S.F, shownFlames: V('F'), heat: M.potw(S.F), seen: S.seen,
+    var fl = activeFx('flight', clock), at = V('potAt'), btn = {};
+    ['hold', 'toss', 'together', 'idk', 'down'].forEach(function (v) { var i = verbInfo(v); btn[v] = (i.lit ? '' : '(off) ') + i.s; });
+    return { round: ROUNDI + 1, start: S.start, wait: S.wait, flames: S.F, shownFlames: V('F'), hottest: S.maxF, heat: M.potw(S.F),
+             seen: S.seen, hands: HW(S.hand), on: S.on.slice(),
              where: fl ? 'flying' : at === 'you' ? 'your hands' : at === 'middle' ? 'the middle' : at === 'ground' ? 'the ground' : at,
-             on: S.on.slice(), hands: hands, busy: busy(), ended: S.out || null,
-             offered: busy() || S.out ? [] : M.offered(S), caption: (($('c1').textContent || '') + ' ' + ($('c2').textContent || '')).trim() };
+             animating: !!(TL && !TL.done), ended: S.out || null, doomed: !!S.doomed, offered: S.out ? [] : M.offered(S), buttons: btn,
+             caption: (($('c1').textContent || '') + ' ' + ($('c2').textContent || '')).trim() };
   },
   press: function (v) { var b = document.querySelector('.verb[data-verb="' + v + '"]'); if (b) lastPressed = b; return press(v); },
   step: function (ms) { advance(ms || 0); return this.state(); },
-  draw: function (need, burn, wait) { if (S.log.length) return false; S.need = need; S.burn = burn; if (wait) S.wait = wait; return true; },
-  secret: function () { return { need: S.need, burn: S.burn, wait: S.wait }; }
+  fire: function (b) { if (S.log.length) return false; S.burn = b; return true; },
+  round: function (i, start, wait) { if (start) { PARAMS = { start: start, wait: wait }; newRound(i - 1, true); } else newRound(i - 1); return this.state(); },
+  secret: function () { return { burn: S.burn }; }
 };
 
-newGame();
+var qr = /[?&]round=(\d+)/.exec(location.search);
+newRound(qr ? Math.max(0, Math.min(8, +qr[1] - 1)) : 0);
 })();
 </script>
 </body>
