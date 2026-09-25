@@ -18,6 +18,8 @@ const Q_LINE = { alignment: 2, containment: 3, race: 4 };
 const LINE_NAME = ['out for good (the gate, part 1)', 'no trial first (the gate, part 2)', 'alignment', 'containment', 'the race'];
 const DEVICE_SAYS = { coin: 'the coin', yarrow: 'the yarrow bowl', coins: 'the coin bowl' };
 const IN_AIR = { coin: 'the coin is in the air…', yarrow: 'drawing from the yarrow bowl…', coins: 'drawing from the coin bowl…' };
+const UNREAD = "The walk in this link couldn't be read, so this is a new walk.";
+const UNREAD_KEPT = "The walk in that address couldn't be read, so your walk stays as it was.";
 const BOX = { gate: 'gate', alignment: 'alignment', 'containment-if-aligned': 'containment (if aligned)', 'containment-if-not': 'containment (if not aligned)', race: 'race' };
 
 const $ = id => document.getElementById(id);
@@ -74,13 +76,15 @@ function draw(opts) {
   renderViews();
   writeHash();
 }
-// Under the tree, in the game's own DOM: when the drawing lights a leaf the rule does not put you on, or when the
-// lit leaf is only the casts' pick, say so where the drawing is (not only in the sheet).
+// Under the tree, in the game's own DOM: when the drawing points at a leaf the rule does not put you on (the tree
+// shows both: the drawing's dashed, the rule's lit), when open answers leave the drawing short of the leaf the rule
+// names, or when the lit leaf is only the casts' pick, say so where the drawing is (not only in the sheet).
 function renderRule() {
   if (!ruleEl) return;
-  const L = ui.person || ui.inAir ? null : E.landing(ui.walk, leafFor);
+  const L = ui.person || ui.inAir ? null : E.landing(ui.walk, leafFor), named = L ? E.namedLeaf(ui.walk, leafFor) : null;
   let t = '';
-  if (L && L.drawnDiffers) t = 'The drawing points at ' + nm(L.leaf) + " (dashed: cast). By the tree's rule you land on " + nm(L.headline) + '.';
+  if (L && L.drawnDiffers) t = 'The drawing points at ' + nm(L.leaf) + " (dashed: cast). By the tree's rule you land on " + nm(L.headline) + ' (lit).';
+  else if (L && L.caution && named && !L.leaf) t = "An open answer counts as not shown: by the tree's rule you land on " + nm(named) + ' (lit).';
   else if (L && L.pick) t = 'The casts picked ' + nm(L.pick) + ' (dashed): a pick, not a finding.';
   ruleEl.hidden = !t;
   ruleEl.textContent = t;
@@ -158,7 +162,8 @@ function gatePanel() {
     return h('div', { class: 'gate-row' + (ui.gateRow === i ? ' cur' : '') },
       h('span', { class: 'gq' }, (i + 1) + '. ' + Q.ask),
       h('span', { class: 'chips' }, chip('yes', 'yes'), chip('no', 'no'), chip('unknown', "don't know")),
-      l.answer != null ? h('span', { class: 'held' }, rowHeld(l), own ? [' · ', h('button', { class: 'linkish', 'data-k': 'loose' + i, disabled: busy, onclick: () => toggleLoose(i) }, E.isTurning(l.kind) ? 'hold it steady' : 'hold it loosely')] : null)
+      l.answer != null ? h('span', { class: 'held' }, rowHeld(l), own ? [' · ', h('button', { class: 'linkish', 'data-k': 'loose' + i, disabled: busy, onclick: () => toggleLoose(i) }, E.isTurning(l.kind) ? 'hold it steady' : 'hold it loosely')] : null,
+        moot.includes(i) ? ' · not needed: your no on part ' + (2 - i) + ' settles the gate' : null)
         : moot.includes(i) ? h('span', { class: 'held' }, 'not needed: your no on part ' + (2 - i) + ' settles the gate') : null,
       ui.more ? h('span', { class: 'held' }, "yes: you'd have to believe " + Q.believe.yes + '. No: ' + Q.believe.no + '.') : null);
   });
@@ -363,7 +368,9 @@ function openClose() {
   openSheet(el => {
     el.append(h('h2', { id: 'sheet-title' }, E.TEXT.closeTitle));
     if (!open.length) {
-      el.append(h('p', null, 'Nothing is open: every question has an answer, yours or cast. A cast answer is still not known.'),
+      const moot = E.mootLines(ui.walk);
+      el.append(h('p', null, 'Nothing is open: every question has an answer, yours or cast. A cast answer is still not known.' +
+        (moot.length ? ' (Part ' + (moot[0] + 1) + ' of the gate is left open, but your no on part ' + (2 - moot[0]) + ' settles the gate.)' : '')),
         h('div', { class: 'opts' },
           optBtn('See where you land', E.TEXT.landingAsk, () => openLanding(), true),
           optBtn(E.TEXT.eitherTitle, 'casts nothing', openEither)),
@@ -430,7 +437,8 @@ function openLanding() {
     } else el.append(h('p', null, 'Some answers are still open, so there is no single leaf yet.'));
     E.ruleText(L, nm).forEach((t, k) => el.append(h('p', { class: k ? 'small' : null }, t, k === 0 ? [' ', why('burden')] : null)));
     if (L.throwSame) el.append(h('p', { class: 'small' }, E.throwSameText(nm(top))));
-    if (L.flipLeaf) el.append(h('p', null, E.flipText(nm(L.flipLeaf))));
+    const flip = E.flipLine(L, nm);
+    if (flip) el.append(h('p', null, flip));
     if (!top) el.append(h('p', { class: 'small' }, E.TEXT.stillPossible), chips(L.still.map(nm), L.pick ? nm(L.pick) : null));
     el.append(h('p', { class: 'small' }, E.raceNote(L.answers.race, top, E.isDevice(ui.walk.lines[4].how))));
     if ((top || L.pick) && la) actionsBlock(el, top || L.pick, !top);
@@ -596,7 +604,7 @@ function personGo(i) {
   if (i >= 4) {
     P.i = 4; P.walk = E.walkFromPerson(P.p, ui.walk, 3); ui.casting = null;
     draw();
-    say('They say: ' + (P.pw.stated_leaf ? nm(P.pw.stated_leaf) : 'no leaf') + '. By this page’s reading, their answers lead to: ' + (P.pw.computedLeaf ? nm(P.pw.computedLeaf) : 'a question still open') + '.');
+    say('They say: ' + (P.pw.stated_leaf ? nm(P.pw.stated_leaf) : 'no leaf') + '. ' + personReading(P.pw) + '.');
     return;
   }
   P.i = Math.max(0, i);
@@ -630,6 +638,11 @@ function sourceLink(q) {
   if (q.start_sec != null && /(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(u.hostname)) u.searchParams.set('t', Math.floor(q.start_sec) + 's');
   return h('a', { href: u.href, target: '_blank', rel: 'noopener' }, q.start_sec != null ? 'watch at ' + mmss(q.start_sec) : 'the source');
 }
+// what this page makes of a person's answers, by the same rule as a player's (fork-engine.js personWalk)
+function personReading(pw) {
+  if (pw.computedLeaf) return (pw.byRule ? "By this page’s reading of their words and the tree's rule, their answers land on: " : 'By this page’s reading of their words, their answers lead to: ') + nm(pw.computedLeaf);
+  return 'By this page’s reading of their words, their answers are still open between ' + E.listWords(pw.possible.map(nm));
+}
 function personPanel() {
   const P = ui.person, pw = P.pw, example = ui.peopleFrom === 'example';
   const wrap = h('div', { class: 'person' },
@@ -648,8 +661,9 @@ function personPanel() {
     }
   } else {
     const said = pw.stated_leaf ? nm(pw.stated_leaf) : 'no leaf';
-    const reading = pw.computedLeaf ? nm(pw.computedLeaf) : 'still open between ' + E.listWords(pw.possible.map(nm));
-    wrap.append(h('h2', null, 'They say: ' + said + '. By this page’s reading of their words, their answers lead to: ' + reading + '.'));
+    wrap.append(h('h2', null, 'They say: ' + said + '. ' + personReading(pw) + '.'));
+    if (pw.computedLeaf && pw.drawnLeaf !== pw.computedLeaf && pw.byRule) wrap.append(h('p', { class: 'small' },
+      "They didn't say, as their own answer, that the step can be undone or tried first, so the caution is on: an answer they left open counts as not shown, so it reads as no."));
     if (pw.mismatch) wrap.append(h('p', { class: 'warn' }, E.TEXT.differ));
     if (pw.own_conditional) wrap.append(h('p', null, pw.own_conditional));
     pw.to_move.forEach(t => wrap.append(h('p', { class: 'small' }, 'To move to ' + nm(t.to) + ' they would have to believe ' + t.would_have_to_believe + '.')));
@@ -669,14 +683,21 @@ function personPanel() {
 }
 
 // ── events ─────────────────────────────────────────────────────────────────────────────────────
+// A leaf tapped. The leaf you land on, the leaf the drawing points at, or the casts' pick: the landing sheet explains
+// all three. Any other leaf: how it is reached, and, by the same rule, that it isn't where you land, or that it is
+// still possible (a cast counted as open), or that your own answers rule it out.
 function leafTapped(leaf) {
   const L = E.landing(ui.walk, leafFor);
-  // the leaf you land on, the leaf the drawing points at, or the casts' pick: the landing sheet explains all three
   if (L.headline === leaf || L.leaf === leaf) { openLanding(); return; }
-  const ways = [['yes', 'yes'], ['yes', 'no'], ['no', 'yes'], ['no', 'no']]
-    .filter(([a, c]) => leafFor({ alignment: a, containment: c }) === leaf)
-    .map(([a, c]) => 'alignment ' + a + ' and containment ' + c);
-  say(nm(leaf) + ': reached when ' + ways.join(', or ') + '.' + (L.possible.includes(leaf) ? ' Still possible from here.' : ''));
+  const w = E.leafAnswersFor(leaf, leafFor), how = w ? 'alignment ' + w.alignment + ' and containment ' + w.containment : 'no answers the tree knows';
+  let t = nm(leaf) + ': reached when ' + how + '.';
+  if (L.headline) {
+    // what it would take, by the rule (fork-engine.js walkToLeaf): only the answers you would have to come to hold
+    const p = E.walkToLeaf(ui.walk, leaf, leafFor), need = p ? p.steps.filter(s => s.type !== 'drawing') : [];
+    t += (L.caution ? " By the tree's rule you land on " : ' Your answers put you at ') + nm(L.headline) + ' for now; ' + nm(leaf) + ' would take your own ' +
+      E.listWords(need.map(s => LINE_NAME[s.line] + ' ' + s.answer)) + (L.caution && need.some(s => s.answer === 'yes') ? ' (a yes shown, not hoped)' : '') + '.';
+  } else t += L.still.includes(leaf) ? ' Still possible from here: a cast answer counts as open.' : ' Your own answers rule it out.';
+  say(t);
 }
 function onSelect(ev) {
   const d = ev.detail || {};
@@ -723,7 +744,7 @@ async function init() {
   document.documentElement.setAttribute('data-theme', ui.theme);
   E.checkNodes(NODES);
   if (SOURCE === 'standin') $('draft').hidden = false;
-  const fromHash = E.decodeHash(location.hash);
+  const fromHash = E.decodeHash(location.hash), unread = !fromHash && E.isForkHash(location.hash);
   ui.walk = fromHash ? fromHash.walk : E.newWalk();
   const [la] = await Promise.all([getJSON('data/leaf-actions.json'), loadPeople()]);
   ui.leafActions = la && la.leaves ? la : null;
@@ -734,14 +755,17 @@ async function init() {
   sheet.addEventListener('click', ev => { if (ev.target === sheet) closeSheet(); });   // a tap on the backdrop
   window.addEventListener('hashchange', () => {
     const d = E.decodeHash(location.hash);
-    if (!d || E.encodeHash(d.walk) === E.encodeHash(ui.walk)) return;
+    if (!d) { if (E.isForkHash(location.hash)) { say(UNREAD_KEPT); writeHash(); } return; }
+    if (d.seeded ? E.encodeHash(d.walk) === E.encodeHash(ui.walk) : E.sameLines(d.walk, ui.walk)) return;
     stopTimers();
     ui.token++; ui.playing = null; ui.casting = null; ui.inAir = null; ui.person = null; ui.walk = d.walk;
+    closeSheet();   // a sheet still open speaks of the old walk
     draw({ animate: false });
     // the message line follows the walk, so it never tells of a cast the page no longer shows
     say('Your walk, picked up from the page address. ' + E.countsSummary(E.counts(ui.walk), 'answers') + '.');
   });
-  say(fromHash ? 'Your walk, picked up from the page address. ' + E.countsSummary(E.counts(ui.walk), 'answers') + '.'
+  say(unread ? UNREAD + " Decide each question, cast for it, or say I don't know."
+    : fromHash ? 'Your walk, picked up from the page address. ' + E.countsSummary(E.counts(ui.walk), 'answers') + '.'
     : "Decide each question, cast for it, or say I don't know. " + E.TEXT.coinIsFor);
   draw({ animate: false });
   const focus = params.get('focus') || (fromHash && fromHash.person);

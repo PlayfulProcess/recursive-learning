@@ -152,7 +152,7 @@ test('burden reading: cast and unknown answers count as no', () => {
   assert.equal(L.ruleLeaf, 'contain');
   assert.equal(L.headline, 'contain', 'the gate not asked yet: nobody has shown it can be undone, so the caution is on');
   assert.deepEqual(L.couldHave, ['proceed', 'contain']);
-  assert.deepEqual(L.possible, ['proceed']);
+  assert.deepEqual(L.possible, ['proceed', 'contain'], 'a cast counts as open: still possible never keeps a cast answer');
   assert.equal(L.leafCast, true);
   assert.equal(L.pickedBy, 2);
   // the gate put at yes by coins
@@ -602,6 +602,207 @@ test('no percent sign in any formatter output or string constant', () => {
     const src = readFileSync(here(f), 'utf8');
     assert.ok(!src.includes('%'), f + ' contains a percent sign');
   }
+});
+
+// The reviewers' repro walks (round 4, lab/fork @ 81b7beb), each checked against the one rule: an open or cast gate
+// answer never gives less caution than a decided one, and where the rule and the drawing differ, both are named.
+const walkOf = h => E.decodeHash(h).walk;
+const nmE = l => E.leafName(l);
+
+test('round 4 repro walks: the rule names Shut down, and so do line 6 (namedLeaf) and the tree (lit)', () => {
+  // [hash, the rule's leaf, where the drawing points]
+  const cases = [
+    ['#f1;L=uu0.uu0.yc7.yc7.nc8', 'shutdown', 'proceed'],                 // as quoted, without ;s= ;n=
+    ['#f1;L=uu0.uu0.yc7.yc7.uu0;s=3;n=2', 'shutdown', 'proceed'],
+    ['#f1;L=nc8.yc7.yc7.yc7.nc8;s=3;n=5', 'shutdown', 'proceed'],
+    ['#f1;L=yy9.ny6.yy7.ny8.yy9;s=77;n=5', 'shutdown', 'regulate'],
+    ['#f1;L=yd7.yy9.y37.n38.n38;s=213569;n=4', 'shutdown', 'regulate'],
+    ['#f1;L=uu0.uu0.nc8.yc7.yc7;s=985449;n=3', 'shutdown', 'contain'],
+    ['#f1;L=uu0.uu0.yc7.yc7.yc7;s=985449;n=6', 'shutdown', 'proceed'],
+    ['#f1;L=uu0.uu0.yc7.yc7.nc8;s=3;n=3', 'shutdown', 'proceed'],
+    // "I don't know" on line 3 or 4 (the philosopher's FAIL 1): the rule still names a leaf, so line 6 reads it
+    ['#f1;L=uu0.uu0.y37.uu0.uu0;s=3;n=2', 'shutdown', null],
+    ['#f1;L=uu0.uu0.y37.y39.uu0;s=3;n=3', 'shutdown', 'proceed'],
+    ['#f1;L=uu0.uu0.yc7.nc8.uu0;s=3;n=2', 'shutdown', 'regulate'],
+    ['#f1;L=uu0.uu0.yc7.uu0.uu0;s=3;n=1', 'shutdown', null],
+    ['#f1;L=uu0.uu0.uu0.uu0.uu0;s=3;n=0', 'shutdown', null]
+  ];
+  for (const [h, rule, drawn] of cases) {
+    const w = walkOf(h), L = E.landing(w, leafFor);
+    assert.equal(L.caution, true, h);
+    assert.equal(L.headline, rule, h);
+    assert.equal(L.leaf, drawn, h);
+    assert.equal(E.namedLeaf(w, leafFor), rule, h + ': line 6 reads the rule\'s leaf, not the drawing\'s');
+    assert.equal(L.flipLeaf, null, h + ': no own turning answer, so nothing can move it');
+    assert.equal(L.pick, null, h);
+    // the tree: the rule's leaf lit and not dashed; the drawing's leaf, when it differs, dashed
+    const st = E.toTreeState(w, { leafFor });
+    assert.ok(st.lit && st.lit.includes(rule), h + ': the tree lights the rule\'s leaf');
+    assert.ok(!st.open.includes(rule), h);
+    if (drawn) { assert.ok(st.open.includes(drawn), h); assert.ok(st.lit.includes(drawn), h + ': the drawing still shows where the casts point'); }
+    // "still possible" never keeps a cast answer as settled
+    assert.ok(L.possible.includes('shutdown'), h);
+    const words = E.ruleText(L, nmE).join(' ');
+    assert.match(words, /you land on Shut down\./, h);
+    if (drawn) assert.match(words, /The tree lights Shut down\./, h);
+  }
+  // Cast 100 on the round-2 walks and the owner's: Shut down in all 100
+  for (const h of ['#f1;L=uu0.uu0.yc7.yc7.uu0;s=3;n=2', '#f1;L=uu0.uu0.yc7.yc7.yc7;s=985449;n=6'])
+    for (const d of Object.keys(E.DEVICES)) assert.equal(E.cast100(walkOf(h), d, leafFor).rule, 'shutdown', h + ' ' + d);
+  // the six-lines reading of the 12-year-old's walk: Shut down before and after
+  const R = E.landing(walkOf('#f1;L=yy9.ny6.yy7.ny8.yy9;s=77;n=5'), leafFor);
+  assert.equal(E.landing(E.relating(walkOf('#f1;L=yy9.ny6.yy7.ny8.yy9;s=77;n=5'), leafFor).walk, leafFor).headline, 'shutdown');
+  assert.equal(E.flipLine(R, nmE), '');
+});
+
+test("round 4: an open or cast answer never gives less caution, or a kinder leaf, than a decided one", () => {
+  const coinYes = { answer: 'yes', how: 'coin', kind: 7 }, coinNo = { answer: 'no', how: 'coin', kind: 8 };
+  const idk = { answer: 'unknown', how: 'unknown', kind: 0 }, unasked = { answer: null, how: null, kind: 0 };
+  const own = a => ({ answer: a, how: 'decide', kind: a === 'yes' ? 7 : 8 });
+  const put = (w, i, l) => { const v = E.cloneWalk(w); v.lines[i] = { ...l }; return v; };
+  for (let s = 1; s <= 400; s++) {
+    const w = randomWalk(s);
+    for (const i of [0, 1]) {
+      const yes = E.landing(put(w, i, own('yes')), leafFor);
+      for (const l of [coinYes, coinNo, idk, unasked]) {
+        const M = E.landing(put(w, i, l), leafFor);
+        assert.equal(M.caution, yes.caution, 'seed ' + s + ' gate part ' + i + ': open or cast reads as an own yes, never as a no');
+        assert.equal(M.headline, yes.headline, 'seed ' + s);
+      }
+    }
+    // with the caution on, a cast or open alignment or containment gives the same leaf as an own no
+    if (E.cautionOn(w)) for (const i of [2, 3]) {
+      const no = E.landing(put(w, i, own('no')), leafFor).headline;
+      for (const l of [coinYes, coinNo, idk, unasked]) assert.equal(E.landing(put(w, i, l), leafFor).headline, no, 'seed ' + s + ' line ' + i);
+    }
+  }
+});
+
+test('round 4: still possible counts a cast as open (six-lines top panel, a tapped leaf)', () => {
+  let L = E.landing(walkOf('#f1;L=nd8.nd8.uu0.yc7.nd8;s=3;n=1'), leafFor);
+  assert.equal(L.caution, false); assert.equal(L.headline, null); assert.equal(L.pick, null);
+  assert.deepEqual(L.possible, E.LEAVES, 'not only Proceed and Contain: the coin\'s yes on containment is still open');
+  assert.deepEqual(L.still, E.LEAVES);
+  assert.equal(E.namedLeaf(walkOf('#f1;L=nd8.nd8.uu0.yc7.nd8;s=3;n=1'), leafFor), null, 'line 6 waits: no leaf is named');
+  L = E.landing(walkOf('#f1;L=uu0.uu0.yc7.uu0.uu0;s=3;n=1'), leafFor);
+  assert.deepEqual(L.possible, E.LEAVES);
+  assert.equal(L.headline, 'shutdown');
+  // for every walk: possible is couldHave, and it holds the rule's leaf whenever one is named
+  for (let s = 1; s <= 300; s++) {
+    const M = E.landing(randomWalk(s), leafFor);
+    assert.deepEqual(M.possible, M.couldHave);
+    if (M.headline) assert.ok(M.possible.includes(M.headline), 'seed ' + s);
+  }
+});
+
+test('round 4: Walk to a leaf goes by the rule, and "already there" only when the rule lands there', () => {
+  const rng = () => 0.9;
+  // the round-2 walk: the rule already puts you on Shut down, so reaching it takes no belief, only the drawing turns
+  const w = walkOf('#f1;L=nc8.yc7.yc7.yc7.nc8;s=3;n=5');
+  let r = E.walkToLeaf(w, 'shutdown', leafFor, rng);
+  assert.equal(r.beliefs, 0); assert.equal(r.drawings, 2); assert.equal(r.arrives, true);
+  assert.deepEqual(r.steps.map(s => s.type), ['drawing', 'drawing']);
+  r.steps.forEach(s => assert.ok(E.isDevice(s.walk.lines[s.line].how), 'a drawing step leaves the line drawn'));
+  // Proceed: the lines already point there, but by the rule it takes coming to believe both yeses
+  r = E.walkToLeaf(w, 'proceed', leafFor, rng);
+  assert.equal(r.beliefs, 2); assert.equal(r.drawings, 0); assert.equal(r.arrives, true);
+  assert.deepEqual(r.steps.map(s => s.type), ['own', 'own']);
+  assert.equal(E.landing(r.end, leafFor).headline, 'proceed');
+  r = E.walkToLeaf(w, 'regulate', leafFor, rng);
+  assert.equal(r.beliefs, 1); assert.equal(r.drawings, 1);
+  // the owner's and the AI-policy walk: "I don't know" on the gate, drawn for the path only; the rule is unchanged
+  const idk = walkOf('#f1;L=uu0.uu0.yc7.yc7.nc8;s=1;n=0');
+  const start = E.closeTheGap(idk, 'coins').walk;
+  assert.equal(E.landing(start, leafFor).headline, 'shutdown');
+  r = E.walkToLeaf(start, 'proceed', leafFor, rng);
+  assert.equal(r.beliefs, 2, 'not "you\'re already there"');
+  assert.equal(E.walkToLeaf(start, 'shutdown', leafFor, rng).beliefs, 0);
+  // with the caution off (an own no on the gate), a drawn line is only a pick: owning it is a belief step
+  const off = walkOf('#f1;L=nd8.nd8.yc7.yc7.nd8;s=3;n=2');
+  r = E.walkToLeaf(off, 'proceed', leafFor, rng);
+  assert.deepEqual(r.steps.map(s => s.type), ['own', 'own']);
+  r = E.walkToLeaf(off, 'shutdown', leafFor, rng);
+  assert.deepEqual(r.steps.map(s => s.type), ['belief', 'belief']);
+  // every walk, every leaf: it arrives by the rule, changes only lines 3 and 4, in at most two steps, and asks no
+  // belief exactly when the rule already lands there
+  for (let s = 1; s <= 300; s++) {
+    const v = E.closeTheGap(randomWalk(s), 'coins').walk, here = E.landing(v, leafFor).headline;
+    for (const leaf of E.LEAVES) {
+      const p = E.walkToLeaf(v, leaf, leafFor, E.rngFrom(s));
+      assert.equal(p.arrives, true, 'seed ' + s + ' ' + leaf);
+      assert.ok(p.steps.length <= 2);
+      p.steps.forEach(x => assert.ok(x.line === 2 || x.line === 3));
+      [0, 1, 4].forEach(i => assert.deepEqual(p.end.lines[i], v.lines[i]));
+      assert.equal(p.beliefs === 0, here === leaf, 'seed ' + s + ' ' + leaf);
+    }
+  }
+  // drawing the open lines for a path never moves where you land
+  for (let s = 1; s <= 300; s++) {
+    const v = randomWalk(s);
+    for (const way of ['coin', 'yarrow', 'coins']) assert.equal(E.landing(E.closeTheGap(v, way).walk, leafFor).headline, E.landing(v, leafFor).headline, 'seed ' + s);
+  }
+});
+
+test('round 4: the flip line reads an own gate "no" held loosely (the caution would come on)', () => {
+  for (const h of ['#f1;L=nd6.yd7.yc7.yc7.nd8;s=1;n=2', '#f1;L=nd6.--0.yc7.yc7.nc8;s=3;n=2', '#f1;L=nd6.yc7.yc7.yc7.nc8;s=3;n=2',
+    '#f1;L=nd6.n38.y37.n38.y37;s=373128;n=8', '#f1;L=nd6.yc7.yc7.yc7.yc7;s=985449;n=7', '#f1;L=nd6.uu0.yc7.yc7.yc7;s=985449;n=6']) {
+    const L = E.landing(walkOf(h), leafFor);
+    assert.equal(L.caution, false, h); assert.equal(L.headline, null, h); assert.ok(L.pick, h);
+    assert.equal(L.flipLeaf, 'shutdown', h); assert.equal(L.flipCaution, 'on', h);
+    assert.match(E.flipLine(L, nmE), /the caution would come on, and by the tree's rule you would land on Shut down\.$/, h);
+  }
+  // an own gate yes held loosely: the flip would switch the caution off, and a cast line then names no leaf
+  const L = E.landing(walkOf('#f1;L=yd9.yd7.yd7.yc7.nd8;s=1;n=1'), leafFor);
+  assert.equal(L.headline, 'regulate'); assert.equal(L.flipCaution, 'off'); assert.equal(L.flipUnnamed, true);
+  assert.match(E.flipLine(L, nmE), /the caution would go off, and with a cast answer on alignment or containment no single leaf would be named/);
+  // every walk: the flip line is the rule read on the flipped walk
+  for (let s = 1; s <= 300; s++) {
+    const v = randomWalk(s), M = E.landing(v, leafFor), F = E.landing(E.relating(v, leafFor).walk, leafFor);
+    if (F.headline !== M.headline) {
+      if (F.headline) assert.equal(M.flipLeaf, F.headline, 'seed ' + s);
+      else assert.equal(M.flipUnnamed, true, 'seed ' + s);
+      assert.ok(E.flipLine(M, nmE), 'seed ' + s);
+    } else { assert.equal(M.flipLeaf, null); assert.equal(M.flipUnnamed, false); assert.equal(E.flipLine(M, nmE), ''); }
+  }
+});
+
+test('round 4: the words, the moot gate part, links without a seed, a person read by the rule', () => {
+  // "weren't" for two, "wasn't" for one, and both lines named
+  const words = h => E.ruleText(E.landing(walkOf(h), leafFor), nmE).join(' ');
+  assert.match(words('#f1;L=uu0.uu0.yc7.yc7.nc8;s=3;n=3'), /The cast yeses on alignment and containment weren't shown, so they count as no here\./);
+  assert.match(words('#f1;L=uu0.uu0.yc7.uu0.uu0;s=3;n=1'), /The cast yes on alignment and the open answer on containment weren't shown, so they count as no here\./);
+  assert.match(words('#f1;L=yd7.yd7.yd7.uu0.nd8;s=1;n=0'), /The open answer on containment wasn't shown, so it counts as no here\./);
+  // "I don't know" on one gate part beside your own no: not needed, so Close the gap doesn't offer to cast it
+  const m = walkOf('#f1;L=nd6.uu0.yc7.yc7.yc7;s=985449;n=6');
+  assert.deepEqual(E.mootLines(m), [1]);
+  assert.deepEqual(E.neededOpenLines(m), []);
+  assert.deepEqual(E.counts(m), { decided: 1, cast: 3, open: 0, moot: 1 });
+  assert.equal(E.closeTheGap(m, 'coin', { needed: true }).steps.length, 0);
+  assert.match(E.afterLine('gate', m), /settles the gate/);
+  // a link without ;s= ;n= is read (a new seed for draws to come); one that can't be read is known as ours
+  const d = E.decodeHash('#f1;L=uu0.uu0.yc7.yc7.nc8');
+  assert.ok(d); assert.equal(d.seeded, false); assert.equal(d.walk.n, 0);
+  assert.ok(d.walk.seed >= 1 && d.walk.seed <= 999999);
+  assert.ok(E.sameLines(d.walk, walkOf('#f1;L=uu0.uu0.yc7.yc7.nc8;s=3;n=5')));
+  assert.equal(E.decodeHash('#f1;L=uu0.uu0.yc7.yc7.nc8;s=3;n=5').seeded, true);
+  assert.equal(E.decodeHash('#f1;L=uu0'), null);
+  assert.equal(E.isForkHash('#f1;L=uu0'), true);
+  assert.equal(E.isForkHash('#top'), false);
+  // a person with the gate and alignment open and containment yes: the rule names Contain (not "still open")
+  const person = { ...PEOPLE[1], slug: 'x', gate: 'unknown', alignment: 'unknown', containment: 'yes' };
+  const pw = E.personWalk(person, leafFor);
+  assert.equal(pw.computedLeaf, 'contain'); assert.equal(pw.byRule, true); assert.deepEqual(pw.possible, ['contain']);
+  assert.equal(E.personWalk({ ...person, gate: 'yes' }, leafFor).computedLeaf, 'contain');
+  // with their own no on the gate, an open alignment names no leaf
+  const b = E.personWalk(PEOPLE[1], leafFor);
+  assert.equal(b.computedLeaf, null); assert.equal(b.byRule, false); assert.deepEqual(b.possible, ['proceed', 'contain']);
+  // the tree lights nothing before lines 3 and 4 have answers, and only the answers' leaf when they are your own
+  assert.equal(E.toTreeState(E.newWalk(1), { leafFor }).lit, undefined);
+  let own = E.newWalk(1); [0, 1, 2, 3].forEach(i => { own = E.decide(own, i, i === 3 ? 'no' : 'yes').walk; });
+  assert.equal(E.toTreeState(own, { leafFor }).lit, undefined);
+  // the rule's leaf and the drawing's the same: lit by the renderer itself, and not dashed
+  const same = E.toTreeState(walkOf('#f1;L=uu0.uu0.nc8.nc8.uu0;s=1;n=2'), { leafFor });
+  assert.equal(same.lit, undefined); assert.ok(!same.open.includes('shutdown'));
 });
 
 test('pickTree: film when present and whole, stand-in otherwise, with a warning', async () => {

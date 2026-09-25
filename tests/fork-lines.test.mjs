@@ -1,6 +1,7 @@
 // node --test "tests/*.test.mjs"   (no dependencies). The Fork's six-lines view: the copied bowl and hexagram data,
-// the relating reading and Walk to a leaf (game/fork/bowl.js). The page itself (lines.html, lines-ui.js) is checked
-// in the browser; here only that its files hold no percent sign.
+// and the relating reading (game/fork/bowl.js). Walk to a leaf is the engine's walkToLeaf, tested in
+// tests/fork-engine.test.mjs. The page itself (lines.html, lines-ui.js) is checked in the browser; here only that
+// its files hold no percent sign.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -84,44 +85,6 @@ test('the relating reading: turning lines flip one at a time, bottom to top, and
     n++;
   }
   assert.equal(n, 1024);
-});
-
-test('walk to a leaf: always arrives, flips only lines 3 and 4, at most two steps; line 6 looked up after each', () => {
-  const want = { proceed: ['yes', 'yes'], regulate: ['yes', 'no'], contain: ['no', 'yes'], shutdown: ['no', 'no'] };
-  let seed = 1;
-  for (const k5 of allFive()) {
-    const kinds = whole(k5);
-    for (const leaf of Object.keys(want)) {
-      const [a, c] = want[leaf];
-      const r = B.leafWalk(kinds, { alignment: a, containment: c }, B.rngFrom(seed++), line6At);
-      const end = r.steps[r.steps.length - 1].kinds;
-      assert.equal(leafFor({ alignment: yn(end[2]), containment: yn(end[3]) }), leaf, 'arrives');
-      assert.ok(r.d <= 2 && r.steps.length - 1 === r.d, 'at most two steps, exactly d');
-      r.steps.slice(1).forEach(s => assert.ok(s.flipped === 2 || s.flipped === 3, 'only lines 3 and 4'));
-      for (const i of [0, 1, 4]) assert.equal(end[i], kinds[i], 'lines 1, 2 and 5 unchanged');
-      r.steps.forEach(s => { assert.equal(s.kinds[5], line6At(s.kinds.slice(0, 5))); assert.ok(B.hexOf(B.bits(s.kinds))); });
-      if (leafFor({ alignment: yn(kinds[2]), containment: yn(kinds[3]) }) === leaf) assert.equal(r.d, 0, "already there");
-    }
-  }
-});
-
-test('walk to a leaf is seeded: the same seed gives the same order of flips', () => {
-  const kinds = whole([7, 7, 7, 8, 7]);   // regulate: to contain is two flips, in either order
-  const order = s => B.leafWalk(kinds, { alignment: 'no', containment: 'yes' }, B.rngFrom(s), line6At).steps.slice(1).map(x => x.flipped).join('');
-  for (let s = 1; s < 50; s++) assert.equal(order(s), order(s));
-  const seen = new Set(); for (let s = 1; s < 200; s++) seen.add(order(s));
-  assert.deepEqual([...seen].sort(), ['23', '32']);
-});
-
-test('buildPath (direct): the final flip is fixed, so it always arrives', () => {
-  const r = B.rngFrom(7);
-  for (let t = 0; t < 500; t++) {
-    const o = Array.from({ length: 6 }, () => (r() < 0.5 ? '1' : '0')).join('');
-    const d = Array.from({ length: 6 }, () => (r() < 0.5 ? '1' : '0')).join('');
-    const p = B.buildPath(o, d, B.hamming(o, d), r);
-    assert.equal(p[p.length - 1].binary, d);
-    assert.equal(p.length - 1, B.hamming(o, d));
-  }
 });
 
 test('no percent sign in the six-lines files', () => {

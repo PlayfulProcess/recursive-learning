@@ -15,6 +15,10 @@
 //   Events on el: 'belieftree:castend' { node, method, result }; 'belieftree:select' { node } or { person }.
 //   Leaves: alignment yes + containment yes -> proceed; yes/no -> regulate; no/yes -> contain; no/no -> shutdown.
 //
+// `lit`, as the film's module reads it: an override of what glows (its coral path), so a page can light a leaf the
+// answers alone would not reach. Here a lit leaf is drawn reached (filled); a lit leaf also in `open` is drawn
+// reached but dashed; without `lit`, the leaf the answers reach is the one drawn reached. `open` alone drives the
+// dashed outline and the soft breathing.
 // This file touches no DOM when imported (node can import it for the tests). A cast starts when state.casting is
 // a new object (not the same object as the last render's); a render whose casting is a different object, or
 // null, ends a cast still in flight at once, and its castend fires with the same detail.
@@ -239,8 +243,9 @@ function drawChips(rec, state) {
 
 function paint(rec, state) {
   const answers = state.answers || {};
-  const glow = new Set(Array.isArray(state.lit) ? state.lit : (state.open || []));
+  const glow = new Set(state.open || []);
   const leaf = leafFor(answers);
+  const reached = new Set(Array.isArray(state.lit) ? state.lit.filter(id => nodeById(id) && nodeById(id).kind === 'leaf') : leaf ? [leaf] : []);
   const people = drawChips(rec, state);
   const focusP = state.focus ? people.find(p => p && p.slug === state.focus) : null;
   const focusSet = new Set(focusP ? personNodes(focusP) : []);
@@ -248,13 +253,13 @@ function paint(rec, state) {
     const g = rec.nodes[n.id], a = answerFor(n.id, answers);
     g.classList.toggle('is-open', glow.has(n.id));
     ['yes', 'no', 'unknown'].forEach(v => g.classList.toggle('is-' + v, a === v));
-    g.classList.toggle('is-reached', n.kind === 'leaf' && leaf === n.id);
+    g.classList.toggle('is-reached', n.kind === 'leaf' && reached.has(n.id));
     g.classList.toggle('is-focus', focusSet.has(n.id));
     const t = g.querySelector('.bt-badge text'); if (t) t.textContent = badgeText(a);
     // an answer that is yes or no yet still open was cast, not known: its badge ring is dashed, as its edge is
     const castYN = glow.has(n.id) && (a === 'yes' || a === 'no');
     let label = n.label + (n.short ? ', ' + n.short : '');
-    if (n.kind === 'leaf') label += leaf === n.id ? (glow.has(n.id) ? ': where the casts point, not known' : ': where the answers lead') : '';
+    if (n.kind === 'leaf') label += reached.has(n.id) ? (glow.has(n.id) ? ': where the casts point, not known' : leaf === n.id ? ': where the answers lead' : ': where you land') : '';
     else label += ': ' + wordOf(a) + (castYN ? ', cast, not known' : '');
     if (glow.has(n.id) && !castYN) label += ', still open';
     g.setAttribute('aria-label', label);

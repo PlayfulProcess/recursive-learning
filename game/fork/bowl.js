@@ -8,9 +8,10 @@
 //     --line live in fork.css. NOT afterDraw: every draw in The Fork comes from a fresh bowl. Adapted only so a
 //     bowl may leave kinds out (the one coin is { 7: 1, 8: 1 }) and hexSVG draws a 0 as an empty slot; ES module
 //     syntax instead of var.
-//   from recursive-iching viewers/caster-engine.js @ b8d82df: hamming, diffIndices, flipBit, buildPath. buildPath is
-//     the direct mode only (the Fork never wanders), and Math.random is replaced by a seeded rng passed in.
-// Below those, marked, a few helpers of The Fork's own (hexOf, relatingSteps, leafWalk): pure, tested by
+//   from recursive-iching viewers/caster-engine.js @ b8d82df: hamming (the tests check each reading step with it).
+//     Its buildPath (the path caster's direct mode) is no longer copied: Walk to a leaf is now read by the tree's
+//     rule, in fork-engine.js walkToLeaf, which can ask a change of belief where no line turns.
+// Below those, marked, a few helpers of The Fork's own (hexOf, isWhole, relatingSteps): pure, tested by
 // tests/fork-lines.test.mjs.
 //
 // Bit strings run bottom to top, as in both sources: index 0 is line 1, index 5 is line 6; '1' is a firm line.
@@ -87,22 +88,6 @@ export function hexSVG(lines, opts) {
 
 // ── the hypercube (recursive-iching viewers/caster-engine.js @ b8d82df) ──────────────────────────
 export function hamming(a, b) { let d = 0; for (let i = 0; i < 6; i++) if (a[i] !== b[i]) d++; return d; }
-export function diffIndices(a, b) { const out = []; for (let i = 0; i < 6; i++) if (a[i] !== b[i]) out.push(i); return out; }
-export function flipBit(bin, idx) { const arr = bin.split(''); arr[idx] = arr[idx] === '1' ? '0' : '1'; return arr.join(''); }
-// Direct mode only: every flip closes the gap (the d! minimal routes), and the final flip is deterministic, so the
-// path always arrives. Returns [{binary, flippedIdx}], path[0] being the origin. `rng` replaces Math.random.
-export function buildPath(originBin, destBin, budget, rng) {
-  let cur = originBin;
-  const path = [{ binary: cur, flippedIdx: null }];
-  for (let step = 1; step <= budget; step++) {
-    const diff = diffIndices(cur, destBin);
-    if (diff.length === 0) break;   // direct mode never detours (the source's loop case is wandering only)
-    const idx = step === budget ? diff[0] : diff[Math.floor(rng() * diff.length)];
-    cur = flipBit(cur, idx);
-    path.push({ binary: cur, flippedIdx: idx });
-  }
-  return path;
-}
 
 // ── The Fork's own (not copied) ──────────────────────────────────────────────────────────────────
 export const BY_BITS = {}; HEX.forEach(x => { BY_BITS[x[4]] = x; });
@@ -130,24 +115,3 @@ export function relatingSteps(kinds, line6At) {
   return steps;
 }
 
-// Walk to a leaf (the path caster's direct mode). The destiny is the origin with lines 3 and 4 (index 2 and 3) set
-// to the leaf's answers; lines 1, 2 and 5 stay, and line 6 is masked to the origin's so the path never flips it.
-// So the path flips only lines 3 and 4, at most two steps. After each flip line 6 is looked up again (line6At): a
-// change in the landing, not a change of mind. A flipped line becomes a steady line (a belief come to, not a cast).
-// `want`: { alignment: 'yes'|'no', containment: 'yes'|'no' }. Returns { d, steps } with steps as relatingSteps'.
-export function leafWalk(kinds, want, rng, line6At) {
-  const origin = bits(kinds), dest = origin.split('');
-  dest[2] = want.alignment === 'yes' ? '1' : '0';
-  dest[3] = want.containment === 'yes' ? '1' : '0';
-  const destBits = dest.join(''), d = hamming(origin, destBits);
-  const path = buildPath(origin, destBits, d, rng);
-  const cur = kinds.slice(), steps = [{ kinds: cur.slice(), flipped: null, line6Changed: false }];
-  for (let s = 1; s < path.length; s++) {
-    const idx = path[s].flippedIdx;
-    cur[idx] = path[s].binary[idx] === '1' ? 7 : 8;
-    const k6 = line6At(cur.slice(0, 5)), changed = k6 !== cur[5];
-    cur[5] = k6;
-    steps.push({ kinds: cur.slice(), flipped: idx, line6Changed: changed });
-  }
-  return { d, steps };
-}
