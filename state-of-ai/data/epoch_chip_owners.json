@@ -10,6 +10,7 @@
  "licence_note": "Epoch's README: free to use, distribute, and reproduce provided the source and authors are credited.",
  "citation": "Epoch AI, 'Data on AI Chip Owners'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-chip-owners",
  "redistribution": "copied",
+ "changes": "From cumulative_by_designer.csv: rows with a date and a median kept; medians rounded to whole H100-equivalents; columns renamed. Coverage notes, trend lines and summaries (summary.json) are ours.",
  "fetched_at": "2026-09-25T08:46:29Z",
  "coverage": {
   "summary": "Owners counted: Amazon, China, China (smuggled), CoreWeave, Google, Meta, Microsoft, Oracle, Other, xAI. Every owner and designer pair is reported up to 2025-12-31, so that is the date the page compares. Figures are Epoch's estimates from filings, reports and supply-chain data, with 5th to 95th percentile ranges.",

@@ -10,6 +10,7 @@
  "licence_note": "Epoch's README: the data is free to use, distribute, and reproduce provided the source and authors are credited.",
  "citation": "Epoch AI, 'Data on AI Models'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-models",
  "redistribution": "copied",
+ "changes": "From notable_ai_models.csv: every model with a publication date kept, with or without an estimate; 10 of its columns kept and renamed; FLOP rounded to 4 significant figures; 'Open model weights?' turned into true, false or blank. Coverage notes, trend lines and summaries (summary.json) are ours.",
  "fetched_at": "2026-09-25T08:45:04Z",
  "coverage": {
   "summary": "1,072 models Epoch judges 'notable', 1950 to 2026-09-21. A compute estimate exists for 540 of them. In the last 12 months (2025-09-21 to 2026-09-21) it exists for 30 of 120. Labs that publish details are counted more often than labs that don't, so the newest part of any compute curve leans on whoever discloses.",

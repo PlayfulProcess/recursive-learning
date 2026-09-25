@@ -46,7 +46,9 @@ def run():
     }
     payload = envelope(
         em.meta(ID, "Training cost of notable models",
-                "Estimated dollar cost of the compute for each model's final training run, in 2023 US dollars."),
+                "Estimated dollar cost of the compute for each model's final training run, in 2023 US dollars.",
+                changes=("From notable_ai_models.csv: only models with a cost estimate and a date kept; 9 columns "
+                         "kept and renamed; dollars and FLOP rounded to 4 significant figures." + """ Coverage notes, trend lines and summaries (summary.json) are ours.""")),
         fetched_at, coverage, columns, rows,
         unit="USD (2023)", source_updated=newest,
     )

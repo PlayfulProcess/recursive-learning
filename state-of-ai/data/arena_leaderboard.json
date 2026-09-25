@@ -10,6 +10,7 @@
  "licence_note": "The dataset card declares license: cc-by-4.0. Read through the Hugging Face API; the arena site's /api/ is disallowed by robots.txt and is not used.",
  "citation": "Arena (lmarena-ai), 'leaderboard-dataset', Hugging Face, https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
  "redistribution": "copied",
+ "changes": "From each 'overall' snapshot of the text and text_style_control configs: only the best proprietary and the best open-weights model kept per snapshot (history), and the top 30 and top 10 open models of the newest one; licences sorted by us into open, closed or neither. Coverage notes, trend lines and summaries (summary.json) are ours.",
  "fetched_at": "2026-09-25T10:55:14Z",
  "coverage": {
   "summary": "402 models rated in the 2026-09-13 snapshot (180 proprietary, 221 open weights). Only models the arena hosts are rated. Voters are self-selected site visitors, and providers can test private variants before release, a known critique of this leaderboard. Ratings are relative: a gap between two models in the same snapshot means more than a rating compared across years, and the arena's method has changed over time.",

@@ -66,7 +66,10 @@ def run():
     payload = envelope(
         em.meta(ID, "Training compute of notable AI models",
                 "Estimated total floating-point operations (FLOP) used to train each model. "
-                "Each estimate carries Epoch's confidence label: Confident, Likely or Speculative."),
+                "Each estimate carries Epoch's confidence label: Confident, Likely or Speculative.",
+                changes=("From notable_ai_models.csv: every model with a publication date kept, with or without an "
+                         "estimate; 10 of its columns kept and renamed; FLOP rounded to 4 significant figures; "
+                         "'Open model weights?' turned into true, false or blank." + """ Coverage notes, trend lines and summaries (summary.json) are ours.""")),
         fetched_at, coverage, columns, rows,
         unit="FLOP", source_updated=newest,
     )

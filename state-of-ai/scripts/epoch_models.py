@@ -68,7 +68,7 @@ def countries(rows, has_value):
     return [{"country": k, "n": v} for k, v in c.most_common(8)]
 
 
-def meta(metric_id, name, what):
+def meta(metric_id, name, what, changes=None):
     return {
         "id": metric_id,
         "name": name,
@@ -81,6 +81,7 @@ def meta(metric_id, name, what):
         "licence_note": LICENCE_NOTE,
         "citation": CITATION,
         "redistribution": "copied",
+        "changes": changes,
     }
 
 

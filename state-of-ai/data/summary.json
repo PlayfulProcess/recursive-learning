@@ -1,78 +1,112 @@
 {
- "as_of": "2026-09-25T10:55:14Z",
+ "about": "Our adaptation of Epoch AI's and Arena's CC BY 4.0 data (credited per source below): rows filtered and combined; the trend lines, positions and sentences are ours. METR's figures are quoted with attribution only.",
+ "as_of": "2026-09-25T13:49:57Z",
+ "ref_date": "2026-09-25",
  "sources": {
   "epoch_training_compute": {
    "fetched_at": "2026-09-25T08:45:04Z",
    "source_updated": "2026-09-21",
+   "newest_data": "2026-09-09",
+   "newest_note": "newest compute estimate; newest model listed 21 Sep 2026",
    "licence": "CC BY 4.0",
-   "redistribution": "copied"
+   "redistribution": "copied",
+   "changes": "From notable_ai_models.csv: every model with a publication date kept, with or without an estimate; 10 of its columns kept and renamed; FLOP rounded to 4 significant figures; 'Open model weights?' turned into true, false or blank. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_training_cost": {
    "fetched_at": "2026-09-25T08:45:17Z",
    "source_updated": "2026-09-21",
+   "newest_data": "2026-07-29",
+   "newest_note": "newest cost estimate",
    "licence": "CC BY 4.0",
-   "redistribution": "copied"
+   "redistribution": "copied",
+   "changes": "From notable_ai_models.csv: only models with a cost estimate and a date kept; 9 columns kept and renamed; dollars and FLOP rounded to 4 significant figures. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_eci": {
    "fetched_at": "2026-09-25T09:53:33Z",
    "source_updated": "2026-09-09",
+   "newest_data": "2026-09-09",
+   "newest_note": "newest model scored",
    "licence": "CC BY 4.0",
-   "redistribution": "copied"
+   "redistribution": "copied",
+   "changes": "From eci_scores.csv: models with a date and a score kept; the display name used as the model name; 9 columns kept and renamed; scores rounded to 2 decimals. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_benchmarks_internal": {
    "fetched_at": "2026-09-25T09:53:33Z",
    "source_updated": "2026-09-03",
+   "newest_data": "2026-09-03",
+   "newest_note": "newest model tested (by release date)",
    "licence": "CC BY 4.0",
-   "redistribution": "copied"
+   "redistribution": "copied",
+   "changes": "Three Epoch-run benchmark files kept (never the *_external.csv files); scores and standard errors rounded to 4 decimals; each model's accessibility joined from model_metadata.csv; questions and answers never copied. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_ml_hardware": {
-   "fetched_at": "2026-09-25T09:53:33Z",
+   "fetched_at": "2026-09-25T13:49:57Z",
    "source_updated": "2026-03-11",
+   "newest_data": "2025-11-06",
+   "newest_note": "newest chip with a price",
    "licence": "CC BY 4.0",
-   "redistribution": "copied"
+   "redistribution": "copied",
+   "changes": "From ml_hardware.csv: chips with a release date kept; 10 columns kept and renamed; FLOP/s per dollar computed by us (FP16/BF16 FLOP/s divided by release price); the segment (data centre, workstation, consumer) and the kind of price are our labels, from the chip's name and Epoch's price source. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_chip_sales": {
    "fetched_at": "2026-09-25T08:46:18Z",
    "source_updated": "2026-09-30",
+   "newest_data": "2026-06-30",
+   "newest_note": "newest complete quarter",
    "licence": "CC BY 4.0",
-   "redistribution": "copied"
+   "redistribution": "copied",
+   "changes": "From cumulative_timelines_by_designer.csv: the per-quarter amount computed by us as the difference of Epoch's cumulative medians; cumulative figures rounded to whole H100-equivalents. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_chip_owners": {
    "fetched_at": "2026-09-25T08:46:29Z",
    "source_updated": "2026-03-31",
+   "newest_data": "2025-12-31",
+   "newest_note": "newest quarter every owner reports",
    "licence": "CC BY 4.0",
-   "redistribution": "copied"
+   "redistribution": "copied",
+   "changes": "From cumulative_by_designer.csv: rows with a date and a median kept; medians rounded to whole H100-equivalents; columns renamed. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_ai_companies": {
    "fetched_at": "2026-09-25T09:53:34Z",
    "source_updated": "2026-09-24",
+   "newest_data": "2026-09-24",
+   "newest_note": "newest revenue report",
    "licence": "CC BY 4.0",
-   "redistribution": "copied"
+   "redistribution": "copied",
+   "changes": "From ai_companies_revenue_reports.csv: reports with a date and an annualized figure kept; 8 columns kept and renamed; figures rounded to 4 significant figures. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "metr_time_horizon": {
    "fetched_at": "2026-09-25T08:46:49Z",
    "source_updated": "2026-04-07",
+   "newest_data": "2026-04-07",
+   "newest_note": "newest model METR measured",
    "licence": "No open licence stated (site: all rights reserved)",
-   "redistribution": "link-only"
+   "redistribution": "link-only",
+   "changes": "Only METR's own fitted doubling times are quoted, with their ranges, from the YAML files it publishes; per-model numbers are not stored unless METR_STORE_ROWS=1. Coverage notes are ours."
   },
   "arena_leaderboard": {
    "fetched_at": "2026-09-25T10:55:14Z",
    "source_updated": "2026-09-13",
+   "newest_data": "2026-09-13",
+   "newest_note": "newest snapshot",
    "licence": "CC BY 4.0",
-   "redistribution": "copied"
+   "redistribution": "copied",
+   "changes": "From each 'overall' snapshot of the text and text_style_control configs: only the best proprietary and the best open-weights model kept per snapshot (history), and the top 30 and top 10 open models of the newest one; licences sorted by us into open, closed or neither. Coverage notes, trend lines and summaries (summary.json) are ours."
   }
  },
  "trends": [
   {
    "id": "compute_frontier",
-   "label": "Training compute, frontier models",
+   "label": "Training compute of the biggest models",
    "unit": "FLOP",
    "note": "Epoch's 'frontier' models (the largest at their release). Few recent ones have public estimates.",
+   "scope": "industry",
    "status": "ok",
    "whole": {
     "n": 72,
     "from": "2010-09-26",
     "to": "2026-09-03",
+    "resampling": "single points",
     "slope_log10_per_year": 0.664,
     "slope_ci": [
      0.643,
@@ -87,13 +121,16 @@
     "doubling_ci": [
      5.27,
      5.62
-    ]
+    ],
+    "scatter_x90": 5.57,
+    "resid_lag1": 0.196
    },
    "recent": null,
    "before": {
     "n": 67,
     "from": "2010-09-26",
     "to": "2024-08-13",
+    "resampling": "single points",
     "slope_log10_per_year": 0.659,
     "slope_ci": [
      0.636,
@@ -108,11 +145,16 @@
     "doubling_ci": [
      5.32,
      5.68
-    ]
+    ],
+    "scatter_x90": 5.84,
+    "resid_lag1": 0.226
    },
    "change": {
     "verdict": "too few points",
-    "recent_months": 24
+    "recent_months": 24,
+    "recent_n": 5,
+    "before_n": 67,
+    "min_points": 6
    },
    "band": [
     [
@@ -415,86 +457,123 @@
      2026.756,
      27.0,
      27.134,
-     27.274
+     27.274,
+     26.497,
+     27.978
     ],
     [
      2026.839,
      27.054,
      27.189,
-     27.331
+     27.331,
+     26.581,
+     27.94
     ],
     [
      2026.923,
      27.109,
      27.244,
-     27.388
+     27.388,
+     26.653,
+     28.009
     ],
     [
      2027.006,
      27.163,
      27.3,
-     27.445
+     27.445,
+     26.701,
+     28.076
     ],
     [
      2027.089,
      27.217,
      27.355,
-     27.502
+     27.502,
+     26.722,
+     28.16
     ],
     [
      2027.173,
      27.271,
      27.41,
-     27.559
+     27.559,
+     26.753,
+     28.439
     ],
     [
      2027.256,
      27.325,
      27.466,
-     27.615
+     27.615,
+     26.857,
+     28.304
     ],
     [
      2027.339,
      27.378,
      27.521,
-     27.672
+     27.672,
+     26.94,
+     28.373
     ],
     [
      2027.423,
      27.432,
      27.577,
-     27.729
+     27.729,
+     26.949,
+     28.356
     ],
     [
      2027.506,
      27.485,
      27.632,
-     27.785
+     27.785,
+     27.027,
+     28.505
     ],
     [
      2027.589,
      27.539,
      27.687,
-     27.842
+     27.842,
+     27.082,
+     28.574
     ],
     [
      2027.673,
      27.592,
      27.743,
-     27.899
+     27.899,
+     27.113,
+     28.546
     ]
-   ]
+   ],
+   "data_stop": null,
+   "start_sensitivity": {
+    "from_years": [
+     2010,
+     2022
+    ],
+    "doubling_months": [
+     5.25,
+     5.77
+    ]
+   }
   },
   {
    "id": "compute_frontier_no_spec",
-   "label": "Training compute, frontier, without 'Speculative' estimates",
+   "label": "Training compute, biggest models, without 'Speculative' estimates",
    "unit": "FLOP",
    "note": "A check on how much the guessed points move the line.",
+   "scope": "industry",
    "status": "ok",
    "whole": {
     "n": 62,
     "from": "2011-04-29",
     "to": "2026-09-03",
+    "resampling": "single points",
     "slope_log10_per_year": 0.672,
     "slope_ci": [
      0.649,
@@ -509,13 +588,16 @@
     "doubling_ci": [
      5.22,
      5.56
-    ]
+    ],
+    "scatter_x90": 4.9,
+    "resid_lag1": 0.0772
    },
    "recent": null,
    "before": {
     "n": 58,
     "from": "2011-04-29",
     "to": "2024-08-13",
+    "resampling": "single points",
     "slope_log10_per_year": 0.668,
     "slope_ci": [
      0.645,
@@ -530,11 +612,16 @@
     "doubling_ci": [
      5.24,
      5.6
-    ]
+    ],
+    "scatter_x90": 5.03,
+    "resid_lag1": 0.0862
    },
    "change": {
     "verdict": "too few points",
-    "recent_months": 24
+    "recent_months": 24,
+    "recent_n": 4,
+    "before_n": 58,
+    "min_points": 6
    },
    "band": [
     [
@@ -837,75 +924,100 @@
      2026.756,
      26.988,
      27.15,
-     27.305
+     27.305,
+     26.532,
+     27.948
     ],
     [
      2026.839,
      27.042,
      27.206,
-     27.362
+     27.362,
+     26.63,
+     28.007
     ],
     [
      2026.923,
      27.096,
      27.262,
-     27.418
+     27.418,
+     26.614,
+     27.947
     ],
     [
      2027.006,
      27.15,
      27.318,
-     27.475
+     27.475,
+     26.711,
+     28.079
     ],
     [
      2027.089,
      27.205,
      27.374,
-     27.533
+     27.533,
+     26.767,
+     28.214
     ],
     [
      2027.173,
      27.259,
      27.43,
-     27.59
+     27.59,
+     26.785,
+     28.219
     ],
     [
      2027.256,
      27.314,
      27.486,
-     27.647
+     27.647,
+     26.824,
+     28.211
     ],
     [
      2027.339,
      27.369,
      27.542,
-     27.705
+     27.705,
+     26.931,
+     28.308
     ],
     [
      2027.423,
      27.423,
      27.598,
-     27.762
+     27.762,
+     26.925,
+     28.41
     ],
     [
      2027.506,
      27.478,
      27.654,
-     27.82
+     27.82,
+     27.022,
+     28.389
     ],
     [
      2027.589,
      27.532,
      27.71,
-     27.877
+     27.877,
+     27.089,
+     28.424
     ],
     [
      2027.673,
      27.585,
      27.766,
-     27.934
+     27.934,
+     27.112,
+     28.495
     ]
    ],
+   "data_stop": null,
    "variant_of": "compute_frontier"
   },
   {
@@ -913,11 +1025,13 @@
    "label": "Training compute, all notable models",
    "unit": "FLOP",
    "note": "Includes small models. Recent estimates come mostly from labs that disclose, often open-weights labs.",
+   "scope": "industry",
    "status": "ok",
    "whole": {
     "n": 389,
     "from": "2018-02-01",
     "to": "2026-09-09",
+    "resampling": "single points",
     "slope_log10_per_year": 0.765,
     "slope_ci": [
      0.71,
@@ -932,12 +1046,15 @@
     "doubling_ci": [
      4.38,
      5.09
-    ]
+    ],
+    "scatter_x90": 337.0,
+    "resid_lag1": 0.158
    },
    "recent": {
     "n": 80,
     "from": "2024-09-17",
     "to": "2026-09-09",
+    "resampling": "single points",
     "slope_log10_per_year": 0.154,
     "slope_ci": [
      -0.15,
@@ -952,12 +1069,15 @@
     "doubling_ci": [
      8.09,
      null
-    ]
+    ],
+    "scatter_x90": 91.2,
+    "resid_lag1": 0.0188
    },
    "before": {
     "n": 309,
     "from": "2018-02-01",
     "to": "2024-09-06",
+    "resampling": "single points",
     "slope_log10_per_year": 0.764,
     "slope_ci": [
      0.669,
@@ -972,7 +1092,9 @@
     "doubling_ci": [
      4.21,
      5.4
-    ]
+    ],
+    "scatter_x90": 369.0,
+    "resid_lag1": 0.16
    },
    "change": {
     "verdict": "slower lately",
@@ -980,7 +1102,17 @@
     "slope_diff_ci": [
      -0.909,
      -0.31
-    ]
+    ],
+    "recent": {
+     "from": "2024-09-17",
+     "to": "2026-09-09",
+     "n": 80
+    },
+    "before": {
+     "from": "2018-02-01",
+     "to": "2024-09-06",
+     "n": 309
+    }
    },
    "band": [
     [
@@ -1283,86 +1415,113 @@
      2026.772,
      25.072,
      25.322,
-     25.573
+     25.573,
+     22.53,
+     27.659
     ],
     [
      2026.856,
      25.131,
      25.385,
-     25.64
+     25.64,
+     22.639,
+     27.627
     ],
     [
      2026.939,
      25.19,
      25.449,
-     25.708
+     25.708,
+     22.686,
+     27.854
     ],
     [
      2027.022,
      25.252,
      25.513,
-     25.777
+     25.777,
+     22.519,
+     27.737
     ],
     [
      2027.106,
      25.314,
      25.577,
-     25.846
+     25.846,
+     22.846,
+     27.941
     ],
     [
      2027.189,
      25.375,
      25.64,
-     25.914
+     25.914,
+     22.642,
+     27.874
     ],
     [
      2027.272,
      25.435,
      25.704,
-     25.981
+     25.981,
+     22.737,
+     28.061
     ],
     [
      2027.356,
      25.494,
      25.768,
-     26.048
+     26.048,
+     22.943,
+     28.079
     ],
     [
      2027.439,
      25.554,
      25.832,
-     26.116
+     26.116,
+     22.887,
+     28.117
     ],
     [
      2027.522,
      25.613,
      25.895,
-     26.183
+     26.183,
+     22.691,
+     28.148
     ],
     [
      2027.606,
      25.671,
      25.959,
-     26.252
+     26.252,
+     22.926,
+     28.159
     ],
     [
      2027.689,
      25.731,
      26.023,
-     26.32
+     26.32,
+     23.055,
+     28.421
     ]
-   ]
+   ],
+   "data_stop": null
   },
   {
    "id": "cost_frontier",
-   "label": "Training cost, frontier models",
+   "label": "Training cost of the biggest models",
    "unit": "2023 US dollars",
    "note": "Final training run only. Very few recent estimates.",
+   "scope": "industry",
    "status": "ok",
    "whole": {
     "n": 44,
     "from": "2016-01-27",
     "to": "2025-07-09",
+    "resampling": "single points",
     "slope_log10_per_year": 0.469,
     "slope_ci": [
      0.409,
@@ -1377,12 +1536,15 @@
     "doubling_ci": [
      6.68,
      8.83
-    ]
+    ],
+    "scatter_x90": 8.25,
+    "resid_lag1": 0.0619
    },
    "recent": {
     "n": 13,
     "from": "2023-07-11",
     "to": "2025-07-09",
+    "resampling": "single points",
     "slope_log10_per_year": 0.82,
     "slope_ci": [
      0.587,
@@ -1397,12 +1559,15 @@
     "doubling_ci": [
      3.59,
      6.16
-    ]
+    ],
+    "scatter_x90": 2.57,
+    "resid_lag1": -0.423
    },
    "before": {
     "n": 31,
     "from": "2016-01-27",
     "to": "2023-05-10",
+    "resampling": "single points",
     "slope_log10_per_year": 0.394,
     "slope_ci": [
      0.292,
@@ -1417,7 +1582,9 @@
     "doubling_ci": [
      6.98,
      12.4
-    ]
+    ],
+    "scatter_x90": 10.1,
+    "resid_lag1": 0.0117
    },
    "change": {
     "verdict": "faster lately",
@@ -1425,7 +1592,17 @@
     "slope_diff_ci": [
      0.166,
      0.635
-    ]
+    ],
+    "recent": {
+     "from": "2023-07-11",
+     "to": "2025-07-09",
+     "n": 13
+    },
+    "before": {
+     "from": "2016-01-27",
+     "to": "2023-05-10",
+     "n": 31
+    }
    },
    "band": [
     [
@@ -1723,95 +1900,909 @@
      8.184
     ]
    ],
-   "if_trend_continued": [
-    [
-     2025.603,
-     7.739,
-     7.992,
-     8.226
-    ],
-    [
-     2025.686,
-     7.773,
-     8.031,
-     8.27
-    ],
-    [
-     2025.769,
-     7.81,
-     8.07,
-     8.314
-    ],
-    [
-     2025.853,
-     7.844,
-     8.109,
-     8.357
-    ],
-    [
-     2025.936,
-     7.879,
-     8.148,
-     8.402
-    ],
-    [
-     2026.019,
-     7.913,
-     8.187,
-     8.446
-    ],
-    [
-     2026.103,
-     7.946,
-     8.227,
-     8.49
-    ],
-    [
-     2026.186,
-     7.98,
-     8.266,
-     8.535
-    ],
-    [
-     2026.269,
-     8.014,
-     8.305,
-     8.581
-    ],
-    [
-     2026.353,
-     8.048,
-     8.344,
-     8.625
-    ],
-    [
-     2026.436,
-     8.082,
-     8.383,
-     8.669
-    ],
-    [
-     2026.519,
-     8.115,
-     8.422,
-     8.713
-    ]
-   ]
+   "if_trend_continued": [],
+   "data_stop": "2025-07"
   },
   {
-   "id": "hw_price_performance",
-   "label": "Chip speed per dollar (FP16/BF16)",
+   "id": "cost_frontier_no_spec",
+   "label": "Training cost, biggest models, without 'Speculative' estimates",
+   "unit": "2023 US dollars",
+   "note": "A check on how much the guessed points move the line.",
+   "scope": "industry",
+   "status": "ok",
+   "whole": {
+    "n": 37,
+    "from": "2016-09-26",
+    "to": "2025-04-05",
+    "resampling": "single points",
+    "slope_log10_per_year": 0.475,
+    "slope_ci": [
+     0.4,
+     0.549
+    ],
+    "x_per_year": 2.99,
+    "x_per_year_ci": [
+     2.51,
+     3.54
+    ],
+    "doubling_months": 7.61,
+    "doubling_ci": [
+     6.58,
+     9.04
+    ],
+    "scatter_x90": 8.9,
+    "resid_lag1": -0.0238
+   },
+   "recent": {
+    "n": 10,
+    "from": "2023-05-10",
+    "to": "2025-04-05",
+    "resampling": "single points",
+    "slope_log10_per_year": 0.789,
+    "slope_ci": [
+     0.525,
+     1.05
+    ],
+    "x_per_year": 6.15,
+    "x_per_year_ci": [
+     3.35,
+     11.1
+    ],
+    "doubling_months": 4.58,
+    "doubling_ci": [
+     3.46,
+     6.88
+    ],
+    "scatter_x90": 2.97,
+    "resid_lag1": -0.33
+   },
+   "before": {
+    "n": 27,
+    "from": "2016-09-26",
+    "to": "2023-03-15",
+    "resampling": "single points",
+    "slope_log10_per_year": 0.413,
+    "slope_ci": [
+     0.272,
+     0.565
+    ],
+    "x_per_year": 2.59,
+    "x_per_year_ci": [
+     1.87,
+     3.68
+    ],
+    "doubling_months": 8.74,
+    "doubling_ci": [
+     6.39,
+     13.3
+    ],
+    "scatter_x90": 12.7,
+    "resid_lag1": -0.0638
+   },
+   "change": {
+    "verdict": "faster lately",
+    "recent_months": 24,
+    "slope_diff_ci": [
+     0.0719,
+     0.67
+    ],
+    "recent": {
+     "from": "2023-05-10",
+     "to": "2025-04-05",
+     "n": 10
+    },
+    "before": {
+     "from": "2016-09-26",
+     "to": "2023-03-15",
+     "n": 27
+    }
+   },
+   "band": [
+    [
+     2016.736,
+     3.343,
+     3.779,
+     4.19
+    ],
+    [
+     2016.914,
+     3.442,
+     3.864,
+     4.263
+    ],
+    [
+     2017.091,
+     3.541,
+     3.948,
+     4.333
+    ],
+    [
+     2017.269,
+     3.639,
+     4.032,
+     4.403
+    ],
+    [
+     2017.447,
+     3.737,
+     4.117,
+     4.479
+    ],
+    [
+     2017.624,
+     3.831,
+     4.201,
+     4.55
+    ],
+    [
+     2017.802,
+     3.925,
+     4.285,
+     4.62
+    ],
+    [
+     2017.979,
+     4.022,
+     4.37,
+     4.692
+    ],
+    [
+     2018.157,
+     4.119,
+     4.454,
+     4.763
+    ],
+    [
+     2018.334,
+     4.216,
+     4.538,
+     4.834
+    ],
+    [
+     2018.512,
+     4.311,
+     4.623,
+     4.904
+    ],
+    [
+     2018.689,
+     4.408,
+     4.707,
+     4.976
+    ],
+    [
+     2018.867,
+     4.506,
+     4.791,
+     5.052
+    ],
+    [
+     2019.045,
+     4.602,
+     4.876,
+     5.129
+    ],
+    [
+     2019.222,
+     4.698,
+     4.96,
+     5.204
+    ],
+    [
+     2019.4,
+     4.795,
+     5.044,
+     5.278
+    ],
+    [
+     2019.577,
+     4.891,
+     5.129,
+     5.354
+    ],
+    [
+     2019.755,
+     4.986,
+     5.213,
+     5.429
+    ],
+    [
+     2019.932,
+     5.078,
+     5.297,
+     5.503
+    ],
+    [
+     2020.11,
+     5.172,
+     5.382,
+     5.58
+    ],
+    [
+     2020.287,
+     5.265,
+     5.466,
+     5.659
+    ],
+    [
+     2020.465,
+     5.359,
+     5.55,
+     5.733
+    ],
+    [
+     2020.643,
+     5.453,
+     5.635,
+     5.812
+    ],
+    [
+     2020.82,
+     5.542,
+     5.719,
+     5.89
+    ],
+    [
+     2020.998,
+     5.638,
+     5.803,
+     5.97
+    ],
+    [
+     2021.175,
+     5.731,
+     5.888,
+     6.048
+    ],
+    [
+     2021.353,
+     5.817,
+     5.972,
+     6.128
+    ],
+    [
+     2021.53,
+     5.904,
+     6.056,
+     6.203
+    ],
+    [
+     2021.708,
+     5.989,
+     6.141,
+     6.281
+    ],
+    [
+     2021.885,
+     6.075,
+     6.225,
+     6.362
+    ],
+    [
+     2022.063,
+     6.161,
+     6.309,
+     6.443
+    ],
+    [
+     2022.24,
+     6.246,
+     6.394,
+     6.53
+    ],
+    [
+     2022.418,
+     6.331,
+     6.478,
+     6.613
+    ],
+    [
+     2022.596,
+     6.412,
+     6.562,
+     6.702
+    ],
+    [
+     2022.773,
+     6.489,
+     6.647,
+     6.789
+    ],
+    [
+     2022.951,
+     6.566,
+     6.731,
+     6.872
+    ],
+    [
+     2023.128,
+     6.644,
+     6.815,
+     6.963
+    ],
+    [
+     2023.306,
+     6.72,
+     6.9,
+     7.054
+    ],
+    [
+     2023.483,
+     6.797,
+     6.984,
+     7.149
+    ],
+    [
+     2023.661,
+     6.873,
+     7.068,
+     7.236
+    ],
+    [
+     2023.838,
+     6.949,
+     7.153,
+     7.334
+    ],
+    [
+     2024.016,
+     7.022,
+     7.237,
+     7.425
+    ],
+    [
+     2024.194,
+     7.103,
+     7.321,
+     7.515
+    ],
+    [
+     2024.371,
+     7.175,
+     7.406,
+     7.606
+    ],
+    [
+     2024.549,
+     7.245,
+     7.49,
+     7.7
+    ],
+    [
+     2024.726,
+     7.309,
+     7.574,
+     7.792
+    ],
+    [
+     2024.904,
+     7.386,
+     7.659,
+     7.884
+    ],
+    [
+     2025.081,
+     7.464,
+     7.743,
+     7.977
+    ],
+    [
+     2025.259,
+     7.539,
+     7.827,
+     8.069
+    ]
+   ],
+   "if_trend_continued": [],
+   "data_stop": "2025-04",
+   "variant_of": "cost_frontier"
+  },
+  {
+   "id": "hw_datacentre",
+   "label": "Chip speed per dollar, data-centre chips",
    "unit": "FLOP/s per dollar",
-   "note": "Chips with a public list price only; most custom chips have none.",
+   "note": "Data-centre accelerators with a reported or estimated price; consumer and workstation cards left out.",
+   "scope": "industry",
+   "status": "ok",
+   "whole": {
+    "n": 16,
+    "from": "2017-06-21",
+    "to": "2025-11-06",
+    "resampling": "single points",
+    "slope_log10_per_year": 0.11,
+    "slope_ci": [
+     0.0862,
+     0.134
+    ],
+    "x_per_year": 1.29,
+    "x_per_year_ci": [
+     1.22,
+     1.36
+    ],
+    "doubling_months": 32.8,
+    "doubling_ci": [
+     26.9,
+     41.9
+    ],
+    "scatter_x90": 2.23,
+    "resid_lag1": -0.201
+   },
+   "recent": {
+    "n": 8,
+    "from": "2023-11-09",
+    "to": "2025-11-06",
+    "resampling": "single points",
+    "slope_log10_per_year": 0.304,
+    "slope_ci": [
+     0.00609,
+     0.603
+    ],
+    "x_per_year": 2.01,
+    "x_per_year_ci": [
+     1.01,
+     4.01
+    ],
+    "doubling_months": 11.9,
+    "doubling_ci": [
+     5.99,
+     593.0
+    ],
+    "scatter_x90": 2.43,
+    "resid_lag1": -0.666
+   },
+   "before": {
+    "n": 8,
+    "from": "2017-06-21",
+    "to": "2023-09-16",
+    "resampling": "single points",
+    "slope_log10_per_year": 0.0827,
+    "slope_ci": [
+     0.07,
+     0.104
+    ],
+    "x_per_year": 1.21,
+    "x_per_year_ci": [
+     1.17,
+     1.27
+    ],
+    "doubling_months": 43.7,
+    "doubling_ci": [
+     34.8,
+     51.6
+    ],
+    "scatter_x90": 1.2,
+    "resid_lag1": 0.063
+   },
+   "change": {
+    "verdict": "no clear change",
+    "recent_months": 24,
+    "slope_diff_ci": [
+     -0.0804,
+     0.518
+    ],
+    "recent": {
+     "from": "2023-11-09",
+     "to": "2025-11-06",
+     "n": 8
+    },
+    "before": {
+     "from": "2017-06-21",
+     "to": "2023-09-16",
+     "n": 8
+    }
+   },
+   "band": [
+    [
+     2017.47,
+     9.854,
+     9.948,
+     10.001
+    ],
+    [
+     2017.644,
+     9.877,
+     9.967,
+     10.018
+    ],
+    [
+     2017.819,
+     9.897,
+     9.986,
+     10.034
+    ],
+    [
+     2017.993,
+     9.917,
+     10.006,
+     10.051
+    ],
+    [
+     2018.168,
+     9.939,
+     10.025,
+     10.069
+    ],
+    [
+     2018.343,
+     9.96,
+     10.044,
+     10.087
+    ],
+    [
+     2018.517,
+     9.981,
+     10.063,
+     10.107
+    ],
+    [
+     2018.692,
+     10.003,
+     10.083,
+     10.125
+    ],
+    [
+     2018.866,
+     10.024,
+     10.102,
+     10.145
+    ],
+    [
+     2019.041,
+     10.045,
+     10.121,
+     10.164
+    ],
+    [
+     2019.215,
+     10.066,
+     10.14,
+     10.184
+    ],
+    [
+     2019.39,
+     10.084,
+     10.159,
+     10.204
+    ],
+    [
+     2019.564,
+     10.105,
+     10.179,
+     10.225
+    ],
+    [
+     2019.739,
+     10.125,
+     10.198,
+     10.244
+    ],
+    [
+     2019.913,
+     10.145,
+     10.217,
+     10.265
+    ],
+    [
+     2020.088,
+     10.163,
+     10.236,
+     10.286
+    ],
+    [
+     2020.263,
+     10.182,
+     10.255,
+     10.307
+    ],
+    [
+     2020.437,
+     10.2,
+     10.275,
+     10.329
+    ],
+    [
+     2020.612,
+     10.22,
+     10.294,
+     10.351
+    ],
+    [
+     2020.786,
+     10.238,
+     10.313,
+     10.373
+    ],
+    [
+     2020.961,
+     10.257,
+     10.332,
+     10.394
+    ],
+    [
+     2021.135,
+     10.273,
+     10.351,
+     10.415
+    ],
+    [
+     2021.31,
+     10.291,
+     10.371,
+     10.437
+    ],
+    [
+     2021.484,
+     10.308,
+     10.39,
+     10.459
+    ],
+    [
+     2021.659,
+     10.323,
+     10.409,
+     10.482
+    ],
+    [
+     2021.833,
+     10.339,
+     10.428,
+     10.504
+    ],
+    [
+     2022.008,
+     10.354,
+     10.448,
+     10.526
+    ],
+    [
+     2022.183,
+     10.374,
+     10.467,
+     10.548
+    ],
+    [
+     2022.357,
+     10.388,
+     10.486,
+     10.57
+    ],
+    [
+     2022.532,
+     10.404,
+     10.505,
+     10.592
+    ],
+    [
+     2022.706,
+     10.421,
+     10.524,
+     10.614
+    ],
+    [
+     2022.881,
+     10.435,
+     10.544,
+     10.637
+    ],
+    [
+     2023.055,
+     10.453,
+     10.563,
+     10.66
+    ],
+    [
+     2023.23,
+     10.471,
+     10.582,
+     10.683
+    ],
+    [
+     2023.404,
+     10.486,
+     10.601,
+     10.705
+    ],
+    [
+     2023.579,
+     10.501,
+     10.62,
+     10.727
+    ],
+    [
+     2023.753,
+     10.516,
+     10.64,
+     10.749
+    ],
+    [
+     2023.928,
+     10.53,
+     10.659,
+     10.772
+    ],
+    [
+     2024.103,
+     10.546,
+     10.678,
+     10.795
+    ],
+    [
+     2024.277,
+     10.563,
+     10.697,
+     10.818
+    ],
+    [
+     2024.452,
+     10.579,
+     10.717,
+     10.841
+    ],
+    [
+     2024.626,
+     10.594,
+     10.736,
+     10.865
+    ],
+    [
+     2024.801,
+     10.61,
+     10.755,
+     10.888
+    ],
+    [
+     2024.975,
+     10.625,
+     10.774,
+     10.911
+    ],
+    [
+     2025.15,
+     10.641,
+     10.793,
+     10.933
+    ],
+    [
+     2025.324,
+     10.657,
+     10.813,
+     10.956
+    ],
+    [
+     2025.499,
+     10.673,
+     10.832,
+     10.98
+    ],
+    [
+     2025.673,
+     10.689,
+     10.851,
+     11.003
+    ],
+    [
+     2025.848,
+     10.703,
+     10.87,
+     11.025
+    ]
+   ],
+   "if_trend_continued": [
+    [
+     2025.931,
+     10.711,
+     10.879,
+     11.036,
+     10.389,
+     11.263
+    ],
+    [
+     2026.015,
+     10.719,
+     10.889,
+     11.048,
+     10.399,
+     11.284
+    ],
+    [
+     2026.098,
+     10.726,
+     10.898,
+     11.059,
+     10.355,
+     11.268
+    ],
+    [
+     2026.181,
+     10.734,
+     10.907,
+     11.07,
+     10.419,
+     11.276
+    ],
+    [
+     2026.265,
+     10.741,
+     10.916,
+     11.08,
+     10.419,
+     11.286
+    ],
+    [
+     2026.348,
+     10.749,
+     10.925,
+     11.091,
+     10.441,
+     11.313
+    ],
+    [
+     2026.431,
+     10.756,
+     10.934,
+     11.101,
+     10.429,
+     11.341
+    ],
+    [
+     2026.515,
+     10.763,
+     10.944,
+     11.112,
+     10.457,
+     11.308
+    ],
+    [
+     2026.598,
+     10.771,
+     10.953,
+     11.123,
+     10.475,
+     11.337
+    ],
+    [
+     2026.681,
+     10.778,
+     10.962,
+     11.135,
+     10.491,
+     11.348
+    ],
+    [
+     2026.765,
+     10.786,
+     10.971,
+     11.146,
+     10.475,
+     11.38
+    ],
+    [
+     2026.848,
+     10.793,
+     10.98,
+     11.156,
+     10.491,
+     11.351
+    ]
+   ],
+   "data_stop": "2025-11"
+  },
+  {
+   "id": "hw_all",
+   "label": "Chip speed per dollar, every priced chip (consumer cards included)",
+   "unit": "FLOP/s per dollar",
+   "note": "Consumer gaming cards sit far above data-centre chips per dollar, so they pull this line around.",
+   "scope": "industry",
    "status": "ok",
    "whole": {
     "n": 20,
     "from": "2017-06-21",
     "to": "2025-11-06",
+    "resampling": "single points",
     "slope_log10_per_year": 0.0858,
     "slope_ci": [
-     0.0361,
-     0.121
+     0.0368,
+     0.12
     ],
     "x_per_year": 1.22,
     "x_per_year_ci": [
@@ -1820,2162 +2811,2172 @@
     ],
     "doubling_months": 42.1,
     "doubling_ci": [
-     30.0,
-     100.0
-    ]
+     30.1,
+     98.2
+    ],
+    "scatter_x90": 4.28,
+    "resid_lag1": -0.267
    },
    "recent": {
     "n": 9,
     "from": "2023-11-09",
     "to": "2025-11-06",
+    "resampling": "single points",
     "slope_log10_per_year": 0.293,
     "slope_ci": [
-     -0.0304,
-     0.672
+     -0.019,
+     0.655
     ],
     "x_per_year": 1.96,
     "x_per_year_ci": [
-     0.932,
-     4.69
+     0.957,
+     4.52
     ],
     "doubling_months": 12.3,
     "doubling_ci": [
-     5.38,
+     5.52,
      null
-    ]
+    ],
+    "scatter_x90": 2.3,
+    "resid_lag1": -0.614
    },
    "before": {
     "n": 11,
     "from": "2017-06-21",
     "to": "2023-09-16",
+    "resampling": "single points",
     "slope_log10_per_year": 0.109,
     "slope_ci": [
-     0.0297,
-     0.192
+     0.0278,
+     0.197
     ],
     "x_per_year": 1.29,
     "x_per_year_ci": [
      1.07,
-     1.56
+     1.57
     ],
     "doubling_months": 33.1,
     "doubling_ci": [
-     18.8,
-     121.0
-    ]
+     18.3,
+     130.0
+    ],
+    "scatter_x90": 3.98,
+    "resid_lag1": -0.446
    },
    "change": {
     "verdict": "no clear change",
     "recent_months": 24,
     "slope_diff_ci": [
-     -0.158,
-     0.566
-    ]
+     -0.142,
+     0.57
+    ],
+    "recent": {
+     "from": "2023-11-09",
+     "to": "2025-11-06",
+     "n": 9
+    },
+    "before": {
+     "from": "2017-06-21",
+     "to": "2023-09-16",
+     "n": 11
+    }
    },
    "band": [
     [
      2017.47,
-     9.97,
+     9.965,
      10.168,
-     10.48
+     10.489
     ],
     [
      2017.644,
-     9.99,
+     9.985,
      10.183,
-     10.488
+     10.495
     ],
     [
      2017.819,
-     10.009,
+     10.004,
      10.198,
-     10.494
+     10.503
     ],
     [
      2017.993,
-     10.027,
+     10.024,
      10.213,
-     10.502
+     10.51
     ],
     [
      2018.168,
-     10.046,
+     10.043,
      10.228,
-     10.511
+     10.519
     ],
     [
      2018.343,
      10.062,
      10.242,
-     10.518
+     10.524
     ],
     [
      2018.517,
-     10.083,
+     10.08,
      10.257,
-     10.525
+     10.528
     ],
     [
      2018.692,
-     10.101,
+     10.099,
      10.272,
-     10.532
+     10.534
     ],
     [
      2018.866,
-     10.119,
+     10.117,
      10.287,
-     10.54
+     10.538
     ],
     [
      2019.041,
-     10.138,
+     10.136,
      10.302,
-     10.547
+     10.544
     ],
     [
      2019.215,
-     10.158,
+     10.155,
      10.317,
-     10.555
+     10.551
     ],
     [
      2019.39,
-     10.178,
+     10.174,
      10.332,
-     10.565
+     10.557
     ],
     [
      2019.564,
-     10.197,
+     10.192,
      10.347,
-     10.572
+     10.566
     ],
     [
      2019.739,
-     10.214,
+     10.212,
      10.362,
-     10.579
+     10.575
     ],
     [
      2019.913,
-     10.234,
+     10.231,
      10.377,
-     10.584
+     10.585
     ],
     [
      2020.088,
-     10.254,
+     10.249,
      10.392,
-     10.591
+     10.593
     ],
     [
      2020.263,
-     10.271,
+     10.268,
      10.407,
-     10.602
+     10.605
     ],
     [
      2020.437,
-     10.288,
+     10.285,
      10.422,
-     10.611
+     10.613
     ],
     [
      2020.612,
-     10.306,
+     10.305,
      10.437,
-     10.618
+     10.621
     ],
     [
      2020.786,
-     10.323,
+     10.321,
      10.452,
-     10.628
+     10.63
     ],
     [
      2020.961,
-     10.341,
+     10.336,
      10.467,
-     10.635
+     10.636
     ],
     [
      2021.135,
-     10.358,
+     10.354,
      10.482,
-     10.645
+     10.648
     ],
     [
      2021.31,
-     10.374,
+     10.37,
      10.497,
-     10.655
+     10.658
     ],
     [
      2021.484,
-     10.39,
+     10.386,
      10.512,
-     10.665
+     10.667
     ],
     [
      2021.659,
      10.404,
      10.527,
-     10.676
+     10.677
     ],
     [
      2021.833,
-     10.419,
+     10.42,
      10.542,
-     10.687
+     10.689
     ],
     [
      2022.008,
-     10.434,
+     10.435,
      10.557,
-     10.699
+     10.702
     ],
     [
      2022.183,
-     10.45,
+     10.451,
      10.572,
-     10.709
+     10.713
     ],
     [
      2022.357,
-     10.465,
+     10.466,
      10.587,
-     10.72
+     10.726
     ],
     [
      2022.532,
-     10.479,
+     10.482,
      10.602,
-     10.733
+     10.739
     ],
     [
      2022.706,
-     10.496,
+     10.493,
      10.617,
-     10.744
+     10.753
     ],
     [
      2022.881,
-     10.511,
+     10.508,
      10.632,
-     10.755
+     10.766
     ],
     [
      2023.055,
-     10.527,
+     10.524,
      10.647,
-     10.77
+     10.78
     ],
     [
      2023.23,
-     10.543,
+     10.537,
      10.662,
-     10.785
+     10.799
     ],
     [
      2023.404,
-     10.558,
+     10.551,
      10.677,
-     10.801
+     10.811
     ],
     [
      2023.579,
-     10.57,
+     10.566,
      10.692,
-     10.818
+     10.825
     ],
     [
      2023.753,
-     10.583,
+     10.579,
      10.707,
-     10.834
+     10.84
     ],
     [
      2023.928,
-     10.597,
+     10.593,
      10.722,
-     10.848
+     10.856
     ],
     [
      2024.103,
-     10.61,
+     10.606,
      10.737,
-     10.866
+     10.871
     ],
     [
      2024.277,
-     10.623,
+     10.62,
      10.752,
-     10.884
+     10.888
     ],
     [
      2024.452,
-     10.633,
+     10.628,
      10.767,
-     10.903
+     10.906
     ],
     [
      2024.626,
-     10.646,
+     10.641,
      10.782,
-     10.922
+     10.924
     ],
     [
      2024.801,
-     10.656,
+     10.655,
      10.797,
      10.943
     ],
     [
      2024.975,
-     10.665,
+     10.67,
      10.812,
-     10.96
+     10.961
     ],
     [
      2025.15,
-     10.677,
+     10.678,
      10.826,
-     10.98
+     10.978
     ],
     [
      2025.324,
      10.688,
      10.841,
-     10.998
+     10.996
     ],
     [
      2025.499,
      10.699,
      10.856,
-     11.018
+     11.015
     ],
     [
      2025.673,
-     10.707,
+     10.706,
      10.871,
-     11.038
+     11.032
     ],
     [
      2025.848,
-     10.717,
+     10.713,
      10.886,
-     11.058
+     11.049
     ]
    ],
    "if_trend_continued": [
     [
      2025.931,
-     10.721,
+     10.717,
      10.894,
-     11.067
+     11.058,
+     10.399,
+     11.639
     ],
     [
      2026.015,
-     10.725,
+     10.72,
      10.901,
-     11.076
+     11.068,
+     10.381,
+     11.665
     ],
     [
      2026.098,
-     10.729,
+     10.726,
      10.908,
-     11.086
+     11.079,
+     10.426,
+     11.662
     ],
     [
      2026.181,
-     10.733,
+     10.73,
      10.915,
-     11.096
+     11.088,
+     10.431,
+     11.643
     ],
     [
      2026.265,
-     10.738,
+     10.735,
      10.922,
-     11.105
+     11.097,
+     10.442,
+     11.659
     ],
     [
      2026.348,
-     10.744,
+     10.741,
      10.929,
-     11.114
+     11.106,
+     10.482,
+     11.666
     ],
     [
      2026.431,
-     10.75,
+     10.747,
      10.936,
-     11.124
+     11.116,
+     10.47,
+     11.667
     ],
     [
      2026.515,
      10.753,
      10.944,
-     11.133
+     11.126,
+     10.462,
+     11.704
     ],
     [
      2026.598,
-     10.756,
+     10.759,
      10.951,
-     11.144
+     11.136,
+     10.457,
+     11.658
     ],
     [
      2026.681,
-     10.759,
+     10.765,
      10.958,
-     11.153
+     11.146,
+     10.497,
+     11.701
     ],
     [
      2026.765,
-     10.762,
+     10.769,
      10.965,
-     11.162
+     11.156,
+     10.445,
+     11.704
     ],
     [
      2026.848,
-     10.766,
+     10.773,
      10.972,
-     11.172
+     11.166,
+     10.479,
+     11.733
     ]
-   ]
+   ],
+   "data_stop": "2025-11",
+   "variant_of": "hw_datacentre"
   },
   {
    "id": "shipped_nvidia",
-   "label": "Nvidia AI compute shipped per quarter",
+   "label": "Nvidia AI chips shipped, per quarter",
    "unit": "H100-equivalents per quarter",
-   "note": "Medians of Epoch's modelled estimates; incomplete quarters left out.",
+   "note": "Medians of Epoch's modelled estimates; incomplete quarters left out. One chipmaker's quarters, so runs of neighbouring quarters are resampled together.",
+   "scope": "industry",
    "status": "ok",
    "whole": {
     "n": 18,
     "from": "2022-02-13",
     "to": "2026-05-15",
+    "resampling": "blocks of 3 neighbouring points",
     "slope_log10_per_year": 0.472,
     "slope_ci": [
-     0.442,
-     0.512
+     0.419,
+     0.559
     ],
     "x_per_year": 2.96,
     "x_per_year_ci": [
-     2.76,
-     3.25
+     2.62,
+     3.63
     ],
     "doubling_months": 7.66,
     "doubling_ci": [
-     7.05,
-     8.18
-    ]
+     6.46,
+     8.63
+    ],
+    "scatter_x90": 1.4,
+    "resid_lag1": 0.599
    },
    "recent": {
     "n": 9,
     "from": "2024-05-15",
     "to": "2026-05-15",
+    "resampling": "blocks of 2 neighbouring points",
     "slope_log10_per_year": 0.385,
     "slope_ci": [
-     0.33,
-     0.432
+     0.317,
+     0.455
     ],
     "x_per_year": 2.43,
     "x_per_year_ci": [
-     2.14,
-     2.7
+     2.07,
+     2.85
     ],
     "doubling_months": 9.38,
     "doubling_ci": [
-     8.36,
-     11.0
-    ]
+     7.94,
+     11.4
+    ],
+    "scatter_x90": 1.13,
+    "resid_lag1": 0.395
    },
    "before": {
     "n": 9,
     "from": "2022-02-13",
     "to": "2024-02-14",
+    "resampling": "blocks of 2 neighbouring points",
     "slope_log10_per_year": 0.527,
     "slope_ci": [
-     0.422,
-     0.677
+     0.285,
+     0.788
     ],
     "x_per_year": 3.36,
     "x_per_year_ci": [
-     2.64,
-     4.75
+     1.93,
+     6.14
     ],
     "doubling_months": 6.86,
     "doubling_ci": [
-     5.34,
-     8.56
-    ]
+     4.58,
+     12.7
+    ],
+    "scatter_x90": 1.51,
+    "resid_lag1": 0.486
    },
    "change": {
-    "verdict": "slower lately",
+    "verdict": "no clear change",
     "recent_months": 24,
     "slope_diff_ci": [
-     -0.291,
-     -0.0261
-    ]
+     -0.428,
+     0.0997
+    ],
+    "recent": {
+     "from": "2024-05-15",
+     "to": "2026-05-15",
+     "n": 9
+    },
+    "before": {
+     "from": "2022-02-13",
+     "to": "2024-02-14",
+     "n": 9
+    }
    },
    "band": [
     [
      2022.119,
-     4.619,
+     4.544,
      4.72,
-     4.813
+     4.901
     ],
     [
      2022.208,
-     4.664,
+     4.594,
      4.762,
-     4.852
+     4.939
     ],
     [
      2022.296,
-     4.71,
+     4.643,
      4.804,
-     4.891
+     4.976
     ],
     [
      2022.385,
-     4.754,
+     4.692,
      4.846,
-     4.93
+     5.013
     ],
     [
      2022.473,
-     4.799,
+     4.741,
      4.887,
-     4.97
+     5.05
     ],
     [
      2022.562,
-     4.844,
+     4.789,
      4.929,
-     5.009
+     5.088
     ],
     [
      2022.65,
-     4.889,
+     4.837,
      4.971,
-     5.048
-    ],
-    [
-     2022.739,
-     4.933,
-     5.013,
-     5.086
-    ],
-    [
-     2022.827,
-     4.978,
-     5.054,
      5.125
     ],
     [
+     2022.739,
+     4.886,
+     5.013,
+     5.163
+    ],
+    [
+     2022.827,
+     4.934,
+     5.054,
+     5.2
+    ],
+    [
      2022.916,
-     5.024,
+     4.982,
      5.096,
-     5.164
+     5.238
     ],
     [
      2023.004,
-     5.069,
+     5.03,
      5.138,
-     5.204
+     5.275
     ],
     [
      2023.093,
-     5.114,
+     5.08,
      5.179,
-     5.244
+     5.312
     ],
     [
      2023.182,
-     5.157,
+     5.128,
      5.221,
-     5.283
+     5.35
     ],
     [
      2023.27,
-     5.203,
+     5.176,
      5.263,
-     5.323
+     5.387
     ],
     [
      2023.359,
-     5.247,
+     5.223,
      5.305,
-     5.363
+     5.424
     ],
     [
      2023.447,
-     5.291,
+     5.269,
      5.346,
-     5.402
+     5.461
     ],
     [
      2023.536,
-     5.335,
+     5.316,
      5.388,
-     5.441
+     5.498
     ],
     [
      2023.624,
-     5.379,
+     5.362,
      5.43,
-     5.48
+     5.536
     ],
     [
      2023.713,
-     5.422,
+     5.408,
      5.472,
-     5.52
+     5.573
     ],
     [
      2023.801,
-     5.466,
+     5.453,
      5.513,
-     5.56
+     5.61
     ],
     [
      2023.89,
-     5.509,
+     5.498,
      5.555,
-     5.6
+     5.647
     ],
     [
      2023.978,
-     5.552,
+     5.543,
      5.597,
-     5.639
+     5.686
     ],
     [
      2024.067,
-     5.596,
+     5.588,
      5.639,
-     5.68
+     5.725
     ],
     [
      2024.155,
-     5.638,
+     5.634,
      5.68,
-     5.72
+     5.764
     ],
     [
      2024.244,
-     5.681,
+     5.677,
      5.722,
-     5.761
+     5.804
     ],
     [
      2024.332,
-     5.724,
+     5.721,
      5.764,
-     5.802
-    ],
-    [
-     2024.421,
-     5.766,
-     5.806,
      5.844
     ],
     [
+     2024.421,
+     5.765,
+     5.806,
+     5.882
+    ],
+    [
      2024.509,
-     5.809,
+     5.808,
      5.847,
-     5.886
+     5.924
     ],
     [
      2024.598,
-     5.853,
+     5.851,
      5.889,
-     5.928
+     5.97
     ],
     [
      2024.686,
-     5.895,
+     5.894,
      5.931,
-     5.97
+     6.015
     ],
     [
      2024.775,
      5.937,
      5.973,
-     6.013
+     6.063
     ],
     [
      2024.864,
-     5.979,
+     5.981,
      6.014,
-     6.057
+     6.111
     ],
     [
      2024.952,
-     6.02,
+     6.024,
      6.056,
-     6.1
+     6.161
     ],
     [
      2025.041,
-     6.062,
+     6.068,
      6.098,
-     6.142
+     6.207
     ],
     [
      2025.129,
-     6.103,
+     6.11,
      6.14,
-     6.184
+     6.256
     ],
     [
      2025.218,
-     6.145,
+     6.153,
      6.181,
-     6.227
+     6.305
     ],
     [
      2025.306,
-     6.186,
+     6.195,
      6.223,
-     6.269
+     6.355
     ],
     [
      2025.395,
-     6.228,
+     6.237,
      6.265,
-     6.313
-    ],
-    [
-     2025.483,
-     6.269,
-     6.307,
-     6.358
-    ],
-    [
-     2025.572,
-     6.31,
-     6.348,
      6.403
     ],
     [
+     2025.483,
+     6.279,
+     6.307,
+     6.45
+    ],
+    [
+     2025.572,
+     6.319,
+     6.348,
+     6.498
+    ],
+    [
      2025.66,
-     6.349,
+     6.361,
      6.39,
-     6.447
+     6.548
     ],
     [
      2025.749,
-     6.39,
+     6.403,
      6.432,
-     6.491
+     6.599
     ],
     [
      2025.837,
-     6.43,
+     6.443,
      6.474,
-     6.537
+     6.648
     ],
     [
      2025.926,
-     6.47,
+     6.481,
      6.515,
-     6.581
+     6.696
     ],
     [
      2026.014,
-     6.51,
+     6.521,
      6.557,
-     6.626
+     6.745
     ],
     [
      2026.103,
-     6.55,
+     6.558,
      6.599,
-     6.67
+     6.794
     ],
     [
      2026.191,
-     6.59,
+     6.594,
      6.64,
-     6.715
+     6.843
     ],
     [
      2026.28,
-     6.63,
+     6.632,
      6.682,
-     6.759
+     6.892
     ],
     [
      2026.368,
-     6.67,
+     6.671,
      6.724,
-     6.804
+     6.941
     ]
    ],
    "if_trend_continued": [
     [
      2026.452,
-     6.708,
+     6.705,
      6.763,
-     6.847
+     6.987,
+     6.584,
+     7.036
     ],
     [
      2026.535,
-     6.745,
+     6.742,
      6.803,
-     6.89
+     7.034,
+     6.615,
+     7.088
     ],
     [
      2026.618,
-     6.782,
+     6.777,
      6.842,
-     6.932
+     7.081,
+     6.668,
+     7.15
     ],
     [
      2026.702,
-     6.82,
+     6.812,
      6.881,
-     6.974
+     7.127,
+     6.69,
+     7.168
     ],
     [
      2026.785,
-     6.856,
+     6.848,
      6.92,
-     7.016
+     7.174,
+     6.749,
+     7.231
     ],
     [
      2026.868,
-     6.894,
+     6.885,
      6.96,
-     7.058
+     7.22,
+     6.774,
+     7.262
     ],
     [
      2026.952,
-     6.931,
+     6.92,
      6.999,
-     7.1
+     7.267,
+     6.814,
+     7.32
     ],
     [
      2027.035,
-     6.969,
+     6.955,
      7.038,
-     7.143
+     7.313,
+     6.845,
+     7.354
     ],
     [
      2027.118,
-     7.005,
+     6.991,
      7.078,
-     7.185
+     7.36,
+     6.891,
+     7.39
     ],
     [
      2027.202,
-     7.043,
+     7.026,
      7.117,
-     7.228
+     7.406,
+     6.924,
+     7.468
     ],
     [
      2027.285,
-     7.08,
+     7.061,
      7.156,
-     7.271
+     7.453,
+     6.975,
+     7.499
     ],
     [
      2027.368,
-     7.116,
+     7.097,
      7.195,
-     7.315
+     7.5,
+     7.003,
+     7.55
     ]
-   ]
+   ],
+   "data_stop": null
   },
   {
    "id": "shipped_all",
-   "label": "All designers' AI compute shipped per quarter",
+   "label": "All designers' AI chips shipped, per quarter",
    "unit": "H100-equivalents per quarter",
    "note": "Only quarters where all 6 designers are counted and complete: 2024-02 to 2025-11.",
+   "scope": "industry",
    "status": "ok",
    "whole": {
     "n": 8,
     "from": "2024-02-14",
     "to": "2025-11-15",
+    "resampling": "blocks of 2 neighbouring points",
     "slope_log10_per_year": 0.429,
     "slope_ci": [
-     0.394,
-     0.473
+     0.342,
+     0.509
     ],
     "x_per_year": 2.68,
     "x_per_year_ci": [
-     2.48,
-     2.97
+     2.2,
+     3.23
     ],
     "doubling_months": 8.42,
     "doubling_ci": [
-     7.64,
-     9.17
-    ]
+     7.09,
+     10.6
+    ],
+    "scatter_x90": 1.11,
+    "resid_lag1": 0.288
    },
    "recent": {
     "n": 8,
     "from": "2024-02-14",
     "to": "2025-11-15",
+    "resampling": "blocks of 2 neighbouring points",
     "slope_log10_per_year": 0.429,
     "slope_ci": [
-     0.397,
-     0.475
+     0.342,
+     0.509
     ],
     "x_per_year": 2.68,
     "x_per_year_ci": [
-     2.5,
-     2.98
+     2.2,
+     3.23
     ],
     "doubling_months": 8.42,
     "doubling_ci": [
-     7.61,
-     9.09
-    ]
+     7.09,
+     10.6
+    ],
+    "scatter_x90": 1.11,
+    "resid_lag1": 0.288
    },
    "before": null,
    "change": {
     "verdict": "too few points",
-    "recent_months": 24
+    "recent_months": 24,
+    "recent_n": 8,
+    "before_n": 0,
+    "min_points": 6
    },
    "band": [
     [
      2024.122,
-     5.904,
+     5.891,
      5.929,
-     5.977
+     6.053
     ],
     [
      2024.158,
-     5.921,
+     5.909,
      5.945,
-     5.991
+     6.065
     ],
     [
      2024.195,
-     5.938,
+     5.927,
      5.96,
-     6.005
-    ],
-    [
-     2024.231,
-     5.955,
-     5.976,
-     6.02
-    ],
-    [
-     2024.268,
-     5.971,
-     5.992,
-     6.034
-    ],
-    [
-     2024.304,
-     5.988,
-     6.007,
-     6.049
-    ],
-    [
-     2024.34,
-     6.004,
-     6.023,
-     6.063
-    ],
-    [
-     2024.377,
-     6.021,
-     6.039,
      6.078
     ],
     [
+     2024.231,
+     5.945,
+     5.976,
+     6.09
+    ],
+    [
+     2024.268,
+     5.964,
+     5.992,
+     6.103
+    ],
+    [
+     2024.304,
+     5.981,
+     6.007,
+     6.115
+    ],
+    [
+     2024.34,
+     5.999,
+     6.023,
+     6.128
+    ],
+    [
+     2024.377,
+     6.016,
+     6.039,
+     6.14
+    ],
+    [
      2024.413,
-     6.038,
+     6.034,
      6.054,
-     6.092
+     6.153
     ],
     [
      2024.45,
-     6.054,
+     6.049,
      6.07,
-     6.106
+     6.165
     ],
     [
      2024.486,
-     6.07,
+     6.066,
      6.085,
-     6.121
-    ],
-    [
-     2024.523,
-     6.087,
-     6.101,
-     6.135
-    ],
-    [
-     2024.559,
-     6.102,
-     6.117,
-     6.15
-    ],
-    [
-     2024.596,
-     6.119,
-     6.132,
-     6.164
-    ],
-    [
-     2024.632,
-     6.134,
-     6.148,
      6.178
     ],
     [
+     2024.523,
+     6.083,
+     6.101,
+     6.19
+    ],
+    [
+     2024.559,
+     6.099,
+     6.117,
+     6.203
+    ],
+    [
+     2024.596,
+     6.116,
+     6.132,
+     6.215
+    ],
+    [
+     2024.632,
+     6.133,
+     6.148,
+     6.228
+    ],
+    [
      2024.669,
-     6.15,
+     6.149,
      6.164,
-     6.193
+     6.24
     ],
     [
      2024.705,
-     6.165,
+     6.164,
      6.179,
-     6.207
+     6.253
     ],
     [
      2024.742,
-     6.181,
+     6.18,
      6.195,
-     6.222
+     6.265
     ],
     [
      2024.778,
      6.196,
      6.211,
-     6.237
+     6.278
     ],
     [
      2024.815,
      6.212,
      6.226,
-     6.252
+     6.29
     ],
     [
      2024.851,
      6.228,
      6.242,
-     6.267
+     6.303
     ],
     [
      2024.888,
      6.243,
      6.258,
-     6.284
+     6.315
     ],
     [
      2024.924,
      6.259,
      6.273,
-     6.301
+     6.328
     ],
     [
      2024.961,
-     6.274,
+     6.275,
      6.289,
-     6.317
+     6.34
     ],
     [
      2024.997,
-     6.289,
+     6.291,
      6.304,
-     6.332
+     6.353
     ],
     [
      2025.034,
-     6.305,
+     6.306,
      6.32,
-     6.349
+     6.367
     ],
     [
      2025.07,
-     6.321,
+     6.322,
      6.336,
-     6.366
+     6.382
     ],
     [
      2025.107,
-     6.336,
+     6.338,
      6.351,
-     6.381
-    ],
-    [
-     2025.143,
-     6.351,
-     6.367,
      6.398
     ],
     [
-     2025.179,
+     2025.143,
+     6.353,
      6.367,
+     6.415
+    ],
+    [
+     2025.179,
+     6.368,
      6.383,
-     6.414
+     6.434
     ],
     [
      2025.216,
-     6.382,
+     6.384,
      6.398,
-     6.43
+     6.452
     ],
     [
      2025.252,
-     6.397,
+     6.4,
      6.414,
-     6.446
+     6.47
     ],
     [
      2025.289,
-     6.413,
+     6.415,
      6.43,
-     6.462
+     6.488
     ],
     [
      2025.325,
-     6.428,
+     6.431,
      6.445,
-     6.479
+     6.507
     ],
     [
      2025.362,
-     6.444,
+     6.446,
      6.461,
-     6.497
+     6.525
     ],
     [
      2025.398,
-     6.459,
+     6.462,
      6.477,
-     6.514
+     6.543
     ],
     [
      2025.435,
-     6.474,
+     6.477,
      6.492,
-     6.532
+     6.561
     ],
     [
      2025.471,
-     6.489,
+     6.493,
      6.508,
-     6.549
+     6.58
     ],
     [
      2025.508,
-     6.505,
+     6.508,
      6.523,
-     6.566
+     6.598
     ],
     [
      2025.544,
-     6.52,
+     6.524,
      6.539,
-     6.582
+     6.617
     ],
     [
      2025.581,
-     6.535,
+     6.54,
      6.555,
-     6.599
+     6.635
     ],
     [
      2025.617,
-     6.55,
+     6.555,
      6.57,
-     6.616
+     6.654
     ],
     [
      2025.654,
-     6.565,
+     6.571,
      6.586,
-     6.633
+     6.672
     ],
     [
      2025.69,
-     6.58,
+     6.583,
      6.602,
-     6.65
+     6.691
     ],
     [
      2025.727,
-     6.595,
+     6.596,
      6.617,
-     6.668
+     6.71
     ],
     [
      2025.763,
      6.61,
      6.633,
-     6.685
+     6.728
     ],
     [
      2025.8,
-     6.625,
+     6.623,
      6.649,
-     6.702
+     6.747
     ],
     [
      2025.836,
-     6.64,
+     6.635,
      6.664,
-     6.719
+     6.765
     ],
     [
      2025.873,
-     6.654,
+     6.647,
      6.68,
-     6.736
+     6.784
     ]
    ],
    "if_trend_continued": [
     [
      2025.956,
-     6.688,
+     6.675,
      6.716,
-     6.776
+     6.826,
+     6.66,
+     6.842
     ],
     [
      2026.039,
-     6.722,
+     6.703,
      6.751,
-     6.815
+     6.869,
+     6.687,
+     6.873
     ],
     [
      2026.123,
-     6.755,
+     6.731,
      6.787,
-     6.855
+     6.911,
+     6.718,
+     6.925
     ],
     [
      2026.206,
-     6.788,
+     6.759,
      6.823,
-     6.894
+     6.954,
+     6.747,
+     6.963
     ],
     [
      2026.289,
-     6.822,
+     6.787,
      6.859,
-     6.934
+     6.996,
+     6.775,
+     7.005
     ],
     [
      2026.373,
-     6.856,
+     6.817,
      6.894,
-     6.973
+     7.038,
+     6.815,
+     7.043
     ],
     [
      2026.456,
-     6.889,
+     6.846,
      6.93,
-     7.013
+     7.081,
+     6.839,
+     7.086
     ],
     [
      2026.539,
-     6.922,
+     6.878,
      6.966,
-     7.052
+     7.123,
+     6.859,
+     7.128
     ],
     [
      2026.623,
-     6.955,
+     6.907,
      7.002,
-     7.091
-    ],
-    [
-     2026.706,
-     6.989,
-     7.037,
-     7.131
-    ],
-    [
-     2026.789,
-     7.022,
-     7.073,
+     7.166,
+     6.894,
      7.17
     ],
     [
+     2026.706,
+     6.935,
+     7.037,
+     7.208,
+     6.926,
+     7.216
+    ],
+    [
+     2026.789,
+     6.964,
+     7.073,
+     7.251,
+     6.953,
+     7.256
+    ],
+    [
      2026.873,
-     7.056,
+     6.992,
      7.109,
-     7.209
-    ]
-   ]
-  },
-  {
-   "id": "revenue_openai",
-   "label": "OpenAI revenue run-rate",
-   "unit": "US dollars per year",
-   "note": "Reported figures, disclosed or leaked.",
-   "status": "ok",
-   "whole": {
-    "n": 16,
-    "from": "2023-03-01",
-    "to": "2026-08-13",
-    "slope_log10_per_year": 0.589,
-    "slope_ci": [
-     0.525,
-     0.665
-    ],
-    "x_per_year": 3.88,
-    "x_per_year_ci": [
-     3.35,
-     4.62
-    ],
-    "doubling_months": 6.13,
-    "doubling_ci": [
-     5.43,
-     6.88
-    ]
-   },
-   "recent": {
-    "n": 10,
-    "from": "2024-08-15",
-    "to": "2026-08-13",
-    "slope_log10_per_year": 0.538,
-    "slope_ci": [
-     0.523,
-     0.563
-    ],
-    "x_per_year": 3.45,
-    "x_per_year_ci": [
-     3.33,
-     3.65
-    ],
-    "doubling_months": 6.71,
-    "doubling_ci": [
-     6.42,
-     6.91
-    ]
-   },
-   "before": {
-    "n": 6,
-    "from": "2023-03-01",
-    "to": "2024-06-12",
-    "slope_log10_per_year": 0.951,
-    "slope_ci": [
-     0.621,
-     1.23
-    ],
-    "x_per_year": 8.92,
-    "x_per_year_ci": [
-     4.18,
-     16.8
-    ],
-    "doubling_months": 3.8,
-    "doubling_ci": [
-     2.95,
-     5.82
-    ]
-   },
-   "change": {
-    "verdict": "slower lately",
-    "recent_months": 24,
-    "slope_diff_ci": [
-     -0.683,
-     -0.0757
-    ]
-   },
-   "band": [
-    [
-     2023.163,
-     8.5,
-     8.663,
-     8.815
-    ],
-    [
-     2023.235,
-     8.548,
-     8.706,
-     8.853
-    ],
-    [
-     2023.307,
-     8.596,
-     8.748,
-     8.89
-    ],
-    [
-     2023.379,
-     8.645,
-     8.79,
-     8.928
-    ],
-    [
-     2023.451,
-     8.693,
-     8.833,
-     8.966
-    ],
-    [
-     2023.523,
-     8.741,
-     8.875,
-     9.004
-    ],
-    [
-     2023.595,
-     8.789,
-     8.918,
-     9.041
-    ],
-    [
-     2023.666,
-     8.836,
-     8.96,
-     9.079
-    ],
-    [
-     2023.738,
-     8.882,
-     9.002,
-     9.117
-    ],
-    [
-     2023.81,
-     8.929,
-     9.045,
-     9.155
-    ],
-    [
-     2023.882,
-     8.977,
-     9.087,
-     9.192
-    ],
-    [
-     2023.954,
-     9.025,
-     9.129,
-     9.23
-    ],
-    [
-     2024.026,
-     9.073,
-     9.172,
-     9.268
-    ],
-    [
-     2024.098,
-     9.12,
-     9.214,
-     9.306
-    ],
-    [
-     2024.17,
-     9.168,
-     9.256,
-     9.344
-    ],
-    [
-     2024.242,
-     9.215,
-     9.299,
-     9.382
-    ],
-    [
-     2024.314,
-     9.26,
-     9.341,
-     9.42
-    ],
-    [
-     2024.386,
-     9.308,
-     9.383,
-     9.457
-    ],
-    [
-     2024.458,
-     9.355,
-     9.426,
-     9.495
-    ],
-    [
-     2024.529,
-     9.401,
-     9.468,
-     9.533
-    ],
-    [
-     2024.601,
-     9.448,
-     9.511,
-     9.571
-    ],
-    [
-     2024.673,
-     9.496,
-     9.553,
-     9.61
-    ],
-    [
-     2024.745,
-     9.541,
-     9.595,
-     9.647
-    ],
-    [
-     2024.817,
-     9.587,
-     9.638,
-     9.685
-    ],
-    [
-     2024.889,
-     9.634,
-     9.68,
-     9.723
-    ],
-    [
-     2024.961,
-     9.68,
-     9.722,
-     9.761
-    ],
-    [
-     2025.033,
-     9.726,
-     9.765,
-     9.8
-    ],
-    [
-     2025.105,
-     9.771,
-     9.807,
-     9.839
-    ],
-    [
-     2025.177,
-     9.816,
-     9.849,
-     9.88
-    ],
-    [
-     2025.249,
-     9.861,
-     9.892,
-     9.922
-    ],
-    [
-     2025.321,
-     9.905,
-     9.934,
-     9.965
-    ],
-    [
-     2025.392,
-     9.95,
-     9.976,
-     10.009
-    ],
-    [
-     2025.464,
-     9.994,
-     10.019,
-     10.054
-    ],
-    [
-     2025.536,
-     10.038,
-     10.061,
-     10.1
-    ],
-    [
-     2025.608,
-     10.081,
-     10.104,
-     10.146
-    ],
-    [
-     2025.68,
-     10.123,
-     10.146,
-     10.193
-    ],
-    [
-     2025.752,
-     10.164,
-     10.188,
-     10.238
-    ],
-    [
-     2025.824,
-     10.203,
-     10.231,
-     10.285
-    ],
-    [
-     2025.896,
-     10.243,
-     10.273,
-     10.331
-    ],
-    [
-     2025.968,
-     10.281,
-     10.315,
-     10.377
-    ],
-    [
-     2026.04,
-     10.319,
-     10.358,
-     10.423
-    ],
-    [
-     2026.112,
-     10.357,
-     10.4,
-     10.47
-    ],
-    [
-     2026.184,
-     10.395,
-     10.442,
-     10.517
-    ],
-    [
-     2026.255,
-     10.433,
-     10.485,
-     10.565
-    ],
-    [
-     2026.327,
-     10.471,
-     10.527,
-     10.613
-    ],
-    [
-     2026.399,
-     10.509,
-     10.569,
-     10.66
-    ],
-    [
-     2026.471,
-     10.547,
-     10.612,
-     10.707
-    ],
-    [
-     2026.543,
-     10.585,
-     10.654,
-     10.754
-    ],
-    [
-     2026.615,
-     10.623,
-     10.697,
-     10.801
+     7.293,
+     6.981,
+     7.304
     ]
    ],
-   "if_trend_continued": [
-    [
-     2026.698,
-     10.668,
-     10.746,
-     10.858
-    ],
-    [
-     2026.782,
-     10.711,
-     10.795,
-     10.916
-    ],
-    [
-     2026.865,
-     10.755,
-     10.844,
-     10.97
-    ],
-    [
-     2026.948,
-     10.799,
-     10.893,
-     11.023
-    ],
-    [
-     2027.032,
-     10.843,
-     10.942,
-     11.078
-    ],
-    [
-     2027.115,
-     10.887,
-     10.991,
-     11.133
-    ],
-    [
-     2027.198,
-     10.93,
-     11.04,
-     11.187
-    ],
-    [
-     2027.282,
-     10.974,
-     11.089,
-     11.242
-    ],
-    [
-     2027.365,
-     11.018,
-     11.138,
-     11.299
-    ],
-    [
-     2027.448,
-     11.062,
-     11.187,
-     11.357
-    ],
-    [
-     2027.532,
-     11.105,
-     11.236,
-     11.412
-    ],
-    [
-     2027.615,
-     11.149,
-     11.286,
-     11.465
-    ]
-   ]
+   "data_stop": "2025-11"
   },
   {
    "id": "revenue_anthropic",
    "label": "Anthropic revenue run-rate",
    "unit": "US dollars per year",
-   "note": "Reported figures, disclosed or leaked.",
+   "note": "One company growing from a small base; reported figures, disclosed or leaked. Chosen because it has the most reports, so it is not the industry's pace. No 'if the trend continued' stretch.",
+   "scope": "company",
    "status": "ok",
    "whole": {
     "n": 15,
     "from": "2023-10-01",
     "to": "2026-07-31",
+    "resampling": "blocks of 2 neighbouring points",
     "slope_log10_per_year": 1.04,
     "slope_ci": [
-     0.964,
-     1.14
+     0.976,
+     1.18
     ],
     "x_per_year": 10.9,
     "x_per_year_ci": [
-     9.2,
-     13.9
+     9.47,
+     15.1
     ],
     "doubling_months": 3.48,
     "doubling_ci": [
-     3.16,
-     3.75
-    ]
+     3.06,
+     3.7
+    ],
+    "scatter_x90": 1.47,
+    "resid_lag1": 0.313
    },
    "recent": {
     "n": 13,
     "from": "2024-12-31",
     "to": "2026-07-31",
+    "resampling": "blocks of 2 neighbouring points",
     "slope_log10_per_year": 1.13,
     "slope_ci": [
-     1.05,
-     1.19
+     0.968,
+     1.2
     ],
     "x_per_year": 13.6,
     "x_per_year_ci": [
-     11.1,
-     15.4
+     9.28,
+     15.9
     ],
     "doubling_months": 3.19,
     "doubling_ci": [
-     3.04,
-     3.45
-    ]
+     3.01,
+     3.73
+    ],
+    "scatter_x90": 1.34,
+    "resid_lag1": 0.559
    },
    "before": null,
    "change": {
     "verdict": "too few points",
-    "recent_months": 24
+    "recent_months": 24,
+    "recent_n": 13,
+    "before_n": 2,
+    "min_points": 6
    },
    "band": [
     [
      2023.749,
-     7.565,
+     7.497,
      7.774,
-     7.91
+     7.851
     ],
     [
      2023.808,
-     7.632,
+     7.566,
      7.835,
-     7.967
+     7.908
     ],
     [
      2023.867,
-     7.699,
+     7.636,
      7.897,
-     8.024
+     7.966
     ],
     [
      2023.926,
-     7.766,
+     7.706,
      7.958,
-     8.08
+     8.025
     ],
     [
      2023.985,
-     7.834,
+     7.774,
      8.019,
-     8.138
+     8.084
     ],
     [
      2024.044,
-     7.901,
+     7.844,
      8.08,
-     8.195
+     8.142
     ],
     [
      2024.103,
-     7.968,
+     7.913,
      8.142,
-     8.253
+     8.199
     ],
     [
      2024.162,
-     8.036,
+     7.983,
      8.203,
-     8.311
+     8.256
     ],
     [
      2024.221,
-     8.102,
+     8.053,
      8.264,
-     8.369
+     8.315
     ],
     [
      2024.28,
-     8.169,
+     8.122,
      8.325,
-     8.427
+     8.374
     ],
     [
      2024.339,
-     8.236,
+     8.191,
      8.387,
-     8.485
+     8.434
     ],
     [
      2024.398,
-     8.303,
+     8.261,
      8.448,
-     8.542
+     8.492
     ],
     [
      2024.457,
-     8.37,
+     8.33,
      8.509,
-     8.6
+     8.551
     ],
     [
      2024.516,
-     8.437,
+     8.399,
      8.571,
-     8.658
+     8.611
     ],
     [
      2024.575,
-     8.504,
+     8.469,
      8.632,
-     8.716
+     8.671
     ],
     [
      2024.634,
-     8.571,
+     8.539,
      8.693,
-     8.774
+     8.73
     ],
     [
      2024.693,
-     8.637,
+     8.608,
      8.754,
-     8.833
+     8.79
     ],
     [
      2024.752,
-     8.704,
+     8.677,
      8.816,
-     8.891
+     8.851
     ],
     [
      2024.811,
-     8.771,
+     8.746,
      8.877,
-     8.949
+     8.912
     ],
     [
      2024.87,
-     8.838,
+     8.815,
      8.938,
-     9.005
+     8.972
     ],
     [
      2024.929,
-     8.905,
+     8.883,
      8.999,
-     9.063
+     9.033
     ],
     [
      2024.987,
-     8.972,
+     8.951,
      9.061,
-     9.121
+     9.093
     ],
     [
      2025.046,
-     9.039,
+     9.021,
      9.122,
-     9.18
+     9.154
     ],
     [
      2025.105,
-     9.106,
+     9.088,
      9.183,
-     9.239
+     9.216
     ],
     [
      2025.164,
-     9.172,
+     9.156,
      9.244,
-     9.299
+     9.278
     ],
     [
      2025.223,
-     9.24,
+     9.223,
      9.306,
-     9.358
+     9.34
     ],
     [
      2025.282,
-     9.304,
+     9.289,
      9.367,
-     9.417
+     9.4
     ],
     [
      2025.341,
-     9.37,
+     9.355,
      9.428,
-     9.475
+     9.462
     ],
     [
      2025.4,
-     9.436,
+     9.419,
      9.49,
-     9.534
+     9.525
     ],
     [
      2025.459,
-     9.499,
+     9.482,
      9.551,
-     9.594
+     9.588
     ],
     [
      2025.518,
-     9.562,
+     9.542,
      9.612,
-     9.653
+     9.65
     ],
     [
      2025.577,
-     9.625,
+     9.602,
      9.673,
      9.713
     ],
     [
      2025.636,
-     9.687,
+     9.664,
      9.735,
      9.774
     ],
     [
      2025.695,
-     9.749,
+     9.723,
      9.796,
-     9.836
+     9.837
     ],
     [
      2025.754,
-     9.81,
+     9.784,
      9.857,
-     9.897
+     9.9
     ],
     [
      2025.813,
-     9.87,
+     9.843,
      9.918,
-     9.958
+     9.965
     ],
     [
      2025.872,
-     9.929,
+     9.902,
      9.98,
-     10.021
+     10.028
     ],
     [
      2025.931,
-     9.987,
+     9.959,
      10.041,
-     10.082
+     10.095
     ],
     [
      2025.99,
-     10.045,
+     10.018,
      10.102,
-     10.147
+     10.161
     ],
     [
      2026.049,
-     10.104,
+     10.076,
      10.164,
-     10.21
+     10.227
     ],
     [
      2026.108,
-     10.162,
+     10.134,
      10.225,
-     10.274
+     10.292
     ],
     [
      2026.167,
-     10.219,
+     10.191,
      10.286,
-     10.339
+     10.359
     ],
     [
      2026.226,
-     10.276,
+     10.25,
      10.347,
-     10.406
+     10.427
     ],
     [
      2026.285,
-     10.333,
+     10.308,
      10.409,
-     10.472
+     10.495
     ],
     [
      2026.344,
-     10.391,
+     10.367,
      10.47,
-     10.539
+     10.562
     ],
     [
      2026.403,
-     10.448,
+     10.426,
      10.531,
-     10.606
+     10.632
     ],
     [
      2026.462,
-     10.506,
+     10.483,
      10.592,
-     10.673
+     10.7
     ],
     [
      2026.52,
-     10.563,
+     10.54,
      10.654,
-     10.74
+     10.768
     ],
     [
      2026.579,
-     10.62,
+     10.597,
      10.715,
-     10.807
+     10.842
     ]
    ],
-   "if_trend_continued": [
+   "if_trend_continued": [],
+   "data_stop": null
+  },
+  {
+   "id": "revenue_openai",
+   "label": "OpenAI revenue run-rate",
+   "unit": "US dollars per year",
+   "note": "One company growing from a small base; reported figures, disclosed or leaked. Chosen because it has the most reports, so it is not the industry's pace. No 'if the trend continued' stretch.",
+   "scope": "company",
+   "status": "ok",
+   "whole": {
+    "n": 16,
+    "from": "2023-03-01",
+    "to": "2026-08-13",
+    "resampling": "blocks of 3 neighbouring points",
+    "slope_log10_per_year": 0.589,
+    "slope_ci": [
+     0.516,
+     0.638
+    ],
+    "x_per_year": 3.88,
+    "x_per_year_ci": [
+     3.28,
+     4.35
+    ],
+    "doubling_months": 6.13,
+    "doubling_ci": [
+     5.66,
+     7.0
+    ],
+    "scatter_x90": 1.35,
+    "resid_lag1": 0.12
+   },
+   "recent": {
+    "n": 10,
+    "from": "2024-08-15",
+    "to": "2026-08-13",
+    "resampling": "blocks of 2 neighbouring points",
+    "slope_log10_per_year": 0.538,
+    "slope_ci": [
+     0.502,
+     0.567
+    ],
+    "x_per_year": 3.45,
+    "x_per_year_ci": [
+     3.18,
+     3.69
+    ],
+    "doubling_months": 6.71,
+    "doubling_ci": [
+     6.37,
+     7.19
+    ],
+    "scatter_x90": 1.08,
+    "resid_lag1": -0.0618
+   },
+   "before": {
+    "n": 6,
+    "from": "2023-03-01",
+    "to": "2024-06-12",
+    "resampling": "blocks of 2 neighbouring points",
+    "slope_log10_per_year": 0.951,
+    "slope_ci": [
+     0.528,
+     1.35
+    ],
+    "x_per_year": 8.92,
+    "x_per_year_ci": [
+     3.37,
+     22.4
+    ],
+    "doubling_months": 3.8,
+    "doubling_ci": [
+     2.67,
+     6.84
+    ],
+    "scatter_x90": 1.34,
+    "resid_lag1": -0.269
+   },
+   "change": {
+    "verdict": "slower lately",
+    "recent_months": 24,
+    "slope_diff_ci": [
+     -0.812,
+     -0.000522
+    ],
+    "recent": {
+     "from": "2024-08-15",
+     "to": "2026-08-13",
+     "n": 10
+    },
+    "before": {
+     "from": "2023-03-01",
+     "to": "2024-06-12",
+     "n": 6
+    }
+   },
+   "band": [
     [
-     2026.663,
-     10.702,
-     10.802,
-     10.903
+     2023.163,
+     8.588,
+     8.663,
+     8.837
     ],
     [
-     2026.746,
-     10.783,
-     10.888,
-     10.997
+     2023.235,
+     8.633,
+     8.706,
+     8.874
     ],
     [
-     2026.829,
-     10.864,
-     10.975,
-     11.092
+     2023.307,
+     8.678,
+     8.748,
+     8.911
     ],
     [
-     2026.913,
-     10.944,
-     11.061,
-     11.189
+     2023.379,
+     8.725,
+     8.79,
+     8.948
     ],
     [
-     2026.996,
-     11.025,
-     11.148,
-     11.283
+     2023.451,
+     8.769,
+     8.833,
+     8.985
     ],
     [
-     2027.079,
-     11.106,
-     11.235,
-     11.379
+     2023.523,
+     8.817,
+     8.875,
+     9.022
     ],
     [
-     2027.163,
-     11.187,
-     11.321,
-     11.475
+     2023.595,
+     8.862,
+     8.918,
+     9.059
     ],
     [
-     2027.246,
-     11.267,
-     11.408,
-     11.571
+     2023.666,
+     8.907,
+     8.96,
+     9.096
     ],
     [
-     2027.329,
-     11.348,
-     11.494,
-     11.666
+     2023.738,
+     8.952,
+     9.002,
+     9.133
     ],
     [
-     2027.413,
-     11.428,
-     11.581,
-     11.761
+     2023.81,
+     8.999,
+     9.045,
+     9.17
     ],
     [
-     2027.496,
-     11.509,
-     11.668,
-     11.856
+     2023.882,
+     9.045,
+     9.087,
+     9.207
     ],
     [
-     2027.579,
-     11.59,
-     11.754,
-     11.951
+     2023.954,
+     9.09,
+     9.129,
+     9.244
+    ],
+    [
+     2024.026,
+     9.135,
+     9.172,
+     9.282
+    ],
+    [
+     2024.098,
+     9.179,
+     9.214,
+     9.319
+    ],
+    [
+     2024.17,
+     9.224,
+     9.256,
+     9.356
+    ],
+    [
+     2024.242,
+     9.267,
+     9.299,
+     9.394
+    ],
+    [
+     2024.314,
+     9.311,
+     9.341,
+     9.431
+    ],
+    [
+     2024.386,
+     9.355,
+     9.383,
+     9.469
+    ],
+    [
+     2024.458,
+     9.399,
+     9.426,
+     9.506
+    ],
+    [
+     2024.529,
+     9.443,
+     9.468,
+     9.544
+    ],
+    [
+     2024.601,
+     9.486,
+     9.511,
+     9.581
+    ],
+    [
+     2024.673,
+     9.531,
+     9.553,
+     9.619
+    ],
+    [
+     2024.745,
+     9.575,
+     9.595,
+     9.657
+    ],
+    [
+     2024.817,
+     9.62,
+     9.638,
+     9.695
+    ],
+    [
+     2024.889,
+     9.665,
+     9.68,
+     9.734
+    ],
+    [
+     2024.961,
+     9.709,
+     9.722,
+     9.773
+    ],
+    [
+     2025.033,
+     9.753,
+     9.765,
+     9.812
+    ],
+    [
+     2025.105,
+     9.797,
+     9.807,
+     9.854
+    ],
+    [
+     2025.177,
+     9.84,
+     9.849,
+     9.897
+    ],
+    [
+     2025.249,
+     9.882,
+     9.892,
+     9.942
+    ],
+    [
+     2025.321,
+     9.924,
+     9.934,
+     9.987
+    ],
+    [
+     2025.392,
+     9.965,
+     9.976,
+     10.031
+    ],
+    [
+     2025.464,
+     10.007,
+     10.019,
+     10.077
+    ],
+    [
+     2025.536,
+     10.047,
+     10.061,
+     10.123
+    ],
+    [
+     2025.608,
+     10.087,
+     10.104,
+     10.169
+    ],
+    [
+     2025.68,
+     10.127,
+     10.146,
+     10.215
+    ],
+    [
+     2025.752,
+     10.165,
+     10.188,
+     10.261
+    ],
+    [
+     2025.824,
+     10.202,
+     10.231,
+     10.307
+    ],
+    [
+     2025.896,
+     10.24,
+     10.273,
+     10.352
+    ],
+    [
+     2025.968,
+     10.277,
+     10.315,
+     10.398
+    ],
+    [
+     2026.04,
+     10.314,
+     10.358,
+     10.444
+    ],
+    [
+     2026.112,
+     10.351,
+     10.4,
+     10.489
+    ],
+    [
+     2026.184,
+     10.389,
+     10.442,
+     10.534
+    ],
+    [
+     2026.255,
+     10.427,
+     10.485,
+     10.579
+    ],
+    [
+     2026.327,
+     10.464,
+     10.527,
+     10.625
+    ],
+    [
+     2026.399,
+     10.501,
+     10.569,
+     10.672
+    ],
+    [
+     2026.471,
+     10.539,
+     10.612,
+     10.717
+    ],
+    [
+     2026.543,
+     10.576,
+     10.654,
+     10.763
+    ],
+    [
+     2026.615,
+     10.613,
+     10.697,
+     10.808
     ]
-   ]
+   ],
+   "if_trend_continued": [],
+   "data_stop": null
   }
  ],
  "metr_quoted": [
@@ -3988,7 +4989,8 @@
     null
    ],
    "quoted": true,
-   "note": "METR excludes points whose central 50% horizon is over 16 hours"
+   "note": "METR excludes points whose central 50% horizon is over 16 hours",
+   "range_note": "METR's own range, from its own method: not our 90% bootstrap."
   },
   {
    "id": "metr_v1.1_from_2023_on",
@@ -3999,7 +5001,8 @@
     5.19
    ],
    "quoted": true,
-   "note": "METR excludes points whose central 50% horizon is over 16 hours"
+   "note": "METR excludes points whose central 50% horizon is over 16 hours",
+   "range_note": "METR's own range, from its own method: not our 90% bootstrap."
   },
   {
    "id": "metr_v1.0_all_time",
@@ -4010,7 +5013,8 @@
     7.4
    ],
    "quoted": true,
-   "note": null
+   "note": null,
+   "range_note": "METR's own range, from its own method: not our 90% bootstrap."
   },
   {
    "id": "metr_v1.0_from_2023_on",
@@ -4021,9 +5025,21 @@
     7.53
    ],
    "quoted": true,
-   "note": null
+   "note": null,
+   "range_note": "METR's own range, from its own method: not our 90% bootstrap."
   }
  ],
+ "epoch_hw_trend": {
+  "label": "Epoch's own fit: GPU FLOP per dollar",
+  "doubling_months": 25.2,
+  "doubling_ci": [
+   19.2,
+   34.9
+  ],
+  "as_of": "2023-11-09",
+  "url": "https://epoch.ai/publications/trends-in-machine-learning-hardware",
+  "note": "Epoch AI, 'Trends in machine learning hardware' (Nov 2023): 2.1 years, range 1.6 to 2.9. A different number format (FP32), inflation-adjusted prices and an older set of chips, so it is shown beside ours, not merged with it."
+ },
  "open_vs_closed": {
   "eci": {
    "id": "eci_lag",
@@ -4046,6 +5062,11 @@
     "hi": 172.03
    },
    "gap_points": 8.9,
+   "range_note": "The range comes only from the uncertainty in the open model's own score; the closed models' uncertainty is not counted.",
+   "history_range_months": [
+    1.1,
+    14.8
+   ],
    "now": {
     "open_model": "Kimi K3",
     "open_org": "Moonshot",
@@ -4443,10 +5464,14 @@
   "arena": {
    "id": "arena_gap",
    "source_id": "arena_leaderboard",
-   "question": "How liked? The chance the best closed model wins a blind vote against the best open one.",
+   "question": "How liked? The chance, implied by the ratings, that the best closed model wins a blind vote against the best open one, counting only votes with a winner.",
+   "range_note": "Rough: it combines the arena's own intervals for the two models as if they were independent. The chances come from the ratings, not from counting real votes between those two models.",
    "configs": {
     "text": {
      "label": "raw votes",
+     "snapshots": 243,
+     "from": "2023-05-22",
+     "to": "2026-09-13",
      "latest": {
       "date": "2026-09-13",
       "closed_model": "claude-fable-5.1-max",
@@ -5933,6 +6958,9 @@
     },
     "text_style_control": {
      "label": "style-adjusted votes",
+     "snapshots": 184,
+     "from": "2024-08-28",
+     "to": "2026-09-13",
      "latest": {
       "date": "2026-09-13",
       "closed_model": "claude-fable-5",
@@ -7068,7 +8096,7 @@
   "release_share": {
    "id": "release_share",
    "source_id": "epoch_training_compute",
-   "question": "How many? Share of notable model releases with downloadable weights.",
+   "question": "How many? Share of notable model releases with downloadable weights, under any licence.",
    "columns": [
     "year",
     "open",
@@ -7077,34 +8105,6 @@
     "open_share"
    ],
    "series": [
-    [
-     "2015",
-     5,
-     11,
-     13,
-     0.312
-    ],
-    [
-     "2016",
-     11,
-     19,
-     19,
-     0.367
-    ],
-    [
-     "2017",
-     1,
-     25,
-     29,
-     0.038
-    ],
-    [
-     "2018",
-     9,
-     21,
-     7,
-     0.3
-    ],
     [
      "2019",
      31,
@@ -7162,6 +8162,9 @@
      0.368
     ]
    ],
+   "first_year": "2019",
+   "start_note": "Starts in 2019: from 2015 to 2018, 7 to 29 notable models a year have no open or closed label, too many for a share.",
+   "late_note": "Epoch adds some models months after release, so the newest year can still change.",
    "partial_year": "2026",
    "newest": "2026-09-21"
   }
@@ -7196,12 +8199,15 @@
    "date": "2026-09-03"
   },
   "epoch_ml_hardware": {
-   "label": "Most FP16 compute per dollar (priced chips)",
-   "value": 206400000000.0,
-   "unit": "FLOP/s per dollar",
-   "who": "NVIDIA GeForce RTX 4090",
-   "org": "NVIDIA",
-   "date": "2022-09-20"
+   "label": "Data-centre chips: months for FLOP/s per dollar to double",
+   "trend": "hw_datacentre",
+   "chips": 16,
+   "priced_all": 20,
+   "value": 32.8,
+   "newest": "2025-11-06",
+   "estimated": [
+    "Google TPU v7 Ironwood"
+   ]
   },
   "epoch_chip_sales": {
    "label": "Nvidia AI compute shipped in its latest complete quarter",
@@ -7240,7 +8246,21 @@
      "org": "OpenAI",
      "date": "2026-09-03",
      "ceiling": 1.0,
-     "room_left": 0.042
+     "room_left_if_keys_right": 0.042,
+     "runner_up": {
+      "who": "gemini-3.8-flash_high",
+      "org": "Google DeepMind",
+      "value": 0.9539,
+      "stderr": 0.014,
+      "date": "2026-09-02"
+     },
+     "tied": true,
+     "newest_tested": {
+      "who": "gpt-6-astra_max",
+      "org": "OpenAI",
+      "date": "2026-09-03",
+      "value": 0.9577
+     }
     },
     {
      "bench": "frontiermath",
@@ -7251,7 +8271,21 @@
      "org": "OpenAI",
      "date": "2026-09-03",
      "ceiling": 1.0,
-     "room_left": 0.063
+     "room_left_if_keys_right": 0.063,
+     "runner_up": {
+      "who": "claude-fable-5-1_max",
+      "org": "Anthropic",
+      "value": 0.9018,
+      "stderr": 0.0177,
+      "date": "2026-09-01"
+     },
+     "tied": true,
+     "newest_tested": {
+      "who": "gpt-6-astra_max",
+      "org": "OpenAI",
+      "date": "2026-09-03",
+      "value": 0.9368
+     }
     },
     {
      "bench": "swebench",
@@ -7262,9 +8296,24 @@
      "org": "Anthropic",
      "date": "2026-04-16",
      "ceiling": 1.0,
-     "room_left": 0.165
+     "room_left_if_keys_right": 0.165,
+     "runner_up": {
+      "who": "gpt-5.5-pre-release_xhigh",
+      "org": "OpenAI",
+      "value": 0.8058,
+      "stderr": 0.018,
+      "date": "2026-04-23"
+     },
+     "tied": true,
+     "newest_tested": {
+      "who": "glm-5.2_max",
+      "org": "Z.ai (Zhipu AI)",
+      "date": "2026-06-16",
+      "value": 0.787
+     }
     }
-   ]
+   ],
+   "note": "Room left if every answer key is right. A test with some wrong answer keys has a real ceiling below 100%. Two scores within two standard errors of each other are called tied."
   },
   "metr_time_horizon": {
    "label": "Newest model METR has measured",
@@ -7280,9 +8329,16 @@
    "meters": [
     "epoch_eci",
     "arena_leaderboard",
-    "epoch_training_compute"
+    "epoch_training_compute",
+    "usage"
    ],
-   "text": "Open against closed, three ways: by Epoch's capability index, the best open-weights model (Kimi K3) is about 4 months behind the best closed ones (between 3 and 7 months, given the score's uncertainty); by Arena's blind votes, the best closed model would be preferred to the best open one in about 53% of head-to-head votes, close to a coin flip; by count, 42% of the notable models released in 2025 had downloadable weights. They answer different questions (how capable, how liked, how many), so no single ratio covers all three."
+   "text": "Open against closed: three meters that don't agree.",
+   "items": [
+    "Epoch's capability index: the best open-weights model, Kimi K3 (Moonshot, 16 Jul 2026), was about 4 months behind when it came out: a closed model, GPT-5.4 Pro, had first reached its score on 5 Mar 2026 (range 3 to 7 months, from the uncertainty in Kimi K3's own score only). No open model has beaten it since, so as of today closed models reached that level {{since:2026-03-05}}. It is 8.9 points below the best closed model (GPT-6 Astra, 3 Sep 2026). Over time this gap has ranged from 1 to 15 months, so any single number is a snapshot. Index data to 9 Sep 2026.",
+    "Arena's blind votes: the ratings imply the best closed model would win, of the votes that have a winner, about 53% using style-adjusted votes (rough range 52 to 54%), or about 55% using raw votes (rough range 53 to 56%). That is close to a coin flip. These chances come from the ratings, not from counting real votes between those two models. Snapshot of 13 Sep 2026.",
+    "Releases: 45 of the 107 notable models released in 2025 (42%) had downloadable weights under any licence; so far in 2026 it is 37% (to 21 Sep 2026). Each model counts once, whatever its size or how much it is used.",
+    "Share of actual use: no official, openly licensed source exists. The public views that do exist, such as OpenRouter's rankings, see one router's paid API traffic and miss the companies' own apps."
+   ]
   },
   {
    "topic": "speed",
@@ -7290,42 +8346,47 @@
     "compute_frontier",
     "compute_notable",
     "cost_frontier",
-    "hw_price_performance",
+    "hw_datacentre",
     "shipped_nvidia",
     "shipped_all",
+    "revenue_anthropic",
     "revenue_openai",
-    "revenue_anthropic"
+    "metr_time_horizon"
    ],
-   "text": "How fast depends on the meter: fitted doubling times run from 3.5 months (Anthropic revenue run-rate) to 3.5 years (Chip speed per dollar (FP16/BF16)); METR's task-length measure doubles about every 4.2 months by its own fit. These count different things, so they are shown side by side, not averaged."
+   "text": "How fast things double depends on the meter (whole period, with the 90% range of the fit). They count different things, so they sit side by side, never averaged.",
+   "items": [
+    "Training compute of the biggest models: 5.4 months (5.3 to 5.6 months), Sep 2010 to Sep 2026, 72 points. Starting the fit anywhere from 2010 to 2022 gives 5.2 to 5.8 months. Single models land about 6 times above or below the line. 1 of these models released in the 12 months to 21 Sep 2026 has an estimate.",
+    "Chip speed per dollar, data-centre chips: 2.7 years (2.2 to 3.5 years), Jun 2017 to Nov 2025, 16 points. Every priced chip, the 4 consumer and workstation cards included: 3.5 years (2.5 to 8.2 years). Epoch's own published trend (Nov 2023; FP32, ML GPUs): 2.1 years (1.6 to 2.9). Too few chips for a firm headline.",
+    "Nvidia AI chips shipped, per quarter: 7.7 months (6.5 to 8.6 months), Feb 2022 to May 2026, 18 points. All designers together: 8.4 months (7.1 to 10.6 months), measured on Feb 2024 to Nov 2025 only, the quarters where every designer is counted.",
+    "Single companies, growing from a small base and picked because they have the most reports: Anthropic revenue run-rate 3.5 months (3.1 to 3.7 months, Oct 2023 to Jul 2026); OpenAI revenue run-rate 6.1 months (5.7 to 7.0 months, Mar 2023 to Aug 2026). They are not the industry's pace.",
+    "METR, quoting its own fits from 2023 on: version 1.1 4.2 months (its range 3.4 to 5.2); version 1.0 5.8 months (4.5 to 7.5). The ranges overlap, so the versions differ rather than disagree. Over all years: 6.2 and 6.6 months. Newest model measured: 7 Apr 2026."
+   ]
   },
   {
    "topic": "bend",
    "meters": [
     "compute_frontier",
-    "compute_frontier_no_spec",
     "compute_notable",
     "cost_frontier",
-    "hw_price_performance",
+    "hw_datacentre",
     "shipped_nvidia",
     "shipped_all",
-    "revenue_openai",
-    "revenue_anthropic"
+    "revenue_anthropic",
+    "revenue_openai"
    ],
-   "text": "Straight line or bend? Comparing the last 24 months with the years before. Faster lately: Training cost, frontier models. Slower lately: Training compute, all notable models, Nvidia AI compute shipped per quarter, OpenAI revenue run-rate. No clear change: Chip speed per dollar (FP16/BF16). Too few recent points to tell: Training compute, frontier models, All designers' AI compute shipped per quarter, Anthropic revenue run-rate. A bend can be real, or can come from who is counted lately; each chart's coverage note says which labs are missing."
-  },
-  {
-   "topic": "metr_versions",
-   "meters": [
-    "metr_time_horizon"
+   "text": "Has the pace changed? The last 24 months of each meter's data, against the years before.",
+   "items": [
+    "Training compute of the biggest models: can't be judged, only 5 points in the last 24 months of its data (6 needed on each side).",
+    "Training compute, all notable models: slower lately (Sep 2024 to Sep 2026, 80 points, against Feb 2018 to Sep 2024, 309 points). This probably reflects who discloses, not the industry: recent estimates come mostly from open-weights labs with smaller models, and the recent doubling time (23.4 months) could also be flat.",
+    "Training cost of the biggest models: faster lately (Jul 2023 to Jul 2025, 13 points, against Jan 2016 to May 2023, 31 points). Weak evidence: 4 of the 13 recent points are 'Speculative', and the data stop in Jul 2025. Without 'Speculative' estimates: faster lately.",
+    "Chip speed per dollar, data-centre chips: no clear change (Nov 2023 to Nov 2025, 8 points, against Jun 2017 to Sep 2023, 8 points).",
+    "Nvidia AI chips shipped, per quarter: no clear change (May 2024 to May 2026, 9 points, against Feb 2022 to Feb 2024, 9 points). Neighbouring points were resampled together, since they move together.",
+    "All designers' AI chips shipped, per quarter: can't be judged, the series covers little more than the last 24 months (6 needed on each side).",
+    "Anthropic revenue run-rate: can't be judged, only 2 points before the last 24 months of its data (6 needed on each side).",
+    "OpenAI revenue run-rate: slower lately (Aug 2024 to Aug 2026, 10 points, against Mar 2023 to Jun 2024, 6 points). Neighbouring points were resampled together, since they move together.",
+    "Some 'changes' could be luck: 5 of these checks give a verdict, and even if nothing had changed, the chance that at least one would say 'changed' is about 41%."
    ],
-   "text": "METR's own two task suites disagree: from 2023 on, version 1.1 gives a doubling time of about 4.2 months, version 1.0 about 5.8. Both are shown; neither is averaged away."
-  },
-  {
-   "topic": "arena_configs",
-   "meters": [
-    "arena_leaderboard"
-   ],
-   "text": "Arena's raw votes and its style-adjusted votes put the open-closed gap at 32 and 21 rating points, so the best closed model would win about 55% or 53% of votes against the best open one, depending on the count (both from the 2026-09-13 snapshot). Both are shown."
+   "false_alarm_chance": 0.41
   },
   {
    "topic": "coverage",
@@ -7333,7 +8394,11 @@
     "epoch_training_compute",
     "epoch_training_cost"
    ],
-   "text": "The newest part of the compute curve leans on whoever discloses: of 120 notable models released since 2025-09-21, 30 have a compute estimate (OpenAI 1 of 24, Alibaba 1 of 12, Google DeepMind 1 of 11, Anthropic 0 of 10, Z.ai (Zhipu AI) 4 of 6)."
+   "text": "Who discloses: of the 120 notable models released between 21 Sep 2025 and 21 Sep 2026, 30 have a compute estimate. The newest part of any compute curve leans on whoever discloses.",
+   "items": [
+    "Labs that rarely disclose: OpenAI 1 of 24, Alibaba 1 of 12, Google DeepMind 1 of 11, Anthropic 0 of 10, Meta AI 0 of 4, xAI 0 of 4.",
+    "Labs that often disclose: Z.ai (Zhipu AI) 4 of 6, DeepSeek 3 of 4, Moonshot 3 of 4."
+   ]
   }
  ]
 }

@@ -9,13 +9,21 @@ standard library, so a GitHub Action runs them with no installs.
 
 ## Rules the page keeps
 
-- Every number keeps its source URL, licence and `fetched_at`.
-- Every card says who is counted and who is not (`coverage` in each data file, computed from the data).
+- Every number keeps its source URL, licence and `fetched_at`, and every card says what we changed.
+- Every card says who is counted and who is not (`coverage` in each data file, computed from the data),
+  and the date its data reach (`newest_data` in `summary.json`), which differs a lot by source.
 - Meters that disagree are shown side by side, never averaged.
-- Fitted lines carry a 90% bootstrap band and are drawn past the data only when the reader turns on
-  "if the trend continued", labelled as not a forecast.
-- Light and dark mode each use their own validated colour steps; reduced motion is respected;
-  every chart has a keyboard path and a table view.
+- Fitted lines carry a 90% bootstrap band for where the line could be. They are drawn past the data
+  only when the reader turns on "if the trend continued", labelled as not a forecast, with a wider band
+  for where single points could land. No stretch is drawn for a single company, or when the data
+  stopped so long ago that the stretch would end in the past.
+- Series about one company or one chipmaker (revenue, shipments) are resampled in runs of neighbouring
+  points, since neighbours move together; lists of models and chips are resampled point by point.
+- Each "faster lately" or "slower lately" names its dates and number of points, and the summary gives
+  the chance that at least one of the checks says "changed" by luck.
+- Light and dark mode each use their own colour steps; reduced motion is respected; every chart has a
+  keyboard path and a table view.
+- "Today" is read only in the reader's browser. The summary build never reads the clock.
 
 ## Meters
 
@@ -25,17 +33,26 @@ standard library, so a GitHub Action runs them with no installs.
 | `epoch_training_cost` | cost of the final training run | same zip | copied (CC BY 4.0) |
 | `epoch_eci` | Epoch Capabilities Index, open vs closed weights | Epoch AI benchmarking hub | copied (CC BY 4.0) |
 | `epoch_benchmarks_internal` | GPQA Diamond, FrontierMath 1-3, SWE-bench Verified: Epoch's own runs | Epoch AI benchmarking hub | copied (CC BY 4.0); the `*_external.csv` files are never copied |
-| `epoch_ml_hardware` | chip FLOP/s per list-price dollar | Epoch AI hardware data | copied (CC BY 4.0) |
+| `epoch_ml_hardware` | chip FLOP/s per dollar, data-centre chips apart from consumer cards | Epoch AI hardware data | copied (CC BY 4.0) |
 | `epoch_chip_sales` | AI compute shipped per quarter, by designer | Epoch AI chip sales | copied (CC BY 4.0) |
 | `epoch_chip_owners` | AI compute held, by owner and designer | Epoch AI chip owners | copied (CC BY 4.0) |
 | `epoch_ai_companies` | reported revenue run-rates | Epoch AI companies | copied (CC BY 4.0) |
 | `arena_leaderboard` | best closed vs best open in every Arena snapshot | lmarena-ai dataset on Hugging Face | copied (CC BY 4.0) |
 | `metr_time_horizon` | task-length doubling time | METR | **link only**: METR's own doubling times are quoted; no per-model rows (site: all rights reserved) |
+| (usage share) | tokens served by open vs closed models | OpenRouter rankings and its 2025 usage study | **link only**: OpenRouter's terms forbid copying its data; the page links to them and states their coverage |
 
-`data/summary.json` is built from those files by `scripts/build_summary.py`: trends (`scripts/fit.py`),
-the open-vs-closed meters, the latest position on each meter, and the plain-words sentences at the
-top of the page. `data/players.json` is hand-written: it maps each source's spelling of an
-organization to one player, with links in the player's own words.
+## Licences, and what we changed
+
+- Files under `data/` named after a source stay under that source's licence: **CC BY 4.0, by Epoch AI**
+  (the `epoch_*` files) or **by Arena (lmarena-ai)** (`arena_leaderboard.json`). CC BY 4.0 asks us to say
+  what we changed: each file's `changes` field does (which rows were kept, which columns renamed or
+  rounded, which labels are ours), and each card on the page says "Changes: rows filtered; trend lines and
+  summaries are ours".
+- `data/summary.json` is **our adaptation** of those files: rows filtered and combined, and the trend
+  lines, positions and sentences are ours. It carries the same credit.
+- `data/players.json` is hand-written by us.
+- METR's figures are quoted with attribution only. OpenRouter's are linked, not copied.
+- Page text and code: see the repository's `LICENSE` and `LICENSE-CONTENT.txt`.
 
 ## Run it locally
 
@@ -44,31 +61,57 @@ organization to one player, with links in the player's own words.
     python state-of-ai/scripts/run_all.py epoch_eci   # just one source (the summary is rebuilt too)
     python -m http.server 8000                      # from the repo root, then open /state-of-ai/
 
-A fetcher that fails keeps the previous file. A file whose contents did not change is not
-rewritten, so its `fetched_at` stays the time those numbers were fetched.
+A fetcher reads robots.txt first and never fetches a disallowed address (Arena's own `/api/` is
+disallowed and is not used; its data come from the Hugging Face dataset). A fetcher that fails keeps
+the previous file. A file whose rows did not change keeps its `fetched_at`, so **`fetched_at` means
+"these numbers have not changed since", not "last checked"**; the page says "numbers unchanged since".
+If only the notes around unchanged rows change (coverage wording, `changes`), the file is rewritten
+with the old `fetched_at`.
+
+`run_all.py` exits 0 when every source was checked, 2 when the summary was built but a source failed,
+and 1 when nothing could be built.
 
 ## The weekly refresh
 
-`.github/workflows/state-of-ai-refresh.yml` runs every Monday (and on demand). It never pushes to
-`main`: it commits to `data/state-of-ai-refresh` and opens or updates one pull request. Merging
-publishes, through `pages.yml`. Opening the pull request needs "Allow GitHub Actions to create and
-approve pull requests" in the repository's Actions settings; without it the run prints a link.
+`.github/workflows/state-of-ai-refresh.yml` runs every Monday at 06:17 UTC (and on demand). It never
+pushes to `main`: it rebuilds the branch `data/state-of-ai-refresh` from `main` and opens or updates one
+pull request. Merging publishes, through `pages.yml`.
 
-The Arena fetcher is incremental: it records a `history_cursor` and reads only newer snapshots
-(the first run reads the whole history, about 1,000 small requests).
+- **A failed source fails the run**, after whatever succeeded has been committed. GitHub emails the
+  owner when a scheduled run fails, so a dead source cannot sit unnoticed behind "nothing changed".
+- **The schedule starts only once the workflow file is on `main`.** In a public repository GitHub turns
+  scheduled runs off after 60 days with no activity, and emails a warning first.
+- **Pull requests show no checks.** A pull request opened with GitHub's own token does not start other
+  workflows. The refresh job runs the offline checks itself; to run the checks that run on pull
+  requests, close and reopen the pull request.
+- Opening the pull request needs "Allow GitHub Actions to create and approve pull requests" in the
+  repository's Actions settings; without it the run pushes the branch and prints a link to open it.
+
+The Arena fetcher is incremental: it records a `history_cursor` and reads only newer snapshots (the
+first run reads the whole history page by page, about 1,000 small requests). The history holds two
+counts, kept apart: raw-vote snapshots and style-adjusted snapshots (the page gives both).
 
 ## Open decisions (PlayfulProcess)
 
-1. **METR**: stay link-only, store per-model numbers with a citation (`METR_STORE_ROWS=1`), or ask
-   METR for permission (outreach needs your approval).
-2. **Player pages**: `lab_page` in `data/players.json` is empty for everyone. When the lab has a
-   page for a player (an institutions entry, a person page), put its URL there and the player
-   panel links to it.
-3. **Usage share** (tokens served by open vs closed models) is shown as "not measured here": no
-   official, openly licensed download was found.
+1. **METR**: stay link-only (the default), store per-model numbers with a citation
+   (`METR_STORE_ROWS=1`), or ask METR (outreach needs your approval). METR's site says "all rights
+   reserved"; its public repository (METR/eval-analysis-public) has no licence file; the 2025 paper
+   (arXiv 2503.14499) is CC BY 4.0 but its numbers are older.
+2. **The 70/30 figure**: no source found for it (who said it, when, which way round, what it counts).
+   The page mentions it without quotation marks and says so. If you have the clip, its link and
+   timestamp can go in the lede.
+3. **Player pages**: `lab_page` in `data/players.json` is empty for everyone. When the lab has a page for
+   a player, put its URL there and the player panel links to it.
+4. **"Open their strategy on click"** is not built as strategy text: the player panel shows what each
+   player says (their own dated statements, flagged when older than 12 months) beside what the data show
+   they do, each line with its source.
 
-## When lab/replatform lands
+## When lab/replatform and lab/curves-and-odds land
 
-That branch moves the list of published folders to `scripts/site-folders.txt` and adds a menu in
-`site/site-header.js`. This folder then needs one line, `state-of-ai`, in that list (replacing the
-`cp -r state-of-ai` line this branch adds to `pages.yml`), plus a menu entry if wanted.
+- `lab/curves-and-odds` adds `explainers/` at the same two places in `pages.yml` as this branch adds
+  `state-of-ai/`; whichever merges second gets a one-line conflict. Keep both lines.
+- `lab/replatform` moves the list of published folders to `scripts/site-folders.txt` and adds a link check
+  that fails the deploy if a top-level folder with a page is not listed. Once both are in `main`: add the
+  line `state-of-ai  state-of-ai` to `site-folders.txt`, keep `'state-of-ai/**'` in `pages.yml`'s path
+  triggers (without it, merging a weekly data pull request would not republish the page), and run
+  `check_all.py` on the result.

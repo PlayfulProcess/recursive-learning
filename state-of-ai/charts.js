@@ -164,7 +164,7 @@
   function xyChart(host, spec) {
     var f = frame(host, spec), svg = f.svg, inter = f.inter;
     function draw() {
-      var W = Math.max(280, host.clientWidth), H = typeof spec.height === 'function' ? spec.height(W) : (spec.height || 280);
+      var W = Math.max(240, host.clientWidth), H = typeof spec.height === 'function' ? spec.height(W) : (spec.height || 280);
       while (svg.firstChild) svg.removeChild(svg.firstChild);
       svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H);
       var ylog = !!spec.y.log;
@@ -276,13 +276,13 @@
   function columnsChart(host, spec) {
     var f = frame(host, spec), svg = f.svg, inter = f.inter;
     function draw() {
-      var W = Math.max(280, host.clientWidth), H = spec.height || 260;
+      var W = Math.max(240, host.clientWidth), H = spec.height || 260;
       while (svg.firstChild) svg.removeChild(svg.firstChild);
       svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H);
       var cats = spec.categories, maxV = 0;
       cats.forEach(function (c) { var t = 0; c.parts.forEach(function (p) { t += p.value || 0; }); c.total = t; maxV = Math.max(maxV, t); });
       var yt = linTicks(0, maxV * 1.05, 5);
-      var ml = 8 + Math.max.apply(null, yt.map(function (t) { return textWidth(spec.y.fmt(t)); })), mr = 8, mt = 14, mb = 24;
+      var ml = 8 + Math.max.apply(null, yt.map(function (t) { return textWidth(spec.y.fmt(t)); })), mr = 8, mt = (spec.markers && spec.markers.length) ? 42 : 14, mb = 24;
       var y = lin(0, yt[yt.length - 1], H - mb, mt);
       var band = (W - ml - mr) / cats.length, bw = Math.min(24, band * 0.72);
       var g = el('g', null, svg), ga = el('g', { 'class': 'axis' }, g);
@@ -310,6 +310,19 @@
         marks.push({ d: c, px: cx, py: y(c.total), r: 2 });
       });
       el('line', { x1: ml, x2: W - mr, y1: H - mb, y2: H - mb, 'class': 'baseline' }, ga);
+      // markers: where counting changes (a solid hairline before that period, labelled)
+      (spec.markers || []).forEach(function (mk, j) {
+        var i = cats.map(function (c) { return c.key; }).indexOf(mk.key);
+        if (i < 0) return;
+        var mx = ml + band * i;
+        el('line', { x1: mx, x2: mx, y1: mt + 2, y2: H - mb, 'class': 'rule' }, g);
+        var lines = String(mk.label).split('|');
+        lines.forEach(function (ln, k) {
+          var right = mx > (W - mr) * 0.62;
+          var t = el('text', { x: right ? mx - 4 : mx + 4, y: 11 + k * 13, 'text-anchor': right ? 'end' : 'start', 'class': 'rule-label' }, g);
+          t.textContent = ln;
+        });
+      });
       inter.marks = marks;
       inter.ring = null;
       var ov = el('rect', { x: ml, y: 0, width: W - ml - mr, height: H, 'class': 'hit' }, svg);
@@ -332,7 +345,7 @@
   function hbarsChart(host, spec) {
     var f = frame(host, spec), svg = f.svg, inter = f.inter;
     function draw() {
-      var W = Math.max(280, host.clientWidth), rows = spec.rows, rowH = 40, mt = 6, H = mt + rows.length * rowH + 22;
+      var W = Math.max(240, host.clientWidth), rows = spec.rows, rowH = 40, mt = 6, H = mt + rows.length * rowH + 22;
       while (svg.firstChild) svg.removeChild(svg.firstChild);
       svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H);
       var maxV = 0;
@@ -388,7 +401,10 @@
   function intervalChart(host, spec) {
     var f = frame(host, spec), svg = f.svg, inter = f.inter;
     function draw() {
-      var W = Math.max(280, host.clientWidth), rows = spec.rows, rowH = 46, mt = 4, H = mt + rows.length * rowH + 24;
+      var W = Math.max(240, host.clientWidth), rows = spec.rows, rowH = 46, headH = 30, mt = 4;
+      var tops = [], acc = mt;
+      rows.forEach(function (r) { tops.push(acc); acc += r.header ? headH : rowH; });
+      var H = acc + 24;
       while (svg.firstChild) svg.removeChild(svg.firstChild);
       svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H);
       var lx0 = Math.log10(spec.x.min), lx1 = Math.log10(spec.x.max), ml = 4, mr = 10;
@@ -399,8 +415,19 @@
         var tx = el('text', { x: X(t), y: H - 6, 'text-anchor': 'middle' }, ga); tx.textContent = spec.x.fmt(t);
       });
       rows.forEach(function (r, i) {
-        var top = mt + i * rowH, cy = top + 30;
-        var lt = el('text', { x: ml, y: top + 13, 'class': 'lbl' }, g); lt.textContent = r.label;
+        var top = tops[i], cy = top + 30;
+        if (r.header) {
+          var ht = el('text', { x: ml, y: top + 22, 'class': 'grp' }, g); ht.textContent = r.label;
+          return;
+        }
+        var lt = el('text', { x: ml, y: top + 13, 'class': 'lbl' }, g), room = W - ml - mr, lab = r.label;
+        // a label wider than the chart is cut with an ellipsis; the tooltip carries it in full
+        lt.textContent = lab;
+        var fits = function () { var w = lt.getComputedTextLength ? lt.getComputedTextLength() : 0; return !w || w <= room; };
+        while (lab.length > 8 && !fits()) {
+          lab = lab.slice(0, -2);
+          lt.textContent = lab.replace(/[\s,(]+$/, '') + '…';
+        }
         r.marks.forEach(function (m, j) {
           var yy = cy + (r.marks.length > 1 ? (j === 0 ? -4 : 4) : 0);
           if (m.lo != null || m.hi != null) {

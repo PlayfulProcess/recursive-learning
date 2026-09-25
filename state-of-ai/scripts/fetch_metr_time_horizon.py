@@ -142,6 +142,8 @@ def run():
                          "on METR's page. Decision pending: store per-model numbers, or ask METR."),
         "citation": "METR, 'Task-Completion Time Horizons of Frontier AI Models', https://metr.org/time-horizons/",
         "redistribution": "rows" if store_rows else "link-only",
+        "changes": ("Only METR's own fitted doubling times are quoted, with their ranges, from the YAML files it "
+                    "publishes; per-model numbers are not stored unless METR_STORE_ROWS=1. Coverage notes are ours."),
     }, fetched_at, coverage,
         ["version", "model", "org", "date", "p50_minutes", "p50_lo", "p50_hi"], rows,
         quoted=quoted, unit="minutes of skilled-human time", source_updated=v11["newest"])

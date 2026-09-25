@@ -53,6 +53,8 @@ def run():
         "licence_note": "Epoch's README: free to use, distribute, and reproduce provided the source and authors are credited. Each row also links its original report.",
         "citation": "Epoch AI, 'Data on AI Companies'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-companies",
         "redistribution": "copied",
+        "changes": ("From ai_companies_revenue_reports.csv: reports with a date and an annualized figure kept; 8 columns kept and renamed; figures rounded to 4 significant figures."
+                    " Coverage notes, trend lines and summaries (summary.json) are ours."),
     }, fetched_at, coverage, columns, rows, unit="US dollars per year", source_updated=max(x[1] for x in rows))
     return write_data(payload)
 

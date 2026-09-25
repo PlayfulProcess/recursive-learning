@@ -4,9 +4,14 @@
     python3 state-of-ai/scripts/run_all.py epoch_eci  # just some
 
 A fetcher that fails keeps its previous data file and is listed at the end; the others still
-run. Exit status: 0 when the summary was built (even if some sources failed, which the report
-names), 1 when nothing could be built. The report is printed and, inside GitHub Actions, also
-written to the job summary and to $STATE_OF_AI_REPORT for the pull request body.
+run, and the summary is rebuilt from whatever is there. Exit status:
+  0  every source fetched (changed or not) and the summary was built
+  2  the summary was built, but at least one source FAILED (its old file was kept)
+  1  the summary could not be built
+The weekly workflow commits whatever succeeded first and only then fails the run on 1 or 2, so
+a dead source cannot hide behind "nothing changed": GitHub emails the owner about a failed
+scheduled run. The report is printed and, inside GitHub Actions, also written to the job summary
+and to $STATE_OF_AI_REPORT for the pull request body.
 """
 
 import importlib
@@ -60,7 +65,9 @@ def main(argv):
         if path:
             with open(path, "a", encoding="utf-8") as f:
                 f.write("### State of AI refresh\n\n" + report + "\n")
-    return 0 if built else 1
+    if not built:
+        return 1
+    return 2 if failed else 0
 
 
 if __name__ == "__main__":

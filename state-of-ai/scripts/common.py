@@ -3,7 +3,10 @@
 Every fetcher writes one file, state-of-ai/data/<id>.json, with the same envelope:
 
     id, name, what_it_measures, source, url, page, licence, licence_url, citation,
-    redistribution ("copied" or "link-only"), fetched_at, coverage, columns, rows
+    redistribution ("copied" or "link-only"), changes, fetched_at, coverage, columns, rows
+
+`changes` says what was changed from the source, as CC BY 4.0 asks: which rows were kept, which
+columns renamed or rounded. The trend lines and sentences in summary.json are ours.
 
 `rows` is a list of arrays in the order of `columns` (smaller than a list of objects).
 
@@ -11,9 +14,9 @@ Rules the helpers enforce, so a fetcher cannot forget them:
   - robots.txt is read before any download, and a disallowed URL is never fetched;
   - one User-Agent that says who we are and where the page lives;
   - a download is retried with backoff, then the fetcher fails and the OLD file is kept;
-  - if the new rows are the same as the old ones, the file is not rewritten, so its
-    fetched_at stays the time those numbers were first fetched (run_all.py records the
-    check time in manifest.json instead);
+  - if the new rows are the same as the old ones, the file keeps its old fetched_at, so
+    fetched_at means "these numbers have not changed since", not "last checked" (the weekly
+    workflow run is the record of each check, and it fails loudly when a source fails);
   - a fetch that returns fewer than half the old rows is refused as a probable format change.
 """
 
@@ -34,8 +37,9 @@ from datetime import date, datetime, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.normpath(os.path.join(HERE, "..", "data"))
-USER_AGENT = ("recursive-learning-state-of-ai/1.0 "
-              "(+https://learning.recursive.eco/state-of-ai/; weekly, one request per file)")
+USER_AGENT = ("recursive-learning-state-of-ai/1.1 "
+              "(+https://learning.recursive.eco/state-of-ai/; weekly; one download per Epoch or METR "
+              "file, and Arena's history read page by page through the Hugging Face API)")
 CACHE_DIR = os.environ.get("STATE_OF_AI_CACHE") or os.path.join(tempfile.gettempdir(), "state-of-ai-cache")
 
 CC_BY_4 = "https://creativecommons.org/licenses/by/4.0/"
@@ -170,23 +174,34 @@ def _digest(payload):
     return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
 
 
-def write_data(payload, min_ratio=0.5):
-    """Write data/<id>.json. Returns 'written' or 'unchanged'. Raises on a suspicious shrink.
+def _rows_digest(payload):
+    body = {"columns": payload.get("columns"), "rows": payload.get("rows")}
+    return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
 
-    'unchanged' means everything but fetched_at is identical, so the file is left alone and its
-    fetched_at stays the time these numbers were fetched."""
+
+def write_data(payload, min_ratio=0.5):
+    """Write data/<id>.json. Returns 'written', 'notes updated' or 'unchanged'.
+    Raises on a suspicious shrink.
+
+    When the rows are the same as before, the old fetched_at is kept: it records when these
+    numbers were first fetched. If only the notes around them changed (coverage wording, the
+    licence note, `changes`), the file is rewritten with that old fetched_at."""
     metric_id = payload["id"]
     old = read_data(metric_id)
+    status = "written"
     if old is not None:
         if _digest(old) == _digest(payload):
             return "unchanged"
+        if _rows_digest(old) == _rows_digest(payload) and old.get("fetched_at"):
+            payload = dict(payload, fetched_at=old["fetched_at"])
+            status = "notes updated"
         n_old, n_new = len(old.get("rows") or []), len(payload.get("rows") or [])
         if n_old and n_new < n_old * min_ratio:
             raise FetchError(f"{metric_id}: {n_new} rows vs {n_old} before; refusing to overwrite")
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(data_path(metric_id), "w", encoding="utf-8", newline="\n") as f:
         f.write(dumps(payload))
-    return "written"
+    return status
 
 
 def dumps(payload):
@@ -202,8 +217,13 @@ def dumps(payload):
     return "{\n" + ",\n".join(parts) + "\n}\n"
 
 
+DEFAULT_CHANGES = ("Rows filtered and columns renamed or reduced from the source file; some values "
+                   "rounded. Coverage notes, trend lines and summaries (summary.json) are ours.")
+
+
 def envelope(meta, fetched_at, coverage, columns, rows, **extra):
     out = dict(meta)
+    out.setdefault("changes", DEFAULT_CHANGES)
     out.update({
         "fetched_at": fetched_at,
         "coverage": coverage,

@@ -10,6 +10,7 @@
  "licence_note": "Epoch's README: free to use, distribute, and reproduce provided the source and authors are credited.",
  "citation": "Epoch AI, 'Data on AI Chip Sales'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-chip-sales",
  "redistribution": "copied",
+ "changes": "From cumulative_timelines_by_designer.csv: the per-quarter amount computed by us as the difference of Epoch's cumulative medians; cumulative figures rounded to whole H100-equivalents. Coverage notes, trend lines and summaries (summary.json) are ours.",
  "fetched_at": "2026-09-25T08:46:18Z",
  "coverage": {
   "summary": "Designers counted: Nvidia from 2022-01, Google from 2022-10, AMD from 2024-01, Amazon from 2024-01, Huawei from 2024-01, Cambricon from 2024-01. The series start at different dates, so a total across designers is only fair from the latest start. Estimates are modelled from company filings and reports; quarters marked incomplete are still being counted.",

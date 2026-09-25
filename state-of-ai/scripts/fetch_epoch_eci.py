@@ -60,6 +60,8 @@ def run():
                          "keeps its original licence; none of that is copied here."),
         "citation": "Epoch AI, 'Capabilities & Benchmarking'. Published online at epoch.ai. Retrieved from https://epoch.ai/benchmarks",
         "redistribution": "copied",
+        "changes": ("From eci_scores.csv: models with a date and a score kept; the display name used as the model name; 9 columns kept and renamed; scores rounded to 2 decimals."
+                    " Coverage notes, trend lines and summaries (summary.json) are ours."),
     }, fetched_at, coverage, columns, rows, unit="ECI points", source_updated=rows[-1][3])
     return write_data(payload)
 

@@ -10,6 +10,7 @@
  "licence_note": "robots.txt allows the download, but no licence grants reuse of the per-model numbers. Only METR's headline doubling times are quoted here, with attribution; the chart lives on METR's page. Decision pending: store per-model numbers, or ask METR.",
  "citation": "METR, 'Task-Completion Time Horizons of Frontier AI Models', https://metr.org/time-horizons/",
  "redistribution": "link-only",
+ "changes": "Only METR's own fitted doubling times are quoted, with their ranges, from the YAML files it publishes; per-model numbers are not stored unless METR_STORE_ROWS=1. Coverage notes are ours.",
  "fetched_at": "2026-09-25T08:46:49Z",
  "coverage": {
   "summary": "26 models in v1.1, 2019-02-14 to 2026-04-07: OpenAI 15, Anthropic 9, Google DeepMind 2. The tasks are software and ML-research work only, so this is not general capability. METR may skip a release or measure it late.",

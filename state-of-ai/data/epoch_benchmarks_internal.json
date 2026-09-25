@@ -10,6 +10,7 @@
  "licence_note": "Epoch-run results only. Benchmark questions and answers belong to their creators; only scores are used.",
  "citation": "Epoch AI, 'Capabilities & Benchmarking'. Published online at epoch.ai. Retrieved from https://epoch.ai/benchmarks",
  "redistribution": "copied",
+ "changes": "Three Epoch-run benchmark files kept (never the *_external.csv files); scores and standard errors rounded to 4 decimals; each model's accessibility joined from model_metadata.csv; questions and answers never copied. Coverage notes, trend lines and summaries (summary.json) are ours.",
  "fetched_at": "2026-09-25T09:53:33Z",
  "coverage": {
   "summary": "Only models Epoch chooses to run through an API: mostly US frontier labs plus the major Chinese labs. Rows: GPQA Diamond 311, FrontierMath, tiers 1-3 108, SWE-bench Verified 35. Models without an API, and labs that don't give access, are missing.",

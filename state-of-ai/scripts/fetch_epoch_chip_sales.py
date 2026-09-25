@@ -66,6 +66,8 @@ def run():
         "licence_note": "Epoch's README: free to use, distribute, and reproduce provided the source and authors are credited.",
         "citation": "Epoch AI, 'Data on AI Chip Sales'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-chip-sales",
         "redistribution": "copied",
+        "changes": ("From cumulative_timelines_by_designer.csv: the per-quarter amount computed by us as the difference of Epoch's cumulative medians; cumulative figures rounded to whole H100-equivalents."
+                    " Coverage notes, trend lines and summaries (summary.json) are ours."),
     }, fetched_at, coverage, columns, rows, unit="H100-equivalents", source_updated=max(x[2] for x in rows))
     return write_data(payload)
 

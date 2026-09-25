@@ -83,6 +83,8 @@ def run():
         "licence_note": "Epoch-run results only. Benchmark questions and answers belong to their creators; only scores are used.",
         "citation": "Epoch AI, 'Capabilities & Benchmarking'. Published online at epoch.ai. Retrieved from https://epoch.ai/benchmarks",
         "redistribution": "copied",
+        "changes": ("Three Epoch-run benchmark files kept (never the *_external.csv files); scores and standard errors rounded to 4 decimals; each model's accessibility joined from model_metadata.csv; questions and answers never copied."
+                    " Coverage notes, trend lines and summaries (summary.json) are ours."),
     }, fetched_at, coverage, columns, rows, unit="share correct", benchmarks=bench_meta,
         source_updated=max(x[4] for x in rows))
     return write_data(payload)

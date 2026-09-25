@@ -30,20 +30,22 @@
     </div>
   </header>
 
-  <p class="lede">A single ratio, like "70/30 open", is one vantage point. It cannot stand for a whole
-    industry. This page keeps several meters side by side: what each one counts, who it leaves out,
-    and where they disagree.</p>
-  <p class="how">A straight line on a log scale means steady doubling; a bend means the pace changed.
-    Each fitted line carries a 90% band. Nothing is drawn past the data unless you turn on
-    "if the trend continued", and even then it is labelled as not a forecast. Tap or hover any dot;
-    tap again to open its source or to place that player on every meter.</p>
+  <p class="lede">A single ratio of open to closed AI, such as a 70/30 split, is one vantage point.
+    It cannot stand for a whole industry. This page keeps several meters side by side: what each one
+    counts, who it leaves out, and where they disagree.</p>
+  <p class="how">We have not found where the 70/30 figure comes from: who said it, which way round it
+    goes, or what it counts, so it is not quoted here. A straight line on a log scale means steady
+    doubling; a bend means the pace changed. Each fitted line carries a band for where the line itself
+    could be. Nothing is drawn past the data unless you turn on "if the trend continued", and even then it
+    is labelled as not a forecast, with a wider band for where single points could land. Tap or hover any
+    dot; tap again to open its source or to place that player on every meter.</p>
 
   <div class="filters" role="region" aria-label="Filters for every chart below">
     <label>Place a player
       <select id="player-select"><option value="">Everyone</option></select>
     </label>
     <button type="button" id="clear" class="clear" hidden>Show everyone</button>
-    <label><input type="checkbox" id="ext"> If the trend continued</label>
+    <label><input type="checkbox" id="ext"> If the trend continued (not a forecast)</label>
   </div>
 
   <section class="player" id="player" hidden aria-live="polite"></section>
@@ -53,14 +55,16 @@
     <p class="blurb" id="asof"></p>
     <p class="loading">Loading the numbers…</p>
     <ul class="disagree" id="disagree"></ul>
-    <noscript><p>The charts need JavaScript. The numbers themselves are plain JSON files in <a href="data/">data/</a>, one per source.</p></noscript>
+    <noscript><p>The charts need JavaScript. The numbers themselves are plain JSON files, one per source, summed up in <a href="data/summary.json">data/summary.json</a>.</p></noscript>
   </section>
 
   <section class="group" id="g-speed" aria-labelledby="g-speed-h">
     <h2 id="g-speed-h">How fast, by each meter</h2>
-    <p class="blurb">Months for each fitted line to double, with its 90% range. Filled dots use the whole
-      period; hollow ones only the last 24 months, so a gap between them is a bend. They measure different
-      things (compute, chips, dollars, task length), so they sit side by side and are never averaged.</p>
+    <p class="blurb">Months for each fitted line to double. Filled dots use the whole period; hollow ones
+      only the last 24 months of that meter's data, so a gap between them is a bend. Industry-wide meters
+      come first, single companies on their own, and last the fits the sources publish themselves, with
+      their own ranges. They measure different things (compute, chips, dollars, task length), so they sit
+      side by side and are never averaged.</p>
     <div class="card"><div id="speed-chart"></div></div>
   </section>
 
@@ -70,8 +74,8 @@
       question, so each gives a different answer.</p>
     <div class="tiles" id="ovc-tiles"></div>
     <div class="tiles">
-      <div class="card"><h3>Months behind, over time</h3><p class="q">At each new open-weights record on Epoch's index: how long before had a closed model scored as high? Whiskers: the range given each score's uncertainty.</p><div id="ovc-lag"></div></div>
-      <div class="card"><h3>Head-to-head votes, over time</h3><p class="q">From Arena's blind votes: the chance the best closed model beats the best open one. The two lines are the arena's two ways of counting.</p><div id="ovc-arena"></div></div>
+      <div class="card"><h3>Months behind, over time</h3><p class="q">At each new open-weights record on Epoch's index: how long before had a closed model scored as high? Whiskers: the range from the open model's own score uncertainty only; the closed models' uncertainty is not counted.</p><div id="ovc-lag"></div></div>
+      <div class="card"><h3>Head-to-head votes, over time</h3><p class="q">From Arena's blind votes: the chance, implied by the ratings, that the best closed model beats the best open one, counting only votes with a winner. The two lines are the arena's two ways of counting.</p><div id="ovc-arena"></div></div>
     </div>
     <div class="card"><h3>Notable releases with open weights, by year</h3><p class="q">Counted from Epoch's list of notable models. The last year is not over yet.</p><div id="ovc-share"></div></div>
   </section>
@@ -101,25 +105,33 @@
     <h2>Sources</h2>
     <div class="tablewrap" style="max-height:none">
       <table id="sources" class="srctable">
-        <thead><tr><th>Meter</th><th>Source</th><th>Licence</th><th>Kept here as</th><th>Fetched</th><th>Files</th></tr></thead>
+        <thead><tr><th>Meter</th><th>Source</th><th>Licence</th><th>Kept here as</th><th>Newest data</th><th>Numbers unchanged since</th><th>Files</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
     <div class="method">
       <h2 style="margin-top:22px">Method</h2>
-      <p>Every source is fetched weekly by a small Python script (standard library only) from an official
-        download or API, after reading the site's robots.txt. Where a source's licence does not allow
-        copying, as with METR's per-model numbers, this page links to it instead. A refresh opens a pull
-        request; a person reads the diff before anything changes here.</p>
-      <p>Trends are least-squares lines through the logarithm of each value, with 1,000 bootstrap resamples
-        for the 90% band (the band is where the line could be, not where points fall). "Faster lately" or
-        "slower lately" means the last 24 months' slope differs from the years before by more than its own
-        90% interval; with fewer than six recent points the page says it cannot tell.
+      <p>Every source is checked weekly by a small Python script (standard library only) from an official
+        download or API, after reading the site's robots.txt. Where a source's licence or terms do not allow
+        copying, as with METR's per-model numbers and OpenRouter's usage data, this page links to it instead.
+        A refresh opens a pull request; a person reads the diff before anything changes here. A source that
+        fails keeps its last good file and makes the weekly run fail, so it cannot go unnoticed.
+        "Numbers unchanged since" is when a source's numbers last changed, not when they were last checked.</p>
+      <p>Trends are least-squares lines through the logarithm of each value, with 1,000 bootstrap resamples.
+        The narrow band is the 90% range of where the line could be; with "if the trend continued" on, a
+        wider band adds how far single points land from the line. For lists of models and chips, points are
+        resampled one by one; for one company's or one chipmaker's series, runs of neighbouring points are
+        resampled together, since they move together. "Faster lately" or "slower lately" means the last 24
+        months of a meter's data differ from the years before by more than their 90% interval; with fewer
+        than six points on either side the page says it cannot tell. With several such checks, one "changed"
+        can be luck, and the summary gives the chance.
         <a href="scripts/fit.py">The fitting code</a> ·
         <a href="scripts/build_summary.py">how the summary sentences are made</a> ·
         <a href="data/players.json">who counts as which player</a>.</p>
-      <p>Epoch AI data: CC BY 4.0, credited on each card. Arena data: CC BY 4.0. METR: quoted headline
-        figures only, with a link. Page text: CC BY-SA 4.0, PlayfulProcess ·
+      <p>Epoch AI data: CC BY 4.0, credited on each card. Arena data: CC BY 4.0. Changes: rows filtered and
+        columns renamed (each data file's <code>changes</code> field says how); the trend lines, positions and
+        sentences in <a href="data/summary.json">summary.json</a> are ours. METR: quoted headline figures
+        only, with a link. Page text: CC BY-SA 4.0, PlayfulProcess ·
         <a href="../">Recursive Learning</a> · <a href="https://recursive.eco">recursive.eco</a></p>
     </div>
   </footer>

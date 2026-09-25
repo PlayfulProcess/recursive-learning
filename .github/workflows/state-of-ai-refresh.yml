@@ -1,19 +1,30 @@
 name: State of AI refresh
 
-# Weekly: re-fetch every source behind learning.recursive.eco/state-of-ai/, rebuild the summary,
+# Weekly: re-check every source behind learning.recursive.eco/state-of-ai/, rebuild the summary,
 # and open (or update) ONE pull request with the new numbers. It never pushes to main: a person
-# reads the diff and merges, and the merge is what publishes (pages.yml deploys on push to main).
+# reads the diff and merges, and the merge is what publishes (pages.yml deploys on push to main,
+# as long as 'state-of-ai/**' stays in its path triggers).
 #
 # No installs: the fetchers use only the Python standard library, and ubuntu-latest ships python3.
-# A source that fails keeps its previous file; the pull request body names it. If no data file
-# changed, nothing is committed.
+#
+# FAILURES ARE LOUD. A source that fails keeps its previous file, and the run still commits
+# whatever did succeed; then the last step fails the run. GitHub emails the owner when a scheduled
+# run fails, so a dead source cannot hide behind "nothing changed" for months. The job summary
+# and the pull request body name the source that failed.
 #
 # The branch `data/state-of-ai-refresh` is rebuilt from main on every run (force-pushed), so an
 # unmerged refresh is replaced by the newer one rather than piling up. Do not hand-edit that branch.
 #
-# Opening the pull request needs Settings -> Actions -> General -> "Allow GitHub Actions to create
-# and approve pull requests". If that is off, the run still pushes the branch and prints a link
-# to open the pull request by hand.
+# Good to know:
+# - The schedule only starts once this file is on main.
+# - In a public repository GitHub turns scheduled runs off after 60 days with no activity in the
+#   repository, and emails a warning first; re-enable it under Actions if that happens.
+# - Pull requests opened with GitHub's own token do not start other workflows, so checks that run
+#   on pull requests will not show on this one. This job runs the offline checks itself (first
+#   step); to run the other checks, close and reopen the pull request.
+# - Opening the pull request needs Settings -> Actions -> General -> "Allow GitHub Actions to
+#   create and approve pull requests". If that is off, the run still pushes the branch and prints
+#   a link to open the pull request by hand.
 
 on:
   schedule:
@@ -40,15 +51,25 @@ jobs:
         with:
           ref: main
 
-      - name: Offline checks (fitting code, YAML reader)
+      - name: Offline checks (fitting code, YAML reader, file writer)
         run: python3 state-of-ai/scripts/test_scripts.py
 
       - name: Fetch every source and rebuild the summary
+        id: fetch
         env:
           STATE_OF_AI_REPORT: ${{ runner.temp }}/report.md
-        run: python3 state-of-ai/scripts/run_all.py
+        # run_all.py exits 0 (all fine), 2 (built, but a source failed) or 1 (nothing built).
+        # Record the code instead of stopping here, so what did succeed is still committed.
+        run: |
+          set +e
+          python3 state-of-ai/scripts/run_all.py
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "run_all.py exit code: $code"
+          exit 0
 
       - name: Commit to the refresh branch and open or update the pull request
+        if: steps.fetch.outputs.code != '1'
         env:
           GH_TOKEN: ${{ github.token }}
           REPORT: ${{ runner.temp }}/report.md
@@ -71,6 +92,9 @@ jobs:
             echo "Only files under \`state-of-ai/data/\` change. Read the diff: each data file keeps one row per line,"
             echo "so a changed estimate shows as a changed line. Merging publishes the new numbers."
             echo
+            echo "Checks that run on pull requests do not start on a pull request opened by this workflow;"
+            echo "the offline checks ran in the refresh job itself. Close and reopen this pull request to run the others."
+            echo
             cat "$REPORT" 2>/dev/null || true
           } > "$RUNNER_TEMP/body.md"
 
@@ -85,3 +109,9 @@ jobs:
           else
             echo "::warning::Could not open a pull request (is 'Allow GitHub Actions to create pull requests' off?). Open it here: https://github.com/${GITHUB_REPOSITORY}/compare/main...${BRANCH}"
           fi
+
+      - name: Fail the run if any source failed
+        if: steps.fetch.outputs.code != '0'
+        run: |
+          echo "::error::A source failed (run_all.py exit ${{ steps.fetch.outputs.code }}). Its previous file was kept; see the job summary for which one."
+          exit 1

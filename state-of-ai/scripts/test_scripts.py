@@ -51,6 +51,48 @@ def test_detects_a_bend():
     check(f["change"]["verdict"] == "faster lately", f"a speed-up is detected ({f['change']['verdict']})")
 
 
+def test_blocks_and_extension():
+    rng = random.Random(3)
+    pts, walk = [], 0.0
+    for i in range(40):
+        t = 2020 + i / 4
+        walk += rng.gauss(0, 0.08)  # neighbours move together
+        pts.append((iso_of(t), 10 ** (1 + (t - 2020) * 0.3 + walk)))
+    iid = fit_series("w", "walk", pts, "x")
+    blk = fit_series("w", "walk", pts, "x", block=True)
+    wi = iid["whole"]["slope_ci"][1] - iid["whole"]["slope_ci"][0]
+    wb = blk["whole"]["slope_ci"][1] - blk["whole"]["slope_ci"][0]
+    check(wb > wi, f"resampling runs of neighbours widens the range for a series that moves together ({wi:.3f} -> {wb:.3f})")
+    check("blocks" in blk["whole"]["resampling"], "the block resampling is named in the output")
+    e = iid["if_trend_continued"]
+    check(len(e) == 12 and all(r[4] <= r[1] <= r[2] <= r[3] <= r[5] for r in e),
+          "the point range is wider than the line's own range, past the data")
+    late = fit_series("w", "walk", pts, "x", ref_date="2032-01-01")
+    check(late["if_trend_continued"] == [] and late["data_stop"] == iso_of(2029.75)[:7],
+          f"no stretch when the data stopped long ago; data_stop {late['data_stop']}")
+    none = fit_series("w", "walk", pts, "x", extend_months=0)
+    check(none["if_trend_continued"] == [], "extend_months=0 draws no stretch (single companies)")
+
+
+def test_fetched_at_kept_when_rows_unchanged():
+    import tempfile
+    import common
+    old_dir = common.DATA_DIR
+    common.DATA_DIR = tempfile.mkdtemp()
+    try:
+        base = {"id": "t", "name": "t", "fetched_at": "2026-01-01T00:00:00Z", "columns": ["a"], "rows": [[1], [2]]}
+        check(common.write_data(dict(base)) == "written", "first write")
+        check(common.write_data(dict(base, fetched_at="2026-02-01T00:00:00Z")) == "unchanged", "same rows: unchanged")
+        st = common.write_data(dict(base, fetched_at="2026-03-01T00:00:00Z", changes="new note"))
+        d = common.read_data("t")
+        check(st == "notes updated" and d["fetched_at"] == "2026-01-01T00:00:00Z" and d["changes"] == "new note",
+              "notes changed, rows not: the old fetched_at is kept")
+        common.write_data(dict(base, fetched_at="2026-04-01T00:00:00Z", rows=[[1], [3]]))
+        check(common.read_data("t")["fetched_at"] == "2026-04-01T00:00:00Z", "rows changed: fetched_at moves")
+    finally:
+        common.DATA_DIR = old_dir
+
+
 def test_too_few_points():
     f = fit_series("s", "short", [("2024-01-01", 1), ("2025-01-01", 2)], "x")
     check(f["status"] == "too few points", "two points are not fitted")
@@ -132,5 +174,7 @@ if __name__ == "__main__":
     test_too_few_points()
     test_recovers_known_doubling()
     test_detects_a_bend()
+    test_blocks_and_extension()
+    test_fetched_at_kept_when_rows_unchanged()
     test_yaml_subset()
     print("all checks passed")

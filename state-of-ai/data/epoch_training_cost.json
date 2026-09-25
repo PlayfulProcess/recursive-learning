@@ -10,6 +10,7 @@
  "licence_note": "Epoch's README: the data is free to use, distribute, and reproduce provided the source and authors are credited.",
  "citation": "Epoch AI, 'Data on AI Models'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-models",
  "redistribution": "copied",
+ "changes": "From notable_ai_models.csv: only models with a cost estimate and a date kept; 9 columns kept and renamed; dollars and FLOP rounded to 4 significant figures. Coverage notes, trend lines and summaries (summary.json) are ours.",
  "fetched_at": "2026-09-25T08:45:17Z",
  "coverage": {
   "summary": "A cost estimate exists for 180 of 1,072 notable models, and for 2 of 120 released in the last 12 months (2025-09-21 to 2026-09-21). It is the cost of the final training run's compute only: not research, staff, failed runs or data. Read the dots one by one; there are too few recent ones for a firm trend.",

@@ -43,6 +43,10 @@ DATASET = "lmarena-ai/leaderboard-dataset"
 API = "https://datasets-server.huggingface.co/"
 CONFIGS = ["text", "text_style_control"]
 CATEGORY = "overall"
+CHANGES = ("From each 'overall' snapshot of the text and text_style_control configs: only the best "
+           "proprietary and the best open-weights model kept per snapshot (history), and the top 30 and "
+           "top 10 open models of the newest one; licences sorted by us into open, closed or neither."
+           " Coverage notes, trend lines and summaries (summary.json) are ours.")
 PAUSE = 0.15  # seconds between requests: a weekly job has time to be polite
 
 
@@ -209,7 +213,7 @@ def run():
         print("  arena: " + "; ".join(e[:200] for e in errors), file=sys.stderr)
     if not latest:
         if old and old.get("latest_top"):
-            payload = dict(old, rows=rows, fetched_at=fetched_at, history_cursor=cursor)
+            payload = dict(old, rows=rows, fetched_at=fetched_at, history_cursor=cursor, changes=CHANGES)
             return write_data(payload) + " (history only; latest tables kept from before)"
         raise FetchError("no latest snapshot" + (f"; {errors[-1]}" if errors else ""))
     snap = str(latest[0]["leaderboard_publish_date"])[:10]
@@ -242,6 +246,7 @@ def run():
                          "arena site's /api/ is disallowed by robots.txt and is not used."),
         "citation": "Arena (lmarena-ai), 'leaderboard-dataset', Hugging Face, https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
         "redistribution": "copied",
+        "changes": CHANGES,
     }, fetched_at, coverage, columns, rows,
         latest_columns=["model", "org", "licence", "kind", "rating", "lo", "hi", "votes", "rank"],
         latest_top=table_rows(latest, 30), latest_top_open=table_rows(latest, 10, only="open"),

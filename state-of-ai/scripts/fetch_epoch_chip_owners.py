@@ -55,6 +55,8 @@ def run():
         "licence_note": "Epoch's README: free to use, distribute, and reproduce provided the source and authors are credited.",
         "citation": "Epoch AI, 'Data on AI Chip Owners'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-chip-owners",
         "redistribution": "copied",
+        "changes": ("From cumulative_by_designer.csv: rows with a date and a median kept; medians rounded to whole H100-equivalents; columns renamed."
+                    " Coverage notes, trend lines and summaries (summary.json) are ours."),
     }, fetched_at, coverage, columns, rows, unit="H100-equivalents", source_updated=max(x[2] for x in rows))
     return write_data(payload)
 

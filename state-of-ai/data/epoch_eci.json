@@ -10,6 +10,7 @@
  "licence_note": "Epoch's own index. The hub notes that data it bundles from other projects keeps its original licence; none of that is copied here.",
  "citation": "Epoch AI, 'Capabilities & Benchmarking'. Published online at epoch.ai. Retrieved from https://epoch.ai/benchmarks",
  "redistribution": "copied",
+ "changes": "From eci_scores.csv: models with a date and a score kept; the display name used as the model name; 9 columns kept and renamed; scores rounded to 2 decimals. Coverage notes, trend lines and summaries (summary.json) are ours.",
  "fetched_at": "2026-09-25T09:53:33Z",
  "coverage": {
   "summary": "268 models, 2023-02-24 to 2026-09-09: 127 open weights, 119 closed, 22 other or unknown. Only models with enough benchmark results for the index to be fitted are here, and the score depends on which benchmarks Epoch picked. It is one vantage point, not ground truth.",
