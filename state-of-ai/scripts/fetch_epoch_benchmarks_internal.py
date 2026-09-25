@@ -12,7 +12,7 @@ a test running out of room.
 
 import collections
 
-from common import (CC_BY_4, FetchError, envelope, http_get_cached, iso_date, main_wrapper,
+from common import (CC_BY_4, FetchError, count_list, envelope, http_get_cached, iso_date, main_wrapper,
                     now_iso, num, require_columns, write_data, zip_csv, zip_names)
 
 ID = "epoch_benchmarks_internal"
@@ -69,7 +69,7 @@ def run():
         "summary": ("Only models Epoch chooses to run through an API: mostly US frontier labs plus the "
                     "major Chinese labs. Rows: " + ", ".join(f"{b['name']} {per[b['id']]}" for b in bench_meta) +
                     ". Models without an API, and labs that don't give access, are missing."),
-        "counted": "Most rows: " + ", ".join(f"{k} {v}" for k, v in orgs.most_common(8)) + ".",
+        "counted": "Rows by organization: " + count_list(orgs, 8) + ".",
         "not_counted": "Models with no public API; results other projects publish (those files keep their own licences and are not copied).",
         "numbers": {"rows_per_benchmark": dict(per), "orgs": dict(orgs.most_common(12))},
     }

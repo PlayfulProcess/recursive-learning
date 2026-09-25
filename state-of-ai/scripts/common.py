@@ -137,6 +137,24 @@ def num(s):
     return v if v == v else None  # drop NaN
 
 
+def count_list(counter, n=None):
+    """'A 3, B 2, C 2' from a Counter, most first. With n, the list stops after n entries but never
+    between two equal counts, and says what it left out ('and 5 more from 3 others'), so a list
+    that looks complete always is."""
+    items = counter.most_common()
+    if n is not None and len(items) > n:
+        cut = n
+        while cut < len(items) and items[cut][1] == items[n - 1][1]:
+            cut += 1
+        shown, rest = items[:cut], items[cut:]
+    else:
+        shown, rest = items, []
+    text = ", ".join(f"{k} {v}" for k, v in shown)
+    if rest:
+        text += f", and {sum(v for _, v in rest)} more from {len(rest)} other{'s' if len(rest) != 1 else ''}"
+    return text
+
+
 def sig(v, digits=4):
     """Round to significant digits, so the JSON stays small and diffs stay quiet."""
     if v is None or v == 0:

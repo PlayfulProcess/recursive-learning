@@ -19,7 +19,7 @@ import collections
 
 import re
 
-from common import (CC_BY_4, envelope, http_get_cached, iso_date, main_wrapper, now_iso, num,
+from common import (CC_BY_4, count_list, envelope, http_get_cached, iso_date, main_wrapper, now_iso, num,
                     require_columns, sig, write_data, zip_csv)
 
 ID = "epoch_ml_hardware"
@@ -83,7 +83,7 @@ def run():
                     "publish a price, so those are reported prices"
                     + (f", and {', '.join(estimated)} carries Epoch's own estimate for a chip that is not sold"
                        if estimated else "") + ". Most custom chips have no price at all."),
-        "counted": "By maker: " + ", ".join(f"{k} {v}" for k, v in makers.most_common(9)) + ".",
+        "counted": "By maker: " + count_list(makers, 9) + ".",
         "not_counted": ("Chips with no public price since 2024: " + ", ".join(unpriced_new[:10]) +
                         (f", and {len(unpriced_new) - 10} more" if len(unpriced_new) > 10 else "") + "."),
         "numbers": {"chips": len(rows), "priced": len(priced), "priced_by_segment": dict(seg_n),
@@ -100,7 +100,7 @@ def run():
         "licence_note": "Epoch's README: free to use, distribute, and reproduce provided the source and authors are credited.",
         "citation": "Epoch AI, 'Data on Machine Learning Hardware'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/machine-learning-hardware",
         "redistribution": "copied",
-        "changes": ("From ml_hardware.csv: chips with a release date kept; 10 columns kept and renamed; FLOP/s per dollar computed by us (FP16/BF16 FLOP/s divided by release price); the segment (data centre, workstation, consumer) and the kind of price are our labels, from the chip's name and Epoch's price source."
+        "changes": ("From ml_hardware.csv: chips with a release date kept; 10 columns kept and renamed; FLOP/s figures and FLOP/s per dollar rounded to 4 significant figures; FLOP/s per dollar computed by us (FP16/BF16 FLOP/s divided by release price); the segment (data centre, workstation, consumer) and the kind of price are our labels, from the chip's name and Epoch's price source."
                     " Coverage notes, trend lines and summaries (summary.json) are ours."),
     }, fetched_at, coverage, columns, rows, unit="FLOP/s per US dollar", source_updated=rows[-1][3])
     return write_data(payload)

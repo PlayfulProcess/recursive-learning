@@ -14,7 +14,7 @@
  "fetched_at": "2026-09-25T09:53:33Z",
  "coverage": {
   "summary": "268 models, 2023-02-24 to 2026-09-09: 127 open weights, 119 closed, 22 other or unknown. Only models with enough benchmark results for the index to be fitted are here, and the score depends on which benchmarks Epoch picked. It is one vantage point, not ground truth.",
-  "counted": "By country: United States of America 153, China 76, not stated 17, France 16, United Arab Emirates 4, United Kingdom 1.",
+  "counted": "By country: United States of America 153, China 76, not stated 17, France 16, United Arab Emirates 4, United Kingdom 1, Canada 1.",
   "not_counted": "Models with too few benchmark runs, and models Epoch cannot reach through an API. 2 rows have no interval (the index's fixed anchor points).",
   "numbers": {
    "models": 268,

@@ -13,6 +13,9 @@ from common import (CC_BY_4, envelope, http_get_cached, iso_date, main_wrapper, 
 ID = "epoch_ai_companies"
 URL = "https://epoch.ai/data/ai_companies.zip"
 PAGE = "https://epoch.ai/data/ai-companies"
+# Epoch's recommended citation for this dataset names its authors, and its licence asks that
+# "the source and authors are credited" (checked on the dataset page, 25 Sep 2026).
+AUTHORS = "Josh You, John Croxton, Venkat Somala, Yafah Edelman"
 
 
 def run():
@@ -39,8 +42,9 @@ def run():
                     " reports. A run-rate is often the latest month's revenue times twelve, so it swings, and "
                     "some figures are leaks rather than audited accounts."),
         "counted": "Companies whose main business is AI models, as far as reports exist.",
-        "not_counted": ("Google, Meta, Microsoft and Amazon: they do not report AI revenue separately. Chinese "
-                        "labs appear only when a figure was reported."),
+        "not_counted": ("Google, Meta, Microsoft and Amazon, whose AI revenue sits inside larger businesses and is "
+                        "mostly not reported as a separate figure (Microsoft has at times given an AI run-rate). "
+                        "Chinese labs appear only when a figure was reported."),
         "numbers": {"reports": dict(per)},
     }
     payload = envelope({
@@ -48,10 +52,12 @@ def run():
         "name": "Revenue of AI companies",
         "what_it_measures": "Reported annualized revenue (run-rate or annual recurring revenue) per company, over time.",
         "source": "Epoch AI, Data on AI Companies",
+        "authors": AUTHORS,
         "url": URL, "page": PAGE,
         "licence": "CC BY 4.0", "licence_url": CC_BY_4,
         "licence_note": "Epoch's README: free to use, distribute, and reproduce provided the source and authors are credited. Each row also links its original report.",
-        "citation": "Epoch AI, 'Data on AI Companies'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-companies",
+        "citation": (f"{AUTHORS}, 'Data on AI Companies'. Published online at epoch.ai. "
+                     "Retrieved from https://epoch.ai/data/ai-companies"),
         "redistribution": "copied",
         "changes": ("From ai_companies_revenue_reports.csv: reports with a date and an annualized figure kept; 8 columns kept and renamed; figures rounded to 4 significant figures."
                     " Coverage notes, trend lines and summaries (summary.json) are ours."),

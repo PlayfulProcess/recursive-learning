@@ -9,7 +9,7 @@ standard library, so a GitHub Action runs them with no installs.
 
 ## Rules the page keeps
 
-- Every number keeps its source URL, licence and `fetched_at`, and every card says what we changed.
+- Every number keeps its source URL, licence and `fetched_at`, and every card says what we changed, in full.
 - Every card says who is counted and who is not (`coverage` in each data file, computed from the data),
   and the date its data reach (`newest_data` in `summary.json`), which differs a lot by source.
 - Meters that disagree are shown side by side, never averaged.
@@ -43,16 +43,22 @@ standard library, so a GitHub Action runs them with no installs.
 
 ## Licences, and what we changed
 
+**[`NOTICE.md`](NOTICE.md) is this folder's licence notice**: code Apache-2.0, page text CC BY-SA 4.0
+(PlayfulProcess), the `epoch_*` and `arena_leaderboard` data files CC BY 4.0 by their sources, with
+changes, and `summary.json` our CC BY 4.0 adaptation. The page links to it from its footer.
+
 - Files under `data/` named after a source stay under that source's licence: **CC BY 4.0, by Epoch AI**
-  (the `epoch_*` files) or **by Arena (lmarena-ai)** (`arena_leaderboard.json`). CC BY 4.0 asks us to say
-  what we changed: each file's `changes` field does (which rows were kept, which columns renamed or
-  rounded, which labels are ours), and each card on the page says "Changes: rows filtered; trend lines and
-  summaries are ours".
+  (the `epoch_*` files; the revenue file names the dataset's four authors, as Epoch's citation does) or
+  **by Arena (lmarena-ai)** (`arena_leaderboard.json`, whose page link goes to the licensed Hugging Face
+  dataset, not the arena's site). CC BY 4.0 asks us to say what we changed: each file's `changes` field
+  does, and each card shows it in full under "What we changed from the source" (a `<details>`, so touch
+  and keyboard reach it).
 - `data/summary.json` is **our adaptation** of those files: rows filtered and combined, and the trend
-  lines, positions and sentences are ours. It carries the same credit.
+  lines, positions and sentences are ours. It carries the same credit, each source's citation included.
 - `data/players.json` is hand-written by us.
 - METR's figures are quoted with attribution only. OpenRouter's are linked, not copied.
-- Page text and code: see the repository's `LICENSE` and `LICENSE-CONTENT.txt`.
+- The repository's root README "Licensing" table does not list this folder yet: it is a shared file, and
+  other branches are editing it. When this branch merges, add a row pointing to `state-of-ai/NOTICE.md`.
 
 ## Run it locally
 
@@ -63,10 +69,13 @@ standard library, so a GitHub Action runs them with no installs.
 
 A fetcher reads robots.txt first and never fetches a disallowed address (Arena's own `/api/` is
 disallowed and is not used; its data come from the Hugging Face dataset). A fetcher that fails keeps
-the previous file. A file whose rows did not change keeps its `fetched_at`, so **`fetched_at` means
-"these numbers have not changed since", not "last checked"**; the page says "numbers unchanged since".
-If only the notes around unchanged rows change (coverage wording, `changes`), the file is rewritten
-with the old `fetched_at`.
+the previous file. A file whose rows did not change keeps its `fetched_at`, so **`fetched_at` is when we
+first fetched the numbers now in the file**, not when they were last checked and not when the source
+last changed them; the page says "these numbers fetched". If only the notes around unchanged rows
+change (coverage wording, `changes`), the file is rewritten with the old `fetched_at`. Adding a column
+counts as a change of rows; when a new column only labels rows whose numbers are the same, set
+`fetched_at` back by hand and say so in the commit (done once, for `epoch_ml_hardware.json`, on 25 Sep
+2026: 162 rows, 0 cells changed in the original columns).
 
 `run_all.py` exits 0 when every source was checked, 2 when the summary was built but a source failed,
 and 1 when nothing could be built.

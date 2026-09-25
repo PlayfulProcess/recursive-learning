@@ -240,7 +240,9 @@ def run():
                              "has a licence field, which makes it a second, independent open-vs-closed meter."),
         "source": "Arena (lmarena-ai), leaderboard dataset on Hugging Face",
         "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
-        "page": "https://lmarena.ai/leaderboard",
+        # the page link goes to the licensed dataset; the arena's own site is not CC BY
+        "page": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
+        "site": "https://arena.ai/leaderboard",
         "licence": "CC BY 4.0", "licence_url": CC_BY_4,
         "licence_note": ("The dataset card declares license: cc-by-4.0. Read through the Hugging Face API; the "
                          "arena site's /api/ is disallowed by robots.txt and is not used."),

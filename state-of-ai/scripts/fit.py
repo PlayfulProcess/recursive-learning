@@ -21,7 +21,9 @@ What the numbers are, in plain words:
                     Never a forecast, and left out when the data stopped too long ago
   change            whether the last 24 months of data run faster or slower than the years
                     before, judged by whether the 90% interval of the difference in slopes
-                    excludes zero; both windows carry their own dates and number of points
+                    excludes zero; both windows carry their own dates and number of points.
+                    A call that only just clears zero, or rests on fewer than 8 points on one
+                    side, carries `borderline` with the reason, and the page says "borderline"
 """
 
 import math
@@ -187,12 +189,34 @@ def fit_series(key, label, points, unit, start=None, recent_months=24, min_point
                   "slope_diff_ci": [r3(lo), r3(hi)],
                   "recent": {"from": recent["from"], "to": recent["to"], "n": recent["n"]},
                   "before": {"from": before["from"], "to": before["to"], "n": before["n"]}}
+        why = borderline_why(lo, hi, len(rec_idx), len(old_idx), min_points, verdict)
+        if why:
+            change["borderline"] = why
     out.update({
         "status": "ok",
         "whole": _public(whole), "recent": _public(recent), "before": _public(before),
         "change": change, "band": band, "if_trend_continued": ext, "data_stop": data_stop,
     })
     return out
+
+
+BORDER_SHARE = 0.10   # the interval's end nearest zero sits within 10% of its width of zero
+BORDER_POINTS = 8     # or one side has fewer than this many points (the minimum is 6)
+
+
+def borderline_why(lo, hi, n_recent, n_before, min_points, verdict):
+    """A 'faster/slower lately' that only just clears zero, or rests on few points, is a borderline
+    call: the page says so instead of stating it as a finding. None when the call is clear."""
+    if verdict == "no clear change":
+        return None
+    near, width = min(abs(lo), abs(hi)), hi - lo
+    reasons = []
+    if width > 0 and near < BORDER_SHARE * width:
+        reasons.append("its 90% interval only just excludes no change")
+    few = min(n_recent, n_before)
+    if few < BORDER_POINTS:
+        reasons.append(f"one side has only {few} points" + (", the fewest we judge on" if few <= min_points else ""))
+    return ", and ".join(reasons) or None
 
 
 def _band_at(t, d, rng=None):

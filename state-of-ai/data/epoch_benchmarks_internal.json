@@ -14,7 +14,7 @@
  "fetched_at": "2026-09-25T09:53:33Z",
  "coverage": {
   "summary": "Only models Epoch chooses to run through an API: mostly US frontier labs plus the major Chinese labs. Rows: GPQA Diamond 311, FrontierMath, tiers 1-3 108, SWE-bench Verified 35. Models without an API, and labs that don't give access, are missing.",
-  "counted": "Most rows: OpenAI 138, Alibaba 72, Anthropic 69, Google DeepMind 48, DeepSeek 20, Mistral AI 19, Z.ai (Zhipu AI) 18, xAI 14.",
+  "counted": "Rows by organization: OpenAI 138, Alibaba 72, Anthropic 69, Google DeepMind 48, DeepSeek 20, Mistral AI 19, Z.ai (Zhipu AI) 18, xAI 14, Meta AI 14, and 36 more from 13 others.",
   "not_counted": "Models with no public API; results other projects publish (those files keep their own licences and are not copied).",
   "numbers": {
    "rows_per_benchmark": {

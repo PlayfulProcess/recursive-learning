@@ -10,11 +10,11 @@
  "licence_note": "Epoch's README: free to use, distribute, and reproduce provided the source and authors are credited.",
  "citation": "Epoch AI, 'Data on Machine Learning Hardware'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/machine-learning-hardware",
  "redistribution": "copied",
- "changes": "From ml_hardware.csv: chips with a release date kept; 10 columns kept and renamed; FLOP/s per dollar computed by us (FP16/BF16 FLOP/s divided by release price); the segment (data centre, workstation, consumer) and the kind of price are our labels, from the chip's name and Epoch's price source. Coverage notes, trend lines and summaries (summary.json) are ours.",
- "fetched_at": "2026-09-25T13:49:57Z",
+ "changes": "From ml_hardware.csv: chips with a release date kept; 10 columns kept and renamed; FLOP/s figures and FLOP/s per dollar rounded to 4 significant figures; FLOP/s per dollar computed by us (FP16/BF16 FLOP/s divided by release price); the segment (data centre, workstation, consumer) and the kind of price are our labels, from the chip's name and Epoch's price source. Coverage notes, trend lines and summaries (summary.json) are ours.",
+ "fetched_at": "2026-09-25T09:53:33Z",
  "coverage": {
   "summary": "162 accelerators used to train a notable model or rented by the big clouds (CPUs excluded; 14 more have no release date and are left out). Only 20 have both a price and an FP16/BF16 figure: 16 data centre, 3 consumer, 1 workstation. Data-centre makers rarely publish a price, so those are reported prices, and Google TPU v7 Ironwood carries Epoch's own estimate for a chip that is not sold. Most custom chips have no price at all.",
-  "counted": "By maker: NVIDIA 88, Google 9, Huawei 9, Cambricon 9, AMD 9, Kunlunxin Baidu 8, Intel 6, Amazon AWS 4, MetaX 3.",
+  "counted": "By maker: NVIDIA 88, Google 9, Huawei 9, Cambricon 9, AMD 9, Kunlunxin Baidu 8, Intel 6, Amazon AWS 4, MetaX 3, Meta 3, and 14 more from 11 others.",
   "not_counted": "Chips with no public price since 2024: NVIDIA H100 NVL, Meta MTIA v2 (MTIA 200), Google TPU v6e Trillium, Maia 100 (M100), Intel Habana Gaudi3, AMD Instinct MI325X, Huawei Ascend 910C, Cambricon Siyuan 590, NVIDIA B200, Amazon Trainium2, and 5 more.",
   "numbers": {
    "chips": 162,

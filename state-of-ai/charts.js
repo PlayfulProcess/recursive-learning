@@ -4,7 +4,7 @@
  *   xyChart        time on x; linear or log y; layers of bands, lines, steps, rules, whiskers, dots
  *   columnsChart   stacked columns (one per period), 2px surface gaps between parts
  *   hbarsChart     stacked horizontal bars (one per row)
- *   intervalChart  a dot and its 90% interval per row, on a log axis
+ *   intervalChart  marks and their 90% intervals, one line each, per row, on a log axis
  *
  * Every chart: hover or tap shows a tooltip (values first, then labels); the keyboard reaches
  * every mark (Tab to the chart, arrow keys to move, Enter to open, Escape to close); a click
@@ -56,6 +56,9 @@
     for (var y = Math.ceil(lo / step) * step; y <= hi; y += step) out.push(y);
     return out;
   }
+  // below 240px a chart is drawn 240 wide and scaled down; its height scales with it, so the
+  // picture is not letterboxed inside a box of the full height
+  function fitHeight(host, W, H) { var cw = host.clientWidth || W; return Math.round(H * Math.min(1, cw / W)); }
   function textWidth(s, px) { return String(s).length * (px || 11) * 0.58; }
 
   /* ---------- tooltip + keyboard shared by every chart ---------- */
@@ -79,15 +82,21 @@
     });
     (info.lines || []).forEach(function (s) { h('div', 'tl', s, tt); });
     tt.classList.add('on');
+    var k = this.scale(), mx = m.px * k, my = m.py * k;
     var W = this.host.clientWidth, tw = tt.offsetWidth, th = tt.offsetHeight;
-    var x = m.px + 14, y = m.py - th - 10;
-    if (x + tw > W) x = Math.max(0, m.px - tw - 14);
-    if (y < 0) y = m.py + 14;
+    var x = mx + 14, y = my - th - 10;
+    if (x + tw > W) x = Math.max(0, mx - tw - 14);
+    if (y < 0) y = my + 14;
     tt.style.left = x + 'px'; tt.style.top = y + 'px';
     if (this.ring) {
       this.ring.setAttribute('cx', m.px); this.ring.setAttribute('cy', m.py);
       this.ring.setAttribute('r', (m.r || 4) + 5); this.ring.style.display = '';
     }
+  };
+  // drawn units per CSS pixel: 1, except below 240px, where a chart is drawn 240 wide and scaled down
+  Interactive.prototype.scale = function () {
+    var vb = this.svg && this.svg.viewBox && this.svg.viewBox.baseVal;
+    return vb && vb.width && this.svg.clientWidth ? Math.min(1, this.svg.clientWidth / vb.width) : 1;
   };
   Interactive.prototype.hide = function () {
     this.tt.classList.remove('on');
@@ -117,7 +126,7 @@
   Interactive.prototype.attach = function (svg, overlay, nearest) {
     var self = this, spec = this.spec, downAt = null;
     if (self.idx >= self.marks.length) self.idx = -1;
-    function local(ev) { var r = svg.getBoundingClientRect(); return [ev.clientX - r.left, ev.clientY - r.top]; }
+    function local(ev) { var r = svg.getBoundingClientRect(), k = self.scale(); return [(ev.clientX - r.left) / k, (ev.clientY - r.top) / k]; }
     overlay.addEventListener('pointermove', function (ev) {
       var p = local(ev), m = nearest(p[0], p[1]);
       if (m) { self.idx = self.marks.indexOf(m); self.show(m); } else self.hide();
@@ -138,6 +147,7 @@
     var inter = new Interactive(host, spec);
     var svg = el('svg', { role: 'group', 'aria-label': spec.aria || '' });
     host.insertBefore(svg, inter.tt);
+    inter.svg = svg;
     inter.bindSvg(svg);
     return { svg: svg, inter: inter };
   }
@@ -166,7 +176,7 @@
     function draw() {
       var W = Math.max(240, host.clientWidth), H = typeof spec.height === 'function' ? spec.height(W) : (spec.height || 280);
       while (svg.firstChild) svg.removeChild(svg.firstChild);
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H);
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', fitHeight(host, W, H));
       var ylog = !!spec.y.log;
       var Y = function (v, logged) { return ylog && !logged ? Math.log10(v) : v; };
       var y0 = ylog ? Math.log10(spec.y.min) : spec.y.min, y1 = ylog ? Math.log10(spec.y.max) : spec.y.max;
@@ -226,7 +236,12 @@
         } else if (L.type === 'rule') {
           var ry = y(Y(L.y, lg));
           el('line', { x1: ml, x2: W - mr, y1: ry, y2: ry, 'class': 'rule' }, g);
-          if (L.label) { var rt = el('text', { x: W - mr, y: ry - 4, 'text-anchor': 'end', 'class': 'rule-label' }, g); rt.textContent = L.label; }
+          if (L.label) {
+            // 'start-below': at the left, under the rule, out of the way of lines that end on the right
+            var below = L.labelAt === 'start-below';
+            var rt = el('text', { x: below ? ml + 4 : W - mr, y: below ? ry + 13 : ry - 4, 'text-anchor': below ? 'start' : 'end', 'class': 'rule-label' }, g);
+            rt.textContent = L.label;
+          }
         } else if (L.type === 'vrule') {
           var rx = x(L.x);
           el('line', { x1: rx, x2: rx, y1: mt, y2: H - mb, 'class': 'rule' }, g);
@@ -244,6 +259,7 @@
             if (!L.invisible) {  // an invisible layer is hover and keyboard targets only (dense lines)
               var c = el('circle', { cx: px, cy: py, r: r, 'class': klass(spec, d, 'dot' + (d.hollow ? ' hollow' : '')) }, plot);
               c.style.fill = d.color; if (d.hollow) c.style.stroke = d.color;
+              if (d.ring) el('circle', { cx: px, cy: py, r: r + 4.5, 'class': klass(spec, d, 'ring') }, plot);
             }
             if (L.hit !== false) marks.push({ d: d, px: px, py: py, r: r, tip: L.tooltip });
           });
@@ -278,13 +294,28 @@
     function draw() {
       var W = Math.max(240, host.clientWidth), H = spec.height || 260;
       while (svg.firstChild) svg.removeChild(svg.firstChild);
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H);
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', fitHeight(host, W, H));
       var cats = spec.categories, maxV = 0;
       cats.forEach(function (c) { var t = 0; c.parts.forEach(function (p) { t += p.value || 0; }); c.total = t; maxV = Math.max(maxV, t); });
       var yt = linTicks(0, maxV * 1.05, 5);
-      var ml = 8 + Math.max.apply(null, yt.map(function (t) { return textWidth(spec.y.fmt(t)); })), mr = 8, mt = (spec.markers && spec.markers.length) ? 42 : 14, mb = 24;
+      // the top tick must clear the tallest column, or the column runs into the labels above the plot
+      if (yt.length > 1 && yt[yt.length - 1] < maxV) yt.push(+(yt[yt.length - 1] + yt[1] - yt[0]).toFixed(10));
+      var ml = 8 + Math.max.apply(null, yt.map(function (t) { return textWidth(spec.y.fmt(t)); })), mr = 8, mb = 24;
+      // marker labels (where counting starts or stops) are stacked in rows so they never overlap
+      var band = (W - ml - mr) / cats.length, keys = cats.map(function (c) { return c.key; }), placed = [], rowsUsed = 0;
+      (spec.markers || []).forEach(function (mk) {
+        var i = keys.indexOf(mk.key);
+        if (i < 0) return;
+        var mx = ml + band * i, right = mx > (W - mr) * 0.62, lines = String(mk.label).split('|');
+        var wmax = Math.max.apply(null, lines.map(function (s) { return textWidth(s, 11); }));
+        var x0 = right ? mx - 4 - wmax : mx + 4, x1 = right ? mx - 4 : mx + 4 + wmax, row = 0;
+        while (placed.some(function (p) { return !(x1 + 6 < p.x0 || x0 - 6 > p.x1) && row < p.row + p.n && p.row < row + lines.length; })) row++;
+        placed.push({ mk: mk, mx: mx, right: right, lines: lines, x0: x0, x1: x1, row: row, n: lines.length });
+        rowsUsed = Math.max(rowsUsed, row + lines.length);
+      });
+      var mt = rowsUsed ? 14 + rowsUsed * 13 : 14;
       var y = lin(0, yt[yt.length - 1], H - mb, mt);
-      var band = (W - ml - mr) / cats.length, bw = Math.min(24, band * 0.72);
+      var bw = Math.min(24, band * 0.72);
       var g = el('g', null, svg), ga = el('g', { 'class': 'axis' }, g);
       yt.forEach(function (t) {
         el('line', { x1: ml, x2: W - mr, y1: y(t), y2: y(t), 'class': 'gridline' }, ga);
@@ -311,15 +342,10 @@
       });
       el('line', { x1: ml, x2: W - mr, y1: H - mb, y2: H - mb, 'class': 'baseline' }, ga);
       // markers: where counting changes (a solid hairline before that period, labelled)
-      (spec.markers || []).forEach(function (mk, j) {
-        var i = cats.map(function (c) { return c.key; }).indexOf(mk.key);
-        if (i < 0) return;
-        var mx = ml + band * i;
-        el('line', { x1: mx, x2: mx, y1: mt + 2, y2: H - mb, 'class': 'rule' }, g);
-        var lines = String(mk.label).split('|');
-        lines.forEach(function (ln, k) {
-          var right = mx > (W - mr) * 0.62;
-          var t = el('text', { x: right ? mx - 4 : mx + 4, y: 11 + k * 13, 'text-anchor': right ? 'end' : 'start', 'class': 'rule-label' }, g);
+      placed.forEach(function (p) {
+        el('line', { x1: p.mx, x2: p.mx, y1: mt + 2, y2: H - mb, 'class': 'rule' + (p.mk.end ? ' rule-end' : '') }, g);
+        p.lines.forEach(function (ln, k) {
+          var t = el('text', { x: p.right ? p.mx - 4 : p.mx + 4, y: 11 + (p.row + k) * 13, 'text-anchor': p.right ? 'end' : 'start', 'class': 'rule-label' }, g);
           t.textContent = ln;
         });
       });
@@ -347,7 +373,7 @@
     function draw() {
       var W = Math.max(240, host.clientWidth), rows = spec.rows, rowH = 40, mt = 6, H = mt + rows.length * rowH + 22;
       while (svg.firstChild) svg.removeChild(svg.firstChild);
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H);
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', fitHeight(host, W, H));
       var maxV = 0;
       rows.forEach(function (r) { var t = 0; r.parts.forEach(function (p) { t += p.value || 0; }); r.total = t; maxV = Math.max(maxV, t); });
       var ml = 0, mr = 64, x = lin(0, maxV, ml, W - mr), g = el('g', null, svg), marks = [];
@@ -397,54 +423,118 @@
       'V' + (y + hgt - r) + 'Q' + (x + w) + ',' + (y + hgt) + ' ' + (x + w - r) + ',' + (y + hgt) + 'H' + x + 'Z';
   }
 
-  /* ---------- intervalChart: dot + 90% interval per row, log x ---------- */
+  /* ---------- intervalChart: marks + 90% intervals per row, log x ----------
+   * Each row: its name (wrapped onto a second line on a narrow screen, never cut before the dates),
+   * a muted line under it (dates, and whether the pace changed), then one line per mark, so each
+   * mark's range has room of its own. The scale is printed at the top, under every group heading
+   * and at the bottom, so a reader on a phone always has it in view. A range that runs off the
+   * scale ends in an arrow and says where it goes. */
+  var measureCtx = null;
+  function measure(s, px, font) {
+    if (!measureCtx) measureCtx = document.createElement('canvas').getContext('2d');
+    if (!measureCtx) return textWidth(s, px);
+    measureCtx.font = px + 'px ' + font;
+    return measureCtx.measureText(String(s)).width;
+  }
+  function wrapText(s, px, font, room, maxLines) {
+    var words = String(s).split(' '), lines = [], cur = '';
+    words.forEach(function (w) {
+      var t = cur ? cur + ' ' + w : w;
+      if (!cur || measure(t, px, font) <= room) cur = t; else { lines.push(cur); cur = w; }
+    });
+    if (cur) lines.push(cur);
+    if (lines.length > maxLines) {
+      lines = lines.slice(0, maxLines);
+      var last = lines[maxLines - 1];
+      while (last.length > 4 && measure(last + '…', px, font) > room) last = last.slice(0, -1);
+      lines[maxLines - 1] = last.replace(/[\s,(·]+$/, '') + '…';
+    }
+    return lines;
+  }
   function intervalChart(host, spec) {
     var f = frame(host, spec), svg = f.svg, inter = f.inter;
     function draw() {
-      var W = Math.max(240, host.clientWidth), rows = spec.rows, rowH = 46, headH = 30, mt = 4;
-      var tops = [], acc = mt;
-      rows.forEach(function (r) { tops.push(acc); acc += r.header ? headH : rowH; });
-      var H = acc + 24;
+      var W = Math.max(240, host.clientWidth), rows = spec.rows, ml = 4, mr = 10, room = W - ml - mr;
+      var font = getComputedStyle(host).fontFamily || 'sans-serif';
+      var LBL = 11.5, SUB = 11, LH = 14, GAP = 13, HEAD = 46, TITLE = 18;
+      var layout = [], acc = TITLE;
+      rows.forEach(function (r) {
+        if (r.header) { layout.push({ top: acc, h: HEAD }); acc += HEAD; return; }
+        var ll = wrapText(r.label, LBL, font, room, 2), sl = r.sub ? wrapText(r.sub, SUB, font, room, 2) : [];
+        // marks sit close under their own name and well clear of the next one
+        var hgt = (ll.length + sl.length) * LH + 34 + (Math.max(1, r.marks.length) - 1) * GAP;
+        layout.push({ top: acc, h: hgt, ll: ll, sl: sl });
+        acc += hgt;
+      });
+      var H = acc + 36;
       while (svg.firstChild) svg.removeChild(svg.firstChild);
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H);
-      var lx0 = Math.log10(spec.x.min), lx1 = Math.log10(spec.x.max), ml = 4, mr = 10;
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', fitHeight(host, W, H));
+      var lx0 = Math.log10(spec.x.min), lx1 = Math.log10(spec.x.max);
       var x = lin(lx0, lx1, ml, W - mr), X = function (v) { return x(Math.log10(Math.max(spec.x.min, Math.min(spec.x.max, v)))); };
       var g = el('g', null, svg), ga = el('g', { 'class': 'axis' }, g), marks = [];
-      spec.x.ticks.forEach(function (t) {
-        el('line', { x1: X(t), x2: X(t), y1: mt, y2: H - 20, 'class': 'gridline' }, ga);
-        var tx = el('text', { x: X(t), y: H - 6, 'text-anchor': 'middle' }, ga); tx.textContent = spec.x.fmt(t);
+      function ticksAt(y) {
+        spec.x.ticks.forEach(function (t) {
+          var tx = el('text', { x: X(t), y: y, 'text-anchor': 'middle' }, ga); tx.textContent = spec.x.fmt(t);
+        });
+      }
+      function grid(y1, y2) {
+        if (y2 <= y1) return;
+        spec.x.ticks.forEach(function (t) { el('line', { x1: X(t), x2: X(t), y1: y1, y2: y2, 'class': 'gridline' }, ga); });
+      }
+      if (spec.title) { var tt = el('text', { x: ml, y: 12, 'class': 'axis-title' }, ga); tt.textContent = spec.title; }
+      // gridlines run from each heading's scale to the next heading
+      var heads = [];
+      rows.forEach(function (r, i) { if (r.header) heads.push(i); });
+      heads.forEach(function (hi, k) {
+        var from = layout[hi].top + 38, to = k + 1 < heads.length ? layout[heads[k + 1]].top - 2 : H - 30;
+        grid(from, to);
       });
+      ticksAt(H - 18);
+      if (spec.title) { var bt = el('text', { x: ml, y: H - 3, 'class': 'axis-title' }, ga); bt.textContent = spec.title; }
+      el('line', { x1: ml, x2: W - mr, y1: H - 30, y2: H - 30, 'class': 'baseline' }, ga);
       rows.forEach(function (r, i) {
-        var top = tops[i], cy = top + 30;
+        var L = layout[i], top = L.top;
         if (r.header) {
-          var ht = el('text', { x: ml, y: top + 22, 'class': 'grp' }, g); ht.textContent = r.label;
+          var ht = el('text', { x: ml, y: top + 17, 'class': 'grp' }, g); ht.textContent = r.label;
+          ticksAt(top + 34);
           return;
         }
-        var lt = el('text', { x: ml, y: top + 13, 'class': 'lbl' }, g), room = W - ml - mr, lab = r.label;
-        // a label wider than the chart is cut with an ellipsis; the tooltip carries it in full
-        lt.textContent = lab;
-        var fits = function () { var w = lt.getComputedTextLength ? lt.getComputedTextLength() : 0; return !w || w <= room; };
-        while (lab.length > 8 && !fits()) {
-          lab = lab.slice(0, -2);
-          lt.textContent = lab.replace(/[\s,(]+$/, '') + '…';
-        }
+        if (i > 0 && !rows[i - 1].header) el('line', { x1: ml, x2: W - mr, y1: top - 3, y2: top - 3, 'class': 'rowsep' }, ga);
+        var ty = top + 12;
+        L.ll.forEach(function (s) { var lt = el('text', { x: ml, y: ty, 'class': 'lbl' }, g); lt.textContent = s; ty += LH; });
+        L.sl.forEach(function (s) { var st = el('text', { x: ml, y: ty, 'class': 'lbl muted sub' }, g); st.textContent = s; ty += LH; });
+        var y0 = ty - 2;
         r.marks.forEach(function (m, j) {
-          var yy = cy + (r.marks.length > 1 ? (j === 0 ? -4 : 4) : 0);
+          var yy = y0 + j * GAP;
           if (m.lo != null || m.hi != null) {
-            var a = X(m.lo != null ? m.lo : m.v), b = m.hi != null ? X(m.hi) : W - mr;
+            var loV = m.lo != null ? m.lo : m.v, a = X(loV), b, note = null;
+            if (m.hi == null) note = 'may be flat';
+            else if (m.hi > spec.x.max) note = 'to ' + (spec.x.fmtOut ? spec.x.fmtOut(m.hi) : m.hi);
+            if (note) {
+              var nw = measure(note, 10.5, font);
+              b = W - mr - nw - 9;
+              var above = m.v != null && X(m.v) > b - 8;
+              if (above) b = W - mr - 1;
+              var nt = el('text', { x: W - mr, y: above ? yy - 5 : yy + 3.5, 'text-anchor': 'end', 'class': 'rule-label' }, g); nt.textContent = note;
+              var ah = el('path', { d: 'M' + (b - 5) + ',' + (yy - 3.5) + 'L' + b + ',' + yy + 'L' + (b - 5) + ',' + (yy + 3.5), 'class': 'arrowhead' }, g);
+              ah.style.stroke = m.color;
+            } else b = X(m.hi);
             var ln = el('line', { x1: a, x2: b, y1: yy, y2: yy, 'class': 'whisker' }, g);
             ln.style.stroke = m.color; ln.style.opacity = 0.8;
-            if (m.hi == null) {  // open-ended: could be flat
-              var ar = el('text', { x: W - mr, y: yy - 3, 'text-anchor': 'end', 'class': 'rule-label' }, g); ar.textContent = 'may be flat';
+            if (loV < spec.x.min) {
+              var al = el('path', { d: 'M' + (a + 5) + ',' + (yy - 3.5) + 'L' + a + ',' + yy + 'L' + (a + 5) + ',' + (yy + 3.5), 'class': 'arrowhead' }, g);
+              al.style.stroke = m.color;
             }
           }
           if (m.v == null) return;
-          var c = el('circle', { cx: X(m.v), cy: yy, r: 5, 'class': 'dot' + (m.hollow ? ' hollow' : '') }, g);
+          var px = X(m.v), c;
+          if (m.shape === 'square') c = el('rect', { x: px - 4.5, y: yy - 4.5, width: 9, height: 9, rx: 1.5, 'class': 'dot' }, g);
+          else c = el('circle', { cx: px, cy: yy, r: m.hollow ? 4.5 : 5, 'class': 'dot' + (m.hollow ? ' hollow' : '') }, g);
           c.style.fill = m.color; if (m.hollow) c.style.stroke = m.color;
-          marks.push({ d: { row: r, mark: m }, px: X(m.v), py: yy, r: 5 });
+          marks.push({ d: { row: r, mark: m }, px: px, py: yy, r: 5 });
         });
         if (!r.marks.some(function (m) { return m.v != null; })) {
-          var nt = el('text', { x: ml, y: cy + 4, 'class': 'lbl muted' }, g); nt.textContent = r.empty || 'too few points to fit';
+          var et = el('text', { x: ml, y: y0 + 4, 'class': 'lbl muted' }, g); et.textContent = r.empty || 'too few points to fit';
         }
       });
       inter.marks = marks;

@@ -1,6 +1,6 @@
 {
- "about": "Our adaptation of Epoch AI's and Arena's CC BY 4.0 data (credited per source below): rows filtered and combined; the trend lines, positions and sentences are ours. METR's figures are quoted with attribution only.",
- "as_of": "2026-09-25T13:49:57Z",
+ "about": "Our adaptation of Epoch AI's and Arena's CC BY 4.0 data (each source's citation, with its authors where the source names them, is under `sources`): rows filtered and combined; the trend lines, positions and sentences are ours. METR's figures are quoted with attribution only. This file is offered under CC BY 4.0, keeping those credits.",
+ "as_of": "2026-09-25T10:55:14Z",
  "ref_date": "2026-09-25",
  "sources": {
   "epoch_training_compute": {
@@ -8,8 +8,10 @@
    "source_updated": "2026-09-21",
    "newest_data": "2026-09-09",
    "newest_note": "newest compute estimate; newest model listed 21 Sep 2026",
+   "frontier_date": null,
    "licence": "CC BY 4.0",
    "redistribution": "copied",
+   "citation": "Epoch AI, 'Data on AI Models'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-models",
    "changes": "From notable_ai_models.csv: every model with a publication date kept, with or without an estimate; 10 of its columns kept and renamed; FLOP rounded to 4 significant figures; 'Open model weights?' turned into true, false or blank. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_training_cost": {
@@ -17,8 +19,10 @@
    "source_updated": "2026-09-21",
    "newest_data": "2026-07-29",
    "newest_note": "newest cost estimate; for the biggest models, 9 Jul 2025",
+   "frontier_date": "2025-07-09",
    "licence": "CC BY 4.0",
    "redistribution": "copied",
+   "citation": "Epoch AI, 'Data on AI Models'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-models",
    "changes": "From notable_ai_models.csv: only models with a cost estimate and a date kept; 9 columns kept and renamed; dollars and FLOP rounded to 4 significant figures. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_eci": {
@@ -26,8 +30,10 @@
    "source_updated": "2026-09-09",
    "newest_data": "2026-09-09",
    "newest_note": "newest model scored",
+   "frontier_date": null,
    "licence": "CC BY 4.0",
    "redistribution": "copied",
+   "citation": "Epoch AI, 'Capabilities & Benchmarking'. Published online at epoch.ai. Retrieved from https://epoch.ai/benchmarks",
    "changes": "From eci_scores.csv: models with a date and a score kept; the display name used as the model name; 9 columns kept and renamed; scores rounded to 2 decimals. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_benchmarks_internal": {
@@ -35,26 +41,32 @@
    "source_updated": "2026-09-03",
    "newest_data": "2026-09-03",
    "newest_note": "newest model tested (by release date)",
+   "frontier_date": null,
    "licence": "CC BY 4.0",
    "redistribution": "copied",
+   "citation": "Epoch AI, 'Capabilities & Benchmarking'. Published online at epoch.ai. Retrieved from https://epoch.ai/benchmarks",
    "changes": "Three Epoch-run benchmark files kept (never the *_external.csv files); scores and standard errors rounded to 4 decimals; each model's accessibility joined from model_metadata.csv; questions and answers never copied. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_ml_hardware": {
-   "fetched_at": "2026-09-25T13:49:57Z",
+   "fetched_at": "2026-09-25T09:53:33Z",
    "source_updated": "2026-03-11",
    "newest_data": "2025-11-06",
    "newest_note": "newest chip with a price",
+   "frontier_date": null,
    "licence": "CC BY 4.0",
    "redistribution": "copied",
-   "changes": "From ml_hardware.csv: chips with a release date kept; 10 columns kept and renamed; FLOP/s per dollar computed by us (FP16/BF16 FLOP/s divided by release price); the segment (data centre, workstation, consumer) and the kind of price are our labels, from the chip's name and Epoch's price source. Coverage notes, trend lines and summaries (summary.json) are ours."
+   "citation": "Epoch AI, 'Data on Machine Learning Hardware'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/machine-learning-hardware",
+   "changes": "From ml_hardware.csv: chips with a release date kept; 10 columns kept and renamed; FLOP/s figures and FLOP/s per dollar rounded to 4 significant figures; FLOP/s per dollar computed by us (FP16/BF16 FLOP/s divided by release price); the segment (data centre, workstation, consumer) and the kind of price are our labels, from the chip's name and Epoch's price source. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_chip_sales": {
    "fetched_at": "2026-09-25T08:46:18Z",
    "source_updated": "2026-09-30",
    "newest_data": "2026-06-30",
    "newest_note": "newest complete quarter",
+   "frontier_date": null,
    "licence": "CC BY 4.0",
    "redistribution": "copied",
+   "citation": "Epoch AI, 'Data on AI Chip Sales'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-chip-sales",
    "changes": "From cumulative_timelines_by_designer.csv: the per-quarter amount computed by us as the difference of Epoch's cumulative medians; cumulative figures rounded to whole H100-equivalents. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_chip_owners": {
@@ -62,8 +74,10 @@
    "source_updated": "2026-03-31",
    "newest_data": "2025-12-31",
    "newest_note": "newest quarter every owner reports",
+   "frontier_date": null,
    "licence": "CC BY 4.0",
    "redistribution": "copied",
+   "citation": "Epoch AI, 'Data on AI Chip Owners'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-chip-owners",
    "changes": "From cumulative_by_designer.csv: rows with a date and a median kept; medians rounded to whole H100-equivalents; columns renamed. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "epoch_ai_companies": {
@@ -71,8 +85,10 @@
    "source_updated": "2026-09-24",
    "newest_data": "2026-09-24",
    "newest_note": "newest revenue report",
+   "frontier_date": null,
    "licence": "CC BY 4.0",
    "redistribution": "copied",
+   "citation": "Josh You, John Croxton, Venkat Somala, Yafah Edelman, 'Data on AI Companies'. Published online at epoch.ai. Retrieved from https://epoch.ai/data/ai-companies",
    "changes": "From ai_companies_revenue_reports.csv: reports with a date and an annualized figure kept; 8 columns kept and renamed; figures rounded to 4 significant figures. Coverage notes, trend lines and summaries (summary.json) are ours."
   },
   "metr_time_horizon": {
@@ -80,8 +96,10 @@
    "source_updated": "2026-04-07",
    "newest_data": "2026-04-07",
    "newest_note": "newest model METR measured",
+   "frontier_date": null,
    "licence": "No open licence stated (site: all rights reserved)",
    "redistribution": "link-only",
+   "citation": "METR, 'Task-Completion Time Horizons of Frontier AI Models', https://metr.org/time-horizons/",
    "changes": "Only METR's own fitted doubling times are quoted, with their ranges, from the YAML files it publishes; per-model numbers are not stored unless METR_STORE_ROWS=1. Coverage notes are ours."
   },
   "arena_leaderboard": {
@@ -89,8 +107,10 @@
    "source_updated": "2026-09-13",
    "newest_data": "2026-09-13",
    "newest_note": "newest snapshot",
+   "frontier_date": null,
    "licence": "CC BY 4.0",
    "redistribution": "copied",
+   "citation": "Arena (lmarena-ai), 'leaderboard-dataset', Hugging Face, https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
    "changes": "From each 'overall' snapshot of the text and text_style_control configs: only the best proprietary and the best open-weights model kept per snapshot (history), and the top 30 and top 10 open models of the newest one; licences sorted by us into open, closed or neither. Coverage notes, trend lines and summaries (summary.json) are ours."
   }
  },
@@ -3766,13 +3786,14 @@
      7.55
     ]
    ],
-   "data_stop": null
+   "data_stop": null,
+   "period": "quarter"
   },
   {
    "id": "shipped_all",
    "label": "All designers' AI chips shipped, per quarter",
    "unit": "H100-equivalents per quarter",
-   "note": "Only quarters where all 6 designers are counted and complete: 2024-02 to 2025-11.",
+   "note": "Only quarters where all 6 designers are counted and complete: Q1 2024 to Q4 2025.",
    "scope": "industry",
    "status": "ok",
    "whole": {
@@ -4223,7 +4244,8 @@
      7.304
     ]
    ],
-   "data_stop": "2025-11"
+   "data_stop": "2025-11",
+   "period": "quarter"
   },
   {
    "id": "revenue_anthropic",
@@ -4677,7 +4699,8 @@
      "from": "2023-03-01",
      "to": "2024-06-12",
      "n": 6
-    }
+    },
+    "borderline": "its 90% interval only just excludes no change, and one side has only 6 points, the fewest we judge on"
    },
    "band": [
     [
@@ -5031,6 +5054,7 @@
  ],
  "epoch_hw_trend": {
   "label": "Epoch's own fit: GPU FLOP per dollar",
+  "authors": "Marius Hobbhahn, Lennart Heim and Gökçe Aydos",
   "doubling_months": 25.2,
   "doubling_ci": [
    19.2,
@@ -5038,7 +5062,7 @@
   ],
   "as_of": "2023-11-09",
   "url": "https://epoch.ai/publications/trends-in-machine-learning-hardware",
-  "note": "Epoch AI, 'Trends in machine learning hardware' (Nov 2023): 2.1 years, range 1.6 to 2.9. A different number format (FP32), inflation-adjusted prices and an older set of chips, so it is shown beside ours, not merged with it."
+  "note": "Marius Hobbhahn, Lennart Heim and Gökçe Aydos (2023), 'Trends in machine learning hardware', Epoch AI (Nov 2023): 2.1 years, range 1.6 to 2.9. A different number format (FP32), inflation-adjusted prices and an older set of chips, so it is shown beside ours, not merged with it."
  },
  "open_vs_closed": {
   "eci": {
@@ -5067,6 +5091,12 @@
     1.1,
     14.8
    ],
+   "history_range_from": "2023-11-02",
+   "first_closed": {
+    "model": "GPT-4 (Mar 2023)",
+    "date": "2023-03-14"
+   },
+   "early_note": "The index's first closed model is GPT-4 (Mar 2023), released 14 Mar 2023, so for the 3 open records before Sep 2023 the lag can only be counted from then on. They are drawn hollow, as floors (the lag could be longer), and left out of the range: LLaMA-65B (-0.6 months), Llama 2-70B (4.1 months), Stable Beluga 2 (4.2 months).",
    "now": {
     "open_model": "Kimi K3",
     "open_org": "Moonshot",
@@ -5086,6 +5116,60 @@
    },
    "history": [
     {
+     "open_model": "LLaMA-65B",
+     "open_org": "Meta AI",
+     "open_date": "2023-02-24",
+     "open_eci": 109.88,
+     "open_lo": 99.44,
+     "open_hi": 114.11,
+     "closed_model": "GPT-4 (Mar 2023)",
+     "closed_org": "OpenAI",
+     "closed_date": "2023-03-14",
+     "closed_eci": 125.88,
+     "lag_months": -0.6,
+     "lag_range_months": [
+      -0.6,
+      -0.6
+     ],
+     "early": true
+    },
+    {
+     "open_model": "Llama 2-70B",
+     "open_org": "Meta AI",
+     "open_date": "2023-07-18",
+     "open_eci": 113.59,
+     "open_lo": 103.8,
+     "open_hi": 117.42,
+     "closed_model": "GPT-4 (Mar 2023)",
+     "closed_org": "OpenAI",
+     "closed_date": "2023-03-14",
+     "closed_eci": 125.88,
+     "lag_months": 4.1,
+     "lag_range_months": [
+      4.1,
+      4.1
+     ],
+     "early": true
+    },
+    {
+     "open_model": "Stable Beluga 2",
+     "open_org": "Stability AI",
+     "open_date": "2023-07-20",
+     "open_eci": 116.97,
+     "open_lo": 108.0,
+     "open_hi": 120.19,
+     "closed_model": "GPT-4 (Mar 2023)",
+     "closed_org": "OpenAI",
+     "closed_date": "2023-03-14",
+     "closed_eci": 125.88,
+     "lag_months": 4.2,
+     "lag_range_months": [
+      4.2,
+      4.2
+     ],
+     "early": true
+    },
+    {
      "open_model": "Yi-34B",
      "open_org": "01.AI",
      "open_date": "2023-11-02",
@@ -5100,7 +5184,8 @@
      "lag_range_months": [
       7.7,
       7.7
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Mixtral 8x7B",
@@ -5117,7 +5202,8 @@
      "lag_range_months": [
       8.9,
       8.9
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Mixtral 8x22B",
@@ -5134,7 +5220,8 @@
      "lag_range_months": [
       13.1,
       13.1
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Llama 3-70B",
@@ -5151,7 +5238,8 @@
      "lag_range_months": [
       2.8,
       13.2
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "DeepSeek-V2 (MoE-236B, May 2024)",
@@ -5168,7 +5256,8 @@
      "lag_range_months": [
       -0.2,
       13.8
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Qwen2-72B",
@@ -5185,7 +5274,8 @@
      "lag_range_months": [
       1.9,
       14.8
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Llama 3.1-405B",
@@ -5202,7 +5292,8 @@
      "lag_range_months": [
       -1.7,
       16.3
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Qwen2.5-72B",
@@ -5219,7 +5310,8 @@
      "lag_range_months": [
       0.2,
       18.2
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Phi-4",
@@ -5236,7 +5328,8 @@
      "lag_range_months": [
       3.0,
       21.0
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "DeepSeek-V3",
@@ -5253,7 +5346,8 @@
      "lag_range_months": [
       3.4,
       11.0
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "DeepSeek-R1",
@@ -5270,7 +5364,8 @@
      "lag_range_months": [
       1.1,
       1.1
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Qwen3-235B-A22B",
@@ -5287,7 +5382,8 @@
      "lag_range_months": [
       4.3,
       7.5
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "DeepSeek-R1 (May 2025)",
@@ -5304,7 +5400,8 @@
      "lag_range_months": [
       1.9,
       5.3
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Qwen3-235B-A22B-Thinking (Jul 2025)",
@@ -5321,7 +5418,8 @@
      "lag_range_months": [
       3.3,
       7.2
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "DeepSeek-V3.2-Exp",
@@ -5338,7 +5436,8 @@
      "lag_range_months": [
       3.6,
       6.0
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Kimi K2 Thinking",
@@ -5355,7 +5454,8 @@
      "lag_range_months": [
       3.0,
       7.2
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "DeepSeek-V3.2",
@@ -5372,7 +5472,8 @@
      "lag_range_months": [
       3.8,
       8.1
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Kimi K2.5",
@@ -5389,7 +5490,8 @@
      "lag_range_months": [
       5.7,
       9.4
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "GLM-5.1",
@@ -5406,7 +5508,8 @@
      "lag_range_months": [
       4.6,
       8.0
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Kimi K2.6",
@@ -5423,7 +5526,8 @@
      "lag_range_months": [
       5.0,
       8.4
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "GLM-5.2",
@@ -5440,7 +5544,8 @@
      "lag_range_months": [
       6.1,
       10.3
-     ]
+     ],
+     "early": false
     },
     {
      "open_model": "Kimi K3",
@@ -5457,7 +5562,8 @@
      "lag_range_months": [
       2.8,
       7.1
-     ]
+     ],
+     "early": false
     }
    ]
   },
@@ -5469,9 +5575,11 @@
    "configs": {
     "text": {
      "label": "raw votes",
-     "snapshots": 243,
-     "from": "2023-05-22",
+     "snapshots": 229,
+     "from": "2024-02-02",
      "to": "2026-09-13",
+     "left_out": 14,
+     "left_out_from": "2023-05-22",
      "latest": {
       "date": "2026-09-13",
       "closed_model": "claude-fable-5.1-max",
@@ -5496,90 +5604,6 @@
       "win_prob"
      ],
      "series": [
-      [
-       "2023-05-22",
-       -16.0,
-       null,
-       0.477
-      ],
-      [
-       "2023-06-19",
-       -27.0,
-       null,
-       0.461
-      ],
-      [
-       "2023-07-17",
-       -77.0,
-       null,
-       0.391
-      ],
-      [
-       "2023-08-02",
-       -81.0,
-       null,
-       0.385
-      ],
-      [
-       "2023-09-05",
-       -89.0,
-       null,
-       0.375
-      ],
-      [
-       "2023-10-02",
-       -97.0,
-       null,
-       0.364
-      ],
-      [
-       "2023-11-08",
-       -100.0,
-       null,
-       0.36
-      ],
-      [
-       "2023-11-16",
-       -102.0,
-       null,
-       0.357
-      ],
-      [
-       "2023-12-06",
-       65.0,
-       null,
-       0.592
-      ],
-      [
-       "2023-12-15",
-       75.3,
-       null,
-       0.607
-      ],
-      [
-       "2023-12-20",
-       69.4,
-       null,
-       0.599
-      ],
-      [
-       "2024-01-09",
-       67.0,
-       20.0,
-       0.595
-      ],
-      [
-       "2024-01-18",
-       66.1,
-       19.9,
-       0.594
-      ],
-      [
-       "2024-01-25",
-       66.2,
-       19.0,
-       0.594
-      ],
       [
        "2024-02-02",
        134.9,
@@ -6961,6 +6985,8 @@
      "snapshots": 184,
      "from": "2024-08-28",
      "to": "2026-09-13",
+     "left_out": 0,
+     "left_out_from": null,
      "latest": {
       "date": "2026-09-13",
       "closed_model": "claude-fable-5",
@@ -8091,7 +8117,9 @@
       ]
      ]
     }
-   }
+   },
+   "complete_from": "2024-02-02",
+   "gaps_note": "Snapshots before 2 Feb 2024 are left out: in this dataset, until 16 Nov 2023 the only proprietary model is PaLM 2 (no GPT-4, GPT-3.5 or Claude), and until 25 Jan 2024 GPT-4 Turbo, then leading the public board, is missing. Later snapshots also appear to leave out some preview models that were retired afterwards: the Dec 2024 to Feb 2025 snapshots have no experimental Gemini and no chatgpt-4o-latest, and the 3 Jun 2025 snapshot has no Gemini 2.5 Pro, although its previews were on the public board from March 2025. So a single dip, such as the raw-vote line going below a coin flip in early 2025, may partly be models missing from the record."
   },
   "release_share": {
    "id": "release_share",
@@ -8334,9 +8362,9 @@
    ],
    "text": "Open against closed: three meters that don't agree.",
    "items": [
-    "Epoch's capability index: the best open-weights model, Kimi K3 (Moonshot, 16 Jul 2026), was about 4 months behind when it came out: a closed model, GPT-5.4 Pro, had first reached its score on 5 Mar 2026 (range 3 to 7 months, from the uncertainty in Kimi K3's own score only). No open model has beaten it since, so as of today closed models reached that level {{since:2026-03-05}}. It is 8.9 points below the best closed model (GPT-6 Astra, 3 Sep 2026). Over time this gap has ranged from 1 to 15 months, so any single number is a snapshot. Index data to 9 Sep 2026.",
-    "Arena's blind votes: the ratings imply the best closed model would win, of the votes that have a winner, about 53% using style-adjusted votes (rough range 52 to 54%), or about 55% using raw votes (rough range 53 to 56%). That is close to a coin flip. These chances come from the ratings, not from counting real votes between those two models. Snapshot of 13 Sep 2026.",
-    "Releases: 45 of the 107 notable models released in 2025 (42%) had downloadable weights under any licence; so far in 2026 it is 37% (to 21 Sep 2026). Each model counts once, whatever its size or how much it is used.",
+    "Epoch's capability index: the best open-weights model, Kimi K3 (Moonshot, 16 Jul 2026), was about 4 months behind when it came out: a closed model, GPT-5.4 Pro, had first reached its score on 5 Mar 2026 (range 3 to 7 months, from the uncertainty in Kimi K3's own score only). No open model has beaten it since, so as of today closed models reached that level {{since:2026-03-05}}. It is 8.9 points below the best closed model (GPT-6 Astra, 3 Sep 2026). At each new open record since Nov 2023, this gap has ranged from 1 to 15 months, so any single number is a snapshot (earlier open records are floors, because the index's first closed model is GPT-4 (Mar 2023)). Index data to 9 Sep 2026.",
+    "Arena's blind votes: the ratings imply the best closed model would win, of the votes that have a winner, about 53% using style-adjusted votes (rough range 52 to 54%), or about 55% using raw votes (rough range 53 to 56%). That is close to a coin flip. These chances come from the ratings, not from counting real votes between those two models. Snapshot of 13 Sep 2026. Snapshots before 2 Feb 2024 are left out of the history: they lack the models then leading the public board.",
+    "Releases: of the notable models released in 2025, 45 of the 107 with a stated status (42%) had downloadable weights under any licence (every 2025 model has one). So far in 2026 (to 21 Sep 2026): 28 of the 76 with a stated status (37%), and 2 more have none. Each model counts once, whatever its size or how much it is used.",
     "Share of actual use: no official, openly licensed source exists. The public views that do exist, such as OpenRouter's rankings, see one router's paid API traffic and miss the companies' own apps."
    ]
   },
@@ -8355,9 +8383,9 @@
    ],
    "text": "How fast things double depends on the meter (whole period, with the 90% range of the fit). They count different things, so they sit side by side, never averaged.",
    "items": [
-    "Training compute of the biggest models: 5.4 months (5.3 to 5.6 months), Sep 2010 to Sep 2026, 72 points. Starting the fit anywhere from 2010 to 2022 gives 5.2 to 5.8 months. Single models land about 6 times above or below the line. 1 of these models released in the 12 months to 21 Sep 2026 has an estimate.",
-    "Chip speed per dollar, data-centre chips: 2.7 years (2.2 to 3.5 years), Jun 2017 to Nov 2025, 16 points. Every priced chip, the 4 consumer and workstation cards included: 3.5 years (2.5 to 8.2 years). Epoch's own published trend (Nov 2023; FP32, ML GPUs): 2.1 years (1.6 to 2.9). Too few chips for a firm headline.",
-    "Nvidia AI chips shipped, per quarter: 7.7 months (6.5 to 8.6 months), Feb 2022 to May 2026, 18 points. All designers together: 8.4 months (7.1 to 10.6 months), measured on Feb 2024 to Nov 2025 only, the quarters where every designer is counted.",
+    "Training compute of the biggest models: 5.4 months (5.3 to 5.6 months), Sep 2010 to Sep 2026, 72 points. Starting the fit anywhere from 2010 to 2022 gives 5.3 to 5.8 months. Single models land about 6 times above or below the line. 1 of these models released in the 12 months to 21 Sep 2026 has an estimate.",
+    "Chip speed per dollar, data-centre chips: 2.7 years (2.2 to 3.5 years), Jun 2017 to Nov 2025, 16 points. Every priced chip, the 4 consumer and workstation cards included: 3.5 years (2.5 to 8.2 years). Epoch's own published trend (Marius Hobbhahn, Lennart Heim and Gökçe Aydos, Nov 2023; FP32, ML GPUs): 2.1 years (1.6 to 2.9). Too few chips for a firm headline.",
+    "Nvidia AI chips shipped, per quarter: 7.7 months (6.5 to 8.6 months), Q1 2022 to Q2 2026, 18 points. All designers together: 8.4 months (7.1 to 10.6 months), measured on Q1 2024 to Q4 2025 only, the quarters where every designer is counted and complete.",
     "Single companies, growing from a small base and picked because they have the most reports: Anthropic revenue run-rate 3.5 months (3.1 to 3.7 months, Oct 2023 to Jul 2026); OpenAI revenue run-rate 6.1 months (5.7 to 7.0 months, Mar 2023 to Aug 2026). They are not the industry's pace.",
     "METR, quoting its own fits from 2023 on: version 1.1 4.2 months (its range 3.4 to 5.2); version 1.0 5.8 months (4.5 to 7.5). The ranges overlap, so the versions differ rather than disagree. Over all years: 6.2 and 6.6 months. Newest model measured: 7 Apr 2026."
    ]
@@ -8380,10 +8408,10 @@
     "Training compute, all notable models: slower lately (Sep 2024 to Sep 2026, 80 points, against Feb 2018 to Sep 2024, 309 points). This probably reflects who discloses, not the industry: recent estimates come mostly from open-weights labs with smaller models, and the recent doubling time (23.4 months) could also be flat.",
     "Training cost of the biggest models: faster lately (Jul 2023 to Jul 2025, 13 points, against Jan 2016 to May 2023, 31 points). Weak evidence: 4 of the 13 recent points are 'Speculative', and the data stop in Jul 2025. Without 'Speculative' estimates: faster lately.",
     "Chip speed per dollar, data-centre chips: no clear change (Nov 2023 to Nov 2025, 8 points, against Jun 2017 to Sep 2023, 8 points).",
-    "Nvidia AI chips shipped, per quarter: no clear change (May 2024 to May 2026, 9 points, against Feb 2022 to Feb 2024, 9 points). Neighbouring points were resampled together, since they move together.",
+    "Nvidia AI chips shipped, per quarter: no clear change (Q2 2024 to Q2 2026, 9 points, against Q1 2022 to Q1 2024, 9 points). Neighbouring points were resampled together, since they move together.",
     "All designers' AI chips shipped, per quarter: can't be judged, the series covers little more than the last 24 months (6 needed on each side).",
     "Anthropic revenue run-rate: can't be judged, only 2 points before the last 24 months of its data (6 needed on each side).",
-    "OpenAI revenue run-rate: slower lately (Aug 2024 to Aug 2026, 10 points, against Mar 2023 to Jun 2024, 6 points). Neighbouring points were resampled together, since they move together.",
+    "OpenAI revenue run-rate: slower lately (borderline) (Aug 2024 to Aug 2026, 10 points, against Mar 2023 to Jun 2024, 6 points). A borderline call: its 90% interval only just excludes no change, and one side has only 6 points, the fewest we judge on. Neighbouring points were resampled together, since they move together.",
     "Some 'changes' could be luck: 5 of these checks give a verdict, and even if nothing had changed, the chance that at least one would say 'changed' is about 41%."
    ],
    "false_alarm_chance": 0.41

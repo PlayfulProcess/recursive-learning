@@ -6,7 +6,7 @@ file (3.8 MB) is not copied; the confidence interval columns are.
 
 import collections
 
-from common import (CC_BY_4, envelope, http_get_cached, iso_date, main_wrapper, now_iso, num,
+from common import (CC_BY_4, count_list, envelope, http_get_cached, iso_date, main_wrapper, now_iso, num,
                     require_columns, write_data, zip_csv)
 
 ID = "epoch_eci"
@@ -42,7 +42,7 @@ def run():
             "Only models with enough benchmark results for the index to be fitted are here, and the "
             "score depends on which benchmarks Epoch picked. It is one vantage point, not ground truth."
         ),
-        "counted": "By country: " + ", ".join(f"{k} {v}" for k, v in ctry.most_common(6)) + ".",
+        "counted": "By country: " + count_list(ctry, 8) + ".",
         "not_counted": ("Models with too few benchmark runs, and models Epoch cannot reach through an API. "
                         f"{no_ci} rows have no interval (the index's fixed anchor points)."),
         "numbers": {"models": len(rows), "groups": dict(groups), "countries": dict(ctry.most_common(8))},

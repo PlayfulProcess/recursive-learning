@@ -15,6 +15,7 @@ import collections
 import math
 import os
 import sys
+from decimal import ROUND_HALF_UP, Decimal
 
 from common import DATA_DIR, dumps, read_data
 from fit import dec_year, fit_series, iso_of, ols, r3
@@ -28,13 +29,62 @@ MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "No
 # Epoch's own published price-performance trend, quoted beside ours (CC BY 4.0, Epoch AI).
 EPOCH_HW_TREND = {
     "label": "Epoch's own fit: GPU FLOP per dollar",
+    "authors": "Marius Hobbhahn, Lennart Heim and Gökçe Aydos",
     "doubling_months": 25.2, "doubling_ci": [19.2, 34.9],
     "as_of": "2023-11-09",
     "url": "https://epoch.ai/publications/trends-in-machine-learning-hardware",
-    "note": ("Epoch AI, 'Trends in machine learning hardware' (Nov 2023): 2.1 years, range 1.6 to 2.9. "
+    "note": ("Marius Hobbhahn, Lennart Heim and Gökçe Aydos (2023), 'Trends in machine learning hardware', "
+             "Epoch AI (Nov 2023): 2.1 years, range 1.6 to 2.9. "
              "A different number format (FP32), inflation-adjusted prices and an older set of chips, so it "
              "is shown beside ours, not merged with it."),
 }
+
+
+# Arena: the dataset's early snapshots are incomplete, so the chart and the headline start at the
+# first snapshot that holds the model then leading the public board. Checked on 25 Sep 2026 by
+# reading the 'text' config's 'full' split: until 16 Nov 2023 the only proprietary model in a
+# snapshot is PaLM 2 (no GPT-4, GPT-3.5 or Claude); from 6 Dec 2023 to 25 Jan 2024 GPT-4 (0314,
+# 0613) is there but GPT-4 Turbo (gpt-4-1106-preview), on the public board since Nov 2023, is not;
+# 2 Feb 2024 is the first snapshot with it. Earlier snapshots stay in the data file, marked on the
+# page as left out.
+ARENA_FROM = "2024-02-02"
+ARENA_GAPS = (
+    "Snapshots before 2 Feb 2024 are left out: in this dataset, until 16 Nov 2023 the only proprietary "
+    "model is PaLM 2 (no GPT-4, GPT-3.5 or Claude), and until 25 Jan 2024 GPT-4 Turbo, then leading the "
+    "public board, is missing. Later snapshots also appear to leave out some preview models that were "
+    "retired afterwards: the Dec 2024 to Feb 2025 snapshots have no experimental Gemini and no "
+    "chatgpt-4o-latest, and the 3 Jun 2025 snapshot has no Gemini 2.5 Pro, although its previews were on "
+    "the public board from March 2025. So a single dip, such as the raw-vote line going below a coin flip "
+    "in early 2025, may partly be models missing from the record.")
+
+
+def fx(x, d=1):
+    """Round like the page's JavaScript toFixed (halves up), so a number reads the same in the
+    summary sentences and on the cards. Python's own format rounds exact halves to even."""
+    q = Decimal(1).scaleb(-d)
+    return str(Decimal(x).quantize(q, rounding=ROUND_HALF_UP))
+
+
+def pc(v):
+    """A share as a whole percent, rounded like the page does."""
+    return fx(v * 100, 0) + "%"
+
+
+def qlabel(iso):
+    """A quarter midpoint date ('2026-05-15') as 'Q2 2026'."""
+    return f"Q{(int(iso[5:7]) - 1) // 3 + 1} {iso[:4]}"
+
+
+def span(t, part):
+    """'Jan 2022 to May 2026', or 'Q1 2022 to Q2 2026' for a quarterly series."""
+    if t.get("period") == "quarter":
+        return f"{qlabel(part['from'])} to {qlabel(part['to'])}"
+    return f"{mon(part['from'])} to {mon(part['to'])}"
+
+
+def verdict_text(ch):
+    """'slower lately', or 'slower lately (borderline)'; the reason goes in its own sentence."""
+    return ch["verdict"] + (" (borderline)" if ch.get("borderline") else "")
 
 
 def objs(d):
@@ -58,7 +108,7 @@ def mon(iso, day=False):
 def fmt_months(m):
     if m is None:
         return "no doubling (flat or shrinking)"
-    return f"{m:.1f} months" if m < 24 else f"{m / 12:.1f} years"
+    return f"{fx(m)} months" if m < 24 else f"{fx(m / 12)} years"
 
 
 def fmt_range(ci):
@@ -68,9 +118,9 @@ def fmt_range(ci):
     if hi is None:
         return f"{fmt_months(lo)} to no growth at all"
     if lo >= 24 and hi >= 24:
-        return f"{lo / 12:.1f} to {hi / 12:.1f} years"
+        return f"{fx(lo / 12)} to {fx(hi / 12)} years"
     if lo < 24 and hi < 24:
-        return f"{lo:.1f} to {hi:.1f} months"
+        return f"{fx(lo)} to {fx(hi)} months"
     return f"{fmt_months(lo)} to {fmt_months(hi)}"
 
 
@@ -165,11 +215,14 @@ def trends(data, ref):
         "shipped_nvidia", "Nvidia AI chips shipped, per quarter", [(quarter_mid(r["quarter_end"]), r["q_median"]) for r in nv],
         "H100-equivalents per quarter", block=True, ref_date=ref,
         note="Medians of Epoch's modelled estimates; incomplete quarters left out. One chipmaker's quarters, so runs of neighbouring quarters are resampled together."))
+    out[-1]["period"] = "quarter"
     total = shipped_total(sales)
     out.append(fit_series(
         "shipped_all", "All designers' AI chips shipped, per quarter", [(d, v) for d, v in total["points"]],
         "H100-equivalents per quarter", block=True, ref_date=ref,
-        note=f"Only quarters where all {len(total['designers'])} designers are counted and complete: {total['from']} to {total['to']}."))
+        note=(f"Only quarters where all {len(total['designers'])} designers are counted and complete: "
+              f"{qlabel(total['from_mid'])} to {qlabel(total['to_mid'])}." if total["points"] else None)))
+    out[-1]["period"] = "quarter"
 
     rev = objs(data["epoch_ai_companies"])
     for co, key in (("Anthropic", "revenue_anthropic"), ("OpenAI", "revenue_openai")):
@@ -196,7 +249,8 @@ def shipped_total(sales):
         if len(rs) == len(designers) and not any(r["incomplete"] for r in rs.values()):
             pts.append((quarter_mid(q), sum(r["q_median"] for r in rs.values())))
     return {"designers": designers, "points": pts,
-            "from": pts[0][0][:7] if pts else None, "to": pts[-1][0][:7] if pts else None}
+            "from": pts[0][0][:7] if pts else None, "to": pts[-1][0][:7] if pts else None,
+            "from_mid": pts[0][0] if pts else None, "to_mid": pts[-1][0] if pts else None}
 
 
 # ---------------------------------------------------------------- open vs closed, three ways
@@ -233,18 +287,22 @@ def eci_meter(data):
         ]
         return res
 
-    # history: at each new open-weights record, how far behind was it? It starts once the index has
-    # six months of closed models behind it, so the start of Epoch's data is not read as a lead.
+    # history: at each new open-weights record, how far behind was it? The index lists no closed
+    # model before its first one, so for records in the first six months after that the lag can only
+    # be counted from that date on: they are kept, marked `early` (a floor: the lag could be longer),
+    # and left out of the range, so the start of Epoch's data is not read as a lead.
     start = iso_of(dec_year(closed[0]["date"]) + 0.5)
     history, top = [], -1
     for o in open_:
         if o["eci"] > top:
             top = o["eci"]
-            if o["date"] < start:
-                continue
-            history.append(lag_for(o))
+            h = lag_for(o)
+            h["early"] = o["date"] < start
+            history.append(h)
     now = lag_for(best_open)
-    lags = [h["lag_months"] for h in history if h["lag_months"] is not None]
+    counted = [h for h in history if h["lag_months"] is not None and not h["early"]]
+    lags = [h["lag_months"] for h in counted]
+    early = [h for h in history if h["early"]]
     return {
         "id": "eci_lag", "source_id": "epoch_eci",
         "question": "How capable? Months until a closed model first reached the best open model's score.",
@@ -253,6 +311,14 @@ def eci_meter(data):
         "gap_points": round(best_closed["eci"] - best_open["eci"], 1),
         "range_note": "The range comes only from the uncertainty in the open model's own score; the closed models' uncertainty is not counted.",
         "history_range_months": [min(lags), max(lags)] if lags else None,
+        "history_range_from": counted[0]["open_date"] if counted else None,
+        "first_closed": {"model": closed[0]["model"], "date": closed[0]["date"]},
+        "early_note": ((f"The index's first closed model is {closed[0]['model']}, released {mon(closed[0]['date'], True)}, "
+                        f"so for the {len(early)} open record{'s' if len(early) != 1 else ''} before {mon(start)} "
+                        "the lag can only be counted from then on. They are drawn hollow, as floors (the lag could "
+                        "be longer), and left out of the range: "
+                        + ", ".join(f"{h['open_model']} ({fx(h['lag_months'])} months)" for h in early) + ".")
+                       if early else None),
         "now": now, "history": history,
     }
 
@@ -269,8 +335,11 @@ def arena_meter(data):
                           "independent. The chances come from the ratings, not from counting real votes between "
                           "those two models."),
            "configs": {}}
+    out["complete_from"] = ARENA_FROM
+    out["gaps_note"] = ARENA_GAPS
     for cfg in ("text", "text_style_control"):
-        rs = [r for r in rows if r["config"] == cfg and r["open_rating"] is not None]
+        every = [r for r in rows if r["config"] == cfg and r["open_rating"] is not None]
+        rs = [r for r in every if r["date"] >= ARENA_FROM]
         if not rs:
             continue
         series = []
@@ -286,6 +355,8 @@ def arena_meter(data):
         out["configs"][cfg] = {
             "label": "raw votes" if cfg == "text" else "style-adjusted votes",
             "snapshots": len(rs), "from": rs[0]["date"], "to": rs[-1]["date"],
+            "left_out": len(every) - len(rs),
+            "left_out_from": every[0]["date"] if len(every) > len(rs) else None,
             "latest": {"date": last["date"], "closed_model": last["closed_model"], "closed_org": last["closed_org"],
                        "closed_rating": last["closed_rating"], "open_model": last["open_model"],
                        "open_org": last["open_org"], "open_licence": last["open_licence"],
@@ -416,7 +487,7 @@ def tr_by(tr, key):
 def speed_item(t, extra=""):
     w = t["whole"]
     return (f"{t['label']}: {fmt_months(w['doubling_months'])} ({fmt_range(w['doubling_ci'])}), "
-            f"{mon(w['from'])} to {mon(w['to'])}, {w['n']} points.{extra}")
+            f"{span(t, w)}, {w['n']} points.{extra}")
 
 
 def sentences(tr, eci, arena, share, metr, data, newest):
@@ -430,14 +501,17 @@ def sentences(tr, eci, arena, share, metr, data, newest):
         hr = eci.get("history_range_months")
         items.append(
             f"Epoch's capability index: the best open-weights model, {n['open_model']} ({n['open_org']}, {mon(n['open_date'], True)}), "
-            f"was about {n['lag_months']:.0f} months behind when it came out: a closed model, {n['closed_model']}, had first "
+            f"was about {fx(n['lag_months'], 0)} months behind when it came out: a closed model, {n['closed_model']}, had first "
             f"reached its score on {mon(n['closed_date'], True)}"
-            + (f" (range {rng[0]:.0f} to {rng[1]:.0f} months, from the uncertainty in {n['open_model']}'s own score only)"
+            + (f" (range {fx(rng[0], 0)} to {fx(rng[1], 0)} months, from the uncertainty in {n['open_model']}'s own score only)"
                if None not in rng else "")
             + f". No open model has beaten it since, so as of today closed models reached that level {{{{since:{n['closed_date']}}}}}. "
             f"It is {eci['gap_points']} points below the best closed model ({eci['best_closed']['model']}, "
             f"{mon(eci['best_closed']['date'], True)})."
-            + (f" Over time this gap has ranged from {hr[0]:.0f} to {hr[1]:.0f} months, so any single number is a snapshot."
+            + (f" At each new open record since {mon(eci['history_range_from'])}, this gap has ranged from {fx(hr[0], 0)} to "
+               f"{fx(hr[1], 0)} months, so any single number is a snapshot"
+               + (f" (earlier open records are floors, because the index's first closed model is "
+                  f"{eci['first_closed']['model']})" if eci.get("early_note") else "") + "."
                if hr else "")
             + f" Index data to {mon(newest['epoch_eci']['date'], True)}.")
     elif n.get("status"):
@@ -450,20 +524,24 @@ def sentences(tr, eci, arena, share, metr, data, newest):
                 continue
             lt = c["latest"]
             r = lt.get("win_prob_range")
-            bits.append(f"about {lt['win_prob'] * 100:.0f}% using {c['label']}"
-                        + (f" (rough range {r[0] * 100:.0f} to {r[1] * 100:.0f}%)" if r else ""))
+            bits.append(f"about {pc(lt['win_prob'])} using {c['label']}"
+                        + (f" (rough range {fx(r[0] * 100, 0)} to {pc(r[1])})" if r else ""))
         snap = (arena["configs"].get("text_style_control") or arena["configs"].get("text"))["latest"]["date"]
         items.append("Arena's blind votes: the ratings imply the best closed model would win, of the votes that have "
                      "a winner, " + ", or ".join(bits) + ". That is close to a coin flip. These chances come from the "
-                     f"ratings, not from counting real votes between those two models. Snapshot of {mon(snap, True)}.")
+                     f"ratings, not from counting real votes between those two models. Snapshot of {mon(snap, True)}."
+                     + (f" Snapshots before {mon(arena['complete_from'], True)} are left out of the history: they lack the "
+                        "models then leading the public board." if arena.get("complete_from") else ""))
     full = [s for s in share["series"] if s[0] < share["partial_year"] and s[4] is not None]
     cur = next((s for s in share["series"] if s[0] == share["partial_year"]), None)
     if full:
         y = full[-1]
-        items.append(f"Releases: {y[1]} of the {y[1] + y[2]} notable models released in {y[0]} "
-                     f"({y[4] * 100:.0f}%) had downloadable weights under any licence"
-                     + (f" ({y[3]} more have no stated status and are not counted)" if y[3] else "")
-                     + (f"; so far in {cur[0]} it is {cur[4] * 100:.0f}% (to {mon(share['newest'], True)})" if cur and cur[4] is not None else "")
+        items.append(f"Releases: of the notable models released in {y[0]}, {y[1]} of the {y[1] + y[2]} with a stated "
+                     f"status ({pc(y[4])}) had downloadable weights under any licence"
+                     + (f"; {y[3]} more have no stated status" if y[3] else f" (every {y[0]} model has one)")
+                     + (f". So far in {cur[0]} (to {mon(share['newest'], True)}): {cur[1]} of the {cur[1] + cur[2]} with a "
+                        f"stated status ({pc(cur[4])})" + (f", and {cur[3]} more have none" if cur[3] else "")
+                        if cur and cur[4] is not None else "")
                      + ". Each model counts once, whatever its size or how much it is used.")
     items.append("Share of actual use: no official, openly licensed source exists. The public views that do exist, "
                  "such as OpenRouter's rankings, see one router's paid API traffic and miss the companies' own apps.")
@@ -480,8 +558,8 @@ def sentences(tr, eci, arena, share, metr, data, newest):
         since = iso_of(dec_year(newest_list) - 1)
         recent_front = sum(1 for r in tc if r["frontier"] and r["flop"] and r["date"] >= since)
         extra = ((f" Starting the fit anywhere from {ss['from_years'][0]} to {ss['from_years'][1]} gives "
-                  f"{ss['doubling_months'][0]:.1f} to {ss['doubling_months'][1]:.1f} months." if ss else "")
-                 + f" Single models land about {t['whole']['scatter_x90']:.0f} times above or below the line."
+                  f"{fx(ss['doubling_months'][0])} to {fx(ss['doubling_months'][1])} months." if ss else "")
+                 + f" Single models land about {fx(t['whole']['scatter_x90'], 0)} times above or below the line."
                  + f" {recent_front} of these models released in the 12 months to {mon(newest_list, True)} "
                    f"{'has' if recent_front == 1 else 'have'} an estimate.")
         items.append(speed_item(t, extra))
@@ -491,24 +569,24 @@ def sentences(tr, eci, arena, share, metr, data, newest):
         if ta and ta["status"] == "ok":
             extra += (f" Every priced chip, the {ta['whole']['n'] - t['whole']['n']} consumer and workstation cards "
                       f"included: {fmt_months(ta['whole']['doubling_months'])} ({fmt_range(ta['whole']['doubling_ci'])}).")
-        extra += (f" Epoch's own published trend (Nov 2023; FP32, ML GPUs): "
-                  f"{EPOCH_HW_TREND['doubling_months'] / 12:.1f} years ({EPOCH_HW_TREND['doubling_ci'][0] / 12:.1f} to "
-                  f"{EPOCH_HW_TREND['doubling_ci'][1] / 12:.1f}). Too few chips for a firm headline.")
+        extra += (f" Epoch's own published trend ({EPOCH_HW_TREND['authors']}, Nov 2023; FP32, ML GPUs): "
+                  f"{fx(EPOCH_HW_TREND['doubling_months'] / 12)} years ({fx(EPOCH_HW_TREND['doubling_ci'][0] / 12)} to "
+                  f"{fx(EPOCH_HW_TREND['doubling_ci'][1] / 12)}). Too few chips for a firm headline.")
         items.append(speed_item(t, extra))
     t, ta = tr_by(tr, "shipped_nvidia"), tr_by(tr, "shipped_all")
     if t and t["status"] == "ok":
         extra = ""
         if ta and ta["status"] == "ok":
             extra = (f" All designers together: {fmt_months(ta['whole']['doubling_months'])} "
-                     f"({fmt_range(ta['whole']['doubling_ci'])}), measured on {mon(ta['whole']['from'])} to "
-                     f"{mon(ta['whole']['to'])} only, the quarters where every designer is counted.")
+                     f"({fmt_range(ta['whole']['doubling_ci'])}), measured on {span(ta, ta['whole'])} only, the "
+                     "quarters where every designer is counted and complete.")
         items.append(speed_item(t, extra))
     comp = [x for x in tr if x.get("scope") == "company" and x["status"] == "ok" and x["whole"]["doubling_months"]]
     comp.sort(key=lambda x: x["whole"]["doubling_months"])
     if comp:
         items.append("Single companies, growing from a small base and picked because they have the most reports: "
                      + "; ".join(f"{x['label']} {fmt_months(x['whole']['doubling_months'])} "
-                                 f"({fmt_range(x['whole']['doubling_ci'])}, {mon(x['whole']['from'])} to {mon(x['whole']['to'])})"
+                                 f"({fmt_range(x['whole']['doubling_ci'])}, {span(x, x['whole'])})"
                                  for x in comp)
                      + ". They are not the industry's pace.")
     if metr:
@@ -517,14 +595,14 @@ def sentences(tr, eci, arena, share, metr, data, newest):
         if a and b:
             overlap = (a["ci_low_days"] is not None and b["ci_low_days"] is not None
                        and a["ci_low_days"] <= b["ci_high_days"] and b["ci_low_days"] <= a["ci_high_days"])
-            txt = (f"METR, quoting its own fits from 2023 on: version 1.1 {a['doubling_days'] / 30.44:.1f} months "
-                   f"(its range {a['ci_low_days'] / 30.44:.1f} to {a['ci_high_days'] / 30.44:.1f}); version 1.0 "
-                   f"{b['doubling_days'] / 30.44:.1f} months ({b['ci_low_days'] / 30.44:.1f} to {b['ci_high_days'] / 30.44:.1f}). "
+            txt = (f"METR, quoting its own fits from 2023 on: version 1.1 {fx(a['doubling_days'] / 30.44)} months "
+                   f"(its range {fx(a['ci_low_days'] / 30.44)} to {fx(a['ci_high_days'] / 30.44)}); version 1.0 "
+                   f"{fx(b['doubling_days'] / 30.44)} months ({fx(b['ci_low_days'] / 30.44)} to {fx(b['ci_high_days'] / 30.44)}). "
                    + ("The ranges overlap, so the versions differ rather than disagree." if overlap
                       else "The ranges do not overlap: the versions disagree."))
             aa = [x for x in metr["quoted"] if x["window"].startswith("all time")]
             if len(aa) == 2:
-                txt += (" Over all years: " + " and ".join(f"{x['doubling_days'] / 30.44:.1f}" for x in aa) + " months.")
+                txt += (" Over all years: " + " and ".join(fx(x['doubling_days'] / 30.44) for x in aa) + " months.")
             txt += f" Newest model measured: {mon(newest['metr_time_horizon']['date'], True)}."
             items.append(txt)
     out.append({"topic": "speed", "meters": [x["id"] for x in tr if not x.get("variant_of")] + ["metr_time_horizon"],
@@ -547,8 +625,10 @@ def sentences(tr, eci, arena, share, metr, data, newest):
             continue
         verdicts += 1
         r, b = ch["recent"], ch["before"]
-        s = (f"{t['label']}: {ch['verdict']} ({mon(r['from'])} to {mon(r['to'])}, {r['n']} points, against "
-             f"{mon(b['from'])} to {mon(b['to'])}, {b['n']} points).")
+        s = (f"{t['label']}: {verdict_text(ch)} ({span(t, r)}, {r['n']} points, against "
+             f"{span(t, b)}, {b['n']} points).")
+        if ch.get("borderline"):
+            s += f" A borderline call: {ch['borderline']}."
         if t["id"] == "cost_frontier":
             cost = [x for x in objs(data["epoch_training_cost"]) if x["frontier"] and x["date"] >= r["from"]]
             spec = sum(1 for x in cost if x["confidence"] == "Speculative")
@@ -556,7 +636,7 @@ def sentences(tr, eci, arena, share, metr, data, newest):
                   f"{mon(r['to'])}.")
             ns = tr_by(tr, "cost_frontier_no_spec")
             if ns and ns["status"] == "ok":
-                s += f" Without 'Speculative' estimates: {ns['change']['verdict']}."
+                s += f" Without 'Speculative' estimates: {verdict_text(ns['change'])}."
         if t["id"] == "compute_notable" and ch["verdict"] == "slower lately":
             s += (f" This probably reflects who discloses, not the industry: recent estimates come mostly from "
                   f"open-weights labs with smaller models, and the recent doubling time "
@@ -614,15 +694,17 @@ def main():
                            "quoted": True, "note": x.get("note"),
                            "range_note": "METR's own range, from its own method: not our 90% bootstrap."})
     summary = {
-        "about": ("Our adaptation of Epoch AI's and Arena's CC BY 4.0 data (credited per source below): rows "
-                  "filtered and combined; the trend lines, positions and sentences are ours. METR's figures are "
-                  "quoted with attribution only."),
+        "about": ("Our adaptation of Epoch AI's and Arena's CC BY 4.0 data (each source's citation, with its authors "
+                  "where the source names them, is under `sources`): rows filtered and combined; the trend lines, "
+                  "positions and sentences are ours. METR's figures are quoted with attribution only. This file is "
+                  "offered under CC BY 4.0, keeping those credits."),
         "as_of": max((d or {}).get("fetched_at", "") for d in data.values()),
         "ref_date": ref,
         "sources": {i: {"fetched_at": d.get("fetched_at"), "source_updated": d.get("source_updated"),
                         "newest_data": newest.get(i, {}).get("date"), "newest_note": newest.get(i, {}).get("note"),
+                        "frontier_date": newest.get(i, {}).get("frontier_date"),
                         "licence": d.get("licence"), "redistribution": d.get("redistribution"),
-                        "changes": d.get("changes")}
+                        "citation": d.get("citation"), "changes": d.get("changes")}
                     for i, d in data.items() if d},
         "trends": tr,
         "metr_quoted": metr_q,

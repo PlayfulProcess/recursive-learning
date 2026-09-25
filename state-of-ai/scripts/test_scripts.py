@@ -168,7 +168,21 @@ def test_arena_block_reader():
         fa.rows_page = real
 
 
+def test_lists_rounding_and_borderline():
+    import collections
+    from build_summary import fx
+    from common import count_list
+    from fit import borderline_why
+    c = collections.Counter({"a": 5, "b": 3, "c": 3, "d": 1})
+    check(count_list(c, 2) == "a 5, b 3, c 3, and 1 more from 1 other", "count_list: never cuts between ties, says what it left out")
+    check(count_list(c) == "a 5, b 3, c 3, d 1", "count_list: whole list when no limit")
+    check(fx(5.25) == "5.3" and fx(0.5, 0) == "1" and fx(42.49, 0) == "42", "fx: halves round up, as the page's toFixed does")
+    check(borderline_why(-0.812, -0.0005, 10, 6, 6, "slower lately") is not None, "borderline: an interval that only just clears zero")
+    check(borderline_why(0.166, 0.635, 13, 31, 6, "faster lately") is None, "borderline: a clear call is not flagged")
+
+
 if __name__ == "__main__":
+    test_lists_rounding_and_borderline()
     test_arena_block_reader()
     test_dates()
     test_too_few_points()

@@ -81,6 +81,55 @@
     return months(ci[0]) + ' to ' + months(ci[1]);
   }
   function monthsTick(m) { return m < 12 ? m + ' mo' : (m / 12) + ' yr'; }
+  function f1(v) { return v == null ? '–' : (+v).toFixed(1); }
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || one + 's')); }
+  // Epoch writes several report kinds in one cell ('Company disclosure,Media report')
+  function sourceTypes(s) { return s ? String(s).split(/\s*,\s*/).join(', ') : 'reported'; }
+  // '3 of their 12 notable models since X have a Y', 'their one notable model since X has no Y'
+  function countLine(k, n, noun, tail, what) {
+    if (n === 1) return 'their one ' + noun + tail + ' ' + (k ? 'has ' : 'does not have ') + what;
+    return (k ? k + ' of' : 'none of') + ' their ' + n + ' ' + noun + 's' + tail + ' ' + (k === 1 ? 'has ' : 'have ') + what;
+  }
+  function andList(xs) { return xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + ' and ' + xs[xs.length - 1]; }
+  // a legend key or other HTML swatch follows the theme by itself when it names the variable
+  function cv(name) { return 'var(' + name + ')'; }
+  // a quarter's midpoint date ('2026-05-15') as 'Q2 2026'
+  function qLabel(iso) { var p = String(iso).split('-'); return 'Q' + (Math.floor((+p[1] - 1) / 3) + 1) + ' ' + p[0]; }
+  function quarterEnd(iso) {
+    var p = String(iso).split('-'), q = Math.floor((+p[1] - 1) / 3), m = q * 3 + 3;
+    return p[0] + '-' + String(m).padStart(2, '0') + '-' + (m === 6 || m === 9 ? '30' : '31');
+  }
+  function spanText(t, part) {
+    return t.period === 'quarter' ? qLabel(part.from) + ' to ' + qLabel(part.to) : fmtDate(part.from) + ' to ' + fmtDate(part.to);
+  }
+  function verdictText(ch) { return ch.verdict + (ch.borderline ? ' (borderline)' : ''); }
+  // Epoch's link cells can hold several addresses, an address with no scheme, or plain text. Use
+  // the first real web address; add https:// to a bare domain; otherwise draw no link at all.
+  function firstUrl(s) {
+    if (!s) return null;
+    var toks = String(s).split(/[\s;|]+|,\s+/);
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i].replace(/^[<("'\[]+/, '').replace(/[>"'\].,]+$/, '');
+      if ((t.match(/\)/g) || []).length > (t.match(/\(/g) || []).length) t = t.replace(/\)+$/, '');
+      var k = t.search(/https?:\/\//i);
+      if (k >= 0) {
+        var u = t.slice(k), again = u.slice(8).search(/https?:\/\//i);
+        if (again >= 0) u = u.slice(0, again + 8);   // two addresses run together
+        return webUrl(u);
+      }
+      if (/^(www\.)?([a-z0-9-]+\.)+[a-z]{2,}([/?#]\S*)?$/i.test(t)) return webUrl('https://' + t);
+    }
+    return null;
+  }
+  function webUrl(u) {
+    try { var x = new URL(u); return /^https?:$/.test(x.protocol) && x.hostname.indexOf('.') > 0 ? x.href : null; } catch (e) { return null; }
+  }
+  // model ids as the sources write them ('gpt-6-astra_max'), lightly tidied for reading
+  function modelName(m) {
+    if (!m) return m;
+    var s = String(m), e = /^(.*?)_(minimal|low|medium|high|xhigh|max|none)$/.exec(s);
+    return (e ? e[1] + ' (' + e[2] + ')' : s).replace(/_/g, ' ');
+  }
   function link(href, text, parent, external) {
     var a = h('a', null, text, parent); a.href = href;
     if (external) { a.rel = 'noopener'; a.target = '_blank'; }
@@ -96,7 +145,12 @@
   }
   function kindColor(k) { return css(k === 'open' ? '--open' : k === 'closed' ? '--closed' : '--unknown'); }
   var KIND_LABEL = { open: 'open weights', closed: 'closed weights', unknown: 'not stated' };
-  function slot(i) { return css('--s' + (i + 1)); }
+  // chip designers take the categorical colours from slot 3 on: slots 1 and 2 are the same blue and
+  // orange as closed and open weights, and a reader who has learnt those should not meet them again
+  // meaning Nvidia and Google
+  var DESIGNERS = ['Nvidia', 'Google', 'AMD', 'Amazon', 'Huawei', 'Cambricon'];
+  function dslotName(i) { return '--s' + (i + 3); }
+  function dslot(i) { return css(dslotName(i)); }
   function newest(id) { return (S.sources[id] || {}).newest_data; }
 
   /* ---------------- players ---------------- */
@@ -107,19 +161,29 @@
       p.aliases.concat([p.name]).forEach(function (a) { aliasMap[a.toLowerCase()] = p.id; });
     });
   }
-  function playerOf(org) {
-    if (!org) return null;
-    var parts = String(org).split(',');
-    for (var i = 0; i < parts.length; i++) {
-      var id = aliasMap[parts[i].trim().toLowerCase()];
-      if (id) return id;
-    }
-    return null;
+  // a model built by several organizations ('Google DeepMind, Google') counts for each player named
+  function playersOf(org) {
+    if (!org) return [];
+    var out = [];
+    String(org).split(',').forEach(function (part) {
+      var id = aliasMap[part.trim().toLowerCase()];
+      if (id && out.indexOf(id) < 0) out.push(id);
+    });
+    return out;
   }
+  function playerOf(org) { return playersOf(org)[0] || null; }
+  function isMine(org, id) { return playersOf(org).indexOf(id) >= 0; }
   function playerName(id) { return id && playerById[id] ? playerById[id].name : null; }
+  // an organization as a source writes it ('moonshot', 'anthropic'), in the form people read
+  function orgName(o) {
+    if (!o) return o;
+    var p = playerById[playerOf(o)];
+    if (p && o === o.toLowerCase()) return p.aliases[0];
+    return o === o.toLowerCase() ? o.charAt(0).toUpperCase() + o.slice(1) : o;
+  }
   function markClass(d) {
     var c = '';
-    if (state.player) c = d.player === state.player ? 'hl' : 'dim';
+    if (state.player) c = (d.players ? d.players.indexOf(state.player) >= 0 : d.player === state.player) ? 'hl' : 'dim';
     if (d.pinned) c += ' pin';
     return c;
   }
@@ -127,20 +191,23 @@
   /* ---------------- trends from summary ---------------- */
   function trend(id) { return (S.trends || []).filter(function (t) { return t.id === id; })[0]; }
   function hasExt(t) { return !!(t && t.status === 'ok' && t.if_trend_continued && t.if_trend_continued.length); }
-  function trendLayers(t) {
-    if (!t || t.status !== 'ok') return [];
-    var L = [{ type: 'band', data: t.band.map(function (b) { return [b[0], b[1], b[3]]; }), logged: true },
-             { type: 'line', data: t.band.map(function (b) { return [b[0], b[2]]; }), logged: true, cls: 'trend-line' }];
+  // bands go under the dots; the fitted lines go over them, so the dots' surface rings cannot cut a
+  // solid line into what looks like the dashed "if the trend continued" stretch
+  function trendParts(t) {
+    var under = [], over = [];
+    if (!t || t.status !== 'ok') return { under: under, over: over };
+    under.push({ type: 'band', data: t.band.map(function (b) { return [b[0], b[1], b[3]]; }), logged: true });
+    over.push({ type: 'line', data: t.band.map(function (b) { return [b[0], b[2]]; }), logged: true, cls: 'trend-line' });
     if (state.ext && hasExt(t)) {
       var e = t.if_trend_continued, last = t.band[t.band.length - 1];
       // the wide band: where a single new point could land (the line's own range plus the scatter of points)
-      if (e[0].length >= 6) L.push({ type: 'band', data: e.map(function (b) { return [b[0], b[4], b[5]]; }), logged: true, cls: 'trend-pred-band' });
+      if (e[0].length >= 6) under.push({ type: 'band', data: e.map(function (b) { return [b[0], b[4], b[5]]; }), logged: true, cls: 'trend-pred-band' });
       var j = [last].concat(e);
-      L.push({ type: 'band', data: j.map(function (b) { return [b[0], b[1], b[3]]; }), logged: true, cls: 'trend-ext-band' });
-      L.push({ type: 'line', data: j.map(function (b) { return [b[0], b[2]]; }), logged: true, cls: 'trend-ext',
+      under.push({ type: 'band', data: j.map(function (b) { return [b[0], b[1], b[3]]; }), logged: true, cls: 'trend-ext-band' });
+      over.push({ type: 'line', data: j.map(function (b) { return [b[0], b[2]]; }), logged: true, cls: 'trend-ext',
         label: 'if the trend continued: not a forecast' });
     }
-    return L;
+    return { under: under, over: over };
   }
   // a log axis from the decade below the smallest value to the decade above the largest, and far
   // enough to hold a trend's 'if it continued' stretch (with its point range) when that is on
@@ -160,17 +227,22 @@
     if (!t) return '';
     if (t.status !== 'ok') return (what || t.label) + ': too few points to fit a trend (' + t.n + ').';
     var w = t.whole;
-    var s = (what || t.label) + ', ' + fmtDate(w.from) + ' to ' + fmtDate(w.to) + ' (' + w.n + ' points): doubles every ' +
+    var s = (what || t.label) + ', ' + spanText(t, w) + ' (' + w.n + ' points): doubles every ' +
       months(w.doubling_months) + ' (90% range of the line: ' + monthsRange(w.doubling_ci, w.doubling_months) + '), about ' + w.x_per_year + '× a year.';
     if (w.scatter_x90) s += ' Nine points in ten sit within about ' + (w.scatter_x90 < 10 ? w.scatter_x90.toFixed(1) : Math.round(w.scatter_x90)) + ' times of the line, above or below.';
     var ch = t.change || {};
     if (ch.verdict === 'too few points') s += ' Pace lately: too few points on one side of the last 24 months to tell.';
-    else if (t.recent && ch.recent) s += ' Last 24 months of data (' + fmtDate(ch.recent.from) + ' to ' + fmtDate(ch.recent.to) + ', ' + ch.recent.n + ' points): ' +
-      months(t.recent.doubling_months) + ' (' + ch.verdict + ').';
+    else if (t.recent && t.before && ch.recent) {
+      s += ' Last 24 months of data (' + spanText(t, ch.recent) + ', ' + ch.recent.n + ' points): ' + months(t.recent.doubling_months) +
+        ' (' + monthsRange(t.recent.doubling_ci, t.recent.doubling_months) + '); the years before (' + spanText(t, ch.before) + ', ' + ch.before.n +
+        ' points): ' + months(t.before.doubling_months) + ' (' + monthsRange(t.before.doubling_ci, t.before.doubling_months) + '). Pace lately: ' + verdictText(ch) + '.';
+      if (ch.borderline) s += ' A borderline call: ' + ch.borderline + '.';
+    }
     if (/blocks/.test(w.resampling || '')) s += ' Its ranges resample runs of neighbouring points together, since they move together.';
+    var stop = t.data_stop ? (t.period === 'quarter' ? 'with the quarter to ' + fmtDate(quarterEnd(t.data_stop + '-15'), true) : 'in ' + fmtDate(t.data_stop)) : '';
     if (t.scope === 'company') s += ' One company: no "if the trend continued" stretch is drawn.';
-    else if (t.data_stop && !hasExt(t)) s += ' The data stop in ' + fmtDate(t.data_stop) + ', so no "if the trend continued" stretch is drawn.';
-    else if (t.data_stop) s += ' The data stop in ' + fmtDate(t.data_stop) + '.';
+    else if (t.data_stop && !hasExt(t)) s += ' The data stop ' + stop + ', so no "if the trend continued" stretch is drawn.';
+    else if (t.data_stop) s += ' The data stop ' + stop + '.';
     return s;
   }
 
@@ -196,28 +268,35 @@
     if (extra) { var p3 = h('p', null, null, box); txt(p3, extra); }
     return box;
   }
+  // the page link goes to the licensed item itself (for Arena, the Hugging Face dataset, not the site)
+  function sourceHref(d) { return d.page || d.url; }
   function sourceLine(parent, d, id) {
     var p = h('p', 'src', null, parent), src = S.sources[id] || {};
     txt(p, 'Source: ');
-    link(d.page || d.url, d.source, p, true);
+    link(sourceHref(d), d.source, p, true);
+    if (d.authors) txt(p, ', by ' + d.authors);
+    if (d.site) { txt(p, ' (the arena\'s own site: '); link(d.site, d.site.replace(/^https?:\/\//, '').replace(/\/.*$/, ''), p, true); txt(p, ', not under this licence)'); }
     txt(p, ' · licence: ');
     link(d.licence_url || d.page, d.licence, p, true);
     txt(p, ' · newest data: ' + fmtDate(src.newest_data, true) + (src.newest_note ? ' (' + src.newest_note + ')' : '') +
-      ' · numbers unchanged since ' + fmtDate(d.fetched_at, true) + ' · ');
-    var ch = h('span', 'changes', d.redistribution === 'link-only' ? 'Changes: only the source\'s own headline figures quoted' :
-      'Changes: rows filtered; trend lines and summaries are ours', p);
-    if (d.changes) ch.title = d.changes;
-    txt(p, ' · ');
+      ' · these numbers fetched ' + fmtDate(d.fetched_at, true) + ' · ');
     link('data/' + id + '.json', 'data file', p);
     txt(p, ' · ');
     link('scripts/fetch_' + id + '.py', 'how it is fetched', p);
+    // what we changed, in full and reachable by touch and keyboard (CC BY asks us to say)
+    var det = h('details', 'changes', null, parent);
+    h('summary', null, d.redistribution === 'link-only' ? 'What we quote, and what we leave on their page' : 'What we changed from the source', det);
+    h('p', null, d.changes || '', det);
+    if (d.citation) h('p', null, 'Cite as: ' + d.citation, det);
     return p;
   }
+  // keys name CSS variables (cv('--closed')), so they follow a theme change without a redraw
   function legend(parent, items) {
     var ul = h('ul', 'legend', null, parent);
     items.forEach(function (it) {
       var li = h('li', null, null, ul), k = h('span', 'key ' + (it.shape || ''), null, li);
-      if (it.color) { if (it.shape === 'hollow') k.style.borderColor = it.color; else k.style.background = it.color; }
+      if (it.color) { if (it.shape === 'hollow' || it.shape === 'ring') k.style.borderColor = it.color; else k.style.background = it.color; }
+      if (it.faded) k.style.opacity = '0.45';
       txt(li, it.label);
     });
     return ul;
@@ -254,11 +333,11 @@
     h('div', 'pv', lines[0], box);
     lines.slice(1).forEach(function (s) { h('div', 'muted', s, box); });
     var act = h('div', 'actions', null, box);
-    if (d.player) {
-      var b = h('button', null, 'Place ' + playerName(d.player) + ' on every meter', act);
-      b.addEventListener('click', function () { setPlayer(d.player, true); });
-    }
-    if (source) link(source.href, source.text, act, true);
+    (d.players || (d.player ? [d.player] : [])).forEach(function (pid) {
+      var b = h('button', null, 'Place ' + playerName(pid) + ' on every meter', act);
+      b.addEventListener('click', function () { setPlayer(pid, true); });
+    });
+    if (source && source.href) link(source.href, source.text, act, true);
   }
   function mount(host, kind, make) {
     var c = { make: make, kind: kind };
@@ -324,7 +403,8 @@
       if (i) txt(asof, ' · ');
       var a = link('#' + (METER_ANCHOR[id] || ''), SHORT[id], asof);
       a.className = 'quiet';
-      txt(asof, ' ' + fmtDate(src.newest_data));
+      txt(asof, ' ' + (id === 'epoch_chip_sales' ? 'quarter to ' : '') + fmtDate(src.newest_data) +
+        (id === 'epoch_training_cost' && src.frontier_date ? ' (biggest models ' + fmtDate(src.frontier_date) + ')' : ''));
     });
     txt(asof, '. Every source is re-checked weekly, and new numbers arrive through a pull request that a person reads before it is merged.');
   }
@@ -333,19 +413,27 @@
   function renderSpeed() {
     var host = $('#speed-chart');
     var industry = [], company = [], quoted = [];
+    var PART = { whole: 'Whole period', before: 'The years before the last 24 months', recent: 'Last 24 months of data' };
     (S.trends || []).forEach(function (t) {
       if (t.variant_of) return;
       var list = t.scope === 'company' ? company : industry;
       if (t.status !== 'ok') { list.push({ label: t.label, marks: [], empty: 'too few points to fit', t: t, sort: 999 }); return; }
+      var ch = t.change || {};
       var marks = [{ v: t.whole.doubling_months, lo: t.whole.doubling_ci[0], hi: t.whole.doubling_ci[1], kind: 'whole', t: t }];
-      if (t.recent) marks.push({ v: t.recent.doubling_months, lo: t.recent.doubling_ci[0], hi: t.recent.doubling_ci[1], kind: 'recent', hollow: true, t: t });
-      list.push({ label: t.label + ' (to ' + fmtDate(t.whole.to) + ')', marks: marks, t: t, sort: t.whole.doubling_months || 999 });
+      // the bend is judged between the years before and the last 24 months, so those two are drawn,
+      // each on its own line; the whole period (which contains both) sits above them
+      if (ch.verdict !== 'too few points' && t.before && t.recent) {
+        marks.push({ v: t.before.doubling_months, lo: t.before.doubling_ci[0], hi: t.before.doubling_ci[1], kind: 'before', shape: 'square', t: t });
+        marks.push({ v: t.recent.doubling_months, lo: t.recent.doubling_ci[0], hi: t.recent.doubling_ci[1], kind: 'recent', hollow: true, t: t });
+      }
+      var lately = 'lately: ' + (ch.verdict === 'too few points' ? 'too few points to judge' : ch.verdict.replace(/ lately$/, '') + (ch.borderline ? ' (borderline)' : ''));
+      list.push({ label: t.label, sub: spanText(t, t.whole) + ' · ' + lately, marks: marks, t: t, sort: t.whole.doubling_months || 999 });
     });
     (S.metr_quoted || []).forEach(function (q) {
-      quoted.push({ label: q.label, marks: [{ v: q.doubling_months, lo: q.doubling_ci[0], hi: q.doubling_ci[1], kind: 'quoted', q: q }], sort: q.doubling_months, anchor: 'm-metr' });
+      quoted.push({ label: q.label, sub: 'METR\'s own fit and range', marks: [{ v: q.doubling_months, lo: q.doubling_ci[0], hi: q.doubling_ci[1], kind: 'quoted', q: q }], sort: q.doubling_months, anchor: 'm-metr' });
     });
     var eh = S.epoch_hw_trend;
-    if (eh) quoted.push({ label: eh.label + ' (' + fmtDate(eh.as_of) + ')', marks: [{ v: eh.doubling_months, lo: eh.doubling_ci[0], hi: eh.doubling_ci[1], kind: 'quoted', q: { note: eh.note, range_note: 'Epoch\'s own range, from its own method: not our 90% bootstrap.' } }], sort: eh.doubling_months, anchor: 'm-hardware' });
+    if (eh) quoted.push({ label: eh.label, sub: 'Epoch\'s own fit and range, ' + fmtDate(eh.as_of), marks: [{ v: eh.doubling_months, lo: eh.doubling_ci[0], hi: eh.doubling_ci[1], kind: 'quoted', q: { note: eh.note, range_note: 'Epoch\'s own range, from its own method: not our 90% bootstrap.' } }], sort: eh.doubling_months, anchor: 'm-hardware' });
     function bySort(a, b) { return (a.sort || 999) - (b.sort || 999); }
     industry.sort(bySort); company.sort(bySort); quoted.sort(bySort);
     var rows = [{ header: true, label: 'Across the industry (our fits)' }].concat(industry)
@@ -354,26 +442,29 @@
     mount(host, 'intervalChart', function () {
       rows.forEach(function (r) { (r.marks || []).forEach(function (m) { m.color = m.kind === 'quoted' ? css('--ink-3') : css('--neutral'); }); });
       return {
-        rows: rows, aria: 'Months to double, by meter, with ranges',
-        x: { min: 2, max: 150, ticks: [3, 6, 12, 24, 48, 96], fmt: monthsTick },
+        rows: rows, aria: 'Months to double, by meter, with ranges', title: 'months to double (log scale): further left is faster',
+        x: { min: 2, max: 150, ticks: [3, 6, 12, 24, 48, 96], fmt: monthsTick, fmtOut: months },
         tooltip: function (d) {
           var m = d.mark, lines = [];
           if (m.kind === 'quoted') {
             lines.push(m.q.range_note || 'The source\'s own range.');
             if (m.q.note) lines.push(m.q.note);
           } else {
-            var src = m.kind === 'whole' ? m.t.whole : m.t.recent;
-            lines.push((m.kind === 'whole' ? 'Whole period' : 'Last 24 months of data') + ': ' + fmtDate(src.from) + ' to ' + fmtDate(src.to) + ', ' + src.n + ' points');
+            var src = m.t[m.kind];
+            lines.push(PART[m.kind] + ': ' + spanText(m.t, src) + ', ' + src.n + ' points');
             lines.push('About ' + src.x_per_year + '× a year');
-            if (m.kind === 'whole') lines.push('Pace lately: ' + m.t.change.verdict);
+            var ch = m.t.change;
+            lines.push('Pace lately: ' + (ch.verdict === 'too few points' ? 'too few points on one side of the last 24 months to judge' : verdictText(ch)));
+            if (ch.borderline) lines.push('A borderline call: ' + ch.borderline + '.');
           }
           return { value: months(m.v) + ' to double', lines: [d.row.label, (m.kind === 'quoted' ? 'Their range: ' : '90% range of the line: ') + monthsRange([m.lo, m.hi], m.v)].concat(lines) };
         },
         onPick: function (d) { var a = d.row.t ? METER_ANCHOR[d.row.t.id] : d.row.anchor; if (a) location.hash = a; }
       };
     });
-    legend(host.parentNode, [{ label: 'whole period', color: css('--neutral') }, { label: 'last 24 months of data', color: css('--neutral'), shape: 'hollow' },
-      { label: 'the source\'s own fit and range', color: css('--ink-3') }]);
+    legend(host.parentNode, [{ label: 'whole period', color: cv('--neutral') }, { label: 'the years before the last 24 months', color: cv('--neutral'), shape: 'sq' },
+      { label: 'last 24 months of data', color: cv('--neutral'), shape: 'hollow' }, { label: 'the source\'s own fit and range', color: cv('--ink-3') },
+      { label: 'arrow: the range runs off the scale', shape: 'arrow' }]);
   }
 
   /* ---------------- 3. open vs closed, side by side ---------------- */
@@ -385,12 +476,13 @@
     if (n.lag_months != null) {
       h('p', 'tv', 'About ' + Math.round(n.lag_months) + ' months behind at release', t1);
       var r = n.lag_range_months || [], hr = e.history_range_months;
-      h('p', 'td', 'The best open-weights model, ' + n.open_model + ' (' + n.open_org + '), came out ' + fmtDate(n.open_date, true) + ' scoring ' + n.open_eci +
+      h('p', 'td', 'The best open-weights model, ' + n.open_model + ' (' + n.open_org + '), came out ' + fmtDate(n.open_date, true) + ' scoring ' + f1(n.open_eci) +
         '. A closed model, ' + n.closed_model + ', had first reached that on ' + fmtDate(n.closed_date, true) + '.' +
         (r[0] != null && r[1] != null ? ' Range ' + Math.round(r[0]) + ' to ' + Math.round(r[1]) + ' months, from the uncertainty in ' + n.open_model + '\'s own score only.' : '') +
         ' No open model has beaten it since, so as of today closed models reached that level ' + fillSince('{{since:' + n.closed_date + '}}') + '.' +
         ' It is ' + e.gap_points + ' points below the best closed model (' + e.best_closed.model + ', ' + fmtDate(e.best_closed.date, true) + ').' +
-        (hr ? ' Over time this gap has ranged from ' + Math.round(hr[0]) + ' to ' + Math.round(hr[1]) + ' months, so any single number is a snapshot.' : ''), t1);
+        (hr ? ' At each new open record since ' + fmtDate(e.history_range_from) + ', this gap has ranged from ' + Math.round(hr[0]) + ' to ' + Math.round(hr[1]) +
+          ' months, so any single number is a snapshot' + (e.early_note ? ' (earlier records are floors: see the chart below)' : '') + '.' : ''), t1);
     } else {
       h('p', 'tv', 'Open is ahead', t1);
       h('p', 'td', n.status || '', t1);
@@ -401,7 +493,7 @@
     if (a && a.configs && (a.configs.text_style_control || a.configs.text)) {
       var cfg = a.configs.text_style_control || a.configs.text, lt = cfg.latest, raw = a.configs.text && a.configs.text_style_control ? a.configs.text.latest : null;
       h('p', 'tv', 'Best closed wins ' + pct(lt.win_prob) + ' of votes with a winner', t2);
-      var td2 = h('p', 'td', 'Best closed, ' + lt.closed_model + ' (' + lt.closed_org + '), against best open, ' + lt.open_model + ' (' + lt.open_org + ', ' +
+      var td2 = h('p', 'td', 'Best closed, ' + modelName(lt.closed_model) + ' (' + orgName(lt.closed_org) + '), against best open, ' + modelName(lt.open_model) + ' (' + orgName(lt.open_org) + ', ' +
         lt.open_licence + '): ' + Math.round(lt.gap) + ' rating points apart, ' + cfg.label + ', ' + fmtDate(lt.date, true) +
         (lt.win_prob_range ? '. Rough range ' + pct(lt.win_prob_range[0]) + ' to ' + pct(lt.win_prob_range[1]) : '') +
         (raw ? '; with raw votes, ' + pct(raw.win_prob) + (raw.win_prob_range ? ' (' + pct(raw.win_prob_range[0]) + ' to ' + pct(raw.win_prob_range[1]) + ')' : '') : '') +
@@ -417,8 +509,11 @@
       cur = rs.series.filter(function (s) { return s[0] === rs.partial_year; })[0], t3 = h('div', 'tile', null, tiles);
     h('p', 'tq', 'How many (notable releases)', t3);
     h('p', 'tv', pct(last[4]) + ' open in ' + last[0], t3);
-    h('p', 'td', last[1] + ' of ' + (last[1] + last[2]) + ' notable models released in ' + last[0] + ' had downloadable weights, under any licence' +
-      (cur ? '; ' + pct(cur[4]) + ' so far in ' + cur[0] + ' (to ' + fmtDate(rs.newest, true) + ')' : '') + '. Each model counts once, whatever its size or how much it is used. ' + (rs.late_note || ''), t3);
+    // every share here is of the models with a stated open or closed status, and says so
+    h('p', 'td', 'Of the notable models released in ' + last[0] + ', ' + last[1] + ' of the ' + (last[1] + last[2]) + ' with a stated status had downloadable weights, under any licence' +
+      (last[3] ? '; ' + last[3] + ' more have no stated status' : ' (every ' + last[0] + ' model has one)') +
+      (cur ? '. So far in ' + cur[0] + ' (to ' + fmtDate(rs.newest, true) + '): ' + cur[1] + ' of the ' + (cur[1] + cur[2]) + ' with a stated status, ' + pct(cur[4]) +
+        (cur[3] ? ', and ' + cur[3] + ' more have none' : '') : '') + '. Each model counts once, whatever its size or how much it is used. ' + (rs.late_note || ''), t3);
     // use: link-only views that exist, with their coverage
     var t4 = h('div', 'tile gap', null, tiles); t4.id = 'ovc-use';
     h('p', 'tq', 'How much used (tokens served)', t4);
@@ -431,6 +526,7 @@
 
     // charts: ECI lag history, Arena chance over time, release share by year
     var hist = e.history.filter(function (x) { return x.lag_months != null; });
+    var counted = hist.filter(function (x) { return !x.early; });
     mount($('#ovc-lag'), 'xyChart', function () {
       var col = css('--neutral');
       return {
@@ -439,23 +535,27 @@
         y: { min: Math.min(0, Math.floor(Math.min.apply(null, hist.map(function (x) { return x.lag_range_months[0] != null ? x.lag_range_months[0] : x.lag_months; })) / 3) * 3),
           max: Math.max(12, Math.ceil(Math.max.apply(null, hist.map(function (x) { return x.lag_range_months[1] || x.lag_months; })) / 3) * 3), fmt: function (v) { return v + ' mo'; }, title: 'months behind at release (below 0: open ahead)' },
         layers: [
-          { type: 'whiskers', data: hist.map(function (x) { return { x: decYear(x.open_date), lo: x.lag_range_months[0], hi: x.lag_range_months[1], color: col, player: playerOf(x.open_org) }; }) },
-          { type: 'line', data: hist.map(function (x) { return [decYear(x.open_date), x.lag_months]; }), color: col },
-          { type: 'points', data: hist.map(function (x) { return { x: decYear(x.open_date), y: x.lag_months, color: css('--open'), r: 4, row: x, player: playerOf(x.open_org) }; }) }
+          { type: 'whiskers', data: hist.map(function (x) { return { x: decYear(x.open_date), lo: x.lag_range_months[0], hi: x.lag_range_months[1], color: col, players: playersOf(x.open_org) }; }) },
+          { type: 'line', data: counted.map(function (x) { return [decYear(x.open_date), x.lag_months]; }), color: col },
+          { type: 'points', data: hist.map(function (x) { return { x: decYear(x.open_date), y: x.lag_months, color: css('--open'), r: 4, hollow: !!x.early, row: x, players: playersOf(x.open_org) }; }) }
         ],
         markClass: markClass,
         tooltip: function (d) {
           var x = d.row;
-          return { value: x.lag_months + ' months behind at release', lines: [x.open_model + ' (' + x.open_org + ', ' + fmtDate(x.open_date, true) + '), index ' + x.open_eci,
-            'Closed first reached it: ' + x.closed_model + ', ' + fmtDate(x.closed_date, true), 'Range from the open model\'s own score: ' + x.lag_range_months[0] + ' to ' + x.lag_range_months[1] + ' months'] };
+          return { value: (x.early ? 'At least ' : '') + x.lag_months + ' months behind at release', lines: [x.open_model + ' (' + x.open_org + ', ' + fmtDate(x.open_date, true) + '), index ' + x.open_eci,
+            'Closed first reached it: ' + x.closed_model + ', ' + fmtDate(x.closed_date, true), 'Range from the open model\'s own score: ' + x.lag_range_months[0] + ' to ' + x.lag_range_months[1] + ' months']
+            .concat(x.early ? ['A floor: the index lists no closed model before ' + e.first_closed.model + ', so the lag could be longer.'] : []) };
         },
-        onPick: function (d) { if (d.player) setPlayer(d.player, true); }
+        onPick: function (d) { if (d.players && d.players[0]) setPlayer(d.players[0], true); }
       };
     });
+    legend($('#ovc-lag').parentNode, [{ label: 'new open record', color: cv('--open') }, { label: 'hollow: a floor, from the index\'s first months', color: cv('--open'), shape: 'hollow' },
+      { label: 'range from the open model\'s own score', color: cv('--neutral'), shape: 'line' }]);
+    if (e.early_note) h('p', 'fitline muted', e.early_note, $('#ovc-lag').parentNode);
     sourceLine($('#ovc-lag').parentNode, D.epoch_eci, 'epoch_eci');
     table($('#ovc-lag').parentNode, [{ label: 'Open record', get: function (x) { return x.open_model + ' (' + x.open_org + ')'; } }, { label: 'Released', get: function (x) { return x.open_date; } },
       { label: 'Index', num: 1, get: function (x) { return x.open_eci; } }, { label: 'Closed first there', get: function (x) { return x.closed_model + ', ' + x.closed_date; } },
-      { label: 'Months behind', num: 1, get: function (x) { return x.lag_months; } }, { label: 'Range', num: 1, get: function (x) { return x.lag_range_months[0] + ' to ' + x.lag_range_months[1]; } }],
+      { label: 'Months behind', num: 1, get: function (x) { return (x.early ? 'at least ' : '') + x.lag_months; } }, { label: 'Range', num: 1, get: function (x) { return x.lag_range_months[0] + ' to ' + x.lag_range_months[1]; } }],
       hist.slice().reverse(), 'each new open record, newest first');
     if (a && a.configs && Object.keys(a.configs).length) {
       mount($('#ovc-arena'), 'xyChart', function () {
@@ -471,7 +571,7 @@
           s.forEach(function (p) { all.push({ x: decYear(p[0]), y: p[3] * 100, color: colors[k], r: 2.5, cfg: k, p: p }); });
         });
         var xs = all.map(function (d) { return d.x; });
-        layers.push({ type: 'rule', y: 50, label: 'coin flip' });
+        layers.push({ type: 'rule', y: 50, label: 'coin flip', labelAt: 'start-below' });
         layers.push({ type: 'points', data: all, invisible: true });
         return {
           height: 210, aria: 'Chance the best closed model beats the best open one in an Arena vote with a winner, over time', crosshair: true,
@@ -482,19 +582,24 @@
           tooltip: function (d) {
             var row = objs(D.arena_leaderboard).filter(function (r) { return r.config === d.cfg && r.date === d.p[0]; })[0] || {};
             return { value: 'Best closed wins ' + d.y.toFixed(0) + '%', lines: [a.configs[d.cfg].label + ', ' + fmtDate(d.p[0], true), 'Gap: ' + d.p[1] + ' points' + (d.p[2] != null ? ' (rough ± ' + d.p[2] + ')' : ''),
-              'Closed: ' + (row.closed_model || '?') + '; open: ' + (row.open_model || '?')] };
+              'Closed: ' + (modelName(row.closed_model) || '?') + '; open: ' + (modelName(row.open_model) || '?')] };
           }
         };
       });
-      var sc = a.configs.text_style_control, rw = a.configs.text;
-      legend($('#ovc-arena').parentNode, [{ label: 'style-adjusted votes (the arena\'s default view)', color: css('--ink'), shape: 'line' },
-        { label: 'raw votes', color: css('--neutral-soft'), shape: 'line' }, { label: 'rough ± range: the arena\'s two intervals combined as if independent', shape: 'band' }]);
+      var sc = a.configs.text_style_control, rw = a.configs.text, from = a.complete_from;
+      legend($('#ovc-arena').parentNode, [{ label: 'style-adjusted votes (the arena\'s default view)', color: cv('--ink'), shape: 'line' },
+        { label: 'raw votes', color: cv('--neutral-soft'), shape: 'line' }, { label: 'rough ± range: the arena\'s two intervals combined as if independent', shape: 'band' }]);
       if (sc && rw) h('p', 'fitline muted', 'History: ' + rw.snapshots + ' raw-vote snapshots (' + fmtDate(rw.from) + ' to ' + fmtDate(rw.to) + ') and ' + sc.snapshots +
-        ' style-adjusted ones (' + fmtDate(sc.from) + ' to ' + fmtDate(sc.to) + ').', $('#ovc-arena').parentNode);
+        ' style-adjusted ones (' + fmtDate(sc.from) + ' to ' + fmtDate(sc.to) + ')' + (rw.left_out ? '; ' + rw.left_out + ' earlier raw-vote snapshots, from ' + fmtDate(rw.left_out_from) + ', are left out.' : '.'),
+        $('#ovc-arena').parentNode);
+      if (a.gaps_note) { var gp = h('p', 'fitline gapnote', null, $('#ovc-arena').parentNode); h('b', null, 'Gaps in the record. ', gp); txt(gp, a.gaps_note); }
       sourceLine($('#ovc-arena').parentNode, D.arena_leaderboard, 'arena_leaderboard');
       table($('#ovc-arena').parentNode, [{ label: 'Snapshot', get: function (r) { return r.date; } }, { label: 'Count', get: function (r) { return r.config === 'text' ? 'raw' : 'style-adjusted'; } },
-        { label: 'Best closed', get: function (r) { return r.closed_model + ' (' + r.closed_rating + ')'; } }, { label: 'Best open', get: function (r) { return r.open_model + ' (' + r.open_rating + ')'; } },
-        { label: 'Closed wins', num: 1, get: function (r) { return r.open_rating == null ? '' : pct(1 / (1 + Math.pow(10, -(r.closed_rating - r.open_rating) / 400))); } }],
+        { label: 'Best closed', get: function (r) { return modelName(r.closed_model) + ' (' + r.closed_rating + ')'; } }, { label: 'Best open', get: function (r) { return modelName(r.open_model) + ' (' + r.open_rating + ')'; } },
+        { label: 'Closed wins', num: 1, get: function (r) {
+          if (r.open_rating == null) return '';
+          return from && r.date < from ? 'left out: incomplete' : pct(1 / (1 + Math.pow(10, -(r.closed_rating - r.open_rating) / 400)));
+        } }],
         objs(D.arena_leaderboard).slice().sort(function (x, y) { return y.date.localeCompare(x.date) || x.config.localeCompare(y.config); }), 'newest first');
     } else {
       $('#ovc-arena').textContent = 'Arena history is not available in this refresh.';
@@ -518,8 +623,8 @@
         }
       };
     });
-    legend($('#ovc-share').parentNode, [{ label: 'open weights', color: css('--open'), shape: 'sq' }, { label: 'closed', color: css('--closed'), shape: 'sq' },
-      { label: 'not stated', color: css('--unknown'), shape: 'sq' }]);
+    legend($('#ovc-share').parentNode, [{ label: 'open weights', color: cv('--open'), shape: 'sq' }, { label: 'closed', color: cv('--closed'), shape: 'sq' },
+      { label: 'not stated', color: cv('--unknown'), shape: 'sq' }]);
     sourceLine($('#ovc-share').parentNode, D.epoch_training_compute, 'epoch_training_compute');
     table($('#ovc-share').parentNode, [{ label: 'Year', get: function (s) { return s[0]; } }, { label: 'Open', num: 1, get: function (s) { return s[1]; } },
       { label: 'Closed', num: 1, get: function (s) { return s[2]; } }, { label: 'Not stated', num: 1, get: function (s) { return s[3]; } },
@@ -531,19 +636,19 @@
     // o: {points, trend, ylog, ymin, ymax, yfmt, ytitle, xmin, xmax, tooltip, onPick, height, extra layers}
     return function () {
       var t = o.trend ? trend(o.trend) : null, xmax = trendXMax(t, o.xmax);
-      var pts = o.points(), yr = o.ylog ? logRange(pts.map(function (p) { return p.y; }), [t]) : [o.ymin, o.ymax];
+      var pts = o.points(), yr = o.ylog ? logRange(pts.map(function (p) { return p.y; }), [t]) : [o.ymin, o.ymax], tp = trendParts(t);
       return {
         height: function (W) { return W < 480 ? 280 : 330; }, aria: o.aria,
         x: { min: o.xmin, max: xmax },
         y: { log: o.ylog, min: yr[0], max: yr[1], fmt: o.yfmt, title: o.ytitle },
-        layers: (o.before ? o.before() : []).concat(trendLayers(t)).concat(o.layers ? o.layers() : []).concat([{ type: 'points', data: pts }]),
+        layers: (o.before ? o.before() : []).concat(tp.under).concat(o.layers ? o.layers() : []).concat([{ type: 'points', data: pts }]).concat(tp.over),
         markClass: markClass, tooltip: o.tooltip, onPick: o.onPick
       };
     };
   }
   function kindLegend(parent, extra) {
-    return legend(parent, [{ label: 'closed weights', color: css('--closed') }, { label: 'open weights', color: css('--open') },
-      { label: 'not stated', color: css('--unknown') }].concat(extra || []));
+    return legend(parent, [{ label: 'closed weights', color: cv('--closed') }, { label: 'open weights', color: cv('--open') },
+      { label: 'not stated', color: cv('--unknown') }].concat(extra || []));
   }
   var EXT_LEGEND = { label: 'with "if the trend continued" on: dashed line and inner band, the line\'s range; wide band, where single points could land (not a forecast)', shape: 'dash' };
 
@@ -553,10 +658,11 @@
     var pos = S.positions.epoch_training_compute;
     nowLine(c, sci(pos.value) + ' FLOP', 'largest estimate: ' + pos.who + ' (' + pos.org + ', ' + fmtDate(pos.date) + ', "' + pos.confidence + '")');
     var host = h('div', null, null, c), pin = pinBox(c);
-    var rows = objs(d).filter(function (r) { return r.flop && r.date >= '2010-01-01'; });
+    var withFlop = objs(d).filter(function (r) { return r.flop; });
+    var rows = withFlop.filter(function (r) { return r.date >= '2010-01-01'; });
     var pts = rows.map(function (r) {
       var k = kindOfOpen(r.open);
-      return { x: decYear(r.date), y: r.flop, r: r.frontier ? 5 : 3, hollow: r.confidence === 'Speculative', row: r, kind: k, player: playerOf(r.org) };
+      return { x: decYear(r.date), y: r.flop, r: r.frontier ? 5 : 3, hollow: r.confidence === 'Speculative', row: r, kind: k, players: playersOf(r.org) };
     });
     mount(host, 'xyChart', scatterSpec({
       aria: 'Training compute of notable models since 2010, log scale, with the trend of the biggest models',
@@ -570,23 +676,23 @@
       onPick: function (p) {
         var r = p.row;
         showPin(pin, p, [r.model + ': ' + sci(r.flop) + ' FLOP', (r.org || '') + ' · ' + fmtDate(r.date, true) + ' · estimate ' + r.confidence + ' · ' + KIND_LABEL[p.kind]],
-          r.link ? { href: r.link, text: 'Their announcement or paper' } : { href: d.page, text: 'Epoch AI: Data on AI Models' });
+          firstUrl(r.link) ? { href: firstUrl(r.link), text: 'Their announcement or paper' } : { href: d.page, text: 'Epoch AI: Data on AI Models' });
       }
     }));
-    kindLegend(c, [{ label: 'hollow: "Speculative" estimate', color: css('--ink-3'), shape: 'hollow' }, { label: 'fitted line, 90% range of the line', shape: 'band' }, EXT_LEGEND]);
+    kindLegend(c, [{ label: 'hollow: "Speculative" estimate', color: cv('--ink-3'), shape: 'hollow' }, { label: 'fitted line, 90% range of the line', shape: 'band' }, EXT_LEGEND]);
     var t = trend('compute_frontier'), t2 = trend('compute_frontier_no_spec'), t3 = trend('compute_notable');
     h('p', 'fitline', fitSentence(t, 'Biggest models'), c);
     var more = h('p', 'fitline muted', null, c), ss = t && t.start_sensitivity;
-    more.textContent = (ss ? 'Starting the fit anywhere from ' + ss.from_years[0] + ' to ' + ss.from_years[1] + ' gives ' + ss.doubling_months[0] + ' to ' + ss.doubling_months[1] + ' months. ' : '') +
+    more.textContent = (ss ? 'Starting the fit anywhere from ' + ss.from_years[0] + ' to ' + ss.from_years[1] + ' gives ' + f1(ss.doubling_months[0]) + ' to ' + f1(ss.doubling_months[1]) + ' months. ' : '') +
       (t2 && t2.status === 'ok' ? 'Leaving out "Speculative" estimates: ' + months(t2.whole.doubling_months) + '. ' : '') +
       (t3 && t3.status === 'ok' ? 'All notable models since 2018: ' + months(t3.whole.doubling_months) + ' over the whole period, but ' +
         (t3.recent ? months(t3.recent.doubling_months) + ' in the last 24 months of data, where most estimates come from labs that disclose (often smaller, open-weights models), so the flattening may be about who is counted.' : 'too few recent points.') : '');
     coverage(c, d);
     sourceLine(c, d, 'epoch_training_compute');
-    table(c, [{ label: 'Model', get: function (r) { return r.model; }, href: function (r) { return r.link; } }, { label: 'Organization', get: function (r) { return r.org; } },
+    table(c, [{ label: 'Model', get: function (r) { return r.model; }, href: function (r) { return firstUrl(r.link); } }, { label: 'Organization', get: function (r) { return r.org; } },
       { label: 'Date', get: function (r) { return r.date; } }, { label: 'FLOP', num: 1, get: function (r) { return r.flop.toExponential(2); } },
       { label: 'Confidence', get: function (r) { return r.confidence; } }, { label: 'Weights', get: function (r) { return KIND_LABEL[kindOfOpen(r.open)]; } }],
-      rows.slice().reverse(), 'models with an estimate, newest first');
+      withFlop.slice().reverse(), 'every model with an estimate, newest first; the chart starts in 2010, so ' + (withFlop.length - rows.length) + ' earlier ones are only here');
   }
 
   function renderShipped(parent) {
@@ -594,51 +700,80 @@
       'How much AI compute do chip designers ship each quarter? Measured in H100-equivalents: one unit is the dense 16-bit compute of one Nvidia H100.');
     var pos = S.positions.epoch_chip_sales;
     nowLine(c, compact(pos.value) + ' H100e', 'Nvidia, quarter to ' + fmtDate(pos.date) + ' (latest complete quarter)');
-    var rows = objs(d), designers = ['Nvidia', 'Google', 'AMD', 'Amazon', 'Huawei', 'Cambricon'].filter(function (x) { return rows.some(function (r) { return r.designer === x; }); });
+    var rows = objs(d), designers = DESIGNERS.filter(function (x) { return rows.some(function (r) { return r.designer === x; }); });
     rows.forEach(function (r) { if (designers.indexOf(r.designer) < 0) designers.push(r.designer); });
     var quarters = Array.from(new Set(rows.map(function (r) { return r.quarter_end; }))).sort();
-    // where counting starts: one marker per start quarter after the first, naming who joins
-    var starts = (d.coverage.numbers && d.coverage.numbers.start) || {}, first = quarters[0], byQ = {};
+    // where counting starts (solid line, '+') and where a designer's series ends (dashed line):
+    // one marker per quarter, naming who joins or who has no estimate from then on
+    var nums = d.coverage.numbers || {}, starts = nums.start || {}, lastQ = nums.last_quarter || {}, first = quarters[0], lastAll = quarters[quarters.length - 1];
+    var byQ = {}, endQ = {};
     designers.forEach(function (dz) {
-      var s = starts[dz]; if (!s) return;
-      var q = quarters.filter(function (x) { return x >= s; })[0];
-      if (!q || q === first) return;
-      (byQ[q] = byQ[q] || []).push(dz);
+      var s = starts[dz];
+      if (s) {
+        var q = quarters.filter(function (x) { return x >= s; })[0];
+        if (q && q !== first) (byQ[q] = byQ[q] || []).push(dz);
+      }
+      var e = lastQ[dz];
+      if (e && e < lastAll) {
+        var nq = quarters.filter(function (x) { return x > e; })[0];
+        if (nq) (endQ[nq] = endQ[nq] || []).push(dz);
+      }
     });
-    var markers = Object.keys(byQ).sort().map(function (q) {
-      var names = byQ[q];
-      return { key: q, label: names.length > 2 ? '+ ' + names.slice(0, 2).join(', ') + ',|' + names.slice(2).join(', ') : '+ ' + names.join(', ') };
-    });
+    function namesLabel(prefix, names) {
+      return names.length > 2 ? prefix + names.slice(0, 2).join(', ') + ',|' + names.slice(2).join(', ') : prefix + names.join(', ');
+    }
+    var markers = Object.keys(byQ).sort().map(function (q) { return { key: q, label: namesLabel('+ ', byQ[q]) }; })
+      .concat(Object.keys(endQ).sort().map(function (q) { return { key: q, end: true, label: namesLabel('no data: ', endQ[q]) }; }));
+    function whyMissing(dz, q) {
+      if (starts[dz] && q < starts[dz]) return 'not counted yet';
+      if (lastQ[dz] && q > lastQ[dz]) return 'no estimate after ' + fmtDate(lastQ[dz]);
+      return 'no estimate';
+    }
     var host = h('div', null, null, c);
     mount(host, 'columnsChart', function () {
       var cats = quarters.map(function (q) {
         var parts = designers.map(function (dz, i) {
           var r = rows.filter(function (x) { return x.designer === dz && x.quarter_end === q; })[0];
-          return { value: r ? r.q_median : 0, color: slot(i), designer: dz, row: r, player: playerOf(dz), incomplete: !!(r && r.incomplete) };
+          return { value: r ? r.q_median : 0, color: dslot(i), designer: dz, row: r, player: playerOf(dz), incomplete: !!(r && r.incomplete) };
         });
         var inc = rows.some(function (x) { return x.quarter_end === q && x.incomplete; });
         var qn = Math.floor((+q.slice(5, 7) - 1) / 3) + 1;
         return { key: q, tick: qn === 1 ? q.slice(0, 4) : '', parts: parts, partial: inc, q: q, qn: qn };
       });
       return {
-        height: 280, categories: cats, markers: markers, aria: 'AI compute shipped per quarter by chip designer; counting starts at different dates',
+        height: 280, categories: cats, markers: markers, aria: 'AI compute shipped per quarter by chip designer; counting starts and stops at different dates',
         y: { fmt: function (v) { return compact(v, 0); }, title: 'H100-equivalents per quarter' },
         markClass: markClass,
         tooltip: function (cat) {
+          var missing = {};
+          cat.parts.forEach(function (p) { if (!p.row) { var w = whyMissing(p.designer, cat.q); (missing[w] = missing[w] || []).push(p.designer); } });
           return { value: 'Q' + cat.qn + ' ' + cat.q.slice(0, 4),
             rows: cat.parts.filter(function (p) { return p.value > 0; }).reverse().map(function (p) { return { value: compact(p.value), label: p.designer + (p.incomplete ? ' (still being counted)' : ''), color: p.color }; })
-              .concat(cat.parts.some(function (p) { return !p.row; }) ? [{ value: '', label: 'not counted yet: ' + cat.parts.filter(function (p) { return !p.row; }).map(function (p) { return p.designer; }).join(', ') }] : []) };
+              .concat(Object.keys(missing).map(function (w) { return { value: '', label: w + ': ' + missing[w].join(', ') }; })) };
         }
       };
     });
-    legend(c, designers.map(function (dz, i) { return { label: dz, color: slot(i), shape: 'sq' }; }).concat([{ label: 'faded: still being counted', color: css('--neutral-soft'), shape: 'sq' }]));
+    legend(c, designers.map(function (dz, i) { return { label: dz, color: cv(dslotName(i)), shape: 'sq' }; })
+      .concat([{ label: 'lighter shade of a colour: quarter still being counted', color: cv(dslotName(0)), shape: 'sq', faded: true },
+        { label: 'dashed line: a series ends', shape: 'vdash' }]));
     var sd = designers.filter(function (dz) { return starts[dz]; }).sort(function (a, b) { return starts[a].localeCompare(starts[b]); });
     if (sd.length > 1 && starts[sd[0]] !== starts[sd[sd.length - 1]]) {
       var minS = starts[sd[0]], maxS = starts[sd[sd.length - 1]];
       var firstN = sd.filter(function (dz) { return starts[dz] === minS; }), mids = sd.filter(function (dz) { return starts[dz] > minS && starts[dz] < maxS; });
       h('p', 'fitline muted', 'Before ' + fmtDate(maxS) + ' only ' + firstN.join(' and ') + (firstN.length > 1 ? ' are' : ' is') + ' counted' +
         (mids.length ? ', plus ' + mids.map(function (dz) { return dz + ' from ' + fmtDate(starts[dz]); }).join(', ') : '') +
-        '. The vertical lines mark where counting starts, so part of the jump after them is counting starting, not only more chips.', c);
+        '. The solid vertical lines mark where counting starts, so part of the jump after them is counting starting, not only more chips.', c);
+    }
+    // and where it stops: Epoch's series end at different quarters, so the newest columns leave some designers out
+    var ended = designers.filter(function (dz) { return lastQ[dz] && lastQ[dz] < lastAll; });
+    if (ended.length) {
+      var byEnd = {};
+      ended.forEach(function (dz) { (byEnd[lastQ[dz]] = byEnd[lastQ[dz]] || []).push(dz); });
+      var ends = Object.keys(byEnd).sort().map(function (q) { return andList(byEnd[q]) + ' after ' + fmtDate(q); });
+      var inc = rows.filter(function (r) { return r.incomplete; }).map(function (r) { return r.designer + '\'s quarter to ' + fmtDate(r.quarter_end); });
+      h('p', 'fitline muted', 'Epoch\'s series also end at different dates: there are no estimates for ' + ends.join(', or for ') +
+        '. The dashed lines mark where each stops, so the newest columns leave those designers out and are lower partly for that reason.' +
+        (inc.length ? ' Still being counted, and drawn lighter: ' + andList(inc) + '.' : ''), c);
     }
     h('p', 'fitline', fitSentence(trend('shipped_nvidia'), 'Nvidia alone'), c);
     h('p', 'fitline', fitSentence(trend('shipped_all'), 'All designers together'), c);
@@ -656,14 +791,15 @@
     var q = d.coverage.numbers.common_quarter, rows = objs(d).filter(function (r) { return r.quarter_end === q; });
     var pos = S.positions.epoch_chip_owners;
     nowLine(c, compact(pos.value) + ' H100e', pos.who + ' holds the most, of about ' + compact(pos.world_total) + ' counted, to ' + fmtDate(q));
-    var designers = ['Nvidia', 'Google', 'AMD', 'Amazon', 'Huawei', 'Cambricon'];
+    var designers = DESIGNERS;
     var owners = Array.from(new Set(rows.map(function (r) { return r.owner; })));
+    function range(r) { return r.p5 == null || r.p95 == null ? null : compact(r.p5) + ' to ' + compact(r.p95); }
     var host = h('div', null, null, c);
     mount(host, 'hbarsChart', function () {
       var list = owners.map(function (o) {
         var parts = designers.map(function (dz, i) {
           var r = rows.filter(function (x) { return x.owner === o && x.designer === dz; })[0];
-          return { value: r ? r.median : 0, color: slot(i), designer: dz, row: r };
+          return { value: r ? r.median : 0, color: dslot(i), designer: dz, row: r };
         });
         return { label: o, parts: parts, player: playerOf(o) };
       });
@@ -674,17 +810,19 @@
         x: { fmt: function (v) { return compact(v, 1); } }, markClass: markClass,
         tooltip: function (m) {
           var p = m.part, r = p.row;
-          return { value: compact(p.value) + ' H100e', lines: [m.row.label + ', ' + p.designer + ' chips', r ? '5th-95th percentile: ' + compact(r.p5) + ' to ' + compact(r.p95) : '',
+          return { value: compact(p.value) + ' H100e', lines: [m.row.label + ', ' + p.designer + ' chips', r && range(r) ? '5th-95th percentile: ' + range(r) : 'Epoch gives no 5th-95th range for this one',
             'Owner total: ' + compact(m.row.total) + ' (sum of medians)'] };
         },
         onPick: function (m) { if (m.row.player) setPlayer(m.row.player, true); }
       };
     });
-    legend(c, designers.map(function (dz, i) { return { label: dz, color: slot(i), shape: 'sq' }; }));
-    coverage(c, d, 'Totals add the medians of each designer\'s estimate; ranges do not add that way, so each part\'s own 5th to 95th percentile is in the tooltip and the table.');
+    legend(c, designers.map(function (dz, i) { return { label: dz, color: cv(dslotName(i)), shape: 'sq' }; }));
+    var noRange = rows.filter(function (r) { return !range(r); }).map(function (r) { return r.owner + ' (' + r.designer + ')'; });
+    coverage(c, d, 'Totals add the medians of each designer\'s estimate; ranges do not add that way, so each part\'s own 5th to 95th percentile is in the tooltip and the table' +
+      (noRange.length ? ', where Epoch gives one (it gives none for ' + andList(noRange) + ')' : '') + '.');
     sourceLine(c, d, 'epoch_chip_owners');
     table(c, [{ label: 'Owner', get: function (r) { return r.owner; } }, { label: 'Designer', get: function (r) { return r.designer; } },
-      { label: 'Median', num: 1, get: function (r) { return compact(r.median); } }, { label: '5th-95th', num: 1, get: function (r) { return compact(r.p5) + '–' + compact(r.p95); } },
+      { label: 'Median', num: 1, get: function (r) { return compact(r.median); } }, { label: '5th-95th', num: 1, get: function (r) { return range(r) || 'not given'; } },
       { label: 'Power (MW)', num: 1, get: function (r) { return r.power_mw == null ? '' : compact(r.power_mw); } }], rows, 'quarter to ' + q);
   }
 
@@ -696,16 +834,12 @@
     var rows = objs(d).filter(function (r) { return r.flops_per_usd; }), host = h('div', null, null, c), pin = pinBox(c);
     var pts = rows.map(function (r) {
       var dc = r.segment === 'data centre';
-      return { x: decYear(r.date), y: r.flops_per_usd, r: dc ? 5 : 4, hollow: !dc, row: r, dc: dc, player: playerOf(r.maker) };
+      return { x: decYear(r.date), y: r.flops_per_usd, r: dc ? 5 : 4, hollow: !dc, ring: r.price_kind === 'estimate', row: r, dc: dc, players: playersOf(r.maker) };
     });
     var xs = pts.map(function (p) { return p.x; });
     mount(host, 'xyChart', scatterSpec({
       aria: 'FP16 FLOP per second per dollar, by chip release date, log scale; data-centre chips filled, consumer and workstation cards hollow',
       points: function () { pts.forEach(function (p) { p.color = p.dc ? css('--neutral') : css('--ink-3'); }); return pts; },
-      layers: function () {
-        return [{ type: 'labels', data: pts.filter(function (p) { return p.row.price_kind === 'estimate'; }).map(function (p) {
-          return { x: p.x, y: p.y, text: 'estimated price (' + p.row.name.replace(/^Google /, '').replace(/ Ironwood$/, '') + ')', dx: 6, dy: -10, anchor: 'end', player: p.player, muted: true }; }) }];
-      },
       trend: 'hw_datacentre', ylog: true, yfmt: function (v) { return compact(v, 0); }, ytitle: 'FLOP/s per dollar (log scale)',
       xmin: Math.floor(Math.min.apply(null, xs)), xmax: Math.max.apply(null, xs) + 0.3,
       tooltip: function (p) {
@@ -716,28 +850,31 @@
       onPick: function (p) {
         var r = p.row;
         showPin(pin, p, [r.name + ': ' + compact(r.flops_per_usd, 1) + ' FLOP/s per dollar', (r.maker || '') + ' · ' + fmtDate(r.date) + ' · ' + r.segment + ' · ' + usd(r.price_usd) + ', ' + (r.price_kind || 'price')],
-          r.price_source ? { href: r.price_source, text: 'Where the price comes from' } : r.link ? { href: String(r.link).split(/[\s;,]+/)[0], text: 'Datasheet' } : { href: d.page, text: 'Epoch AI hardware data' });
+          firstUrl(r.price_source) ? { href: firstUrl(r.price_source), text: 'Where the price comes from' } : firstUrl(r.link) ? { href: firstUrl(r.link), text: 'Datasheet' } : { href: d.page, text: 'Epoch AI hardware data' });
       }
     }));
-    legend(c, [{ label: 'data-centre chip', color: css('--neutral') }, { label: 'consumer or workstation card', color: css('--ink-3'), shape: 'hollow' },
-      { label: 'fitted line (data-centre chips), 90% range of the line', shape: 'band' }, EXT_LEGEND]);
+    var estNames = pts.filter(function (p) { return p.ring; }).map(function (p) { return p.row.name; });
+    legend(c, [{ label: 'data-centre chip', color: cv('--neutral') }, { label: 'consumer or workstation card', color: cv('--ink-3'), shape: 'hollow' }]
+      .concat(estNames.length ? [{ label: 'dashed ring: the price is Epoch\'s own estimate (' + andList(estNames) + ')', color: cv('--ink-2'), shape: 'ring' }] : [])
+      .concat([{ label: 'fitted line (data-centre chips), 90% range of the line', shape: 'band' }, EXT_LEGEND]));
     h('p', 'fitline', fitSentence(trend('hw_datacentre'), 'Data-centre chips'), c);
     var ta = trend('hw_all'), eh = S.epoch_hw_trend, more = h('p', 'fitline muted', null, c);
     if (ta && ta.status === 'ok') txt(more, 'Every priced chip, consumer and workstation cards included: ' + months(ta.whole.doubling_months) + ' (' + monthsRange(ta.whole.doubling_ci, ta.whole.doubling_months) + '), a wider range because the cards sit far above the data-centre chips. ');
     if (eh) {
-      txt(more, 'Epoch\'s own published trend, measured differently (FP32, inflation-adjusted, chips to ' + fmtDate(eh.as_of) + '): ' + months(eh.doubling_months) + ' (' + monthsRange(eh.doubling_ci, eh.doubling_months) + '). ');
-      link(eh.url, 'Epoch: Trends in machine learning hardware', more, true);
-      txt(more, '.');
+      txt(more, 'Epoch\'s own published trend, measured differently (FP32, inflation-adjusted, chips to ' + fmtDate(eh.as_of) + '): ' + months(eh.doubling_months) + ' (' + monthsRange(eh.doubling_ci, eh.doubling_months) + '). Source: ' +
+        (eh.authors ? eh.authors + ', ' : ''));
+      link(eh.url, 'Trends in machine learning hardware', more, true);
+      txt(more, ' (Epoch AI, 2023, CC BY 4.0).');
     }
     var est = (pos.estimated || []).join(', ');
     coverage(c, d, 'Prices: consumer cards carry the maker\'s launch price; data-centre chips carry prices reported by resellers, analysts or the press' +
       (est ? ', and ' + est + ' carries Epoch\'s own estimate (Google sells no TPUs and publishes no price)' : '') + '. None of these is what the largest buyers pay. ' +
       'For GeForce gaming cards, the FP16 figure appears to be the rate with FP16 accumulation, about twice the rate with FP32 accumulation that training usually uses (Nvidia\'s architecture whitepapers list both), so the cards are drawn hollow and left out of the headline line.');
     sourceLine(c, d, 'epoch_ml_hardware');
-    table(c, [{ label: 'Chip', get: function (r) { return r.name; }, href: function (r) { return r.link ? String(r.link).split(/[\s;,]+/)[0] : null; } }, { label: 'Maker', get: function (r) { return r.maker; } },
+    table(c, [{ label: 'Chip', get: function (r) { return r.name; }, href: function (r) { return firstUrl(r.link); } }, { label: 'Maker', get: function (r) { return r.maker; } },
       { label: 'Released', get: function (r) { return r.date; } }, { label: 'Segment', get: function (r) { return r.segment; } },
       { label: 'FP16 FLOP/s', num: 1, get: function (r) { return r.fp16_flops ? r.fp16_flops.toExponential(2) : ''; } },
-      { label: 'Price', num: 1, get: function (r) { return r.price_usd ? usd(r.price_usd) : ''; } }, { label: 'Price kind', get: function (r) { return r.price_kind || ''; }, href: function (r) { return r.price_source; } },
+      { label: 'Price', num: 1, get: function (r) { return r.price_usd ? usd(r.price_usd) : ''; } }, { label: 'Price kind', get: function (r) { return r.price_kind || ''; }, href: function (r) { return firstUrl(r.price_source); } },
       { label: 'FLOP/s per $', num: 1, get: function (r) { return r.flops_per_usd ? compact(r.flops_per_usd) : ''; } }],
       objs(d).slice().reverse(), 'all chips, newest first');
   }
@@ -746,11 +883,11 @@
     var d = D.epoch_eci, c = card(parent, 'm-eci', 'Epoch Capabilities Index',
       'One general-capability score per model, fitted across many benchmarks. The steps trace the best closed and the best open model so far.');
     var pos = S.positions.epoch_eci;
-    nowLine(c, String(pos.value), 'highest: ' + pos.who + ' (' + pos.org + ', ' + fmtDate(pos.date) + '), interval ' + pos.lo + ' to ' + pos.hi);
+    nowLine(c, f1(pos.value), 'highest: ' + pos.who + ' (' + pos.org + ', ' + fmtDate(pos.date) + '), interval ' + f1(pos.lo) + ' to ' + f1(pos.hi));
     var rows = objs(d), host = h('div', null, null, c), pin = pinBox(c);
     var pts = rows.map(function (r) {
       var k = r.group === 'Open weights' ? 'open' : r.group === 'Closed weights' ? 'closed' : 'unknown';
-      return { x: decYear(r.date), y: r.eci, r: 3.5, row: r, kind: k, player: playerOf(r.org) };
+      return { x: decYear(r.date), y: r.eci, r: 3.5, row: r, kind: k, players: playersOf(r.org) };
     });
     function frontier(k) {
       var best = -1, out = [];
@@ -763,14 +900,14 @@
     var xs = pts.map(function (p) { return p.x; }), xmax = Math.max.apply(null, xs) + 0.15;
     mount(host, 'xyChart', function () {
       pts.forEach(function (p) { p.color = kindColor(p.kind); });
-      var pinned = pts.filter(function (p) { return p.pinned || (state.player && p.player === state.player); });
+      var pinned = pts.filter(function (p) { return p.pinned || (state.player && p.players.indexOf(state.player) >= 0); });
       return {
         height: function (W) { return W < 480 ? 280 : 320; }, aria: 'Epoch Capabilities Index by release date, open and closed weights',
         x: { min: Math.min.apply(null, xs) - 0.1, max: xmax },
         y: { min: Math.floor(Math.min.apply(null, rows.map(function (r) { return r.eci; })) / 10) * 10, max: Math.ceil(Math.max.apply(null, rows.map(function (r) { return r.hi || r.eci; })) / 10) * 10 + 5,
           fmt: function (v) { return String(v); }, title: 'ECI' },
         layers: [
-          { type: 'whiskers', data: pinned.map(function (p) { return { x: p.x, lo: p.row.lo, hi: p.row.hi, color: p.color, player: p.player }; }) },
+          { type: 'whiskers', data: pinned.map(function (p) { return { x: p.x, lo: p.row.lo, hi: p.row.hi, color: p.color, players: p.players }; }) },
           { type: 'steps', data: frontier('closed'), color: css('--closed'), extendTo: xmax },
           { type: 'steps', data: frontier('open'), color: css('--open'), extendTo: xmax },
           { type: 'points', data: pts }
@@ -778,23 +915,23 @@
         markClass: markClass,
         tooltip: function (p) {
           var r = p.row;
-          return { value: 'ECI ' + r.eci + (r.lo != null ? ' (' + r.lo + ' to ' + r.hi + ')' : ''), lines: [r.model, (r.org || 'organization not stated') + ', ' + fmtDate(r.date, true), KIND_LABEL[p.kind] + (r.access ? ' · ' + r.access : '')] };
+          return { value: 'ECI ' + f1(r.eci) + (r.lo != null ? ' (' + f1(r.lo) + ' to ' + f1(r.hi) + ')' : ''), lines: [r.model, (r.org || 'organization not stated') + ', ' + fmtDate(r.date, true), KIND_LABEL[p.kind] + (r.access ? ' · ' + r.access : '')] };
         },
         onPick: function (p) {
           var r = p.row;
-          showPin(pin, p, [r.model + ': ECI ' + r.eci, (r.org || '') + ' · ' + fmtDate(r.date, true) + ' · interval ' + (r.lo != null ? r.lo + ' to ' + r.hi : 'none (an anchor point)') + ' · ' + KIND_LABEL[p.kind]],
+          showPin(pin, p, [r.model + ': ECI ' + f1(r.eci), (r.org || '') + ' · ' + fmtDate(r.date, true) + ' · interval ' + (r.lo != null ? f1(r.lo) + ' to ' + f1(r.hi) : 'none (an anchor point)') + ' · ' + KIND_LABEL[p.kind]],
             { href: d.page, text: 'Epoch AI benchmarking hub' });
         }
       };
     });
-    kindLegend(c, [{ label: 'best so far (steps)', color: css('--ink-3'), shape: 'line' }]);
+    kindLegend(c, [{ label: 'best closed so far (steps)', color: cv('--closed'), shape: 'line' }, { label: 'best open so far (steps)', color: cv('--open'), shape: 'line' }]);
     var e = S.open_vs_closed.eci;
     h('p', 'fitline', 'Gap today: the best closed model scores ' + e.best_closed.eci + ', the best open one ' + e.best_open.eci + ' (' + e.gap_points +
       ' points). The index is built so steady progress looks like a straight line, so it has no doubling time to compare with the others.', c);
     coverage(c, d);
     sourceLine(c, d, 'epoch_eci');
     table(c, [{ label: 'Model', get: function (r) { return r.model; } }, { label: 'Organization', get: function (r) { return r.org; } }, { label: 'Date', get: function (r) { return r.date; } },
-      { label: 'ECI', num: 1, get: function (r) { return r.eci; } }, { label: 'Interval', num: 1, get: function (r) { return r.lo != null ? r.lo + '–' + r.hi : ''; } },
+      { label: 'ECI', num: 1, get: function (r) { return f1(r.eci); } }, { label: 'Interval', num: 1, get: function (r) { return r.lo != null ? f1(r.lo) + '–' + f1(r.hi) : ''; } },
       { label: 'Weights', get: function (r) { return r.group; } }], rows.slice().reverse(), 'newest first');
   }
 
@@ -806,20 +943,21 @@
     pos.items.forEach(function (it) {
       var li = h('li', null, null, n), ru = it.runner_up;
       h('b', null, it.name + ': ', li);
-      txt(li, 'best ' + pct(it.value, 1) + ' (' + it.who + ', ' + fmtDate(it.date) + ')' +
-        (ru ? (it.tied ? ', tied with ' : ', ahead of ') + ru.who + ' (' + pct(ru.value, 1) + ')' + (it.tied ? ' within two standard errors' : '') : '') +
+      txt(li, 'best ' + pct(it.value, 1) + ' (' + modelName(it.who) + ', ' + fmtDate(it.date) + ')' +
+        (ru ? (it.tied ? ', tied with ' : ', ahead of ') + modelName(ru.who) + ' (' + pct(ru.value, 1) + ')' + (it.tied ? ' within two standard errors' : '') : '') +
         '. Room left, if every answer key is right: ' + Math.round(it.room_left_if_keys_right * 100) + ' points. ' +
         (it.newest_tested.who === it.who ? 'It is also the newest model Epoch has run on this test.' :
-          'Newest model Epoch ran: ' + it.newest_tested.who + ' (released ' + fmtDate(it.newest_tested.date, true) + '), ' + pct(it.newest_tested.value, 1) + '.'));
+          'Newest model Epoch ran: ' + modelName(it.newest_tested.who) + ' (released ' + fmtDate(it.newest_tested.date, true) + '), ' + pct(it.newest_tested.value, 1) + '.'));
     });
     var rows = objs(d), grid = h('div', null, null, c), pin = pinBox(c);
+    var allX = rows.map(function (r) { return decYear(r.date); }), xmin = Math.min.apply(null, allX) - 0.1, xmaxAll = Math.max.apply(null, allX) + 0.1;
     d.benchmarks.forEach(function (b) {
       var sub = h('div', null, null, grid);
       h('p', 'fitline', b.name + '. ' + b.what, sub);
       var host = h('div', null, null, sub);
       var rs = rows.filter(function (r) { return r.bench === b.id; });
-      var pts = rs.map(function (r) { var k = kindOfAccess(r.access); return { x: decYear(r.date), y: r.score, r: 3.2, row: r, kind: k, player: playerOf(r.org) }; });
-      var xs = pts.map(function (p) { return p.x; }), xmax = Math.max.apply(null, xs) + 0.1, best = -1, steps = [];
+      var pts = rs.map(function (r) { var k = kindOfAccess(r.access); return { x: decYear(r.date), y: r.score, r: 3.2, row: r, kind: k, players: playersOf(r.org) }; });
+      var xmax = xmaxAll, best = -1, steps = [];
       rs.slice().sort(function (a, b2) { return a.date.localeCompare(b2.date); }).forEach(function (r) { if (r.score > best) { best = r.score; steps.push([decYear(r.date), r.score]); } });
       mount(host, 'xyChart', function () {
         pts.forEach(function (p) { p.color = kindColor(p.kind); });
@@ -829,33 +967,35 @@
         layers.push({ type: 'steps', data: steps, color: css('--ink-3'), extendTo: xmax });
         layers.push({ type: 'points', data: pts });
         return {
-          height: 200, aria: b.name + ' scores by model release date',
-          x: { min: Math.min.apply(null, xs) - 0.1, max: xmax },
+          height: 200, aria: b.name + ' scores by model release date (the three tests share one time axis)',
+          x: { min: xmin, max: xmax },
           y: { min: 0, max: 1.08, fmt: function (v) { return Math.round(v * 100) + '%'; } },
           layers: layers, markClass: markClass,
           tooltip: function (p) {
             var r = p.row;
-            return { value: pct(r.score, 1) + (r.stderr != null ? ' ± ' + pct(r.stderr, 1) : ''), lines: [r.model, (r.org || '') + ', released ' + fmtDate(r.date, true), KIND_LABEL[p.kind]] };
+            return { value: pct(r.score, 1) + (r.stderr != null ? ' ± ' + pct(r.stderr, 1) : ''), lines: [modelName(r.model), (r.org || '') + ', released ' + fmtDate(r.date, true), KIND_LABEL[p.kind]] };
           },
           onPick: function (p) {
             var r = p.row;
-            showPin(pin, p, [r.model + ' on ' + b.name + ': ' + pct(r.score, 1) + (r.stderr != null ? ' (standard error ' + pct(r.stderr, 1) + ')' : ''), (r.org || '') + ' · released ' + fmtDate(r.date, true)],
+            showPin(pin, p, [modelName(r.model) + ' on ' + b.name + ': ' + pct(r.score, 1) + (r.stderr != null ? ' (standard error ' + pct(r.stderr, 1) + ')' : ''), (r.org || '') + ' · released ' + fmtDate(r.date, true)],
               { href: d.page, text: 'Epoch AI benchmarking hub' });
           }
         };
       });
     });
-    kindLegend(c, [{ label: 'best so far (steps)', color: css('--ink-3'), shape: 'line' }]);
+    kindLegend(c, [{ label: 'best so far (steps)', color: cv('--ink-3'), shape: 'line' }]);
+    h('p', 'fitline muted', 'The three charts share one time axis, from ' + fmtDate(rows.reduce(function (a, r) { return r.date < a ? r.date : a; }, '9999')) +
+      ', so the same place across them is the same date. Dots sit at each model\'s release date, so a test\'s dots start with the oldest model Epoch has run on it.', c);
     coverage(c, d, pos.note);
     sourceLine(c, d, 'epoch_benchmarks_internal');
-    table(c, [{ label: 'Test', get: function (r) { return r.bench; } }, { label: 'Model', get: function (r) { return r.model; } }, { label: 'Organization', get: function (r) { return r.org; } },
+    table(c, [{ label: 'Test', get: function (r) { return r.bench; } }, { label: 'Model', get: function (r) { return modelName(r.model); } }, { label: 'Organization', get: function (r) { return r.org; } },
       { label: 'Released', get: function (r) { return r.date; } }, { label: 'Score', num: 1, get: function (r) { return pct(r.score, 1); } },
       { label: 'Std. error', num: 1, get: function (r) { return r.stderr != null ? pct(r.stderr, 1) : ''; } }], rows.slice().reverse());
   }
 
   function renderMetr(parent) {
     var d = D.metr_time_horizon, c = card(parent, 'm-metr', 'METR: how long a task an agent can finish',
-      'The length of software and ML-research task, timed by how long a skilled person takes, that an AI agent completes half the time. The most-cited exponential curve in the field.', { cls: 'linkonly' });
+      'The length of software and ML-research task, timed by how long a skilled person takes, that an AI agent completes half the time.', { cls: 'linkonly' });
     if (!d) { h('p', 'err', 'Not available in this refresh.', c); return; }
     var p = h('p', 'fitline', null, c);
     txt(p, 'The chart lives on METR\'s own page, because no open licence covers its per-model numbers: ');
@@ -867,7 +1007,7 @@
         (q.ci_low_days ? ' (METR\'s range ' + (q.ci_low_days / 30.44).toFixed(1) + ' to ' + (q.ci_high_days / 30.44).toFixed(1) + ')' : '') + (q.note ? '. ' + q.note + '.' : '.'), ul);
     });
     h('p', 'fitline muted', 'The two versions of METR\'s task suite give different numbers, but their ranges overlap: they differ rather than disagree. Both are listed, neither is averaged away. Newest model measured: ' +
-      d.coverage.numbers.versions[0].newest_model + ' (' + fmtDate(d.coverage.numbers.versions[0].newest) + ').', c);
+      modelName(d.coverage.numbers.versions[0].newest_model) + ' (' + fmtDate(d.coverage.numbers.versions[0].newest) + ').', c);
     coverage(c, d, 'Until METR\'s per-model numbers come with a clear licence or permission, this card links to them rather than redrawing them.');
     sourceLine(c, d, 'metr_time_horizon');
   }
@@ -879,12 +1019,12 @@
     nowLine(c, usd(pos.value) + ' a year', 'highest reported: ' + pos.who + ' (' + fmtDate(pos.date) + ')');
     var rows = objs(d), host = h('div', null, null, c), pin = pinBox(c);
     var cos = Array.from(new Set(rows.map(function (r) { return r.company; })));
-    var pts = rows.map(function (r) { return { x: decYear(r.date), y: r.annualized_usd, r: 3.5, row: r, player: playerOf(r.company) }; });
+    var pts = rows.map(function (r) { return { x: decYear(r.date), y: r.annualized_usd, r: 3.5, row: r, players: playersOf(r.company) }; });
     var xs = pts.map(function (p) { return p.x; });
     mount(host, 'xyChart', function () {
       var ta = trend('revenue_openai'), tb = trend('revenue_anthropic');
       var xmax = trendXMax(tb, trendXMax(ta, Math.max.apply(null, xs) + 0.1));
-      var layers = trendLayers(ta).concat(trendLayers(tb));
+      var pa = trendParts(ta), pb = trendParts(tb), layers = pa.under.concat(pb.under);
       var ends = [];
       var FIT = { OpenAI: css('--s3'), Anthropic: css('--s7') };
       cos.forEach(function (co) {
@@ -893,7 +1033,7 @@
         rs.forEach(function (p) { p.color = col; });
         if (rs.length > 1) layers.push({ type: 'line', data: rs.map(function (p) { return [p.x, p.y]; }), color: col });
         var last = rs[rs.length - 1];
-        ends.push({ x: last.x, y: last.y, text: co, player: last.player, muted: !FIT[co], emph: !!FIT[co] });
+        ends.push({ x: last.x, y: last.y, text: co, players: last.players, muted: !FIT[co], emph: !!FIT[co] });
       });
       // label line ends selectively: the two fitted companies always (the lower one goes under
       // its line end if the two are close), the others only where they do not collide
@@ -904,8 +1044,9 @@
         if (!clash) { e.dy = 4; kept.push(e); }
         else if (e.emph) { e.dy = 16; kept.push(e); }
       });
-      layers.push({ type: 'labels', data: kept.map(function (e) { return { x: e.x, y: e.y, text: e.text, dx: 6, dy: e.dy, player: e.player, muted: e.muted }; }) });
+      layers.push({ type: 'labels', data: kept.map(function (e) { return { x: e.x, y: e.y, text: e.text, dx: 6, dy: e.dy, players: e.players, muted: e.muted }; }) });
       layers.push({ type: 'points', data: pts });
+      layers = layers.concat(pa.over).concat(pb.over);
       return {
         height: function (W) { return W < 480 ? 280 : 320; }, aria: 'Reported annualized revenue by company, log scale',
         marginRight: function () { return 84; },
@@ -914,16 +1055,16 @@
         layers: layers, markClass: markClass,
         tooltip: function (p) {
           var r = p.row;
-          return { value: usd(r.annualized_usd) + ' a year', lines: [r.company + ', ' + fmtDate(r.date, true), (r.kind || '') + (r.confidence ? ' · ' + r.confidence : ''), r.source_type || ''] };
+          return { value: usd(r.annualized_usd) + ' a year', lines: [r.company + ', ' + fmtDate(r.date, true), (r.kind || '') + (r.confidence ? ' · ' + r.confidence : ''), sourceTypes(r.source_type)] };
         },
         onPick: function (p) {
           var r = p.row;
-          showPin(pin, p, [r.company + ': ' + usd(r.annualized_usd) + ' a year', fmtDate(r.date, true) + ' · ' + (r.kind || '') + ' · ' + (r.source_type || '') + ' · confidence ' + (r.confidence || 'not stated')],
-            r.source_link ? { href: r.source_link, text: 'Where it was reported' } : { href: d.page, text: 'Epoch AI: Data on AI Companies' });
+          showPin(pin, p, [r.company + ': ' + usd(r.annualized_usd) + ' a year', fmtDate(r.date, true) + ' · ' + (r.kind || '') + ' · ' + sourceTypes(r.source_type) + ' · confidence ' + (r.confidence || 'not stated')],
+            firstUrl(r.source_link) ? { href: firstUrl(r.source_link), text: 'Where it was reported' } : { href: d.page, text: 'Epoch AI: Data on AI Companies' });
         }
       };
     });
-    legend(c, [{ label: 'OpenAI', color: css('--s3') }, { label: 'Anthropic', color: css('--s7') }, { label: 'other companies (hover or table)', color: css('--neutral-soft') },
+    legend(c, [{ label: 'OpenAI', color: cv('--s3') }, { label: 'Anthropic', color: cv('--s7') }, { label: 'other companies (hover or table)', color: cv('--neutral-soft') },
       { label: 'fitted line (one company), 90% range of the line', shape: 'band' }]);
     h('p', 'fitline', fitSentence(trend('revenue_anthropic'), 'Anthropic'), c);
     h('p', 'fitline', fitSentence(trend('revenue_openai'), 'OpenAI'), c);
@@ -931,17 +1072,18 @@
     sourceLine(c, d, 'epoch_ai_companies');
     table(c, [{ label: 'Company', get: function (r) { return r.company; } }, { label: 'Date', get: function (r) { return r.date; } },
       { label: 'Run-rate', num: 1, get: function (r) { return usd(r.annualized_usd); } }, { label: 'Kind', get: function (r) { return r.kind; } },
-      { label: 'Report', get: function (r) { return r.source_type; }, href: function (r) { return r.source_link; } }], rows.slice().sort(function (a, b) { return b.date.localeCompare(a.date); }));
+      { label: 'Report', get: function (r) { return sourceTypes(r.source_type); }, href: function (r) { return firstUrl(r.source_link); } }], rows.slice().sort(function (a, b) { return b.date.localeCompare(a.date); }));
   }
 
   function renderCost(parent) {
     var d = D.epoch_training_cost, c = card(parent, 'm-cost', 'Training cost',
       'What the compute for one final training run cost, in 2023 dollars. Research, staff, failed runs and data are not included.');
     var pos = S.positions.epoch_training_cost;
+    var fd = (S.sources.epoch_training_cost || {}).frontier_date;
     nowLine(c, usd(pos.value), 'costliest estimate: ' + pos.who + ' (' + pos.org + ', ' + fmtDate(pos.date) + ', compute "' + pos.confidence + '"); newest estimate ' + fmtDate(newest('epoch_training_cost')) +
-      ((S.sources.epoch_training_cost || {}).newest_note && /biggest/.test(S.sources.epoch_training_cost.newest_note) ? ', ' + S.sources.epoch_training_cost.newest_note.split('; ')[1] : ''));
-    var rows = objs(d).filter(function (r) { return r.date >= '2012-01-01'; }), host = h('div', null, null, c), pin = pinBox(c);
-    var pts = rows.map(function (r) { var k = kindOfOpen(r.open); return { x: decYear(r.date), y: r.cost_usd_2023, r: r.frontier ? 5 : 3, hollow: r.confidence === 'Speculative', row: r, kind: k, player: playerOf(r.org) }; });
+      (fd ? '; newest for the biggest models ' + fmtDate(fd, true) : ''));
+    var all = objs(d), rows = all.filter(function (r) { return r.date >= '2012-01-01'; }), host = h('div', null, null, c), pin = pinBox(c);
+    var pts = rows.map(function (r) { var k = kindOfOpen(r.open); return { x: decYear(r.date), y: r.cost_usd_2023, r: r.frontier ? 5 : 3, hollow: r.confidence === 'Speculative', row: r, kind: k, players: playersOf(r.org) }; });
     var xs = pts.map(function (p) { return p.x; });
     mount(host, 'xyChart', scatterSpec({
       aria: 'Training run cost of notable models, log scale, with the trend of the biggest models',
@@ -952,19 +1094,20 @@
       onPick: function (p) {
         var r = p.row;
         showPin(pin, p, [r.model + ': ' + usd(r.cost_usd_2023), (r.org || '') + ' · ' + fmtDate(r.date, true) + ' · ' + KIND_LABEL[p.kind]],
-          r.link ? { href: r.link, text: 'Their announcement or paper' } : { href: d.page, text: 'Epoch AI: Data on AI Models' });
+          firstUrl(r.link) ? { href: firstUrl(r.link), text: 'Their announcement or paper' } : { href: d.page, text: 'Epoch AI: Data on AI Models' });
       }
     }));
-    kindLegend(c, [{ label: 'hollow: "Speculative" compute estimate', color: css('--ink-3'), shape: 'hollow' }, { label: 'fitted line (biggest models), 90% range of the line', shape: 'band' }]);
+    kindLegend(c, [{ label: 'hollow: "Speculative" compute estimate', color: cv('--ink-3'), shape: 'hollow' }, { label: 'fitted line (biggest models), 90% range of the line', shape: 'band' }]);
     h('p', 'fitline', fitSentence(trend('cost_frontier'), 'Biggest models since 2016'), c);
     var t2 = trend('cost_frontier_no_spec');
     if (t2 && t2.status === 'ok') h('p', 'fitline muted', 'Leaving out "Speculative" estimates: ' + months(t2.whole.doubling_months) + ' (' + monthsRange(t2.whole.doubling_ci, t2.whole.doubling_months) + '), ' +
-      t2.whole.n + ' points; pace lately: ' + t2.change.verdict + (t2.change.recent ? ' (' + fmtDate(t2.change.recent.from) + ' to ' + fmtDate(t2.change.recent.to) + ', ' + t2.change.recent.n + ' points)' : '') + '.', c);
+      t2.whole.n + ' points; pace lately: ' + verdictText(t2.change) + (t2.change.recent ? ' (' + spanText(t2, t2.change.recent) + ', ' + t2.change.recent.n + ' points)' : '') + '.', c);
     coverage(c, d);
     sourceLine(c, d, 'epoch_training_cost');
-    table(c, [{ label: 'Model', get: function (r) { return r.model; }, href: function (r) { return r.link; } }, { label: 'Organization', get: function (r) { return r.org; } },
+    table(c, [{ label: 'Model', get: function (r) { return r.model; }, href: function (r) { return firstUrl(r.link); } }, { label: 'Organization', get: function (r) { return r.org; } },
       { label: 'Date', get: function (r) { return r.date; } }, { label: 'Cost (2023 $)', num: 1, get: function (r) { return usd(r.cost_usd_2023); } },
-      { label: 'Confidence', get: function (r) { return r.confidence; } }], rows.slice().reverse());
+      { label: 'Confidence', get: function (r) { return r.confidence; } }], all.slice().reverse(),
+      'every model with an estimate, newest first' + (all.length > rows.length ? '; the chart starts in 2012, so ' + (all.length - rows.length) + ' earlier ones are only here' : ''));
   }
 
   /* ---------------- 5. the player panel: what they say, what they do ---------------- */
@@ -1002,21 +1145,26 @@
       var t = h('span', absent ? 'absent' : '', text + ' ', li);
       if (srcId && D[srcId]) { var s = h('span', 'srcref', '(', t); link('data/' + srcId + '.json', D[srcId].source, s); txt(s, ')'); }
     }
-    var mine = function (rows, key) { return rows.filter(function (r) { return playerOf(r[key || 'org']) === id; }); };
+    // a model several organizations built counts for each of them that is a player
+    var mine = function (rows, key) { return rows.filter(function (r) { return isMine(r[key || 'org'], id); }); };
     var tcAll = mine(objs(D.epoch_training_compute));
     var known = tcAll.filter(function (r) { return r.open === true || r.open === false; }), openN = known.filter(function (r) { return r.open === true; }).length;
     var cov = D.epoch_training_compute.coverage.numbers, recentN = tcAll.filter(function (r) { return r.date >= cov.recent_since; });
-    if (tcAll.length) line('Open weights', 'ovc', openN + ' of their ' + known.length + ' notable models with a stated status have downloadable weights (' + pct(known.length ? openN / known.length : null) +
-      '); in the 12 months to ' + fmtDate(D.epoch_training_compute.source_updated) + ', ' + recentN.filter(function (r) { return r.open === true; }).length + ' of ' + recentN.length + '.', false, 'epoch_training_compute');
-    else line('Open weights', 'ovc', 'no notable models listed', true, 'epoch_training_compute');
-    if (tcAll.length) line('Compute disclosed', 'm-compute', recentN.filter(function (r) { return r.flop; }).length + ' of their ' + recentN.length + ' notable models since ' + fmtDate(cov.recent_since, true) +
-      ' have a public compute estimate; ' + tcAll.filter(function (r) { return r.flop; }).length + ' of ' + tcAll.length + ' over all years.', false, 'epoch_training_compute');
+    var recentKnown = recentN.filter(function (r) { return r.open === true || r.open === false; });
+    var upTo = fmtDate(D.epoch_training_compute.source_updated);
+    if (known.length) line('Open weights', 'ovc', countLine(openN, known.length, 'notable model', ' with a stated status', 'downloadable weights') + ' (' + pct(openN / known.length) + '); ' +
+      (recentKnown.length ? 'in the 12 months to ' + upTo + ', ' + recentKnown.filter(function (r) { return r.open === true; }).length + ' of ' + recentKnown.length + '.' : 'none released in the 12 months to ' + upTo + '.'), false, 'epoch_training_compute');
+    else line('Open weights', 'ovc', tcAll.length ? 'no stated open or closed status for their ' + plural(tcAll.length, 'notable model') + '.' : 'no notable models listed.', true, 'epoch_training_compute');
+    var recentF = recentN.filter(function (r) { return r.flop; }).length;
+    if (tcAll.length) line('Compute disclosed', 'm-compute', (recentN.length ? countLine(recentF, recentN.length, 'notable model', ' since ' + fmtDate(cov.recent_since, true), 'a public compute estimate') + '; ' :
+      'no notable models since ' + fmtDate(cov.recent_since, true) + '; ') +
+      tcAll.filter(function (r) { return r.flop; }).length + ' of ' + tcAll.length + ' over all years.', false, 'epoch_training_compute');
     var q = D.epoch_chip_owners.coverage.numbers.common_quarter, own = objs(D.epoch_chip_owners).filter(function (r) { return r.quarter_end === q; });
-    var mineOwn = own.filter(function (r) { return playerOf(r.owner) === id; }), total = own.reduce(function (s, r) { return s + r.median; }, 0);
+    var mineOwn = own.filter(function (r) { return isMine(r.owner, id); }), total = own.reduce(function (s, r) { return s + r.median; }, 0);
     if (mineOwn.length) { var so = mineOwn.reduce(function (s, r) { return s + r.median; }, 0); line('Compute owned', 'm-owners', compact(so) + ' H100e, about ' + pct(so / total) + ' of what is counted (to ' + fmtDate(q) + ').', false, 'epoch_chip_owners'); }
     else line('Compute owned', 'm-owners', 'not listed as an owner (may rent, or be counted inside ' + (p.country === 'China' ? '"China" or "Other"' : '"Other"') + ').', true, 'epoch_chip_owners');
-    var hw = objs(D.epoch_ml_hardware).filter(function (r) { return playerOf(r.maker) === id; });
-    if (hw.length) { var lh = hw[hw.length - 1]; line('Chips designed', 'm-hardware', hw.length + ' chips listed; newest ' + lh.name + ' (' + fmtDate(lh.date) + ')' + (lh.flops_per_usd ? '.' : ', no public price.'), false, 'epoch_ml_hardware'); }
+    var hw = objs(D.epoch_ml_hardware).filter(function (r) { return isMine(r.maker, id); });
+    if (hw.length) { var lh = hw[hw.length - 1]; line('Chips designed', 'm-hardware', plural(hw.length, 'chip') + ' listed; newest ' + lh.name + ' (' + fmtDate(lh.date) + ')' + (lh.flops_per_usd ? '.' : ', no public price.'), false, 'epoch_ml_hardware'); }
     else line('Chips designed', 'm-hardware', 'none listed.', true, 'epoch_ml_hardware');
 
     // where they sit on each meter
@@ -1029,7 +1177,7 @@
     if (cost.length) { var bc = best(cost, 'cost_usd_2023'); line('Training cost', 'm-cost', 'costliest estimate ' + usd(bc.cost_usd_2023) + ' (' + bc.model + ', ' + fmtDate(bc.date) + ').'); }
     else line('Training cost', 'm-cost', 'no cost estimates.', true);
     var eci = mine(objs(D.epoch_eci));
-    if (eci.length) { var be = best(eci, 'eci'); line('Capability index', 'm-eci', 'best ' + be.eci + ' (' + be.model + ', ' + fmtDate(be.date) + ', ' + be.group.toLowerCase() + '); ' + eci.length + ' models scored.'); }
+    if (eci.length) { var be = best(eci, 'eci'); line('Capability index', 'm-eci', 'best ' + f1(be.eci) + ' (' + be.model + ', ' + fmtDate(be.date) + ', ' + be.group.toLowerCase() + '); ' + plural(eci.length, 'model') + ' scored.'); }
     else line('Capability index', 'm-eci', 'no models scored.', true);
     var tests = mine(objs(D.epoch_benchmarks_internal));
     if (tests.length) {
@@ -1041,22 +1189,22 @@
     var ar = D.arena_leaderboard;
     if (ar && ar.latest_top) {
       var cols = ar.latest_columns, top = ar.latest_top.concat(ar.latest_top_open || []).map(function (r) { var o = {}; cols.forEach(function (c, i) { o[c] = r[i]; }); return o; });
-      var ma = top.filter(function (r) { return playerOf(r.org) === id; });
-      if (ma.length) { var ba = best(ma, 'rating'); line('Arena votes', 'ovc', 'best rating ' + ba.rating + ' (' + ba.model + ', ' + ba.lo + ' to ' + ba.hi + '), rank ' + ba.rank + ' on ' + fmtDate(ar.latest_snapshot, true) + '.'); }
+      var ma = top.filter(function (r) { return isMine(r.org, id); });
+      if (ma.length) { var ba = best(ma, 'rating'); line('Arena votes', 'ovc', 'best rating ' + ba.rating + ' (' + modelName(ba.model) + ', ' + ba.lo + ' to ' + ba.hi + '), rank ' + ba.rank + ' on ' + fmtDate(ar.latest_snapshot, true) + '.'); }
       else line('Arena votes', 'ovc', 'not in the top 30, or the top 10 open models, of the latest snapshot.', true);
     }
     var metr = D.metr_time_horizon;
     if (metr) {
       var vs = metr.coverage.numbers.versions, found = vs.map(function (v) {
-        var nn = Object.keys(v.orgs).filter(function (o) { return playerOf(o) === id; }).reduce(function (s, o) { return s + v.orgs[o]; }, 0);
+        var nn = Object.keys(v.orgs).filter(function (o) { return isMine(o, id); }).reduce(function (s, o) { return s + v.orgs[o]; }, 0);
         return nn ? nn + ' in ' + v.version : null;
       }).filter(Boolean);
       line('METR time horizon', 'm-metr', found.length ? 'models measured: ' + found.join(', ') + ' (numbers on METR\'s page).' : 'not measured by METR.', !found.length);
     }
-    var sales = objs(D.epoch_chip_sales).filter(function (r) { return playerOf(r.designer) === id && !r.incomplete; });
+    var sales = objs(D.epoch_chip_sales).filter(function (r) { return isMine(r.designer, id) && !r.incomplete; });
     if (sales.length) { var ls = sales.sort(function (a, b2) { return b2.quarter_end.localeCompare(a.quarter_end); })[0]; line('Chips shipped', 'm-shipped', compact(ls.q_median) + ' H100e shipped in the quarter to ' + fmtDate(ls.quarter_end) + '; ' + compact(ls.cum_median) + ' since ' + fmtDate(ls.start) + '.'); }
-    var rev = objs(D.epoch_ai_companies).filter(function (r) { return playerOf(r.company) === id; });
-    if (rev.length) { var lr = rev.sort(function (a, b2) { return b2.date.localeCompare(a.date); })[0]; line('Revenue', 'm-revenue', usd(lr.annualized_usd) + ' a year (' + fmtDate(lr.date) + ', ' + (lr.source_type || 'reported') + ').'); }
+    var rev = objs(D.epoch_ai_companies).filter(function (r) { return isMine(r.company, id); });
+    if (rev.length) { var lr = rev.sort(function (a, b2) { return b2.date.localeCompare(a.date); })[0]; line('Revenue', 'm-revenue', usd(lr.annualized_usd) + ' a year (' + fmtDate(lr.date) + ', ' + sourceTypes(lr.source_type) + ').'); }
     else line('Revenue', 'm-revenue', 'no reported AI revenue figure.', true);
     h('p', 'kind', 'Links checked ' + fmtDate(P.checked, true) + '. Their own words are how they describe themselves, not a strategy we have written for them.', box);
   }
@@ -1081,11 +1229,12 @@
       var d = D[id]; if (!d) return;
       var src = S.sources[id] || {};
       var tr = h('tr', null, null, tb);
-      var td = h('td', null, null, tr); link(d.page || d.url, d.name, td, true);
-      h('td', null, d.source, tr);
+      var td = h('td', null, null, tr); link(sourceHref(d), d.name, td, true);
+      h('td', null, d.source + (d.authors ? ', by ' + d.authors : ''), tr);
       var tl = h('td', null, null, tr); link(d.licence_url || d.page, d.licence, tl, true);
-      var tk = h('td', null, d.redistribution === 'link-only' ? 'link only' : 'copied, with credit', tr);
-      if (d.changes) tk.title = d.changes;
+      var tk = h('td', null, null, tr), kd = h('details', 'changes', null, tk);
+      h('summary', null, d.redistribution === 'link-only' ? 'link only' : 'copied, with changes', kd);
+      h('p', null, d.changes || '', kd);
       h('td', null, fmtDate(src.newest_data, true) + (src.newest_note ? ' (' + src.newest_note + ')' : ''), tr);
       h('td', null, fmtDate(d.fetched_at, true), tr);
       var tf = h('td', null, null, tr); link('data/' + id + '.json', 'data', tf); txt(tf, ' · '); link('scripts/fetch_' + id + '.py', 'fetcher', tf);
