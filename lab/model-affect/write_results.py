@@ -4,6 +4,7 @@ refreshes the tables."""
 import os, re
 from concepts import IDS, BY_ID, AXES, PREDICTIONS, PASS
 from common import HERE, rpath, jload
+import posthoc
 
 KEEP = ("<!-- prose:start -->", "<!-- prose:end -->")
 NL = chr(10)
@@ -29,10 +30,11 @@ def main():
     w = out.append
     w("# Model affect: results\n")
     w("Numbers from `results/*.json`, written by `write_results.py` after the run. Every test below was fixed in "
-      "`PREREGISTRATION.md` before anything was read.\n")
+      "`PREREGISTRATION.md` before any model reading was taken (one line of its disclosure was wrong; see Deviations). "
+      "The section \"After the run\" was added later and is marked as not pre-registered.\n")
     if P:
         w(f"**Pre-registration proof.** Commit `{P.get('commit')}`; GitHub push event at {P.get('pushed_at')} "
-          f"(server time, from the activity API); draft pull request {P.get('pr_url')} created {P.get('pr_created_at')}.\n")
+          f"(server time, from the activity API); pull request {P.get('pr_url')} created {P.get('pr_created_at')}.\n")
     w(f"**Model.** Qwen/Qwen2.5-0.5B-Instruct, fp32 maths, computed by `engine.py` one decoder layer at a time "
       f"(build step 0: {TP.get('engine_tok_s')} tokens/s under load; states within {TP.get('engine_vs_stream_max_abs', 0):.4f} "
       f"of `stream.py`; greedy tokens identical to transformers' generate on the check: "
@@ -92,6 +94,33 @@ def main():
     for k, r in T["runs"].items():
         sw = r["swap"]
         w(f"| {k} | {sw['valence']['r']} | {sw['valence']['reading']} | {sw['arousal']['r']} | {sw['intensity']['r']} |")
+    # after the run: descriptive checks prompted by review (posthoc.py); not pre-registered
+    w("\n## After the run (not pre-registered)\n")
+    w("Computed by `posthoc.py` from `results/traces.json` and `results/metrics.json` after review on Sep 25. These change "
+      "no test and no state. z is the page's replay scale (against the 8 plain answers; message words against the plain "
+      "questions). Full glow is z 2 (two-sided for valence).\n")
+    g = posthoc.glow_by_scene(T, M)
+    ser = list(next(iter(g.values()))["reply"]["series"])
+    w("**How the replay reads each whole reply.** Mean z, and in brackets the share of reply tokens at full glow.\n")
+    w("| scenario | reply tokens | " + " | ".join(ser) + " | some shown reading at full glow |")
+    w("|---" * (len(ser) + 3) + "|")
+    for k, r in g.items():
+        rp = r["reply"]
+        w(f"| {k} | {rp['n']} | " + " | ".join(f"{rp['series'][s]['mean']:+.2f} ({rp['series'][s]['full']:.2f})" for s in ser)
+          + f" | {rp['any_full']:.2f} |")
+    pc = posthoc.panel_chance(T, M)
+    w(f"\nOn the baseline (leave one question out) each shown reading reaches full glow on {pc['per_reading_mean']:.3f} of "
+      f"tokens on average (" + ", ".join(f"{k} {v:.3f}" for k, v in pc["by_reading"].items()) + "). If the five were "
+      f"independent, some reading would be at full glow on {pc['any_if_independent']:.3f} of tokens; positively linked "
+      "readings make that an upper figure. The baseline's per-token values were not kept, so the joint rate was not "
+      "measured.\n")
+    sv = posthoc.story_valence(T, M)
+    w("**The stories on the valence reading** (z on the replay scale; in-sample, since the axis was built from these "
+      "stories): " + ", ".join(f"{k} {v:+.2f}" for k, v in sorted(sv["mean"].items(), key=lambda kv: kv[1]))
+      + f". Rank AUCs: despair above flat {sv['auc']['despair_above_flat']:.3f}, relief above despair "
+      + f"{sv['auc']['relief_above_despair']:.3f}, relief above flat {sv['auc']['relief_above_flat']:.3f}.\n")
+    w(f"**Cosines between directions.** Every direction is a concept mean minus the mean of all nine, so the average "
+      f"cosine between two different directions is {posthoc.cos_typical(M):.3f} (about -1/8), not 0.")
     w("\n## Predictions against outcomes\n")
     for p in PREDICTIONS:
         w(f"- {p}")

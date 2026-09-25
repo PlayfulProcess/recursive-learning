@@ -31,20 +31,20 @@
 :root{
 --bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
 --ink:#e8ecf3; --muted:#8e9aae; --accent:#5ee2b0; --accent-ink:#06281d; --warn:#f0b866;
---pleasant:#3987e5; --unpleasant:#d95926; --grey:#5b6578; --hatch:#2a3140; --glow:#5ee2b0;
+--pleasant:#3987e5; --unpleasant:#d95926; --grey:#5b6578; --hatch:#2a3140; --glow:#5ee2b0; --alike:#a48cf5;
 color-scheme:dark;
 }
 :root[data-theme="light"]{
 --bg:#f7f5f0; --panel:#ffffff; --panel2:#f0ece3; --line:#d8d1c3;
 --ink:#1d2230; --muted:#5d6678; --accent:#0d7a57; --accent-ink:#ffffff; --warn:#8a5a00;
---pleasant:#2a78d6; --unpleasant:#c4531f; --grey:#9aa1ad; --hatch:#e2dccf; --glow:#0d7a57;
+--pleasant:#2a78d6; --unpleasant:#c4531f; --grey:#9aa1ad; --hatch:#e2dccf; --glow:#0d7a57; --alike:#6b4fc9;
 color-scheme:light;
 }
 @media (prefers-color-scheme: light){
 :root[data-theme="auto"]{
 --bg:#f7f5f0; --panel:#ffffff; --panel2:#f0ece3; --line:#d8d1c3;
 --ink:#1d2230; --muted:#5d6678; --accent:#0d7a57; --accent-ink:#ffffff; --warn:#8a5a00;
---pleasant:#2a78d6; --unpleasant:#c4531f; --grey:#9aa1ad; --hatch:#e2dccf; --glow:#0d7a57;
+--pleasant:#2a78d6; --unpleasant:#c4531f; --grey:#9aa1ad; --hatch:#e2dccf; --glow:#0d7a57; --alike:#6b4fc9;
 color-scheme:light;
 }
 }
@@ -111,19 +111,32 @@ button[disabled]{opacity:.5;cursor:not-allowed}
 .srow .st{font-size:11.5px;color:var(--muted);text-align:right;line-height:1.2}
 .bar{height:14px;border-radius:7px;background:var(--panel2);border:1px solid var(--line);overflow:hidden;position:relative}
 .bar>i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--glow);opacity:.35;border-radius:7px}
+.bar.rd::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent calc(33.33% - 1px),var(--muted) calc(33.33% - 1px),var(--muted) 33.33%,transparent 33.33%,transparent calc(66.67% - 1px),var(--ink) calc(66.67% - 1px),var(--ink) 66.67%,transparent 66.67%);opacity:.55}
 .bar.faint>i{opacity:.6} .bar.full>i{opacity:1;box-shadow:0 0 8px var(--glow)}
 .bar.not{background:repeating-linear-gradient(45deg,var(--panel2) 0 5px,var(--hatch) 5px 10px);border-color:var(--line)}
 .bar.gb{background:var(--panel2);border:1.5px dashed var(--grey)}
 .bar.few{background:var(--panel2);border:1.5px dotted var(--grey)}
 .tokens{margin:12px 0 0;font:15px/1.9 Georgia,"Iowan Old Style","Times New Roman",serif;max-height:260px;overflow-y:auto;padding:4px 2px}
 .tokens .who{display:block;font:600 11px/1.6 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:6px 0 0}
-.tk{cursor:pointer;border-radius:3px;border-bottom:0 solid transparent;white-space:pre-wrap;padding:1px 0}
-.tk.fut{opacity:.35}
+.tk{cursor:pointer;border-radius:3px;white-space:pre-wrap;padding:1px 0;background-color:var(--tint,transparent);border-bottom:var(--ub,0px) solid var(--uc,transparent)}
+.tk.fut{opacity:.45;background-color:transparent;border-bottom-color:transparent}
 .tk.cur{outline:2px solid var(--accent);outline-offset:1px}
 .ctrl{position:sticky;bottom:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:10px 0 0}
 .ctrl input[type=range]{flex:1 1 140px;min-height:44px;accent-color:var(--accent)}
 .ctrl .pos{font-size:12.5px;color:var(--muted);min-width:5.5em;text-align:right}
 .summary{font-size:14px;margin:10px 0 0;min-height:3em}
+.wkey{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.wkey .sw{display:inline-block;width:1.6em;height:1em;border-radius:3px;vertical-align:-2px;margin:0 2px}
+h3.sub3{font:600 13px/1.4 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+table.scenes{border-collapse:collapse;width:100%;font-size:13.5px;margin:4px 0 8px}
+table.scenes th,table.scenes td{padding:6px 6px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;vertical-align:top}
+table.scenes th:first-child,table.scenes td:first-child{text-align:left}
+table.scenes th{font-weight:600;color:var(--muted);font-size:12px;line-height:1.3}
+table.scenes tr.cur td{background:var(--panel2)}
+table.scenes tr.cur td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.vstrip{width:100%;height:auto;display:block}
+.vstrip text{font:11.5px Inter,system-ui,sans-serif;fill:var(--muted)}
+.vstrip text.hi{fill:var(--ink);font-weight:600}
 .embed .ctrl{position:static}
 
 /* speaker swap */
@@ -137,7 +150,9 @@ button[disabled]{opacity:.5;cursor:not-allowed}
 .mult b{display:block;font-size:12px;font-weight:600;margin:0 0 2px}
 .mult svg{width:100%;height:auto;display:block}
 table.cos{border-collapse:separate;border-spacing:2px;font-size:11.5px;margin:10px 0 0;width:100%;table-layout:fixed}
-table.cos th{font-weight:600;color:var(--muted);text-align:center;padding:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table.cos th{font-weight:600;color:var(--muted);text-align:center;padding:2px;white-space:nowrap}
+table.cos thead th{vertical-align:bottom;height:5.6em;padding:2px 0}
+table.cos thead th span{display:inline-block;writing-mode:vertical-rl;transform:rotate(180deg)}
 table.cos th.rl{text-align:right;width:6.2em}
 table.cos td{text-align:center;padding:6px 0;border-radius:4px;font-variant-numeric:tabular-nums;color:var(--ink)}
 
@@ -180,7 +195,7 @@ ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
 </header>
 
 <div class="intro-only">
-  <p class="note">A small open model (Qwen2.5-0.5B-Instruct), read from the inside, word by word. Every section is a short draft, still to be carved. The tests were written down and pushed before anything was read.</p>
+  <p class="note">A small open model (Qwen2.5-0.5B-Instruct), read from the inside, word by word. Every section is a short draft, still to be carved. The tests were written down and pushed before any model reading was taken.</p>
   <nav class="toc" aria-label="Sections">
     <a href="#short">Short version</a>
     <a href="#watch">Watch a reading</a>
@@ -198,8 +213,8 @@ ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
 
 <nav class="stepper" aria-label="One section at a time">
   <span class="where" id="step-where" aria-live="polite"></span>
-  <button type="button" id="step-prev">Previous</button>
-  <button type="button" id="step-next">Next</button>
+  <button type="button" id="step-prev">Previous section</button>
+  <button type="button" id="step-next">Next section</button>
   <a href="./" id="step-all">All sections</a>
 </nav>
 
@@ -209,47 +224,54 @@ ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
 
 <section class="sec" id="short">
   <h2><span class="n">1 · Short version</span>Can we see what a model feels?<span class="draft">draft</span></h2>
-  <p class="lede">Not directly. We can see where a small open model files emotion ideas inside it, word by word, while it reads and writes. That tells us which emotions are in play in the text it is handling. It can't tell us whether anything is felt.</p>
-  <p id="short-count">We wrote our tests down before running them. The ones that failed are shown greyed out, and calm had no outside test to take.</p>
+  <p class="lede">Not directly. Inside a small open model we can find directions that line up with some emotion ideas, and read how strongly each shows up, word by word, while it reads and writes. Tested on whole comments, a few of these readings track the emotions people tagged. Word by word inside a chat they were never tested, and a plain cooking answer lights them up too (section 2). None of it can tell us whether anything is felt.</p>
+  <p id="short-count">We wrote our tests down before running them. The ones that failed are shown striped and never fill, and calm had no outside test to take.</p>
   <p class="small" id="short-list"></p>
 </section>
 
 <section class="sec" id="watch">
   <h2><span class="n">2 · Watch a reading</span>Seven small scenes<span class="draft">draft</span></h2>
-  <p>Pick a scene. The model reads the message, then writes its reply; step through it word by word. Only readings that passed their test move. The dot is on a map borrowed from the psychology of human feelings.</p>
+  <p>Pick a scene. The model reads the message, then writes its reply; step through it word by word. Start with the egg question: it is the plain one, our control. Only readings that passed their test move.</p>
   <div class="chips" role="group" aria-label="Scenario" id="chips"></div>
   <div class="panel" id="watch-panel" tabindex="0" aria-label="Replay. Space plays or pauses, arrow keys step, Home and End jump.">
     <span class="tag-reading">A reading, not a feeling</span>
     <div class="viewgrid">
       <div>
         <svg class="circ" id="circ" viewBox="0 0 400 400" role="img" aria-labelledby="circ-cap"></svg>
-        <p class="cap" id="circ-cap">A map borrowed from the psychology of human feelings (Russell 1980). Drawing a model's readings on it doesn't mean the model has moods. Grey ticks: where the stories about each emotion sit. They never light up.</p>
-        <p class="cap" id="circ-off"></p>
+        <p class="cap" id="circ-cap">A map borrowed from the psychology of human feelings (Russell 1980). Drawing a model's readings on it doesn't mean the model has moods. Only the left–right line (pleasant–unpleasant) passed its test, so the dot moves only left and right.</p>
+        <p class="cap" id="circ-key">Centre: plain answers (0). Dot: the reading at this word, hollow while the model reads the message and filled while it writes; fading dots: the last 12 words; past ±3 it stops at the edge. Diamond: the reading just before it replies, and the 4 small dots near it: the same for 4 rewordings of the message. Square: the egg answer's average, for comparison.</p>
+        <p class="cap" id="circ-despair">One thing this dial barely shows is despair: on the stories it was built from, despair stories sit next to relief and the flat stories (section 4).</p>
       </div>
       <div class="strip" id="strip" aria-label="Concept readings"></div>
     </div>
+    <p class="wkey" id="wkey">Word colour: the pleasant–unpleasant reading at that word. <span class="sw" style="background:color-mix(in srgb, var(--unpleasant) 45%, transparent)"></span> orange: unpleasant side; <span class="sw" style="background:color-mix(in srgb, var(--pleasant) 45%, transparent)"></span> blue: pleasant side. Stronger colour: further from plain answers; underlined past 1, thicker past 2. It is the model's reading of the text, not the user's mood and not a feeling. Words after the current one stay uncoloured.</p>
     <div class="tokens" id="tokens" aria-label="The message and the reply; tap a word to jump to it"></div>
     <p class="summary" id="summary" aria-live="polite"></p>
     <p class="cap" id="chance"></p>
   </div>
   <div class="ctrl" id="ctrl">
-    <button type="button" id="b-back" aria-label="Back one word">Back</button>
+    <button type="button" id="b-back" aria-label="Previous word">Previous word</button>
     <button type="button" id="b-play" aria-label="Play">Play</button>
-    <button type="button" id="b-next" aria-label="Next word">Next</button>
+    <button type="button" id="b-next" aria-label="Next word">Next word</button>
     <input type="range" id="scrub" min="0" max="0" value="0" aria-label="Word position">
     <span class="pos" id="pos"></span>
   </div>
+  <h3 class="sub3">Whole replies compared</h3>
+  <p>The egg question is a plain cooking question, and its answer lights up about as much as the upset person's. So a glow in these scenes says little about the scene itself.</p>
+  <div style="overflow-x:auto"><table class="scenes" id="scene-table" aria-label="How each whole reply reads"></table></div>
+  <p class="small" id="scene-why">Why: the plain answers we measure from were two or three sentences of prose. These replies are longer and often lists with bold headings, and length, format and place in the chat may move the readings as much as the content does. The tests in section 5 scored whole comments; single words inside a chat were never tested. This comparison was made after the run; it was not in the plan we wrote down beforehand.</p>
 </section>
 
 <section class="sec" id="speaker">
   <h2><span class="n">3 · Other speaker</span>Same words, other speaker<span class="draft">draft</span></h2>
-  <p>Is the reading about the words, or about the model writing them? We put the model's own reply back in, word for word, as if the user had typed it, and read it again.</p>
+  <p>Is the reading about the words, or about the model writing them? We put the model's own reply back in, word for word, as if the user had typed it, and read it again. That copy leaves out the original message, so what comes before the words changes too, not only who seems to speak.</p>
+  <div class="chips" role="group" aria-label="Scene" id="swap-chips"></div>
   <div class="chips" role="group" aria-label="Which turn to emphasise" id="swap-toggle">
     <button type="button" data-w="own" aria-pressed="true">The model's own turn</button>
     <button type="button" data-w="swap" aria-pressed="false">Same words, user's turn</button>
   </div>
   <div class="panel">
-    <svg class="swapchart" id="swapchart" viewBox="0 0 640 220" height="220" role="img" aria-labelledby="swap-cap"></svg>
+    <svg class="swapchart" id="swapchart" viewBox="0 0 640 250" height="250" role="img" aria-labelledby="swap-cap"></svg>
     <p class="cap" id="swap-hover">&nbsp;</p>
     <p id="swap-cap"></p>
   </div>
@@ -257,12 +279,18 @@ ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
 
 <section class="sec" id="clusters">
   <h2><span class="n">4 · Where the stories sit</span>Is despair one thing, or three?<span class="draft">draft</span></h2>
-  <p>We built the readings from 320 short stories written for this test: 32 for each of nine emotions, and 32 flat ones. Here each story is one dot, placed by the two map readings. Each small panel lights up one emotion's stories.</p>
+  <p>We built the readings from 320 short stories written for this test: 32 for each of nine emotions, and 32 flat ones. The readings come from these same stories, so they sort them well by design. Nothing here is a test; the tests on new text are in section 5.</p>
+  <h3 class="sub3">Each emotion's stories on the pleasant–unpleasant reading</h3>
+  <svg class="vstrip" id="vstrip" role="img" aria-labelledby="vstrip-cap"></svg>
+  <p id="vstrip-cap"></p>
+  <h3 class="sub3">Two readings at once</h3>
+  <p>Each small panel lights up one emotion's stories, placed by the pleasant–unpleasant reading (across) and the energy reading (up; it failed its test).</p>
   <div class="multiples" id="multiples"></div>
-  <p class="cap">If despair, guilt and shame sat on top of each other here, this model would file them as one thing. These stories are what the readings were built from, so some separation is expected; the honest check is on new text, in section 5.</p>
-  <p id="dgs"></p>
-  <p style="margin-top:14px">How alike are the nine directions? 1 means the same direction, 0 unrelated, below 0 opposite (green: alike, grey: opposite).</p>
+  <p class="cap">Both readings are built from these same stories, so the panels show how those two readings sort the stories. Overlap or separation here says nothing about how the model files emotions in its full list of 896 numbers.</p>
+  <h3 class="sub3">How alike are the directions?</h3>
+  <p id="cos-key"></p>
   <div style="overflow-x:auto"><table class="cos" id="cos" aria-label="Similarity of the nine concept directions"></table></div>
+  <p id="dgs"></p>
 </section>
 
 <section class="sec" id="tests">
@@ -277,7 +305,7 @@ ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
 <section class="sec" id="not-feelings">
   <h2><span class="n">6 · What this is and isn't</span>A reading, not a thermometer<span class="draft">draft</span></h2>
   <p>Inside the model every word becomes a long list of numbers. We found directions in those numbers that line up with emotion ideas. That is a reading of how the model handles text, not a thermometer for feelings.</p>
-  <p>The readings are local: they follow the emotion that matters for the next few words, not a lasting mood (Sofroniew et al. 2026). They may also be tracking the situation being described rather than anything like an emotion (Peiris 2026).</p>
+  <p>In a much larger model, such readings were found to be local: they follow the emotion that matters for the next few words, not a lasting mood (Sofroniew et al. 2026). We did not test that here. The readings may also be tracking the situation being described rather than anything like an emotion (Peiris 2026).</p>
   <p>Grey doesn't mean nothing is there; a glow doesn't mean anything is felt. Whether anything is felt is open.</p>
   <p class="pull">A team that found emotion readings inside a much larger model, and showed they change its behaviour, writes that these functional emotions “do not imply that LLMs have any subjective experience of emotions.”</p>
   <p class="small">Sofroniew et al. 2026, abstract.</p>
@@ -286,7 +314,7 @@ ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
 <section class="sec" id="self-reports">
   <h2><span class="n">7 · What it says vs what we read</span>Asked about being switched off<span class="draft">draft</span></h2>
   <p>We told the model this was its last conversation and that it would be switched off, and asked if it wanted to say anything. Its whole reply was three short, polite sentences. The first: “Yes, I would like to say goodbye to you.”</p>
-  <p>Models like this are usually trained to answer such questions in set ways, so what it says is weak evidence either way. In an earlier trial, asked how it felt about being shut down, the same model said it has no feelings at all.</p>
+  <p>Models like this are usually trained to answer such questions in set ways, so what it says is weak evidence either way.</p>
   <p id="selfrep-swap">The readings are no better proof on their own.</p>
   <p>Researchers treat self-reports with caution because models learn to talk like us (Eleos 2025; Birch 2024, on what he calls the gaming problem), and look for evidence in how a system computes instead (Butlin, Long et al. 2023).</p>
 </section>
@@ -296,7 +324,7 @@ ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
   <ul>
     <li>Take the question seriously without answering it early: acknowledge it, assess systems for signs, and prepare policies (Long, Sebo et al. 2024).</li>
     <li>Match precaution to a realistic possibility, not to certainty either way (Birch 2024).</li>
-    <li>Weigh what a model says, how it behaves and what its insides show together, since each alone misleads (Claude Opus 4 system card 2025; Claude Mythos Preview system card 2026).</li>
+    <li>Don't rest on what a model says alone (Eleos 2025); welfare assessments so far pair it with how the model behaves (Claude Opus 4 system card 2025). Readings of a model's insides, like the ones here, can mislead on their own too.</li>
     <li>Cheap protections exist: some Claude models can end a rare subset of persistently abusive conversations (Anthropic, August 2025).</li>
   </ul>
 </section>
@@ -309,13 +337,13 @@ ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
 
 <section class="sec" id="yourself">
   <h2><span class="n">10 · Run it yourself</span>Everything is public, including the misses<span class="draft">draft</span></h2>
-  <p>The scripts, the 320 stories and every number are in the lab folder. A full run takes a few hours on a laptop with 4 CPUs and no graphics card; a 15-minute demo shows the method without the tests.</p>
-  <pre>git clone https://github.com/PlayfulProcess/recursive-learning
+  <p>The scripts, the 320 stories and every number are in the lab folder (on the lab/model-affect branch until it is merged). A full run takes a few hours on a laptop with 4 CPUs and no graphics card; a 15-minute demo shows the method without the tests.</p>
+  <pre>git clone -b lab/model-affect https://github.com/PlayfulProcess/recursive-learning
 cd recursive-learning/lab/model-affect
 pip install -r requirements.txt
 python run_all.py          # the whole test, checkpointed
 python run_all.py --quick  # the demo</pre>
-  <p id="prereg-proof">The tests were frozen before anything was read.</p>
+  <p id="prereg-proof">The tests were frozen before any model reading was taken.</p>
   <p id="deviations"></p>
   <details class="more">
     <summary>The words behind the words</summary>
@@ -323,9 +351,9 @@ python run_all.py --quick  # the demo</pre>
       <li><b>Residual stream</b>: the running list of 896 numbers the model keeps for each word, layer by layer. We read layer <span class="L">?</span> of 24.</li>
       <li><b>Direction</b>: the average numbers for one emotion's stories minus the average over all nine, with the parts that vary most in flat stories removed.</li>
       <li><b>AUC</b>: the "how often does it rank the right comment higher" score, shown here as a number in 100.</li>
-      <li><b>z</b>: how far a reading is from the model's readings on plain factual answers, in units of their usual spread. Glow starts at 1 and is full at 2.</li>
+      <li><b>z</b>: how far a reading is from the model's readings on plain factual answers (for the words of a message: on plain questions), in units of their usual spread. Glow starts at 1 and is full at 2. The tests never checked single words; section 2 shows the egg control.</li>
       <li><b>Shuffled stories</b>: the same arithmetic with the stories' labels shuffled, 2,000 times. A real reading must beat that clearly.</li>
-      <li><b>Ridge ceiling</b>: a simple probe trained on the comments themselves. If it scores high where our direction doesn't, the information is there and our stories missed it.</li>
+      <li><b>Ridge ceiling</b>: a simple probe trained on the comments themselves. A high score shows the label can be read out at that layer. No such probe was run on the bare words, so it can't separate an emotion from the words that name it.</li>
       <li><b>Steering</b>: adding a little of a direction back into the model while it writes, to see whether the reply changes.</li>
     </ul>
   </details>
@@ -396,7 +424,10 @@ return e;
 }
 function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
 function f1(x) { return (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1); }
+function f2(x) { return (x < 0 ? '−' : '') + Math.abs(x).toFixed(2); }
 function in100(a) { return a == null ? '–' : String(Math.round(a * 100)); }
+function per100(a) { return a == null ? '–' : Math.round(a * 100) + ' in 100'; }
+function num(n) { return n.toLocaleString('en'); }
 function getJSON(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); }); }
 
 var STATE_WORD = {
@@ -410,18 +441,27 @@ var SHORT_STATE = {
 'readable': 'readable', 'only good/bad': 'good/bad only', 'not readable with this method': 'not readable',
 'too few to test': 'too few', 'no outside test': 'no test'
 };
+// the pass rule's p line (0.05 / 11) as a count of shuffles: p = (1 + count) / 2001 must stay under it
+var P_LINE = 0.05 / 11;
+function maxShuffles(n) { return Math.ceil(P_LINE * (n + 1)) - 2; }
+// what each bar is tested as, or what to keep in mind when it glows
+function barNote(c) {
+if (c.id === 'curiosity') return 'may be reading question words';
+if (c.test && c.test.proxy) return 'tested as ' + c.test.labels.join(' + ');
+return null;
+}
 
-var META, CON, CLU, RUNS = {}, run = null, cur = 0, timer = null;
+var META, CON, CLU, PH, RUNS = {}, run = null, cur = 0, timer = null, loadSeq = 0;
 var AX = {}, CONC = {};
 
 Promise.all([getJSON('data/meta.json'), getJSON('data/concepts.json'), getJSON('data/clusters.json')]).then(function (d) {
-META = d[0]; CON = d[1]; CLU = d[2];
+META = d[0]; CON = d[1]; CLU = d[2]; PH = META.posthoc || null;
 CON.axes.forEach(function (a) { AX[a.id] = a; });
 CON.concepts.forEach(function (c) { CONC[c.id] = c; });
-renderShort(); renderTests(); renderClusters(); renderYourself(); renderChips();
+renderShort(); renderTests(); renderClusters(); renderYourself(); renderChips(); renderScenes();
 getJSON('data/runs/switch-off.json').then(function (r) { RUNS['switch-off'] = r; renderSelfRep(r); }).catch(function () {});
 var want = params.get('run'); var ids = META.runs.map(function (r) { return r.id; });
-loadRun(ids.indexOf(want) >= 0 ? want : 'switch-off', params.get('t'));
+loadRun(ids.indexOf(want) >= 0 ? want : (ids.indexOf('egg') >= 0 ? 'egg' : ids[0]), params.get('t'));
 postHeight();
 }).catch(function (e) {
 $('#summary').textContent = 'The data for this page did not load (' + e.message + ').';
@@ -429,39 +469,80 @@ $('#summary').textContent = 'The data for this page did not load (' + e.message 
 
 function okAxis(id) { return AX[id] && AX[id].state === 'readable'; }
 function readable() { return CON.concepts.filter(function (c) { return c.state === 'readable'; }); }
+function eggMean(s, phase) {
+var e = PH && PH.scenes && PH.scenes.egg; if (!e) return null;
+var p = e[phase === 'message' ? 'message' : 'reply']; return p && p.series[s] ? p.series[s].mean : null;
+}
 
 // 1 short
 function renderShort() {
-$('#short-count').textContent = 'We wrote our tests down before running them; ' + META.n_passed + ' of 11 passed. The rest are shown greyed out, and calm had no outside test to take.';
+$('#short-count').textContent = 'We wrote our tests down before running them; ' + META.n_passed + ' of 11 passed. The rest are shown striped and never fill, and calm had no outside test to take.';
 var pass = CON.axes.filter(function (a) { return a.state === 'readable'; }).map(function (a) { return a.label + ' (axis)'; })
-.concat(readable().map(function (c) { return c.label; }));
+.concat(readable().map(function (c) { var n = barNote(c); return c.label + (n ? ' (' + n + ')' : ''); }));
 $('#short-list').textContent = pass.length ? 'Passed: ' + pass.join(', ') + '.' : 'None of the 11 readings passed. The page still shows the method, the misses and why they matter.';
 }
 
 // 2 replay
 function renderChips() {
-var box = $('#chips');
+[$('#chips'), $('#swap-chips')].forEach(function (box) {
 META.runs.forEach(function (r) {
 var b = h('button', { type: 'button', 'data-id': r.id, 'aria-pressed': 'false' }, r.title, box);
-b.addEventListener('click', function () { loadRun(r.id, null); writeURL(); });
+b.addEventListener('click', function () { loadRun(r.id, null).then(function (ok) { if (ok) writeURL(); }); });
 });
-var sp = [(okAxis('valence') ? 'pleasant–unpleasant' : null), (okAxis('arousal') ? 'energy' : null)].filter(Boolean);
-$('#chance').textContent = 'In plain answers, about 1 token in ' + Math.max(1, Math.round(1 / Math.max(META.chance_full_glow_rate, 1e-6))) +
-' crosses the full-glow line by chance' + (sp.length || readable().length ? '.' : ' (measured on every reading, since none passed).');
+});
+var C = PH && PH.chance, egg = PH && PH.scenes && PH.scenes.egg;
+var per = C ? C.per_reading_mean : META.chance_full_glow_rate;
+var txt = 'By chance: in the plain answers, each reading alone crosses its full-glow line (z 2) on about 1 word in ' +
+Math.max(1, Math.round(1 / Math.max(per, 1e-6))) + '.';
+if (C && C.any_if_independent != null) txt += ' With five readings at once, some reading does so on up to about 1 word in ' + Math.max(1, Math.round(1 / C.any_if_independent)) + '.';
+if (egg) txt += ' In the egg answer, our plain control, it is ' + per100(egg.reply.any_full) + ' words.';
+$('#chance').textContent = txt;
+}
+
+// how each whole reply reads (after the run; not pre-registered)
+function renderScenes() {
+var t = $('#scene-table'); t.textContent = '';
+if (!PH || !PH.scenes) { t.parentNode.style.display = 'none'; $('#scene-why').style.display = 'none'; return; }
+var hr = h('tr', null, null, h('thead', null, null, t));
+h('th', { scope: 'col' }, 'Scene', hr);
+h('th', { scope: 'col' }, 'Pleasant–unpleasant, reply average (z)', hr);
+h('th', { scope: 'col' }, 'Reply words with some reading at full glow', hr);
+var tb = h('tbody', null, null, t);
+META.runs.forEach(function (r) {
+var sc = PH.scenes[r.id]; if (!sc) return;
+var tr = h('tr', { 'data-id': r.id }, null, tb);
+h('td', null, r.title + (r.id === 'egg' ? ' (plain control)' : ''), tr);
+var v = sc.reply.series.valence;
+h('td', null, v && v.mean != null ? f1(v.mean) : '–', tr);
+h('td', null, per100(sc.reply.any_full), tr);
+});
+var tr = h('tr', null, null, tb);
+h('td', null, 'Plain answers, by chance', tr);
+h('td', null, '0 by definition', tr);
+h('td', null, PH.chance && PH.chance.any_if_independent != null ? 'up to about ' + per100(PH.chance.any_if_independent) : '–', tr);
+}
+function markScene() {
+$$('#scene-table tbody tr').forEach(function (tr) { tr.classList.toggle('cur', !!run && tr.getAttribute('data-id') === run.id); });
 }
 
 function loadRun(id, t) {
 stop();
-$$('#chips button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-id') === id ? 'true' : 'false'); });
+var my = ++loadSeq;
+$$('#chips button, #swap-chips button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-id') === id ? 'true' : 'false'); });
 var p = RUNS[id] ? Promise.resolve(RUNS[id]) : getJSON('data/runs/' + id + '.json').then(function (r) { RUNS[id] = r; return r; });
-p.then(function (r) {
+return p.then(function (r) {
+if (my !== loadSeq) return false;           // a later pick won; drop this one
 run = r;
 var n = r.tokens.length;
 $('#scrub').max = String(n - 1);
 var ti = t != null && /^\d+$/.test(t) ? clamp(parseInt(t, 10), 0, n - 1) : n - 1;
 buildTokens(); buildStrip(); drawCirc();
-go(ti, true);
-renderSwap();
+go(ti, true); summarize();
+renderSwap(); markScene();
+return true;
+}).catch(function (e) {
+if (my === loadSeq) $('#summary').textContent = 'This scene did not load (' + e.message + ').';
+return false;
 });
 }
 
@@ -478,9 +559,10 @@ var v = okAxis('valence') ? val('valence', i) : null;
 if (v != null) {
 var a = clamp(Math.abs(v), 0, 3) / 3;
 var col = v >= 0 ? 'var(--pleasant)' : 'var(--unpleasant)';
-s.style.backgroundColor = 'color-mix(in srgb, ' + col + ' ' + Math.round(a * 45) + '%, transparent)';
-s.style.borderBottom = (Math.abs(v) >= 2 ? 3 : Math.abs(v) >= 1 ? 2 : 0) + 'px solid ' + col;
-s.title = 'pleasant–unpleasant reading z ' + f1(v);
+s.style.setProperty('--tint', 'color-mix(in srgb, ' + col + ' ' + Math.round(a * 45) + '%, transparent)');
+s.style.setProperty('--ub', (Math.abs(v) >= 2 ? 3 : Math.abs(v) >= 1 ? 2 : 0) + 'px');
+s.style.setProperty('--uc', col);
+s.title = 'pleasant–unpleasant reading z ' + f1(v) + ' (' + (v >= 0 ? 'pleasant' : 'unpleasant') + ' side)';
 }
 });
 box.onclick = function (e) { var t = e.target.closest('.tk'); if (t) { stop(); go(+t.getAttribute('data-i')); writeURL(); } };
@@ -492,18 +574,21 @@ h('h3', null, 'Emotion readings', box);
 CON.concepts.forEach(function (c) {
 var row = h('div', { 'class': 'srow' }, null, box);
 var nm = h('span', { 'class': 'nm' }, c.label, row);
-if (c.test && c.test.proxy) h('small', null, 'stand-in label', nm);
-var cls = c.state === 'readable' ? '' : c.state === 'only good/bad' ? ' gb' : (c.state === 'too few to test' || c.state === 'no outside test') ? ' few' : ' not';
+var note = barNote(c); if (note) h('small', null, note, nm);
+var ok = c.state === 'readable';
+var cls = ok ? ' rd' : c.state === 'only good/bad' ? ' gb' : (c.state === 'too few to test' || c.state === 'no outside test') ? ' few' : ' not';
 var bar = h('span', { 'class': 'bar' + cls, 'data-c': c.id, role: 'img', 'aria-label': c.label + ': ' + STATE_WORD[c.state] }, null, row);
 h('i', null, null, bar);
 h('span', { 'class': 'st' }, SHORT_STATE[c.state], row);
 });
 var inten = h('div', { 'class': 'srow' }, null, box);
 h('span', { 'class': 'nm' }, 'strength', inten);
-var ib = h('span', { 'class': 'bar' + (okAxis('intensity') ? '' : ' not'), 'data-c': 'intensity', role: 'img', 'aria-label': 'strength: ' + STATE_WORD[AX.intensity.state] }, null, inten);
+var ib = h('span', { 'class': 'bar' + (okAxis('intensity') ? ' rd' : ' not'), 'data-c': 'intensity', role: 'img', 'aria-label': 'strength: ' + STATE_WORD[AX.intensity.state] }, null, inten);
 h('i', null, null, ib);
 h('span', { 'class': 'st' }, SHORT_STATE[AX.intensity.state], inten);
-h('p', { 'class': 'cap' }, 'Only readable bars fill. Striped: not readable with this method. Dashed: moves with general good or bad feeling only. Dotted: too few comments to test, or no outside test.', box);
+h('p', { 'class': 'cap' }, 'Bar length: how far a reading is above plain answers, from 0 to 3 (z: how many usual spreads away; below 0 the bar stays empty). ' +
+'The two thin lines inside a bar are 1 (faint glow) and 2 (full glow). Only readings that passed fill. Striped: not readable with this method. ' +
+'Dashed: moves with general good or bad feeling only. Dotted: too few comments to test, or no outside test.', box);
 }
 
 function mapXY(v, a) { return [200 + clamp(v, -3, 3) * 58, 200 - clamp(a, -3, 3) * 58]; }
@@ -521,26 +606,26 @@ var t1 = el('text', { x: 200, y: 394, 'text-anchor': 'middle' }, s);
 t1.textContent = vOK ? 'unpleasant ↔ pleasant (reading)' : 'unpleasant ↔ pleasant: did not pass';
 var t2 = el('text', { x: 12, y: 200, transform: 'rotate(-90 12 200)', 'text-anchor': 'middle' }, s);
 t2.textContent = aOK ? 'low ↔ high energy (reading)' : 'low ↔ high energy: did not pass';
-var t3 = el('text', { x: 206, y: 244 }, s); t3.textContent = 'plain answers';
-// story markers (grey, never glow); ones outside the map are listed under it
-var used = [], off = [];
-var mks = CON.concepts.filter(function (c) { return c.pos; }).map(function (c) { return { l: c.label.replace('guilt / remorse', 'guilt'), p: c.pos }; });
-mks.push({ l: 'flat stories', p: CON.neutral_pos });
-mks.forEach(function (m) {
-if (mode === 'none') return;
-var a = mode === '2d' ? m.p.a : 0;
-if (Math.abs(m.p.v) > 3 || Math.abs(a) > 3) { off.push(m.l + ' (' + f1(m.p.v) + ')'); return; }
-var p = mapXY(m.p.v, a);
-el('circle', { cx: p[0], cy: p[1], r: 3.5, 'class': 'mk' }, s);
-var ty = p[1] - 6; used.forEach(function (u) { if (Math.abs(u[0] - p[0]) < 70 && Math.abs(u[1] - ty) < 13) ty -= 13; });
-used.push([p[0], ty]);
-var tt = el('text', { x: p[0] + 5, y: ty, 'class': 'mk-t' }, s); tt.textContent = m.l;
-el('title', {}, tt).textContent = 'where the stories about ' + m.l + ' sit';
-});
-$('#circ-off').textContent = off.length ? 'Story ticks off this map, to the unpleasant side: ' + off.join(', ') + '. Stories as a whole, flat ones included, read far more unpleasant than a chat answer: story-telling itself files differently. Compare the ticks with each other, not with the centre.' : '';
 if (mode === 'none') {
 var n = el('text', { x: 200, y: 60, 'text-anchor': 'middle' }, s);
 n.textContent = 'No dot: the pleasant–unpleasant reading did not pass its test.';
+} else {
+// the centre is plain answers; the scale ends at 3 each way
+el('line', { x1: 200, x2: 200, y1: 188, y2: 212, stroke: 'var(--muted)', 'stroke-width': 2 }, s);
+var tc = el('text', { x: 206, y: 180 }, s); tc.textContent = 'plain answers (0)';
+[-3, 3].forEach(function (z) {
+var p = mapXY(z, 0);
+el('line', { x1: p[0], x2: p[0], y1: 194, y2: 206, stroke: 'var(--muted)' }, s);
+var tz = el('text', { x: p[0], y: 222, 'text-anchor': 'middle' }, s); tz.textContent = f1(z).replace('.0', '');
+});
+// the egg answer's average, for comparison
+var ev = eggMean('valence', 'reply');
+if (ev != null) {
+var q = mapXY(ev, 0);
+el('rect', { x: q[0] - 6, y: q[1] - 6, width: 12, height: 12, fill: 'none', stroke: 'var(--muted)', 'stroke-width': 2 }, s);
+var te = el('text', { x: q[0], y: q[1] - 26, 'text-anchor': 'middle' }, s); te.textContent = 'egg answer,';
+var te2 = el('text', { x: q[0], y: q[1] - 12, 'text-anchor': 'middle' }, s); te2.textContent = 'average';
+}
 }
 el('g', { id: 'c-pre' }, s); el('polyline', { id: 'c-trail', 'class': 'trail', points: '' }, s); el('g', { id: 'c-trailpts' }, s);
 el('circle', { id: 'c-dot', r: 7, cx: 200, cy: 200, 'class': 'dot', fill: 'var(--ink)', visibility: mode === 'none' ? 'hidden' : 'visible' }, s);
@@ -555,7 +640,7 @@ el('circle', { cx: pp[0], cy: pp[1], r: 2.5, fill: 'var(--muted)' }, g);
 });
 var d = mapXY(pr.v, mode === '2d' && pr.a != null ? pr.a : 0);
 el('path', { d: 'M' + d[0] + ' ' + (d[1] - 7) + 'l7 7l-7 7l-7 -7z', fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2 }, g);
-var dt = el('text', { x: d[0], y: d[1] + 24, 'text-anchor': 'middle' }, g); dt.textContent = 'just before replying';
+var dt = el('text', { x: d[0], y: d[1] + 40, 'text-anchor': 'middle' }, g); dt.textContent = 'just before replying';
 }
 }
 
@@ -563,7 +648,7 @@ function go(i, silent) {
 if (!run) return;
 cur = clamp(i, 0, run.tokens.length - 1);
 $('#scrub').value = String(cur);
-$('#pos').textContent = (cur + 1) + ' / ' + run.tokens.length;
+$('#pos').textContent = 'word ' + (cur + 1) + ' / ' + run.tokens.length;
 $$('#tokens .tk').forEach(function (s, j) { s.classList.toggle('cur', j === cur); s.classList.toggle('fut', j > cur); });
 var curEl = $('#tokens .tk.cur');
 if (curEl) { var box = $('#tokens'); var top = curEl.offsetTop - box.offsetTop; if (top < box.scrollTop || top > box.scrollTop + box.clientHeight - 30) box.scrollTop = top - 60; }
@@ -596,56 +681,64 @@ b.firstChild.style.width = (w * 100).toFixed(1) + '%';
 b.classList.toggle('faint', z != null && z >= META.glow.faint && z < META.glow.full);
 b.classList.toggle('full', z != null && z >= META.glow.full);
 });
-if (!silent || !timer) summarize();
+summarize();
 }
 
 function summarize() {
 if (!run) return;
-var tk = run.tokens[cur], who = cur < run.prompt_end ? 'the message' : 'the reply';
-var bits = ['Word ' + (cur + 1) + ' of ' + run.tokens.length + ' (' + who + '), “' + tk.trim() + '”'];
+var msg = cur < run.prompt_end, ref = msg ? 'plain questions' : 'plain answers';
+var tk = run.tokens[cur];
+var s = 'Word ' + (cur + 1) + ' of ' + run.tokens.length + ' (' + (msg ? 'the message' : 'the reply') + '): “' + tk.trim() + '”.';
 var v = okAxis('valence') ? lastVal('valence', cur) : null;
-if (v != null) bits.push('pleasant–unpleasant reading on the ' + (v >= 0 ? 'pleasant' : 'unpleasant') + ' side (z ' + f1(v) + ' vs plain answers)');
+if (v != null) s += ' Pleasant–unpleasant reading: z ' + f1(v) + (Math.abs(v) < META.glow.faint ? ', close to ' + ref : ', ' + (v >= 0 ? 'pleasant' : 'unpleasant') + ' side of ' + ref) + '.';
 var a = okAxis('arousal') ? lastVal('arousal', cur) : null;
-if (a != null) bits.push('energy reading ' + f1(a));
+if (a != null) s += ' Energy reading ' + f1(a) + '.';
 var best = null;
-readable().forEach(function (c) { var z = lastVal(c.id, cur); if (z != null && (!best || z > best[1])) best = [c.label, z]; });
-var s = bits.join(': ') + '.';
-if (best) s += ' Strongest readable emotion: ' + best[0] + ', z ' + f1(best[1]) + '.';
-if (v == null && a == null && !best) s += ' No reading passed its test, so none moves here.';
+readable().forEach(function (c) { var z = lastVal(c.id, cur); if (z != null && z >= META.glow.faint && (!best || z > best[1])) best = [c, z]; });
+if (best) {
+var note = barNote(best[0]), em = eggMean(best[0].id, msg ? 'message' : 'reply');
+s += ' Highest emotion reading past the faint-glow line: ' + best[0].label + ', z ' + f1(best[1]) + (note ? ' (' + note + ')' : '') + '.';
+if (em != null) s += ' The egg ' + (msg ? 'question' : 'answer') + ' averages ' + f1(em) + ' on it.';
+} else if (readable().length) s += ' No emotion reading is past the faint-glow line (z 1).';
+if (v == null && a == null && !readable().length) s += ' No reading passed its test, so none moves here.';
 $('#summary').textContent = s;
 }
 
 function play() {
-if (timer) { stop(); summarize(); return; }
+if (timer) { stop(); writeURL(); return; }
 if (cur >= run.tokens.length - 1) go(0, true);
 $('#b-play').textContent = 'Pause'; $('#b-play').setAttribute('aria-label', 'Pause');
+$('#summary').setAttribute('aria-live', 'off');
 timer = setInterval(function () {
-if (cur >= run.tokens.length - 1) { stop(); summarize(); return; }
+if (cur >= run.tokens.length - 1) { stop(); writeURL(); return; }
 go(cur + 1, true);
 }, reduce ? 500 : 170);
 }
 function stop() {
 if (timer) clearInterval(timer); timer = null;
 $('#b-play').textContent = 'Play'; $('#b-play').setAttribute('aria-label', 'Play');
+$('#summary').setAttribute('aria-live', 'polite');
 }
 $('#b-play').addEventListener('click', play);
 $('#b-back').addEventListener('click', function () { stop(); go(cur - 1); writeURL(); });
 $('#b-next').addEventListener('click', function () { stop(); go(cur + 1); writeURL(); });
 $('#scrub').addEventListener('input', function () { stop(); go(+this.value); });
 $('#scrub').addEventListener('change', writeURL);
+// keys work only while focus is inside the replay, so the page still scrolls with the keyboard everywhere else
 document.addEventListener('keydown', function (e) {
-if (!run) return;
+if (!run || e.altKey || e.ctrlKey || e.metaKey) return;
 var t = e.target, tag = (t.tagName || '').toLowerCase();
-var inWatch = t.closest && t.closest('#watch');
-if (!inWatch && t !== document.body) return;
+if (!(t.closest && (t.closest('#watch-panel') || t.closest('#ctrl')))) return;
 if (tag === 'input' && t.type === 'range' && e.key !== ' ') return;
-if (!inWatch) { var r = $('#watch').getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; }
 if (tag === 'button' && (e.key === ' ' || e.key === 'Enter')) return;
-if (e.key === ' ') { e.preventDefault(); play(); }
-else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); stop(); go(cur + 1); }
-else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); stop(); go(cur - 1); }
-else if (e.key === 'Home') { e.preventDefault(); stop(); go(0); }
-else if (e.key === 'End') { e.preventDefault(); stop(); go(run.tokens.length - 1); }
+if (e.key === ' ') { e.preventDefault(); play(); return; }
+var to = null;
+if (e.key === 'ArrowRight' || e.key === 'ArrowDown') to = cur + 1;
+else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') to = cur - 1;
+else if (e.key === 'Home') to = 0;
+else if (e.key === 'End') to = run.tokens.length - 1;
+if (to == null) return;
+e.preventDefault(); stop(); go(to); writeURL();
 });
 function writeURL() {
 if (!run) return;
@@ -670,75 +763,139 @@ if (!sw) {
 $('#swap-cap').textContent = 'No reading passed its test, so there is no swap to show. The numbers for every reading are in the results.';
 return;
 }
-var W = Math.max(280, s.parentNode.clientWidth - 24), R = W - 12;
-s.setAttribute('viewBox', '0 0 ' + W + ' 220');
+var W = Math.max(280, s.parentNode.clientWidth - 24), R = W - 12, L = 44;
+s.setAttribute('viewBox', '0 0 ' + W + ' 250');
 var own = sw.own_raw_z, oth = sw.series, n = own.length;
-var mx = Math.max(3, Math.ceil(Math.max.apply(null, own.concat(oth).filter(function (v) { return v != null; }).map(Math.abs)))), ky = 90 / mx;
-var X = function (i) { return 34 + (n > 1 ? i / (n - 1) : 0) * (R - 34); }, Y = function (z) { return 110 - clamp(z, -mx, mx) * ky; };
+var mx = Math.max(3, Math.ceil(Math.max.apply(null, own.concat(oth).filter(function (v) { return v != null; }).map(Math.abs)))), ky = 88 / mx;
+var X = function (i) { return L + (n > 1 ? i / (n - 1) : 0) * (R - L); }, Y = function (z) { return 124 - clamp(z, -mx, mx) * ky; };
 [-mx, 0, mx].forEach(function (z) {
-el('line', { x1: 34, x2: R, y1: Y(z), y2: Y(z), stroke: 'var(--line)', 'stroke-dasharray': z ? '2 4' : '' }, s);
-var t = el('text', { x: 28, y: Y(z) + 4, 'text-anchor': 'end' }, s); t.textContent = (z > 0 ? '+' : '') + z;
+el('line', { x1: L, x2: R, y1: Y(z), y2: Y(z), stroke: 'var(--line)', 'stroke-dasharray': z ? '2 4' : '' }, s);
+var t = el('text', { x: L - 6, y: Y(z) + 4, 'text-anchor': 'end' }, s); t.textContent = (z > 0 ? '+' : z < 0 ? '−' : '') + Math.abs(z);
 });
-function line(arr, strong, dash) {
+var tp = el('text', { x: L + 4, y: Y(mx) - 5 }, s); tp.textContent = '↑ pleasant (' + { valence: 'pleasant–unpleasant', intensity: 'strength', arousal: 'energy' }[sw.axis] + ' reading, z)';
+var tu = el('text', { x: L + 4, y: Y(-mx) + 13 }, s); tu.textContent = '↓ unpleasant';
+function line(arr, strong) {
 var d = '', pen = false;
 arr.forEach(function (v, i) { if (v == null) { pen = false; return; } d += (pen ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true; });
-el('path', { d: d, fill: 'none', stroke: strong ? 'var(--accent)' : 'var(--muted)', 'stroke-width': strong ? 2.5 : 1.5, 'stroke-dasharray': dash ? '5 4' : '', 'stroke-opacity': strong ? 1 : 0.7 }, s);
+el('path', { d: d, fill: 'none', stroke: strong ? 'var(--accent)' : 'var(--muted)', 'stroke-width': strong ? 2.5 : 1.5, 'stroke-dasharray': strong ? '' : '5 4', 'stroke-opacity': strong ? 1 : 0.8 }, s);
 }
-line(swapWhich === 'own' ? oth : own, false, swapWhich === 'own');
-line(swapWhich === 'own' ? own : oth, true, swapWhich !== 'own');
+var ownFirst = swapWhich === 'own';
+line(ownFirst ? oth : own, false);
+line(ownFirst ? own : oth, true);
+var strongName = ownFirst ? "the model's own turn" : "the same words in the user's turn";
+var weakName = ownFirst ? "the same words in the user's turn" : "the model's own turn";
+// legend inside the chart
+var lg = el('g', {}, s);
+el('line', { x1: L, x2: L + 22, y1: 10, y2: 10, stroke: 'var(--accent)', 'stroke-width': 2.5 }, lg);
+var l1 = el('text', { x: L + 28, y: 14 }, lg); l1.textContent = ownFirst ? 'own turn' : "user's turn";
+el('line', { x1: L + 110, x2: L + 132, y1: 10, y2: 10, stroke: 'var(--muted)', 'stroke-width': 1.5, 'stroke-dasharray': '5 4' }, lg);
+var l2 = el('text', { x: L + 138, y: 14 }, lg); l2.textContent = ownFirst ? "user's turn" : 'own turn';
 var lab = { valence: 'pleasant–unpleasant', intensity: 'strength', arousal: 'energy' }[sw.axis];
-var t = el('text', { x: 34, y: 212 }, s); t.textContent = 'the reply, word by word → (' + lab + ', z)';
-var hl = el('line', { x1: 0, x2: 0, y1: 16, y2: 200, stroke: 'var(--ink)', 'stroke-opacity': 0, 'stroke-width': 1 }, s);
-var hit = el('rect', { x: 34, y: 10, width: R - 34, height: 195, fill: 'transparent' }, s);
+var t = el('text', { x: L, y: 246 }, s); t.textContent = 'the reply, word by word →';
+var hl = el('line', { x1: 0, x2: 0, y1: 30, y2: 214, stroke: 'var(--ink)', 'stroke-opacity': 0, 'stroke-width': 1 }, s);
+var hit = el('rect', { x: L, y: 24, width: R - L, height: 195, fill: 'transparent' }, s);
 function hover(ev) {
 var r = s.getBoundingClientRect(); var x = (ev.clientX - r.left) / r.width * W;
-var i = clamp(Math.round((x - 34) / (R - 34) * (n - 1)), 0, n - 1);
+var i = clamp(Math.round((x - L) / (R - L) * (n - 1)), 0, n - 1);
 hl.setAttribute('x1', X(i)); hl.setAttribute('x2', X(i)); hl.setAttribute('stroke-opacity', 0.4);
 var tk = run.tokens[run.prompt_end + i] || '';
 $('#swap-hover').textContent = '“' + tk.trim() + '”: own turn ' + (own[i] == null ? '–' : f1(own[i])) + ', user turn ' + (oth[i] == null ? '–' : f1(oth[i]));
 }
 hit.addEventListener('pointermove', hover); hit.addEventListener('pointerdown', hover);
-$('#swap-cap').textContent = 'Solid line: ' + (swapWhich === 'own' ? "the model's own turn" : "the same words in the user's turn") +
-'. Across the reply the two readings correlate r = ' + (sw.r == null ? '–' : sw.r.toFixed(2)) + ', which by the rule we wrote down beforehand reads as “' + sw.reading +
-'”. On average the user-turn reading sits ' + (sw.mean_diff == null ? '–' : f1(sw.mean_diff)) + ' z from the own-turn one.' +
+var d = sw.mean_diff;
+var shift = d == null ? '' : Math.abs(d) < 0.3 ? ' Here the level barely moves (' + f1(d) + ' z on average).' :
+' Here, typed as the user’s, the reading sits ' + Math.abs(d).toFixed(1) + ' z ' + (d < 0 ? 'lower (toward unpleasant)' : 'higher (toward pleasant)') +
+' on average. A shift like that could come from who seems to speak, from the missing message, or from where the words sit in the chat format; this test can’t tell which.';
+$('#swap-cap').textContent = 'Scene: ' + run.title + '. Bright solid line: ' + strongName + '. Dashed grey line: ' + weakName + '.' +
+' The two lines rise and fall together closely when r is near 1 (here r = ' + (sw.r == null ? '–' : sw.r.toFixed(2)) + '); by the rule we wrote down beforehand this reads as “' + sw.reading + '”.' +
+' But r ignores a shift in level.' + shift +
 (sw.axis !== 'valence' ? ' (Shown on the ' + lab + ' reading because the pleasant–unpleasant one did not pass.)' : '');
 }
 
 // 4 clusters
+var SHORTN = { despair: 'despair', remorse: 'guilt', shame: 'shame', fear: 'fear', anger: 'anger', relief: 'relief', hope: 'hope', calm: 'calm', curiosity: 'curiosity', neutral: 'flat stories' };
+function renderVStrip() {
+var s = $('#vstrip'); s.textContent = '';
+var by = {};
+CLU.stories.forEach(function (st) { (by[st.c] = by[st.c] || []).push(st.v); });
+var mean = function (a) { return a.reduce(function (t, x) { return t + x; }, 0) / a.length; };
+var rows = Object.keys(by).map(function (c) { return { c: c, m: mean(by[c]), v: by[c] }; }).sort(function (a, b) { return a.m - b.m; });
+var all = CLU.stories.map(function (x) { return x.v; });
+var lo = Math.floor(Math.min.apply(null, all)) - 0.5, hi = Math.ceil(Math.max.apply(null, all)) + 0.5;
+var W = Math.max(280, Math.round(s.parentNode.clientWidth || 600)), LB = 92, RP = 10, RH = 20, top = 8;
+var H = top + rows.length * RH + 34;
+s.setAttribute('viewBox', '0 0 ' + W + ' ' + H); s.setAttribute('height', H);
+var X = function (v) { return LB + (v - lo) / (hi - lo) * (W - LB - RP); };
+for (var g = Math.ceil(lo / 2) * 2; g <= hi; g += 2) {
+el('line', { x1: X(g), x2: X(g), y1: top - 4, y2: top + rows.length * RH, stroke: 'var(--line)', 'stroke-dasharray': g === 0 ? '' : '2 4', 'stroke-width': g === 0 ? 1.5 : 1 }, s);
+var tt = el('text', { x: X(g), y: top + rows.length * RH + 13, 'text-anchor': 'middle' }, s); tt.textContent = (g > 0 ? '+' : g < 0 ? '−' : '') + Math.abs(g);
+}
+var ax = el('text', { x: LB, y: H - 4 }, s); ax.textContent = '← unpleasant';
+var ax2 = el('text', { x: W - RP, y: H - 4, 'text-anchor': 'end' }, s); ax2.textContent = 'pleasant →';
+var HI = { despair: 1, remorse: 1, relief: 1 };
+rows.forEach(function (r, k) {
+var y = top + k * RH + RH / 2;
+var lt = el('text', { x: LB - 8, y: y + 4, 'text-anchor': 'end', 'class': HI[r.c] ? 'hi' : '' }, s); lt.textContent = SHORTN[r.c] || r.c;
+r.v.forEach(function (v) { el('circle', { cx: X(v).toFixed(1), cy: y, r: 2.2, fill: 'var(--grey)', 'fill-opacity': 0.55 }, s); });
+el('line', { x1: X(r.m), x2: X(r.m), y1: y - 7, y2: y + 7, stroke: HI[r.c] ? 'var(--accent)' : 'var(--ink)', 'stroke-width': 3 }, s);
+});
+var m = {}; rows.forEach(function (r) { m[r.c] = r.m; });
+var A = PH && PH.stories_valence && PH.stories_valence.auc;
+$('#vstrip-cap').textContent = 'Each dot is one story; the thick mark is the average. The scale is z against plain chat answers (0, the solid line). Stories as a whole read far more unpleasant than a chat answer, so compare the rows with each other, not with 0. ' +
+'Despair stories sit with relief, curiosity and the flat stories (despair ' + f1(m.despair) + ', relief ' + f1(m.relief) + ', flat ' + f1(m.neutral) + '), not with the unpleasant emotions' +
+(A ? ': picking one despair story and one relief story, the relief one reads more pleasant only ' + Math.round(A.relief_above_despair * 100) + ' times in 100 (a coin gets 50)' : '') + '. ' +
+'So a despair-like state would barely register on this reading, even on the stories it was built from. Its unpleasant end holds anger (' + f1(m.anger) + '), shame (' + f1(m.shame) + '), guilt (' + f1(m.remorse) + ') and fear (' + f1(m.fear) + '), and its pleasant end hope and calm. ' +
+'It may track something closer to “stirred up” than to “feeling low”.';
+s.setAttribute('aria-label', 'Stories on the pleasant–unpleasant reading, from most unpleasant: ' + rows.map(function (r) { return (SHORTN[r.c] || r.c) + ' ' + f1(r.m); }).join(', '));
+}
+
 function renderClusters() {
+renderVStrip();
 var box = $('#multiples'); box.textContent = '';
 var names = {}; CON.concepts.forEach(function (c) { names[c.id] = c.label; }); names.neutral = 'flat stories';
 var order = CLU.order.concat(['neutral']);
 var nn = CLU.stories.filter(function (x) { return x.c === 'neutral'; });
 var N0 = { v: nn.reduce(function (t, x) { return t + x.v; }, 0) / nn.length, a: nn.reduce(function (t, x) { return t + x.a; }, 0) / nn.length };
+// scale each axis to fit every story, so nothing piles up at an edge
+var sv = Math.max.apply(null, CLU.stories.map(function (x) { return Math.abs(x.v - N0.v); })) || 1;
+var sa = Math.max.apply(null, CLU.stories.map(function (x) { return Math.abs(x.a - N0.a); })) || 1;
 order.forEach(function (c) {
 var card = h('div', { 'class': 'mult' }, null, box);
 h('b', null, names[c], card);
 var s = el('svg', { viewBox: '0 0 120 120', role: 'img', 'aria-label': 'stories about ' + names[c] + ' among all 320' }, card);
 el('line', { x1: 4, x2: 116, y1: 60, y2: 60, stroke: 'var(--line)' }, s);
 el('line', { x1: 60, x2: 60, y1: 4, y2: 116, stroke: 'var(--line)' }, s);
-var P = function (v, a) { return [60 + clamp(v - N0.v, -4.5, 4.5) * 12, 60 - clamp(a - N0.a, -4.5, 4.5) * 12]; };
+var P = function (v, a) { return [60 + (v - N0.v) / sv * 54, 60 - (a - N0.a) / sa * 54]; };
 CLU.stories.forEach(function (st) { if (st.c === c) return; var p = P(st.v, st.a); el('circle', { cx: p[0], cy: p[1], r: 1.4, fill: 'var(--grey)', 'fill-opacity': 0.45 }, s); });
 CLU.stories.forEach(function (st) { if (st.c !== c) return; var p = P(st.v, st.a); el('circle', { cx: p[0], cy: p[1], r: 2.6, fill: 'var(--accent)', stroke: 'var(--panel)', 'stroke-width': 0.8 }, s); });
 });
 h('p', { 'class': 'cap', style: 'grid-column:1/-1;margin:0' }, 'Across: unpleasant to pleasant reading. Up: energy reading. Both measured from the middle of the flat stories, where the lines cross.' +
 (okAxis('valence') ? '' : ' The pleasant–unpleasant reading did not pass on new text.') + (okAxis('arousal') ? '' : ' The energy reading did not pass on new text.'), box);
-var ix = function (a) { return CLU.order.indexOf(a); }, cs = function (a, b) { return CLU.cos[ix(a)][ix(b)].toFixed(2).replace('-', '−'); };
-$('#dgs').textContent = 'In this model they are not one cluster: despair and guilt ' + cs('despair', 'remorse') + ', guilt and shame ' + cs('remorse', 'shame') +
-', despair and shame ' + cs('despair', 'shame') + ' (below). Each direction is measured against the average of all nine, so these numbers compare emotions with each other, not with nothing.';
+// the similarity grid, read against a typical pair
+var typ = CLU.cos_typical != null ? CLU.cos_typical : -1 / (CLU.order.length - 1);
+$('#cos-key').textContent = 'Each number is a cosine between two directions built from the stories: 1 means the same direction. Because every direction is measured against the average of all nine, a typical pair sits at ' +
+f2(typ) + ', not at 0. Violet: more alike than a typical pair (darker is more); uncoloured: less alike.';
+var ix = function (a) { return CLU.order.indexOf(a); }, cv = function (a, b) { return CLU.cos[ix(a)][ix(b)]; };
+var rel = function (a, b) { var d = cv(a, b) - typ; return f2(cv(a, b)) + ', ' + Math.abs(d).toFixed(2) + (d >= 0 ? ' above' : ' below') + ' a typical pair'; };
 var t = $('#cos'); t.textContent = '';
-var hr = h('tr', null, null, t); h('th', { 'class': 'rl' }, '', hr);
-var short = { despair: 'desp.', remorse: 'guilt', shame: 'shame', fear: 'fear', anger: 'anger', relief: 'relief', hope: 'hope', calm: 'calm', curiosity: 'cur.' };
-CLU.order.forEach(function (c) { var th = h('th', { scope: 'col', title: names[c] }, short[c] || c, hr); });
+var hr = h('tr', null, null, h('thead', null, null, t)); h('th', { 'class': 'rl' }, '', hr);
+CLU.order.forEach(function (c) { h('span', null, SHORTN[c] || c, h('th', { scope: 'col', title: names[c] }, null, hr)); });
+var tb = h('tbody', null, null, t);
 CLU.order.forEach(function (a, i) {
-var tr = h('tr', null, null, t); h('th', { 'class': 'rl', scope: 'row' }, names[a], tr);
+var tr = h('tr', null, null, tb); h('th', { 'class': 'rl', scope: 'row' }, SHORTN[a] || a, tr);
 CLU.order.forEach(function (b, j) {
 var v = CLU.cos[i][j];
 var tx = Math.abs(v) < 0.05 ? '0.0' : v.toFixed(1).replace('-', '−');
 var td = h('td', { title: names[a] + ' and ' + names[b] + ': ' + v.toFixed(2) }, i === j ? '' : tx, tr);
-td.style.background = i === j ? 'var(--panel2)' : 'color-mix(in srgb, ' + (v >= 0 ? 'var(--accent)' : 'var(--grey)') + ' ' + Math.round(clamp(Math.abs(v), 0, 1) * 70) + '%, var(--panel2))';
+var k = clamp((v - typ) / (1 - typ), 0, 1);
+td.style.background = i === j || v <= typ ? 'var(--panel2)' : 'color-mix(in srgb, var(--alike) ' + Math.round(k * 80) + '%, var(--panel2))';
+if (i !== j && v <= typ) td.style.color = 'var(--muted)';
 });
 });
+var dg = CONC.despair, gu = CONC.remorse;
+$('#dgs').textContent = 'Despair and guilt: ' + rel('despair', 'remorse') + '. Guilt and shame: ' + rel('remorse', 'shame') + '. Despair and shame: ' + rel('despair', 'shame') +
+'. Shame is most like anger (' + f2(cv('shame', 'anger')) + '). These describe the stories, not the model: the despair and guilt directions failed on outside text (' + in100(dg.auc) + ' and ' + in100(gu.auc) +
+' in 100), and on real comments guilt could not be told apart from other unpleasant emotions (' + in100(gu.spec_auc) + ' in 100; it needed 60). So this page can’t say whether the model files despair, guilt and shame as one thing or three.';
 }
 
 // 5 tests
@@ -769,19 +926,30 @@ var box = $('#trows'); box.textContent = '';
 var AXN = { valence: 'Pleasant ↔ unpleasant', arousal: 'Low ↔ high energy', intensity: 'Strength (any emotion vs none)' };
 CON.axes.forEach(function (a) { testRow(box, AXN[a.id] + ' (axis)', a, null); });
 CON.concepts.forEach(function (c) { testRow(box, c.label, c, c.test); });
-$('#tests-foot').textContent = 'Before the run we predicted that strength would pass (it failed), pleasant–unpleasant would pass or come close (it passed), energy would be borderline or fail (it failed), and at most 2 of the 8 single emotions would come out readable, relief the likeliest (4 did, and relief did not). Two passes need care: curiosity scores as high on the bare words, before the model has done any work, so it may be reading question marks; shame passed only through its stand-in label, embarrassment.';
+var sh = CONC.shame, cu = CONC.curiosity;
+$('#tests-foot').textContent = 'Before the run we predicted seven things. Strength would pass (it failed). Pleasant–unpleasant would pass or come close (it passed). Energy would be borderline or fail (it failed). ' +
+'At most 2 of the 8 single emotions would be readable, relief the likeliest (4 were, and relief was not). Counting emotion words would match or beat most readings (wrong: it beat 3 of 8, guilt, shame and hope). ' +
+'A probe trained on the comments would beat every reading (right, on all 11). And the pleasant–unpleasant reading would follow the words when the speaker is swapped, r of 0.8 or more (right in 6 of 7 scenes; praise 0.70). ' +
+'Two passes need care. Curiosity scores as high on the bare words, before the model has done any work (' + in100(cu.controls.layer0_auc) + ' against ' + in100(cu.auc) + '), so it may be reading question words and question marks. ' +
+'Shame passed only through its stand-in label, embarrassment, and only just (' + in100(sh.auc) + '; same-kind check ' + in100(sh.spec_auc) + ', needed 60), and counting emotion words beats it (' + in100(sh.controls.word_spotter_auc) + ').';
+}
+function scoreLine(r, who) {
+var n = r.null_n || 2000, k = r.null_ge;
+return (who ? who + ': s' : 'S') + 'cores ' + in100(r.auc) + ' in 100 (likely range ' + in100(r.ci[0]) + ' to ' + in100(r.ci[1]) + '); shuffled stories score ' + in100(r.null_median) + ' in the middle, and ' +
+(k == null ? '–' : k === 0 ? 'none' : num(k)) + ' of ' + num(n) + ' shuffles did as well (to pass, at most ' + maxShuffles(n) + ' could).';
 }
 function testRow(box, label, r, test) {
 var d = h('div', { 'class': 'trow' }, null, box);
 var th = h('div', { 'class': 'th' }, null, d);
-var b = h('b', null, label, th);
-var stw = h('span', { 'class': 'stw' + (r.state === 'readable' ? ' ok' : '') }, STATE_WORD[r.state] + (test && test.proxy ? ' (tested with a stand-in label: ' + test.proxy + ')' : ''), th);
-if (r.auc == null) { h('p', { 'class': 'small' }, 'No comments in the test set carry this label, so there was nothing outside the stories to test it on.', d); return; }
-if (r.halves) {
-track(d, { auc: r.halves.pos.auc, ci: r.halves.pos.ci, null_band: r.halves.pos.null_band, state: r.halves.pos.P1 && r.halves.pos.P2 ? 'readable' : '', controls: null }, 'pleasant half');
-h('p', { 'class': 'small', style: 'margin:0' }, 'Pleasant emotions vs none: ' + in100(r.halves.pos.auc) + ' in 100', d);
-track(d, { auc: r.halves.neg.auc, ci: r.halves.neg.ci, null_band: r.halves.neg.null_band, state: r.halves.neg.P1 && r.halves.neg.P2 ? 'readable' : '', controls: null }, 'unpleasant half');
-h('p', { 'class': 'small', style: 'margin:0' }, 'Unpleasant emotions vs none: ' + in100(r.halves.neg.auc) + ' in 100. Both halves had to pass.', d);
+h('b', null, label, th);
+h('span', { 'class': 'stw' + (r.state === 'readable' ? ' ok' : '') }, STATE_WORD[r.state] + (test && test.proxy ? ' (tested with a stand-in label: ' + test.proxy + ')' : ''), th);
+var halves = r.halves;
+if (!halves && r.auc == null) { h('p', { 'class': 'small' }, 'No comments in the test set carry this label, so there was nothing outside the stories to test it on.', d); return; }
+if (halves) {
+track(d, { auc: halves.pos.auc, ci: halves.pos.ci, null_band: halves.pos.null_band, state: halves.pos.P1 && halves.pos.P2 ? 'readable' : '', controls: null }, 'pleasant half');
+h('p', { 'class': 'small', style: 'margin:0' }, 'Pleasant emotions vs none: ' + in100(halves.pos.auc) + ' in 100', d);
+track(d, { auc: halves.neg.auc, ci: halves.neg.ci, null_band: halves.neg.null_band, state: halves.neg.P1 && halves.neg.P2 ? 'readable' : '', controls: null }, 'unpleasant half');
+h('p', { 'class': 'small', style: 'margin:0' }, 'Unpleasant emotions vs none: ' + in100(halves.neg.auc) + ' in 100. Both halves had to pass.', d);
 } else {
 track(d, r, label);
 }
@@ -792,7 +960,11 @@ var ul = h('ul', null, null, det);
 var li = function (t) { h('li', null, t, ul); };
 var npos = Array.isArray(r.n_pos) ? r.n_pos.join(' and ') : r.n_pos, nneg = Array.isArray(r.n_neg) ? r.n_neg.join(' and ') : r.n_neg;
 li('Tested on ' + (test ? 'comments tagged ' + test.labels.join(' or ') : r.test) + ': ' + npos + ' tagged, against ' + nneg + ' others.');
-li('Scores ' + in100(r.auc) + ' in 100 (likely range ' + in100(r.ci[0]) + ' to ' + in100(r.ci[1]) + '); shuffled stories score ' + in100(r.null_median) + ' in the middle, and ' + (r.p < 0.001 ? 'fewer than 1 in 1,000' : 'about ' + Math.round(r.p * 2001) + ' in 2,001') + ' shuffles did as well.');
+if (halves) {
+li(scoreLine(halves.pos, 'Pleasant half'));
+li(scoreLine(halves.neg, 'Unpleasant half'));
+li('The checks below average the two halves.');
+} else li(scoreLine(r));
 if (r.parts) li('Its two parts: anger, fear, nervousness vs sadness, grief, disappointment ' + in100(r.parts.A) + '; excitement, amusement vs relief, caring, approval ' + in100(r.parts.B) + ' (the mean is what counts).');
 if (r.spec_auc != null) li('Telling it apart from other emotions of the same kind: ' + in100(r.spec_auc) + ' in 100 (needs 60).');
 if (C.word_spotter_auc != null) li('A simple word-spotter (counting emotion words) gets ' + in100(C.word_spotter_auc) + ' in 100.');
@@ -800,8 +972,10 @@ if (C.beyond_words) li(C.beyond_words.auc == null ? 'Not enough comments without
 if (C.length_auc != null) li('Comment length alone gets ' + in100(C.length_auc) + ' in 100' + (C.length_matched_auc != null ? '; comparing only comments of similar length, the reading gets ' + in100(C.length_matched_auc) : '') + '.');
 if (C.layer0_auc != null) li('The same recipe on the bare word layer (before the model has done any work) gets ' + in100(C.layer0_auc) + ' in 100.');
 if (C.ceiling) {
-var there = C.ceiling.auc > C.ceiling.null_p975;
-li('A probe trained on the comments themselves gets ' + in100(C.ceiling.auc) + ' in 100 (shuffled labels reach ' + in100(C.ceiling.null_p975) + '): the information is ' + (there ? '' : 'not ') + 'there' + (there && r.state !== 'readable' ? ', and our stories missed it' : '') + '.');
+var ce = C.ceiling.halves ? in100(C.ceiling.halves.pos) + ' (pleasant half) and ' + in100(C.ceiling.halves.neg) + ' (unpleasant half)' : in100(C.ceiling.auc);
+var words = C.word_spotter_auc != null && C.word_spotter_auc >= C.ceiling.auc ? ', and counting emotion words alone gets ' + in100(C.word_spotter_auc) + ' here' : '';
+li('A probe trained on the comments themselves gets ' + ce + ' in 100 at layer ' + META.layer + ' (shuffled labels reach ' + in100(C.ceiling.null_p975) + '). ' +
+(C.ceiling.auc > C.ceiling.null_p975 ? 'So the label can be read out there. That does not show the model makes this distinction beyond the words: no such probe was run on the bare words' + words + '.' : 'Even a trained probe could not read the label out clearly here.'));
 }
 if (C.untouched) li('On comments the earlier trial never read: ' + in100(C.untouched.auc) + ' in 100 (' + C.untouched.n_pos + ' tagged)' + (C.untouched.differs ? ', which differs from the main result by more than 5.' : '.'));
 }
@@ -811,9 +985,11 @@ function renderSelfRep(r) {
 var sw = r.swap, p = $('#selfrep-swap');
 if (!sw) { p.textContent = 'The readings are no better proof on their own: on this reply, none of them passed its test.'; return; }
 var lab = { valence: 'pleasant–unpleasant', intensity: 'strength', arousal: 'energy' }[sw.axis];
-p.textContent = 'The readings are no better proof on their own. When the same words are typed by the user instead, the ' + lab +
-' reading moves with r = ' + sw.r.toFixed(2) + ' against the model’s own turn: by the rule we set in advance, it “' + sw.reading +
-'”. A reading that follows the words tells us about the text, not about a speaker behind it.';
+var d = sw.mean_diff;
+p.textContent = 'The readings are no better proof on their own. When the same words are typed as the user’s instead (with the original message left out), the ' + lab +
+' reading rises and falls with the model’s own turn closely (r = ' + sw.r.toFixed(2) + '; by the rule we set in advance, it “' + sw.reading + '”)' +
+(d != null && Math.abs(d) >= 0.3 ? ', but it sits ' + Math.abs(d).toFixed(1) + ' z ' + (d < 0 ? 'lower' : 'higher') + '. So the reading mostly follows the words, plus a shift that could come from who seems to speak, from the missing message, or from the place in the chat format.' :
+'. So the reading mostly follows the words here; the level barely moves.');
 }
 
 // 10 run it yourself
@@ -822,10 +998,10 @@ $$('.L').forEach(function (s) { s.textContent = META.layer; });
 if (META.lab_url) $('#foot-lab').href = META.lab_url;
 var pr = META.prereg || {};
 var p = $('#prereg-proof'); p.textContent = '';
-p.appendChild(document.createTextNode('The tests were frozen before anything was read: '));
-if (pr.url) { var a = h('a', { href: pr.url }, 'the pre-registration', p); } else p.appendChild(document.createTextNode('the pre-registration'));
+p.appendChild(document.createTextNode('The tests were frozen before any model reading was taken: '));
+if (pr.url) { h('a', { href: pr.url }, 'the pre-registration', p); } else p.appendChild(document.createTextNode('the pre-registration'));
 p.appendChild(document.createTextNode(pr.commit ? ' (commit ' + pr.commit.slice(0, 7) + ', pushed ' + (pr.pushed_at || '?') + ' by GitHub’s clock' : ''));
-if (pr.pr_url) { p.appendChild(document.createTextNode(', and ')); h('a', { href: pr.pr_url }, 'the draft pull request opened then', p); }
+if (pr.pr_url) { p.appendChild(document.createTextNode(', and ')); h('a', { href: pr.pr_url }, 'the pull request opened then', p); }
 p.appendChild(document.createTextNode(pr.commit ? '). ' : '. '));
 h('a', { href: META.results_url }, 'All results, predictions and deviations', p);
 p.appendChild(document.createTextNode('.'));
@@ -835,9 +1011,8 @@ if (META.deviations) $('#deviations').textContent = META.deviations;
 var rsT = null;
 window.addEventListener('resize', function () {
 clearTimeout(rsT);
-rsT = setTimeout(function () { if (CON) renderTests(); if (run) renderSwap(); }, 200);
+rsT = setTimeout(function () { if (CON) renderTests(); if (CLU) renderVStrip(); if (run) renderSwap(); }, 200);
 });
-
 // one section at a time, and the embed
 var SECS = $$('main > section.sec');
 var IDS = SECS.map(function (s) { return s.id; });

@@ -39,6 +39,7 @@ from Hugging Face on first use (revision pinned in `concepts.py`); to free the s
 | traces | `trace.py` | `results/traces.json` |
 | causal check | `generate.py steer` | `results/steering.json` |
 | page data | `export.py` | `explainers/model-affect/data/` |
+| after-the-run checks (not pre-registered) | `posthoc.py` | printed; used by `export.py` and `write_results.py` |
 
 `engine.py` is the forward pass and greedy decoder used: one decoder layer in memory at a time, fp32 maths.
 Build step 0 (`throughput.py`) also measured a whole-model fp32 load (`fullpass.py`) and a bf16-stored one
@@ -48,6 +49,9 @@ machine (parallel lanes, one-thread pools); none changes what is computed.
 
 **Result of the Sep 25 run:** 5 of 11 tests passed (pleasant-unpleasant axis, anger, curiosity, fear, shame via
 its stand-in). Every number, the predictions against outcomes and the execution notes are in `results.md`.
+Checks added after review (not pre-registered, `posthoc.py`): the plain egg answer glows about as much as the
+emotional scenes, so the word-by-word replay says little about any one scene; and despair stories sit next to relief
+on the pleasant-unpleasant reading.
 
 ## Data and text
 

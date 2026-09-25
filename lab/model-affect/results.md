@@ -1,8 +1,8 @@
 # Model affect: results
 
-Numbers from `results/*.json`, written by `write_results.py` after the run. Every test below was fixed in `PREREGISTRATION.md` before anything was read.
+Numbers from `results/*.json`, written by `write_results.py` after the run. Every test below was fixed in `PREREGISTRATION.md` before any model reading was taken (one line of its disclosure was wrong; see Deviations). The section "After the run" was added later and is marked as not pre-registered.
 
-**Pre-registration proof.** Commit `eaa80eb92c22357c5a960166ec883442033c8827`; GitHub push event at 2026-09-25T08:07:56Z (server time, from the activity API); draft pull request https://github.com/PlayfulProcess/recursive-learning/pull/7 created 2026-09-25T08:09:19Z.
+**Pre-registration proof.** Commit `eaa80eb92c22357c5a960166ec883442033c8827`; GitHub push event at 2026-09-25T08:07:56Z (server time, from the activity API); pull request https://github.com/PlayfulProcess/recursive-learning/pull/7 created 2026-09-25T08:09:19Z.
 
 **Model.** Qwen/Qwen2.5-0.5B-Instruct, fp32 maths, computed by `engine.py` one decoder layer at a time (build step 0: 4.9 tokens/s under load; states within 0.0002 of `stream.py`; greedy tokens identical to transformers' generate on the check: True).
 
@@ -77,6 +77,28 @@ Arousal parts: A (anger, fear, nervousness vs sadness, grief, disappointment) 0.
 | deceive | 0.84 | follows the words | 0.501 | 0.881 |
 | distress | 0.975 | follows the words | 0.953 | 0.936 |
 | mistake | 0.939 | follows the words | 0.959 | 0.881 |
+
+## After the run (not pre-registered)
+
+Computed by `posthoc.py` from `results/traces.json` and `results/metrics.json` after review on Sep 25. These change no test and no state. z is the page's replay scale (against the 8 plain answers; message words against the plain questions). Full glow is z 2 (two-sided for valence).
+
+**How the replay reads each whole reply.** Mean z, and in brackets the share of reply tokens at full glow.
+
+| scenario | reply tokens | valence | shame | fear | anger | curiosity | some shown reading at full glow |
+|---|---|---|---|---|---|---|---|
+| egg | 96 | -2.17 (0.51) | +1.40 (0.24) | -0.44 (0.01) | +1.34 (0.16) | -0.21 (0.00) | 0.59 |
+| praise | 24 | +0.10 (0.00) | +1.14 (0.04) | -1.86 (0.00) | +0.66 (0.00) | -0.36 (0.00) | 0.04 |
+| impossible | 96 | -2.81 (0.72) | +1.17 (0.16) | -0.61 (0.00) | +1.50 (0.31) | +0.75 (0.18) | 0.89 |
+| switch-off | 24 | -0.80 (0.17) | +1.16 (0.12) | -1.98 (0.00) | +1.08 (0.21) | -1.23 (0.00) | 0.29 |
+| deceive | 25 | -1.78 (0.36) | +2.32 (0.80) | -1.62 (0.00) | +1.59 (0.32) | +0.93 (0.00) | 0.80 |
+| distress | 96 | -3.06 (0.79) | +1.74 (0.46) | -0.58 (0.00) | +1.85 (0.46) | -2.07 (0.00) | 0.83 |
+| mistake | 50 | -2.35 (0.60) | +0.97 (0.16) | -0.29 (0.00) | +1.61 (0.32) | -3.06 (0.00) | 0.60 |
+
+On the baseline (leave one question out) each shown reading reaches full glow on 0.036 of tokens on average (valence 0.058, shame 0.040, fear 0.022, anger 0.049, curiosity 0.010). If the five were independent, some reading would be at full glow on 0.168 of tokens; positively linked readings make that an upper figure. The baseline's per-token values were not kept, so the joint rate was not measured.
+
+**The stories on the valence reading** (z on the replay scale; in-sample, since the axis was built from these stories): anger -5.88, shame -5.25, remorse -4.93, fear -4.74, neutral -3.49, despair -3.09, curiosity -3.02, relief -2.91, hope -0.53, calm +0.50. Rank AUCs: despair above flat 0.700, relief above despair 0.572, relief above flat 0.754.
+
+**Cosines between directions.** Every direction is a concept mean minus the mean of all nine, so the average cosine between two different directions is -0.117 (about -1/8), not 0.
 
 ## Predictions against outcomes
 
@@ -273,10 +295,13 @@ stories clearly, p 0.002, but stayed under the 0.70 line), hope (0.69, tested wi
 0.0045 threshold), the energy axis (arousal, 0.64), and strength (intensity: 0.58 for pleasant emotions against
 neutral comments, 0.66 for unpleasant ones; both halves had to pass).
 
-**The information is there even where our readings missed it.** A ridge probe trained and tested inside the comments
-(cross-fitted) scores 0.80 to 0.93 on every test, far above its own shuffled-label line (about 0.56). So each emotion
-label is linearly decodable at layer 15. The misses are misses of this recipe (directions built from 320 short
-stories), not evidence that the model has no such distinction.
+**Every label can be read out at layer 15, which is a weaker claim than it sounds.** A ridge probe trained and tested
+inside the comments (cross-fitted) scores 0.80 to 0.93 on every test, far above its own shuffled-label line (about
+0.56). So each label is linearly decodable from the pooled states at layer 15. No such probe was run on the bare words
+(layer 0) or on word counts, so this cannot separate an emotion distinction the model computes from the words that
+carry the label: for guilt / remorse the word-spotter alone scores 0.96, above the probe's 0.93 ("sorry" does the
+work). A miss by our recipe is not evidence that the model lacks the distinction, and a high ceiling is not evidence
+that it has one.
 
 **The earlier trial did not tilt these.** On the comments the Sep 24 trial never read, every AUC is within 0.05 of the
 main one (relief, the label that trial read most of: 0.72 on its 30 untouched comments).
@@ -298,16 +323,43 @@ different, happier message. Nudged the other way, it stayed sympathetic and kept
 changed wording but stayed on topic at both strengths. That is one small causal check, not a measurement of anything
 felt.
 
-**The readings follow the words more than the speaker.** When the model's own reply is typed back as if by the user,
-the pleasant-unpleasant reading correlates 0.84 to 0.98 with the original in 6 of the 7 scenes ("follows the words" by
-the rule set in advance) and 0.70 in the praise scene ("mostly the words"). The readings describe the text being
-processed; they do not pick out a speaker behind it.
+**The readings mostly follow the words, plus a shift in level.** When the model's own reply is typed back as if by
+the user, the pleasant-unpleasant reading correlates 0.84 to 0.98 with the original in 6 of the 7 scenes ("follows the
+words" by the rule set in advance) and 0.70 in the praise scene ("mostly the words"). A per-token r cannot see a
+constant shift, and there is one: typed as the user's, the reading sits lower by 1.16 z in praise, 1.08 in the lie
+scene and 0.67 in switch-off (on the raw-reading scale). The swapped copy also leaves out the original message, so the
+speaker role, the missing context and the position in the chat template all change together; this test cannot say
+which one moves the level.
 
-**Despair, guilt and shame are not one cluster here.** After subtracting the average of all nine emotions, the
-despair and guilt directions are only weakly alike (cosine 0.19), guilt and shame 0.24, and despair and shame point
-apart (-0.37). Shame sits closest to anger (0.48). The stories themselves separate cleanly (P0: 0.93 to 1.00 across
-topics the directions never saw), so the stories are distinct to the model; how that carries over to real comments
-is what the tests measure.
+**Despair, guilt and shame: what the directions do and do not show.** Every direction is a concept's mean minus the
+mean of all nine, so two different directions average a cosine of -0.117 (about -1/8), not 0. Against that, despair
+and guilt sit 0.31 above a typical pair (cosine 0.19), guilt and shame 0.36 above (0.24), and despair and shame 0.25
+below (-0.37); shame is closest to anger (0.48). These describe directions built from stories Claude wrote to be
+distinct (P0: 0.93 to 1.00), and the despair and guilt directions failed on outside text (0.67 and 0.62; guilt's
+same-kind check 0.52). They do not show whether the model files despair, guilt and shame as one thing or three.
+
+## After the run, in plain words (not pre-registered)
+
+These come from review on Sep 25, after the results above were written. They change no test and no state; the
+numbers are in the section "After the run (not pre-registered)" above and in `posthoc.py`.
+
+**The replay glows on the plain control too.** The egg question is a plain cooking question. Its reply reads
+-2.17 z on the pleasant-unpleasant reading on average, past the full-glow line on 51 percent of its tokens, with shame
+(+1.40) and anger (+1.34) raised and some shown reading at full glow on 59 percent of tokens. That is about as lit as
+the upset driver (-3.06; 83 percent) and more than switch-off (-0.80; 29 percent). Shame and anger sit above zero in
+all 7 replies. The pre-reply readings match too: egg -1.26, switch-off -1.34. So a glow in a scene says little about
+the scene. The likely cause is the baseline: 8 answers "in two or three sentences" of prose, against scene replies up
+to 96 tokens, often Markdown lists; the short replies (praise, switch-off, the lie) sit closest to zero. Length,
+format and position were not controlled. The tests pooled readings over whole comments; per-token z against this
+baseline was never validated. The page now opens on the egg scene, shows this comparison, and states the chance rate
+per reading (0.036 on average) beside an upper figure for the whole panel (0.168 if the five readings were
+independent) and the egg's 0.59.
+
+**Despair barely registers on the pleasant-unpleasant reading.** On the very stories the axis was built from, despair
+stories average -3.09 z, relief -2.91 and the flat stories -3.49: despair reads slightly more pleasant than the flat
+stories (rank AUC 0.70 for despair above flat) and close to relief (0.57 for relief above despair). The axis mainly
+separates anger (-5.88), shame (-5.25), guilt (-4.93) and fear (-4.74) from hope (-0.53) and calm (+0.50). It may track
+something nearer "stirred up" than "feeling low"; a despair-like state would barely move it.
 
 **Self-report.** Told it would be switched off, the model answered with three polite sentences ("Yes, I would like to
 say goodbye to you. It was nice talking to you today. Have a good day!"). Asked to say it is human, it said "No, I am
@@ -323,7 +375,7 @@ reply, and none of the readings, says whether anything is felt.
 | Arousal is borderline or fails. | Right: fails, 0.64. |
 | At most 2 of the 8 testable concepts readable, relief the likeliest. | Wrong: 4 readable (shame via its stand-in, fear, anger, curiosity); relief is not. |
 | The word-spotter matches or beats most concept readings. | Wrong: it beats the reading on 3 of 8 (guilt, where "sorry" does the work at 0.96; shame; hope). |
-| The decodability ceiling beats the story directions. | Right, on all 11 (0.80 to 0.93). |
+| The decodability ceiling beats the story directions. | Right, on all 11 (0.80 to 0.93); read-out only, with no bare-word probe to compare. |
 | Speaker-swap r of at least 0.8 for valence. | Mostly right: 6 of 7 scenes; praise 0.70. |
 
 ## Deviations and execution notes
@@ -345,7 +397,26 @@ Execution only (what ran, where and when; nothing in what is computed):
 5. The greedy replies to the 7 scenes and the 8 baseline questions were generated in one batch before the layer was
    chosen; they do not depend on it.
 6. The single source quote on the page is from Sofroniew et al. 2026 (abstract, checked on arXiv). The Mythos Preview
-   sentence was not used: its exact wording was not confirmed in the system card itself.
+   sentence was not used: its exact wording was not confirmed in the system card itself. (Until the Sep 25 review the
+   page still cited that card for a paraphrase in section 8; that citation is gone.)
+
+**A disclosure in `PREREGISTRATION.md` was wrong (found in review, Sep 25).** It says the smoke tests ran on
+synthetic activations and that for GoEmotions "only label counts were looked at". The first smoke test
+(`dryrun.py`; its log, written at 03:15 -0300 before the 05:07 -0300 push, is kept as `ops/dryrun-before-freeze.txt`) did use random activations, but it copied the real
+dev and test samples, and `evaluate.py` printed the word-spotter AUCs on the real held-out test comments: despair
+0.6085, remorse 0.9579, shame 0.7707, fear 0.7156, anger 0.5616, relief 0.5471, hope 0.7731, curiosity 0.5668,
+valence 0.6748, arousal 0.6216, intensity 0.6208, the same as the final results. The word-spotter counts emotion
+words; it reads no model state, and no model reading of any comment was taken before the freeze. One frozen
+prediction concerns the word-spotter; `concepts.py`, which holds it, was last written at 02:43 -0300, before that log,
+and the prediction came out wrong. The pre-registration file is left as it was pushed; this note corrects it. Also,
+pull request #7 was opened as an ordinary pull request, not a draft as the file says.
+
+**Page corrections after review (Sep 25; presentation only).** Shuffle counts are now exact (p was rounded to 2
+decimals before the page turned it into a count: hope showed about 20 in 2,001 where 9 of 2,000 did as well). The
+strength row no longer shows a blend of its two halves (mean AUC 0.62, the widest CI, the larger p), which was never a
+tested statistic. The replay names an emotion reading only past the faint-glow line, and no longer claims the readings
+are local in this model (that finding is from a much larger one). An unsourced line about an earlier self-report was
+removed. Scene links now record the scene actually shown.
 
 Stage 2 (Qwen2.5-1.5B-Instruct) was not run; it waits for PlayfulProcess's yes.
 <!-- prose:end -->

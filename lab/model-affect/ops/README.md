@@ -10,4 +10,9 @@ changes what is computed; `results.md` ("Deviations and execution notes") says w
 - `early_directions.py`: writes `directions.npz` exactly as `evaluate.py test` does, so `trace.py` and the
   steering check could run while the nulls were computing. The file `evaluate.py` wrote later was identical.
 
+- `dryrun-before-freeze.txt`: the output of the first smoke test, run before the pre-registration was pushed. It
+  used random activations, so every AUC, CI, null and ceiling in it is meaningless, except the `words` column: the
+  word-spotter on the real held-out test comments, which the pre-registration's disclosure should have mentioned
+  (see `results.md`, "Deviations and execution notes").
+
 Run them from `lab/model-affect/` (they import the frozen scripts from the working directory).
