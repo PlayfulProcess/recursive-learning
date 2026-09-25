@@ -32,21 +32,21 @@ URL hash, so a link to either opens in the other:
   the forecast and confidence, the reading, the step with its kind and card id, the two forgiveness
   lines, the asymmetry, the synthesis, a timestamp and the consent line. `FORM_URL` near the Step
   code is empty until she makes the form; once set, a **Send it** button opens it.
-- **`potato-others.html` — Hot Potato, with others (Sep 24; the default way in).** The same potato
-  with six other seats in the ring, each moving after you, one at a time, by one published rule: a
-  Racer (tosses whenever anyone else held last year; holds once the ring has held it together), a
-  Mirror (holds when at least 2 others held; slips one year in ten), and four joiners who hold from
-  the start or join once 1, 2 or 3 others held. The year's allocation is the average of the seven
-  hands; the step together counts when more than half reach for it and the trust (the model's
-  coordination) is past the bar. Each lab's size is the page's own tally, so tossing grows your lab
-  fastest while the heat is everyone's. Notes: `DESIGN-potato.md`.
-- **`potato.html` — Hot Potato, alone (Sep 24; linked as "play alone, for careful readers").** The
-  recursive.eco hot potato ad as a game, on the Walk's model. Each year: toss it on (heat), hold it
-  (more hands), hold it together (set it down on shared ground; counts only when 6 of 10 people are
-  holding it, the model's 0.60 bar), or I don't know. Heat is the model's risk that year; the ring
-  is its coordination, shown as people. After each move, rough words (rarely, sometimes, often) for
-  every ending if you kept making it. Planted ends draw the spiral. Walked a hundred times at the
-  end, beside a hundred walks that toss every year.
+- **`potato.html` — Hot Potato (v4, Sep 25; v3 rebuilt from scratch Sep 24).** "The race to build
+  AI is a hot potato." Three short rounds, then random ones. You start each round with 5 coins.
+  **Hold it** keeps it in your hands and slows you down: you add no flame (only Flint adds his), your
+  hands heat a step and Wren counts it (her seat prints how many holds she wants). **Bounce it**
+  carries on: +1 coin, but your flame and Flint's (+2). **Toss it on** races: +5 coins and cool hands,
+  but everyone races after you (+6 flames) and Wren crosses out a hold. The fire hides somewhere in
+  the striped boxes (9 to 16 flames); if it catches, everyone's coins burn. **Hold it together** lights
+  up once Wren is ready: she says yes and Moss, Reed and Oak follow (Reed and Oak not while it's
+  scorching); three holding it stops Flint. With five pairs of hands, **Put it down** and keep your
+  coins. The rules are the game's own, small enough to print (`potato-model.js`, checked against
+  `tools/potato_rules_check.py` by `tools/potato_port_check.mjs`; `tools/potato_solve.mjs` checks
+  that each round asks for a choice). Notes, why v1 was replaced ("Hold it did not hold it") and what
+  playtest rounds 1 to 3 changed: `DESIGN-potato.md`.
+- **`potato-others.html`** only redirects to `potato.html`, so old links still work. **`potato-v1/`**
+  keeps the first version (with others, and alone, on the Walk's model) and its notes.
 - **`lines.html` — Changing Lines (prototype, Sep 22).** A second game for the same lesson, built on
   the I Ching's sixteen-marble bowl (the yarrow odds). Six lines, bottom to top, each a stage of an
   AI future; before each draw a move changes the marbles, so the chance of every line belongs to the

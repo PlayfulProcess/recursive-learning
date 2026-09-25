@@ -56,7 +56,7 @@ grammars/
   _eco_ids.json           slug -> recursive.eco grammar UUID
   PRIVATE.md              the private grammars: name + id only, never contents
   <slug>/grammar.json     one public grammar, exported in the app's own sync shape
-game/                     the games: potato-others.html (Hot Potato, with others; potato.html alone)
+game/                     the games: potato.html (Hot Potato; the first version in potato-v1/)
                           · walk.html (The Walk) · index.html (As-If) — hand-written
 glossary/                 Words: terms.json (the canonical definitions) + index.html (GENERATED)
 site/                     the landing the Pages workflow publishes at learning.recursive.eco

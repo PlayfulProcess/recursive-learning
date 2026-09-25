@@ -207,7 +207,7 @@ const html = `<!DOCTYPE html>
   </div>
 
   <p class="also">The Walk is also <a href="game/scroll.html">a story you read down</a>, one year per section with the numbers following you, and a <a href="game/walk.html">dashboard</a> with every gauge and prior laid flat. Same model, same links.</p>
-  <p class="also">New and rough: <a href="game/lines.html">Changing Lines</a>, the same lesson in six draws from the I Ching's bowl of sixteen marbles, and <a href="game/potato-others.html">Hot Potato</a>, the ad made playable with six others in the ring: toss it on, or hold it together (or <a href="game/potato.html">play alone</a>, for careful readers).</p>
+  <p class="also">New and rough: <a href="game/lines.html">Changing Lines</a>, the same lesson in six draws from the I Ching's bowl of sixteen marbles, and <a href="game/potato.html">Hot Potato</a>: the race to build AI as a hot potato. Hold it, toss it on, or ask the others to hold it together.</p>
 
   <details class="shelf">
     <summary><h3><svg class="i" aria-hidden="true"><use href="#ic-library"/></svg> The grammars behind the games</h3></summary>

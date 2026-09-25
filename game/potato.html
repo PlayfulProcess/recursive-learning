@@ -3,505 +3,1465 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="dark">
 <title>Hot Potato · Recursive Learning</title>
-<meta name="description" content="The AI race is a hot potato: each lab builds faster because the others might. Each year you toss it on, hold it, set it down, or hold it together. Tosses heat it; holding together cools it, but only when enough hands are there. A teaching instrument, not a forecast.">
+<meta name="description" content="The race to build AI is a hot potato. Hold it and you slow down: your hands take the heat, and Wren sees you mean it. Toss it and you race ahead and win coins, but it goes round the table and comes back hotter. Somewhere in the striped boxes it catches fire and everyone loses everything. Hold it together, and with five pairs of hands you can put it down. A small game with made-up rules, not a forecast.">
 <!--
-  Hot Potato, playable (Sep 24 2026). The sequel to the 64-second recursive.eco ad (in
-  recursive-eco: apps/landing/ads/hot-potato.html), with the same four scenes and palette, and
-  the Walk's model underneath (walk-model.js, unchanged). Every turn is one year of that model:
-    heat of the potato   = the model's risk that year (s.lastRisk)
-    hands in the ring    = the model's coordination, with the stag-hunt bar at stagK (0.60), shown
-                           as people: ten in the ring, floor(coordination x 10) holding, 6 needed
-    Toss it on           = a year spent mostly on power
-    Hold it              = a year spent mostly on alignment
-    Hold it together     = the step together, spent on shared ground (mostly sustainability): it
-                           counts only above the bar, else the year is spent. As in the ad, the
-                           potato is set down and planted only by hands held together.
-    I don't know         = keep last year's hand
-  The link is the Walk's own (#v1;s=;a=;h=), so a potato walk opens in the spread and the dashboard.
-  No dependencies beyond two Google Fonts with system fallbacks.
+  Hot Potato, v4 (Sep 25 2026). v3 was rebuilt from scratch after PlayfulProcess played v1 and said
+  "Hold it does not hold it"; v3.1 and v3.2 answered playtest rounds 1 and 2; v4 answers round 3
+  (one recipe won every round, a toss was never worth it, and holding held back no heat: Flint
+  added his flame either way). Now Hold it adds no flame of yours, the race pays in coins, and the
+  fire hides anywhere in the striped boxes, so racing is a real bet.
+  Design: DESIGN-potato.md. Rules: potato-model.js (a rule-for-rule port of
+  tools/potato_rules_check.py; tools/potato_port_check.mjs compares them, tools/potato_solve.mjs
+  checks the rounds). The first version is kept at potato-v1/.
+  One file of HTML, inline SVG, no dependencies, no network calls. All game motion is computed from
+  one virtual clock (tweens from t), so window.potatoTest.step(ms) can drive it.
 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0e16; --lift:#121a29; --lift2:#18223a; --line:#26314a;
-    --ink:#eee7da; --dim:#98a1b0; --faint:#5d6676;
-    --agent:#cfe2ff; --heat:#ff7440; --heat-hi:#ffd08a; --soil:#5a4030; --eco:#74d8b4; --eco-deep:#2e8a73;
-    --serif:"Fraunces",Georgia,"Times New Roman",serif;
-    --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --bg:#f6f0e4; --surface:#fffaf0; --ink:#211b14; --dim:#4f463b; --faint:#8d8273; --line:#d6c8b1;
+    --focus:#1f6fd1; --eco:#23704f; --eco-soft:#d7eadf; --no:#a8360f; --cool:#1f6a9e; --cool-soft:#d5e6f2;
+    --mitt:#fffdf7; --cuff:#b59d80; --h1:#f4d2a5; --h3bg:#f3c7a0; --h3:#c2411c; --h4bg:#efb08e; --h4:#a8210c;
+    --char:#2d2521; --charline:#8a7a70;
+    --pot1:#d9a862; --pot2:#e18d45; --pot3:#e2672f; --pot4:#c83b1b; --potline:#5a3a1c;
+    --heat:#d2551f; --litbox:#f7c58f; --hatch:#b9a78f; --soil:#8b6441; --soil-dark:#5f4128;
+    --chalk:#3d5c4f; --v-hold:#3e6db3; --v-toss:#c1541f; --v-tog:#2d7f62; --v-idk:#7a6f61;
+    --dimveil:rgba(246,240,228,.94); --coin:#9a6a00; --coin-fill:#f2c94c; --warn:#a8210c;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12161f; --surface:#1b2130; --ink:#f0e9dc; --dim:#c9c0b2; --faint:#877f73; --line:#343c50;
+      --focus:#7fb2ff; --eco:#6fd0aa; --eco-soft:#1d3a31; --no:#ff9a6e; --cool:#8cc8f2; --cool-soft:#1b3346;
+      --mitt:#3a4560; --cuff:#5d6986; --h1:#6a4c2c; --h3bg:#5a2e1f; --h3:#ff6a3d; --h4bg:#5e1d12; --h4:#ff8a63;
+      --char:#0b0a09; --charline:#6d625b;
+      --pot1:#c89656; --pot2:#d9823e; --pot3:#e0612b; --pot4:#e2431f; --potline:#2c1a0b;
+      --heat:#ff7a3d; --litbox:#7a4521; --hatch:#5b5347; --soil:#7b5838; --soil-dark:#4a321f;
+      --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#a59c8f;
+      --dimveil:rgba(18,22,31,.94); --coin:#f2c94c; --coin-fill:#b8860b; --warn:#ff8a63;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12161f; --surface:#1b2130; --ink:#f0e9dc; --dim:#c9c0b2; --faint:#877f73; --line:#343c50;
+    --focus:#7fb2ff; --eco:#6fd0aa; --eco-soft:#1d3a31; --no:#ff9a6e; --cool:#8cc8f2; --cool-soft:#1b3346;
+    --mitt:#3a4560; --cuff:#5d6986; --h1:#6a4c2c; --h3bg:#5a2e1f; --h3:#ff6a3d; --h4bg:#5e1d12; --h4:#ff8a63;
+    --char:#0b0a09; --charline:#6d625b;
+    --pot1:#c89656; --pot2:#d9823e; --pot3:#e0612b; --pot4:#e2431f; --potline:#2c1a0b;
+    --heat:#ff7a3d; --litbox:#7a4521; --hatch:#5b5347; --soil:#7b5838; --soil-dark:#4a321f;
+    --chalk:#bfe3d2; --v-hold:#7ea6ea; --v-toss:#f08a4f; --v-tog:#6fd0aa; --v-idk:#a59c8f;
+    --dimveil:rgba(18,22,31,.94); --coin:#f2c94c; --coin-fill:#b8860b; --warn:#ff8a63;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  html{-webkit-text-size-adjust:100%;overflow-x:hidden}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   a{color:var(--eco)}
-  .wrap{max-width:900px;margin:0 auto;padding:12px 16px 80px}
-  .mark{display:flex;align-items:center;gap:12px;margin:10px 0 2px}
-  .mark svg{width:32px;height:32px;color:var(--eco);flex:none}
-  h1{font:300 30px/1.15 var(--serif);margin:0}
-  h1 .sub{display:block;font:600 11px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
-  .lede{font:300 18px/1.5 var(--serif);max-width:64ch;margin:12px 0 4px}
-  .disc{font-size:12.5px;color:var(--heat-hi);margin:0 0 16px}
-  h2{font:300 23px/1.25 var(--serif);margin:26px 0 8px}
-  .small{font-size:12.5px;color:var(--dim);line-height:1.5}
-
-  .stagebox{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#111a2b 0%,var(--bg) 70%)}
-  canvas{display:block;width:100%;height:auto}
-  .scene{position:absolute;left:14px;top:12px;font:600 10.5px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-  .scene b{color:var(--ink);margin-right:6px}
-  .year{position:absolute;right:14px;top:12px;font:600 11px var(--sans);color:var(--dim);letter-spacing:.06em}
-  .caption{position:absolute;left:0;right:0;bottom:14px;margin:0 auto;max-width:34ch;text-align:center;font:300 clamp(16px,2.2vw + 6px,24px)/1.32 var(--serif);text-wrap:balance;padding:0 12px;transition:opacity .4s}
-  .caption em{font-style:italic;color:var(--heat-hi)} .caption em.eco{color:var(--eco)}
-  .intro-go{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
-
-  .meters{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0 6px}
-  .meter{background:var(--lift);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-  .meter .lab{font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:8px}
-  .meter .lab b{color:var(--ink);font-variant-numeric:tabular-nums}
-  .track{position:relative;height:10px;border-radius:6px;background:#0d1320;border:1px solid var(--line);margin-top:7px;overflow:visible}
-  .fill{height:100%;border-radius:6px;transition:width .5s ease}
-  .bar-mark{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
-  .bar-mark span{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--ink);white-space:nowrap}
-  .meter .lab .say b{color:var(--eco)}
-  .cells{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:8px}
-  .cells i{height:12px;border-radius:4px;background:#0d1320;border:1px solid var(--line);position:relative}
-  .cells i.on{background:var(--eco);border-color:var(--eco)}
-  .cells i.need{box-shadow:0 0 0 2px var(--ink)}
-  .count{position:absolute;right:14px;top:30px;font:600 11px var(--sans);color:var(--dim);letter-spacing:.04em;text-align:right}
-  .count b{color:var(--eco)}
-  @media (max-width:560px){ .count{left:14px;right:auto;text-align:left;font-size:10px} .count .nd{display:block} .count .sep{display:none} }
-
-  .yourmove{font:600 12px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:16px 0 0}
-  .acts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:8px 0 6px}
-  .act{color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:13px 12px 13px;text-align:left;cursor:pointer;font:700 17px/1.2 var(--sans);box-shadow:0 2px 0 rgba(0,0,0,.35);transition:transform .12s,box-shadow .12s,border-color .12s}
-  .act small{display:block;font-weight:400;font-size:11.5px;color:var(--dim);margin-top:6px;line-height:1.35}
-  .after{font-size:13px;line-height:1.5;color:var(--dim);margin:4px 0 8px;min-height:3em}
-  .after b{color:var(--ink);font-weight:600}
-  .act.toss{background:linear-gradient(180deg,#3a2019,#24140f);border-color:#a8502e}.act.toss:hover{border-color:var(--heat)}
-  .act.hold{background:linear-gradient(180deg,#1e2a44,#162036);border-color:#5a78a8}.act.hold:hover{border-color:var(--agent)}
-  .act.tog{background:linear-gradient(180deg,#16362d,#10261f);border-color:var(--eco-deep)}.act.tog:hover{border-color:var(--eco)}
-  .act.tog.ready{border-color:var(--eco);box-shadow:0 0 0 3px rgba(116,216,180,.25),0 2px 0 rgba(0,0,0,.35)}
-  .act.idk{background:var(--lift);border-style:dashed}
-  .act:hover{transform:translateY(-1px);box-shadow:0 4px 0 rgba(0,0,0,.35)}
-  .act:active{transform:translateY(1px);box-shadow:none}
-  .act .ico{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:1px}
-  .act[disabled]{opacity:.45;cursor:not-allowed}
-  .act.spent{opacity:.5;filter:saturate(.35);border-style:dashed;box-shadow:none}
-  .act.spent:hover{transform:none;box-shadow:none}
-  .act .why{display:block;font-weight:600;font-size:11.5px;color:var(--ink);margin-top:6px;line-height:1.35}
-  button.main{background:var(--eco);color:#06281d;border:0;border-radius:10px;padding:12px 20px;font:700 15px var(--sans);cursor:pointer}
-  button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font:600 14px var(--sans);cursor:pointer}
-  .log{list-style:none;margin:10px 0 0;padding:0;font-size:13.5px;line-height:1.5}
-  .log li{border-top:1px solid var(--line);padding:8px 0}
-  .log li b{color:var(--ink)} .log .g{color:var(--dim)}
-  .log li.hot b{color:var(--heat-hi)} .log li.cool b{color:var(--eco)}
-
-  .endcard{background:var(--lift);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px}
-  .endcard.verdict{margin-top:12px}
-  .endcard .nm{font:300 26px/1.2 var(--serif)}
-  .endcard p{font:300 17px/1.5 var(--serif);margin:8px 0 0}
-  .two{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-  .grid100{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;max-width:320px}
-  .grid100 i{aspect-ratio:1;border-radius:50%;display:block}
-  .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--dim);margin:10px 0}
-  .legend span{display:inline-flex;align-items:center;gap:6px}
-  .legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
-  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
-  .credits{font-size:11.5px;color:var(--faint);line-height:1.5;border-top:1px solid var(--line);margin-top:34px;padding-top:12px}
-  .credits a{color:var(--dim)}
+  button{font:inherit;color:inherit}
   [hidden]{display:none!important}
-  .acts{grid-auto-rows:1fr}
-  @media (max-width:760px){ .acts{grid-template-columns:repeat(2,minmax(0,1fr))} }
-  @media (max-width:560px){ h1{font-size:25px} .meters,.two{grid-template-columns:1fr} .scene{font-size:9.5px} }
+  :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+  .game{max-width:560px;margin:0 auto;padding:4px 16px 12px;display:flex;flex-direction:column}
+
+  header.top{display:flex;align-items:center;gap:8px;min-height:46px}
+  header.top .spiral{width:24px;height:24px;color:var(--eco);flex:none}
+  header.top h1{font-size:16px;line-height:1.25;font-weight:700;margin:0;flex:1;min-width:0}
+  .textbtn{min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);flex:none;cursor:pointer;font-size:15px;font-weight:700;padding:6px 12px}
+  .roundline{margin:0 0 4px;font-size:14px;line-height:1.3;color:var(--dim)}
+  .roundline b{color:var(--ink)}
+
+  .track{padding:0 0 2px}
+  .trk1{display:flex;align-items:baseline;gap:6px;font-size:14px;min-height:22px;white-space:nowrap}
+  .trk1 .lbl{color:var(--dim)}
+  .trk1 b{font-size:17px}
+  .trk1 .hint{margin-left:auto;color:var(--dim);text-align:right;white-space:nowrap;flex:none}
+  .trk1 .hint .lng{display:inline}
+  .trk1 .hint .sht{display:none}
+  .trk1 .hint svg{width:11px;height:11px;vertical-align:-1px}
+  .boxes{display:flex;align-items:flex-start;gap:6px;margin-top:3px}
+  .grp{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:stretch;gap:2px}
+  .grp .gb{display:flex;gap:2px}
+  .grp .gl{font-size:14px;line-height:1.1;color:var(--dim);text-align:center;white-space:nowrap}
+  .grp .gl.now{color:var(--ink);font-weight:700}
+  .box{flex:1 1 0;min-width:9px;height:20px;border:1.5px solid var(--line);border-radius:3px;position:relative;background:var(--surface)}
+  .box.band{border-style:dashed;border-color:var(--faint);background-image:repeating-linear-gradient(45deg,var(--hatch) 0 1.5px,transparent 1.5px 5px)}
+  .box.lit{background:var(--litbox);border-color:var(--heat);border-style:solid}
+  .box svg{position:absolute;inset:1px;width:calc(100% - 2px);height:calc(100% - 2px)}
+  .boxes .firemark{flex:none;width:20px;height:22px}
+  .box .plus{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:800;line-height:1;color:#fff;background:var(--heat);border-radius:2px;letter-spacing:-.02em}
+  .box .plus.minus{background:var(--cool)}
+  .track.out .box{opacity:.45;filter:grayscale(1)}
+
+  .stagewrap{flex:0 0 auto;display:flex;justify-content:center;align-items:flex-start;position:relative;margin-top:4px}
+  .stage{position:relative;user-select:none;-webkit-user-select:none;touch-action:manipulation;width:343px;height:316px}
+  .stage > svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}
+  #ovs{font-size:13px}
+  .ov{position:absolute;z-index:1;line-height:1.25}
+  .seat .nm{font-size:1.15em;font-weight:700;display:flex;align-items:center;gap:5px}
+  .seat.r{text-align:right}.seat.r .nm{justify-content:flex-end}
+  .seat.c{text-align:center}.seat.c .nm{justify-content:center}
+  .seat .nm svg{width:13px;height:13px;flex:none}
+  .seat .st{color:var(--ink)}
+  .seat .st .ok{color:var(--eco);font-weight:700}
+  .seat .st .no{color:var(--no);font-weight:700}
+  .seat .st svg{width:12px;height:12px;vertical-align:-1px}
+  .pips{display:inline-flex;gap:3px;margin-top:2px;padding:1px 3px;border-radius:5px;vertical-align:middle}
+  .pips.pop{background:var(--eco-soft)}
+  .pips.lost{background:#f3d0c2}
+  .pips svg{width:11px;height:11px}
+  .chalk{font:italic 700 14px/1.2 "Segoe Print","Bradley Hand","Comic Sans MS",cursive,system-ui;color:var(--chalk);text-align:center;letter-spacing:.01em;white-space:nowrap}
+  .bubble{z-index:4;background:var(--surface);border:1.5px solid var(--ink);border-radius:12px;padding:6px 10px;font-size:14px;line-height:1.35;box-shadow:0 3px 10px rgba(0,0,0,.18);pointer-events:none}
+  .bubble b{display:block;font-size:15px;margin-bottom:2px}
+  .seatbtn{position:absolute;z-index:3;background:transparent;border:0;border-radius:12px;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
+  @media (hover:hover){ .seatbtn:hover{background:rgba(127,127,127,.07)} }
+  .endcards{position:absolute;left:0;right:0;top:0;min-height:100%;z-index:5;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:8px 4px;background:var(--dimveil);border-radius:14px}
+  .endcards h2{font-size:20px;line-height:1.25;margin:0;text-align:center;color:var(--eco)}
+  .endcards .sub{font-size:15px;line-height:1.4;margin:0;text-align:center}
+  .endcards .next{font-size:14px;margin:4px 0 0;text-align:center;color:var(--dim)}
+  .fork{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .fork div{background:var(--surface);border:1.5px solid var(--ink);border-radius:12px;padding:7px 8px;font-size:13.5px;line-height:1.3}
+  .fork b{display:block;font-size:14px;margin-bottom:3px}
+  .endcards .under{font-size:13.5px;text-align:center;margin:0;color:var(--dim)}
+
+  .yourow{display:flex;align-items:center;gap:4px 8px;font-size:15px;min-height:30px;margin-top:2px;white-space:nowrap}
+  .pill{display:inline-block;border:1.5px solid var(--ink);border-radius:999px;padding:0 8px;font-weight:700;font-size:14px;line-height:19px}
+  .ytag{display:inline-block;background:var(--ink);color:var(--bg);border-radius:6px;padding:0 7px;font-weight:700;font-size:14px;line-height:19px}
+  .yourow .yh{display:inline-flex;align-items:center;gap:6px}
+  .coins{display:inline-flex;align-items:center;gap:4px;margin-left:auto;font-weight:700;border-radius:8px;padding:0 4px;transition:background-color .3s}
+  .coins.pop{background:var(--coin-fill);color:#211b14}
+  .coins svg{width:17px;height:17px;flex:none}
+  .coins.burnt{color:var(--no);text-decoration:line-through}
+  .seat .st .cn{white-space:nowrap}
+  .seat .st .cn svg{width:12px;height:12px;vertical-align:-2px}
+  .bar{display:inline-flex;gap:2px;height:13px;width:50px;flex:none}
+  .bar i{flex:1;border:1px solid var(--faint);border-radius:2px;background:var(--surface)}
+  .bar.l1 i.on{background:var(--h1);border-color:var(--h3)}
+  .bar.l2 i.on{background:repeating-linear-gradient(45deg,var(--h3) 0 1.5px,transparent 1.5px 4px),repeating-linear-gradient(-45deg,var(--h3) 0 1.5px,var(--h3bg) 1.5px 4px);border-color:var(--h3)}
+  .bar.l3 i.on{background:var(--h4);border-color:var(--h4)}
+  .bar.burnt i{background:var(--char);border-color:var(--char)}
+
+  .caption{font-size:16px;line-height:1.35;margin:6px 0 8px;min-height:calc(1.35em * 4 + 6px)}
+  .caption b{font-weight:700}
+  .game.over .caption{min-height:0}
+
+  .verbs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .verb{min-height:70px;border-radius:14px;border:2px solid var(--vc);background:var(--surface);text-align:left;padding:7px 11px 8px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 0 var(--vc);min-width:0}
+  .verb .v{font-size:18px;font-weight:700;line-height:1.15}
+  .verb .s{font-size:14px;color:var(--dim);line-height:1.25;margin-top:3px}
+  .verb .w{font-size:14px;color:var(--warn);font-weight:700;line-height:1.25;margin-top:0}
+  .verb .w.soft{color:var(--dim);font-weight:400;font-style:italic}
+  .verb .w.cost{color:var(--ink);font-weight:600}
+  .verb .w{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .verb:active:not(.off){transform:translateY(1px);box-shadow:none}
+  .verb.hold{--vc:var(--v-hold)} .verb.toss{--vc:var(--v-toss)} .verb.tog{--vc:var(--v-tog)} .verb.idk{--vc:var(--v-idk)} .verb.down{--vc:var(--eco)}
+  .verb.down{grid-column:1 / -1;min-height:56px;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .verb.down .hc{display:flex;align-items:center;gap:6px;flex:none;font-size:14px;font-weight:700}
+  .verb.down .hc svg{width:20px;height:20px}
+  .verb.down .txt{min-width:0}
+  .verb.down:not(.off){background:var(--eco);color:var(--bg)}
+  .verb.down:not(.off) .s{color:var(--bg)}
+  .verb.down.done{background:var(--eco-soft);border-style:solid;border-color:var(--eco)}
+  .verb.down.done .v,.verb.down.done .s{color:var(--ink)}
+  .verb.off{cursor:default;box-shadow:none;border-style:dashed;border-color:var(--faint);background:transparent}
+  .verb.off .v{color:var(--faint)}
+  .verb.off .s{color:var(--dim)}
+  .verb.pulse{animation:pulse 1.4s ease-out 2}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 var(--eco)}60%{box-shadow:0 0 0 12px transparent}100%{box-shadow:0 2px 0 var(--vc)}}
+  .doom{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .doom button{min-height:62px;border-radius:14px;font-size:17px;font-weight:700;cursor:pointer;padding:8px 12px}
+  .doom .again{border:2px solid var(--eco);background:var(--eco);color:var(--bg)}
+  .doom .see{border:2px solid var(--line);background:var(--surface)}
+  .inlinebtn{font-size:14px;font-weight:700;min-height:24px;line-height:20px;border-radius:8px;border:1.5px solid var(--eco);background:var(--surface);color:var(--eco);padding:0 10px;cursor:pointer;margin-left:2px;vertical-align:baseline}
+
+  .end{padding:4px 0 8px}
+  .end .row{display:flex;gap:8px;flex-wrap:wrap}
+  .big{flex:1 1 auto;min-height:52px;border-radius:14px;border:2px solid var(--eco);background:var(--eco);color:var(--bg);font-size:18px;font-weight:700;cursor:pointer;padding:8px 16px}
+  .ghost{min-height:48px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);font-size:15px;font-weight:600;cursor:pointer;padding:8px 14px}
+  .score{font-size:16px;line-height:1.4;margin:12px 0 0}
+  .recap{margin:8px 0 0;padding:0;list-style:none;font-size:15px;line-height:1.45}
+  .recap li{padding:6px 0;border-top:1px solid var(--line)}
+  .river{margin:16px 0 0;padding:10px 12px;border-left:3px solid var(--line);font-size:14px;line-height:1.45;font-style:italic}
+  .river small{display:block;font-style:normal;font-size:13px;color:var(--dim);margin-top:4px}
+
+  .how{max-width:560px;margin:0 auto;padding:8px 16px 40px;font-size:15.5px;line-height:1.5}
+  .how h2{font-size:19px;margin:14px 0 6px}
+  .how h3{font-size:16px;margin:14px 0 4px}
+  .how ol{padding-left:22px;margin:4px 0}
+  .how ul{padding-left:20px;margin:4px 0}
+  .how li{margin:4px 0}
+  .how .lines p{margin:6px 0}
+  .how details{margin:12px 0;border:1.5px solid var(--line);border-radius:12px;padding:6px 12px;background:var(--surface)}
+  .how summary{cursor:pointer;font-weight:700;min-height:32px;display:flex;align-items:center}
+  .how .set{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+  .how .tog{min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);padding:6px 12px;cursor:pointer;font-size:15px}
+  .how .tog[aria-pressed="true"]{border-color:var(--eco);box-shadow:inset 0 0 0 2px var(--eco);font-weight:700}
+  .how .small{font-size:14px;color:var(--dim)}
+  kbd{font:600 12px/1 ui-monospace,Consolas,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:2px 5px;background:var(--surface)}
+  dialog.sheet{border:0;border-radius:16px;padding:0;max-width:min(560px,calc(100vw - 20px));width:100%;max-height:calc(100svh - 24px);background:var(--bg);color:var(--ink);box-shadow:0 10px 40px rgba(0,0,0,.35)}
+  dialog.sheet::backdrop{background:rgba(0,0,0,.45)}
+  dialog.sheet .close{position:sticky;top:0;display:flex;justify-content:flex-end;padding:8px 8px 0;background:var(--bg);z-index:1}
+
+  @media (min-width:900px) and (min-aspect-ratio:1/1){
+    .game{max-width:1080px}
+    .play{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,1fr);gap:8px 32px;align-items:start}
+    .right{padding-top:30px}
+    .game.over .right{padding-top:8px}
+  }
+  @media (max-height:740px) and (max-width:699px){
+    .caption{min-height:calc(1.35em * 4 + 6px);margin-top:4px}
+    .verb{min-height:62px}
+    .verb.down{min-height:50px}
+  }
+  @media (max-width:420px){
+    #hotLbl{display:none}
+    .trk1 .hint .lng{display:none}
+    .trk1 .hint .sht{display:inline}
+  }
+  @media (max-width:400px){
+    .caption{font-size:15.5px}
+    .yourow{font-size:14px}
+    .verb{padding:6px 9px 7px;min-height:77px}
+    .verb .v{font-size:17px}
+    .verb .s,.verb .w{font-size:13.5px}
+  }
+  @media (max-width:359px){
+    .yourow{gap:4px 6px}
+    .yourow .pill{padding:0 6px}
+    .yourow .ytag{padding:0 5px}
+    .bar{width:40px}
+    .yourow .hl{display:none}
+    .grp .gl{font-size:12.5px}
+    .trk1{font-size:13px} .trk1 b{font-size:15px}
+  }
+  @media (max-width:360px){
+    .verb{min-height:93px}
+  }
+  @media (max-width:300px){
+    .verb{min-height:124px}
+    .verb .w{white-space:normal}
+    .trk1{flex-wrap:wrap}
+    .trk1 .hint{margin-left:0;width:100%;text-align:left}
+    .yourow .bar{display:none}
+  }
+  @media (max-width:340px){
+    .caption{font-size:14.5px;min-height:calc(1.35em * 5 + 6px)}
+  }
+  @media (max-width:330px){
+    header.top h1{font-size:14.5px}
+    .textbtn{padding:6px 8px;font-size:14px}
+    .verb .s,.verb .w{font-size:12.5px}
+    .verb.down{flex-wrap:wrap}
+  }
+  @media (min-width:700px){
+    .game{padding-top:10px}
+    header.top h1{font-size:19px}
+    .roundline{font-size:15px}
+    .trk1{font-size:15.5px} .trk1 b{font-size:19px}
+    .seat .nm{font-size:1.2em}
+    .chalk{font-size:17px}
+    .yourow{font-size:16px}
+    .caption{font-size:19px}
+    .verb .v{font-size:21px} .verb .s,.verb .w{font-size:15.5px}
+    .verb{min-height:88px} .verb.down{min-height:88px}
+    .fork div{font-size:15px} .endcards h2{font-size:23px} .endcards .sub{font-size:17px} .endcards .under{font-size:15px}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
-      <h1><span class="sub">Recursive Learning · the ad, playable</span>Hot Potato</h1></div>
-    <p class="lede"><b style="font-weight:400">The AI race is a hot potato: each lab builds faster because the others might. Can you get everyone to hold it instead?</b></p>
-    <p class="lede" style="font-size:16px;margin-top:6px">The threat that gets passed around is <i>"if we don't build it, they will."</i> Every toss adds heat. Here you hold it for up to twenty years, one year at a time. Tossing it on heats it. Holding it brings more hands. Holding it together sets it down on shared ground, where it can cool and be planted, but only when enough hands are there.</p>
-    <p class="small" style="margin:0 0 6px">This is the solo game, for careful readers. <a href="potato-others.html">Play it with others</a>: six seats in the ring, each moving by one published rule.</p>
-    <p class="disc">A teaching instrument, not a forecast. The numbers come from a small model with its assumptions in the open. Nothing staked, nothing sent. "I don't know" is always a legal move.</p>
+<div class="game" id="game">
+  <header class="top">
+    <svg class="spiral" viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
+    <h1>The race to build AI is a hot potato.</h1>
+    <button class="textbtn" id="helpBtn" type="button">How to play</button>
   </header>
+  <p class="roundline"><b id="roundName">Round 1 of 3</b> · made-up rules, not a forecast</p>
 
-  <div class="stagebox" id="stagebox">
-    <canvas id="stage" width="900" height="460" aria-label="The ring of agents and the potato"></canvas>
-    <div class="scene" id="scene"><b>I</b>In training</div>
-    <div class="year" id="year"></div>
-    <div class="count" id="count"></div>
-    <p class="caption" id="caption"></p>
-    <button class="main intro-go" id="go" hidden>Now you hold it</button>
-  </div>
-  <div class="endcard verdict" id="endcard" hidden></div>
-
-  <div id="play" hidden>
-    <p class="yourmove" id="yourmove">Your move</p>
-    <div class="acts" id="acts"></div>
-    <p class="after" id="after" aria-live="polite"></p>
-    <div class="meters">
-      <div class="meter"><div class="lab"><span>Heat: the chance it burns in a year (bar 0 to 20%)</span><b id="m-heat">0%</b></div><div class="track"><div class="fill" id="f-heat" style="width:0;background:linear-gradient(90deg,#8a4a2a,var(--heat),var(--heat-hi))"></div></div></div>
-      <div class="meter"><div class="lab"><span class="say" id="m-ring">3 of 10 people are holding it; you need 6</span></div><div class="cells" id="cells" aria-hidden="true"></div></div>
-    </div>
-    <p class="small" id="why"></p>
-    <p class="small">A walk ends when the potato is <b style="color:var(--eco)">planted</b> (set down together long enough), when it <b style="color:var(--heat)">burns</b>, when it gets <b style="color:var(--heat-hi)">through it, still hot</b> (built faster than it was understood, and survived), when <b style="color:#b8a1e8">one lab keeps it</b> and the ring has let go, when enough hands <b style="color:#8fb8e8">put it down together</b>, or after twenty years <b>still in the air</b>.</p>
-    <p class="small">Each move is one year of the same model the other games use. After each move, a line says in rough words how each ending comes up if every remaining year were that same move, walked 400 times from there (almost never: none of the 400; rarely: under 5 in 100; sometimes: under 25; often: under 60; most times: 60 or more): a property of that path, not a prediction. No single move plants it; the way there is a sequence.</p>
-    <ul class="log" id="log"></ul>
-  </div>
-
-  <section id="end" hidden>
-    <h2>Walk your way a hundred times</h2>
-    <p class="small">Your own sequence of moves, from the same start, with a hundred different years of luck. Beside it, a hundred walks that toss it on every year. One of these is the walk you had. None of them is a forecast.</p>
-    <div class="legend" id="legend"></div>
-    <div class="two">
-      <div><p class="small"><b style="color:var(--ink)">Your way</b></p><div class="grid100" id="g-yours"></div><p class="small" id="n-yours"></p></div>
-      <div><p class="small"><b style="color:var(--ink)">Toss it on, every year</b></p><div class="grid100" id="g-toss"></div><p class="small" id="n-toss"></p></div>
-    </div>
-    <p style="font:300 21px/1.4 var(--serif);margin:18px 0 0">The odds are conditional, and you are part of the condition.</p>
-    <div class="row"><button class="main" id="again">Hold a new one</button><a class="ghost" id="to-table" href="spread.html" style="text-decoration:none;display:inline-block;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font:600 14px var(--sans)">Open this walk at the table</a><button class="ghost" id="copy">Copy the link</button><span class="small" id="copied"></span></div>
+  <div class="play">
+  <div class="left">
+  <section class="track" id="track" aria-label="How hot the potato is">
+    <div class="trk1"><span class="lbl" id="hotLbl">How hot:</span> <b id="heatWord">warm</b> <span id="flameCount"></span>
+      <span class="hint" id="fireHint"></span></div>
+    <div class="boxes" id="boxes" aria-hidden="true"></div>
   </section>
 
-  <p class="credits">The sequel to the recursive.eco hot potato ad, with its scenes and colours. The model is the Walk's (<a href="walk.html">dashboard</a>, <a href="spread.html">table</a>, <a href="scroll.html">story</a>): every assumption is a number you can change there. PlayfulProcess. Code Apache-2.0, content CC BY-SA 4.0. <a href="index.html">Other games</a>.</p>
+  <div class="stagewrap" id="stagewrap">
+    <div class="stage" id="stage">
+      <div id="ovs"></div>
+      <svg id="svg" viewBox="0 0 390 352" aria-hidden="true">
+        <defs>
+          <pattern id="h2" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><rect width="4" height="4" style="fill:var(--h3bg)"/><rect width="1.3" height="4" style="fill:var(--h3)"/><rect width="4" height="1.3" style="fill:var(--h3)"/></pattern>
+          <pattern id="hb" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><rect width="4" height="4" style="fill:var(--char)"/><rect width="1" height="4" style="fill:var(--charline)"/><rect width="4" height="1" style="fill:var(--charline)"/></pattern>
+          <clipPath id="aboveGround"><rect x="0" y="0" width="390" height="205"/></clipPath>
+        </defs>
+        <g id="dyn"></g>
+      </svg>
+      <div class="endcards" id="endcards" hidden></div>
+    </div>
+  </div>
+
+  <div class="yourow" id="yourow"></div>
+  </div>
+  <div class="right">
+
+  <p class="caption" id="caption"><span aria-live="polite"><b id="c1"></b> <span id="c2"></span></span></p>
+
+  <div class="verbs" id="verbs">
+    <button type="button" class="verb hold" id="vHold" data-verb="hold" aria-keyshortcuts="H"></button>
+    <button type="button" class="verb toss" id="vToss" data-verb="toss" aria-keyshortcuts="T"></button>
+    <button type="button" class="verb tog" id="vTog" data-verb="together" aria-keyshortcuts="G"></button>
+    <button type="button" class="verb idk" id="vBounce" data-verb="bounce" aria-keyshortcuts="B"></button>
+    <button type="button" class="verb down" id="vDown" data-verb="down" aria-keyshortcuts="D"></button>
+  </div>
+  <div class="doom" id="doom" hidden>
+    <button type="button" class="see" id="seeEnd">See how it ends</button>
+    <button type="button" class="again" id="doomAgain">Start this round again</button>
+  </div>
+
+  <section class="end" id="end" hidden>
+    <div class="row"><button type="button" class="big" id="nextBtn">Next round</button><button type="button" class="ghost" id="againBtn">Play this round again</button><button type="button" class="ghost" id="howBtn2">How to play</button></div>
+    <p class="score" id="score"></p>
+    <ul class="recap" id="recap"></ul>
+    <p class="river" id="river" hidden></p>
+  </section>
+  </div>
+  </div>
 </div>
+
+<section class="how" id="howInline" hidden aria-label="How to play"></section>
+
+<dialog class="sheet" id="sheet" aria-label="How to play">
+  <div class="close"><button type="button" class="textbtn" id="sheetClose">Close</button></div>
+  <div class="how" id="howSheet"></div>
+</dialog>
+
+<template id="howTpl">
+  <h2>How to play</h2>
+  <ol>
+    <li><b>The potato is the race to build AI.</b> Everyone at the table is building it (made up: think labs, companies or countries). Each flame makes it more dangerous. Somewhere in the striped boxes it catches fire, and everyone loses everything, coins too.</li>
+    <li><b>Hold it</b>: you slow down. You add no flame; only Flint adds his. Your hands heat a step, and Wren counts the hold.</li>
+    <li><b>Bounce it</b>: you carry on. You win a coin, but you add a flame, and so does Flint. Your hands cool a step.</li>
+    <li><b>Toss it on</b>: you race. You win 5 coins and your hands cool at once, but everyone races after you: +6 flames. The others let go, and Wren crosses out a hold.</li>
+    <li><b>Hold it together</b>, once Wren has seen enough holds: she says yes, and Moss, Reed and Oak follow (Reed and Oak not while it’s scorching). Three holding it stops Flint. With five pairs of hands, <b>put it down</b> and keep your coins.</li>
+  </ol>
+  <p class="small">Your score is the coins you keep. You start each round with 5. The fire’s box changes every round, and you only find out where it was at the end.</p>
+  <details>
+    <summary>The five others</summary>
+    <div class="lines" id="LINES"></div>
+  </details>
+  <details>
+    <summary>What’s real here</summary>
+    <ul>
+      <li>These are this game’s rules, made up to show one idea. They are not measured from anything, and they are not a forecast.</li>
+      <li>Here you can count the flames, and you’re told the fire is somewhere in the striped boxes. In the real race nobody can count the flames, or knows where the stripes begin.</li>
+      <li>Here, racing wins coins, and holding alone wins none while Flint keeps winning. Real builders feel that pull: racing ahead can win a lead, money or power.</li>
+      <li>Here, Wren prints how many holds she needs and always keeps her word, the others always follow her, and Flint always stops once three of you hold it. Whether one side slowing down makes others follow, and whether a group can hold back a builder who never signs up, are debated.</li>
+      <li>This game takes a side: it was made to show why holding it together might matter. Flint’s line, “If we don’t, they will”, is a real argument that serious people make.</li>
+      <li>Here the only way to lose is a fire that burns everyone the same. Real harms could also come from misuse or from power piling up in a few hands, and may not fall equally. The five others are equal here; real builders are not.</li>
+      <li>Here, three holding a scorching potato cool it a flame a move. Whether an agreement lowers the danger, or how fast, is an open question. Real crises have pushed rivals apart and also together (after the Cuban missile crisis came a hotline and a test-ban treaty).</li>
+      <li>Here, five pairs of hands are enough. Nobody knows how many would be enough in reality. Putting it down isn’t a happy ending by itself.</li>
+      <li>“Nobody had to be good. Enough of them had to agree on a number.” “A pause taken alone is a sacrifice the others outlive. Taken by enough, it keeps the river for everyone.” <span class="small">Lines from a toy model of a river; a rhyme, not a finding about AI.</span></li>
+      <li>Nothing is saved or sent.</li>
+    </ul>
+  </details>
+  <h3>Settings</h3>
+  <div class="set">
+    <button type="button" class="tog" data-set="slow" aria-pressed="false">Slower</button>
+    <button type="button" class="tog" data-set="read" aria-pressed="false">Read aloud</button>
+    <button type="button" class="tog" data-act="round1">Start again from round 1</button>
+  </div>
+  <h3>Keys</h3>
+  <p><kbd>H</kbd> Hold it · <kbd>B</kbd> Bounce it · <kbd>T</kbd> Toss it on · <kbd>G</kbd> Hold it together · <kbd>D</kbd> Put it down. Tap a name, or press Enter on it, to read that seat’s line.</p>
+  <p class="small">The first version of this game is kept at <a href="potato-v1/potato-others.html">the first version</a>. More games: <a href="spread.html">The Walk</a> · <a href="lines.html">Changing Lines</a> · <a href="index.html">As-If</a> · <a href="../">Recursive Learning</a>.</p>
+</template>
 
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px"><symbol id="spiral" viewBox="0 0 100 100"><path id="spiral-path" d="M50.5 50L50.5 50.01 50.51,50.02 50.51,50.03 50.51,50.04 50.51,50.05 50.52,50.07 50.52,50.08 50.52,50.09 50.52,50.1 50.52,50.11 50.52,50.12 50.52,50.13 50.52,50.15 50.52,50.16 50.52,50.17 50.52,50.18 50.52,50.19 50.52,50.21 50.52,50.22 50.52,50.23 50.52,50.24 50.52,50.26 50.51,50.27 50.51,50.28 50.51,50.29 50.51,50.31 50.5,50.32 50.5,50.33 50.49,50.34 50.49,50.36 50.49,50.37 50.48,50.38 50.48,50.39 50.47,50.41 50.47,50.42 50.46,50.43 50.45,50.44 50.45,50.46 50.44,50.47 50.43,50.48 50.43,50.49 50.42,50.5 50.41,50.52 50.4,50.53 50.39,50.54 50.38,50.55 50.37,50.56 50.36,50.57 50.35,50.59 50.34,50.6 50.33,50.61 50.32,50.62 50.31,50.63 50.3,50.64 50.29,50.65 50.28,50.66 50.27,50.67 50.25,50.68 50.24,50.69 50.23,50.7 50.21,50.71 50.2,50.72 50.19,50.73 50.17,50.73 50.16,50.74 50.14,50.75 50.13,50.76 50.11,50.77 50.1,50.77 50.08,50.78 50.07,50.79 50.05,50.79 50.03,50.8 50.02,50.8 50,50.81 49.98,50.81 49.97,50.82 49.95,50.82 49.93,50.83 49.91,50.83 49.89,50.83 49.88,50.84 49.86,50.84 49.84,50.84 49.82,50.84 49.8,50.85 49.78,50.85 49.76,50.85 49.74,50.85 49.72,50.85 49.71,50.85 49.69,50.85 49.67,50.84 49.65,50.84 49.63,50.84 49.61,50.84 49.59,50.83 49.57,50.83 49.55,50.83 49.53,50.82 49.5,50.82 49.48,50.81 49.46,50.81 49.44,50.8 49.42,50.79 49.4,50.79 49.38,50.78 49.36,50.77 49.34,50.76 49.32,50.75 49.3,50.74 49.28,50.73 49.26,50.72 49.24,50.71 49.22,50.7 49.2,50.69 49.18,50.68 49.16,50.66 49.15,50.65 49.13,50.63 49.11,50.62 49.09,50.61 49.07,50.59 49.05,50.57 49.03,50.56 49.02,50.54 49,50.52 48.98,50.51 48.96,50.49 48.95,50.47 48.93,50.45 48.92,50.43 48.9,50.41 48.88,50.39 48.87,50.37 48.85,50.35 48.84,50.32 48.83,50.3 48.81,50.28 48.8,50.26 48.79,50.23 48.77,50.21 48.76,50.18 48.75,50.16 48.74,50.13 48.73,50.11 48.72,50.08 48.71,50.05 48.7,50.03 48.69,50 48.68,49.97 48.68,49.94 48.67,49.92 48.66,49.89 48.66,49.86 48.65,49.83 48.65,49.8 48.64,49.77 48.64,49.74 48.63,49.71 48.63,49.68 48.63,49.65 48.63,49.62 48.63,49.59 48.63,49.55 48.63,49.52 48.63,49.49 48.63,49.46 48.64,49.43 48.64,49.39 48.64,49.36 48.65,49.33 48.66,49.3 48.66,49.26 48.67,49.23 48.68,49.2 48.69,49.17 48.7,49.13 48.71,49.1 48.72,49.07 48.73,49.03 48.74,49 48.75,48.97 48.77,48.94 48.78,48.9 48.8,48.87 48.81,48.84 48.83,48.81 48.85,48.77 48.87,48.74 48.89,48.71 48.91,48.68 48.93,48.65 48.95,48.62 48.97,48.59 49,48.56 49.02,48.53 49.05,48.5 49.07,48.47 49.1,48.44 49.13,48.41 49.15,48.38 49.18,48.35 49.21,48.33 49.24,48.3 49.27,48.27 49.31,48.25 49.34,48.22 49.37,48.19 49.41,48.17 49.44,48.15 49.48,48.12 49.51,48.1 49.55,48.08 49.59,48.06 49.63,48.04 49.66,48.02 49.7,48 49.74,47.98 49.79,47.96 49.83,47.94 49.87,47.93 49.91,47.91 49.96,47.9 50,47.88 50.04,47.87 50.09,47.86 50.14,47.85 50.18,47.83 50.23,47.82 50.28,47.82 50.32,47.81 50.37,47.8 50.42,47.8 50.47,47.79 50.52,47.79 50.57,47.78 50.62,47.78 50.67,47.78 50.72,47.78 50.77,47.78 50.82,47.79 50.88,47.79 50.93,47.79 50.98,47.8 51.03,47.81 51.08,47.82 51.14,47.82 51.19,47.83 51.24,47.85 51.3,47.86 51.35,47.87 51.4,47.89 51.46,47.91 51.51,47.92 51.56,47.94 51.62,47.96 51.67,47.98 51.72,48.01 51.77,48.03 51.83,48.05 51.88,48.08 51.93,48.11 51.98,48.14 52.03,48.17 52.09,48.2 52.14,48.23 52.19,48.27 52.24,48.3 52.29,48.34 52.34,48.38 52.39,48.42 52.43,48.46 52.48,48.5 52.53,48.54 52.57,48.58 52.62,48.63 52.67,48.68 52.71,48.72 52.75,48.77 52.8,48.82 52.84,48.88 52.88,48.93 52.92,48.98 52.96,49.04 53,49.09 53.04,49.15 53.07,49.21 53.11,49.27 53.14,49.33 53.18,49.39 53.21,49.46 53.24,49.52 53.27,49.59 53.3,49.65 53.33,49.72 53.36,49.79 53.38,49.86 53.4,49.93 53.43,50 53.45,50.07 53.47,50.15 53.49,50.22 53.5,50.29 53.52,50.37 53.53,50.45 53.55,50.52 53.56,50.6 53.57,50.68 53.57,50.76 53.58,50.84 53.59,50.92 53.59,51 53.59,51.08 53.59,51.17 53.59,51.25 53.58,51.33 53.58,51.42 53.57,51.5 53.56,51.58 53.55,51.67 53.54,51.75 53.52,51.84 53.5,51.93 53.48,52.01 53.46,52.1 53.44,52.18 53.42,52.27 53.39,52.36 53.36,52.44 53.33,52.53 53.3,52.61 53.26,52.7 53.23,52.79 53.19,52.87 53.15,52.96 53.1,53.04 53.06,53.12 53.01,53.21 52.96,53.29 52.91,53.37 52.86,53.46 52.81,53.54 52.75,53.62 52.69,53.7 52.63,53.78 52.56,53.86 52.5,53.94 52.43,54.01 52.36,54.09 52.29,54.17 52.22,54.24 52.14,54.31 52.06,54.38 51.98,54.46 51.9,54.53 51.82,54.59 51.73,54.66 51.65,54.73 51.56,54.79 51.47,54.85 51.37,54.91 51.28,54.97 51.18,55.03 51.08,55.09 50.98,55.14 50.88,55.19 50.77,55.24 50.67,55.29 50.56,55.34 50.45,55.39 50.34,55.43 50.23,55.47 50.12,55.51 50,55.55 49.88,55.58 49.76,55.61 49.65,55.64 49.52,55.67 49.4,55.69 49.28,55.72 49.15,55.74 49.03,55.76 48.9,55.77 48.77,55.78 48.64,55.79 48.51,55.8 48.38,55.81 48.25,55.81 48.11,55.81 47.98,55.8 47.84,55.8 47.71,55.79 47.57,55.77 47.44,55.76 47.3,55.74 47.16,55.72 47.02,55.7 46.88,55.67 46.75,55.64 46.61,55.6 46.47,55.57 46.33,55.53 46.19,55.48 46.05,55.44 45.91,55.39 45.77,55.34 45.63,55.28 45.49,55.22 45.36,55.16 45.22,55.09 45.08,55.02 44.94,54.95 44.81,54.88 44.67,54.8 44.54,54.71 44.41,54.63 44.27,54.54 44.14,54.45 44.01,54.35 43.88,54.25 43.76,54.15 43.63,54.04 43.5,53.93 43.38,53.82 43.26,53.71 43.14,53.59 43.02,53.46 42.91,53.34 42.79,53.21 42.68,53.08 42.57,52.94 42.46,52.8 42.35,52.66 42.25,52.52 42.15,52.37 42.05,52.22 41.95,52.07 41.86,51.91 41.77,51.75 41.68,51.59 41.6,51.42 41.51,51.25 41.43,51.08 41.36,50.91 41.29,50.73 41.22,50.55 41.15,50.37 41.09,50.19 41.03,50 40.97,49.81 40.92,49.62 40.87,49.43 40.83,49.23 40.79,49.03 40.75,48.83 40.72,48.63 40.69,48.42 40.66,48.22 40.64,48.01 40.63,47.8 40.61,47.59 40.61,47.38 40.6,47.16 40.6,46.95 40.61,46.73 40.62,46.51 40.64,46.29 40.66,46.07 40.68,45.85 40.71,45.63 40.75,45.41 40.78,45.18 40.83,44.96 40.88,44.73 40.93,44.51 40.99,44.28 41.06,44.06 41.13,43.83 41.2,43.61 41.28,43.38 41.37,43.16 41.46,42.93 41.55,42.71 41.65,42.48 41.76,42.26 41.87,42.04 41.99,41.82 42.11,41.6 42.24,41.38 42.37,41.16 42.51,40.95 42.66,40.73 42.81,40.52 42.96,40.31 43.12,40.1 43.29,39.9 43.46,39.69 43.64,39.49 43.82,39.29 44,39.09 44.2,38.9 44.39,38.71 44.6,38.52 44.81,38.34 45.02,38.15 45.24,37.97 45.46,37.8 45.69,37.63 45.93,37.46 46.16,37.3 46.41,37.14 46.66,36.98 46.91,36.83 47.17,36.68 47.43,36.54 47.7,36.4 47.97,36.27 48.25,36.14 48.53,36.02 48.82,35.9 49.11,35.79 49.4,35.68 49.7,35.58 50,35.48 50.31,35.39 50.62,35.31 50.93,35.23 51.25,35.16 51.57,35.09 51.89,35.03 52.22,34.98 52.55,34.93 52.88,34.89 53.22,34.86 53.56,34.83 53.9,34.81 54.24,34.8 54.59,34.8 54.94,34.8 55.29,34.81 55.64,34.83 56,34.85 56.36,34.88 56.71,34.92 57.07,34.97 57.43,35.03 57.8,35.09 58.16,35.16 58.52,35.24 58.89,35.33 59.25,35.42 59.61,35.53 59.98,35.64 60.34,35.76 60.71,35.89 61.07,36.03 61.44,36.18 61.8,36.33 62.16,36.5 62.52,36.67 62.88,36.85 63.24,37.04 63.59,37.24 63.94,37.44 64.3,37.66 64.65,37.88 64.99,38.12 65.34,38.36 65.68,38.61 66.01,38.87 66.35,39.14 66.68,39.42 67,39.7 67.33,40 67.65,40.3 67.96,40.61 68.27,40.93 68.57,41.26 68.87,41.6 69.17,41.94 69.46,42.3 69.74,42.66 70.02,43.03 70.29,43.41 70.55,43.79 70.81,44.19 71.07,44.59 71.31,45 71.55,45.42 71.78,45.85 72,46.28 72.22,46.72 72.42,47.17 72.62,47.62 72.81,48.08 73,48.55 73.17,49.03 73.33,49.51 73.49,50 73.64,50.5 73.77,51 73.9,51.5 74.02,52.02 74.12,52.54 74.22,53.06 74.3,53.59 74.38,54.12 74.44,54.66 74.5,55.21 74.54,55.76 74.57,56.31 74.59,56.87 74.6,57.43 74.6,57.99 74.58,58.56 74.55,59.13 74.51,59.71 74.46,60.28 74.4,60.86 74.32,61.44 74.23,62.03 74.13,62.61 74.01,63.2 73.88,63.79 73.74,64.38 73.58,64.97 73.42,65.56 73.23,66.15 73.04,66.74 72.83,67.33 72.6,67.92 72.37,68.5 72.12,69.09 71.85,69.67 71.57,70.26 71.28,70.84 70.97,71.42 70.65,71.99 70.32,72.56 69.97,73.13 69.6,73.7 69.23,74.26 68.83,74.81 68.43,75.36 68.01,75.91 67.57,76.45 67.13,76.99 66.66,77.51 66.19,78.04 65.7,78.55 65.19,79.06 64.67,79.56 64.14,80.05 63.6,80.54 63.04,81.02 62.47,81.48 61.88,81.94 61.28,82.39 60.67,82.83 60.04,83.26 59.4,83.68 58.75,84.08 58.09,84.48 57.41,84.87 56.72,85.24 56.02,85.6 55.31,85.95 54.58,86.28 53.85,86.61 53.1,86.91 52.34,87.21 51.57,87.49 50.79,87.76 50,88.01 49.2,88.24 48.39,88.46 47.57,88.67 46.74,88.86 45.9,89.03 45.05,89.19 44.19,89.33 43.33,89.45 42.45,89.55 41.57,89.64 40.69,89.71 39.79,89.76 38.89,89.79 37.98,89.8 37.07,89.8 36.15,89.77 35.23,89.73 34.3,89.66 33.36,89.58 32.42,89.47 31.48,89.35 30.54,89.2 29.59,89.04 28.64,88.85 27.69,88.64 26.74,88.41 25.89,87.99 25.1,87.48 24.32,86.95 23.55,86.41 22.79,85.84 22.05,85.27 21.32,84.67 20.6,84.06 19.89,83.44 19.2,82.8 18.52,82.15 17.85,81.48 17.2,80.8 16.56,80.11 15.94,79.4 15.33,78.68 14.73,77.95 14.16,77.21 13.59,76.45 13.05,75.68 12.52,74.9 12.01,74.11 11.51,73.31 11.03,72.5 10.57,71.68 10.12,70.85 9.69,70.01 9.28,69.16 8.89,68.3 8.52,67.44 8.16,66.57 7.82,65.69 7.5,64.8 7.2,63.91 6.92,63.01 6.66,62.1 6.41,61.19 6.19,60.28 5.98,59.36 5.8,58.43 5.63,57.5 5.48,56.57 5.35,55.64 5.25,54.7 5.16,53.77 5.09,52.83 5.04,51.88 5.01,50.94 5,50 5.01,49.06 5.04,48.12 5.09,47.17 5.16,46.23 5.25,45.3 5.35,44.36 5.48,43.43 5.63,42.5 5.8,41.57 5.98,40.64 6.19,39.72 6.41,38.81 6.66,37.9 6.92,36.99 7.2,36.09 7.5,35.2 7.82,34.31 8.16,33.43 8.52,32.56 8.89,31.7 9.28,30.84 9.69,29.99 10.12,29.15 10.57,28.32 11.03,27.5 11.51,26.69 12.01,25.89 12.52,25.1 13.05,24.32 13.59,23.55 14.16,22.79 14.73,22.05 15.33,21.32 15.94,20.6 16.56,19.89 17.2,19.2 17.85,18.52 18.52,17.85 19.2,17.2 19.89,16.56 20.6,15.94 21.32,15.33 22.05,14.73 22.79,14.16 23.55,13.59 24.32,13.05 25.1,12.52 25.89,12.01 26.69,11.51 27.5,11.03 28.32,10.57 29.15,10.12 29.99,9.69 30.84,9.28 31.7,8.89 32.56,8.52 33.43,8.16 34.31,7.82 35.2,7.5 36.09,7.2 36.99,6.92 37.9,6.66 38.81,6.41 39.72,6.19 40.64,5.98 41.57,5.8 42.5,5.63 43.43,5.48 44.36,5.35 45.3,5.25 46.23,5.16 47.17,5.09 48.12,5.04 49.06,5.01 50,5 50.94,5.01 51.88,5.04 52.83,5.09 53.77,5.16 54.7,5.25 55.64,5.35 56.57,5.48 57.5,5.63 58.43,5.8 59.36,5.98 60.28,6.19 61.19,6.41 62.1,6.66 63.01,6.92 63.91,7.2 64.8,7.5 65.69,7.82 66.57,8.16 67.44,8.52 68.3,8.89 69.16,9.28 70.01,9.69 70.85,10.12 71.68,10.57 72.5,11.03 73.31,11.51 74.11,12.01 74.9,12.52 75.68,13.05 76.45,13.59 77.21,14.16 77.95,14.73 78.68,15.33 79.4,15.94 80.11,16.56 80.8,17.2 81.48,17.85 82.15,18.52 82.8,19.2 83.44,19.89 84.06,20.6 84.67,21.32 85.27,22.05 85.84,22.79 86.41,23.55 86.95,24.32 87.48,25.1 87.99,25.89 88.49,26.69 88.97,27.5 89.43,28.32 89.88,29.15 90.31,29.99 90.72,30.84 91.11,31.7 91.48,32.56 91.84,33.43 92.18,34.31 92.5,35.2 92.8,36.09 93.08,36.99 93.34,37.9 93.59,38.81 93.81,39.72 94.02,40.64 94.2,41.57 94.37,42.5 94.52,43.43 94.65,44.36 94.75,45.3 94.84,46.23 94.91,47.17 94.96,48.12 94.99,49.06 95,50 94.99,50.94 94.96,51.88 94.91,52.83 94.84,53.77 94.75,54.7 94.65,55.64 94.52,56.57 94.37,57.5 94.2,58.43 94.02,59.36 93.81,60.28 93.59,61.19 93.34,62.1 93.08,63.01 92.8,63.91 92.5,64.8 92.18,65.69 91.84,66.57 91.48,67.44 91.11,68.3 90.72,69.16 90.31,70.01 89.88,70.85 89.43,71.68 88.97,72.5 88.49,73.31 87.99,74.11 87.48,74.9 86.95,75.68 86.41,76.45 85.84,77.21 85.27,77.95 84.67,78.68 84.06,79.4 83.44,80.11 82.8,80.8 82.15,81.48 81.48,82.15 80.8,82.8 80.11,83.44 79.4,84.06 78.68,84.67 77.95,85.27 77.21,85.84 76.45,86.41 75.68,86.95 74.9,87.48 74.11,87.99 73.31,88.49 72.5,88.97 71.68,89.43 70.85,89.88 70.01,90.31 69.16,90.72 68.3,91.11 67.44,91.48 66.57,91.84 65.69,92.18 64.8,92.5 63.91,92.8 63.01,93.08 62.1,93.34 61.19,93.59 60.28,93.81 59.36,94.02 58.43,94.2 57.5,94.37 56.57,94.52 55.64,94.65 54.7,94.75 53.77,94.84 52.83,94.91 51.88,94.96 50.94,94.99 50,95 49.06,94.99 48.12,94.96 47.17,94.91 46.23,94.84 45.3,94.75 44.36,94.65 43.43,94.52 42.5,94.37 41.57,94.2 40.64,94.02 39.72,93.81 38.81,93.59 37.9,93.34 36.99,93.08 36.09,92.8 35.2,92.5 34.31,92.18 33.43,91.84 32.56,91.48 31.7,91.11 30.84,90.72 29.99,90.31 29.15,89.88 28.32,89.43 27.5,88.97 26.69,88.49 25.89,87.99" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol></svg>
 
-<script src="walk-model.js"></script>
+<script src="potato-model.js"></script>
 <script>
-"use strict";
-var M = window.walkModel, P = M.withDefaults({});
-var KEYS = ['power','alignment','sustainability','stop'];
-var ACTS = [
-  { k:'toss', nm:'Toss it on', d:'a year on building more', alloc:{ power:0.70, alignment:0.10, sustainability:0.10, stop:0.10 }, tog:false, cls:'toss' },
-  { k:'hold', nm:'Hold it', d:'a year on understanding it; the others notice', alloc:{ power:0.25, alignment:0.50, sustainability:0.10, stop:0.15 }, tog:false, cls:'hold' },
-  { k:'tog',  nm:'Hold it together', d:'set it down on shared ground', alloc:{ power:0.15, alignment:0.30, sustainability:0.45, stop:0.10 }, tog:true, cls:'tog' },
-  { k:'idk',  nm:"I don't know", d:"keep last year's hand", alloc:null, tog:false, cls:'idk' }
-];
-// Plain names first (the panel's 80-year-old and nurse did not know "Adolescence" or "Lock-in");
-// `term` is what the table and the dashboard call the same ending, so a walk can be followed there.
-var ENDS = {
-  grace:            { nm:'Planted in time', sh:'planted', term:'Grace', col:'#74d8b4', planted:true,  line:'It cooled in time, and it was planted. Understanding ran ahead of what was built, so the lead was paid for in advance.' },
-  sustainable_turn: { nm:'Planted on shared ground', sh:'planted', term:'the sustainable turn', col:'#9fe0c4', planted:true, line:'Set down on shared ground, it cooled. Something grew. The ground was tended faster than the fire.' },
-  the_stop:         { nm:'Put down together', sh:'put down together', term:'the Stop', col:'#8fb8e8', planted:false, line:'Enough hands held it that it could be put down. It is cool and still. Nothing is planted yet; the ground is waiting.' },
-  adolescence:      { nm:'Through it, still hot', sh:'through it, still hot', term:'Adolescence', col:'#ffd08a', planted:false, line:'' },
-  lock_in:          { nm:'One lab keeps it', sh:'one lab keeps it', term:'Lock-in', col:'#b8a1e8', planted:false, line:'One lab ended up holding it alone. It is not burning, but nobody else holds it any more: the power is locked in one place.' },
-  doom:             { nm:'It burned', sh:'burned', col:'#ff7440', planted:false, line:'The heat ran past what the hands could hold.' },
-  still_walking:    { nm:'Still in the air', sh:'still in the air', col:'#98a1b0', planted:false, line:'Twenty years, and it is still being passed around. No ending yet is an honest ending.' }
+(function () {
+'use strict';
+var M = window.potatoModel;
+var OTHERS = M.OTHERS, SEATS = M.SEATS, CHAIN = M.CHAIN;
+var VBW = 390, VBH = 352, C = { x: 195, y: 176 }, R = 28, GROUND_Y = 205;
+var RM = false;
+try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+if (/[?&]reduced(=|&|$)/.test(location.search)) RM = true;     // potato.html?reduced shows the reduced-motion version
+
+/* ── The table ─────────────────────────────────────────────────────────────── */
+var NAME = { you: 'you', wren: 'Wren', moss: 'Moss', flint: 'Flint', reed: 'Reed', oak: 'Oak' };
+var SHAPE = { wren: 'circle', moss: 'square', flint: 'triangle', reed: 'diamond', oak: 'hexagon' };
+var LINE = {
+  wren: 'I’m building it too. Show me you mean it: hold it yourself, and I’ll count every hold. Once I’ve seen enough, ask me and I’ll hold it with you.',
+  moss: 'If Wren holds it with you, so will I.',
+  flint: 'If we don’t, they will. Every move I add a flame and win a coin, until three of you hold it. I never put my hands on it.',
+  reed: 'If Moss holds it, so will I. Not while it’s scorching: it’s too hot to touch.',
+  oak: 'If Reed holds it, so will I. Not while it’s scorching.'
 };
-// Adolescence is reached with the ring anywhere above a near-empty one, so its words follow the
-// ring as it actually was (a full ring once read "the hands are partly there").
-function endLine(e, s){
-  if (e !== 'adolescence') return ENDS[e].line;
-  var hn = holding(s.coordination);
-  return 'What was built outran how well it was understood, and we got through it, rockily. It is still warm. ' +
-    (hn >= NEED ? hn + ' of ' + PEOPLE + ' were holding it by the end, but the hands came after the build, not before it.' : 'Only ' + hn + ' of ' + PEOPLE + ' were holding it by the end.');
-}
-var ORDER_ENDS = ['grace','sustainable_turn','the_stop','adolescence','lock_in','still_walking','doom'];
+var RULE = {             // the short rule, for the help sheet
+  wren: 'joins once she’s seen enough holds', moss: 'follows Wren', flint: 'adds a flame and wins a coin every move, until 3 hold it',
+  reed: 'follows Moss, not while it’s scorching', oak: 'follows Reed, not while it’s scorching'
+};
+// Geometry, in viewBox units (390 x 352). a = where the potato sits in that seat's hands.
+var G = {
+  you:   { a: { x: 195, y: 282 }, big: true },
+  flint: { a: { x: 195, y: 98 } },
+  moss:  { a: { x: 116, y: 140 } },
+  reed:  { a: { x: 274, y: 140 } },
+  wren:  { a: { x: 116, y: 214 } },
+  oak:   { a: { x: 274, y: 214 } }
+};
+SEATS.forEach(function (k) {
+  var g = G[k];
+  g.phi = k === 'you' ? -90 : k === 'flint' ? 90 : Math.atan2(C.y - g.a.y, C.x - g.a.x) * 180 / Math.PI;
+  g.alpha = (g.phi + 90) * Math.PI / 180;
+});
+// Seat blocks (name and answer), in viewBox units: [x, y, w, align]
+var LAB = { flint: [40, 0, 310, 'c'], moss: [2, 44, 146, 'l'], reed: [242, 44, 146, 'r'], wren: [2, 250, 128, 'l'], oak: [260, 250, 128, 'r'] };
+var PLUS_AT = { you: [70, -24], flint: [60, 10], moss: [22, -30], reed: [-22, -30], wren: [24, 34], oak: [-24, 34] };
+var SAY_AT = { wren: [118, 180], moss: [118, 100], reed: [272, 100], oak: [272, 180], flint: [195, 62] };
+var BTN = { flint: [140, 0, 110, 112], moss: [0, 38, 150, 120], reed: [240, 38, 150, 120], wren: [0, 176, 140, 150], oak: [250, 176, 140, 150] };
+var YOU_MARK = { x: 146, y: 246 };        // where your own flame shows: +1 when you add it, crossed out when you hold it back
 
-// ── state ────────────────────────────────────────────────────────────────────────────────
-var seed = 1, rng, state, moves = [], phase = 'intro';
-function fresh(){ return M.freshState({ power:0.40, alignment:0.30, sustainability:0.15, stop:0.15 }); }
-function actOf(k){ return ACTS.filter(function(a){ return a.k === k; })[0]; }
-var START_ACT = { k:'start', nm:'The hand the walk began with', alloc:{ power:0.40, alignment:0.30, sustainability:0.15, stop:0.15 }, tog:false };
-// what a move really does: "I don't know" is last year's move again, exactly (the step together included)
-function effOf(k, prev){ if (k !== 'idk') return actOf(k) || START_ACT; return prev || START_ACT; }
-function lastEff(seq){ var e = null; seq.forEach(function(k){ e = effOf(k, e); }); return e; }
-function newWalk(s){ seed = s || 1 + Math.floor(Math.random() * 999999); rng = M.makeRng(seed); state = fresh(); moves = []; }
-function pctOf(a){ return KEYS.map(function(k){ return Math.round(a[k] * 100); }).join('.'); }
-function allocFrom(str){ var n = String(str).split('.').map(Number); if (n.length < 4 || n.slice(0,4).some(function(v){ return !isFinite(v); })) return null;
-  return { a:{ power:n[0]/100, alignment:n[1]/100, sustainability:n[2]/100, stop:n[3]/100 }, t:n[4] === 1 }; }
-function matchAct(a, t){ for (var i = 0; i < ACTS.length; i++){ var x = ACTS[i]; if (x.alloc && x.tog === t && pctOf(x.alloc) === pctOf(a)) return x.k; } return 'own'; }
-function writeHash(){
-  var h = '#v1;s=' + seed + ';a=' + pctOf(state.alloc) + (state.history.length ? ';h=' + state.history.map(function(x){ return pctOf(x.alloc) + '.' + (x.together ? 1 : 0); }).join('_') : '');
-  try { history.replaceState(null, '', location.pathname + location.search + h); } catch (e) {}
-  document.getElementById('to-table').href = 'spread.html' + h;
-}
-function readHash(){
-  var h = location.hash.replace(/^#/, ''); if (h.indexOf('v1') !== 0) return false;
-  var map = {}; h.split(';').slice(1).forEach(function(s){ var i = s.indexOf('='); if (i > 0) map[s.slice(0, i)] = s.slice(i + 1); });
-  if (map.p) return false;   // a walk with changed assumptions belongs to the table, not here
-  newWalk(isFinite(+map.s) ? +map.s : 1);
-  if (map.h) map.h.split('_').forEach(function(sg){ var r = allocFrom(sg); if (!r || state.endpoint) return; state.alloc = r.a; moves.push(matchAct(r.a, r.t)); state = M.stepOnce(state, {}, rng, r.t); });
-  return true;
+/* ── Words ─────────────────────────────────────────────────────────────────── */
+var NUMW = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen'];
+function times(n) { return n === 1 ? 'once' : n === 2 ? 'twice' : (NUMW[n] || n) + ' times'; }
+function holdsW(n) { return n + (n === 1 ? ' hold' : ' holds'); }
+function flamesW(n) { return n + (n === 1 ? ' flame' : ' flames'); }
+function coinsW(n) { return n + (n === 1 ? ' coin' : ' coins'); }
+function HW(h) { return M.HANDW[h]; }
+function joinNames(a) { return a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+var DOOM = 'No way left: even if the fire is in the last box, it gets there before five of you can hold it.';
+
+/* ── Settings (per viewer, in this browser only) ───────────────────────────── */
+function load(k) { try { return window.localStorage.getItem('potato-v3.' + k); } catch (e) { return null; } }
+function save(k, v) { try { window.localStorage.setItem('potato-v3.' + k, v); } catch (e) {} }
+var SET = { slow: load('slow') === '1', read: load('read') === '1' };
+var CAN_SPEAK = typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined';
+if (!CAN_SPEAK) SET.read = false;
+
+/* ── State: the model (S), the round, the drawn values (base + the current timeline) ── */
+var S, ROUNDI = 0, PARAMS, TL, clock = 0, base, RESULTS = [];
+var $ = function (id) { return document.getElementById(id); };
+
+function resetBase(start) {
+  base = { F: start, maxF: start, coins: M.BANK, flintCoins: M.BANK, potAt: 'flint', luggage: true, on: [], c1: '', c2: '', tag: '',
+           seen: 0, seenPop: 0, hand: 0, flint: 'builds', chalk: 0, chalkRub: 0, lower: 0, sink: 0, mound: 0, out: false,
+           burned: false, crack: 0, dim: 0, ended: '', bubble: false, doomUI: false };
+  SEATS.forEach(function (k) { base['reach.' + k] = 0; base['pose.' + k] = 'empty'; });
+  base['pose.flint'] = 'rest';
 }
 
-// ── after a move: every remaining year like it, walked 400 times, said in rough words ─────────
-// (decision #27: coarse bands, after the move, every ending). Same draws for the same state.
-function preview(a){
-  var c = {}, n = 400, al = a.alloc || state.alloc;
-  for (var i = 0; i < n; i++){
-    var r = M.makeRng(state.t * 1009 + i * 7919 + 1), s = M.copyState(state); s.alloc = al; s.history = null;
-    while (!s.endpoint && s.t < P.horizon) M.stepCore(s, P, r, a.tog);
-    var e = s.endpoint || 'still_walking'; c[e] = (c[e] || 0) + 1;
+/* ── Timelines: named tracks of segments on one virtual clock ──────────────── */
+function newTL() { return { tracks: {}, fx: [], end: 0, fxEnd: 0, done: false, capT: 0 }; }
+function seg(tl, name, t0, t1, v0, v1) {
+  (tl.tracks[name] = tl.tracks[name] || []).push({ t0: t0, t1: t1, v0: v0, v1: v1 });
+  tl.end = Math.max(tl.end, t1);
+}
+function set(tl, name, t, v) { seg(tl, name, t, t, undefined, v); }
+function tween(tl, name, t0, dur, v0, v1) { seg(tl, name, t0, t0 + (RM ? 0 : dur), v0, v1); }
+var LINGER = { plusBox: 1, minusBox: 1, plusSeat: 1, coolMark: 1, flintMark: 1, say: 1, loop: 1, downArrow: 1, noFlame: 1, youFlame: 1, coinPop: 1 };
+function fx(tl, o) {
+  tl.fx.push(o);
+  tl.fxEnd = Math.max(tl.fxEnd, (o.t1 || o.t0) + (o.kind === 'flight' ? 350 : 0));
+  if (!LINGER[o.kind]) tl.end = Math.max(tl.end, o.t1 || o.t0);
+}
+function ease(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+function V(name, t) {
+  var v = base[name], segs = TL && !TL.done && TL.tracks[name];
+  if (t === undefined) t = clock;
+  if (!segs) return v;
+  for (var i = 0; i < segs.length; i++) {
+    var s = segs[i];
+    if (t < s.t0) break;
+    if (t >= s.t1 || s.t1 === s.t0) { v = s.v1; continue; }
+    var a = s.v0 === undefined ? v : s.v0;
+    v = (typeof a === 'number' && typeof s.v1 === 'number') ? a + (s.v1 - a) * ease((t - s.t0) / (s.t1 - s.t0)) : s.v1;
   }
-  var out = {}; M.ENDPOINTS.forEach(function(k){ out[k] = (c[k] || 0) / n; });
+  return v;
+}
+function finalize(tl) {
+  Object.keys(tl.tracks).forEach(function (k) { tl.tracks[k].sort(function (a, b) { return a.t0 - b.t0; }); });
+  return tl;
+}
+function bake() {
+  if (!TL) return;
+  Object.keys(TL.tracks).forEach(function (k) { base[k] = V(k, Infinity); });
+}
+
+/* ── Captions and button words, from the rules ─────────────────────────────── */
+// Captions stay within four short lines on a phone: what happened (bold), then the one or two
+// things that matter next. Every number they name is on screen at the same moment.
+function stripesNote(pre, post) {
+  if (post.out || post.maxF <= pre.maxF || post.maxF < M.LO) return '';
+  if (pre.maxF < M.LO) return 'It’s in the striped boxes now: the fire could be in any of them.';
+  return 'No fire up to ' + post.maxF + ': it’s higher up.';
+}
+function wrenNote(post) {
+  if (post.seen >= post.wait) return 'Wren has seen enough: hold it together.';
+  return 'Wren has seen ' + post.seen + ' of ' + post.wait + '.';
+}
+function captionFor(v, pre, post, ev) {
+  var c1 = '', c2 = [], sn = stripesNote(pre, post);
+  var joins = ev.filter(function (e) { return e.type === 'join' && !e.late; }).map(function (e) { return NAME[e.who]; });
+  var late = ev.filter(function (e) { return e.type === 'join' && e.late; }).map(function (e) { return NAME[e.who]; });
+  var hotNo = ev.filter(function (e) { return e.type === 'refuse' && e.why === 'scorching'; }).map(function (e) { return NAME[e.who]; });
+  var cooled = ev.some(function (e) { return e.type === 'cool'; });
+  if (v === 'hold') {
+    c1 = 'You held it: no flame from you.';
+    c2.push('Flint added his: ' + flamesW(post.F) + '. Your hands are ' + HW(post.hand) + '.');
+    // one more thing, the most useful first: into the stripes, Wren ready, what the stripes say, Wren's count
+    if (sn && pre.maxF < M.LO) c2.push(sn);
+    else if (M.ready(post) && !M.ready(pre)) c2.push(wrenNote(post));
+    else if (sn) c2.push(sn);
+    else c2.push(wrenNote(post));
+    if (!sn && M.tooHot(post) && !M.ready(post)) c2.push('Too hot to hold: bounce it or toss it.');
+  } else if (v === 'bounce') {
+    c1 = 'You bounced it: +1 coin, but you added a flame.';
+    c2.push('Flint added his: ' + flamesW(post.F) + '.' + (pre.hand > 0 ? ' Your hands cooled to ' + HW(post.hand) + '.' : ''));
+    if (sn) c2.push(sn);
+    else if (M.ready(post)) c2.push('Wren is ready: hold it together.');
+  } else if (v === 'together') {
+    var five = post.on.length >= M.NEED, stopped = pre.on.length < 3 && post.on.length >= 3;
+    if (joins.length && !hotNo.length) c1 = 'Wren said yes, and ' + joinNames(joins.slice(1)) + ' followed.';
+    else if (joins.length) c1 = joinNames(joins) + ' said yes; ' + joinNames(hotNo) + (late.length ? ' waited: it was scorching.' : ' said no: it’s scorching.');
+    else c1 = 'You held it together: it cooled to ' + post.F + '.';
+    if (!joins.length && late.length) c2.push(joinNames(late) + ' joined: five pairs of hands.');
+    else if (!joins.length) c2.push('Still scorching: keep holding it together.');
+    else if (hotNo.length && late.length) c2.push('Three holding it stopped Flint and cooled it to ' + post.F + ', so ' + joinNames(late) + ' joined.');
+    else if (hotNo.length) c2.push('Three holding it stopped Flint and cooled it to ' + post.F + '. Keep holding it together.');
+    else c2.push('Five pairs of hands, and Flint has stopped.');
+    if (five) c2.push('Put it down to keep your coins.');
+  }
+  return [c1, c2.join(' ')];
+}
+function nextHoldsW(s) { var n = s.wait - s.seen; return n === 1 ? 'one more hold' : NUMW[n] + ' more holds'; }
+// What a move would do to the heat, read from the rules: the hottest it would get, and whether it
+// would leave no way to put it down even if the fire is in the last box.
+function lookAhead(v) {
+  var t = M.clone(S); t.burn = 99; M.step(t, v);
+  return { maxF: t.maxF, doom: t.maxF >= M.TOP || !M.canWin(t) };
+}
+function fireNote(v) {
+  var r = lookAhead(v);
+  if (r.maxF >= M.TOP) return '→ ' + r.maxF + ': it catches fire';
+  if (r.doom) return '→ ' + r.maxF + ': no way back';
+  if (r.maxF > S.maxF && r.maxF >= M.LO) return '→ ' + r.maxF + ': may catch fire';
+  return '';
+}
+// What each button will do now, or why it isn't lit: { lit, s, w (a warning, or ''), soft, why: [c1, c2] }.
+function verbInfo(v) {
+  var s = S, o = M.offered(s), lit = o.indexOf(v) >= 0, alone = s.on.length === 1, n;
+  if (s.out) return { lit: false, s: v === 'down' && s.out === 'down' ? 'you keep your coins' : 'the round is over', w: '', why: ['This round is over.', ''] };
+  if (v === 'hold') {
+    if (lit) return { lit: true, s: '+1 flame (Flint’s)', g: 'slow down alone', w: fireNote('hold') };
+    if (!alone) return { lit: false, s: 'not now: holding it together', w: '', why: ['You’re already holding it, together with the others.', 'Put it down, or keep holding it together.'] };
+    return { lit: false, s: 'not now: hands too hot', w: '',
+             why: ['Not now: your hands are too hot to hold it alone.', M.ready(s) ? 'Wren is ready: hold it together, and the others take the heat.' : 'Bounce it to cool them a step, or toss it to cool them at once.'] };
+  }
+  if (v === 'bounce') {
+    if (!lit) return { lit: false, s: 'not now: holding it together', w: '', why: ['You’re holding it together with the others.', 'Put it down, or keep holding it together.'] };
+    return { lit: true, s: '+1 coin, +2 flames', g: 'carry on building', w: fireNote('bounce') };
+  }
+  if (v === 'toss') {
+    var f = fireNote('toss');
+    return { lit: true, s: '+5 coins, +6 flames', g: 'race ahead', w: f,
+             soft: s.on.length > 1 ? 'they let go, Wren −1' : s.seen > 0 ? 'Wren −1 hold' : '' };
+  }
+  if (v === 'together') {
+    if (!lit) {
+      if (!alone) return { lit: false, s: 'everyone’s holding it', w: '', why: ['All five of you are holding it.', 'Put it down to keep your coins.'] };
+      return { lit: false, s: 'not yet: Wren wants ' + (s.wait - s.seen) + ' more', w: '',
+               why: ['Not yet: Wren wants to see you hold it ' + s.wait + (s.wait === 1 ? ' time' : ' times') + ' first.', 'She has seen ' + s.seen + '. Hold it, and she counts it.'] };
+    }
+    if (alone) return { lit: true, s: M.scorching(s) ? 'ask: 3 of you, not 5' : 'ask: the others follow', g: M.scorching(s) ? 'Reed, Oak: too hot' : 'slow down together', w: '' };
+    return { lit: true, s: '−1 flame a move', g: 'Reed and Oak wait', w: '' };
+  }
+  if (v === 'down') {
+    if (lit) return { lit: true, s: 'stop the race together: keep your coins', w: '' };
+    n = s.on.length;
+    return { lit: false, s: 'needs five pairs of hands', w: '',
+             why: ['Not yet: it takes five pairs of hands to put it down.', n === 1 ? 'Right now it’s only yours.' : 'Now there are ' + NUMW[n] + '.'] };
+  }
+}
+
+/* ── Building a move ───────────────────────────────────────────────────────── */
+function flight(tl, from, to, t0, dur, trail) {
+  if (RM) { set(tl, 'potAt', t0, to); return; }
+  fx(tl, { kind: 'flight', from: from, to: to, t0: t0, t1: t0 + dur, trail: trail });
+  set(tl, 'potAt', t0 + dur, to);
+}
+function plus(tl, t, box, seat, text) {
+  fx(tl, { kind: 'plusBox', box: box, t0: t, t1: t + 1100 });
+  if (seat) fx(tl, { kind: 'plusSeat', seat: seat, text: text || '+1', t0: t, t1: t + 1100 });
+}
+// Everything the words name changes when the words do: flames, the stripes, your hands, Wren's
+// dots, your coins and Flint's. (A burn zeroes the coins when it happens, not before.)
+function readouts(tl, t, post) {
+  var burned = post.out === 'burned';
+  set(tl, 'F', t, post.F); set(tl, 'maxF', t, post.maxF);
+  set(tl, 'hand', t, post.hand); set(tl, 'seen', t, post.seen);
+  set(tl, 'coins', t, burned ? post.lost : post.coins);
+  set(tl, 'flintCoins', t, burned ? post.flintLost : post.flint);
+}
+function burnAt(tl, t, post) {
+  set(tl, 'burned', t, true);
+  tween(tl, 'crack', t, 400, 0, 1);
+  set(tl, 'coins', t, 0); set(tl, 'flintCoins', t, 0);
+  set(tl, 'c1', t, 'It caught fire at ' + flamesW(post.burn) + '.');
+  set(tl, 'c2', t, 'It burned every pair of hands at the table, Flint’s too, and all their coins.');
+  set(tl, 'tag', t, '');
+  set(tl, 'ended', t + 1300, 'burned');
+  tl.end = t + 1300; tl.capT = t;
+  tl.stop = true;
+}
+function flintBuild(tl, A, ev, post) {        // Flint's flame: a spark from Flint to the potato, +1 in its box
+  var fb = ev.filter(function (e) { return e.type === 'flame' && e.by === 'flint'; })[0];
+  if (!fb) return A;
+  if (RM) fx(tl, { kind: 'flintMark', t0: A, t1: A + 1300 });
+  else fx(tl, { kind: 'spark', t0: A, t1: A + 280 });
+  plus(tl, A, fb.F, 'flint', '+1 flame');
+  if (post.out === 'burned') burnAt(tl, A + (RM ? 0 : 300), post);
+  return A + 300;
+}
+function coolFx(tl, A, ev) {
+  var c = ev.filter(function (e) { return e.type === 'cool'; })[0];
+  if (!c) return A;
+  fx(tl, { kind: 'minusBox', box: c.F + 1, t0: A, t1: A + 1100 });
+  fx(tl, { kind: 'coolMark', t0: A, t1: A + 1100 });
+  return A + 150;
+}
+// The lap: off your hands, round the ring, a flame at each seat, back into your hands. The flames
+// climb in the box as it goes round, and the caption says the total when it's back.
+function buildRound(tl, pre, post, ev) {
+  var mid = pre.on.length > 1, flames = ev.filter(function (e) { return e.type === 'flame'; });
+  var burn = ev.filter(function (e) { return e.type === 'burn'; })[0];
+  set(tl, 'hand', 0, 0); set(tl, 'seen', 0, post.seen);
+  set(tl, 'coins', 0, pre.coins + M.TOSS_COINS);
+  fx(tl, { kind: 'coinPop', n: M.TOSS_COINS, t0: 0, t1: 1600 });
+  set(tl, 'on', 0, []);
+  set(tl, 'tag', 0, 'tossed');
+  if (pre.seen > 0) { set(tl, 'seenPop', 0, -1); set(tl, 'seenPop', 1400, 0); }
+  if (base.flint === 'stopped') set(tl, 'flint', 0, 'builds');
+  if (mid) pre.on.forEach(function (k) { set(tl, 'pose.' + k, 0, 'empty'); tween(tl, 'reach.' + k, 0, 300, 1, 0); });
+  if (pre.on.length >= 3) { tween(tl, 'chalkRub', 0, 300, 0, 1); set(tl, 'chalk', 300, 0); set(tl, 'chalkRub', 320, 0); }
+  var sn = stripesNote(pre, post);
+  var back = [(pre.seen > 0 ? 'Wren crossed out a hold (' + post.seen + ' of ' + post.wait + ').' : ''),
+              sn || (post.F >= M.SCORCH && pre.F < M.SCORCH ? 'It’s scorching: Reed and Oak won’t touch it.' : '')].filter(Boolean).join(' ');
+  function backAt(t) {
+    set(tl, 'c1', t, 'It came back six flames hotter: ' + flamesW(post.F) + '.');
+    set(tl, 'c2', t, back || 'Your hands are cool.');
+    tl.capT = t;
+  }
+  if (RM) {
+    set(tl, 'pose.you', 0, burn ? 'empty' : 'rest');
+    set(tl, 'potAt', 0, burn ? (burn.by === 'you' ? 'wren' : burn.by) : 'you');
+    readouts(tl, 0, post);
+    fx(tl, { kind: 'loop', t0: 0, t1: 1500, flames: flames.map(function (e) { return e.by; }) });
+    if (burn) { burnAt(tl, 0, post); return 0; }
+    set(tl, 'on', 0, ['you']); set(tl, 'tag', 0, 'back');
+    backAt(0);
+    return 400;
+  }
+  var from = mid ? 'middle' : 'you', L;
+  set(tl, 'pose.you', 0, 'empty');
+  var f0 = flames[0];
+  set(tl, 'F', 100, f0.F); set(tl, 'maxF', 100, Math.max(pre.maxF, f0.F)); plus(tl, 100, f0.F, 'you');
+  flight(tl, from, 'wren', 0, 320, true);
+  L = 320;
+  if (burn && burn.by === 'you') { set(tl, 'pose.wren', L, 'rest'); set(tl, 'flintCoins', 0, post.flintLost); burnAt(tl, L, post); return L; }
+  var ring = ['wren', 'moss', 'flint', 'reed', 'oak'];
+  for (var i = 0; i < ring.length; i++) {
+    var k = ring[i], e = null;
+    flames.forEach(function (f) { if (f.by === k) e = f; });
+    if (!e) break;
+    set(tl, 'pose.' + k, L, 'rest');
+    set(tl, 'F', L, e.F); set(tl, 'maxF', L, Math.max(pre.maxF, e.F)); plus(tl, L, e.F, k);
+    if (burn && burn.by === k) { set(tl, 'flintCoins', 0, post.flintLost); burnAt(tl, L, post); return L; }
+    set(tl, 'pose.' + k, L + 130, 'empty');
+    flight(tl, k, ring[i + 1] || 'you', L + 130, 200, true);
+    L += 330;
+  }
+  set(tl, 'pose.you', L, 'rest');
+  set(tl, 'on', L, ['you']);
+  set(tl, 'tag', L, 'back');
+  backAt(L);
+  return L + 150;
+}
+function build(v, pre, post, ev) {
+  var tl = newTL(), E = 0;
+  set(tl, 'luggage', 0, false); set(tl, 'bubble', 0, false);
+  if (v === 'toss') {
+    set(tl, 'c1', 0, 'You tossed it on: +5 coins, and your hands are cool.');
+    set(tl, 'c2', 0, 'Everyone races after you: a flame at every seat.' + (pre.on.length > 1 ? ' The others let go.' : ''));
+    E = buildRound(tl, pre, post, ev);
+    tl.end = Math.max(tl.end, E);
+    return finalize(tl);
+  }
+  if (v === 'down') {
+    pre.on.forEach(function (k) { set(tl, 'pose.' + k, 0, 'rest'); });
+    tween(tl, 'lower', 0, 300, 0, 1);
+    tween(tl, 'sink', 300, 400, 0, 1);
+    tween(tl, 'mound', 450, 250, 0, 1);
+    tween(tl, 'chalk', 0, 300, undefined, 0);
+    if (RM) fx(tl, { kind: 'downArrow', t0: 0, t1: 1500 });
+    set(tl, 'potAt', 700, 'ground');
+    set(tl, 'out', 700, true);
+    set(tl, 'tag', 0, '');
+    pre.on.forEach(function (k) { set(tl, 'pose.' + k, 700, 'empty'); tween(tl, 'reach.' + k, 700, 300, 1, 0); });
+    tween(tl, 'lower', 700, 300, 1, 0);
+    set(tl, 'c1', 0, 'You put it down together.');
+    set(tl, 'c2', 0, 'You keep your ' + coinsW(post.coins) + '. Nobody got burned.');
+    tween(tl, 'dim', 1500, 300, 0, 1);
+    set(tl, 'ended', 1500, 'down');
+    tl.end = Math.max(tl.end, 1800);
+    return finalize(tl);
+  }
+  var cc = captionFor(v, pre, post, ev);
+  set(tl, 'c1', 0, cc[0]); set(tl, 'c2', 0, cc[1]);
+  readouts(tl, 0, post);
+  if (v === 'hold') {
+    set(tl, 'pose.you', 0, 'grip');
+    set(tl, 'tag', 0, 'holding it');
+    if (RM) fx(tl, { kind: 'wave', t0: 0, t1: 900, still: true });
+    else fx(tl, { kind: 'wave', t0: 60, t1: 380 });
+    fx(tl, { kind: 'noFlame', t0: 0, t1: 1300 });
+    set(tl, 'seenPop', 0, 1); set(tl, 'seenPop', 1400, 0);
+    E = flintBuild(tl, RM ? 0 : 120, ev, post);
+    if (tl.stop) return finalize(tl);
+    tl.end = Math.max(tl.end, 800);
+    return finalize(tl);
+  }
+  if (v === 'bounce') {
+    var yf = ev.filter(function (e) { return e.type === 'flame' && e.by === 'you'; })[0];
+    set(tl, 'pose.you', 0, 'relaxed');
+    set(tl, 'tag', 0, 'bouncing');
+    if (!RM) { fx(tl, { kind: 'bounce', t0: 0, t1: 720 }); if (pre.hand > 0) fx(tl, { kind: 'vent', t0: 120, t1: 820 }); }
+    fx(tl, { kind: 'coinPop', n: M.BOUNCE_COINS, t0: 0, t1: 1500 });
+    fx(tl, { kind: 'youFlame', t0: 0, t1: 1300 });
+    if (yf) fx(tl, { kind: 'plusBox', box: yf.F, t0: 0, t1: 1100 });
+    if (post.out === 'burned' && !ev.some(function (e) { return e.type === 'build'; })) { burnAt(tl, RM ? 0 : 300, post); return finalize(tl); }
+    E = flintBuild(tl, RM ? 0 : 120, ev, post);
+    if (tl.stop) return finalize(tl);
+    tl.end = Math.max(tl.end, 820);
+    return finalize(tl);
+  }
+  if (v === 'together') {
+    var joins = ev.filter(function (e) { return e.type === 'join' && !e.late; }), late = ev.filter(function (e) { return e.type === 'join' && e.late; });
+    var refs = ev.filter(function (e) { return e.type === 'refuse'; }), T = 0;
+    var mid = pre.on.length > 1;
+    set(tl, 'pose.you', 0, 'grip');
+    set(tl, 'tag', 0, 'together');
+    set(tl, 'on', 0, post.on.slice());
+    if (!mid) { tween(tl, 'reach.you', 0, 300, 0, 1); flight(tl, 'you', 'middle', 0, 300, false); T = RM ? 0 : 300; }
+    joins.forEach(function (e, i) {
+      var tj = T + (RM ? 0 : 260 * i);
+      set(tl, 'pose.' + e.who, tj, 'grip');
+      tween(tl, 'reach.' + e.who, tj, 250, 0, 1);
+      fx(tl, { kind: 'say', seat: e.who, text: 'Yes', ok: true, t0: tj, t1: tj + 1500 });
+    });
+    var tEnd = T + (RM ? 0 : 260 * joins.length);
+    if (pre.on.length < 3 && post.on.length >= 3) { tween(tl, 'chalk', 0, 600, 0, 1); set(tl, 'flint', 0, 'stopped'); }
+    E = coolFx(tl, tEnd + (RM ? 0 : 450), ev);
+    var lateAt = E + (RM ? 0 : 500);
+    refs.forEach(function (e) { if (e.why === 'scorching') fx(tl, { kind: 'say', seat: e.who, text: 'Too hot', t0: tEnd, t1: late.length ? lateAt : tEnd + 1700 }); });
+    late.forEach(function (e, i) {
+      var tj = lateAt + (RM ? 0 : 260 * i);
+      set(tl, 'pose.' + e.who, tj, 'grip');
+      tween(tl, 'reach.' + e.who, tj, 250, 0, 1);
+      fx(tl, { kind: 'say', seat: e.who, text: 'Yes', ok: true, t0: tj, t1: tj + 1500 });
+    });
+    tl.end = Math.max(tl.end, (late.length ? lateAt : E) + 250 + (RM ? 0 : 260 * late.length));
+    return finalize(tl);
+  }
+}
+// No way left, and you chose to see it: Flint keeps adding flames until it catches fire.
+function buildPlayOut(pre, post, ev) {
+  var tl = newTL(), t = 0;
+  set(tl, 'c1', 0, 'No way left: Flint keeps adding flames.'); set(tl, 'c2', 0, '');
+  set(tl, 'doomUI', 0, false);
+  var fl = ev.filter(function (e) { return e.type === 'flame'; });
+  fl.forEach(function (e) {
+    if (!RM) fx(tl, { kind: 'spark', t0: t, t1: t + 260 });
+    set(tl, 'F', t + (RM ? 0 : 260), e.F); set(tl, 'maxF', t + (RM ? 0 : 260), Math.max(pre.maxF, e.F));
+    plus(tl, t + (RM ? 0 : 260), e.F, 'flint', '+1 flame');
+    t += RM ? 0 : 420;
+  });
+  set(tl, 'flintCoins', 0, post.flintLost);
+  burnAt(tl, t + (RM ? 0 : 100), post);
+  return finalize(tl);
+}
+function introText() {
+  var p = PARAMS;
+  if (ROUNDI === 0) return ['Flint tossed you the potato: the race to build AI. Everyone at this table is building it.',
+                            'Hold it to slow down. Wren, another builder, joins once she’s seen you hold it twice.'];
+  if (ROUNDI === 1) return ['Round 2: Wren wants to see 4 holds, and your hands can take 3.',
+                            'Every move, Flint still adds a flame. Is there room to race?'];
+  if (ROUNDI === 2) return ['Round 3: it starts hotter, at 3 flames. Wren wants 2 holds.',
+                            'Race, or not? The fire is somewhere in the stripes.'];
+  return ['Round ' + (ROUNDI + 1) + ': it starts at ' + flamesW(p.start) + ', and Wren wants ' + holdsW(p.wait) + '.',
+          'The fire is somewhere in the striped boxes, in a new place.'];
+}
+function buildIntro() {
+  var tl = newTL(), it = introText();
+  set(tl, 'c1', 0, it[0]); set(tl, 'c2', 0, it[1]);
+  set(tl, 'tag', 0, '');
+  set(tl, 'bubble', RM ? 0 : 100, true);
+  set(tl, 'pose.flint', RM ? 0 : 700, 'empty');
+  if (RM) set(tl, 'potAt', 0, 'you');
+  else flight(tl, 'flint', 'you', 700, 450, true);
+  set(tl, 'pose.you', RM ? 0 : 1150, 'rest');
+  set(tl, 'on', RM ? 0 : 1150, ['you']);
+  set(tl, 'tag', RM ? 0 : 1150, 'yours');
+  set(tl, 'bubble', RM ? 1600 : 1300, false);
+  tl.end = RM ? 1600 : 1300;
+  return finalize(tl);
+}
+
+/* ── Drawing: the stage (SVG) ──────────────────────────────────────────────── */
+var U = 1;        // viewBox units per CSS pixel, so SVG text can be sized in real pixels
+function rot(g, lx, ly) { var c = Math.cos(g.alpha), s = Math.sin(g.alpha); return { x: c * lx - s * ly, y: s * lx + c * ly }; }
+var POSE_HOME = {   // local to the potato in that seat's hands; +x toward the right mitten, -y toward the middle
+  grip:    function (mw, mh) { return { x: R + mw * 0.24, y: mh * 0.08, r: -16, over: true, curl: true }; },
+  rest:    function (mw, mh) { return { x: R + mw * 0.26, y: mh * 0.2, r: -4, over: true }; },
+  relaxed: function (mw, mh) { return { x: R + mw * 0.34, y: mh * 0.42, r: 18, over: false, crease: true }; },
+  empty:   function (mw, mh) { return { x: mw * 0.8, y: mh * 0.15, r: 8, over: false, crease: true }; }
+};
+var POSE_RING = {   // local to the potato in the middle; the pair sits on its own seat's side
+  grip:    function (mw, mh) { return { x: mw * 0.62, y: R + mh * 0.2, r: -10, over: true, curl: true }; },
+  rest:    function (mw, mh) { return { x: mw * 0.66, y: R + mh * 0.32, r: 0, over: true }; },
+  relaxed: function (mw, mh) { return { x: mw * 0.9, y: R + mh * 0.3, r: 16, over: false, crease: true }; },
+  empty:   function (mw, mh) { return { x: mw * 0.9, y: R + mh * 0.6, r: 14, over: false, crease: true }; }
+};
+function mittens(k, t) {
+  var g = G[k], reach = V('reach.' + k, t), pose = V('pose.' + k, t) || 'empty', lower = V('lower', t) || 0;
+  var hw = g.big ? 36 : 16, hh = g.big ? 44 : 24, rw = g.big ? 17 : 13, rh = g.big ? 25 : 21;
+  var ph = POSE_HOME[pose](hw, hh), pr = POSE_RING[pose](rw, rh), e = ease(Math.max(0, Math.min(1, reach)));
+  var out = [];
+  [1, -1].forEach(function (side) {
+    var h = rot(g, side * ph.x, ph.y), r = rot(g, side * pr.x, pr.y);
+    var hx = g.a.x + h.x, hy = g.a.y + h.y, rx = C.x + r.x, ry = C.y + r.y;
+    var lz = lower * 8 * e;
+    out.push({ x: hx + (rx - hx) * e, y: hy + (ry - hy) * e + lz, rot: g.phi + 90 + side * (ph.r + (pr.r - ph.r) * e),
+               w: hw + (rw - hw) * e, h: hh + (rh - hh) * e, side: side, over: e > 0.5 ? pr.over : ph.over,
+               curl: e > 0.5 ? pr.curl : ph.curl, crease: e > 0.5 ? pr.crease : ph.crease, big: g.big, reach: e });
+  });
   return out;
 }
-function band(q){ return q === 0 ? 'almost never' : q < 0.05 ? 'rarely' : q < 0.25 ? 'sometimes' : q < 0.6 ? 'often' : 'most times'; }
-var BAND_ROWS = [ ['planted', ['grace','sustainable_turn']], ['the_stop', ['the_stop']], ['adolescence', ['adolescence']],
-  ['lock_in', ['lock_in']], ['doom', ['doom']], ['still_walking', ['still_walking']] ];
-function afterLine(a){
-  var pv = preview(a), rows = BAND_ROWS.map(function(r){
-    var q = r[1].reduce(function(t, k){ return t + pv[k]; }, 0);
-    return ENDS[r[1][0]].sh + ' <b>' + band(q) + '</b>';
+function f1(n) { return Math.round(n * 10) / 10; }
+function mittenSVG(m, lvl, burned) {
+  var w = m.w, h = m.h, sw = m.big ? 2.6 : 1.8;
+  var fill = burned ? 'url(#hb)' : lvl === 0 ? 'var(--mitt)' : lvl === 1 ? 'var(--h1)' : lvl === 2 ? 'url(#h2)' : 'var(--h4)';
+  var fillAttr = fill.indexOf('url') === 0 ? 'fill="' + fill + '"' : 'style="fill:' + fill + '"';
+  var body = 'M' + f1(-w / 2) + ',' + f1(h / 2) + 'L' + f1(-w / 2) + ',' + f1(-h / 2 + w / 2) + 'A' + f1(w / 2) + ',' + f1(w / 2) + ' 0 0 1 ' + f1(w / 2) + ',' + f1(-h / 2 + w / 2) + 'L' + f1(w / 2) + ',' + f1(h / 2) + 'Z';
+  var s = '<g transform="translate(' + f1(m.x) + ' ' + f1(m.y) + ') rotate(' + f1(m.rot) + ') scale(' + (m.side === 1 ? 1 : -1) + ' 1)">';
+  s += '<ellipse cx="' + f1(-w * 0.5) + '" cy="' + f1(h * 0.06) + '" rx="' + f1(w * 0.24) + '" ry="' + f1(h * 0.2) + '" transform="rotate(-22 ' + f1(-w * 0.5) + ' ' + f1(h * 0.06) + ')" ' + fillAttr + ' style="stroke:var(--ink)" stroke-width="' + sw + '"/>';
+  if (lvl === 3 && !burned) s += '<path d="' + body + '" transform="scale(1.16)" fill="none" style="stroke:var(--h4)" stroke-width="' + (sw + 0.6) + '" stroke-dasharray="2.4 1.6"/>';
+  s += '<path d="' + body + '" ' + fillAttr + ' style="stroke:var(--ink)" stroke-width="' + sw + '" stroke-linejoin="round"/>';
+  s += '<rect x="' + f1(-w / 2) + '" y="' + f1(h / 2 - h * 0.18) + '" width="' + f1(w) + '" height="' + f1(h * 0.18) + '" style="fill:var(--cuff);stroke:var(--ink)" stroke-width="' + sw + '"/>';
+  if (m.curl) {
+    s += '<path d="M' + f1(-w * 0.34) + ',' + f1(-h * 0.2) + 'q' + f1(w * 0.34) + ',' + f1(-h * 0.13) + ' ' + f1(w * 0.68) + ',0M' + f1(-w * 0.34) + ',' + f1(-h * 0.02) + 'q' + f1(w * 0.34) + ',' + f1(-h * 0.13) + ' ' + f1(w * 0.68) + ',0" fill="none" style="stroke:var(--ink)" stroke-width="' + (sw * 0.8) + '" stroke-linecap="round"/>';
+  } else if (m.crease) {
+    s += '<path d="M' + f1(-w * 0.22) + ',' + f1(h * 0.1) + 'q' + f1(w * 0.22) + ',' + f1(h * 0.1) + ' ' + f1(w * 0.44) + ',0" fill="none" style="stroke:var(--ink)" stroke-width="' + (sw * 0.7) + '" stroke-linecap="round" opacity=".6"/>';
+  }
+  return s + '</g>';
+}
+function sleeves(k, ms) {
+  var g = G[k], e = ms[0].reach;
+  if (e < 0.03) return '';
+  var s = '';
+  ms.forEach(function (m) {
+    var sh = g.big ? rot(g, m.side * 30, -20) : rot(g, m.side * 10, 22);
+    var wr = { x: m.x - Math.sin(m.rot * Math.PI / 180) * -m.h * 0.45, y: m.y + Math.cos(m.rot * Math.PI / 180) * m.h * 0.45 };
+    s += '<line x1="' + f1(g.a.x + sh.x) + '" y1="' + f1(g.a.y + sh.y) + '" x2="' + f1(wr.x) + '" y2="' + f1(wr.y) + '" style="stroke:var(--ink)" stroke-width="' + (g.big ? 2.4 : 1.5) + '" opacity=".75" stroke-linecap="round"/>';
   });
-  var nm = a.k === 'start' ? 'the starting hand' : a.nm.toLowerCase();
-  return 'If every year from here were <b>' + nm + '</b>, in 400 walks: ' + rows.join(' · ') + '. A property of that path, not a prediction.';
+  return s;
 }
-var afterHTML = '';
-// the heat: the model's yearly risk without this year's shock, i.e. what was built against how
-// well it is understood. Shocks are shown apart, as a flare for one year.
-function baseRisk(s){ return P.riskBase * Math.pow(s.capability, P.alpha) * Math.exp(-P.beta * M.alignRatio(s)); }
-// the glow on the stage uses a square root so small heats still show
-function heat01(r){ return Math.max(0, Math.min(1, Math.sqrt(r / 0.08))); }
-// the ring as people: ten in the ring; the model's coordination x 10, rounded down, are holding it.
-// The bar (stagK 0.60) is exactly 6 of 10. The guard keeps the count on the model's side of the bar
-// even where floating point would round across it.
-var PEOPLE = 10, NEED = Math.round(P.stagK * PEOPLE);
-function holding(c){ var n = Math.floor(c * PEOPLE + 1e-9); return c >= P.stagK ? Math.max(n, NEED) : Math.min(n, NEED - 1); }
-function countSay(c){ return '<b>' + holding(c) + '</b> of ' + PEOPLE + ' people are holding it; you need <b>' + NEED + '</b>'; }
-
-// ── the stage ────────────────────────────────────────────────────────────────────────────
-var cv = document.getElementById('stage'), cx = cv.getContext('2d');
-var W = 900, H = 460, N = 10, DPR = 1;
-var COLS = ['#cfe2ff','#ffc9d9','#ffe0a8','#bde8d6','#d9c9ff','#ffd2b8','#c6e4ff','#e8f2b0','#f2c9ff','#c9f0ff'];
-var anim = { holder:0, from:0, to:0, p:1, heat:0, heatShown:0, ring:0.30, ringShown:0.30, center:false, centerP:0, end:null, endP:0, t0:performance.now(), stars:[] };
-var spiral = new Path2D(document.getElementById('spiral-path').getAttribute('d'));
-var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-function sizeStage(){
-  var w = cv.parentNode.clientWidth; DPR = Math.min(2, window.devicePixelRatio || 1);
-  W = w; H = Math.max(270, Math.min(Math.round(innerHeight * 0.5), 420, Math.round(w * 0.56)));
-  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); cv.style.height = H + 'px';
-  cx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  if (!anim.stars.length) for (var i = 0; i < 90; i++) anim.stars.push([Math.random(), Math.random(), Math.random()]);
+function anchorOf(p) { return p === 'middle' || p === 'ground' ? C : G[p] ? G[p].a : C; }
+function bez(a, c, b, p) { var q = 1 - p; return { x: q * q * a.x + 2 * q * p * c.x + p * p * b.x, y: q * q * a.y + 2 * q * p * c.y + p * p * b.y }; }
+function ctrlOf(a, b) {
+  var m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }, dx = C.x - m.x, dy = C.y - m.y, d = Math.hypot(dx, dy);
+  if (d < 25) { var nx = -(b.y - a.y), ny = b.x - a.x, nl = Math.hypot(nx, ny) || 1; return { x: m.x + nx / nl * 70, y: m.y + ny / nl * 70 }; }
+  return { x: m.x + dx * 0.45, y: m.y + dy * 0.45 };
 }
-function ringR(){ return Math.min(W, H) * (W < 560 ? 0.30 : 0.33); }
-function agentPos(i, tt){ var a = -Math.PI / 2 + i * 2 * Math.PI / N + (phase === 'intro' ? tt * 0.00005 : 0); var R = ringR(); return [W / 2 + R * Math.cos(a), H * 0.42 + R * Math.sin(a) * 0.82]; }
-function lerp(a, b, t){ return a + (b - a) * t; }
-function heatColor(h){ // soil -> heat -> heat-hi
-  var c1 = [90,64,48], c2 = [255,116,64], c3 = [255,208,138], c = h < 0.6 ? [c1, c2, h / 0.6] : [c2, c3, (h - 0.6) / 0.4];
-  var r = c[0].map(function(v, i){ return Math.round(lerp(v, c[1][i], Math.min(1, c[2]))); }); return 'rgb(' + r.join(',') + ')'; }
-function drawAgent(x, y, col, dim, lit){
-  var k = Math.max(1, Math.min(1.6, ringR() / 110));
-  if (lit){ cx.fillStyle = 'rgba(116,216,180,.22)'; cx.beginPath(); cx.arc(x, y, 15 * k, 0, Math.PI * 2); cx.fill(); }
-  cx.globalAlpha = dim ? 0.3 : 1;
-  cx.fillStyle = col; cx.beginPath(); cx.arc(x, y - 9 * k, 5.5 * k, 0, Math.PI * 2); cx.fill();
-  cx.beginPath(); cx.moveTo(x - 7 * k, y + 9 * k); cx.quadraticCurveTo(x, y - 5 * k, x + 7 * k, y + 9 * k); cx.closePath(); cx.fill();
-  cx.globalAlpha = 1;
+function activeFx(kind, t) {
+  if (!TL) return null;
+  for (var i = TL.fx.length - 1; i >= 0; i--) { var f = TL.fx[i]; if (f.kind === kind && t >= f.t0 && t < f.t1) return f; }
+  return null;
 }
-function draw(now){
-  var tt = now - anim.t0;
-  cx.clearRect(0, 0, W, H);
-  // stars
-  anim.stars.forEach(function(s){ cx.fillStyle = 'rgba(207,226,255,' + (0.15 + 0.35 * s[2]) + ')'; cx.fillRect(s[0] * W, s[1] * H, 1.2, 1.2); });
-  anim.heatShown = lerp(anim.heatShown, anim.heat, 0.06); anim.ringShown = lerp(anim.ringShown, anim.ring, 0.06);
-  if (anim.p < 1) anim.p = Math.min(1, anim.p + (reduce ? 1 : 0.028));
-  anim.centerP = lerp(anim.centerP, anim.center ? 1 : 0, 0.05);
-  if (anim.end) anim.endP = Math.min(1, anim.endP + 0.006);
-  var cxm = W / 2, cym = H * 0.42, R = ringR();
-  var ended = anim.end, planted = ended && ENDS[ended].planted, dimOthers = ended === 'lock_in' || ended === 'doom';
-  // the shared ground
-  var gA = 0.25 + 0.6 * anim.centerP;
-  cx.fillStyle = 'rgba(90,64,48,' + gA + ')'; cx.beginPath(); cx.ellipse(cxm, cym + 10, R * 0.34, R * 0.12, 0, 0, Math.PI * 2); cx.fill();
-  // hands: the people holding it (the model's coordination as a count) join hands with their
-  // neighbours; the seat that would make it enough is ringed until someone is there
-  var held = phase === 'intro' ? holding(0.30) : holding(anim.ring);
-  for (var i = 0; i < N; i++){
-    var a = agentPos(i, tt), b = agentPos((i + 1) % N, tt), on = (i < held - 1) || (held === N);
-    cx.strokeStyle = on ? 'rgba(116,216,180,.85)' : 'rgba(152,161,176,.18)';
-    cx.lineWidth = on ? 2.2 : 1; cx.setLineDash(on ? [] : [3, 5]);
-    cx.beginPath(); cx.moveTo(a[0], a[1]); cx.lineTo(b[0], b[1]); cx.stroke();
-    if (on){ var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; cx.fillStyle = '#74d8b4'; cx.beginPath(); cx.arc(mx, my, 2.6, 0, Math.PI * 2); cx.fill(); }
+function potPos(t) {
+  var f = activeFx('flight', t);
+  if (f) {
+    var a = anchorOf(f.from), b = anchorOf(f.to), p = ease((t - f.t0) / (f.t1 - f.t0));
+    return f.trail ? bez(a, ctrlOf(a, b), b, p) : { x: a.x + (b.x - a.x) * p, y: a.y + (b.y - a.y) * p };
   }
-  cx.setLineDash([]);
-  if (held < NEED && !ended){ var nq = agentPos(NEED - 1, tt), kk = Math.max(1, Math.min(1.6, ringR() / 110));
-    cx.strokeStyle = 'rgba(238,231,218,.55)'; cx.setLineDash([2, 3]); cx.lineWidth = 1.2; cx.beginPath(); cx.arc(nq[0], nq[1], 17 * kk, 0, Math.PI * 2); cx.stroke(); cx.setLineDash([]); }
-  // the planted spiral
-  if (planted){
-    cx.save(); cx.translate(cxm - R * 0.9, cym - R * 0.9 * 0.82); cx.scale(R * 1.8 / 90, R * 1.8 * 0.82 / 90); cx.translate(-5, -5);
-    cx.strokeStyle = 'rgba(116,216,180,' + (0.2 + 0.7 * anim.endP) + ')'; cx.lineWidth = 2.2 * 90 / (R * 1.8);
-    cx.setLineDash([900 * anim.endP, 2000]); cx.stroke(spiral); cx.restore(); cx.setLineDash([]);
+  var at = V('potAt', t), pt = anchorOf(at);
+  var lz = (V('lower', t) || 0) * 8, sk = (V('sink', t) || 0) * 34;
+  var bo = activeFx('bounce', t), bx = 0, by = 0;
+  if (bo && at === 'you') {             // Bounce it: hop from one mitten to the other and back
+    var q = (t - bo.t0) / (bo.t1 - bo.t0);
+    bx = Math.sin(q * Math.PI * 2) * 26; by = -Math.abs(Math.sin(q * Math.PI * 2)) * 22;
   }
-  // agents
-  for (var j = 0; j < N; j++){ var q = agentPos(j, tt); drawAgent(q[0], q[1], COLS[j], (dimOthers && j !== anim.holder) || (!dimOthers && j >= held), !dimOthers && j < held); }
-  if (phase === 'intro') { requestAnimationFrame(draw); return; }
-  // the potato: in a hand, in the air, or on the ground
-  var A = agentPos(anim.from, tt), B = agentPos(anim.to, tt), e = anim.p < 1 ? (1 - Math.cos(anim.p * Math.PI)) / 2 : 1;
-  var px = lerp(A[0], B[0], e), py = lerp(A[1], B[1], e) - Math.sin(e * Math.PI) * R * 0.35;
-  var inward = 0.22; px = lerp(px, cxm, inward); py = lerp(py, cym, inward);
-  px = lerp(px, cxm, anim.centerP); py = lerp(py, cym, anim.centerP);
-  var h = Math.max(0, Math.min(1, anim.heatShown));
-  if (ended === 'doom') h = Math.min(1, 0.7 + anim.endP);
-  var glow = 14 + 70 * h + (ended === 'doom' ? 160 * anim.endP : 0);
-  var g = cx.createRadialGradient(px, py, 2, px, py, glow);
-  g.addColorStop(0, 'rgba(255,160,90,' + (0.15 + 0.55 * h) + ')'); g.addColorStop(1, 'rgba(255,116,64,0)');
-  cx.fillStyle = g; cx.beginPath(); cx.arc(px, py, glow, 0, Math.PI * 2); cx.fill();
-  if (h > 0.45 && !reduce){ var ph = (tt % 1400) / 1400; cx.strokeStyle = 'rgba(255,208,138,' + (0.5 * (1 - ph)) + ')'; cx.lineWidth = 1.5; cx.beginPath(); cx.arc(px, py, 14 + ph * 40, 0, Math.PI * 2); cx.stroke(); }
-  cx.fillStyle = heatColor(h); cx.beginPath(); cx.ellipse(px, py, 13, 10, -0.3, 0, Math.PI * 2); cx.fill();
-  cx.fillStyle = 'rgba(0,0,0,.18)'; cx.beginPath(); cx.arc(px - 3, py + 1, 1.6, 0, Math.PI * 2); cx.arc(px + 4, py - 2, 1.3, 0, Math.PI * 2); cx.fill();
-  // a sprout when planted
-  if (planted){ var sh = 26 * anim.endP; cx.strokeStyle = '#74d8b4'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(px, py - 8); cx.lineTo(px, py - 8 - sh); cx.stroke();
-    if (anim.endP > 0.5){ cx.fillStyle = '#74d8b4'; cx.beginPath(); cx.ellipse(px - 6, py - 8 - sh, 6, 3, -0.5, 0, Math.PI * 2); cx.ellipse(px + 6, py - 12 - sh * 0.8, 6, 3, 0.5, 0, Math.PI * 2); cx.fill(); } }
-  requestAnimationFrame(draw);
+  return { x: pt.x + bx, y: pt.y + by + (at === 'middle' || at === 'ground' ? lz + sk : 0) };
 }
-
-// ── scenes and captions (the ad's own words where they fit) ────────────────────────────────
-var capEl = document.getElementById('caption');
-function caption(html){ capEl.style.opacity = 0; setTimeout(function(){ capEl.innerHTML = html; capEl.style.opacity = 1; }, reduce ? 0 : 250); }
-function setScene(n, name){ document.getElementById('scene').innerHTML = '<b>' + n + '</b>' + name; }
-function sceneFor(s){ if (s.endpoint) return ['IV', ENDS[s.endpoint].planted ? 'Together' : 'The end of the walk'];
-  if (s.coordination >= P.stagK) return ['IV','Together']; if (s.coordination >= 0.45) return ['III','The turn']; return ['II','Among the labs']; }
-
-// ── a year ───────────────────────────────────────────────────────────────────────────────
-function play(k){
-  if (state.endpoint || phase !== 'play') return;
-  var chosen = actOf(k), a = effOf(k, lastEff(moves)), before = state, heatBefore = baseRisk(state);
-  state.alloc = a.alloc;
-  state = M.stepOnce(state, {}, rng, a.tog);
-  moves.push(k);
-  afterHTML = state.endpoint ? '' : afterLine(a);
-  var heatNow = baseRisk(state);
-  // the stage
-  var tossed = a.k === 'toss';
-  if (tossed){ anim.from = anim.holder; var n = 2 + Math.floor(Math.random() * 4); anim.to = (anim.holder + n) % N; anim.holder = anim.to; anim.p = 0; }
-  anim.center = (a.tog && !state.lastAlone) || (anim.center && !tossed);
-  anim.heat = heat01(heatNow + (state.lastShock ? P.shockRisk : 0)); anim.ring = state.coordination;
-  if (state.endpoint){ anim.end = state.endpoint; anim.endP = 0; if (ENDS[state.endpoint].planted || state.endpoint === 'the_stop') anim.center = true; }
-  var sc = sceneFor(state); setScene(sc[0], sc[1]);
-  // the words
-  var risk = (heatNow * 100).toFixed(1), dRing = state.coordination - before.coordination;
-  var cap, pre = k === 'idk' ? 'You kept last year\u2019s move' + (a.k === 'start' ? ' (the hand the walk began with)' : ': ' + a.nm.toLowerCase()) + '. ' : '';
-  if (a.tog && state.lastAlone) cap = 'You reached for hands, and not enough were there. <em>The year was spent.</em>';
-  else if (a.tog) cap = 'Held <em class="eco">together</em> and set down on shared ground, it can cool. <em class="eco">Something can grow.</em>';
-  else if (tossed) cap = heatNow > heatBefore + 1e-6 ? 'Each grabs it, points at another, throws it on. <em>Every toss adds heat.</em>' : 'Thrown on. The heat held this year, but what was built keeps growing.';
-  else { var dN = holding(state.coordination) - holding(before.coordination);
-    cap = 'Held instead of thrown: it is understood a little better' + (dN > 0 ? ', and the others notice: <em class="eco">' + (dN === 1 ? 'one more pair of hands' : dN + ' more pairs of hands') + '</em>.' : dRing > 0.001 ? '. The others notice, but nobody new has joined yet.' : '. Nobody new joined this year.'); }
-  cap = pre + cap;
-  if (state.lastShock) cap += ' <em>A shock from outside shook the ring and flared the heat.</em>';
-  if (state.endpoint) cap = ENDS[state.endpoint].planted ? 'Not AI improving itself. <em class="eco">All of us improving the ground we share.</em>' : ENDS[state.endpoint].nm + '.';
-  caption(cap);
-  var li = document.createElement('li');
-  li.className = tossed ? 'hot' : (a.tog && !state.lastAlone) ? 'cool' : '';
-  li.innerHTML = '<b>Year ' + state.t + '. ' + (k === 'idk' ? 'I don\u2019t know: ' + (a.k === 'start' ? 'the starting hand' : a.nm + ' again') : a.nm) + '.</b> ' +
-    (a.tog && state.lastAlone ? '<span class="g">Only ' + holding(before.coordination) + ' of ' + PEOPLE + ' were holding it and ' + NEED + ' were needed, so the step together could not count and the year passed with nothing done.</span>'
-      : '<span class="g">Heat: ' + (heatBefore * 100).toFixed(1) + '% \u2192 ' + risk + '% a year.' + (state.lastShock ? ' A shock from outside added ' + Math.round(P.shockRisk * 100) + '% for this year only and cost some hands.' : '') + ' People holding it: ' + holding(before.coordination) + ' \u2192 ' + holding(state.coordination) + ' of ' + PEOPLE + '.</span>');
-  document.getElementById('log').insertBefore(li, document.getElementById('log').firstChild);
-  writeHash(); render();
-  if (state.endpoint) setTimeout(showEnd, reduce ? 200 : 1800);
+var POTPATH = 'M-29,-2C-30,-17 -15,-25 1,-25C17,-25 30,-15 29,0C29,14 16,24 0,24C-16,24 -28,13 -29,-2Z';
+function potatoSVG(p, F, crack) {
+  var n = M.level(Math.max(1, F)), col = ['--pot1', '--pot2', '--pot3', '--pot4'][n - 1];
+  var s = '<g transform="translate(' + f1(p.x) + ' ' + f1(p.y) + ')">';
+  if (!crack) for (var i = 0; i < n; i++) {
+    var x0 = (i - (n - 1) / 2) * 9;
+    s += '<path d="M' + x0 + ',-29q4,-4 0,-8q-4,-4 0,-8" fill="none" style="stroke:var(--heat)" stroke-width="2" stroke-linecap="round"/>';
+  }
+  s += '<path d="' + POTPATH + '" style="fill:var(' + col + ');stroke:var(--potline)" stroke-width="2"/>';
+  s += '<path d="M-12,-9q2,-2 4,0M7,4q2,-2 4,0M10,-13q2,-2 4,0M-16,8q2,-2 4,0" fill="none" style="stroke:var(--potline)" stroke-width="1.6" stroke-linecap="round"/>';
+  if (crack) {
+    s += '<path d="' + POTPATH + '" style="fill:var(--char)" opacity="' + f1(0.75 * crack) + '"/>';
+    s += '<path d="M-22,-12l8,6-3,7 9,4-2,8M4,-24l-2,9 7,5-4,8 8,5M20,-12l-6,7 5,6" fill="none" style="stroke:var(--h4)" stroke-width="2" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="' + f1(1 - crack) + '"/>';
+  }
+  return s + '</g>';
 }
-
-var actsTall = 0;
-window.addEventListener('resize', function(){ actsTall = 0; });
-function render(){
-  document.getElementById('year').textContent = 'Year ' + state.t + ' of ' + P.horizon;
-  var heat = baseRisk(state); document.getElementById('m-heat').textContent = (heat * 100).toFixed(1) + '%' + (state.lastShock ? ' +' + Math.round(P.shockRisk * 100) + '% shock' : '');
-  document.getElementById('f-heat').style.width = Math.min(100, heat / 0.20 * 100) + '%';
-  var hn = holding(state.coordination);
-  document.getElementById('m-ring').innerHTML = countSay(state.coordination);
-  document.getElementById('count').innerHTML = '<b>' + hn + '</b> of ' + PEOPLE + ' holding<span class="nd"><span class="sep"> · </span>' + NEED + ' needed</span>';
-  var cells = ''; for (var ci = 0; ci < PEOPLE; ci++) cells += '<i class="' + (ci < hn ? 'on' : '') + (ci === NEED - 1 ? ' need' : '') + '"></i>';
-  document.getElementById('cells').innerHTML = cells;
-  document.getElementById('why').textContent = state.t === 0 ? 'Year 0: nothing has been thrown yet. The potato is warm, and ' + hn + ' of ' + PEOPLE + ' people are holding it.' :
-    'What makes the heat: how much has been built (grown by tossing) against how well it is understood (grown by holding). What brings people into the ring: holding; tossing drives them off, and a few drift away every year. Planting needs ' + NEED + ' of ' + PEOPLE + ' holding and a few years held together.';
-  // the four cards are made once and only their words change, so nothing moves under a thumb
-  // between years; each card keeps the tallest height it has needed so the grid never shrinks
-  var box = document.getElementById('acts');
-  if (!box.children.length) ACTS.forEach(function(a){
-    var b = document.createElement('button'); b.dataset.k = a.k;
-    b.addEventListener('click', function(){ play(a.k); });
-    box.appendChild(b);
+function text(x, y, str, px, opts) {
+  opts = opts || {};
+  return '<text x="' + f1(x) + '" y="' + f1(y) + '" text-anchor="' + (opts.anchor || 'middle') + '" style="font-size:' + f1(px * U) + 'px;font-weight:' + (opts.w || 700) + ';fill:var(' + (opts.fill || '--ink') + ');stroke:var(--bg);stroke-width:' + f1(3 * U) + 'px;paint-order:stroke;stroke-linejoin:round">' + str + '</text>';
+}
+function waveSVG(from, to, p, off) {
+  var dx = to.x - from.x, dy = to.y - from.y, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, nx = -uy, ny = ux;
+  var a = Math.max(0, p - 0.5), b = Math.min(1, p), pts = [];
+  off = off || 0;
+  for (var q = a; q <= b + 1e-6; q += 0.04) {
+    var w = Math.sin(q * L / 5) * 3.2;
+    pts.push(f1(from.x + dx * q + nx * (w + off)) + ',' + f1(from.y + dy * q + ny * (w + off)));
+  }
+  if (pts.length < 2) return '';
+  return '<polyline points="' + pts.join(' ') + '" fill="none" style="stroke:var(--heat)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>';
+}
+function flameIcon(x, y, s) {
+  return '<path transform="translate(' + f1(x) + ' ' + f1(y) + ') scale(' + f1(s) + ')" d="M0,-9C1.6,-5.8 5,-3.8 5,0.6A5,5 0 0 1 -5,0.6C-5,-1.6 -3.8,-2.8 -2.6,-3.8 -2.4,-2 -1.4,-1 -0.6,-0.6 -1.4,-3.4 -1,-6.6 0,-9Z" style="fill:var(--heat);stroke:var(--bg)" stroke-width="1"/>';
+}
+function sayBubble(k, str, p, ok) {
+  var at = SAY_AT[k], w = str.length * 8.4 * U + 16 * U, h = 22 * U, y = at[1] - (1 - Math.min(1, p * 4)) * 4, col = ok ? '--eco' : '--no';
+  return '<g opacity="' + f1(Math.min(1, p * 5, (1 - p) * 5)) + '"><rect x="' + f1(at[0] - w / 2) + '" y="' + f1(y - h / 2) + '" width="' + f1(w) + '" height="' + f1(h) + '" rx="' + f1(8 * U) + '" style="fill:var(--surface);stroke:var(' + col + ')" stroke-width="' + f1(1.6 * U) + '"/>' +
+         text(at[0], y + 5 * U, str, 14, { fill: col }) + '</g>';
+}
+function renderStage(t) {
+  var F = V('F', t), burned = V('burned', t), crack = V('crack', t) || 0;
+  var pp = potPos(t), at = V('potAt', t), fl = activeFx('flight', t);
+  var under = '', over = '', pot = '', top = '';
+  SEATS.forEach(function (k) {
+    var ms = mittens(k, t), lvl = k === 'you' ? (V('hand', t) || 0) : 0;
+    under += sleeves(k, ms);
+    ms.forEach(function (m) { var g = mittenSVG(m, lvl, burned); if (m.over && !fl && (at === k || (at === 'middle' && m.reach > 0.5))) over += g; else under += g; });
   });
-  var spentNow = state.coordination < P.stagK;
-  ACTS.forEach(function(a, ai){
-    var b = box.children[ai];
-    var idkSpent = a.k === 'idk' && lastEff(moves.concat(['idk'])).tog && spentNow;
-    b.className = 'act' + (a.cls ? ' ' + a.cls : '') + (a.tog && !spentNow ? ' ready' : '') + ((a.tog || idkSpent) && spentNow ? ' spent' : '');
-    var sub;
-    var eff = a.k === 'idk' ? lastEff(moves.concat(['idk'])) : a;
-    if (a.tog) sub = (!spentNow ? 'the hands are there (' + holding(state.coordination) + ' of ' + PEOPLE + '): it counts. ' : '<span class="why">Not yet: ' + holding(state.coordination) + ' of ' + PEOPLE + ' are holding it and ' + NEED + ' are needed, so this year would be spent.</span>');
-    else if (a.k === 'idk') sub = (eff.k === 'start' ? 'the hand the walk began with' : 'last year\u2019s move again: ' + eff.nm.toLowerCase()) + '. ';
-    else sub = a.d + '. ';
-    var dot = { toss:'var(--heat)', hold:'var(--agent)', tog:'var(--eco)', idk:'var(--dim)' }[a.k];
-    b.innerHTML = '<span class="ico" style="background:' + dot + '"></span>' + a.nm + '<small>' + sub + '</small>';
-    b.disabled = !!state.endpoint;
-    b.setAttribute('aria-label', a.nm + ((a.tog || idkSpent) && spentNow ? ', would be spent this year' : ''));
+  if (at !== 'ground' || fl || (V('sink', t) || 0) < 1) {
+    var ptxt = potatoSVG(pp, F, crack);
+    if ((V('sink', t) || 0) > 0 && !fl) ptxt = '<g clip-path="url(#aboveGround)">' + ptxt + '</g>';
+    pot += ptxt;
+  }
+  var mound = V('mound', t) || 0;
+  if (mound > 0) {
+    over += '<ellipse cx="195" cy="' + (GROUND_Y + 2) + '" rx="' + f1(34 * mound) + '" ry="' + f1(11 * mound) + '" style="fill:var(--soil);stroke:var(--soil-dark)" stroke-width="1.5"/>';
+    if (mound > 0.8) {
+      over += '<path d="M195,' + (GROUND_Y - 4) + 'c0,-10 -2,-16 -8,-20M195,' + (GROUND_Y - 12) + 'c0,-6 4,-12 10,-14" fill="none" style="stroke:var(--eco)" stroke-width="2.4" stroke-linecap="round"/>';
+      over += '<path d="M187,' + (GROUND_Y - 24) + 'c-6,-2 -9,-7 -8,-11c5,0 8,4 8,11zM205,' + (GROUND_Y - 26) + 'c5,-3 10,-3 12,0c-3,4 -8,4 -12,0z" style="fill:var(--eco)"/>';
+    }
+  }
+  // the luggage tag, until your first press
+  if (V('luggage', t) && !burned && !openSeat) {
+    var d = { x: C.x - pp.x, y: C.y - pp.y }, dl = Math.hypot(d.x, d.y);
+    var tc = dl < 8 ? { x: pp.x, y: pp.y + 62 } : { x: pp.x + d.x / dl * 76, y: pp.y + d.y / dl * 76 };
+    var tw = 150, th = 38;
+    top += '<line x1="' + f1(pp.x) + '" y1="' + f1(pp.y) + '" x2="' + f1(tc.x) + '" y2="' + f1(tc.y + (tc.y > pp.y ? -th / 2 : th / 2)) + '" style="stroke:var(--dim)" stroke-width="1.2" stroke-dasharray="3 2"/>';
+    top += '<rect x="' + f1(tc.x - tw / 2) + '" y="' + f1(tc.y - th / 2) + '" width="' + tw + '" height="' + th + '" rx="6" style="fill:var(--surface);stroke:var(--ink)" stroke-width="1.4"/>';
+    top += text(tc.x, tc.y - 3, 'the race', 13, { w: 600 }) + text(tc.x, tc.y + 13 * U - 2, 'to build AI', 13, { w: 600 });
+  }
+  if (TL) TL.fx.forEach(function (f) {
+    if (t < f.t0 || t >= f.t1 + (f.kind === 'flight' && f.trail ? 350 : 0)) return;
+    var p = (t - f.t0) / Math.max(1, f.t1 - f.t0);
+    if (f.kind === 'flight' && f.trail) {
+      var a = anchorOf(f.from), b = anchorOf(f.to), c = ctrlOf(a, b), pts = [], pe = ease(Math.min(1, p));
+      for (var q = 0; q <= pe + 1e-6; q += 0.05) { var bp = bez(a, c, b, q); pts.push(f1(bp.x) + ',' + f1(bp.y)); }
+      var op = t >= f.t1 ? 1 - (t - f.t1) / 350 : 0.9;
+      if (pts.length > 1) under += '<polyline points="' + pts.join(' ') + '" fill="none" style="stroke:var(--dim)" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round" opacity="' + f1(op) + '"/>';
+    } else if (f.kind === 'wave') {                 // heat from the potato into your mittens
+      var ms = mittens('you', t), to = { x: (ms[0].x + ms[1].x) / 2, y: (ms[0].y + ms[1].y) / 2 + 14 };
+      if (f.still) { top += waveSVG(pp, { x: to.x - 16, y: to.y }, 1, 0) + waveSVG(pp, { x: to.x + 16, y: to.y }, 1, 0); }
+      else top += waveSVG(pp, { x: to.x - 16, y: to.y }, Math.min(1, p * 1.25), 0) + waveSVG(pp, { x: to.x + 16, y: to.y }, Math.min(1, p * 1.25), 0);
+    } else if (f.kind === 'vent') {                 // bouncing it: heat goes up into the air
+      for (var j = -1; j <= 1; j++) top += waveSVG({ x: pp.x + j * 10, y: pp.y - 26 }, { x: pp.x + j * 16, y: pp.y - 66 }, Math.min(1, p * 1.2), 0).replace('stroke-width="2.6"', 'stroke-width="2" opacity="' + f1(1 - p) + '"');
+    } else if (f.kind === 'plusSeat') {
+      var g = G[f.seat].a, o = PLUS_AT[f.seat], rise = RM ? 0 : Math.min(1, p) * 8;
+      top += text(g.x + o[0], g.y + o[1] - rise, f.text, 15, { fill: '--heat' });
+    } else if (f.kind === 'spark') {                // Flint's flame travels to the potato
+      var sx = G.flint.a.x + 30, sy = G.flint.a.y - 8, e2 = ease(Math.min(1, p));
+      top += flameIcon(sx + (pp.x + 8 - sx) * e2, sy + (pp.y - 30 - sy) * e2, 1.3);
+    } else if (f.kind === 'noFlame') {             // Hold it: your own flame, held back
+      var q1 = Math.min(1, p * 4, (1 - p) * 4);
+      top += '<g opacity="' + f1(q1) + '">' + flameIcon(YOU_MARK.x, YOU_MARK.y, 1.5).replace('fill:var(--heat);stroke:var(--bg)', 'fill:var(--cool-soft);stroke:var(--cool)') +
+             '<line x1="' + (YOU_MARK.x - 10) + '" y1="' + (YOU_MARK.y + 8) + '" x2="' + (YOU_MARK.x + 10) + '" y2="' + (YOU_MARK.y - 14) + '" style="stroke:var(--cool)" stroke-width="3" stroke-linecap="round"/></g>';
+    } else if (f.kind === 'youFlame') {            // Bounce it: you added your flame
+      var rise2 = RM ? 0 : Math.min(1, p) * 8, q2 = Math.min(1, p * 4, (1 - p) * 4);
+      top += '<g opacity="' + f1(q2) + '">' + flameIcon(YOU_MARK.x, YOU_MARK.y - rise2, 1.5) + text(YOU_MARK.x - 22, YOU_MARK.y + 2 - rise2, '+1', 15, { fill: '--heat' }) + '</g>';
+    } else if (f.kind === 'flintMark') {
+      top += text(G.flint.a.x + 74, G.flint.a.y - 20, '+1 flame', 15, { fill: '--heat' });
+    } else if (f.kind === 'coolMark') {
+      top += text(pp.x + 50, pp.y - 30 - (RM ? 0 : Math.min(1, p) * 6), '−1 cooler', 14, { fill: '--cool' });
+    } else if (f.kind === 'say') {
+      top += sayBubble(f.seat, f.text, p, f.ok);
+    } else if (f.kind === 'downArrow') {
+      top += '<path d="M195,110v44M184,143l11,12 11-12" fill="none" style="stroke:var(--eco)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+    } else if (f.kind === 'loop') {
+      top += '<circle cx="' + C.x + '" cy="' + C.y + '" r="92" fill="none" style="stroke:var(--heat)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>';
+      f.flames.forEach(function (k) { var ga = G[k].a, o2 = PLUS_AT[k]; top += text(ga.x + o2[0], ga.y + o2[1], '+1', 15, { fill: '--heat' }); });
+    }
   });
-  box.hidden = !!state.endpoint; document.getElementById('yourmove').hidden = !!state.endpoint;
-  document.getElementById('yourmove').textContent = 'Your move for year ' + (state.t + 1);
-  var af = document.getElementById('after'); af.hidden = !!state.endpoint;
-  af.innerHTML = afterHTML || 'After your move, a line here says how each ending tends to come up if you kept making it.';
-  if (!box.hidden){ var tall = 0; Array.prototype.forEach.call(box.children, function(b){ b.style.minHeight = ''; });
-    Array.prototype.forEach.call(box.children, function(b){ tall = Math.max(tall, b.offsetHeight); });
-    actsTall = Math.max(actsTall, tall); Array.prototype.forEach.call(box.children, function(b){ b.style.minHeight = actsTall + 'px'; }); }
+  $('dyn').innerHTML = under + pot + over + top;
+  var dim = V('dim', t) || 0;
+  $('svg').style.opacity = f1(1 - 0.5 * dim);
+  $('ovs').style.opacity = f1(1 - 0.5 * dim);
 }
 
-// ── the end: a hundred walks ────────────────────────────────────────────────────────────
-function walkMoves(seq, s){
-  var r = M.makeRng(s), st = fresh(), i = 0, prev = null;
-  while (!st.endpoint && st.t < P.horizon){
-    var k = seq.length ? seq[Math.min(i, seq.length - 1)] : 'toss', a = effOf(k, prev); prev = a;
-    st.alloc = a.alloc;
-    st = M.stepOnce(st, {}, r, a.tog); i++;
-  }
-  return st.endpoint || 'still_walking';
+/* ── Drawing: the HTML parts ───────────────────────────────────────────────── */
+var shapes = {
+  circle: '<circle cx="7" cy="7" r="5.6" style="fill:var(--ink)"/>',
+  square: '<rect x="1.6" y="1.6" width="10.8" height="10.8" rx="1" style="fill:var(--ink)"/>',
+  triangle: '<path d="M7,1.2 13,12.6H1z" style="fill:var(--ink)"/>',
+  diamond: '<path d="M7,.8 13.2,7 7,13.2 .8,7z" style="fill:var(--ink)"/>',
+  hexagon: '<path d="M4,1.3H10L13.2,7 10,12.7H4L.8,7z" style="fill:var(--ink)"/>'
+};
+function badge(k) { return '<svg viewBox="0 0 14 14" aria-hidden="true">' + shapes[SHAPE[k]] + '</svg>'; }
+var CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2,6.5 5,9.2 10.2,2.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var COIN = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.6" style="fill:var(--coin-fill);stroke:var(--coin)" stroke-width="1.5"/><path d="M8,4.6v6.8M6.2,6.4h3.6" style="stroke:var(--coin)" stroke-width="1.4" stroke-linecap="round"/></svg>';
+function pct(x, y, w, h) {
+  return 'left:' + (x / VBW * 100) + '%;top:' + (y / VBH * 100) + '%;' + (w ? 'width:' + (w / VBW * 100) + '%;' : '') + (h ? 'height:' + (h / VBH * 100) + '%;' : '');
 }
-function showEnd(){
-  var e = state.endpoint || 'still_walking', E = ENDS[e];
-  document.getElementById('endcard').innerHTML = '<p class="small" style="margin:0">After ' + state.t + ' year' + (state.t === 1 ? '' : 's') + '</p><div class="nm" style="color:' + E.col + '">' + E.nm + '</div><p>' + endLine(e, state) + '</p>' +
-    (E.planted ? '<p class="small">The ad calls this <i>recursive eco-improvement</i>: not an AI improving itself faster and faster (recursive self-improvement), but people and machines improving the ground they share, year after year.</p>' : '') +
-    (E.term ? '<p class="small">On the <a href="spread.html' + location.hash + '">table</a> and the <a href="walk.html' + location.hash + '">dashboard</a> this ending is called ' + E.term + '.</p>' : '') + '<p class="small" style="margin-top:10px">Your way, walked a hundred times, is further down the page.</p>';
-  var leg = document.getElementById('legend'); leg.innerHTML = ''; var seen = {};
-  function grid(id, seq, nid){
-    var box = document.getElementById(id), c = {}; box.innerHTML = '';
-    var res = []; for (var i = 0; i < 100; i++) res.push(walkMoves(seq, seed * 7919 + i + 1));
-    res.sort(function(a, b){ return ORDER_ENDS.indexOf(a) - ORDER_ENDS.indexOf(b); });
-    res.forEach(function(r){ c[r] = (c[r] || 0) + 1; seen[r] = 1; box.insertAdjacentHTML('beforeend', '<i title="' + ENDS[r].nm + '" style="background:' + ENDS[r].col + '"></i>'); });
-    var cool = (c.grace || 0) + (c.sustainable_turn || 0) + (c.the_stop || 0);
-    document.getElementById(nid).textContent = cool + ' of 100 cooled (' + ((c.grace || 0) + (c.sustainable_turn || 0)) + ' planted), ' + (c.doom || 0) + ' burned.';
-  }
-  grid('g-yours', moves, 'n-yours'); grid('g-toss', [], 'n-toss');
-  ORDER_ENDS.forEach(function(k){ if (seen[k]) leg.insertAdjacentHTML('beforeend', '<span><i style="background:' + ENDS[k].col + '"></i>' + ENDS[k].nm + '</span>'); });
-  document.getElementById('endcard').hidden = false;
-  document.getElementById('end').hidden = false;
-  document.getElementById('stagebox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' });
+function barHTML(lvl, burned) {
+  var s = '<span class="bar l' + lvl + (burned ? ' burnt' : '') + '" aria-hidden="true">';
+  for (var i = 1; i <= 3; i++) s += '<i class="' + (burned || i <= lvl ? 'on' : '') + '"></i>';
+  return s + '</span>';
 }
-document.getElementById('again').addEventListener('click', function(){
-  newWalk(); afterHTML = ''; anim.holder = 0; anim.from = anim.to = 0; anim.p = 1; anim.center = false; anim.end = null; anim.heat = 0; anim.ring = state.coordination;
-  document.getElementById('log').innerHTML = ''; document.getElementById('end').hidden = true; document.getElementById('endcard').hidden = true;
-  setScene('II', 'Among the labs'); caption('Among the labs, a threat appears: <em>“if we don’t build it, they will.”</em>');
-  writeHash(); render(); document.getElementById('stagebox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+function pipsHTML(n, w, pop) {
+  var s = '<span class="pips' + (pop > 0 ? ' pop' : pop < 0 ? ' lost' : '') + '" aria-label="Wren has seen ' + Math.min(n, w) + ' of ' + w + ' holds">';
+  for (var i = 0; i < w; i++) s += '<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" style="fill:' + (i < n ? 'var(--ink)' : 'none') + ';stroke:var(--ink)" stroke-width="1.5"/></svg>';
+  return s + '</span>';
+}
+function buildOverlays() {
+  var h = '';
+  OTHERS.forEach(function (k) {
+    var L = LAB[k], r = L[3] === 'r';
+    h += '<div class="ov seat ' + L[3] + '" style="' + pct(L[0], L[1], L[2]) + '"><div class="nm">' + (r ? '' : badge(k)) + '<span>' + NAME[k] + '</span>' + (r ? badge(k) : '') + '</div>' +
+         '<div class="st" id="st-' + k + '"></div></div>';
+  });
+  h += '<div class="ov chalk" id="chalk" style="' + pct(0, 327, 390) + '">We hold it until it’s down.</div>';
+  h += '<div class="ov bubble" id="flintBubble" style="' + pct(105, 146, 180) + 'text-align:center" hidden>Flint: “If we don’t, they will.”</div>';
+  h += '<div class="ov bubble" id="seatBubble" hidden></div>';
+  OTHERS.forEach(function (k) {
+    var B = BTN[k];
+    h += '<button type="button" class="seatbtn" id="btn-' + k + '" data-seat="' + k + '" style="' + pct(B[0], B[1], B[2], B[3]) + '"></button>';
+  });
+  $('ovs').innerHTML = h;
+}
+var last = {};
+function put(id, html) { if (last[id] !== html) { last[id] = html; $(id).innerHTML = html; } }
+function ok(s) { return '<span class="ok">' + CHECK + ' ' + s + '</span>'; }
+function no(s) { return '<span class="no">' + s + '</span>'; }
+// Each seat's line: its rule until it holds it, then "holding it".
+function status(k, t) {
+  var on = V('on', t) || [], F = V('F', t), burned = V('burned', t), out = V('out', t);
+  if (burned) return no('burned');
+  if (k === 'flint') {
+    var fc = '<span class="cn">' + COIN + ' ' + V('flintCoins', t) + '</span>';
+    return (V('flint', t) === 'stopped' ? ok('stopped: 3 hold it') : '+1 flame a move') + ' · ' + fc;
+  }
+  if (out) return 'hands off it';
+  if (on.indexOf(k) >= 0) return ok('holding it');
+  if (k === 'wren') {
+    var n = V('seen', t) || 0;
+    return (n >= S.wait ? ok('ready: ask her') : 'joins after ' + holdsW(S.wait)) + '<br>' + pipsHTML(n, S.wait, V('seenPop', t) || 0);
+  }
+  if ((k === 'reed' || k === 'oak') && F >= M.SCORCH) return no('no: it’s scorching');
+  return k === 'moss' ? 'follows Wren' : k === 'reed' ? 'follows Moss; not if scorching' : 'follows Reed; not if scorching';
+}
+function renderOverlays(t) {
+  OTHERS.forEach(function (k) {
+    var st = status(k, t);
+    put('st-' + k, st);
+    var b = $('btn-' + k), al = NAME[k] + ', ' + SHAPE[k] + '. ' + LINE[k] + ' Now: ' + st.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() + '.';
+    if (b.getAttribute('aria-label') !== al) b.setAttribute('aria-label', al);
+  });
+  var ch = V('chalk', t) || 0, rub = V('chalkRub', t) || 0, chalk = $('chalk');
+  var cs = 'inset(0 ' + f1((1 - ch) * 100) + '% 0 0)';
+  if (chalk.style.clipPath !== cs) { chalk.style.clipPath = cs; chalk.style.webkitClipPath = cs; }
+  chalk.style.opacity = ch > 0 ? f1(1 - rub) : 0;
+  chalk.style.visibility = ch > 0 ? 'visible' : 'hidden';
+  $('flintBubble').hidden = !V('bubble', t);
+}
+// The heat: 16 boxes in four named groups. The fire is somewhere in the striped boxes; a box it has
+// already passed without catching loses its stripes, so the stripes show where it can still be.
+function renderTrack(t) {
+  var F = Math.min(16, V('F', t) || 1), mx = V('maxF', t) || F, out = V('out', t), burned = V('burned', t);
+  var h = '', mark = {}, words = ['warm', 'hot', 'very hot', 'scorching'], now = M.level(Math.max(1, F)) - 1;
+  if (TL) TL.fx.forEach(function (f) {
+    if ((f.kind === 'plusBox' || f.kind === 'minusBox') && t >= f.t0 && t < f.t1) mark[Math.min(16, f.box)] = f.kind === 'plusBox' ? '+1' : '−1';
+  });
+  for (var gI = 0; gI < 4; gI++) {
+    h += '<div class="grp"><div class="gb">';
+    for (var i = gI * 4 + 1; i <= gI * 4 + 4; i++) {
+      var lit = i <= F, mk = mark[i], band = i >= M.LO && i > mx && !out;
+      h += '<span class="box' + (band ? ' band' : '') + (lit ? ' lit' : '') + '">' +
+           (mk === '+1' && lit ? '<span class="plus">+1</span>' : mk === '−1' ? '<span class="plus minus">−1</span>'
+            : lit ? '<svg viewBox="0 0 12 16"><path d="M6,1.5C7.6,4.4 10.4,6.4 10.4,10A4.4,4.4 0 0 1 1.6,10C1.6,8 2.8,6.8 3.8,5.9 4,7.4 4.8,8.3 5.6,8.6 4.9,6.1 5.2,3.7 6,1.5Z" style="fill:var(--heat)"/></svg>' : '') + '</span>';
+    }
+    h += '</div><div class="gl' + (gI === now && !out && !burned ? ' now' : '') + '">' + words[gI] + '</div></div>';
+  }
+  h += '<svg class="firemark" viewBox="0 0 20 22"><path d="M10,1C12.5,5.6 17,8.4 17,13.8A7,7 0 0 1 3,13.8C3,10.6 4.8,8.8 6.4,7.4 6.7,9.8 8,11.2 9.2,11.7 8.1,7.8 8.7,4.2 10,1Z" style="fill:' + (burned ? 'var(--h4)' : 'none') + ';stroke:var(--h4)" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+  put('boxes', h);
+  $('track').classList.toggle('out', !!out);
+  put('hotLbl', out || burned ? '' : 'How hot:');
+  put('heatWord', burned ? 'burned everyone' : out ? 'in the ground' : M.potw(F));
+  put('flameCount', burned || out ? '' : '· ' + flamesW(F));
+  var arrow = ' <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1v7M2 5.5 5 8.5 8 5.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+  put('fireHint', burned ? '' : out ? 'the fire was at ' + S.burn : '<span class="lng">the fire is in the stripes</span><span class="sht">fire’s in the stripes</span>' + arrow);
+}
+var MIT_ICON = '<path d="M8,20.5V8.5A5.5,5.5 0 0 1 19,8.5V20.5Z M8,15.5C4.5,15 2.6,12.4 3.4,10.2 4.2,8.4 6.6,9.2 8,11.4"/>';
+function renderRows(t) {
+  var burned = V('burned', t), lvl = V('hand', t) || 0, tg = V('tag', t), c = V('coins', t), pop = activeFx('coinPop', t);
+  put('yourow', '<span class="pill">you</span>' + (tg ? '<span class="ytag">' + tg + '</span>' : '') +
+      '<span class="yh"><span class="hl">hands:</span> <b>' + (burned ? 'burned' : HW(lvl)) + '</b> ' + barHTML(lvl, burned) + '</span>' +
+      '<span class="coins' + (burned ? ' burnt' : '') + (pop && !burned ? ' pop' : '') + '" title="your coins" aria-label="your coins: ' + c + '">' + COIN + ' ' + c + '</span>');
+}
+var spoken = { c1: '', c2: '' };
+function renderCaption(t) {
+  var c1 = V('c1', t) || '', c2 = V('c2', t) || '';
+  put('c1', c1); put('c2', c2);
+  if (SET.read && CAN_SPEAK) {
+    if (c1 !== spoken.c1 || c2 !== spoken.c2) { spoken.c1 = c1; spoken.c2 = c2; if (c1 || c2) speak((c1 + ' ' + c2).trim(), true); }
+  } else { spoken.c1 = c1; spoken.c2 = c2; }
+}
+function speak(str, fresh) {
+  try {
+    if (fresh) window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(str.replace(/…/g, '.').replace(/−/g, 'minus ').replace(/→/g, 'to')); u.rate = SET.slow ? 0.85 : 1;
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+// No way left: once the move has played out, the buttons give way to two plain choices.
+function renderDoom(t) {
+  var d = !!V('doomUI', t) && S && !S.out;
+  if ($('doom').hidden === d) { $('doom').hidden = !d; $('verbs').hidden = d; }
+}
+function render() {
+  var t = clock;
+  renderStage(t); renderOverlays(t); renderTrack(t); renderRows(t); renderCaption(t); renderDoom(t);
+  var ended = V('ended', t);
+  if (ended && !$('game').classList.contains('over')) showEnd(ended);
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────────── */
+var wasDown = false;
+function setVerb(id, v, info, extra) {
+  var b = $(id), l2 = info.w || info.soft || info.g || '';
+  put(id, extra ? extra(info) : '<span class="v">' + v + '</span><span class="s">' + info.s + '</span>' +
+      (l2 ? '<span class="w' + (info.w ? '' : info.soft ? ' cost' : ' soft') + '">' + l2 + '</span>' : ''));
+  b.classList.toggle('off', !info.lit);
+  b.setAttribute('aria-disabled', info.lit ? 'false' : 'true');
+}
+function updateButtons() {
+  setVerb('vHold', 'Hold it', verbInfo('hold'));
+  setVerb('vToss', 'Toss it on', verbInfo('toss'));
+  setVerb('vTog', 'Hold it together', verbInfo('together'));
+  setVerb('vBounce', 'Bounce it', verbInfo('bounce'));
+  var d = verbInfo('down'), put_ = S.out === 'down', n = put_ ? M.NEED : S.out ? 0 : S.on.length;
+  setVerb('vDown', 'Put it down', d, function (info) {
+    var ic = '';
+    for (var i = 0; i < M.NEED; i++) ic += '<svg viewBox="0 0 24 22" aria-hidden="true"><g style="fill:' + (i < n ? 'currentColor' : 'none') + ';stroke:currentColor" stroke-width="1.6">' + MIT_ICON + '</g></svg>';
+    return '<span class="txt"><span class="v">' + (put_ ? 'Put down' : 'Put it down') + '</span><span class="s" style="display:block">' + info.s + '</span></span>' +
+           '<span class="hc" aria-label="' + n + ' of 5 pairs of hands on it">' + ic + ' ' + n + ' of 5</span>';
+  });
+  $('vDown').classList.toggle('done', put_);
+  var down = d.lit, db = $('vDown');
+  if (!down) db.classList.remove('pulse');
+  if (down && !wasDown) { db.classList.remove('pulse'); void db.offsetWidth; db.classList.add('pulse'); }
+  wasDown = down;
+}
+
+/* ── Playing ───────────────────────────────────────────────────────────────── */
+var lastPressed = null, lastPress = { v: '', at: 0 };
+function finish() {
+  if (!TL || TL.done) return;
+  var end = TL.end;
+  clock = end; render();
+  bake();
+  TL.done = true;                       // the move is over; its lingering marks fade on their own
+  render();
+}
+// A press always does what its button says. If a move is still playing out, it finishes at once
+// first. A second tap on the same button within a fifth of a second is taken as a double tap.
+function press(v) {
+  if (!S) return false;
+  var now = performance.now();
+  if (v === lastPress.v && now - lastPress.at < 200) return false;
+  lastPress = { v: v, at: now };
+  if (TL && !TL.done) finish();
+  if (S.out || S.doomed) return false;
+  var info = verbInfo(v);
+  if (!info.lit) {                      // a button that isn't lit says why, and nothing happens
+    base.c1 = info.why[0]; base.c2 = info.why[1];
+    render();
+    return false;
+  }
+  closeSeatBubble();
+  var pre = M.clone(S), ev = M.step(S, v);
+  S.doomed = !S.out && !M.canWin(S);
+  TL = build(v, pre, S, ev); clock = 0;
+  if (S.doomed) {
+    set(TL, 'c2', TL.capT, DOOM);
+    set(TL, 'doomUI', TL.capT, true);
+    finalize(TL);
+  }
+  updateButtons();
+  render();
+  return true;
+}
+function seeEnd() {
+  if (!S || S.out || !S.doomed) return;
+  if (TL && !TL.done) finish();
+  var pre = M.clone(S), ev = M.playOut(S);
+  TL = buildPlayOut(pre, S, ev); clock = 0;
+  updateButtons(); render();
+}
+function advance(ms) {
+  if (!TL) return;
+  if (TL.done) {
+    if (clock < TL.fxEnd) { clock = Math.min(TL.fxEnd, clock + ms); render(); }
+    return;
+  }
+  clock += ms;
+  if (clock >= TL.end) { var over = clock; finish(); clock = Math.min(over, Math.max(TL.end, TL.fxEnd)); render(); }
+  else render();
+}
+function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+function paramsFor(i) {
+  if (i < M.ROUNDS.length) return M.ROUNDS[i];
+  return pick(M.FREE);
+}
+function newRound(i, keepParams) {
+  ROUNDI = i;
+  if (!keepParams) PARAMS = paramsFor(i);
+  S = M.create(PARAMS.start, PARAMS.wait, pick(M.FIRES));
+  S.doomed = false;
+  wasDown = false; resetBase(PARAMS.start);
+  if (i === 0) RESULTS = RESULTS.slice(0, 0);
+  $('game').classList.remove('over');
+  $('end').hidden = true; $('verbs').hidden = false; $('doom').hidden = true; $('howInline').hidden = true; $('endcards').hidden = true;
+  $('yourow').hidden = false;
+  $('stagewrap').style.height = '';
+  put('roundName', i < M.ROUNDS.length ? 'Round ' + (i + 1) + ' of ' + M.ROUNDS.length : 'Round ' + (i + 1) + ' (random)');
+  last = {};
+  TL = buildIntro(); clock = 0;
+  updateButtons(); render();
+  sizeStage();
+}
+
+/* ── The ending ────────────────────────────────────────────────────────────── */
+function didW(s) {
+  var a = [];
+  if (s.holds) a.push('held it alone ' + times(s.holds));
+  if (s.bounces) a.push('bounced it ' + times(s.bounces));
+  if (s.tosses) a.push('tossed it ' + times(s.tosses));
+  if (!a.length) return '';
+  return 'You ' + joinNames(a) + '.';
+}
+function recapLines(s, kind) {
+  var L = [], sure = M.surest(s.start, s.wait), hind = M.most(M.create(s.start, s.wait, 99), s.burn);
+  var did = didW(s); if (did) L.push(did);
+  L.push('Flint added ' + flamesW(s.flintBuilt) + ' and won a coin with each' + (s.everThree ? ', until three of you held it.' : '. Three of you never held it at once.'));
+  if (kind === 'burned') {
+    var how = s.burnMove === 'toss' ? 'your toss sent it round the table from ' + s.burnFrom + ' flames.'
+            : s.burnMove === 'bounce' ? 'you bounced it at ' + s.burnFrom + ' flames, and your flame and Flint’s took it there.'
+            : s.burnMove === 'hold' ? 'you held it at ' + s.burnFrom + ' flames, and Flint’s flame took it there.'
+            : 'there was no way left, and Flint kept adding flames.';
+    L.push('It caught fire at ' + s.burn + ': ' + how);
+    L.push('Everyone lost their coins: your ' + s.lost + ', Flint’s ' + s.flintLost + ', and the others’ 5 each.');
+  } else {
+    L.push(s.maxF >= M.LO ? 'You went into the striped boxes (up to ' + flamesW(s.maxF) + ') and got away with it: the fire was at ' + s.burn + '.'
+                          : 'You never touched the stripes. The fire was at ' + s.burn + '.');
+  }
+  var kept = kind === 'down' ? s.coins : 0;
+  L.push('The surest way, never touching the stripes, keeps ' + coinsW(sure.coins) +
+         (kept === sure.coins ? ', as you did.' : sure.line.indexOf('bounce') >= 0 && s.bounces === 0 ? ' (bounce it while it’s below the stripes).' : '.') +
+         (!hind ? '' : kept >= hind.coins ? ' With the fire at ' + s.burn + ', nobody could have kept more.'
+          : ' Knowing the fire was at ' + s.burn + ', you could have kept ' + coinsW(hind.coins) + (hind.line.indexOf('toss') >= 0 ? ', with a toss' : '') + '. Nobody knows that in advance.'));
+  if (kind === 'burned' && s.burnMove !== 'wait') L.push('<b>Before you race, count the room:</b> a toss adds 6 flames, a bounce 2, and every hold still lets Flint add 1 until three of you hold it.');
+  if (kind === 'burned' && s.burnMove === 'wait') L.push('<b>Next time:</b> the buttons say “no way back” before a move that leaves no way to put it down.');
+  return L;
+}
+function scoreboard() {
+  var parts = [], tot = 0;
+  for (var i = 0; i < RESULTS.length; i++) if (RESULTS[i] != null) { parts.push(RESULTS[i]); tot += RESULTS[i]; }
+  if (parts.length < 2) return '';
+  return ' Coins kept so far: ' + parts.join(' + ') + ' = ' + tot + '.';
+}
+function showEnd(kind) {
+  var s = S, last3 = ROUNDI >= M.ROUNDS.length - 1;
+  $('game').classList.add('over');
+  $('verbs').hidden = true; $('doom').hidden = true;
+  $('end').hidden = false;
+  RESULTS[ROUNDI] = kind === 'down' ? s.coins : 0;
+  RESULTS.length = ROUNDI + 1;
+  if (kind === 'down') {
+    var ec = $('endcards');
+    ec.innerHTML = '<h2>You put it down together.</h2><p class="sub">You keep ' + coinsW(s.coins) + '. Nobody got burned. The fire was at ' + s.burn + '.</p>' +
+      (last3 ? '<p class="next">It’s in the ground. What happens next isn’t in this game:</p><div class="fork">' +
+        '<div><b>If people know how to keep it down</b>They keep it there. For example: every builder agrees to pass a safety test before building anything bigger, and someone checks.</div>' +
+        '<div><b>If nobody knows how yet</b>Putting it down together bought time. Finding a way to keep it down is still ahead.</div></div>' +
+        '<p class="under">This game can’t tell you which of these is true. Nobody can yet.</p>'
+        : '<p class="sub">It’s in the ground. Whether it stays there, nobody knows yet.</p>');
+    ec.hidden = false;
+    var wrap = $('stagewrap');
+    wrap.style.height = Math.max($('stage').offsetHeight, ec.offsetHeight) + 'px';
+    $('nextBtn').textContent = ROUNDI + 1 < M.ROUNDS.length ? 'Next: round ' + (ROUNDI + 2) : 'Another round (random)';
+    $('nextBtn').dataset.act = 'next';
+    $('againBtn').hidden = false;
+    $('score').innerHTML = '<b>Round ' + (ROUNDI + 1) + ':</b> put down. You keep ' + coinsW(s.coins) + '.' + scoreboard();
+  } else {
+    $('nextBtn').textContent = 'Try this round again';
+    $('nextBtn').dataset.act = 'again';
+    $('againBtn').hidden = true;
+    $('score').innerHTML = '<b>Round ' + (ROUNDI + 1) + ':</b> it caught fire at ' + flamesW(s.burn) + '. Everyone kept 0 coins.' + scoreboard();
+  }
+  $('recap').innerHTML = recapLines(s, kind).map(function (l) { return '<li>' + l + '</li>'; }).join('');
+  var riv = $('river');
+  riv.hidden = !(kind === 'burned' || last3);
+  riv.innerHTML = (kind === 'down' ? '“Nobody had to be good. Enough of them had to agree on a number.”'
+    : '“A pause taken alone is a sacrifice the others outlive. Taken by enough, it keeps the river for everyone.”') +
+    '<small>a line from a toy model of a river; a rhyme, not a finding about AI</small>';
+  $('howInline').hidden = !last3 && kind === 'down';
+  try { $('nextBtn').focus({ preventScroll: true }); } catch (e) {}
+}
+
+/* ── Seats: tap for the full line ──────────────────────────────────────────── */
+var openSeat = null;
+function openSeatBubble(k) {
+  var b = $('seatBubble');
+  if (openSeat === k) { closeSeatBubble(); return; }
+  openSeat = k;
+  b.innerHTML = '<b>' + NAME[k] + '</b>“' + LINE[k] + '”';
+  b.setAttribute('style', pct(60, k === 'flint' ? 60 : k === 'moss' || k === 'reed' ? 112 : 128, 270));
+  b.hidden = false;
+  render();
+}
+function closeSeatBubble() { if (!openSeat) return; openSeat = null; $('seatBubble').hidden = true; render(); }
+
+/* ── Layout: the stage fits the screen, the text keeps its size ────────────── */
+function sizeStage() {
+  var wrap = $('stagewrap'), st = $('stage'), game = $('game');
+  if (game.classList.contains('over')) return;
+  var cs = getComputedStyle(game), used = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) + parseFloat(getComputedStyle(wrap).marginTop);
+  var wide = window.matchMedia && window.matchMedia('(min-width:900px) and (min-aspect-ratio:1/1)').matches;
+  (wide ? ['.top', '.roundline', '#track', '#yourow'] : ['.top', '.roundline', '#track', '#yourow', '#caption', '#verbs']).forEach(function (q) {
+    var el = document.querySelector(q), m = getComputedStyle(el);
+    used += el.offsetHeight + parseFloat(m.marginTop) + parseFloat(m.marginBottom);
+  });
+  var aw = wrap.clientWidth, ah = Math.max(0, window.innerHeight - used - 4);
+  if (!aw) return;
+  var w = Math.min(aw, Math.max(Math.min(aw, 270), ah * VBW / VBH));
+  wrap.style.height = Math.round(w * VBH / VBW) + 'px';
+  st.style.width = Math.round(w) + 'px';
+  st.style.height = Math.round(w * VBH / VBW) + 'px';
+  U = VBW / w;
+  var fs = Math.max(11.5, Math.min(15, w / 26));          // the seats' words shrink a little with the table
+  $('ovs').style.fontSize = f1(fs) + 'px';
+  render();
+}
+
+/* ── Settings UI ───────────────────────────────────────────────────────────── */
+function syncSettings() {
+  document.querySelectorAll('[data-set]').forEach(function (b) { b.setAttribute('aria-pressed', SET[b.dataset.set] ? 'true' : 'false'); });
+  document.querySelectorAll('[data-set="read"]').forEach(function (b) { b.hidden = !CAN_SPEAK; });
+}
+function toggleSet(k) {
+  SET[k] = !SET[k]; save(k, SET[k] ? '1' : '0'); syncSettings();
+  if (k === 'read') {
+    if (SET.read) { var t = ($('c1').textContent + ' ' + $('c2').textContent).trim(); spoken = { c1: V('c1') || '', c2: V('c2') || '' }; if (t) speak(t, true); }
+    else try { window.speechSynthesis.cancel(); } catch (e) {}
+  }
+}
+function openSheet() {
+  var d = $('sheet');
+  if (typeof d.showModal === 'function') { try { d.showModal(); } catch (e) { d.setAttribute('open', ''); } }
+  else d.setAttribute('open', '');
+}
+function closeSheet() { var d = $('sheet'); if (typeof d.close === 'function') d.close(); else d.removeAttribute('open'); }
+
+/* ── Wiring ────────────────────────────────────────────────────────────────── */
+function fillHow() {
+  var tpl = $('howTpl').innerHTML;
+  var lines = OTHERS.map(function (k) { return '<p><b>' + badge(k).replace('<svg ', '<svg style="width:12px;height:12px;vertical-align:-1px" ') + ' ' + NAME[k] + '</b> (' + SHAPE[k] + ', ' + RULE[k] + '): “' + LINE[k] + '”</p>'; }).join('');
+  var html = tpl.replace('<div class="lines" id="LINES"></div>', '<div class="lines">' + lines + '</div>');
+  $('howSheet').innerHTML = html; $('howInline').innerHTML = html;
+}
+fillHow();
+buildOverlays();
+document.addEventListener('click', function (e) {
+  var t = e.target.closest ? e.target : e.target.parentNode;
+  var verb = t.closest('.verb'), seat = t.closest('.seatbtn'), set_ = t.closest('[data-set]'), act = t.closest('[data-act="round1"]');
+  if (verb) { lastPressed = verb; press(verb.dataset.verb); return; }
+  if (seat) { openSeatBubble(seat.dataset.seat); return; }
+  if (set_) { toggleSet(set_.dataset.set); return; }
+  if (act) { closeSheet(); window.scrollTo(0, 0); newRound(0); return; }
+  if (openSeat) closeSeatBubble();
 });
-document.getElementById('copy').addEventListener('click', function(){
-  var u = location.href; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(function(){ document.getElementById('copied').textContent = 'Copied.'; }, function(){ window.prompt('Copy this link:', u); });
+$('helpBtn').addEventListener('click', openSheet);
+$('howBtn2').addEventListener('click', openSheet);
+$('sheetClose').addEventListener('click', closeSheet);
+$('sheet').addEventListener('click', function (e) { if (e.target === $('sheet')) closeSheet(); });
+$('nextBtn').addEventListener('click', function () { window.scrollTo(0, 0); if (this.dataset.act === 'next') newRound(ROUNDI + 1); else newRound(ROUNDI, true); });
+$('againBtn').addEventListener('click', function () { window.scrollTo(0, 0); newRound(ROUNDI, true); });
+$('seeEnd').addEventListener('click', seeEnd);
+$('doomAgain').addEventListener('click', function () { window.scrollTo(0, 0); newRound(ROUNDI, true); });
+document.addEventListener('keydown', function (e) {
+  if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+  if (e.key === 'Escape') { closeSeatBubble(); return; }
+  if ($('sheet').open) return;
+  var want = { h: 'hold', t: 'toss', g: 'together', b: 'bounce', k: 'bounce', d: 'down' }[(e.key || '').toLowerCase()];
+  if (!want || !S || $('game').classList.contains('over') || S.doomed) return;
+  e.preventDefault();
+  lastPressed = document.querySelector('.verb[data-verb="' + want + '"]');
+  press(want);
 });
+syncSettings();
 
-// ── the opening: the ad's first two scenes, then the potato is yours ─────────────────────────
-function startPlay(){
-  phase = 'play'; document.getElementById('go').hidden = true; document.getElementById('play').hidden = false;
-  if (innerWidth < 640) document.getElementById('stagebox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' });
-  anim.heat = heat01(baseRisk(state)); anim.ring = state.coordination; anim.ringShown = state.coordination;
-  if (state.endpoint){ anim.end = state.endpoint; anim.endP = 1; anim.center = ENDS[state.endpoint].planted || state.endpoint === 'the_stop'; }
-  var sc = sceneFor(state); setScene(sc[0], sc[1]);
-  caption(state.t ? 'You opened a walk from a link, at year ' + state.t + '.' : 'Among the labs, a threat appears: <em>“if we don’t build it, they will.”</em> It is in your hands.');
-  if (moves.length && !state.endpoint) afterHTML = afterLine(lastEff(moves));
-  render(); if (state.endpoint) showEnd();
+var lastTick = performance.now();
+function tick() {
+  var now = performance.now(), dt = Math.min(1000, now - lastTick);
+  lastTick = now;
+  if (dt > 0) advance(dt * (SET.slow ? 0.5 : 1));
 }
+function raf() { tick(); window.requestAnimationFrame(raf); }
+window.requestAnimationFrame(raf);
+setInterval(function () { if (performance.now() - lastTick > 300) tick(); }, 250);   // if frames stall
 window.addEventListener('resize', sizeStage);
-sizeStage();
-var fromLink = readHash();
-if (!fromLink) newWalk();
-// replay the log for a walk opened from a link
-if (fromLink){ state.history.forEach(function(hh, i){ var li = document.createElement('li'); li.innerHTML = '<b>Year ' + hh.t + '. ' + (actOf(moves[i]) ? actOf(moves[i]).nm : 'Your own hand') + '.</b> <span class="g">People holding it after it: ' + holding(hh.coordination) + ' of ' + PEOPLE + '.</span>'; document.getElementById('log').insertBefore(li, document.getElementById('log').firstChild); }); }
-requestAnimationFrame(draw);
-if (fromLink) startPlay();
-else {
-  caption('In training, where an AI is made, many copies of one mind learn toward a <em class="eco">single shared goal</em>.');
-  setTimeout(function(){ if (phase !== 'intro') return; setScene('II', 'Among the labs'); caption('Among the labs, a threat appears: <em>“if we don’t build it, they will.”</em>'); document.getElementById('go').hidden = false; }, reduce ? 800 : 3600);
-}
-document.getElementById('go').addEventListener('click', startPlay);
-window.potato = { play:play, state:function(){ return state; }, moves:function(){ return moves.slice(); }, walkMoves:walkMoves };
+
+// Test hook: drive the game on the virtual clock (screenshots work with the pane hidden).
+window.potatoTest = {
+  state: function () {
+    var fl = activeFx('flight', clock), at = V('potAt'), btn = {};
+    ['hold', 'toss', 'together', 'bounce', 'down'].forEach(function (v) { var i = verbInfo(v); btn[v] = (i.lit ? '' : '(off) ') + i.s + ' | ' + (i.w || i.soft || i.g || ''); });
+    return { round: ROUNDI + 1, start: S.start, wait: S.wait, flames: S.F, shownFlames: V('F'), hottest: S.maxF, heat: M.potw(S.F),
+             seen: S.seen, shownSeen: V('seen'), hands: HW(S.hand), shownHands: HW(V('hand') || 0), coins: S.coins, shownCoins: V('coins'),
+             flint: S.flint, on: S.on.slice(),
+             where: fl ? 'flying' : at === 'you' ? 'your hands' : at === 'middle' ? 'the middle' : at === 'ground' ? 'the ground' : at,
+             animating: !!(TL && !TL.done), ended: S.out || null, doomed: !!S.doomed, offered: S.out ? [] : M.offered(S), buttons: btn,
+             caption: (($('c1').textContent || '') + ' ' + ($('c2').textContent || '')).trim() };
+  },
+  press: function (v) { if (v === 'idk') v = 'bounce'; lastPress = { v: '', at: 0 }; var b = document.querySelector('.verb[data-verb="' + v + '"]'); if (b) lastPressed = b; return press(v); },
+  seeEnd: function () { seeEnd(); return this.state(); },
+  step: function (ms) { advance(ms || 0); return this.state(); },
+  fire: function (b) { if (S.log.length) return false; S.burn = b; return true; },
+  round: function (i, start, wait) { if (start) { PARAMS = { start: start, wait: wait }; newRound(i - 1, true); } else newRound(i - 1); return this.state(); },
+  secret: function () { return { burn: S.burn }; }
+};
+
+var qr = /[?&]round=(\d+)/.exec(location.search);
+newRound(qr ? Math.max(0, Math.min(8, +qr[1] - 1)) : 0);
+})();
 </script>
 </body>
 </html>
