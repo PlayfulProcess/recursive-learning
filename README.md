@@ -64,6 +64,7 @@ scripts/                  export-grammars.mjs (re-export) · build-site.mjs (reb
                           and the glossary) · build-glossary.mjs (the glossary alone)
                           mark.svg (her spiral + icons, inlined into the landing)
 docs/CHANNELS.md          the two-channel model, and what sync needs
+explainers/curves-and-odds/  Curves and Odds (HOT POTATO explainer); films embed it with ?embed=1 and ?step=N
 ```
 
 ### Where GitHub Pages serves from
