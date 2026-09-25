@@ -171,11 +171,15 @@
       .replace(/`([^`\n]+)`/g, '<code>$1</code>');
   }
   /* The deck's sections are a little Markdown: paragraphs, "- " lists, **bold**, *italic*,
-     `code` and [links](https://...). Everything is escaped first; only http(s) links become <a>. */
+     `code` and [links](https://...). Everything is escaped first; only http(s) links become <a>.
+     An author's note to self ("**Working doc:** `docs/drafts/...`", a path in a private working
+     repo) is not for players and leads nowhere, so a line that starts that way is not shown. */
+  const NOTE_TO_SELF = /^\s*\*\*Working doc:\*\*/i;
   function mdToHtml(src) {
     const blocks = String(src == null ? '' : src).replace(/\r\n?/g, '\n').split(/\n\s*\n/).filter(b => b.trim());
     return blocks.map(b => {
-      const lines = b.split('\n').filter(l => l.trim());
+      const lines = b.split('\n').filter(l => l.trim() && !NOTE_TO_SELF.test(l));
+      if (!lines.length) return '';
       if (lines.every(l => /^\s*[-*]\s+/.test(l))) {
         return '<ul>' + lines.map(l => '<li>' + inline(esc(l.replace(/^\s*[-*]\s+/, ''))) + '</li>').join('') + '</ul>';
       }

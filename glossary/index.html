@@ -44,11 +44,15 @@
     display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
   .term h3 a.self{color:var(--ink)}
   .term h3 a.self:hover,.term h3 a.self:focus-visible{color:var(--gold)}
-  .term .tag{margin:0;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+  .term .tag{margin:0;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;max-width:100%}
+  @media (max-width:360px){ .term .tag{white-space:normal} }
   .term .tag.ours{color:var(--gold);border-color:var(--gold)}
   .term .tag.std{color:var(--ink-soft)}
   .def{margin:7px 0 0;font-size:17px;line-height:1.55;color:var(--ink)}
   .note{margin:6px 0 0;font-size:15px;line-height:1.55;color:var(--ink-soft)}
+  .note.reading{padding-left:10px;border-left:2px solid var(--line)}
+  .note.reading .lab{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--gold);margin-right:4px}
   .draw{margin:11px 0 0;padding:8px 12px;background:var(--chip);border-radius:8px;font-size:15.5px;line-height:1.5;
     font-style:italic;color:var(--ink)}
   .draw .lab{display:block;font-family:var(--sans);font-style:normal;font-size:10px;font-weight:600;letter-spacing:.16em;
@@ -157,7 +161,7 @@
         <h3><a class="self" href="#intent">Intent</a>
           <span class="tag ours">ours</span></h3>
         <p class="def">A stable preference for one outcome over another that survives correction.</p>
-        <p class="note">A hypothesis that, as far as we know, has not been shown for current systems, and one that would matter a great deal if it were true.</p>
+        <p class="note">Contested for current systems. Some published experiments report models acting to keep a trained preference when training or instructions push against it (Greenblatt et al. 2024, alignment faking, arXiv 2412.14093; Meinke et al. 2024, in-context scheming, arXiv 2412.04984); others read the same results as following patterns in the prompt. It would matter a great deal if it held.</p>
         <p class="draw"><span class="lab">When you draw it</span>Are you reading a preference into a system that may only be following a pattern?</p>
         <p class="rel">See also: <a href="#disposition">Disposition</a> &middot; <a href="#human-ai-alignment">Human-AI alignment</a> &middot; <a href="#misaligned-asi-scenario">Misaligned-ASI scenario</a><a class="card" href="../viewers/cards.html?src=../grammars/words-deck/grammar.json&amp;item=intent">Open as a card</a></p>
       </article>
@@ -172,9 +176,10 @@
       <article class="term" id="value-function">
         <h3><a class="self" href="#value-function">Value function</a>
           <span class="tag std">standard in reinforcement learning</span></h3>
-        <p class="def">What a learning system is rewarded toward.</p>
-        <p class="note">The lab's reading: in practice it is culture, and culture is made in large part of fiction.</p>
-        <p class="draw"><span class="lab">When you draw it</span>What is being rewarded here, and which stories shaped what counts as a reward?</p>
+        <p class="def">An estimate of the total reward a learning system can expect from here on, from a situation or from one action taken in it.</p>
+        <p class="note">Not the reward itself: the reward says what counts as good right now, and the value function predicts how much reward will follow.</p>
+        <p class="note reading"><span class="lab">The lab’s reading</span> Our looser use, not the reinforcement-learning sense: for people, what we learn to expect rewards from is shaped by culture, and culture is made in large part of fiction.</p>
+        <p class="draw"><span class="lab">When you draw it</span>What does this system expect to be rewarded for later, and which stories shaped what counts as a reward?</p>
         <p class="rel">See also: <a href="#alignment">Alignment</a> &middot; <a href="#intent">Intent</a><a class="card" href="../viewers/cards.html?src=../grammars/words-deck/grammar.json&amp;item=value-function">Open as a card</a></p>
       </article>
     </section>
@@ -352,8 +357,8 @@
       </div>
       <div class="spread" id="spread-single">
         <h3 id="spread-single-h">A single draw</h3>
-        <p class="sdesc">One word for now.</p>
-        <ol class="pos"><li><strong>The word for now</strong>: The word that seems most alive in your situation today.</li></ol>
+        <p class="sdesc">One card for now, from the Words deck or the Ideas deck.</p>
+        <ol class="pos"><li><strong>The card for now</strong>: The word or idea that seems most alive in your situation today.</li></ol>
         <a class="cast" href="../viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&amp;spread=single">Cast it in the Spread Caster</a>
       </div>
     </section>

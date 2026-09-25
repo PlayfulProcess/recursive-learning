@@ -5464,13 +5464,13 @@
    ],
    "year": 1984,
    "venue": "Basic Books",
-   "url": "https://fee.org/articles/book-review-the-evolution-of-cooperation-by-robert-axelrod/",
+   "url": "https://openlibrary.org/works/OL2620286W",
    "doi": null,
    "thread": "thread-cooperation",
    "cited_in": "the value-lab literature review (Sep 19 2026)",
    "about": "Tournaments of the repeated prisoner's dilemma, in which a simple, provokable and forgiving strategy (tit-for-tat) did well.",
    "used_for": "Upstream of the value-lab's rule set: legible rules as a route to cooperation.",
-   "reading_check": "The lab cites a review of the book (FEE), not the book itself."
+   "reading_check": "The lab's notes read a review of the book by FEE, an advocacy organisation, not the book itself. The link here is a library catalogue entry instead (Open Library, checked Sep 25 2026)."
   },
   {
    "kind": "paper",
@@ -5630,7 +5630,6 @@
   "https://elifesciences.org/articles/01385": "200 HEAD 2026-09-25",
   "https://en.wikipedia.org/wiki/An_Introduction_to_Cybernetics": "200 HEAD 2026-09-25",
   "https://en.wikipedia.org/wiki/Steps_to_an_Ecology_of_Mind": "200 HEAD 2026-09-25",
-  "https://fee.org/articles/book-review-the-evolution-of-cooperation-by-robert-axelrod/": "200 HEAD 2026-09-25",
   "https://lexfridman.com/andrej-karpathy/": "200 HEAD 2026-09-25",
   "https://lexfridman.com/dario-amodei/": "200 HEAD 2026-09-25",
   "https://lexfridman.com/david-chalmers/": "200 HEAD 2026-09-25",
@@ -5663,6 +5662,7 @@
   "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/": "200 HEAD 2026-09-25",
   "https://open.spotify.com/episode/1S8FEbhkaQQ8Yrx4e3f5Vh": "200 HEAD 2026-09-25",
   "https://open.spotify.com/episode/6LDmLYDdYwyBtwCqELGzQk": "200 HEAD 2026-09-25",
+  "https://openlibrary.org/works/OL2620286W": "200 HEAD 2026-09-25",
   "https://pmc.ncbi.nlm.nih.gov/articles/PMC2900004/": "200 HEAD 2026-09-25",
   "https://pmc.ncbi.nlm.nih.gov/articles/PMC9334443/": "200 HEAD 2026-09-25",
   "https://podcast.clearerthinking.org/episode/031/roman-yampolskiy-superintelligence-and-consciousness/": "200 HEAD 2026-09-25",

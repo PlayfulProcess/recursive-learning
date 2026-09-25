@@ -50,7 +50,7 @@
       "section": "value",
       "standard": false,
       "definition": "A stable preference for one outcome over another that survives correction.",
-      "note": "A hypothesis that, as far as we know, has not been shown for current systems, and one that would matter a great deal if it were true.",
+      "note": "Contested for current systems. Some published experiments report models acting to keep a trained preference when training or instructions push against it (Greenblatt et al. 2024, alignment faking, arXiv 2412.14093; Meinke et al. 2024, in-context scheming, arXiv 2412.04984); others read the same results as following patterns in the prompt. It would matter a great deal if it held.",
       "draw": "Are you reading a preference into a system that may only be following a pattern?",
       "related": ["disposition", "human-ai-alignment", "misaligned-asi-scenario"]
     },
@@ -70,9 +70,10 @@
       "section": "value",
       "standard": true,
       "standard_in": "reinforcement learning",
-      "definition": "What a learning system is rewarded toward.",
-      "note": "The lab's reading: in practice it is culture, and culture is made in large part of fiction.",
-      "draw": "What is being rewarded here, and which stories shaped what counts as a reward?",
+      "definition": "An estimate of the total reward a learning system can expect from here on, from a situation or from one action taken in it.",
+      "note": "Not the reward itself: the reward says what counts as good right now, and the value function predicts how much reward will follow.",
+      "reading": "Our looser use, not the reinforcement-learning sense: for people, what we learn to expect rewards from is shaped by culture, and culture is made in large part of fiction.",
+      "draw": "What does this system expect to be rewarded for later, and which stories shaped what counts as a reward?",
       "related": ["alignment", "intent"]
     },
     {

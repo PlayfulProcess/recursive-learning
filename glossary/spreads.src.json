@@ -35,9 +35,9 @@
     {
       "id": "single",
       "name": "A single draw",
-      "description": "One word for now.",
+      "description": "One card for now, from the Words deck or the Ideas deck.",
       "positions": [
-        { "label": "The word for now", "meaning": "The word that seems most alive in your situation today.", "x": 0.5, "y": 0.5 }
+        { "label": "The card for now", "meaning": "The word or idea that seems most alive in your situation today.", "x": 0.5, "y": 0.5 }
       ]
     }
   ]

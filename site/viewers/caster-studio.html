@@ -29,7 +29,20 @@
   .intention { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:0 0 16px; }
   .intention h2 { font-family:var(--sans); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
   .intention .creed { font-size:13.5px; color:#4a4439; line-height:1.55; margin:0 0 8px; }
-  .intention ul.principles { margin:0; padding-left:18px; color:var(--muted); font-size:12.5px; line-height:1.55; }
+  .intention ul.principles { margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:12.5px; line-height:1.55; }
+  .intention .creed { margin-bottom:6px; }
+  .intention details.beforecast > summary { cursor:pointer; list-style:none; display:flex; align-items:baseline; gap:10px;
+    flex-wrap:wrap; min-height:32px; }
+  .intention details.beforecast > summary::-webkit-details-marker { display:none; }
+  .intention details.beforecast > summary h2 { margin:0; }
+  .intention details.beforecast > summary .bc-hint { font-size:12.5px; color:var(--muted); }
+  .intention details.beforecast[open] > summary .bc-hint { display:none; }
+  .intention details.beforecast > summary::after { content:"Show"; margin-left:auto; font-family:var(--sans); font-size:12px;
+    font-weight:600; color:#15704d; }
+  .intention details.beforecast[open] > summary::after { content:"Hide"; }
+  .intention details.beforecast > .creed { margin-top:8px; }
+  .intention details.lenses > summary { cursor:pointer; font-family:var(--sans); font-size:12.5px; font-weight:600;
+    color:#15704d; padding:6px 0; min-height:32px; }
   .voices { display:flex; gap:10px; overflow-x:auto; padding:6px 2px 8px; margin-top:12px; scrollbar-width:thin; }
   .voice { flex:0 0 auto; min-width:104px; max-width:122px; background:#faf8f3; border:1px solid var(--line);
     border-radius:12px; padding:10px; cursor:pointer; text-align:center; transition:border-color .15s, transform .1s; }
@@ -110,6 +123,22 @@
   .axesbar .axfield label { font-size:12px; color:var(--muted); }
   .axesbar .axfield input { width:100%; }
   .empty { color:var(--muted); font-size:14px; text-align:center; padding:40px 0; }
+  .caststatus { margin:12px 0 0; font-family:var(--sans); font-size:13.5px; color:#15704d; font-weight:600; min-height:1em; }
+  .caststatus:empty { display:none; }
+  .board { scroll-margin-top:16px; }
+  /* A spread laid out in one row (every position at the same height) gets a shorter board, so the
+     cast cards sit in the middle of it instead of in a mostly empty square. */
+  .board.onerow { aspect-ratio:16/7; }
+  @media (max-width:640px){ .board.onerow { aspect-ratio:4/3; } }
+  /* A drawn card with no picture: its name on a white face, readable and plainly tappable (it used
+     to be an 11px grey placeholder with the same name repeated in the caption under it). */
+  .slot .card.filled.tface { aspect-ratio:auto; width:calc(var(--cw) * 1.5); margin-left:calc(var(--cw) * -0.25);
+    min-height:calc(var(--cw) * 1.25); flex-direction:column; gap:5px; padding:10px 6px; background:#fff;
+    border:1px solid #177d56; border-radius:8px; box-shadow:0 6px 16px -9px rgba(60,45,20,.5); cursor:pointer; overflow:visible; }
+  .slot .tf-name { font-family:var(--serif-display); font-size:13.5px; font-weight:600; color:var(--ink); text-align:center;
+    line-height:1.25; overflow-wrap:break-word; hyphens:auto; }
+  .slot .tf-tap { font-family:var(--sans); font-size:10.5px; color:#15704d; text-align:center; }
+  .slot .card.filled.tface + .cdeck { margin-top:4px; }
 
   /* custom spread editor (shown only for Custom) */
   .custombar { display:none; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap; }
@@ -142,7 +171,7 @@
   .cdm-box { background:#ffffff; border:1px solid #cfc8ba; border-radius:16px; max-width:540px; width:100%; max-height:88vh; overflow-y:auto; position:relative; }
   .cdm-header { display:flex; align-items:flex-start; gap:14px; padding:18px 18px 14px; border-bottom:1px solid #d8d2c6; }
   .cdm-img { width:72px; flex-shrink:0; border-radius:8px; border:1px solid #d8d2c6; background:#faf8f3; }
-  .cdm-close { position:absolute; top:12px; right:14px; background:none; border:none; color:#8a8273; font-size:20px; cursor:pointer; }
+  .cdm-close { position:absolute; top:4px; right:4px; min-width:44px; min-height:44px; background:none; border:none; color:#6b6457; font-size:20px; cursor:pointer; border-radius:8px; }
   .cdm-pos { font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:#177d56; font-weight:700; }
   .cdm-name { font-family:var(--serif-display); font-size:21px; font-weight:600; color:#221f1a; margin:4px 0 2px; }
   .cdm-deck { font-size:12px; color:#6b6457; }
@@ -162,7 +191,6 @@
   .cdm-ref-label { font-size:10.5px; text-transform:uppercase; letter-spacing:.11em; color:#6d4ab6; font-weight:700; margin-bottom:8px; }
   .cdm-ref-link { display:inline-block; margin-top:4px; font-size:12.5px; color:#6d4ab6; text-decoration:underline; }
   .cdm-tag.cdm-ref-tag { background:rgba(109,74,182,.12); color:#6d4ab6; }
-  footer.site { padding:18px; border-top:1px solid var(--line); color:#6b6457; font-size:12px; text-align:center; }
 
   /* Spread Studio — aligned control rows, wide question, always-visible action bar */
   .controls { flex-direction:column; align-items:stretch; gap:14px; }
@@ -243,6 +271,26 @@
   #hovprev img { height:min(64vh,440px); width:auto; border-radius:8px; background:#f4f1ea;
     border:1px solid #e3ddd0; box-shadow:0 18px 50px -12px rgba(20,12,4,.55); display:block; }
   @media (hover:none){ #hovprev{ display:none!important; } }
+
+  /* Phone: a tighter top of the page, so Cast is on the first screen (last in this sheet, so it
+     wins over the rules above). */
+  @media (max-width:640px){
+    .wrap { padding-top:12px; }
+    h1 { font-size:24px; }
+    .sub { font-size:13px; margin-bottom:10px; }
+    .intention { padding:8px 12px; margin-bottom:10px; }
+    .controls { padding:12px; gap:10px; }
+    .studiohead { flex-wrap:nowrap; gap:8px; }
+    .studiohead .namewrap { flex:1 1 auto; gap:3px; }
+    input#spreadName { font-size:16px; padding:7px 10px; }
+    .fieldhead { height:auto; }
+    .crow { gap:10px; }
+    .deckmeta { margin-top:4px; }
+    .qfield textarea { min-height:2.4em; }
+    .actionbar { margin-top:10px; }
+    .slot .card.filled.tface { padding:8px 3px; }
+    .slot .tf-name { font-size:12px; }
+  }
 </style>
 </head>
 <body data-assistant-context="spread-builder">
@@ -264,12 +312,19 @@
   </div>
 
   <div class="intention" id="intention" style="display:none">
-    <h2 id="intentionTitle">Before you cast</h2>
-    <p class="creed" id="intentionCreed"></p>
-    <ul class="principles" id="intentionPrinciples"></ul>
-    <p id="intentionNote" style="margin:8px 0 0;font-size:11.5px;color:#6b6457;font-style:italic;line-height:1.5"></p>
-    <div class="voices" id="voices" aria-label="Reading orientations — tap one to hear how it reads"></div>
-    <div class="voice-detail" id="voiceDetail"></div>
+    <!-- Open on a wide screen, folded to one line on a phone (loadVoices), so Cast and the board
+         are not pushed below a long block; the principles and the five lenses fold inside it. -->
+    <details class="beforecast" id="beforeCast">
+      <summary><h2 id="intentionTitle">Before you cast</h2><span class="bc-hint">A card is a prompt, not a forecast.</span></summary>
+      <p class="creed" id="intentionCreed"></p>
+      <details class="lenses" id="intentionMore">
+        <summary>Five principles, and five ways to read a card</summary>
+        <ul class="principles" id="intentionPrinciples"></ul>
+        <p id="intentionNote" style="margin:8px 0 0;font-size:11.5px;color:#6b6457;font-style:italic;line-height:1.5"></p>
+        <div class="voices" id="voices" aria-label="Reading orientations — tap one to hear how it reads"></div>
+        <div class="voice-detail" id="voiceDetail"></div>
+      </details>
+    </details>
   </div>
 
   <div class="controls">
@@ -349,6 +404,7 @@
     <p>Drag positions on the board to arrange them; edit labels &amp; meanings in the list below. <strong>Cast</strong> draws a card into every position; <strong>Clear casting</strong> keeps the layout while <strong>Clear all</strong> wipes it too. <strong>Add position</strong>, <strong>Save as new</strong> and <strong>Update spread</strong> build and save the spread itself; the icons beside the spread name download or upload a spread file.</p>
     <p>An automatically laid-out spread has no meaningful geometry — drag any card on the board to arrange it. <strong>Shift-click</strong> to select several positions and move them together; hold <strong>Ctrl</strong> (⌘) while dragging to copy them.</p>
   </div>
+  <p id="castStatus" class="caststatus" role="status" aria-live="polite"></p>
   <div id="board" class="board"></div>
   <div id="hovprev"><img alt=""></div>
   <div class="clist" id="clist"></div>
@@ -388,7 +444,8 @@
   </div>
 </div>
 
-<footer class="site">Open data, CC BY-SA 4.0 · <a href="https://github.com/PlayfulProcess/recursive-learning" target="_blank" rel="noopener">recursive-tarot</a> · companion to <a href="https://recursive.eco" target="_blank" rel="noopener">recursive.eco</a></footer>
+<!-- The page's own tarot footer ("recursive-tarot · companion to recursive.eco") was removed: it was
+     a port leftover, and it sat on top of the site footer below, so the page had two. -->
 
 <script>
 const META_URL = '../grammars/all-decks/grammar.json';
@@ -814,7 +871,7 @@ function updateSaveAffordances(){
 
 function renderBoard(){
   const board = $('board'); board.innerHTML = '';
-  if (!positions.length) { board.innerHTML = '<div class="empty">Add a position to begin.</div>'; updateSaveAffordances(); return; }
+  if (!positions.length) { board.innerHTML = '<div class="empty">Add a position to begin.</div>'; board.classList.remove('onerow'); $('castStatus').textContent = ''; updateSaveAffordances(); return; }
   renderAxes(board);
   positions.forEach((p, i) => {
     const slot = document.createElement('div');
@@ -824,15 +881,25 @@ function renderBoard(){
     const c = p.card;
     // The position's meaning renders IN FULL — it used to be cut at 60 characters ("…where the
     // movement o"), which is exactly the text a builder needs to read while laying a spread out.
+    const textFace = !!(c && !c.image_url);   // a card with no picture shows its name as its face
     const cardInner = c
-      ? (c.image_url ? `<img src="${esc(c.image_url)}" alt="${esc(c.name)}" style="${c.reversed?'transform:rotate(180deg);':''}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:'?'}))">` : '<div class="ph">' + esc(shortCardName(c.name, c.deck)) + '</div>')
+      ? (c.image_url ? `<img src="${esc(c.image_url)}" alt="${esc(c.name)}" style="${c.reversed?'transform:rotate(180deg);':''}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:'?'}))">`
+                     : `<div class="tf-name">${esc(shortCardName(c.name, c.deck))}</div><div class="tf-tap" aria-hidden="true">Tap to read</div>`)
       : `<div class="ph">${esc(p.meaning||'') || '—'}</div>`;
     slot.innerHTML = `<div class="phead"><span class="num">${i+1}</span><span class="plabel" title="${esc(p.meaning||'')}">${esc(p.label)}</span></div>`
-      + `<div class="card${c?' filled':''}">${cardInner}</div>`
-      + (c ? `<div class="cname">${esc(shortCardName(c.name, c.deck))}</div><div class="cdeck">${esc(c.deck||'')}</div>${c.reversed?'<div class="rev">reversed</div>':''}` : '');
+      + `<div class="card${c?' filled':''}${textFace?' tface':''}">${cardInner}</div>`
+      + (c ? (textFace ? '' : `<div class="cname">${esc(shortCardName(c.name, c.deck))}</div>`) + `<div class="cdeck">${esc(c.deck||'')}</div>${c.reversed?'<div class="rev">reversed</div>':''}` : '');
+    if (c) { slot.setAttribute('role', 'button'); slot.tabIndex = 0;
+      slot.setAttribute('aria-label', (p.label ? p.label + ': ' : '') + shortCardName(c.name, c.deck) + (c.reversed ? ', reversed' : '') + '. Open its entry');
+      slot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCardDetail(p); } }); }
     attachSlot(slot, p, i);
     board.appendChild(slot);
   });
+  board.classList.toggle('onerow', !(axes.rows && axes.rows.length) && new Set(positions.map(p => Math.round(p.y * 100))).size === 1);
+  const dealt = positions.filter(p => p.card).length;
+  $('castStatus').textContent = dealt
+    ? `Dealt ${dealt} card${dealt === 1 ? '' : 's'}. Tap a card to read its full entry.`
+    : '';
   updateSaveAffordances();
 }
 
@@ -934,6 +1001,11 @@ function cast(){
       keywords:c.keywords||null, sections:c.sections||null }; });
   $('reshuffle').style.display = 'inline-block';
   renderBoard(); syncJson(); $('export').classList.add('on');
+  const br = $('board').getBoundingClientRect();
+  if (br.top < 0 || br.top > window.innerHeight * 0.6) {
+    // an instant jump: the status line lands at the top, just under the header
+    $('castStatus').scrollIntoView({ behavior: 'auto', block: 'start' });
+  }
   // Oracle Ribbon — ON by default since Aug 8 2026 (approved after the ?ribbon=1 preview).
   // The moment a cast lands is exactly when "the cards have spoken" energy is highest, so
   // that's where the frame belongs. Still dismissible for the session via its own ×.
@@ -1392,6 +1464,8 @@ async function loadVoices(){
         + ((v.essay||v.link) ? ' <a href="'+esc(v.essay||v.link)+'">Read more →</a>' : (v.persona ? ' <span style="color:#8a8273">· a voice you can consult on recursive.eco</span>' : ''));
       detail.classList.add('on'); });
     vbox.appendChild(el); });
+  // open on a wide screen; one line on a phone, so Cast is not pushed off the first screen
+  try { $('beforeCast').open = !window.matchMedia('(max-width: 640px)').matches; } catch(_) { $('beforeCast').open = true; }
   $('intention').style.display='block';
 }
 

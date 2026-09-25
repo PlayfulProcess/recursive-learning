@@ -27,7 +27,7 @@
   .sintro{color:var(--muted);font-size:14.5px;line-height:1.65;max-width:82ch;margin:.2em 0 16px}
   .sintro a{color:var(--accent)} .sintro strong{color:var(--ink)}
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:8px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:16px;margin-top:8px}
   .tile{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:14px;
     overflow:hidden;text-decoration:none;color:inherit;transition:transform .14s,box-shadow .14s,border-color .14s}
   .tile:hover{transform:translateY(-4px);box-shadow:0 16px 34px -22px rgba(60,45,20,.5);border-color:var(--accent)}

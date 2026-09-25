@@ -255,6 +255,10 @@
     The forecast is yours, written before the coin is shown, and <b>“I don't know” is a legal answer</b>,
     recorded as itself. <b>Nothing is staked</b>: no points, and no score for being right. What you write
     stays in this browser unless you download it.
+    <br><b>Where the deck leans:</b> it was written from one side of the AI debate. A reviewer found that
+    several of its faces lean toward slowing down or stopping, and that no face yet makes the case for
+    going faster at full strength. Read it as a practice deck, not a survey; a stronger counter-face is
+    welcome.
   </div>
 
   <div class="settings" id="settings">
@@ -575,7 +579,8 @@
     if (!shown) {
       const dr = S.drafts[p.id] || {};
       const sure = Number.isInteger(dr.sure) ? dr.sure : 50;
-      const opt = (v, label) => `<label class="fcopt"><input type="radio" name="fc-${idx}" value="${v}" data-fc="${esc(p.id)}"${dr.dir === v ? ' checked' : ''}> <span>${label}</span></label>`;
+      // aria-label repeats the visible words, so a screen reader names the option, not its value
+      const opt = (v, label) => `<label class="fcopt"><input type="radio" name="fc-${idx}" value="${v}" data-fc="${esc(p.id)}" aria-label="${esc(label.replace(/<[^>]+>/g, ''))}"${dr.dir === v ? ' checked' : ''}> <span>${label}</span></label>`;
       body += `<fieldset class="fc"><legend>Your forecast, before the coin</legend>
         <p class="fchint">Which way do you think the world will turn this card? Write it before you look anything up.</p>
         <div class="fcopts">${opt('upright', '<b>Upright</b>: it holds')}${opt('reversed', '<b>Reversed</b>: it does not')}${opt('unknown', "<b>I don't know</b>")}</div>
@@ -626,11 +631,14 @@
         <h2 id="h-end" tabindex="-1">${S.ended === 'early' ? 'You ended the cast here' : 'Nature votes later'}</h2>
         ${S.ended === 'early' ? '<p>What you wrote is kept below; a forecast you did not record is kept as not recorded, and a coin you did not show stays face down.</p>' : ''}
         ${rule('Nature votes') ? md(rule('Nature votes')) : ''}
+        <p class="muted">In plain words: <b>the Value Lab</b> is this project's small computer model, two hundred
+          simulated agents drawing on one shared river, used to see which kinds of step keep a shared resource
+          alive after a shock. It is a toy, not a forecast about anyone.</p>
         ${rule('Nothing is staked') ? `<p class="bklabel">Nothing is staked</p><div class="bktext">${md(rule('Nothing is staked'))}</div>` : ''}
       </div>
       <div class="complete-banner">
         <b>Your casting</b>
-        <p>It is kept in this browser only. Download it to keep it, or to propose it to the deck: it has the shape of the deck's own Castings (the cards in <code>composite_of</code>, the keywords <code>synthesis</code> and <code>human</code>).</p>
+        <p>It is kept in this browser only. Download it to keep it, or to offer it to the deck: it is saved in the same format as the Castings already at the end of the deck, marked as written by a person.</p>
         ${rule('A community deck') ? `<div class="bktext">${md(rule('A community deck'))}</div>` : ''}
         <div class="btnrow">
           <button class="btn primary" id="save-btn" type="button">Download the casting (JSON grammar)</button>

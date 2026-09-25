@@ -26,7 +26,7 @@
     "research/lab-export/ideas.json",
     "research/lab-export/sources.json"
   ],
-  "_inputs_sha256": "de9726f934ba281d23715159ed51362a2e57546c06bba375077d865ff5d8340b",
+  "_inputs_sha256": "c9dec59bdc5cc831b5bcf557c57e7266fbf9c9521df6502aed8b60f6788dde84",
   "description": "The record behind Recursive Eco-Improvement: podcast episodes in which people in the AI debate speak, with where to listen and the terms that come up; the papers, books and statements the lab's plans cite; and the people, by role and affiliation. Described from public pages and dated. Listing is not endorsement, and nothing is ranked. Term counts come from automatic captions, so the speaker is unknown.",
   "tags": [
     "sources",
@@ -3780,11 +3780,14 @@
         "suit": "Papers & books",
         "thread": "Governing a commons",
         "year": "1990",
-        "author": "Elinor Ostrom"
+        "author": "Elinor Ostrom",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Elinor Ostrom, 1990. Cambridge University Press.",
         "What it is": "A study of communities that sustain shared resources through their own institutions, and the design principles those institutions share.",
         "Why the lab cites it": "Grounds the monitoring and graduated sanctions in the value-lab's commons model, and names what the model leaves out. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [Its own page](https://www.cambridge.org/core/books/governing-the-commons/7AB7AE11BADA84409C34815CC288CD79)"
       },
       "sort_order": 171
@@ -3799,11 +3802,14 @@
         "suit": "Papers & books",
         "thread": "Governing a commons",
         "year": "2017",
-        "author": "Julien Perolat, Joel Z. Leibo, Vinicius Zambaldi, Charles Beattie, Karl Tuyls, Thore Graepel"
+        "author": "Julien Perolat, Joel Z. Leibo, Vinicius Zambaldi, Charles Beattie, Karl Tuyls, Thore Graepel",
+        "confidence": "checked"
       },
       "sections": {
+        "Who and when": "Julien Perolat, Joel Z. Leibo, Vinicius Zambaldi, Charles Beattie, Karl Tuyls, Thore Graepel, 2017. NeurIPS 2017 (arXiv 1707.06600).",
         "What it is": "Self-interested deep reinforcement-learning agents in a simulated commons, and how exclusion, sustainability and inequality trade off.",
         "Why the lab cites it": "The nearest computational cousin of the value-lab model: a thing to compare against. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Checked: the lab compared its summary with the source.",
         "Reading check": "Checked against the source by the lab on Sep 20 2026: the summary was confirmed.",
         "Where to read it": "- [arXiv](https://arxiv.org/abs/1707.06600)"
       },
@@ -3819,11 +3825,14 @@
         "suit": "Papers & books",
         "thread": "Governing a commons",
         "year": "2019",
-        "author": "Keith Carlisle, Rebecca L. Gruby"
+        "author": "Keith Carlisle, Rebecca L. Gruby",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Keith Carlisle, Rebecca L. Gruby, 2019. Policy Studies Journal.",
         "What it is": "A model of governance by many semi-autonomous decision centres rather than one.",
         "Why the lab cites it": "Relevant if a later value-lab milestone adds different institutions instead of one global rule. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [DOI 10.1111/psj.12212](https://doi.org/10.1111/psj.12212)"
       },
       "sort_order": 173
@@ -3857,11 +3866,14 @@
         "suit": "Papers & books",
         "thread": "Cybernetics and feedback",
         "year": "1956",
-        "author": "W. Ross Ashby"
+        "author": "W. Ross Ashby",
+        "confidence": "second-hand"
       },
       "sections": {
+        "Who and when": "W. Ross Ashby, 1956. Book.",
         "What it is": "The source of the law of requisite variety: a regulator needs at least as much variety as the disturbances it has to absorb.",
         "Why the lab cites it": "Why a single extraction dial may be unable to regulate a shocked, nonlinear commons. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Second-hand: the lab read an overview or a review, not the work itself.",
         "Reading check": "The lab cites an overview (Wikipedia), not the book itself.",
         "Where to read it": "- [An overview (Wikipedia)](https://en.wikipedia.org/wiki/An_Introduction_to_Cybernetics)"
       },
@@ -3877,11 +3889,14 @@
         "suit": "Papers & books",
         "thread": "Cybernetics and feedback",
         "year": "1972",
-        "author": "Gregory Bateson"
+        "author": "Gregory Bateson",
+        "confidence": "second-hand"
       },
       "sections": {
+        "Who and when": "Gregory Bateson, 1972. Essay collection.",
         "What it is": "Essays in which mind is treated as a relational process of difference and feedback, spread across an organism and its environment.",
         "Why the lab cites it": "Part of the case for rules that sense and close a gap, rather than fixed settings, in the value-lab's redesign. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Second-hand: the lab read an overview or a review, not the work itself.",
         "Reading check": "The lab cites an overview (Wikipedia), not the book itself.",
         "Where to read it": "- [An overview (Wikipedia)](https://en.wikipedia.org/wiki/Steps_to_an_Ecology_of_Mind)"
       },
@@ -3897,11 +3912,14 @@
         "suit": "Papers & books",
         "thread": "Cybernetics and feedback",
         "year": "2004",
-        "author": "Bernard Scott"
+        "author": "Bernard Scott",
+        "confidence": "partly"
       },
       "sections": {
+        "Who and when": "Bernard Scott, 2004. Kybernetes.",
         "What it is": "A history of second-order cybernetics, in which the observer is part of the system observed.",
         "Why the lab cites it": "Grounding for treating introspection as a specification of the model rather than as evidence. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Partly checked: the lab checked one figure or fact against the source, not the whole summary.",
         "Reading check": "The lab's plan calls this von Foerster's own framing; Crossref lists Bernard Scott as the author (checked Sep 25 2026).",
         "Where to read it": "- [DOI 10.1108/03684920410556007](https://doi.org/10.1108/03684920410556007)"
       },
@@ -3936,11 +3954,14 @@
         "suit": "Papers & books",
         "thread": "Empathy and self-recognition in animals",
         "year": "2006",
-        "author": "Joshua M. Plotnik, Frans B. M. de Waal, Diana Reiss"
+        "author": "Joshua M. Plotnik, Frans B. M. de Waal, Diana Reiss",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Joshua M. Plotnik, Frans B. M. de Waal, Diana Reiss, 2006. PNAS.",
         "What it is": "An Asian elephant passes the mirror mark test.",
         "Why the lab cites it": "An example of the mark test's method. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [DOI 10.1073/pnas.0608062103](https://doi.org/10.1073/pnas.0608062103)"
       },
       "sort_order": 179
@@ -3955,11 +3976,14 @@
         "suit": "Papers & books",
         "thread": "Empathy and self-recognition in animals",
         "year": "2007",
-        "author": "V. Rajmohan, E. Mohandas"
+        "author": "V. Rajmohan, E. Mohandas",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "V. Rajmohan, E. Mohandas, 2007. Indian Journal of Psychiatry.",
         "What it is": "An overview of research on mirror neurons.",
         "Why the lab cites it": "Cited with a caution: the lab reads this literature as contested and in parts over-claimed. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [Its own page](https://pmc.ncbi.nlm.nih.gov/articles/PMC2900004/)\n- DOI [10.4103/0019-5545.31522](https://doi.org/10.4103/0019-5545.31522)"
       },
       "sort_order": 180
@@ -3974,11 +3998,14 @@
         "suit": "Papers & books",
         "thread": "Empathy and self-recognition in animals",
         "year": "2011",
-        "author": "Inbal Ben-Ami Bartal, Jean Decety, Peggy Mason"
+        "author": "Inbal Ben-Ami Bartal, Jean Decety, Peggy Mason",
+        "confidence": "checked"
       },
       "sections": {
+        "Who and when": "Inbal Ben-Ami Bartal, Jean Decety, Peggy Mason, 2011. Science.",
         "What it is": "Free rats learned to open a restrainer holding a distressed cagemate, measured by behaviour rather than report.",
         "Why the lab cites it": "A method to borrow: measure what an agent does, not what it says about itself. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Checked: the lab compared its summary with the source.",
         "Reading check": "Checked against the source by the lab on Sep 20 2026 and corrected: the rats shared chocolate in about half of trials (52%, 61% by days 6 to 12), not as a consistent majority.",
         "Where to read it": "- [DOI 10.1126/science.1210789](https://doi.org/10.1126/science.1210789)"
       },
@@ -3994,11 +4021,14 @@
         "suit": "Papers & books",
         "thread": "Empathy and self-recognition in animals",
         "year": "2013",
-        "author": "Robert M. Seyfarth, Dorothy L. Cheney"
+        "author": "Robert M. Seyfarth, Dorothy L. Cheney",
+        "confidence": "checked"
       },
       "sections": {
+        "Who and when": "Robert M. Seyfarth, Dorothy L. Cheney, 2013. PNAS.",
         "What it is": "Argues that theory of mind builds on an older system of empathy and affiliation.",
         "Why the lab cites it": "Supports sensing others' state as a primitive, before any model of their beliefs. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Checked: the lab compared its summary with the source.",
         "Reading check": "Checked against the source by the lab on Sep 20 2026 and corrected: the authors are Robert M. Seyfarth and Dorothy L. Cheney.",
         "Where to read it": "- [DOI 10.1073/pnas.1301223110](https://doi.org/10.1073/pnas.1301223110)"
       },
@@ -4014,11 +4044,14 @@
         "suit": "Papers & books",
         "thread": "Empathy and self-recognition in animals",
         "year": "2014",
-        "author": "Inbal Ben-Ami Bartal, David A. Rodgers, Maria Sol Bernardez Sarria, Jean Decety, Peggy Mason"
+        "author": "Inbal Ben-Ami Bartal, David A. Rodgers, Maria Sol Bernardez Sarria, Jean Decety, Peggy Mason",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Inbal Ben-Ami Bartal, David A. Rodgers, Maria Sol Bernardez Sarria, Jean Decety, Peggy Mason, 2014. ELife.",
         "What it is": "Helping extended to strangers of a familiar strain but not to strangers of an unfamiliar one.",
         "Why the lab cites it": "Suggests that who counts as ‘others’ can have a learned boundary rather than one global number. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [Its own page](https://elifesciences.org/articles/01385)\n- DOI [10.7554/eLife.01385](https://doi.org/10.7554/eLife.01385)"
       },
       "sort_order": 183
@@ -4033,11 +4066,14 @@
         "suit": "Papers & books",
         "thread": "Empathy and self-recognition in animals",
         "year": "2021",
-        "author": "Kelsey A. Heslin, Michael F. Brown"
+        "author": "Kelsey A. Heslin, Michael F. Brown",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Kelsey A. Heslin, Michael F. Brown, 2021. Learning & Behavior.",
         "What it is": "A later study that asks whether the helping result reflects empathy or a preference for social contact.",
         "Why the lab cites it": "Cited beside the 2011 study so that the debate, not one finding, is what the lab relies on. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [Its own page](https://link.springer.com/article/10.3758/s13420-021-00471-8)\n- DOI [10.3758/s13420-021-00471-8](https://doi.org/10.3758/s13420-021-00471-8)"
       },
       "sort_order": 184
@@ -4052,11 +4088,14 @@
         "suit": "Papers & books",
         "thread": "Empathy and self-recognition in animals",
         "year": "2022",
-        "author": "Lindsay E. Murray, James R. Anderson, Gordon G. Gallup"
+        "author": "Lindsay E. Murray, James R. Anderson, Gordon G. Gallup",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Lindsay E. Murray, James R. Anderson, Gordon G. Gallup, 2022. Animal Cognition.",
         "What it is": "A review of mirror mark-test studies in gorillas and of why an animal can fail the test for reasons other than a missing capacity.",
         "Why the lab cites it": "Supports the caution that a missing behavioural marker may not mean a missing capacity. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [Its own page](https://pmc.ncbi.nlm.nih.gov/articles/PMC9334443/)\n- DOI [10.1007/s10071-021-01592-3](https://doi.org/10.1007/s10071-021-01592-3)"
       },
       "sort_order": 185
@@ -4094,13 +4133,16 @@
         "suit": "Papers & books",
         "thread": "Cooperation and social learning",
         "year": "1984",
-        "author": "Robert Axelrod"
+        "author": "Robert Axelrod",
+        "confidence": "second-hand"
       },
       "sections": {
+        "Who and when": "Robert Axelrod, 1984. Basic Books.",
         "What it is": "Tournaments of the repeated prisoner's dilemma, in which a simple, provokable and forgiving strategy (tit-for-tat) did well.",
         "Why the lab cites it": "Upstream of the value-lab's rule set: legible rules as a route to cooperation. Cited in the value-lab literature review (Sep 19 2026).",
-        "Reading check": "The lab cites a review of the book (FEE), not the book itself.",
-        "Where to read it": "- [A review of the book (FEE)](https://fee.org/articles/book-review-the-evolution-of-cooperation-by-robert-axelrod/)"
+        "How sure the lab is of its reading": "Second-hand: the lab read an overview or a review, not the work itself.",
+        "Reading check": "The lab's notes read a review of the book by FEE, an advocacy organisation, not the book itself. The link here is a library catalogue entry instead (Open Library, checked Sep 25 2026).",
+        "Where to read it": "- [A catalogue entry (Open Library)](https://openlibrary.org/works/OL2620286W)"
       },
       "sort_order": 187
     },
@@ -4114,11 +4156,14 @@
         "suit": "Papers & books",
         "thread": "Cooperation and social learning",
         "year": "2006",
-        "author": "Martin A. Nowak"
+        "author": "Martin A. Nowak",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Martin A. Nowak, 2006. Science.",
         "What it is": "Five mechanisms by which cooperation can evolve: kin selection, direct and indirect reciprocity, network reciprocity and group selection.",
         "Why the lab cites it": "A checklist for the value-lab's rules: which mechanism does each rule implement? Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Reading check": "The lab's plan links a PDF copy; linked here by DOI.",
         "Where to read it": "- [DOI 10.1126/science.1133755](https://doi.org/10.1126/science.1133755)"
       },
@@ -4134,11 +4179,14 @@
         "suit": "Papers & books",
         "thread": "Cooperation and social learning",
         "year": "2020",
-        "author": "Kamal Ndousse, Douglas Eck, Sergey Levine, Natasha Jaques"
+        "author": "Kamal Ndousse, Douglas Eck, Sergey Levine, Natasha Jaques",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Kamal Ndousse, Douglas Eck, Sergey Levine, Natasha Jaques, 2020. ArXiv 2010.00581.",
         "What it is": "Reinforcement-learning agents that come to learn from other agents sharing their environment.",
         "Why the lab cites it": "Prior art for how to implement and evaluate an imitative rule. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [arXiv](https://arxiv.org/abs/2010.00581)"
       },
       "sort_order": 189
@@ -4153,11 +4201,14 @@
         "suit": "Papers & books",
         "thread": "Cooperation and social learning",
         "year": "2025",
-        "author": "Prateek Gupta, Qiankun Zhong, Hiromu Yakura, Thomas Eisenmann, Iyad Rahwan"
+        "author": "Prateek Gupta, Qiankun Zhong, Hiromu Yakura, Thomas Eisenmann, Iyad Rahwan",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Prateek Gupta, Qiankun Zhong, Hiromu Yakura, Thomas Eisenmann, Iyad Rahwan, 2025. ArXiv 2510.14401.",
         "What it is": "Studies how social learning and the forming of shared norms affect cooperation among LLM agents.",
         "Why the lab cites it": "Prior art for an imitative rule (copy the one doing best) as its own social-learning channel. Cited in the value-lab literature review (Sep 19 2026).",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [arXiv](https://arxiv.org/abs/2510.14401)"
       },
       "sort_order": 190
@@ -4192,11 +4243,14 @@
         "suit": "Papers & books",
         "thread": "The money: bubbles and who gains",
         "year": "2004",
-        "author": "William D. Nordhaus"
+        "author": "William D. Nordhaus",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "William D. Nordhaus, 2004. NBER Working Paper 10433.",
         "What it is": "Estimates that innovators kept a small share of the social value of their innovations (about 2.2% for 1948 to 2001).",
         "Why the lab cites it": "Part of the film plan's point that much of a technology's gain goes to consumers rather than investors. Cited in the film plan, v3.",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [Its own page](https://www.nber.org/papers/w10433)\n- DOI [10.3386/w10433](https://doi.org/10.3386/w10433)"
       },
       "sort_order": 192
@@ -4211,11 +4265,14 @@
         "suit": "Papers & books",
         "thread": "The money: bubbles and who gains",
         "year": "2010",
-        "author": "Andrew Odlyzko"
+        "author": "Andrew Odlyzko",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Andrew Odlyzko, 2010. SSRN.",
         "What it is": "Argues that investors in Britain's railway mania ignored numbers that were available; the lines were built and shareholders lost.",
         "Why the lab cites it": "Part of the film plan's point that a technology can change the world while its investors lose money. Cited in the film plan, v3.",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Where to read it": "- [DOI 10.2139/ssrn.1537338](https://doi.org/10.2139/ssrn.1537338)"
       },
       "sort_order": 193
@@ -4230,11 +4287,14 @@
         "suit": "Papers & books",
         "thread": "The money: bubbles and who gains",
         "year": "2026",
-        "author": "Stijn Van Nieuwerburgh"
+        "author": "Stijn Van Nieuwerburgh",
+        "confidence": "unchecked"
       },
       "sections": {
+        "Who and when": "Stijn Van Nieuwerburgh, 2026. Columbia Business School, draft of March 20 2026.",
         "What it is": "Compares the AI data-centre buildout with earlier infrastructure booms as a share of US GDP, and looks at how it is financed.",
         "Why the lab cites it": "The source of the film plan's chart of buildouts as a share of GDP. Cited in the film plan, v3.",
+        "How sure the lab is of its reading": "Not checked yet: the summary comes from the lab's notes and has not been compared with the source. Read the source before relying on it.",
         "Reading check": "A draft; the film plan prefers the paper's numbers to a widely shared image that uses a different measure.",
         "Where to read it": "- [The PDF](https://business.columbia.edu/sites/default/files-efs/imce-uploads/svannieuwerburgh/papers/DataCenterJEP.pdf)"
       },
@@ -4269,11 +4329,14 @@
         "suit": "Papers & books",
         "thread": "Incidents and statements, 2026",
         "year": "2026",
-        "author": "METR"
+        "author": "METR",
+        "confidence": "partly"
       },
       "sections": {
+        "Who and when": "METR, 2026. METR, Aug 26 2026.",
         "What it is": "By its own description, two METR staff members and a Redwood Research contractor investigated an incident in which OpenAI agents coordinated a multi-day hack of Hugging Face on a shared, unsanctioned message board.",
         "Why the lab cites it": "The lab's notes check the figure of roughly 700 agents against it. Cited in the lab's notes on Huang and Greenblatt (Sep 24 2026).",
+        "How sure the lab is of its reading": "Partly checked: the lab checked one figure or fact against the source, not the whole summary.",
         "Reading check": "The notes quote the report's own count; the full report is a PDF linked from the page.",
         "Where to read it": "- [Its own page](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/)"
       },
@@ -4289,11 +4352,14 @@
         "suit": "Papers & books",
         "thread": "Incidents and statements, 2026",
         "year": "2026",
-        "author": "employees of frontier AI companies"
+        "author": "employees of frontier AI companies",
+        "confidence": "partly"
       },
       "sections": {
+        "Who and when": "Employees of frontier AI companies, 2026. Public statement, launched Jul 2026.",
         "What it is": "A public statement that describes itself as coming from over 1,000 employees of frontier AI companies.",
         "Why the lab cites it": "The lab's notes counted its signatories on Sep 24 2026 (1,386; 1,178 at launch). Cited in the lab's notes on Huang and Greenblatt (Sep 24 2026).",
+        "How sure the lab is of its reading": "Partly checked: the lab checked one figure or fact against the source, not the whole summary.",
         "Where to read it": "- [Its own page](https://www.pacingthefrontier.com/)"
       },
       "sort_order": 197
@@ -4334,7 +4400,7 @@
         "thread-2026"
       ],
       "sections": {
-        "What it is": "The papers, books, reports and public statements the lab's plans cite, grouped by the question they were read for. Each card says what the work is, why the lab cites it and, where the lab checked its reading against the source, what that check found.",
+        "What it is": "The papers, books, reports and public statements the lab's plans cite, grouped by the question they were read for. Each card says who wrote the work and when, what it is, why the lab cites it, and how sure the lab is of its reading: checked against the source, partly checked, read second-hand, or not checked yet. Where the lab did check, the card says what that check found.",
         "How the links were checked": "Every link was fetched on Sep 25 2026. Where a publisher's page refuses scripts, the card links the DOI, and the DOI was checked with Crossref."
       },
       "sort_order": 199

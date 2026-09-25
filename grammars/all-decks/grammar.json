@@ -25,7 +25,7 @@
     "grammars/ideas-of-alignment/grammar.json",
     "grammars/words-deck/grammar.json"
   ],
-  "_inputs_sha256": "437bf7d00d2b14f79ab1c4981f1488d03b46909ed082014876fc943d2afa6cf4",
+  "_inputs_sha256": "55ad8812b403d64e5e1ffd603a8e6c887d44e95102e5fb9315ad53ac18f449b7",
   "description": "Every castable card on the site in one pool, as pointers: the Words deck and the Ideas seed map. The Spread Caster draws from it; each card's entry opens from its own deck.",
   "tags": [
     "meta",

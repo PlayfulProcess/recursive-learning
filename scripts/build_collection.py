@@ -87,6 +87,18 @@ def short_name(name, slug):
     return re.split(r"\s[—–]\s|:\s", (name or slug).strip())[0].strip() or slug
 
 
+def has_generated_images(g):
+    """True when the grammar carries a picture made with recursive.eco's image generator: the app
+    records one in an item's metadata.image_generation, and serves it from /flow-image-gen/. The
+    home gallery marks such a grammar (the About page says so)."""
+    for it in [g] + list(g.get("items") or []):
+        if (it.get("metadata") or {}).get("image_generation"):
+            return True
+        if any("/flow-image-gen/" in str(it.get(k) or "") for k in ("image_url", "cover_image_url")):
+            return True
+    return False
+
+
 def blurb_of(g):
     desc = (g.get("description") or "").strip().split("\n")[0]
     return (desc[:200] + "…") if len(desc) > 200 else desc
@@ -122,6 +134,8 @@ def main():
             e["status"] = g["status"]
         if g.get("_generated"):
             e["generated"] = True
+        if has_generated_images(g):
+            e["ai_images"] = True
         if slug != META:
             own = g.get("cover_image_url") or ""
             if COMMONS.match(own):

@@ -80,7 +80,7 @@ const termHtml = t => `      <article class="term" id="${esc(t.id)}">
         <h3><a class="self" href="#${esc(t.id)}">${esc(t.term)}</a>
           <span class="tag ${t.standard ? 'std' : 'ours'}">${t.standard ? 'standard' + (t.standard_in ? ' in ' + esc(t.standard_in) : '') : 'ours'}</span></h3>
         <p class="def">${esc(t.definition)}</p>
-${t.note ? `        <p class="note">${esc(t.note)}${t.id === exTerm ? ` <a href="#${esc(ex.id)}">Read the example.</a>` : ''}</p>\n` : ''}        <p class="draw"><span class="lab">When you draw it</span>${esc(t.draw)}</p>
+${t.note ? `        <p class="note">${esc(t.note)}${t.id === exTerm ? ` <a href="#${esc(ex.id)}">Read the example.</a>` : ''}</p>\n` : ''}${t.reading ? `        <p class="note reading"><span class="lab">The lab’s reading</span> ${esc(t.reading)}</p>\n` : ''}        <p class="draw"><span class="lab">When you draw it</span>${esc(t.draw)}</p>
         <p class="rel">${(t.related || []).length ? `See also: ${t.related.map(r => `<a href="#${esc(r)}">${esc(byId.get(r).term)}</a>`).join(' &middot; ')}` : ''}<a class="card" href="${cardUrl(t.id)}">Open as a card</a></p>
       </article>`;
 
@@ -156,11 +156,15 @@ const html = `<!DOCTYPE html>
     display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
   .term h3 a.self{color:var(--ink)}
   .term h3 a.self:hover,.term h3 a.self:focus-visible{color:var(--gold)}
-  .term .tag{margin:0;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+  .term .tag{margin:0;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;max-width:100%}
+  @media (max-width:360px){ .term .tag{white-space:normal} }
   .term .tag.ours{color:var(--gold);border-color:var(--gold)}
   .term .tag.std{color:var(--ink-soft)}
   .def{margin:7px 0 0;font-size:17px;line-height:1.55;color:var(--ink)}
   .note{margin:6px 0 0;font-size:15px;line-height:1.55;color:var(--ink-soft)}
+  .note.reading{padding-left:10px;border-left:2px solid var(--line)}
+  .note.reading .lab{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--gold);margin-right:4px}
   .draw{margin:11px 0 0;padding:8px 12px;background:var(--chip);border-radius:8px;font-size:15.5px;line-height:1.5;
     font-style:italic;color:var(--ink)}
   .draw .lab{display:block;font-family:var(--sans);font-style:normal;font-size:10px;font-weight:600;letter-spacing:.16em;

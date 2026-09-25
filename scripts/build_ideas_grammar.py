@@ -45,6 +45,31 @@ PRECISION = {
 }
 LAYER = {"idea": "an idea", "outcome": "an outcome", "regulation": "a regulatory idea", "lore": "lore"}
 
+# Corrections from a public review of the site (Sep 25 2026), applied on top of the lab's export.
+# research/lab-export/ideas.json stays a faithful copy of the lab's data; what changes here is
+# said on the card, with why.
+#   TERM_REVIEW[id]  = {"precision": new rating, "note": why}      (a count rated too high)
+#   LANE_REVIEW[id]  = {"heading": new text, "sources": [...]}    (a claim with no source)
+TERM_REVIEW = {
+    "ea-rationalists": {
+        "precision": "medium",
+        "note": ("Lowered from high on review (Sep 25 2026): the pattern also matches \"rationalist\" and "
+                 "\"rationalism\" in the philosophical sense. The guest whose episodes carry it most is a "
+                 "philosopher of mind, and the term said most often alongside it is Consciousness, so a "
+                 "share of the hits is likely about philosophy rather than the movement. Not yet spot-checked."),
+    },
+}
+LANE_REVIEW = {
+    "safety": {
+        "heading": ("Growing, but still a thin stream next to capabilities (ETO, 2025). In July 2025 researchers "
+                    "from several rival labs argued together for keeping models' reasoning readable, so that it "
+                    "can be monitored (Korbak et al., 2025). The lab's notes also say that labs moved further in "
+                    "2026; no source is attached to that yet, so it is left out here."),
+        "sources": [{"kind": "link", "title": "Korbak et al., Chain of Thought Monitorability (Jul 2025)",
+                     "url": "https://arxiv.org/abs/2507.11473"}],
+    },
+}
+
 
 def inputs_sha256(paths):
     """sha256 over the inputs, in sorted path order: path, NUL, bytes, NUL. Never a date."""
@@ -122,6 +147,9 @@ def build():
     for l in I["lanes"]:
         tids = []
         for t in by_lane[l["id"]]:
+            rv = TERM_REVIEW.get(t["id"]) or {}
+            if rv.get("precision"):
+                t = dict(t, precision=rv["precision"])
             sec, meta = {}, {"kind": "term", "lane": l["name"], "layer": t["layer"],
                              "count_reliability": t["precision"]}
             # definition: where the Words glossary holds the same idea, link there (it lives once)
@@ -175,15 +203,19 @@ def build():
                    f"Count reliability, the lab's estimate: {PRECISION.get(t['precision'], t['precision'])}.")
             if t["spotcheck"]:
                 how += f" Spot-checked by the lab on Sep 24 2026: {t['spotcheck']}."
+            if rv.get("note"):
+                how += " " + rv["note"]
             sec["How it was counted"] = how
             desc = (f"Said {times(t['mentions'])} in {episodes_word(t['episodes'])}; first heard here in {f['date'][:4]}. "
                     if t["mentions"] else "Not heard in these episodes. ") + f"{LAYER.get(t['layer'], t['layer']).capitalize()}, {l['short'] or l['name']} lane."
             tids.append(add({"id": t["id"], "name": t["label"], "level": 1, "description": desc,
                              "metadata": meta, "sections": sec}))
-        src = [f"- {ext(s['title'], s['url'])}" for s in l["sources"] if ok(s["url"])]
+        lr = LANE_REVIEW.get(l["id"]) or {}
+        src = [f"- {ext(s['title'], s['url'])}" for s in list(l["sources"]) + lr.get("sources", []) if ok(s["url"])]
         lsec = {"What the lane is": l["summary"]}
-        if l["heading"]:
-            lsec["Where it seems to be heading (Sep 2026)"] = l["heading"]
+        heading = lr.get("heading") or l["heading"]
+        if heading:
+            lsec["Where it seems to be heading (Sep 2026)"] = heading
         if l["parent"] and l["parent"] in lanes:
             lsec["Forks from"] = card(SLUG, "lane-" + l["parent"], lanes[l["parent"]]["name"])
         if l["people"]:

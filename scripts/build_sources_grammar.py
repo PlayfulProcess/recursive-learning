@@ -47,6 +47,31 @@ IDEAS = "ideas-of-alignment"
 
 SUIT = {"podcasts": "Podcasts", "people": "People", "papers": "Papers & books", "institutions": "Institutions"}
 
+# How sure the lab is of its reading of each paper, book, report or statement (reviewed Sep 25 2026
+# against each record's reading check in research/lab-export/sources.json). Every paper needs a
+# level here: the build stops on one that has none, so a new paper cannot slip in unmarked.
+#   checked      the lab compared its summary with the source
+#   partly       the lab checked one figure or fact against the source, not the whole summary
+#   second-hand  the lab read an overview or a review, not the work itself
+#   unchecked    the summary comes from the lab's notes and has not been compared with the source
+CONFIDENCE_TEXT = {
+    "checked": "Checked: the lab compared its summary with the source.",
+    "partly": "Partly checked: the lab checked one figure or fact against the source, not the whole summary.",
+    "second-hand": "Second-hand: the lab read an overview or a review, not the work itself.",
+    "unchecked": ("Not checked yet: the summary comes from the lab's notes and has not been compared with the "
+                  "source. Read the source before relying on it."),
+}
+CONFIDENCE = {
+    "ostrom-1990": "unchecked", "carlisle-gruby-2019": "unchecked", "perolat-2017": "checked",
+    "bateson-1972": "second-hand", "ashby-1956": "second-hand", "scott-2004": "partly",
+    "bartal-2011": "checked", "bartal-2014": "unchecked", "heslin-brown-2021": "unchecked",
+    "seyfarth-cheney-2013": "checked", "rajmohan-mohandas-2007": "unchecked", "murray-2022": "unchecked",
+    "plotnik-2006": "unchecked", "nowak-2006": "unchecked", "axelrod-1984": "second-hand",
+    "gupta-2025": "unchecked", "ndousse-2020": "unchecked", "van-nieuwerburgh-2026": "unchecked",
+    "odlyzko-2010": "unchecked", "nordhaus-2004": "unchecked", "metr-2026": "partly",
+    "pacing-the-frontier-2026": "partly",
+}
+
 
 # ------------------------------------------------------------------------------------------------
 def inputs_sha256(paths):
@@ -264,19 +289,24 @@ def build():
                 where.append(f"- {ext(_where_label(x), x['url'])}")
             if x["doi"] and not x["url"].startswith("https://doi.org/"):
                 where.append(f"- DOI {ext(x['doi'], 'https://doi.org/' + x['doi'])}")
+            authors = ", ".join(x["authors"])
+            if x["id"] not in CONFIDENCE:
+                raise SystemExit(f"paper {x['id']!r} has no level in CONFIDENCE (build_sources_grammar.py)")
             sec = {
+                # the card viewer shows sections, not `description`, so who and when is a section too
+                "Who and when": f"{_cap(authors)}, {x['year']}. {_cap(x['venue'])}.",
                 "What it is": x["about"],
                 "Why the lab cites it": f"{x['used_for']} Cited in {x['cited_in']}.",
+                "How sure the lab is of its reading": CONFIDENCE_TEXT[CONFIDENCE[x["id"]]],
             }
             if x["reading_check"]:
                 sec["Reading check"] = x["reading_check"]
             sec["Where to read it"] = "\n".join(where)
-            authors = ", ".join(x["authors"])
             ids.append(add({
                 "id": "paper-" + x["id"], "name": x["title"], "level": 1,
                 "description": f"{authors} ({x['year']}). {x['venue']}.",
                 "metadata": {"kind": x["kind"], "suit": SUIT["papers"], "thread": t["name"], "year": str(x["year"]),
-                             "author": authors},
+                             "author": authors, "confidence": CONFIDENCE[x["id"]]},
                 "sections": sec,
             }))
         if ids:
@@ -294,8 +324,10 @@ def build():
         "composite_of": thread_ids,
         "sections": {
             "What it is": ("The papers, books, reports and public statements the lab's plans cite, grouped by the "
-                           "question they were read for. Each card says what the work is, why the lab cites it and, "
-                           "where the lab checked its reading against the source, what that check found."),
+                           "question they were read for. Each card says who wrote the work and when, what it is, why "
+                           "the lab cites it, and how sure the lab is of its reading: checked against the source, "
+                           "partly checked, read second-hand, or not checked yet. Where the lab did check, the card "
+                           "says what that check found."),
             "How the links were checked": ("Every link was fetched on Sep 25 2026. Where a publisher's page refuses "
                                            "scripts, the card links the DOI, and the DOI was checked with Crossref."),
         },
@@ -344,11 +376,16 @@ def _where_label(x):
         return "arXiv"
     if "wikipedia.org" in u:
         return "An overview (Wikipedia)"
-    if "fee.org" in u:
-        return "A review of the book (FEE)"
+    if "openlibrary.org" in u:
+        return "A catalogue entry (Open Library)"
     if u.endswith(".pdf"):
         return "The PDF"
     return "Its own page"
+
+
+def _cap(t):
+    t = str(t).strip()
+    return t[:1].upper() + t[1:]
 
 
 def _institution_stubs(G, add):

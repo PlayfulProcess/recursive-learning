@@ -24,7 +24,7 @@
   .page p strong,.page li strong{color:var(--ink)}
   .page ul{padding-left:1.2em}
   .page li{margin:.35em 0}
-  .wings{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0 4px}
+  .wings{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:14px;margin:14px 0 4px}
   .wing{background:var(--surface);border:1px solid var(--line-soft);border-radius:10px;padding:16px 18px}
   .wing .lab{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
   .wing p{font-size:15.5px;margin:0}
@@ -69,10 +69,15 @@
     <li><strong>Counts come from auto-captions.</strong> Where the site counts how often a term comes
       up in an episode, the count is from automatic captions, and the speaker is unknown. Episodes
       that are members-only are listed without counts.</li>
-    <li><strong>Confidence is marked.</strong> Sources carry a confidence level, and anything we could
-      not check says so.</li>
-    <li><strong>No AI-generated images.</strong> Pictures are public-domain works with their credits,
-      or the plain line covers drawn from the spiral mark.</li>
+    <li><strong>How sure we are is marked.</strong> Each paper and book in the Sources says who wrote it,
+      when, and how sure the lab is of its reading: checked against the source, partly checked, read
+      second-hand, or not checked yet. Each idea’s counts carry a reliability estimate. Anything we
+      could not check says so.</li>
+    <li><strong>Images.</strong> The Words, Sources, Ideas and Institutions pages and the games use no
+      AI-generated images: pictures there are public-domain works with their credits, or the plain line
+      covers drawn from the spiral mark. Some of the films in the gallery, made on recursive.eco, use an
+      image made with its image generator. The gallery marks those films, and a card whose picture the
+      app recorded as generated says so.</li>
     <li><strong>Built with Claude.</strong> Much of the code and many first drafts were written with
       Claude, an AI model made by Anthropic. Anthropic is one of the companies this material discusses,
       so that is a possible conflict of interest; read the Anthropic-related sources with that in mind,

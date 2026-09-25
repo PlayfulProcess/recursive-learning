@@ -34,7 +34,7 @@
   .lede .wip{display:block;margin-top:10px;font-family:var(--sans);font-size:12.5px;color:var(--mut)}
 
   /* the doors in (five: they wrap to two rows on a tablet, one column on a phone) */
-  .ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:16px;margin:34px 0 8px}
+  .ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(196px,100%),1fr));gap:16px;margin:34px 0 8px}
   .way{display:block;background:var(--surface);border:1px solid var(--line-soft);border-radius:10px;
     overflow:hidden;text-decoration:none;color:var(--ink);transition:transform .15s,border-color .15s,box-shadow .15s}
   .way:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 18px 36px -26px rgba(60,45,20,.5)}
@@ -55,7 +55,7 @@
   .band .note{font-family:var(--serif-body);font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:66ch;margin:0 auto 18px;text-align:center}
 
   /* the games strip: tarot's .vcard tiles, text only */
-  .viewgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:0 0 12px}
+  .viewgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:14px;margin:0 0 12px}
   .vcard{display:block;background:var(--surface);border:1px solid var(--line-soft);border-radius:10px;
     overflow:hidden;text-decoration:none;color:var(--ink);transition:transform .15s,border-color .15s,box-shadow .15s}
   .vcard:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 16px 32px -24px rgba(60,45,20,.5)}
@@ -68,7 +68,7 @@
   .band .links a{margin:0 10px;white-space:nowrap}
 
   /* the gallery: tarot's .deckgrid / .dcard, covers contained, never cropped */
-  .deckgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:14px}
+  .deckgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(146px,100%),1fr));gap:14px}
   .dcard{display:block;text-decoration:none;color:var(--ink)}
   .dcard .dthumb{aspect-ratio:3/4;background:var(--thumb-bg) center/contain no-repeat;
     border:1px solid var(--line-soft);border-radius:4px;transition:transform .15s,box-shadow .15s,border-color .15s}
@@ -77,6 +77,9 @@
   .dcard .dy{font-family:var(--sans);font-size:11px;letter-spacing:.06em;color:var(--mut)}
   .dcard .status{display:inline-block;font-family:var(--sans);font-size:9.5px;letter-spacing:.1em;
     text-transform:uppercase;color:var(--gold);background:var(--chip);border-radius:999px;padding:3px 9px;margin-top:6px}
+
+  .dcard .status + .status{margin-left:4px}
+  .dcard .status.aimg{color:var(--ink-soft);background:transparent;border:1px solid var(--line)}
 
   /* recursive.eco callout (tarot's .ecotree) */
   .ecotree{margin:56px auto 0;max-width:760px;background:var(--surface);border:1px solid var(--line-soft);
@@ -188,7 +191,7 @@
   <!-- RECURSIVE.ECO: the tree this grows from (tarot's reusable block) -->
   <aside class="ecotree">
     <a href="https://recursive.eco" target="_blank" rel="noopener" aria-label="recursive.eco, the parent project"><img class="spiral" src="spiral.svg" width="46" height="46" alt=""></a>
-    <h2>One channel of recursive.eco</h2>
+    <h2>Open grammars, held in git</h2>
     <p><a href="https://recursive.eco" target="_blank" rel="noopener"><strong>recursive.eco</strong></a> is an
       open platform built on <strong>grammars</strong>: symbolic systems people make meaning with. This site
       is one channel of it, held in git, so every grammar here is plain JSON you can read, fork or correct.</p>
@@ -207,11 +210,19 @@
     let branchName = {};   // branch id -> its short name ("Films"), from _collection.json branches[]
     const card = g => {
       const name = g.common_name || (g.name||g.slug).split(' — ')[0];
-      const sub = g.year_label || branchName[g.branch] || '';
+      // The line under the name: the branch ("Films"), unless the branch has the grammar's own
+      // name (Words, Ideas); then the grammar's own subtitle, the part of its name after the dash.
+      let sub = g.year_label || branchName[g.branch] || '';
+      if (sub.toLowerCase() === name.toLowerCase()) {
+        const tail = ((g.name||'').split(' — ')[1] || '').trim();
+        sub = tail ? tail[0].toUpperCase() + tail.slice(1) : '';
+      }
       const href = 'viewers/cards.html?src=../grammars/'+encodeURIComponent(g.slug)+'/grammar.json';
       return '<a class="dcard" href="'+href+'">'+thumb(g)+'<div class="dn">'+esc(name)+'</div>'
         +(sub?'<div class="dy">'+esc(sub)+'</div>':'')
-        +(g.status?'<span class="status">'+esc(g.status)+'</span>':'')+'</a>';
+        +(g.status?'<span class="status">'+esc(g.status)+'</span>':'')
+        // a grammar with a picture made by recursive.eco's image generator says so (see About)
+        +(g.ai_images?'<span class="status aimg">Uses an AI-generated image</span>':'')+'</a>';
     };
     fetch('grammars/_collection.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{
       (c.branches||[]).forEach(b => { branchName[b.id] = String(b.name||b.id).split(' — ')[0]; });

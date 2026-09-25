@@ -122,6 +122,9 @@
         }
 
         .hierarchy-sidebar {
+            /* border-box: at phone width the sidebar is width:100% of the column, and its padding
+               and border used to add 34px on top, pushing the page 10px past a 375px screen */
+            box-sizing: border-box;
             width: var(--sidebar-width, 240px);
             flex-shrink: 0;
             position: sticky;
@@ -1092,6 +1095,52 @@
         .item-visual .icon {
             font-size: 2.5rem;
             color: var(--grammar-accent);
+        }
+
+        /* The text face of a card with no picture: its name in full, then its description. */
+        .item-visual.has-text-face {
+            aspect-ratio: auto;     /* grows with the name, so the name is not cut */
+            min-height: 9rem;
+            align-items: stretch;
+            background: #ffffff;
+            border: 1px solid var(--line, #d8d2c6);
+            border-radius: 8px;
+        }
+        .item-visual .text-face {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            width: 100%;
+            padding: 0.6rem 0.5rem;
+            box-sizing: border-box;
+            text-align: left;
+            overflow: hidden;
+        }
+        .item-visual .text-face .tf-name {
+            font-family: var(--serif-display, Georgia, serif);
+            font-size: 0.8rem;
+            font-weight: 600;
+            line-height: 1.22;
+            color: var(--ink);
+            overflow-wrap: break-word;
+            hyphens: auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 9;
+            line-clamp: 9;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .item-visual .text-face .tf-desc {
+            font-size: 0.7rem;
+            line-height: 1.3;
+            color: var(--grammar-text-muted, #6b6457);
+            overflow-wrap: break-word;
+            hyphens: auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         /* Delicate, neutral "no image yet" mark — override the accent colour so it
@@ -2349,6 +2398,22 @@
         let activeDecks = []; // Slugs loaded via ?decks= multiselect
         let deckGroupField = null; // Discovered field used to group cards sidebar (null = by deck)
 
+        // Group-by chips speak to visitors, so they carry plain names, and the plumbing fields
+        // (the cross-link pointer, ids, URLs, dates of a link check) are not offered as groupings.
+        const HIDDEN_GROUP_FIELDS = new Set(['source_deck', 'source_item_id', 'deck', 'youtube_video_id',
+            'url', 'domain', 'checked', 'castable', 'trump_key']);
+        const FIELD_LABELS = { level: 'Level', suit: 'Suit', thread: 'Thread', show: 'Show', kind: 'Kind', year: 'Year',
+            author: 'Author', guests: 'Guest', keyword: 'Keyword', lane: 'Lane', layer: 'Layer',
+            count_reliability: 'Count reliability', first_heard: 'First heard', group: 'Group', section: 'Section',
+            standing: 'Standard or ours', standard_in: 'Standard in', reach: 'Reach', status: 'Status', deck: 'Deck',
+            arcana: 'Arcana', number: 'Number', trump: 'Figure', confidence: 'How sure' };
+        function fieldLabel(f) {
+            if (FIELD_LABELS[f]) return FIELD_LABELS[f];
+            const s = String(f || '').replace(/^_+/, '').replace(/_/g, ' ').trim();
+            return s ? s[0].toUpperCase() + s.slice(1) : 'Field';
+        }
+        const groupableField = f => !HIDDEN_GROUP_FIELDS.has(f.name) && !/(^|_)(id|url)$/.test(f.name);
+
         // Selection mode state
         let isSelectionMode = false;
         let maxCards = 3; // Default for 3-card spread
@@ -2572,7 +2637,8 @@
                             return r;
                         });
                         const sdFields = DimensionEngine.discoverFields(deRecs)
-                            .filter(f => f.count >= 2 && f.count <= Math.max(items.length * 0.8, 20));
+                            .filter(f => f.count >= 2 && f.count <= Math.max(items.length * 0.8, 20))
+                            .filter(groupableField);
                         if (sdFields.length) {
                             try {
                                 const h = decodeURIComponent(location.hash.slice(1));
@@ -2723,13 +2789,17 @@
                 chip.draggable = true;
                 chip.dataset.field = f.name;
                 chip.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:14px;font-size:12px;cursor:grab;border:1px solid rgba(255,255,255,.18);background:${deckGroupField===f.name?'#177d56':'rgba(255,255,255,.07)'};color:${deckGroupField===f.name?'#fff':'var(--grammar-text-muted)'};user-select:none;`;
-                chip.textContent = f.name + ' (' + f.count + ')';
+                chip.textContent = fieldLabel(f.name) + ' (' + f.count + ')';
+                chip.title = 'Group the cards by ' + fieldLabel(f.name).toLowerCase() + ' (' + f.count + ' groups)';
                 chip.addEventListener('dragstart', e => {
                     e.dataTransfer.setData('text/plain', JSON.stringify({ field: f.name }));
                     chip.style.opacity = '.5';
                 });
                 chip.addEventListener('dragend', () => { chip.style.opacity = ''; });
                 chip.addEventListener('click', () => { applyDeckGroupField(f.name); });
+                chip.setAttribute('role', 'button'); chip.tabIndex = 0;
+                chip.setAttribute('aria-pressed', deckGroupField === f.name ? 'true' : 'false');
+                chip.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); applyDeckGroupField(f.name); } });
                 tray.appendChild(chip);
             });
         }
@@ -2751,7 +2821,11 @@
 
             // Determine grouping key
             const groupKey = deckGroupField || '_deck';
-            const labelOf = item => (groupKey === '_deck' ? item._deck : (item.categories?.[groupKey] || item.metadata?.[groupKey] || item[groupKey])) || '—';
+            // An item without the field gets a named group, never a bare dash: the deck's root card
+            // (metadata.kind "root", the one card above every suit) is "The whole deck"; anything
+            // else is "No <field>".
+            const noneLabel = item => (item.metadata?.kind === 'root') ? 'The whole deck' : ('No ' + fieldLabel(groupKey).toLowerCase());
+            const labelOf = item => (groupKey === '_deck' ? item._deck : (item.categories?.[groupKey] || item.metadata?.[groupKey] || item[groupKey])) || noneLabel(item);
 
             const groups = new Map();
             items.forEach(item => {
@@ -2767,7 +2841,20 @@
             // Drop zone at the top of the sidebar
             const dropZone = document.createElement('div');
             dropZone.style.cssText = `padding:6px 8px;border-radius:6px;border:1.5px dashed rgba(255,255,255,.18);font-size:11.5px;color:var(--grammar-text-muted);margin-bottom:8px;text-align:center;transition:border-color .15s,background .15s;`;
-            dropZone.textContent = deckGroupField ? ('Grouped by: ' + deckGroupField + ' <rt-icon name="x"></rt-icon>') : '⊸ Tap a dimension above to group';
+            // textContent for the label (a field name is data), then the close icon as a real
+            // element: the icon markup used to go through textContent and showed as literal text.
+            dropZone.textContent = deckGroupField ? ('Grouped by: ' + fieldLabel(deckGroupField) + ' ') : 'Tap a dimension above to group';
+            if (deckGroupField) {
+                const x = document.createElement('rt-icon');
+                x.setAttribute('name', 'x');
+                x.setAttribute('aria-hidden', 'true');
+                x.style.cssText = 'width:12px;height:12px;vertical-align:-2px';
+                dropZone.appendChild(x);
+                dropZone.setAttribute('role', 'button');
+                dropZone.setAttribute('tabindex', '0');
+                dropZone.setAttribute('aria-label', 'Grouped by ' + fieldLabel(deckGroupField) + '. Clear the grouping');
+                dropZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); applyDeckGroupField(deckGroupField); } });
+            }
             dropZone.title = deckGroupField ? 'Tap to clear grouping' : 'Tap a dimension chip above (or drag it here) to group cards';
             if (deckGroupField) { dropZone.style.borderColor = '#177d56'; dropZone.style.color = '#1b9566'; dropZone.style.cursor = 'pointer'; dropZone.addEventListener('click', () => applyDeckGroupField(deckGroupField)); }
             dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.background = 'rgba(23,125,86,.18)'; dropZone.style.borderColor = '#177d56'; });
@@ -2786,7 +2873,7 @@
 
             const hdr = document.createElement('div');
             hdr.className = 'sidebar-group-header';
-            hdr.textContent = 'By ' + (deckGroupField || 'Deck');
+            hdr.textContent = 'By ' + (deckGroupField ? fieldLabel(deckGroupField).toLowerCase() : 'deck');
             hierarchyIndex.appendChild(hdr);
 
             groups.forEach((grpItems, groupName) => {
@@ -3004,6 +3091,9 @@
                     const normalizedItem = {
                         id: itemId,
                         name: item.name || 'Unnamed Item',
+                        // the one-line description (a paper's "Author (year). Venue."), shown on the
+                        // text face of a card with no picture
+                        description: typeof item.description === 'string' ? item.description : null,
                         number: itemNumber,
                         sort_order: item.sort_order ?? index,
                         image_url: item.image_url,
@@ -3400,40 +3490,44 @@
                 descContainer.classList.add('hidden');
             }
 
-            // Update page title
-            document.title = `${grammarData.name || 'Grammar'} - Recursive.eco`;
+            // Update page title (the site's name, not the parent platform's)
+            document.title = `${grammarData.name || 'Grammar'} · Recursive Eco-Improvement`;
 
-            // Set up Get a Reading button - always points to Flow.
-            // Match grammar types loosely so legacy values
-            // ('iching_book', 'i-ching', 'tarot-deck', 'birth_chart',
-            // etc.) route to the right oracle. Bug fix May 11 2026:
-            // strict equality on `grammarType === 'iching'` was
-            // failing for any grammar with a non-canonical type and
-            // silently falling through to `?deckId=`, loading I Ching
-            // grammars into the Tarot oracle. Also inspect item shape
-            // as a final fallback (per CLAUDE.md: a grammar is a
-            // grammar — data shape > type stamp).
+            // Get a Reading. On this site a reading is cast in the local Spread Caster, which casts
+            // the decks listed in grammars/all-decks (`_decks`): such a deck opens there, in this tab.
+            // A deck published on recursive.eco (an id in _eco_ids.json) opens its reading there,
+            // labelled as leaving the site. Any other grammar (the Sources and Institutions record)
+            // has no reading, so it shows no button. The button stays hidden until this resolves.
             const readingBtn = document.getElementById('reading-btn');
             if (readingBtn) {
-                readingBtn.target = '_blank';
-                readingBtn.href = getFlowBaseUrl();   // sensible default; the deck is resolved on click
-                readingBtn.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const flowBaseUrl = getFlowBaseUrl();
-                    const id = await resolveDeckFlowId();   // ?id=/?deckId= OR slug -> _eco_ids.json
-                    let url = flowBaseUrl;
-                    if (id) {
-                        const typeStr = String(grammarType || '').toLowerCase();
-                        const items = grammarData && grammarData.items ? grammarData.items : [];
-                        // I Ching by type string OR item shape (number 1–64 + binary/king_wen → hexagram).
-                        const looksLikeIching = typeStr.includes('iching') || typeStr.includes('i-ching') || typeStr.includes('hex')
-                            || items.some(it => typeof it.number === 'number' && it.number >= 1 && it.number <= 64 && (it.binary || it.king_wen || it.trigram_above));
-                        const looksLikeAstro = typeStr.includes('astro') || typeStr.includes('birthchart') || typeStr.includes('birth_chart')
-                            || (grammarData && Array.isArray(grammarData.birth_charts) && grammarData.birth_charts.length > 0);
-                        url = `${flowBaseUrl}/g/${id}?view=reading`;
+                readingBtn.style.display = 'none';
+                (async () => {
+                    const m = (new URLSearchParams(location.search).get('src') || '').match(/grammars\/([^/]+)\/grammar\.json/);
+                    const slug = m ? m[1] : null;
+                    let castable = false;
+                    if (slug) {
+                        try {
+                            const meta = await (await fetch('../grammars/all-decks/grammar.json')).json();
+                            castable = (meta._decks || []).some(d => d.slug === slug);
+                        } catch (_) { castable = false; }
                     }
-                    window.open(url, '_blank', 'noopener');
-                });
+                    if (castable) {
+                        readingBtn.href = 'caster-studio.html?src=../grammars/' + encodeURIComponent(slug) + '/grammar.json';
+                        readingBtn.removeAttribute('target');
+                        readingBtn.textContent = 'Get a Reading';
+                        readingBtn.title = 'Cast this deck in the Spread Caster, on this site';
+                        readingBtn.style.display = '';
+                        return;
+                    }
+                    const id = await resolveDeckFlowId();   // ?id=/?deckId= OR slug -> _eco_ids.json
+                    if (!id) return;
+                    readingBtn.href = `${getFlowBaseUrl()}/g/${id}?view=reading`;
+                    readingBtn.target = '_blank';
+                    readingBtn.rel = 'noopener';
+                    readingBtn.textContent = 'Get a Reading on recursive.eco ↗';
+                    readingBtn.title = 'Opens this deck in the oracle on recursive.eco, in a new tab';
+                    readingBtn.style.display = '';
+                })();
             }
 
             // Set up view mode dropdown (shared component)
@@ -3957,17 +4051,26 @@
 
                 // Visual section — prefer explicit image, fall through to YouTube thumb, then icon
                 let visualHtml = '';
+                let textFace = false;
                 const cardThumbUrl = getItemThumbnailUrl(item);
                 if (cardThumbUrl) {
                     visualHtml = `<img src="${cardThumbUrl}" alt="${escapeHtml(item.name)}" loading="lazy">`;
                 } else if (item.icon) {
                     visualHtml = `<span class="icon">${item.icon}</span>`;
-                } else {
+                } else if (grammarType === 'tarot' || grammarType === 'iching') {
                     visualHtml = `<span class="icon">${noImageVisual(grammarType)}</span>`;
+                } else {
+                    // A card with no picture shows its full name and its one-line description as
+                    // its face, so a deck of words or a record of sources can be browsed by reading
+                    // (it was a spiral placeholder over a name cut to two lines: "#88 – Trist...").
+                    textFace = true;
+                    const d = String(item.description || '').trim();
+                    visualHtml = `<span class="text-face"><span class="tf-name">${escapeHtml(item.name)}</span>`
+                        + (d ? `<span class="tf-desc">${escapeHtml(d.length > 160 ? d.slice(0, 157) + '…' : d)}</span>` : '') + `</span>`;
                 }
                 // Lens-flip: if a section is the chosen display field, show its text instead.
                 const _lensVisual = lensCellVisual(item);
-                if (_lensVisual !== null) visualHtml = _lensVisual;
+                if (_lensVisual !== null) { visualHtml = _lensVisual; textFace = false; }
 
                 // Selection badge (shows position number when selected)
                 const selectionBadge = isSelectionMode ? `<span class="selection-badge">${selectionIndex >= 0 ? selectionIndex + 1 : ''}</span>` : '';
@@ -3979,10 +4082,10 @@
                     ${selectionBadge}
                     ${reversedBadge}
                     ${levelBadge}
-                    <div class="item-visual">${visualHtml}</div>
+                    <div class="item-visual${textFace ? ' has-text-face' : ''}">${visualHtml}</div>
                     <div class="item-info">
                         ${item.number !== undefined ? `<div class="item-number">${item.number}</div>` : ''}
-                        <div class="item-name">${escapeHtml(item.name)}</div>
+                        ${textFace ? '' : `<div class="item-name">${escapeHtml(item.name)}</div>`}
                     </div>
                 `;
 
@@ -4350,6 +4453,14 @@
                 ${subtitle ? `<p class="modal-subtitle">${escapeHtml(subtitle)}</p>` : ''}
             `;
 
+            // Label an AI-generated picture as such. recursive.eco records a generated image in
+            // metadata.image_generation (model, provider, date), so the label reads from that record.
+            const genRec = [].concat(item.metadata?.image_generation || []).find(g => g && g.image_url && g.image_url === item.image_url)
+                || [].concat(item.metadata?.image_generation || [])[0];
+            if (genRec && detailThumbUrl && (!genRec.image_url || genRec.image_url === item.image_url)) {
+                bodyHtml += `<p class="modal-subtitle" style="font-size:0.8rem;margin:0 0 0.75rem;">The picture on this card is AI-generated${genRec.model ? ` (${escapeHtml(String(genRec.model))}${genRec.created_at ? ', ' + escapeHtml(String(genRec.created_at).slice(0, 10)) : ''})` : ''}, made with recursive.eco's image generator.</p>`;
+            }
+
             // (The old recursive.eco "Cast · View · Edit" bar was removed Jun 25 2026 —
             //  it duplicated the Edit/Play chips at the foot of the card detail, and its
             //  gold "Cast" button rendered unreadable under the purple eco-redirect rule.
@@ -4452,10 +4563,14 @@
                 // a click and adds a pattern this repo doesn't otherwise have —
                 // "consolidate, don't multiply" (CLAUDE.md). Same purple treatment.
                 const ecoBtnStyle = 'display:inline-flex; align-items:center; gap:5px; padding:0.35rem 0.7rem; background:rgba(147,51,234,0.10); border:1px solid rgba(147,51,234,0.42); border-radius:6px; color:#7c3aed; font-size:0.8rem; font-weight:600; text-decoration:none; cursor:pointer; transition:all 0.2s;';
+                // Both links start hidden and get a real href from fillEcoLinks() (after the modal is
+                // drawn) only when the open card's deck is published on recursive.eco (an id in
+                // _eco_ids.json). A deck that lives only in this repo (Words, Sources, Ideas,
+                // Institutions) shows neither: they used to point at "#" and then at a bare app page.
                 bodyHtml += `
-                    <a href="#" onclick="openItemDeckOnEco();return false;"
-                       title="Open this deck in the Journal on recursive.eco — loaded in the oracle, ready to draw"
-                       style="${ecoBtnStyle}"
+                    <a href="#" data-eco-link="cast" target="_blank" rel="noopener"
+                       title="Open this deck in the Journal on recursive.eco, in a new tab: loaded in the oracle, ready to draw"
+                       style="${ecoBtnStyle} display:none;"
                        onmouseover="this.style.background='rgba(147,51,234,0.20)'" onmouseout="this.style.background='rgba(147,51,234,0.10)'">
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg> Cast in recursive.eco ↗
                     </a>`;
@@ -4467,9 +4582,9 @@
                 // its own deck's page (the "Open in <deck>" pill above takes you there).
                 if (!grammarData?._generated) {
                     bodyHtml += `
-                    <a href="#" onclick="editItemDeckOnEco();return false;"
-                       title="Open this deck in the Create editor on recursive.eco. If it isn't yours, your changes are proposed to the owner for review."
-                       style="${ecoBtnStyle}"
+                    <a href="#" data-eco-link="edit" target="_blank" rel="noopener"
+                       title="Open this deck in the Create editor on recursive.eco, in a new tab. If it isn't yours, your changes are proposed to the owner for review."
+                       style="${ecoBtnStyle} display:none;"
                        onmouseover="this.style.background='rgba(147,51,234,0.20)'" onmouseout="this.style.background='rgba(147,51,234,0.10)'">
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Edit in recursive.eco ↗
                     </a>`;
@@ -4660,6 +4775,7 @@
             }
 
             modalBody.innerHTML = bodyHtml;
+            fillEcoLinks();
             // Reset the scroll to the top so each card opens at its title, not
             // wherever the previous card was scrolled to (modal-body scrolls on
             // desktop, modal-content on phones — reset both).
@@ -4880,6 +4996,21 @@
             }
             if (!id) id = await resolveDeckFlowId();   // single-deck fallback (?src=/?id=)
             return id;
+        }
+
+        // Give the card's recursive.eco links a real href once the deck's id is known; with no id
+        // (a deck that lives only in this repo) they stay hidden.
+        async function fillEcoLinks() {
+            const token = selectedItem;
+            const id = await resolveItemDeckId();
+            if (token !== selectedItem) return;   // another card was opened meanwhile
+            document.querySelectorAll('#modal-body [data-eco-link]').forEach(a => {
+                if (!id) { a.style.display = 'none'; return; }
+                a.href = a.dataset.ecoLink === 'cast'
+                    ? `${getFlowBaseUrl()}/g/${id}?view=reading`
+                    : `${getOfferBaseUrl()}/dashboard/unified/new?id=${id}&type=${encodeURIComponent(grammarType)}`;
+                a.style.display = 'inline-flex';
+            });
         }
 
         // The item detail offers TWO deliberate jumps to the app, per the builder's
@@ -5271,6 +5402,13 @@ ${reason}
             }
         };
 
+        // True for an absolute http(s) link to another host; relative links and this site's own
+        // absolute links count as on-site.
+        function offSite(u) {
+            if (!/^https?:\/\//i.test(u || '')) return false;
+            try { return new URL(u).origin !== location.origin; } catch (_) { return true; }
+        }
+
         // Lightweight markdown to HTML: images, bold, italic, links, line breaks
         function mdToHtml(s) {
             // Block-aware markdown: headers (#), blockquotes (>), lists (-/*/+),
@@ -5290,7 +5428,10 @@ ${reason}
                 .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%;height:auto;margin:8px 0;border-radius:8px;">')
                 // A markdown target may already be wrapped by linkifyBare — unwrap, then anchor.
                 .replace(/\[([^\]]+)\]\(\s*(?:<a href="([^"]+)"[^>]*>[^<]*<\/a>|([^)\s]+))\s*\)/g,
-                    (m, text, wrapped, plain) => `<a href="${wrapped || plain || ''}" target="_blank" rel="noopener noreferrer">${text}</a>`)
+                    (m, text, wrapped, plain) => { const u = wrapped || plain || '';
+                        // A link to another card or page of this site opens in this tab (the browser's
+                        // Back comes back here); only a link off the site opens a new tab.
+                        return offSite(u) ? `<a href="${u}" target="_blank" rel="noopener noreferrer">${text}</a>` : `<a href="${u}">${text}</a>`; })
                 .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
                 .replace(/`([^`]+)`/g, '<code>$1</code>')
                 // Research-source paths (e.g. `research/cards/foo.md`) become GitHub links —
@@ -5318,6 +5459,9 @@ ${reason}
             for (const raw of lines) {
                 const line = raw.trim();
                 if (!line) { flushP(); closeL(); closeQ(); continue; }
+                // An author's note to self ("**Working doc:** `docs/drafts/...`", a path in a private
+                // working repo) is not for visitors and would lead nowhere: it is not shown.
+                if (/^\*\*Working doc:\*\*/i.test(line)) { flushP(); closeL(); closeQ(); continue; }
                 if (m = line.match(/^(#{1,6})\s+(.*)$/)) { flushP(); closeL(); closeQ(); html += `<div style="font-weight:700;font-size:1.05em;margin:.7em 0 .25em;">${inline(m[2])}</div>`; continue; }
                 if (m = line.match(/^>\s?(.*)$/)) { flushP(); closeL(); if (!inQuote) { html += '<blockquote style="border-left:3px solid currentColor;opacity:.8;margin:.5em 0;padding:.1em 0 .1em .8em;">'; inQuote = true; } html += inline(m[1]) + ' '; continue; }
                 if (m = line.match(/^[-*+]\s+(.*)$/)) { flushP(); closeQ(); flushLI(); if (!inList) { html += '<ul style="margin:.4em 0;padding-left:1.2em;">'; inList = true; } liBuf = [m[1]]; continue; }

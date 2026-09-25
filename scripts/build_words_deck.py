@@ -15,7 +15,8 @@ Outputs (generated, committed, checked for currency by CI):
 The glossary page (glossary/index.html, scripts/build-glossary.mjs) reads the same two inputs,
 so the page and the deck carry the same words.
 
-Each term card: the term (name), standard or ours, the definition, the note, "When you draw it"
+Each term card: the term (name), standard or ours, the definition, the note, the lab's reading
+(optional `reading`: the project's own use of a standard term, kept apart from its definition), "When you draw it"
 (the term's `draw` question) and the related words, as links that open the related card. The
 related words are links inside a section rather than a new link field: the site keeps one
 cross-grammar link pattern (metadata.source_deck + source_item_id + deck, the "Open in X" pill),
@@ -102,7 +103,7 @@ def check(terms_doc, spreads_doc):
         q = (t.get("draw") or "").strip()
         if not q: problems.append(f"{t['id']}: no `draw` question")
         elif len(q.split()) > 20: problems.append(f"{t['id']}: `draw` is {len(q.split())} words (20 or fewer)")
-        for field in ("draw", "definition", "note"):
+        for field in ("draw", "definition", "note", "reading"):
             m = ABSOLUTIST.search(t.get(field) or "")
             if m: warnings.append(f"{t['id']}: {field} has {m.group(0)!r}")
     sp_ids = set()
@@ -158,6 +159,9 @@ def build_grammar(terms_doc, spreads_doc, digest):
         secs = {"Definition": t["definition"], "Standard or ours": standing_text(t)}
         if (t.get("note") or "").strip():
             secs["Note"] = t["note"]
+        if (t.get("reading") or "").strip():
+            # the lab's own reading of a standard term, kept apart from the standard definition
+            secs["The lab's reading"] = t["reading"]
         secs["When you draw it"] = t["draw"]
         rel = t.get("related") or []
         if rel:

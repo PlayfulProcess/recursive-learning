@@ -27,7 +27,7 @@
     "research/lab-export/ideas.json",
     "research/lab-export/sources.json"
   ],
-  "_inputs_sha256": "478051cd27d723bf2aff74a8c3bdadb9f4a796a939e9dce64a491aacb233b894",
+  "_inputs_sha256": "d871fbaedb73ec48bfcdd14368f9a4d74728752791ec3245152faa83b283bd5f",
   "description": "A seed draft of the ideas in the AI debate: the lab's 52 seed terms, placed in the lanes of its genealogy of AI research. For each, how often it comes up in 91 podcast episodes with automatic captions, when it is first heard there, whose episodes carry it most, and the milestone that names it. Counts are pattern matches on captions: the speaker is unknown, long episodes weigh more, and recent years have more episodes. Awaiting review.",
   "tags": [
     "ideas",
@@ -1153,7 +1153,7 @@
         "kind": "term",
         "lane": "Alignment & safety",
         "layer": "lore",
-        "count_reliability": "high",
+        "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
         "source_item_id": "person-david-chalmers",
@@ -1163,7 +1163,7 @@
         "How often it comes up": "Said 64 times, in 15 of the 91 episodes with automatic captions (2018 to 2026).\n\nFirst heard in these episodes: 2018-10-02, 80,000 Hours Podcast, [#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=ep-80000-hours-2018-10-02-paul-christiano).\n\nEpisodes where it comes up, out of the episodes that year: 2018: 1 of 4 · 2019: 1 of 2 · 2020: 2 of 6 · 2021: 0 of 3 · 2022: 1 of 3 · 2023: 4 of 20 · 2024: 1 of 16 · 2025: 3 of 20 · 2026: 2 of 17.",
         "Whose episodes carry it most": "Counted in the episodes where they are a guest. The captions do not say who is speaking, so some of these may be the host.\n- [David Chalmers](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-david-chalmers): 17 times, in 1 episode\n- [Eliezer Yudkowsky](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-eliezer-yudkowsky): 11 times, in 2 episodes\n- [Ajeya Cotra](cards.html?src=../grammars/sources-of-alignment/grammar.json&item=person-ajeya-cotra): 9 times, in 1 episode",
         "Often said alongside": "Terms that come up within the same two minutes most often: [Consciousness (human and machine)](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=consciousness) (19), [Alignment](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=alignment) (16), [AGI](cards.html?src=../grammars/ideas-of-alignment/grammar.json&item=agi) (8).",
-        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: high: almost every hit is about the idea."
+        "How it was counted": "A case-insensitive pattern over automatic captions; hits within 20 seconds count once. Count reliability, the lab's estimate: medium: most hits are about the idea, some use the words in another sense. Lowered from high on review (Sep 25 2026): the pattern also matches \"rationalist\" and \"rationalism\" in the philosophical sense. The guest whose episodes carry it most is a philosopher of mind, and the term said most often alongside it is Consciousness, so a share of the hits is likely about philosophy rather than the movement. Not yet spot-checked."
       },
       "sort_order": 47
     },
@@ -1244,9 +1244,9 @@
       ],
       "sections": {
         "What the lane is": "How do you make powerful AI do what we actually want, and know that it does? The lane runs from early warnings (Wiener, Good) through MIRI's theory to today's techniques: human-feedback training, constitutions, interpretability (looking inside the network), chain-of-thought monitoring and 'control' protocols that assume the model might be misaligned.",
-        "Where it seems to be heading (Sep 2026)": "Growing, but still a thin stream next to capabilities. In 2026 labs began making chain-of-thought monitoring mandatory and talking publicly about verifiable pauses.",
+        "Where it seems to be heading (Sep 2026)": "Growing, but still a thin stream next to capabilities (ETO, 2025). In July 2025 researchers from several rival labs argued together for keeping models' reasoning readable, so that it can be monitored (Korbak et al., 2025). The lab's notes also say that labs moved further in 2026; no source is attached to that yet, so it is left out here.",
         "People the genealogy names": "Norbert Wiener, Eliezer Yudkowsky, Stuart Russell, Paul Christiano, Chris Olah, Jan Leike, Yoshua Bengio.",
-        "Sources": "- [ETO: Still a drop in the bucket (2025)](https://eto.tech/blog/still-drop-bucket-ai-safety-research/)\n- [Amodei et al., Concrete Problems in AI Safety (2016)](https://arxiv.org/abs/1606.06565)"
+        "Sources": "- [ETO: Still a drop in the bucket (2025)](https://eto.tech/blog/still-drop-bucket-ai-safety-research/)\n- [Amodei et al., Concrete Problems in AI Safety (2016)](https://arxiv.org/abs/1606.06565)\n- [Korbak et al., Chain of Thought Monitorability (Jul 2025)](https://arxiv.org/abs/2507.11473)"
       },
       "sort_order": 50
     },

@@ -502,15 +502,21 @@
         }
 
         .modal-close {
+            /* a 44px touch target (it was 12 by 20 px, easy to miss on a phone) */
             float: right;
             background: none;
             border: none;
             color: var(--tree-text-muted);
-            font-size: 1.25rem;
+            font-size: 1.6rem;
             cursor: pointer;
+            min-width: 44px;
+            min-height: 44px;
+            margin: -0.75rem -0.75rem 0 0.25rem;
             padding: 0;
             line-height: 1;
+            border-radius: 8px;
         }
+        .modal-close:focus-visible { outline: 2px solid var(--tree-accent, #177d56); outline-offset: 2px; }
         .modal-close:hover { color: var(--tree-text); }
 
         .modal-item-name {
@@ -680,7 +686,7 @@
     <!-- Detail Modal -->
     <div id="detail-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeModal()">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <button type="button" class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
             <div id="modal-body"></div>
         </div>
     </div>
@@ -711,6 +717,13 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        // True for an absolute http(s) link to another host; relative links and this site's own
+        // absolute links count as on-site.
+        function offSite(u) {
+            if (!/^https?:\/\//i.test(u || '')) return false;
+            try { return new URL(u).origin !== location.origin; } catch (_) { return true; }
+        }
+
         // Lightweight markdown to HTML: images, bold, italic, links, line breaks
         function mdToHtml(s) {
             // Block-aware markdown (headers/blockquotes/lists/paragraphs + inline).
@@ -726,7 +739,10 @@
             const inline = t => linkifyBare(esc(t))
                 .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%;height:auto;margin:8px 0;border-radius:8px;">')
                 .replace(/\[([^\]]+)\]\(\s*(?:<a href="([^"]+)"[^>]*>[^<]*<\/a>|([^)\s]+))\s*\)/g,
-                    (m, text, wrapped, plain) => `<a href="${wrapped || plain || ''}" target="_blank" rel="noopener noreferrer">${text}</a>`)
+                    (m, text, wrapped, plain) => { const u = wrapped || plain || '';
+                        // A link to another card or page of this site opens in this tab (Back comes
+                        // back to the tree); only a link off the site opens a new tab.
+                        return offSite(u) ? `<a href="${u}" target="_blank" rel="noopener noreferrer">${text}</a>` : `<a href="${u}">${text}</a>`; })
                 .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
                 .replace(/`([^`]+)`/g, '<code>$1</code>')
                 .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
@@ -737,6 +753,8 @@
             for (const raw of lines) {
                 const line = raw.trim();
                 if (!line) { closeL(); closeQ(); continue; }
+                // An author's note to self (a path in a private working repo) is not shown.
+                if (/^\*\*Working doc:\*\*/i.test(line)) { closeL(); closeQ(); continue; }
                 if (m = line.match(/^(#{1,6})\s+(.*)$/)) { closeL(); closeQ(); html += `<div style="font-weight:700;font-size:1.05em;margin:.7em 0 .25em;">${inline(m[2])}</div>`; continue; }
                 if (m = line.match(/^>\s?(.*)$/)) { closeL(); if (!inQuote) { html += '<blockquote style="border-left:3px solid currentColor;opacity:.8;margin:.5em 0;padding:.1em 0 .1em .8em;">'; inQuote = true; } html += inline(m[1]) + ' '; continue; }
                 if (m = line.match(/^[-*+]\s+(.*)$/)) { closeQ(); if (!inList) { html += '<ul style="margin:.4em 0;padding-left:1.2em;">'; inList = true; } html += `<li>${inline(m[1])}</li>`; continue; }
@@ -1022,7 +1040,7 @@
             // Set up header
             const title = data.name || data.title || 'Grammar';
             document.getElementById('tree-title').textContent = title;
-            document.title = `${title} — Tree View`;
+            document.title = `${title} · Tree · Recursive Eco-Improvement`;
 
             if (data.description) {
                 const descEl = document.getElementById('tree-description');
@@ -1051,8 +1069,21 @@
             setupViewLinks();
 
             // Set up header buttons (static mode: local links)
+            // Cast a Reading only for a deck the Spread Caster casts (grammars/all-decks `_decks`);
+            // the record (Sources, Institutions) has no reading, so it shows no button.
             const readingBtn = document.getElementById('reading-btn');
-            if (readingBtn) { readingBtn.textContent = 'Cast a Reading'; readingBtn.href = `caster.html${srcUrl ? '?src=' + encodeURIComponent(srcUrl) : ''}`; }
+            if (readingBtn) {
+                readingBtn.style.display = 'none';
+                const slugM = String(srcUrl || '').match(/grammars\/([^/]+)\/grammar\.json/);
+                if (slugM) {
+                    fetch('../grammars/all-decks/grammar.json').then(r => r.json()).then(meta => {
+                        if (!(meta._decks || []).some(d => d.slug === slugM[1])) return;
+                        readingBtn.textContent = 'Cast a Reading';
+                        readingBtn.href = `caster-studio.html?src=${encodeURIComponent(srcUrl)}`;
+                        readingBtn.style.display = 'inline-flex';
+                    }).catch(() => {});
+                }
+            }
             const exploreBtn = document.getElementById('explore-btn');
             if (exploreBtn) { exploreBtn.textContent = 'Explorer'; exploreBtn.href = `explorer.html${srcUrl ? '?src=' + encodeURIComponent(srcUrl) : ''}`; }
             const githubBtn = document.getElementById('github-btn');
@@ -1066,8 +1097,32 @@
             document.getElementById('loading-state').classList.add('hidden');
             document.getElementById('tree-content').classList.remove('hidden');
 
+            focusPath = focusFromHash();   // a lane opened earlier (#focus=...) comes back with Back
             renderTree();
         }
+
+        // ── Back and Forward follow the drill-down ──
+        // Each step in or out is a history entry (#focus=<id>/<id>), so the browser's Back returns
+        // to the lane you had open instead of to the top of the tree.
+        function pushFocus() {
+            try {
+                const u = new URL(location.href);
+                u.hash = focusPath.length ? 'focus=' + focusPath.map(encodeURIComponent).join('/') : '';
+                if (u.href !== location.href) history.pushState({ focus: focusPath.slice() }, '', u);
+            } catch (_) {}
+        }
+        function focusFromHash() {
+            const m = /^#focus=(.*)$/.exec(location.hash || '');
+            if (!m) return [];
+            return m[1].split('/').map(x => { try { return decodeURIComponent(x); } catch (_) { return x; } })
+                .filter(id => itemMap[id] && itemMap[id].composite_of && itemMap[id].composite_of.length);
+        }
+        window.addEventListener('popstate', () => {
+            if (!allItems || !allItems.length) return;
+            focusPath = focusFromHash();
+            collapsedLevels.clear();
+            renderTree();
+        });
 
         function setupBackLink(srcUrl) {
             // pages/grammar-viewer.html never existed in this repo (404). This site's
@@ -1118,6 +1173,7 @@
 
             focusPath.push(itemId);
             collapsedLevels.clear();
+            pushFocus();
             renderTree();
         }
 
@@ -1129,6 +1185,7 @@
                 focusPath = focusPath.slice(0, index + 1);
             }
             collapsedLevels.clear();
+            pushFocus();
             renderTree();
         }
 
@@ -1690,6 +1747,7 @@
                     // Escape goes up one level in focus
                     focusPath.pop();
                     collapsedLevels.clear();
+                    pushFocus();
                     renderTree();
                 }
             }

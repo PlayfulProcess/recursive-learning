@@ -20,7 +20,7 @@
   "_do_not_hand_edit": true,
   "_built_by": "scripts/build_words_deck.py",
   "_source_of_truth": "glossary/terms.json",
-  "_inputs_sha256": "bbe9425fa1edd098a6c926ba45d466170f11312d82f2aa274bf375a4fe99e9cc",
+  "_inputs_sha256": "5d98460bd37809a8011372c7559e7240661e2dbb0305ceaed4d3d955e319c3ab",
   "description": "The glossary's twenty working definitions, one per card: the words the film and the games lean on. Two are standard terms and eighteen are ours, marked so. Each card holds the definition, a note, a question for when you draw it, and the related words. The deck is built from the same file as [the glossary](/glossary/), so the two carry the same words. Cast it in the Spread Caster: [Before you delegate](/viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=before-you-delegate), [The fork](/viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=the-fork), [What held](/viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=what-held), [A single draw](/viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=single).",
   "tags": [
     "words",
@@ -114,7 +114,7 @@
       "sections": {
         "Definition": "A stable preference for one outcome over another that survives correction.",
         "Standard or ours": "Ours: a working definition written for this project, open to argument.",
-        "Note": "A hypothesis that, as far as we know, has not been shown for current systems, and one that would matter a great deal if it were true.",
+        "Note": "Contested for current systems. Some published experiments report models acting to keep a trained preference when training or instructions push against it (Greenblatt et al. 2024, alignment faking, arXiv 2412.14093; Meinke et al. 2024, in-context scheming, arXiv 2412.04984); others read the same results as following patterns in the prompt. It would matter a great deal if it held.",
         "When you draw it": "Are you reading a preference into a system that may only be following a pattern?",
         "Related words": "See [Disposition](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=disposition) · [Human-AI alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=human-ai-alignment) · [Misaligned-ASI scenario](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=misaligned-asi-scenario)"
       }
@@ -157,10 +157,11 @@
         "standard_in": "reinforcement learning"
       },
       "sections": {
-        "Definition": "What a learning system is rewarded toward.",
+        "Definition": "An estimate of the total reward a learning system can expect from here on, from a situation or from one action taken in it.",
         "Standard or ours": "Standard: the term as it is used in reinforcement learning, given here in one line.",
-        "Note": "The lab's reading: in practice it is culture, and culture is made in large part of fiction.",
-        "When you draw it": "What is being rewarded here, and which stories shaped what counts as a reward?",
+        "Note": "Not the reward itself: the reward says what counts as good right now, and the value function predicts how much reward will follow.",
+        "The lab's reading": "Our looser use, not the reinforcement-learning sense: for people, what we learn to expect rewards from is shaped by culture, and culture is made in large part of fiction.",
+        "When you draw it": "What does this system expect to be rewarded for later, and which stories shaped what counts as a reward?",
         "Related words": "See [Alignment](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=alignment) · [Intent](/viewers/cards.html?src=../grammars/words-deck/grammar.json&item=intent)"
       }
     },

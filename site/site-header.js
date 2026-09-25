@@ -207,6 +207,22 @@
             .tab{ padding:5px 8px; font-size:12px; }
             .cap{ display:none; } .sep{ display:none; }
           }
+          /* Touch screens: every tab and menu item is at least 44px tall (they were about 26px). */
+          @media (pointer:coarse){
+            .tab{ display:inline-flex; align-items:center; min-height:44px; padding-top:0; padding-bottom:0; }
+            .dd-menu a{ display:flex; align-items:center; min-height:44px; padding-top:0; padding-bottom:0; }
+            nav{ gap:0 2px; }
+            .bar{ row-gap:4px; padding-top:8px; padding-bottom:6px; }
+          }
+          /* Narrower than a phone (a split pane, a folded screen): the name wraps onto two lines
+             instead of being cut off, and the bar's side padding shrinks. */
+          @media (max-width:360px){
+            .bar{ padding-left:10px; padding-right:10px; gap:8px; }
+            .brand{ gap:6px; min-width:0; }
+            .brand-name{ min-width:0; }
+            .brand-name .name{ white-space:normal; font-size:15px; }
+            .brand-name .name .gold{ display:inline-block; }
+          }
         </style>
         <div class="bar">
           <span class="brand">
@@ -333,6 +349,18 @@
           if (menu && getComputedStyle(menu).display !== 'none') positionMenu(dd);
         });
       });
+
+      // An anchor jump (a group chip, a #term link) lands below this sticky header, not under it:
+      // its height is published as --site-header-h and used as the page's scroll padding. The
+      // header wraps to two or three rows on a phone, so it is measured, not assumed.
+      const setH = () => {
+        const h = Math.round(this.getBoundingClientRect().height) || 0;
+        document.documentElement.style.setProperty('--site-header-h', h + 'px');
+        document.documentElement.style.scrollPaddingTop = (h + 8) + 'px';
+      };
+      setH();
+      window.addEventListener('resize', setH);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(setH).catch(() => {});
 
       // Auto-hide on scroll down, reveal on scroll up — but never while the nav has keyboard focus.
       let lastY = window.scrollY || 0, host = this;
