@@ -164,6 +164,8 @@ button.primary:hover{opacity:.9}
 .row .links{display:flex;flex-wrap:wrap;gap:4px 14px;margin:8px 0 0;font-size:16px;align-items:center}
 .row .links a,.row .links button{min-height:44px;display:inline-flex;align-items:center;gap:5px}
 .row .links button{padding:0 12px}
+.row .links button[hidden]{display:none}
+.row .who{margin:4px 0 0;font-size:16px;color:var(--muted)}
 .row .tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
 .tag{display:inline-flex;align-items:center;min-height:32px;padding:3px 10px;border-radius:99px;font-size:16px;
   border:1px solid var(--line);text-decoration:none;color:var(--ink);background:var(--panel2)}

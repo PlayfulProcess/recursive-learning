@@ -5,7 +5,7 @@
 
 Fails if: a snippet is over its cap (20 words; 15 for New York Times shows); an episode's snippets
 go over their share of its caption words; a snippet keeps caption markup or a speaker label; an idea
-link stops mid-word; an episode has no caption kind; the key words are longer than two-word terms
+link stops mid-word; a quote is not marked ok in build/quote-review.json; an episode has no caption kind; the key words are longer than two-word terms
 or more than 5 per passage; any string in data/ is over 25 words; an absolute path or this machine's
 account name appears anywhere in map/; a passage has no video id + time; or a file is over its size budget.
 """
@@ -81,6 +81,18 @@ for e in E:
 for e, u in zip(E, used):
     if u > share * e['words'] + 1e-9:
         fail(f'episode {e["vid"]} snippets {u} words > {share:.0%} of {e["words"]}')
+
+# ---- every quote was read in context and marked ok (not the host, not a paraphrase, not a garbled caption)
+import hashlib
+review = json.load(open(os.path.join(HERE, 'quote-review.json'), encoding='utf-8'))['quotes']
+unread = []
+for k, s in snips.items():
+    vid = E[P['ep'][int(k)]]['vid']
+    key = f'{vid}:{int(s["s"])}:{hashlib.sha1(s["t"].encode("utf-8")).hexdigest()[:8]}'
+    if review.get(key) != 'ok':
+        unread.append(key)
+if unread:
+    fail(f'{len(unread)} quotes not marked ok in build/quote-review.json, e.g. {unread[:3]}')
 
 # ---- key words: an index of short terms, never a phrase that could be a quote
 if len(kw['p']) != N:

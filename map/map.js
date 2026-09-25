@@ -55,11 +55,13 @@ const personColour = pi => slotColour(IX.people[pi].colour);
 // ------------------------------------------------------------------ load
 async function boot() {
   readColours();
+  // 'no-cache' asks the server whether a file changed (a 304 when not), so a rebuilt map never mixes old and new data
+  const get = f => fetch('data/' + f, { cache: 'no-cache' });
   const [ix, sn, nn, kw] = await Promise.all([
-    fetch('data/index.json').then(r => r.json()),
-    fetch('data/snippets.json').then(r => r.json()),
-    fetch('data/nn.u16.bin').then(r => r.arrayBuffer()),
-    fetch('data/words.json').then(r => r.json()).catch(() => null),     // key words are a help, not a need
+    get('index.json').then(r => r.json()),
+    get('snippets.json').then(r => r.json()),
+    get('nn.u16.bin').then(r => r.arrayBuffer()),
+    get('words.json').then(r => r.json()).catch(() => null),     // key words are a help, not a need
   ]);
   IX = ix; SN = sn; NN = new Uint16Array(nn); KW = kw;
   const P = IX.passages; N = P.ep.length;
@@ -95,6 +97,8 @@ function fillText() {
   $('#subtitle').textContent = `${nE} conversations about AI, cut into ${N.toLocaleString('en')} half-minute passages. Ask a question and the passages the model scores closest light up.`;
   const untagged = P.ideas.filter(a => !a.length).length;
   $('#tagshare').textContent = `About ${Math.round(100 * untagged / N)}% of passages match no idea word; they are grey in Idea mode.`;
+  const K = IX.layout_keep;
+  if (K) $('#keepinfo').textContent = `Of each passage’s 10 nearest passages by the model’s numbers, on average ${Math.round(100 * K['10'])}% are among its 10 nearest dots on the map (${Math.round(100 * K['100'])}% within the nearest 100).`;
   const cr = E.filter(e => e.captions === 'creator').length, au = E.filter(e => e.captions === 'auto').length;
   const parts = [];
   if (cr) parts.push(`the creator's own captions for ${numWord(cr)} episode${cr > 1 ? 's' : ''}`);
@@ -195,33 +199,36 @@ function label(ctx, text, x, y, opts = {}) {
 }
 // Label placement: try spots around the node, then spots further out (joined to the node by a thin leader
 // line), keeping the first that overlaps nothing placed yet. Optional labels are dropped rather than crowded.
-let placed = [];
-const overlaps = (b, skip) => placed.some(o => o !== skip && b[0] < o[0] + o[2] && o[0] < b[0] + b[2] && b[1] < o[1] + o[3] && o[1] < b[1] + b[3]);
+// Placing and painting are separate: everything is placed first, then painted in a fixed order (lines, node
+// marks, lit dots with number one on top, names, numbers), so no mark is ever painted over a lit passage.
+let placed = [], later = [], laterNum = [], numHits = [];
+const boxHit = (b, o) => b[0] < o[0] + o[2] && o[0] < b[0] + b[2] && b[1] < o[1] + o[3] && o[1] < b[1] + b[3];
+const overlaps = (b, skip) => placed.some(o => o !== skip && boxHit(b, o));
+const insideCanvas = b => b[0] >= 2 && b[1] >= 2 && b[0] + b[2] <= W - 2 && b[1] + b[3] <= W - 2;
+function leader(x, y, b, from) {
+  const nx = Math.min(Math.max(x, b[0]), b[0] + b[2]), ny = Math.min(Math.max(y, b[1]), b[1] + b[3]);
+  const a = Math.atan2(ny - y, nx - x);
+  octx.save(); octx.globalAlpha = 0.9; octx.strokeStyle = C.ink; octx.lineWidth = 1; octx.setLineDash([]);
+  octx.beginPath(); octx.moveTo(x + from * Math.cos(a), y + from * Math.sin(a)); octx.lineTo(nx, ny); octx.stroke(); octx.restore();
+}
 function place(text, x, y, opts = {}) {
   const size = opts.size || 14;
   octx.font = `${opts.weight || 700} ${size}px system-ui,-apple-system,"Segoe UI",sans-serif`;
   const w = octx.measureText(text).width, h = size + 4, g = opts.gap ?? 12;
   const box = ([cx, cy, al]) => [al === 'left' ? cx : al === 'right' ? cx - w : cx - w / 2, cy - h / 2, w, h];
-  const inside = b => b[0] >= 2 && b[1] >= 2 && b[0] + b[2] <= W - 2 && b[1] + b[3] <= W - 2;
-  // a name must sit nearer its own node than any other node, so it is never read as the neighbour's
+  // a name must sit clearly nearer its own node than any other node, so it is never read as the neighbour's
   const near = (b, px, py) => Math.hypot(px - Math.min(Math.max(px, b[0]), b[0] + b[2]), py - Math.min(Math.max(py, b[1]), b[1] + b[3]));
   const margin = b => { const d = near(b, x, y); let m = 1e9; for (const [nx, ny] of nodesXY) if (nx !== x || ny !== y) m = Math.min(m, near(b, nx, ny) - d); return m; };
-  const own = b => margin(b) > 2;
-  const free = b => inside(b) && !overlaps(b);
-  const draw = (c, leader) => {
-    const b = box(c);
-    if (leader) {
-      const nx = Math.min(Math.max(x, b[0]), b[0] + b[2]), ny = Math.min(Math.max(y, b[1]), b[1] + b[3]);
-      const a = Math.atan2(ny - y, nx - x);
-      octx.save(); octx.globalAlpha = 0.9; octx.strokeStyle = C.ink; octx.lineWidth = 1; octx.setLineDash([]);
-      octx.beginPath(); octx.moveTo(x + 10 * Math.cos(a), y + 10 * Math.sin(a)); octx.lineTo(nx, ny); octx.stroke(); octx.restore();
-    }
-    placed.push(b); label(octx, text, c[0], c[1], { ...opts, align: c[2] });
+  const own = b => { const d = near(b, x, y); return nodesXY.every(([nx, ny]) => (nx === x && ny === y) || (near(b, nx, ny) - d >= 5 && near(b, nx, ny) >= 1.5 * d)); };
+  const free = b => insideCanvas(b) && !overlaps(b);
+  const draw = (c, lead) => {
+    const b = box(c); placed.push(b);
+    later.push(() => { if (lead) leader(x, y, b, 10); label(octx, text, c[0], c[1], { ...opts, align: c[2] }); });
     return true;
   };
   if (opts.center) {
     const c = [x, y, 'center'];
-    if ((inside(box(c)) && !overlaps(box(c))) || !opts.optional) return draw(c, false);
+    if (free(box(c)) || !opts.optional) return draw(c, false);
     return false;
   }
   const ring = d => [[x + d, y, 'left'], [x - d, y, 'right'], [x, y - d - h / 2 + 4, 'center'], [x, y + d + h / 2 - 4, 'center'],
@@ -237,13 +244,82 @@ function place(text, x, y, opts = {}) {
     const best = cands.reduce((a, b) => (margin(box(b[0])) - b[1] / 20 > margin(box(a[0])) - a[1] / 20 ? b : a));
     return draw(best[0], true);
   }
-  const c = ring(g).find(c => inside(box(c)) && own(box(c))) || ring(g).find(c => inside(box(c))) || [x, y + g + h / 2, 'center'];
+  const c = ring(g).find(c => insideCanvas(box(c)) && own(box(c))) || ring(g).find(c => insideCanvas(box(c))) || [x, y + g + h / 2, 'center'];
   return draw(c, false);
 }
 let nodesXY = [];
 const shortLabel = t => t.replace(/\s+\(.*\)\s*$/, '');          // 'The race (arms race, US–China)' -> 'The race'; 'p(doom)' stays
 function diamond(ctx, x, y, s) { ctx.beginPath(); ctx.moveTo(x, y - s); ctx.lineTo(x + s, y); ctx.lineTo(x, y + s); ctx.lineTo(x - s, y); ctx.closePath(); }
 const lineAlpha = s => { const b = band(s); return b === 'high' ? 0.9 : b === 'medium' ? 0.65 : b === 'low' ? 0.4 : 0.55; };
+// Two node marks closer than this are pushed apart (each moves half the gap), so neither hides the other.
+function separate(nodes, min = 21) {
+  for (let it = 0; it < 40; it++) {
+    let moved = false;
+    for (let a = 0; a < nodes.length; a++) for (let b = a + 1; b < nodes.length; b++) {
+      const A = nodes[a], B = nodes[b];
+      let vx = B.x - A.x, vy = B.y - A.y, d = Math.hypot(vx, vy);
+      if (d >= min) continue;
+      if (d < 0.01) { vx = 1; vy = 0.4; d = Math.hypot(vx, vy); }
+      const p = (min - d) / 2 + 0.05;
+      A.x -= vx / d * p; A.y -= vy / d * p; B.x += vx / d * p; B.y += vy / d * p; moved = true;
+    }
+    for (const n of nodes) { n.x = Math.min(W - 10, Math.max(10, n.x)); n.y = Math.min(W - 10, Math.max(10, n.y)); }
+    if (!moved) break;
+  }
+}
+// Numbers beside lit dots, matching the numbered list. Dots whose glows touch share one label ("1, 5, 7").
+// A label goes in the nearest spot that covers nothing else; failing that, one that may cover a node mark but
+// no lit dot or number; failing that, one that covers no number. Further spots get a thin leader line.
+// [1, 2, 3, 4, 6, 9, 10] -> "1–4, 6, 9, 10": runs of three or more become a range
+function numRanges(ns) {
+  const out = [];
+  for (let k = 0; k < ns.length;) {
+    let j = k; while (j + 1 < ns.length && ns[j + 1] === ns[j] + 1) j++;
+    if (j - k >= 2) out.push(`${ns[k]}–${ns[j]}`); else for (let q = k; q <= j; q++) out.push(String(ns[q]));
+    k = j + 1;
+  }
+  return out.join(', ');
+}
+const NUM_ANG = [-0.6, 0.6, -2.55, 2.55, -1.57, 1.57, 0, 3.14, -1.05, 1.05, -2.1, 2.1];
+function placeNumbers(r, dotBox) {
+  const pts = [];
+  for (const [i] of st.lit) {
+    const n = st.num.get(i); if (!n) continue;
+    const x = sx(X[i]), y = sy(Y[i]);
+    if (x < 0 || y < 0 || x > W || y > W) continue;
+    pts.push({ i, n, x, y });
+  }
+  const G = Math.max(10, 2 * r + 6);
+  const par = pts.map((_, k) => k), find = k => (par[k] === k ? k : (par[k] = find(par[k])));
+  for (let a = 0; a < pts.length; a++) for (let b = a + 1; b < pts.length; b++)
+    if (Math.hypot(pts[a].x - pts[b].x, pts[a].y - pts[b].y) < G) par[find(a)] = find(b);
+  const byRoot = new Map();
+  pts.forEach((p, k) => { const g = find(k); (byRoot.get(g) || byRoot.set(g, []).get(g)).push(p); });
+  const groups = [...byRoot.values()].map(m => m.sort((a, b) => a.n - b.n)).sort((a, b) => a[0].n - b[0].n);
+  const H = 15, dots = new Set(dotBox.values()), nums = new Set();
+  octx.font = '700 12px system-ui,-apple-system,"Segoe UI",sans-serif';
+  for (const m of groups) {
+    const cx = m.reduce((s, p) => s + p.x, 0) / m.length, cy = m.reduce((s, p) => s + p.y, 0) / m.length;
+    const R = Math.max(...m.map(p => Math.hypot(p.x - cx, p.y - cy))) + r + 3;
+    const t = numRanges(m.map(p => p.n)), w = octx.measureText(t).width + 4;
+    const mine = new Set(m.map(p => dotBox.get(p.i)));
+    const cands = [];
+    for (const d of [R + 1, R + 9, R + 20, R + 34, R + 52, R + 76, R + 106])
+      for (const a of NUM_ANG) {
+        const c = Math.cos(a), s = Math.sin(a), ex = cx + d * c, ey = cy + d * s;
+        cands.push({ d, b: [c > 0.3 ? ex : c < -0.3 ? ex - w : ex - w / 2, s > 0.3 ? ey : s < -0.3 ? ey - H : ey - H / 2, w, H] });
+      }
+    const clear = (b, isObstacle) => !placed.some(o => isObstacle(o) && boxHit(b, o));
+    const tiers = [o => !mine.has(o), o => nums.has(o) || (dots.has(o) && !mine.has(o)), o => nums.has(o)];
+    let pick = null;
+    for (const ob of tiers) { pick = cands.find(c => insideCanvas(c.b) && clear(c.b, ob)); if (pick) break; }
+    pick = pick || cands.find(c => insideCanvas(c.b)) || cands[0];
+    const b = pick.b; placed.push(b); nums.add(b);
+    numHits.push({ b, i: m[0].i });
+    const lead = pick.d > R + 1 || m.length > 1;
+    laterNum.push(() => { if (lead) leader(cx, cy, b, Math.max(0, R - 3)); label(octx, t, b[0] + 2, b[1] + H / 2, { size: 12, align: 'left' }); });
+  }
+}
 
 function drawOver(now = performance.now()) {
   if (!IX) return;
@@ -252,7 +328,24 @@ function drawOver(now = performance.now()) {
   const litIdeas = new Set(st.ideasLit.map(a => a[0]));
   const showPeople = st.mode === 'person' || st.lit.length > 0 || (st.filter && st.filter.type === 'person');
   const usedPeople = new Set(), usedIdeas = new Set();
-  placed = [];
+  for (const [i] of st.lit) {
+    for (const pi of IX.episodes[EP[i]].people) if (IX.people[pi].x != null) usedPeople.add(pi);
+    for (const ii of IX.passages.ideas[i]) if (IX.ideas[ii].x != null) usedIdeas.add(ii);
+  }
+  placed = []; later = []; laterNum = []; numHits = [];
+  // which node marks show. A node whose spot is off the canvas (zoomed in) is not drawn, so its name never
+  // floats over other dots. Idea mode, nothing lit: only ideas with a real patch (at least 1 in 5 dots around
+  // the diamond carry the word).
+  const ideaIdx = IX.ideas.map((d, i) => i).filter(i => IX.ideas[i].x != null && onCanvas(nodeXY(IX.ideas[i])) && (usedIdeas.has(i) || litIdeas.has(i) ||
+    (st.filter && st.filter.type === 'idea' && st.filter.i === i) ||
+    (st.mode === 'idea' && !st.lit.length && IX.ideas[i].n >= (N > 10000 ? 80 : 25) && (IX.ideas[i].own ?? 1) >= 0.2)));
+  const peopleIdx = !showPeople ? [] : IX.people.map((p, pi) => pi).filter(pi => onCanvas(nodeXY(IX.people[pi])) &&
+    !(st.lit.length && !usedPeople.has(pi) && st.mode !== 'person'));
+  const nodes = [...peopleIdx.map(i => ({ kind: 'p', i })), ...ideaIdx.map(i => ({ kind: 'i', i }))];
+  for (const n of nodes) [n.x, n.y] = nodeXY(n.kind === 'p' ? IX.people[n.i] : IX.ideas[n.i]);
+  separate(nodes);
+  const pos = new Map(nodes.map(n => [n.kind + n.i, [n.x, n.y]]));
+  nodesXY = nodes.map(n => [n.x, n.y]);
   // cluster labels only when zoomed in (placed last, and only where they fit)
   const clusterLabels = [];
   if (st.z >= 2) {
@@ -263,32 +356,61 @@ function drawOver(now = performance.now()) {
       clusterLabels.push([t, x, y]);
     }
   }
-  // lines from lit dots to person nodes (solid) and idea nodes (dashed); stronger for higher scores
+  // 1) lines from lit dots to person nodes (solid) and idea nodes (dashed); stronger for higher scores
   for (const [i, s] of st.lit) {
     const px = sx(X[i]), py = sy(Y[i]), on = i === st.focus;
     octx.strokeStyle = C.glow;
     for (const pi of IX.episodes[EP[i]].people) {
-      const q = nodeXY(IX.people[pi]); if (!q) continue; usedPeople.add(pi);
+      const q = pos.get('p' + pi) || nodeXY(IX.people[pi]); if (!q) continue;
       octx.globalAlpha = on ? 1 : lineAlpha(s); octx.lineWidth = on ? 2.5 : 1.25; octx.setLineDash([]);
       octx.beginPath(); octx.moveTo(px, py); octx.lineTo(q[0], q[1]); octx.stroke();
     }
     for (const ii of IX.passages.ideas[i]) {
-      const q = nodeXY(IX.ideas[ii]); if (!q) continue; usedIdeas.add(ii);
+      const q = pos.get('i' + ii) || nodeXY(IX.ideas[ii]); if (!q) continue;
       octx.globalAlpha = on ? 1 : lineAlpha(s) * 0.8; octx.lineWidth = on ? 2.5 : 1; octx.setLineDash([5, 4]);
       octx.beginPath(); octx.moveTo(px, py); octx.lineTo(q[0], q[1]); octx.stroke();
     }
   }
   octx.setLineDash([]); octx.globalAlpha = 1;
-  // lit dots: high and medium scores glow (3 pulses over ~5 s, then hold; a static halo with reduced motion);
-  // low scores are rings. In Person mode the dot's core takes its person's colour.
+  // place: lit dots and node marks hold their room first, then numbers, then names
+  const dotBox = new Map();
+  for (const [i] of st.lit) { const x = sx(X[i]), y = sy(Y[i]); const b = [x - r - 4, y - r - 4, 2 * r + 8, 2 * r + 8]; placed.push(b); dotBox.set(i, b); }
+  for (const n of nodes) placed.push([n.x - 9, n.y - 9, 18, 18]);
+  if (st.num.size) placeNumbers(r, dotBox);
+  // bigger people first, so the most populous names get the best spots; on a narrow map, family names only
+  // (the legend and the list carry full names)
+  const people = nodes.filter(n => n.kind === 'p').sort((a, b) => IX.people[b.i].n - IX.people[a.i].n);
+  for (const n of people) { const name = IX.people[n.i].name; place(W < 520 ? name.split(' ').slice(-1)[0] : name, n.x, n.y); }
+  const ideaShapes = [];
+  const byHeat = nodes.filter(n => n.kind === 'i').sort((a, b) => (litIdeas.has(b.i) - litIdeas.has(a.i)) || IX.ideas[b.i].n - IX.ideas[a.i].n);
+  for (const n of byHeat) {
+    const hot = litIdeas.has(n.i);
+    const named = place(shortLabel(IX.ideas[n.i].label), n.x, n.y, { size: 13, weight: hot ? 700 : 500, gap: 10, optional: !hot && !usedIdeas.has(n.i) });
+    // an idle diamond with no room for its name is left out; one tied to a lit passage or the filter always shows
+    if (!named && !usedIdeas.has(n.i) && !(st.filter && st.filter.type === 'idea' && st.filter.i === n.i)) continue;
+    ideaShapes.push([n.x, n.y, hot]);
+  }
+  for (const [t, x, y] of clusterLabels) place(t, x, y, { size: 13, weight: 400, colour: C.muted, center: true, optional: true });
+  // 2) node marks, under the lit dots
+  for (const n of people) {
+    octx.beginPath(); octx.arc(n.x, n.y, 7, 0, TAU);
+    octx.fillStyle = personColour(n.i); octx.fill(); octx.lineWidth = 2; octx.strokeStyle = C.bg; octx.stroke();
+    octx.lineWidth = 1; octx.strokeStyle = C.ink; octx.beginPath(); octx.arc(n.x, n.y, 8.5, 0, TAU); octx.stroke();
+  }
+  for (const [x, y, hot] of ideaShapes) {
+    diamond(octx, x, y, hot ? 8 : 6);
+    octx.fillStyle = C.bg; octx.fill(); octx.lineWidth = hot ? 3 : 1.5; octx.strokeStyle = hot ? C.glow : C.ink; octx.stroke();
+  }
+  // 3) lit dots: high and medium scores glow (3 pulses over ~5 s, then hold; a static halo with reduced motion);
+  // low scores are rings. In Person mode the dot's core takes its person's colour. Painted last-ranked first,
+  // so number one is never under another dot.
   let k = 0, animating = false;
   if (st.lit.length && !RM.matches) {
     const ph = (now - st.pulseStart) / 5000;
     if (ph < 1) { k = Math.sin(ph * 3 * Math.PI) ** 2; animating = true; }
   }
-  const dotBox = new Map();
-  for (const [i, s] of st.lit) {
-    const x = sx(X[i]), y = sy(Y[i]), b = band(s);
+  for (let j = st.lit.length - 1; j >= 0; j--) {
+    const [i, s] = st.lit[j], x = sx(X[i]), y = sy(Y[i]), b = band(s);
     if (b === 'low') {
       octx.beginPath(); octx.arc(x, y, r + 3, 0, TAU); octx.lineWidth = 3.5; octx.strokeStyle = C.bg; octx.stroke();
       octx.lineWidth = 2; octx.strokeStyle = C.glow; octx.stroke();
@@ -298,56 +420,10 @@ function drawOver(now = performance.now()) {
       octx.fillStyle = st.mode === 'person' ? personColour(PERSON[i]) : C.glow; octx.fill();
       octx.lineWidth = 2; octx.strokeStyle = C.glow; octx.stroke();
     }
-    const box = [x - r - 4, y - r - 4, 2 * r + 8, 2 * r + 8]; placed.push(box); dotBox.set(i, box);
   }
-  // idea nodes (diamonds) and person nodes (circles): shapes first, then labels placed around them.
-  // A node whose spot is off the canvas (zoomed in) is not drawn, so its name never floats over other dots.
-  const ideaNodes = IX.ideas.map((d, i) => i).filter(i => IX.ideas[i].x != null && onCanvas(nodeXY(IX.ideas[i])) && (usedIdeas.has(i) || litIdeas.has(i) ||
-    (st.filter && st.filter.type === 'idea' && st.filter.i === i) ||
-    // Idea mode, nothing lit: only ideas with a real patch (at least 1 in 5 dots around the diamond carry the word)
-    (st.mode === 'idea' && !st.lit.length && IX.ideas[i].n >= (N > 10000 ? 80 : 25) && (IX.ideas[i].own ?? 1) >= 0.2)));
-  for (const i of ideaNodes) { const [x, y] = nodeXY(IX.ideas[i]); placed.push([x - 8, y - 8, 16, 16]); }
-  const peopleShown = [];
-  if (showPeople) {
-    IX.people.forEach((p, pi) => {
-      const q = nodeXY(p); if (!onCanvas(q)) return;
-      if (st.lit.length && !usedPeople.has(pi) && st.mode !== 'person') return;
-      octx.beginPath(); octx.arc(q[0], q[1], 7, 0, TAU);
-      octx.fillStyle = personColour(pi); octx.fill(); octx.lineWidth = 2; octx.strokeStyle = C.bg; octx.stroke();
-      octx.lineWidth = 1; octx.strokeStyle = C.ink; octx.beginPath(); octx.arc(q[0], q[1], 8.5, 0, TAU); octx.stroke();
-      placed.push([q[0] - 9, q[1] - 9, 18, 18]);
-      peopleShown.push([p.name, q, p.n]);
-    });
-  }
-  nodesXY = [...peopleShown.map(a => a[1]), ...ideaNodes.map(i => nodeXY(IX.ideas[i]))];
-  // numbers beside lit dots, matching the numbered list
-  if (st.num.size) {
-    for (const [i] of st.lit) {
-      const n = st.num.get(i); if (!n) continue;
-      const x = sx(X[i]), y = sy(Y[i]);
-      if (x < 0 || y < 0 || x > W || y > W) continue;
-      const t = String(n); octx.font = '700 12px system-ui,-apple-system,"Segoe UI",sans-serif';
-      const w = octx.measureText(t).width;
-      const spots = [[x + r + 4, y - r - 5], [x - r - 4 - w, y - r - 5], [x + r + 4, y + r + 5], [x - r - 4 - w, y + r + 5]];
-      const s = spots.find(([a, b]) => !overlaps([a - 3, b - 7, w + 6, 14], dotBox.get(i))) || spots[0];
-      label(octx, t, s[0], s[1], { size: 12, align: 'left' });
-      placed.push([s[0] - 3, s[1] - 7, w + 6, 14]);           // padded, so "11" and "10" never read as "1110"
-    }
-  }
-  // bigger people first, so the most populous names get the best spots
-  peopleShown.sort((a, b) => b[2] - a[2]);
-  // on a narrow map, family names only (the legend and the list carry full names)
-  for (const [name, q] of peopleShown) place(W < 520 ? name.split(' ').slice(-1)[0] : name, q[0], q[1]);
-  const byHeat = ideaNodes.slice().sort((a, b) => (litIdeas.has(b) - litIdeas.has(a)) || IX.ideas[b].n - IX.ideas[a].n);
-  for (const i of byHeat) {
-    const [x, y] = nodeXY(IX.ideas[i]); const hot = litIdeas.has(i);
-    const named = place(shortLabel(IX.ideas[i].label), x, y, { size: 13, weight: hot ? 700 : 500, gap: 10, optional: !hot && !usedIdeas.has(i) });
-    // an idle diamond with no room for its name is left out; one tied to a lit passage or the filter always shows
-    if (!named && !usedIdeas.has(i) && !(st.filter && st.filter.type === 'idea' && st.filter.i === i)) continue;
-    diamond(octx, x, y, hot ? 8 : 6);
-    octx.fillStyle = C.bg; octx.fill(); octx.lineWidth = hot ? 3 : 1.5; octx.strokeStyle = hot ? C.glow : C.ink; octx.stroke();
-  }
-  for (const [t, x, y] of clusterLabels) place(t, x, y, { size: 13, weight: 400, colour: C.muted, center: true, optional: true });
+  // 4) names, then numbers, on top
+  for (const f of later) f();
+  for (const f of laterNum) f();
   if (st.focus >= 0) {
     const x = sx(X[st.focus]), y = sy(Y[st.focus]);
     octx.beginPath(); octx.arc(x, y, r + 8, 0, TAU); octx.lineWidth = 2.5; octx.strokeStyle = C.ink; octx.stroke();
@@ -382,6 +458,13 @@ function setFocus(i, scroll) {
 
 // ------------------------------------------------------------------ result rows
 function episodeWith(e) { return listNames(e.people.map(pi => IX.people[pi].name)); }
+const hostsOf = e => e.hosts || IX.shows[e.show]?.hosts || [];
+// "Ezra Klein with Jensen Huang": the host is named too, since a passage mixes host and guest
+function withLine(e) { const h = hostsOf(e); return h.length ? `${listNames(h)} with ${episodeWith(e)}` : `the episode with ${episodeWith(e)}`; }
+const cap1 = t => t.charAt(0).toUpperCase() + t.slice(1);
+const listOr = a => a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' or ' + a[a.length - 1];
+// the time a row shows: the quote's start when it has one, else the passage's
+const timeOf = i => (SN[i] ? SN[i].s : IX.passages.t0[i]);
 function personHref(p) { return p.channel ? p.channel : '#person=' + encodeURIComponent(p.id); }
 function ideaHref(d) { return d.glossary ? '../glossary/#' + encodeURIComponent(d.id) : '#idea=' + encodeURIComponent(d.id); }
 function keyWords(i) { return KW && KW.p[i] ? KW.p[i].map(k => KW.vocab[k]) : []; }
@@ -413,11 +496,14 @@ function row(i, score, num) {
   else if (score === null && st.view === 'keyword') h += '<span class="score">keyword match</span>';
   if (sn) h += `<span class="src">${capKind(e)} excerpt</span>`;
   h += '</div>';
-  if (sn) h += quoteHtml(i, sn, e);
-  else h += '<p class="noq">No quote for this passage.</p>';
+  if (sn) {
+    h += quoteHtml(i, sn, e);
+    const hs = hostsOf(e);
+    h += `<p class="who">Speaker not marked: could be ${esc(listOr([...hs.map(n => n + ' (host)'), ...e.people.map(pi => IX.people[pi].name)]))}.</p>`;
+  } else h += '<p class="noq">No quote for this passage.</p>';
   const kw = keyWords(i);
   if (kw.length) h += `<p class="kw"><span class="kwl">Key words</span> ${kw.map(esc).join(' · ')}</p>`;
-  h += `<p class="meta">From the episode with ${esc(episodeWith(e))} · ${esc(show.name)} · ${esc((e.date || '').slice(0, 4))} · ${fmtT(t)}</p>`;
+  h += `<p class="meta">${esc(cap1(withLine(e)))} · ${esc(show.name)} · ${esc((e.date || '').slice(0, 4))} · ${fmtT(t)}</p>`;
   h += `<div class="links"><button type="button" class="play">${SVG_PLAY} Watch here</button>`;
   h += `<a href="${ytUrl(e.vid, t)}" target="_blank" rel="noopener">YouTube at ${fmtT(t)} ${SVG_OUT}</a>`;
   const epu = e.url || show.url;
@@ -441,8 +527,10 @@ function openClip(btn, i, e, show) {
   const box = el('div', 'clip');
   const f = el('iframe', 'player');
   // no autoplay: the player appears ready at the passage, and the viewer presses play
-  f.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(e.vid)}?start=${Math.max(0, Math.floor(P.t0[i]) - 2)}&end=${Math.ceil(P.t1[i]) + 2}&rel=0`;
-  f.title = `${show.name}, episode with ${episodeWith(e)}, from ${fmtT(P.t0[i])}`;
+  // the player starts 2 s before the time the row shows (the quote's start, else the passage's)
+  const t = timeOf(i);
+  f.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(e.vid)}?start=${Math.max(0, Math.floor(t) - 2)}&end=${Math.ceil(P.t1[i]) + 2}&rel=0`;
+  f.title = `${show.name}, ${withLine(e)}, from ${fmtT(t)} (starts 2 seconds early)`;
   f.allow = 'encrypted-media; picture-in-picture'; f.allowFullscreen = true;
   const x = el('button', 'closeclip', 'Close the clip'); x.type = 'button';
   box._close = () => { box.remove(); btn.hidden = false; };
@@ -474,17 +562,22 @@ function showResults(text, top, ideas, note) {
   const scored = top.length && top[0][1] != null;
   const best = scored ? top[0][1] : 0;
   const nHM = top.filter(a => a[1] != null && a[1] >= 0.5).length, nLow = top.length - nHM;
+  const shortQ = text.trim().split(/\s+/).length <= 6;
   const hd = el('h2', null, 'Closest passages'); hd.id = 'resultshead'; hd.tabIndex = -1; out.append(hd);
   out.append(el('p', 'lead', `To “${esc(text)}”, by the model’s score.`));
   if (note) out.append(el('p', 'caveat', esc(note)));
   let verdict;
   if (!scored) verdict = '';
   else if (nHM) verdict = `${nHM === top.length ? `All ${top.length}` : `${nHM} of ${top.length}`} passages scored high or medium (best ${best.toFixed(2)}).${nLow ? ` ${nLow} scored low: they are rings on the map and come last.` : ''}`;
-  else verdict = `No passage scored high or medium for this wording (best ${best.toFixed(2)}). That is a limit of this small model, not proof that the episodes never discuss it: short questions often score low, so try saying more. The ${top.length} highest scores are below anyway, drawn as rings on the map.`;
+  else verdict = `No passage scored high or medium for this wording (best ${best.toFixed(2)}). Either these episodes don’t discuss it, or this small model missed it; the page can’t tell which.${shortQ ? ' Short questions often score lower, so saying more may help.' : ' A different wording may help.'} The ${top.length} highest scores are below anyway, drawn as rings on the map.`;
   if (verdict) out.append(el('p', 'verdictlong', esc(verdict)));
   if (ideas.length) {
-    const p = el('p', 'near-ideas', 'Ideas near your question: ');
-    ideas.forEach(([ii, s], k) => { const a = el('a', null, esc(IX.ideas[ii].label)); a.href = ideaHref(IX.ideas[ii]); a.title = 'similarity ' + s.toFixed(3); p.append(a); if (k < ideas.length - 1) p.append(', '); });
+    const p = el('p', 'near-ideas', scored ? 'Ideas near your question (idea score 0.35 or more, a looser line than the 0.50 for passages): ' : 'Idea names matching your words: ');
+    ideas.forEach(([ii, s], k) => {
+      const a = el('a', null, esc(IX.ideas[ii].label)); a.href = ideaHref(IX.ideas[ii]); p.append(a);
+      if (scored) p.append(` ${s.toFixed(2)}`);
+      if (k < ideas.length - 1) p.append(', ');
+    });
     out.append(p);
   }
   if (top.some(([i]) => !SN[i])) out.append(el('p', 'caveat', 'Most passages have no quote: quotes are capped (see “Quotes and key words”, further down). Every passage shows its key words, picked by counting, and links to its moment in the video.'));
@@ -496,12 +589,12 @@ function showResults(text, top, ideas, note) {
   const v = $('#verdict'); v.innerHTML = '';
   const short = !scored ? `${top.length} passages lit by keyword match.`
     : nHM ? `${nHM} of ${top.length} lit passages scored high or medium (best ${best.toFixed(2)}).`
-    : `No high or medium scores (best ${best.toFixed(2)}). Short questions often score low: try saying more.`;
+    : `No high or medium scores (best ${best.toFixed(2)}). The episodes may not cover this, or the model missed it.${shortQ ? ' Short questions often score lower: saying more may help.' : ''}`;
   v.append(el('p', null, esc(short)));
   const go = el('button', 'readbtn', `${SVG_DOWN} Read the ${top.length} passages`); go.type = 'button';
   go.addEventListener('click', () => { const h = $('#resultshead'); if (h) { h.scrollIntoView({ block: 'start', behavior: RM.matches ? 'auto' : 'smooth' }); h.focus({ preventScroll: true }); } });
   v.append(go); v.hidden = false;
-  announce(scored ? `${short} ${top.length} passages lit, numbered as in the list; the first is from the episode with ${episodeWith(IX.episodes[EP[top[0][0]]])}.` : short);
+  announce(scored ? `${short} ${top.length} passages lit, numbered as in the list; the first is from ${withLine(IX.episodes[EP[top[0][0]]])}.` : short);
 }
 
 function askSuggested(id, push) {
@@ -563,13 +656,17 @@ function keywordFallback(text) {
 
 async function askTyped(text, fromButton) {
   text = text.trim(); if (!text) return;
+  if (!IX) { $('#status').textContent = 'The map is still loading. Try again in a moment.'; return; }
   const sug = IX.questions.find(q => q.text.toLowerCase() === text.toLowerCase());
   if (sug) return askSuggested(sug.id, true);
-  st.view = 'question'; st.qid = null; st.typed = text; markChip(null);
+  st.view = 'question'; st.qid = null; st.typed = text; st.last = null; markChip(null);
   setHash('');                     // the address bar no longer names an older question; Share puts this one there
+  // the old answer goes at once, so it never sits under the new question while the model downloads
+  closeSheet(); hideVerdict(); $('#share').hidden = true; light([]);
+  resetOut(`Lighting up the passages closest to “${esc(text)}”…`);
   const ok = await ensureModel(fromButton);
   if (!ok) {
-    if (modelState !== 'failed') return;
+    if (modelState !== 'failed') { resetOut(`Press Load above to download the model and ask “${esc(text)}”.`); return; }
     const r = keywordFallback(text);
     if (!r.top.length) { closeSheet(); hideVerdict(); resetOut(`No idea name matches “${esc(text)}”, and the model did not load. Try a suggested question.`); light([]); return; }
     st.view = 'keyword';
@@ -594,13 +691,13 @@ function showPassage(i, push) {
   const nn = Array.from(NN.subarray(i * 6, i * 6 + 6));
   sheet.append(rows(nn.map(j => [j, null]), true));
   const same = nn.filter(j => EP[j] === EP[i]).length, eps = new Set(nn.map(j => EP[j])).size;
-  sheet.append(el('p', 'caveat', `Neighbours by the model’s numbers, numbered on the map. ${same === 6 ? 'All six come from the same episode.' : `${same ? numWord(same)[0].toUpperCase() + numWord(same).slice(1) : 'None'} of the six come${same === 1 ? 's' : ''} from the same episode; together they come from ${numWord(eps)} episode${eps > 1 ? 's' : ''}.`}`));
+  sheet.append(el('p', 'caveat', `Neighbours by the model’s 384 numbers, numbered on the map. The flat map keeps only rough neighbourhoods, so they can sit far apart on it. ${same === 6 ? 'All six come from the same episode.' : `${same ? numWord(same)[0].toUpperCase() + numWord(same).slice(1) : 'None'} of the six come${same === 1 ? 's' : ''} from the same episode; together they come from ${numWord(eps)} episode${eps > 1 ? 's' : ''}.`}`));
   sheet.hidden = false; $('#out').hidden = true; hideVerdict();
   light([[i, null], ...nn.map(j => [j, null])], [], i, nn);
   setFocus(i, false);
   const e = IX.episodes[EP[i]];
   if (push) history.pushState(null, '', `#p=${e.vid}:${Math.floor(IX.passages.t0[i])}`);
-  announce(`Passage from the episode with ${episodeWith(e)} at ${fmtT(IX.passages.t0[i])}; the 6 like it are lit and numbered.`);
+  announce(`Passage from ${withLine(e)} at ${fmtT(timeOf(i))}; the 6 like it are lit and numbered.`);
   sheet.querySelector('.row').focus({ preventScroll: true });
 }
 // closing a tapped passage returns to the question it was opened from, or to the whole map
@@ -621,11 +718,11 @@ function showPerson(pi) {
   const out = $('#out'); out.innerHTML = '';
   const head = el('div', 'panelhead', `<h2>${esc(p.name)}</h2>`);
   head.append(clearBtn()); out.append(head);
-  out.append(el('p', 'lead', `${p.n.toLocaleString('en')} passages from ${eps.length} episode${eps.length > 1 ? 's' : ''} with ${esc(p.name)}. The map shows only these. A passage mixes host and guest.`));
+  out.append(el('p', 'lead', `${p.n.toLocaleString('en')} passages from ${eps.length} episode${eps.length > 1 ? 's' : ''} with ${esc(p.name)}. The map shows only these. A passage mixes host and guest, and the captions don’t say who is speaking.`));
   const ul = el('ul', 'eplist');
   for (const e of eps) {
     const s = IX.shows[e.show] || {};
-    let h = `${esc(s.name || e.show)} · ${esc(e.date || '')} · `;
+    let h = `${esc(s.name || e.show)}${hostsOf(e).length ? ', hosted by ' + esc(listNames(hostsOf(e))) : ''} · ${esc(e.date || '')} · `;
     h += e.url ? `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)} ${SVG_OUT}</a> <span class="host">(${esc(hostLabel(e.url))})</span>` : esc(e.title);
     h += ` · <a href="${ytUrl(e.vid, 0)}" target="_blank" rel="noopener">video ${SVG_OUT}</a>`;
     ul.append(el('li', null, h));
@@ -748,7 +845,7 @@ function buildSources() {
     if (e.url) hosts.add(/apple|spotify/i.test(hostLabel(e.url)) ? hostLabel(e.url) : 'site');
     ep += ` · <a href="${ytUrl(e.vid, 0)}" target="_blank" rel="noopener">video</a>`;
     tr.innerHTML = `<td>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>` : esc(s.name)}</td>` +
-      `<td>${ep}</td><td>${esc(episodeWith(e))}</td><td>${esc(e.date || '')}</td><td>${esc(capKind(e).replace('caption', 'captions'))}</td><td class="num">${e.n.toLocaleString('en')}</td>`;
+      `<td>${ep}</td><td>${esc(cap1(withLine(e)))}</td><td>${esc(e.date || '')}</td><td>${esc(capKind(e).replace('caption', 'captions'))}</td><td class="num">${e.n.toLocaleString('en')}</td>`;
     tb.append(tr);
   }
   for (const x of IX.excluded || []) {
@@ -796,6 +893,13 @@ function applyHash() {
 
 // ------------------------------------------------------------------ input: map
 function hit(px, py) {
+  // a tapped number opens the first passage it names
+  for (const h of numHits) { const b = h.b; if (px >= b[0] - 4 && px <= b[0] + b[2] + 4 && py >= b[1] - 4 && py <= b[1] + b[3] + 4) return h.i; }
+  // any lit dot within reach beats every unlit one; among lit dots on top of each other, the higher-ranked
+  // (painted on top) wins unless another is clearly nearer
+  let li = -1, ld = 16 * 16;
+  for (const [i] of st.lit) { const d = (sx(X[i]) - px) ** 2 + (sy(Y[i]) - py) ** 2; if (d < ld - (li < 0 ? 0 : 6)) { ld = d; li = i; } }
+  if (li >= 0) return li;
   const x = dx(px), y = dy(py), rr = 14 / (inner() * st.z);
   let best = -1, bd = rr * rr;
   const x0 = Math.floor((x - rr) * GRID), x1 = Math.floor((x + rr) * GRID), y0 = Math.floor((y - rr) * GRID), y1 = Math.floor((y + rr) * GRID);
@@ -803,8 +907,7 @@ function hit(px, py) {
     for (let gx = Math.max(0, x0); gx <= Math.min(GRID - 1, x1); gx++)
       for (const i of grid[gx + GRID * gy]) {
         const d = (X[i] - x) ** 2 + (Y[i] - y) ** 2;
-        const pref = st.litSet.has(i) ? 0.5 : 1;             // lit dots win close calls
-        if (d * pref < bd) { bd = d * pref; best = i; }
+        if (d < bd) { bd = d; best = i; }
       }
   return best;
 }
@@ -849,7 +952,7 @@ over.addEventListener('keydown', e => {
     const i = lit[(k + step + lit.length) % lit.length];
     setFocus(i, true);
     const ep = IX.episodes[EP[i]], sn = SN[i], n = st.num.get(i), kw = keyWords(i);
-    announce(`${n ? 'Number ' + n : 'The tapped passage'}: from the episode with ${episodeWith(ep)}, ${fmtT(IX.passages.t0[i])}.${sn ? ' ' + sn.t : kw.length ? ' Key words: ' + kw.join(', ') + '.' : ''}`);
+    announce(`${n ? 'Number ' + n : 'The tapped passage'}: from ${withLine(ep)}, ${fmtT(timeOf(i))}.${sn ? ' Quote, speaker not marked: ' + sn.t : kw.length ? ' Key words: ' + kw.join(', ') + '.' : ''}`);
   } else if (e.key === 'Enter' && st.focus >= 0) {
     const r = document.querySelector(`.row[data-i="${st.focus}"]`); if (r) r.focus();
   } else if (e.key === '+' || e.key === '=') zoomAt(1.5);

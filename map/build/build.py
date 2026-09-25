@@ -224,6 +224,51 @@ def load_cache():
         return {}
 
 
+def shipped_layout(P, n_eps):
+    """The shipped map's positions and clusters, when it holds exactly these passages in this order (then the
+    vectors are the cached ones too, so UMAP and KMeans would give the same answer): {'XY', 'C', 'cen'} or None."""
+    try:
+        idx = json.load(open(os.path.join(DATA, 'index.json'), encoding='utf-8'))
+        SP = idx['passages']
+        vids = [e['vid'] for e in idx['episodes']]
+        if len(SP['ep']) != len(P) or len(vids) != n_eps:
+            return None
+        for i, p in enumerate(P):
+            if vids[SP['ep'][i]] != p['vid'] or SP['t0'][i] != p['t0'] or SP['t1'][i] != p['t1']:
+                return None
+        Q = np.fromfile(os.path.join(DATA, 'vectors.i8.bin'), dtype=np.int8).reshape(-1, 384)
+        S = np.fromfile(os.path.join(DATA, 'scale.f32.bin'), dtype=np.float32)
+        D = Q.astype(np.float32) * S[:, None]
+        C = np.array(SP['c'])
+        cen = np.stack([D[C == c].mean(0) for c in range(int(C.max()) + 1)])   # KMeans centres = cluster means
+        return {'XY': np.stack([SP['x'], SP['y']], 1).astype(int), 'C': C, 'cen': cen}
+    except (OSError, KeyError, ValueError):
+        return None
+
+
+def layout_keep(D, XY, ks=(10, 30, 100)):
+    """How much of each passage's neighbourhood the flat map keeps: of its 10 nearest passages by the model's
+    384 numbers (cosine), the mean share found among its k nearest dots on the map, for each k."""
+    N = len(D)
+    Dn = D / np.linalg.norm(D, axis=1, keepdims=True).clip(1e-9)
+    xy = XY.astype(np.float64)
+    out = {k: 0.0 for k in ks}
+    K, top = max(ks), min(ks)
+    for a in range(0, N, 512):
+        S = Dn[a:a + 512] @ Dn.T
+        d2 = ((xy[a:a + 512, None, :] - xy[None, :, :]) ** 2).sum(-1)
+        for r in range(S.shape[0]):
+            S[r, a + r] = -9
+            d2[r, a + r] = np.inf
+        hi = np.argsort(-S, axis=1)[:, :K]
+        lo = np.argsort(d2, axis=1)[:, :K]
+        for r in range(S.shape[0]):
+            near = set(hi[r, :top].tolist())
+            for k in ks:
+                out[k] += len(near & set(lo[r, :k].tolist())) / top
+    return {str(k): round(v / N, 2) for k, v in out.items()}
+
+
 # ---------------------------------------------------------------- 3. tag
 def compile_terms(terms):
     return [re.compile('|'.join(f'(?:{p})' for p in t['patterns']), re.I) for t in terms]
@@ -337,9 +382,17 @@ def window_text(words, lo, hi, starts):
     return text
 
 
-def pick_window(p, cap, marked, target_vec, embed, must=None):
+def quote_key(vid, s, text):
+    """The quote review's key: video, start second, and a hash of the quote (so a changed window is re-read)."""
+    import hashlib
+    return f'{vid}:{int(s)}:{hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]}'
+
+
+def pick_window(p, cap, marked, target_vec, embed, must=None, review=None):
     """The window closest (by the model) to target_vec; with must (a regex), only windows it matches, if any.
-    -> (text, n_words, cue_time) or None."""
+    review: {key: verdict}. A window the review rejected (the host speaking, someone repeating another person's
+    view, a garbled caption) is skipped, and so is every window overlapping it; the next closest is taken.
+    -> (text, n_words, cue_time, key, n_rejected) or None."""
     words, sent, cands = windows(p, cap, marked)
     starts = set(sent) | set(p['turns'])
     if not cands:
@@ -347,6 +400,22 @@ def pick_window(p, cap, marked, target_vec, embed, must=None):
     if must is not None:
         hit = [c for c in cands if must.search(' '.join(words[c[0]:c[1]]))]
         cands = hit or cands
+
+    def cue_time(lo):
+        t = p['t0']
+        for wi, ts in p['marks']:
+            if wi <= lo:
+                t = ts
+        return t
+    info = {}
+    for lo, hi in cands:
+        text = window_text(words, lo, hi, starts)
+        info[(lo, hi)] = (text, cue_time(lo), quote_key(p['vid'], cue_time(lo), text))
+    review = review or {}
+    bad = [c for c in cands if review.get(info[c][2], 'ok') != 'ok']
+    cands = [c for c in cands if not any(c[0] < b[1] and b[0] < c[1] for b in bad)]
+    if not cands:
+        return None
     texts = [' '.join(words[lo:hi]) for lo, hi in cands]
     V = embed(texts)
     best, bs = None, -9
@@ -357,12 +426,8 @@ def pick_window(p, cap, marked, target_vec, embed, must=None):
         s -= 0.08 if hi - lo < 8 else 0
         if s > bs:
             best, bs = (lo, hi), s
-    lo, hi = best
-    t = p['t0']
-    for wi, ts in p['marks']:
-        if wi <= lo:
-            t = ts
-    return window_text(words, lo, hi, starts), hi - lo, t
+    text, t, key = info[best]
+    return text, best[1] - best[0], t, key, len(bad)
 
 
 def word_spans(text, rx):
@@ -398,6 +463,27 @@ start started use used using try trying tried understand saying says believe ide
 end ends turn turns happen happens happened happening ones one two three big huge'''.split())
 
 
+# Automatic captions misspell people's names. Key words are an index, not a quote, so these are corrected
+# (quotes never are: a quote with a garbled word is dropped in the quote review instead).
+NAME_FIX = {'alman': 'altman', 'benjio': 'bengio', 'elizer': 'eliezer', 'elizers': 'eliezers', 'greenblat': 'greenblatt',
+            'ilia': 'ilya', 'daario': 'dario', 'amade': 'amodei', 'sutskysa': 'sutskever', 'sutska': 'sutskever',
+            'suskgiver': 'sutskever', 'yosha': 'yoshua', 'chatgbt': 'chatgpt'}
+PAIR_FIX = {('jensen', 'hang'): 'huang', ('jeff', 'hinton'): 'geoff', ('jeffrey', 'hinton'): 'geoffrey',
+            ('joshua', 'bengio'): 'yoshua'}           # (a, b) -> the right spelling of whichever word is wrong
+
+
+def fix_names(toks):
+    toks = [NAME_FIX.get(t, t) for t in toks]
+    for i in range(len(toks) - 1):
+        f = PAIR_FIX.get((toks[i], toks[i + 1]))
+        if f:
+            if toks[i + 1] in ('hang',):
+                toks[i + 1] = f
+            else:
+                toks[i] = f
+    return toks
+
+
 def key_words(P, k=5):
     """-> (vocab, [[term index] x <=k per passage]) : the passage's most distinctive words and two-word phrases
     by tf-idf over this set of passages. An index of terms, not a quote."""
@@ -406,7 +492,7 @@ def key_words(P, k=5):
     tok_re = re.compile(r"[a-z][a-z'-]*[a-z]")
 
     def analyse(text):
-        toks = [re.sub(r"'s$", '', t) for t in tok_re.findall(text.lower().replace('’', "'"))]
+        toks = fix_names([re.sub(r"'s$", '', t) for t in tok_re.findall(text.lower().replace('’', "'"))])
         ok = [t if (len(t) >= 3 and t not in stop and not t.startswith("'")) else None for t in toks]
         grams = [t for t in ok if t]
         grams += [f'{a} {b}' for a, b in zip(ok, ok[1:]) if a and b and a != b]
@@ -563,6 +649,10 @@ def main():
     vkey = hashlib.sha1(Q.tobytes() + S.tobytes()).hexdigest()[:16]
     lay_path = os.path.join(args.work, f'layout-{vkey}.npz')
     lay = np.load(lay_path) if os.path.exists(lay_path) else None
+    if lay is None and not todo:
+        lay = shipped_layout(P, len(rows))      # same passages, same vectors: the shipped map is the layout cache
+        if lay is not None:
+            log('   layout and clusters reused from the shipped map (same passages, same vectors)')
     XY = lay['XY'] if lay is not None else project(D)
     log(f'4 project: UMAP cosine n15 d0.1 seed42 single-thread ({time.time() - t0:.1f}s)')
 
@@ -590,7 +680,9 @@ def main():
     for c in range(k):
         ix = np.where(C == c)[0]
         cn = Counter(i for j in ix for i in P[j]['ideas'])
-        lab = [i for i, h in cn.most_common() if h >= 8 and (h / len(ix)) / base_rate[i] >= 2][:3]
+        # a name must be over-represented (lift >= 2, >= 8 hits) AND common in the group (at least 1 passage in 5
+        # carries it, the same floor as an idle idea diamond), else the group is "mixed talk"
+        lab = [i for i, h in cn.most_common() if h >= 8 and (h / len(ix)) / base_rate[i] >= 2 and h / len(ix) >= 0.2][:3]
         pc = Counter(p_person[ix].tolist()).most_common(1)[0]
         x, y = peak_xy(ix, XY)
         clusters.append({'x': x, 'y': y, 'n': int(len(ix)), 'label': lab,
@@ -640,6 +732,9 @@ def main():
     NN = neighbours(D)
     log(f'7 nn: 6 neighbours per passage ({time.time() - t0:.1f}s); same-episode share '
         f'{np.mean([P[j]["ep"] == P[i]["ep"] for i in range(N) for j in NN[i]]):.2f}')
+    t0 = time.time()
+    keep = layout_keep(D, XY)
+    log(f'   of each passage\'s 10 nearest by the model, the share among its k nearest on the map: {keep}  ({time.time() - t0:.1f}s)')
 
     # ---- 8. questions
     qdoc = json.load(open(os.path.join(HERE, 'questions.json'), encoding='utf-8'))
@@ -687,38 +782,62 @@ def main():
             best = sorted(ix, key=lambda j: -float(D[j] @ IV[ii]))[:3]
             order += [(j, IV[ii], rx[ii]) for j in best]
     emb = lambda texts: embed_texts(texts, tok, mod)
-    snippets, skipped = {}, 0
+    # the quote review (committed; keys and verdicts only, no text): every published quote was read in context
+    rv_doc = json.load(open(os.path.join(HERE, 'quote-review.json'), encoding='utf-8'))
+    review, no_quote = rv_doc['quotes'], set(rv_doc.get('no_quote', []))
+    snippets, skipped, rejected, unread = {}, 0, 0, []
     for j, target, must in order:
         if str(j) in snippets:
             continue
         p = P[j]
+        if f'{p["vid"]}@{p["t0"]}' in no_quote:
+            continue
         cap = SNIP_CAP_NYT if shows_raw[p['ep']] in NYT_SHOWS else SNIP_CAP
-        got = pick_window(p, cap, ep_marked[p['ep']], target, emb, must)
+        got = pick_window(p, cap, ep_marked[p['ep']], target, emb, must, review)
         if not got:
             continue
-        text, nw, ts = got
+        text, nw, ts, key, nbad = got
+        rejected += nbad > 0
         if used[p['ep']] + nw > budget[p['ep']]:
             skipped += 1
             continue
         used[p['ep']] += nw
         snippets[str(j)] = {'t': text, 's': int(ts), 'm': word_spans(text, rx)}
+        if review.get(key) != 'ok':
+            unread.append((j, key, text, ts))
     total_snip = sum(used)
-    log(f'9 snippets: {len(snippets)} kept, {skipped} skipped by the per-episode cap; {total_snip:,} of '
-        f'{sum(ep_words):,} words ({100 * total_snip / sum(ep_words):.2f}%); worst episode '
-        f'{max(u / w for u, w in zip(used, ep_words)) * 100:.2f}%')
+    log(f'9 snippets: {len(snippets)} kept, {skipped} skipped by the per-episode cap, {rejected} moved off a window '
+        f'the review rejected; {total_snip:,} of {sum(ep_words):,} words ({100 * total_snip / sum(ep_words):.2f}%); '
+        f'worst episode {max(u / w for u, w in zip(used, ep_words)) * 100:.2f}%')
+    if unread:
+        # for the private read: each new quote with the raw captions around it (speaker marks and labels kept)
+        rp = os.path.join(args.work, 'quote-review-todo.txt')
+        with open(rp, 'w', encoding='utf-8') as f:
+            for j, key, text, ts in unread:
+                m, cp = rows[P[j]['ep']]
+                cues = json.load(open(cp, encoding='utf-8'))
+                ctx = ' '.join((c.get('text') or '').replace(chr(10), ' ') for c in cues
+                               if ts - 45 <= float(c['start']) <= ts + 25)
+                f.write(f'\n### {key}  passage {j}  {shows_raw[P[j]["ep"]]}  guest {", ".join(m["guests"])}\n'
+                        f'QUOTE: {text}\nCONTEXT: {ctx}\n')
+        log(f'   {len(unread)} quotes not yet read: {rp}  (check.py fails until each is in quote-review.json)')
 
     # ---- 10. export
     shows = {}
     for sid in dict.fromkeys(shows_raw):
         cid = SHOW_ALIAS.get(sid, sid)
         node = wnodes.get(cid, {})
-        shows[cid] = {'name': node.get('name', cid), 'url': node.get('url'), 'nyt': cid in NYT_SHOWS or sid in NYT_SHOWS}
+        hosts = [wnodes.get(h, {}).get('name') or h.replace('_', ' ').title() for h in node.get('hosts', [])]
+        shows[cid] = {'name': node.get('name', cid), 'url': node.get('url'), 'nyt': cid in NYT_SHOWS or sid in NYT_SHOWS,
+                      'hosts': hosts}
     episodes = []
     for ei, (m, _) in enumerate(rows):
         em = ep_meta.get(m['video_id'], {})
         xe = extra.get(m['video_id'], {})
-        episodes.append({'vid': m['video_id'], 'show': SHOW_ALIAS.get(m['show'], m['show']),
-                         'date': m.get('date'),
+        cid = SHOW_ALIAS.get(m['show'], m['show'])
+        episodes.append({'vid': m['video_id'], 'show': cid,
+                         'hosts': xe.get('hosts') or shows[cid]['hosts'],
+                         'date': xe.get('date') or m.get('date'),
                          'title': fix_mojibake(xe.get('title') or em.get('episode') or m.get('title')),
                          'people': ep_people[ei], 'url': xe.get('url') or em.get('episode_url'),
                          'captions': ep_caps[ei], 'turns': ep_marked[ei],
@@ -736,6 +855,7 @@ def main():
                      'ideas': [p['ideas'] for p in P]},
         'questions': questions,
         'excluded': excluded,
+        'layout_keep': keep,
     }
     wj = lambda name, obj: json.dump(obj, open(os.path.join(DATA, name), 'w', encoding='utf-8'),
                                      ensure_ascii=False, separators=(',', ':'))

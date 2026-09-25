@@ -33,8 +33,14 @@ The canonical terms file is on the private `recursive-transcripts` repo, branch 
    The cache is the shipped data: a passage whose (video, start, end) and chunker version match is not re-embedded.
 3. **tag**: the terms' regexes over the cleaned text -> idea ids per passage (in order of first match).
 4. **project**: UMAP, cosine, 15 neighbours, min_dist 0.1, seed 42, single thread (repeatable). Scaled into a square.
-5. **cluster**: KMeans on the vectors, k = round(sqrt(N/5)). Label = idea terms with lift >= 2 and >= 8 hits,
-   plus the share from the top person's episodes. No such term: "mixed talk".
+   When every passage came from the cache and the shipped map holds exactly these passages, the shipped positions
+   and clusters are reused (they are what UMAP and KMeans would return), so a quotes-only re-run takes minutes.
+   The build logs, and ships as `layout_keep`, how much of each passage's neighbourhood the flat map keeps: of its
+   10 nearest passages by the 384 numbers, the share among its 10, 30 and 100 nearest dots (Sep 25: 21%, 39%, 59%).
+   The page quotes it, since distance on the map means much less than the scores.
+5. **cluster**: KMeans on the vectors, k = round(sqrt(N/5)). Label = idea terms with lift >= 2 and >= 8 hits that
+   at least 1 passage in 5 of the group carries (the idle-diamond floor; before Sep 25 a name could be carried by
+   7%), plus the share from the top person's episodes. No such term: "mixed talk".
 6. **nodes**: a person or idea node sits at the densest spot of its passages (the point with the most of its own
    passages within 4.5% of the map, then the median of those), not the median of all of them, which can land in
    empty space. `own` = the share of all dots near the node that are its own (logged; shipped for reference).
@@ -48,8 +54,18 @@ The canonical terms file is on the private `recursive-transcripts` repo, branch 
    never crosses a marked change of speaker; where an episode's captions mark none (Dwarkesh), a window stays inside
    one sentence. At most 20 words (15 for The Ezra Klein Show, a New York Times show), at most 2% of each episode's
    caption words. Idea-word links are widened to whole words.
+   **Quote review** (`quote-review.json`, committed: keys and verdicts only, never text). Captions rarely name the
+   speaker, so every published quote is read privately in its caption context before it ships. Verdicts: `ok`,
+   `host` (the host speaking), `paraphrase` (someone repeating another person's view), `garble` (a wrong word or
+   name in the captions), `unclear` (the speaker cannot be told). A window whose verdict is not `ok` is skipped, with
+   every window overlapping it, and the next closest window is taken; so a re-run can surface new quotes. The build
+   writes those, with the raw captions around them, to the work dir (`quote-review-todo.txt`), and check.py fails
+   until each is marked. Keys hash the quote text, so a changed window is read again. For 80,000 Hours the
+   captions' speaker labels settle it; elsewhere it is a reading, and the page says the speaker is not marked.
 10. **key words**: every passage gets up to 5 words or two-word phrases by tf-idf over all passages (fillers and
-   stop words removed, min 2 passages, max 12%). An index of terms, not a quote: `data/words.json`.
+   stop words removed, min 2 passages, max 12%). An index of terms, not a quote: `data/words.json`. Misspelt names of
+   people in automatic captions (`ilia`, `daario`, `alman`, `benjio`, `jensen hang`, ...) are corrected here
+   (`NAME_FIX`, `PAIR_FIX`); quotes are never corrected, a garbled quote is dropped instead.
 11. **export**, then `check.py`, then the work dir (passage text, the 88 MB Python model) is deleted.
     With `--keep-work` the work dir also keeps the UMAP layout and KMeans clusters, keyed by the exact int8
     vectors, so a re-run that only changes quotes or key words skips them (on a busy CPU they took 15 minutes).
@@ -57,7 +73,9 @@ The canonical terms file is on the private `recursive-transcripts` repo, branch 
 
 Episode facts the private manifest gets wrong or lacks live in `episodes-extra.json` (committed): the caption kind
 (`creator` or `auto`, checked on each watch page's caption track list), and the real title and episode page for
-the two episodes whose manifest titles were placeholders. An episode missing from it gets a guessed kind
+the two episodes whose manifest titles were placeholders, and a `date` where the manifest's was the YouTube upload
+date rather than the episode page's (Making Sense #494). Hosts come from the who's-who (`hosts` of each show node);
+an episode can override them with `hosts`. An episode missing from it gets a guessed kind
 (`auto?` / `creator?`), and the page then says just "caption".
 
 The browser model (`map/model/Xenova/all-MiniLM-L6-v2/`, q8 ONNX, 23 MB, Apache-2.0) is fetched once
@@ -66,7 +84,8 @@ from Hugging Face on the first build and then served from this site.
 ## Checks that fail the build
 
 Snippet over its cap; a New York Times show over 15 words; an episode over its snippet share; a snippet with caption
-markup or a speaker label; an idea link that stops mid-word; an episode with no caption kind; a key word longer than
+markup or a speaker label; a quote not marked `ok` in `quote-review.json`; an idea link that stops mid-word; an
+episode with no caption kind; a key word longer than
 two words or more than 5 per passage; any string in `data/` over 25 words; an absolute path or this machine's account name anywhere in `map/`; a passage with no
 video id + time; a file over its size budget.
 
