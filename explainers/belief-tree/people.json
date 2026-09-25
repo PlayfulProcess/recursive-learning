@@ -153,12 +153,12 @@
    },
    {
     "id": "huang-q8",
-    "text": "it is completely in my ability, my power, and my responsibility … to not launch the product",
+    "text": "completely in my ability, my power, and my responsibility, and I'm incentivized to do so to not launch the product",
     "verbatim": true,
     "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
     "video_id": "HjurAWAr_nY",
     "start_sec": 2457.8,
-    "end_sec": 2468.7,
+    "end_sec": 2471.5,
     "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=2457s",
     "checked_against": "captions"
    },
@@ -253,7 +253,8 @@
     "checked_against": "captions"
    }
   ],
-  "channel_url": null
+  "channel_url": "https://recursive.eco/view/24603558-3231-4101-9520-84aba6303659?kiosk",
+  "channel_label": "Person channel (private for now)"
  },
  {
   "slug": "amodei",

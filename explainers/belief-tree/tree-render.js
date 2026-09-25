@@ -51,7 +51,7 @@
  * stated_leaf, placed_by, scope, confidence, gate/alignment/containment {answer, basis}, race,
  * own_conditional, to_move[], card_quote_ids, shares_principle_with, on_record[], reader_notes[],
  * quotes[] {id, text, verbatim, wording?, speaker_confirmed?, context?, checked_against, video_id,
- * start_sec, end_sec, source_label, url}, channel_url. Editor notes (cautions, how each quote was
+ * start_sec, end_sec, source_label, url}, channel_url, channel_label? (link text). Editor notes (cautions, how each quote was
  * checked, film item ids) are kept out of this public repo, in the private recursive-transcripts repo.
  *
  * Events dispatched on `el`:

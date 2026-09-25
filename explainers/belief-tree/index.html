@@ -17,6 +17,8 @@
   URL
     ?step=N              open on step N (1..8), its end state
     ?embed=1             the scene only (tree + caption), sized to its frame, dark ground (also when framed)
+    ?nonum=1             no step numeral and no dots: the caption reads "You are here" + the title (without
+                         its "N. ") + the text. For film dividers, which play out of order. ?step=N still works.
     ?focus=<slug>        a lens that lasts across steps: that person's chip is shown and ringed at every
                          step; at step 8 their path lights and their card opens. With no ?step it opens on 8.
     ?autoplay_steps=6,14 move one step on at 6 s and 14 s after load (stops when a parent says 'driven')
@@ -32,6 +34,7 @@
     var q = new URLSearchParams(location.search), framed;
     try { framed = window.self !== window.top; } catch (e) { framed = true; }
     if (q.get('embed') === '1' || framed) document.documentElement.classList.add('embed');
+    if (q.get('nonum') === '1') document.documentElement.classList.add('nonum');
   })();
 </script>
 <style>
@@ -79,6 +82,7 @@
   #tree .bt-svg{--bt-bg-label:var(--lift)}
   .embed #tree .bt-svg{--bt-bg-label:var(--bg)}
 
+  .nonum .dots,.nonum #count{visibility:hidden}
   .dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
   .dot{min-width:30px;height:30px;border-radius:15px;border:1px solid var(--line);background:transparent;color:var(--dim);
     font:600 12px var(--sans);cursor:pointer;padding:0 6px}
@@ -354,6 +358,7 @@ const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
 const framed = (() => { try { return window.self !== window.top; } catch (_) { return true; } })();
 const embed = document.documentElement.classList.contains('embed');
+const nonum = document.documentElement.classList.contains('nonum');
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const treeEl = $('tree');
 
@@ -403,8 +408,8 @@ function draw(animate) {
 
 function renderCaption(animate) {
   const s = STEPS[current - 1];
-  $('cap-k').textContent = current === 8 ? 'After the seven steps' : 'You are here';
-  $('cap-t').textContent = s.t;
+  $('cap-k').textContent = current === 8 && !nonum ? 'After the seven steps' : 'You are here';
+  $('cap-t').textContent = nonum ? s.t.replace(/^\d+\.\s*/, '') : s.t;
   $('cap-b').textContent = s.b;
   const note = $('pnote');
   note.textContent = '';
@@ -566,7 +571,7 @@ function renderCard() {
   d2.appendChild(ul2);
   card.appendChild(d2);
   if (p.channel_url) {
-    const a = h('a', null, 'Their branch channel'); a.href = p.channel_url;
+    const a = h('a', null, p.channel_label || 'Person channel'); a.href = p.channel_url;
     const pp = h('p', 'web-only'); pp.appendChild(a); card.appendChild(pp);
   }
   box.appendChild(card);
