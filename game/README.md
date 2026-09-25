@@ -32,16 +32,18 @@ URL hash, so a link to either opens in the other:
   the forecast and confidence, the reading, the step with its kind and card id, the two forgiveness
   lines, the asymmetry, the synthesis, a timestamp and the consent line. `FORM_URL` near the Step
   code is empty until she makes the form; once set, a **Send it** button opens it.
-- **`potato.html` — Hot Potato (v3, Sep 24; rebuilt from scratch).** "The race to build AI is a hot
-  potato." Four buttons, each doing something you can see: **Hold it** keeps it in your hands and
-  your hands take the heat; **Toss it on** cools your hands at once, but everyone else tosses it on
-  too and it comes back six flames hotter; **Hold it together** asks the five others at the table,
-  each of whom joins by the one line printed under their name, and shares the heat; with enough
-  hands (about 4, sometimes 5, drawn each game and hidden) **Put it down** puts it in the ground.
-  **I don't know** leaves it where it is. Flint builds a flame every move until three of you hold
-  it. The rules are the game's own, small enough to print (`potato-model.js`, checked against
-  `tools/potato_rules_check.py` by `tools/potato_port_check.mjs`). Notes and why v1 was replaced
-  ("Hold it did not hold it"): `DESIGN-potato.md`.
+- **`potato.html` — Hot Potato (v3.1, Sep 25; v3 rebuilt from scratch Sep 24).** "The race to build
+  AI is a hot potato." Four buttons, each doing something you can see: **Hold it** keeps it in your
+  hands, your hands take the heat, and Wren sees you hold it; **Hold it together** asks the five
+  others at the table, each of whom says yes by the line under their name (Wren only once she has
+  seen you hold it a while, 1 to 4 moves, hidden; asking isn't holding), and shares the heat;
+  **Toss it on** cools your hands at once, but it goes round the table and comes back six flames
+  hotter, and Wren forgets what she saw; **I don't know** waits, so your hands rest a step while
+  Flint keeps building. With enough hands (4 or 5, hidden) **Put it down** puts it in the ground.
+  The rules are the game's own, small enough to print (`potato-model.js`, checked against
+  `tools/potato_rules_check.py` by `tools/potato_port_check.mjs`; `tools/potato_solve.mjs` checks
+  that no single button wins). Notes, why v1 was replaced ("Hold it did not hold it") and what
+  playtest round 1 changed: `DESIGN-potato.md`.
 - **`potato-others.html`** only redirects to `potato.html`, so old links still work. **`potato-v1/`**
   keeps the first version (with others, and alone, on the Walk's model) and its notes.
 - **`lines.html` — Changing Lines (prototype, Sep 22).** A second game for the same lesson, built on
