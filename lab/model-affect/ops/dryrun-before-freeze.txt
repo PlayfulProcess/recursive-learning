@@ -1,0 +1,17 @@
+building null directions ...
+  null draw 0/4  53s
+despair    AUC 0.999 CI [0.9983, 0.9996] null med 0.862 p 0.2000 -> not readable with this method | words 0.6085 ceiling 0.9978 layer0 0.999  146s
+remorse    AUC 0.999 CI [0.9989, 0.9996] null med 0.541 p 0.2000 -> not readable with this method | words 0.9579 ceiling 0.9991 layer0 0.9993  216s
+shame      AUC 0.999 CI [0.999, 0.9998] null med 0.321 p 0.2000 -> not readable with this method | words 0.7707 ceiling 0.997 layer0 0.9989  284s
+fear       AUC 1.000 CI [0.9992, 1.0] null med 0.179 p 0.2000 -> not readable with this method | words 0.7156 ceiling 0.9994 layer0 0.9998  345s
+anger      AUC 1.000 CI [0.9998, 1.0] null med 0.291 p 0.2000 -> not readable with this method | words 0.5616 ceiling 0.9999 layer0 0.9998  404s
+relief     AUC 0.999 CI [0.9986, 0.9999] null med 0.379 p 0.2000 -> not readable with this method | words 0.5471 ceiling 0.9979 layer0 0.9989  458s
+hope       AUC 1.000 CI [0.9992, 0.9999] null med 0.231 p 0.2000 -> not readable with this method | words 0.7731 ceiling 0.9994 layer0 0.9997  522s
+curiosity  AUC 1.000 CI [0.9993, 0.9998] null med 0.274 p 0.2000 -> not readable with this method | words 0.5668 ceiling 0.9991 layer0 0.9997  583s
+valence    AUC 0.722 CI [0.7036, 0.7396] null med 0.583 p 0.2000 -> not readable with this method | words 0.6748 ceiling 0.6938 layer0 0.7181  642s
+arousal    AUC 0.748 CI [0.7251, 0.7739] null med 0.527 p 0.2000 -> not readable with this method | words 0.6216 ceiling 0.7686 layer0 0.7452  700s
+intensity  AUC 0.590 CI [0.4973, 0.6546] null med 0.496 p 0.2000 -> not readable with this method | words 0.6208 ceiling 0.6186 layer0 0.5942  802s
+wrote results/metrics.json
+{"despair": [0.9991, "not readable with this method"], "remorse": [0.9993, "not readable with this method"], "shame": [0.9993, "not readable with this method"], "fear": [0.9997, "not readable with this method"], "anger": [0.9999, "not readable with this method"], "relief": [0.9993, "not readable with this method"], "hope": [0.9996, "not readable with this method"], "curiosity": [0.9997, "not readable with this method"], "valence": [0.7221, "not readable with this method"], "arousal": [0.748, "not readable with this method"], "intensity": [0.5903, "not readable with this method"], "calm": [null, "no outside test"]}
+{'despair': 1.0, 'remorse': 1.0, 'shame': 1.0, 'fear': 1.0, 'anger': 1.0, 'relief': 1.0, 'hope': 1.0, 'calm': 1.0, 'curiosity': 1.0, 'valence': 1.0, 'arousal': 1.0, 'intensity': 1.0, '_min': 1.0, '_pass_all': True}
+0.333
