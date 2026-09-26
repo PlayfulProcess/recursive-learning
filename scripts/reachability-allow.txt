@@ -10,3 +10,5 @@ game/potato.html            no-header    owned by the Hot Potato PR (PRIORITIES 
 game/potato-others.html     no-header    owned by the Hot Potato PR (PRIORITIES #26-28)
 explainers/curves-and-odds/index.html  unreachable  self-contained noindex embed for films (?embed=1&step=N); reached by direct embed URL, not site nav
 explainers/curves-and-odds/index.html  no-header    embed-only explainer page; no site chrome by design (see its own step-API header comment)
+explainers/belief-tree/index.html      unreachable  embed for HOT POTATO and each person's branch film (?embed=1&step=N&focus=); reached by direct embed URL, not site nav (Film chat's page; step contract owned by tree-render.js)
+explainers/belief-tree/index.html      no-header    embed-only explainer page; no site chrome by design (see its own step-contract header comment)
