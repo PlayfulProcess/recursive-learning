@@ -50,7 +50,8 @@ function readColours() {
   for (let i = 0; i < 6; i++) C['s' + i] = g('--s' + i);
 }
 const slotColour = s => (s == null ? C.other : C['s' + s]);
-const personColour = pi => slotColour(IX.people[pi].colour);
+// pi < 0: no guest identified for the episode (most of corpus-expansion's shows) -- colours like "Other"
+const personColour = pi => pi < 0 ? C.other : slotColour(IX.people[pi].colour);
 
 // ------------------------------------------------------------------ load
 async function boot() {
@@ -70,7 +71,7 @@ async function boot() {
   const laneIdx = Object.fromEntries(IX.lanes.map((l, i) => [l.id, i]));
   for (let i = 0; i < N; i++) {
     X[i] = P.x[i] / 10000; Y[i] = P.y[i] / 10000; EP[i] = P.ep[i];
-    PERSON[i] = IX.episodes[P.ep[i]].people[0];
+    PERSON[i] = IX.episodes[P.ep[i]].people[0] ?? -1;
     // colour lane: the lane holding most of the passage's idea words (ties: the first found)
     const cnt = new Map();
     for (const ii of P.ideas[i]) { const l = laneIdx[IX.ideas[ii].lane]; if (l == null) continue; cnt.set(l, (cnt.get(l) || 0) + 1); LANESETS[i] |= 1 << l; }
@@ -155,7 +156,7 @@ function passes(i) {
   if (f.type === 'lane') return (LANESETS[i] >> f.i) & 1;                     // any idea word of the lane
   if (f.type === 'untagged') return LANE[i] < 0;
   if (f.type === 'otherlane') return IX.lanes.some((l, li) => l.colour == null && ((LANESETS[i] >> li) & 1));
-  if (f.type === 'otherperson') return IX.people[PERSON[i]].colour == null;
+  if (f.type === 'otherperson') return PERSON[i] < 0 || IX.people[PERSON[i]].colour == null;
   return true;
 }
 function colourOf(i) {
@@ -459,8 +460,15 @@ function setFocus(i, scroll) {
 // ------------------------------------------------------------------ result rows
 function episodeWith(e) { return listNames(e.people.map(pi => IX.people[pi].name)); }
 const hostsOf = e => e.hosts || IX.shows[e.show]?.hosts || [];
-// "Ezra Klein with Jensen Huang": the host is named too, since a passage mixes host and guest
-function withLine(e) { const h = hostsOf(e); return h.length ? `${listNames(h)} with ${episodeWith(e)}` : `the episode with ${episodeWith(e)}`; }
+// "Ezra Klein with Jensen Huang": the host is named too, since a passage mixes host and guest.
+// Most corpus-expansion episodes carry no guest name at all, so fall back to the host(s) alone, or
+// "the episode" when neither is known.
+function withLine(e) {
+  const h = hostsOf(e), w = episodeWith(e);
+  if (h.length && w) return `${listNames(h)} with ${w}`;
+  if (h.length) return listNames(h);
+  return w ? `the episode with ${w}` : 'the episode';
+}
 const cap1 = t => t.charAt(0).toUpperCase() + t.slice(1);
 const listOr = a => a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' or ' + a[a.length - 1];
 // the time a row shows: the quote's start when it has one, else the passage's
@@ -621,7 +629,7 @@ async function loadModel() {
   const status = $('#status'), prog = {};
   status.textContent = 'Downloading the model…';
   try {
-    search = await import('./search.js?v=6');
+    search = await import('./search.js?v=7');
     await search.load(p => {
       if (p.status === 'progress' && p.total) {
         prog[p.file] = [p.loaded, p.total];
@@ -852,8 +860,11 @@ function buildSources() {
     const tr = el('tr'); tr.innerHTML = `<td colspan="6">Not included: <a href="${ytUrl(x.vid, 0)}" target="_blank" rel="noopener">${esc(x.vid)}</a> (${esc(x.why)})</td>`; tb.append(tr);
   }
   const where = [...hosts].map(h => h === 'site' ? "the show's own site" : h);
-  const nyt = IX.episodes.some(e => IX.shows[e.show]?.nyt);
-  $('#sourceslead').textContent = `Every episode on the map (${IX.episodes.length}), linked to where it is published (${listNames(where)}) and to its video, with the kind of captions it came from.` + (nyt ? ' The Ezra Klein Show is a New York Times show, so its quotes stop at 15 words.' : '');
+  const nytNames = [...new Set(IX.episodes.map(e => IX.shows[e.show]).filter(s => s?.nyt).map(s => s.name))];
+  const nytLine = nytNames.length
+    ? ` ${listNames(nytNames)} ${nytNames.length > 1 ? 'are' : 'is a'} New York Times show${nytNames.length > 1 ? 's' : ''}, so ${nytNames.length > 1 ? 'their' : 'its'} quotes stop at 15 words.`
+    : '';
+  $('#sourceslead').textContent = `Every episode on the map (${IX.episodes.length}), linked to where it is published (${listNames(where)}) and to its video, with the kind of captions it came from.` + nytLine;
 }
 
 // ------------------------------------------------------------------ hash
