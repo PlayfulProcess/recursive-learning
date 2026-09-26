@@ -1,5 +1,15 @@
 # Model affect: results
 
+**The honest result, plainly.** At this size, with this method, we could not read despair, guilt or relief.
+What we could read is coarser and follows the words. Of the 11 pre-registered tests, 5 passed on held-out
+GoEmotions comments the stories never touched: the pleasant-unpleasant axis (0.82), anger (0.80), curiosity
+(0.83), fear (0.76) and shame through its stand-in label "embarrassment" (0.71). Despair (0.67), guilt / remorse
+(0.62) and relief (0.69) did not clear the pre-registered bar against the shuffled-story control (median 0.50,
+middle 95 in 100 about 0.33-0.68); neither did hope (0.69), the energy axis (0.64) or strength (0.58 pleasant /
+0.66 unpleasant). This is a statement about what one small model does not show at this size, with this
+method — it is not a claim that the model feels anything, and not a claim that it doesn't. That question stays
+open.
+
 Numbers from `results/*.json`, written by `write_results.py` after the run. Every test below was fixed in `PREREGISTRATION.md` before any model reading was taken (one line of its disclosure was wrong; see Deviations). The section "After the run" was added later and is marked as not pre-registered.
 
 **Pre-registration proof.** Commit `eaa80eb92c22357c5a960166ec883442033c8827`; GitHub push event at 2026-09-25T08:07:56Z (server time, from the activity API); pull request https://github.com/PlayfulProcess/recursive-learning/pull/7 created 2026-09-25T08:09:19Z.
