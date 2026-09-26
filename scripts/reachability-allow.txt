@@ -8,3 +8,5 @@ pages/spread-builder.html   redirect     old Spread Builder address, forwards to
 game/index.html             no-header    the first As-If; owned by the Hot Potato PR (PRIORITIES #26-28), which relights it
 game/potato.html            no-header    owned by the Hot Potato PR (PRIORITIES #26-28)
 game/potato-others.html     no-header    owned by the Hot Potato PR (PRIORITIES #26-28)
+explainers/curves-and-odds/index.html  unreachable  self-contained noindex embed for films (?embed=1&step=N); reached by direct embed URL, not site nav
+explainers/curves-and-odds/index.html  no-header    embed-only explainer page; no site chrome by design (see its own step-API header comment)
