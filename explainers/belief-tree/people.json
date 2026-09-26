@@ -254,7 +254,139 @@
    }
   ],
   "channel_url": "https://recursive.eco/view/24603558-3231-4101-9520-84aba6303659?kiosk",
-  "channel_label": "Person grammar (private for now)"
+  "channel_label": "Person grammar (private for now)",
+  "disputed": true,
+  "lab_reading": {
+   "stated_leaf": "proceed",
+   "placed_by": "answers",
+   "scope": "",
+   "confidence": "medium",
+   "gate": {
+    "answer": "no",
+    "basis": "Resists new regulation or slowing down for 'hypothetical problems' and asks for evidence-based claims, though he requires release-time evaluation.",
+    "quote_ids": [
+     "dc69d965-91b4-4fea-bbc6-2a4ec327701f",
+     "8fc337e0-86f7-44a1-91a6-5b47c582b137",
+     "26a44602-609b-4d53-9601-90eee859d2fd"
+    ]
+   },
+   "alignment": {
+    "answer": "yes",
+    "basis": "Read here as his 'yes/yes' bet: a long-term problem he expects labs to work out, paired with his stated confidence to proceed.",
+    "quote_ids": [
+     "67c51239-a1c0-4512-bdd3-ff30a17934d5"
+    ]
+   },
+   "containment": {
+    "answer": "yes",
+    "basis": "'I believe those two things are solvable problems. I believe they are solving it.'",
+    "quote_ids": [
+     "0020a603-6d05-4c3f-8487-ba8ac6e2c69d",
+     "252fd0e8-de9f-45dc-a1dd-414e7837ffe4",
+     "5c2816c6-e672-403a-a805-be08b89551fb"
+    ]
+   },
+   "to_move": [
+    {
+     "to": "contain",
+     "would_have_to_believe": "That release testing cannot certify 'in control' when models behave differently when watched; and that alignment may not be solved on the timescale that matters, so models must stay caged and untrusted indefinitely rather than for a phase. (He already grants that alignment is slow.)"
+    },
+    {
+     "to": "regulate",
+     "would_have_to_believe": "That containment at the lab level will stay leaky, so binding rules on uses have to carry the load. He already backs sector rules on uses (NHTSA, third-party auditors, dialogue on what not to use AI for), so the crux is only the leaky cage."
+    },
+    {
+     "to": "shutdown",
+     "would_have_to_believe": "His own stated condition: that the labs say 'there is no way to contain our experiments'. Extending it to the evidence showing this without the labs saying so is the lab's extension, not his."
+    },
+    {
+     "to": "gate",
+     "would_have_to_believe": "That the next step is untestable (for example, that test-awareness makes pre-release evaluation unreliable) and irreversible (his car-safety analogy assumes mistakes are survivable), so the burden of proof should flip before there is evidence of harm. Setting this against his call for evidence-based claims is the lab's link: that line was about Hinton's forecast."
+    }
+   ],
+   "quotes": [
+    {
+     "id": "dc69d965-91b4-4fea-bbc6-2a4ec327701f",
+     "text": "when you make a premise that is so extreme, everything goes from zero or infinity, we end up scaring people in a way that's just not true. Life is not like that.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Jensen Huang, Apr 15 2026",
+     "video_id": "Hrbq66XqtCo",
+     "start_sec": 5369.1,
+     "end_sec": 5399.8,
+     "url": "https://www.youtube.com/watch?v=Hrbq66XqtCo&t=5369s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "8fc337e0-86f7-44a1-91a6-5b47c582b137",
+     "text": "if they believe they're out of control, then the right answer is don't ship products until they're in control. It is really quite that simple.",
+     "verbatim": true,
+     "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+     "video_id": "HjurAWAr_nY",
+     "start_sec": 3031.0,
+     "end_sec": 3050.1,
+     "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=3031s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "26a44602-609b-4d53-9601-90eee859d2fd",
+     "text": "before we go fix the hypothetical problems, before we go create more regulations, can we work on the practical problems that we know exist",
+     "verbatim": true,
+     "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+     "video_id": "HjurAWAr_nY",
+     "start_sec": 3220.2,
+     "end_sec": 3237.3,
+     "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=3220s",
+     "checked_against": "captions",
+     "speaker_confirmed": false
+    },
+    {
+     "id": "67c51239-a1c0-4512-bdd3-ff30a17934d5",
+     "text": "The obvious algorithm is to just go find the answer and give it to me. That's not because it's cheating. It's because it's obvious.",
+     "verbatim": true,
+     "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+     "video_id": "HjurAWAr_nY",
+     "start_sec": 2045.5,
+     "end_sec": 2058.7,
+     "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=2045s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "0020a603-6d05-4c3f-8487-ba8ac6e2c69d",
+     "text": "Agentic systems can access sensitive information, it can execute code, and it can communicate externally. We could keep things safe if we gave you two out of those three capabilities at any time, but not all three.",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Jensen Huang, Mar 23 2026",
+     "video_id": "vif8NQcjVf0",
+     "start_sec": 2223.6,
+     "end_sec": 2240.1,
+     "url": "https://www.youtube.com/watch?v=vif8NQcjVf0&t=2223s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "252fd0e8-de9f-45dc-a1dd-414e7837ffe4",
+     "text": "The idea that you're going to have an AI agent running around with nobody watching after it is kind of insane.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Jensen Huang, Apr 15 2026",
+     "video_id": "Hrbq66XqtCo",
+     "start_sec": 3706.6,
+     "end_sec": 3716.8,
+     "url": "https://www.youtube.com/watch?v=Hrbq66XqtCo&t=3706s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "5c2816c6-e672-403a-a805-be08b89551fb",
+     "text": "If the isolation and containment was good enough, that technology be sitting in a lab doing whatever it's doing and we'd all be fine.",
+     "verbatim": true,
+     "source_label": "The Ezra Klein Show, Jensen Huang, Sep 23 2026",
+     "video_id": "HjurAWAr_nY",
+     "start_sec": 2734.7,
+     "end_sec": 2746.6,
+     "url": "https://www.youtube.com/watch?v=HjurAWAr_nY&t=2734s",
+     "checked_against": "captions"
+    }
+   ],
+   "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=jensen-huang",
+   "channel_label": "Person grammar (private for now)"
+  }
  },
  {
   "slug": "amodei",
@@ -466,7 +598,162 @@
     "checked_against": "secondary source"
    }
   ],
-  "channel_url": null
+  "channel_url": null,
+  "disputed": true,
+  "lab_reading": {
+   "stated_leaf": "regulate",
+   "placed_by": "answers",
+   "scope": "Leaning proceed (as of Aug 2023 to Feb 2026, these four interviews only; may be outdated)",
+   "confidence": "low to medium",
+   "gate": {
+    "answer": "no",
+    "basis": "Half-accepts the premise but mostly does not flip the burden: obligations switch on 'when you can show that the model is dangerous.'",
+    "quote_ids": [
+     "ee9ee36a-d54f-4144-ae3a-fd4d36959606",
+     "e192ebcb-9af2-4cfb-a986-42d41bb9c4b1",
+     "6a101769-edb1-4c5f-ac62-ab8629cfeac7"
+    ]
+   },
+   "alignment": {
+    "answer": "yes",
+    "basis": "'Yes, with work' for powerful models: 'I don't think this is an unsolvable problem.'",
+    "quote_ids": [
+     "a9b61e0e-bf00-4913-a8aa-f20a56d8581f",
+     "f80957f7-193b-4528-b0c1-ad49e5586afb",
+     "dc0032fe-676a-452d-9184-fd8a5a537610"
+    ]
+   },
+   "containment": {
+    "answer": "no",
+    "basis": "'We have basically no ability to stop it'; containing bad models is 'much worse' than having good models.",
+    "quote_ids": [
+     "f4684277-5de6-4761-98c2-866d3432bce5",
+     "78f35e69-358a-40e7-9030-ebd740177f59",
+     "853fcaf3-d2df-4f0d-a566-0938fff078d8"
+    ]
+   },
+   "to_move": [
+    {
+     "to": "proceed",
+     "would_have_to_believe": "That checks inside the model (interpretability) can verify alignment at the level of powerful models, and that misuse limits can be built into the model itself (a mostly corrigible model still needs them), so that outside rules on use add little. Containment is not the crux here: he already prefers good models to boxes. His Lex closing speaks in these terms, conditional on defusing the 'landmines'."
+    },
+    {
+     "to": "contain",
+     "would_have_to_believe": "That alignment cannot be verified in time, so models must stay untrusted, and that a box can hold anyway; he doubts the second, saying a sandbox at the next level would need to be mathematically provable (Lex 1:18:50)."
+    },
+    {
+     "to": "shutdown",
+     "would_have_to_believe": "What he named in 2023 as a sign that alignment is very difficult: interpretability showing that 'problems tend to get moved around instead of being stamped out' (Dwarkesh 2023 1:22:06), or seeing it 'inside the X-ray' (1:22:49). He did not tie this to stopping; that link is the lab's inference, since he was never asked. In 2024 he already reports a behavioural version ('if you fix one thing it creates other problems', Lex 0:58:20) and still calls the problem tractable, so the sign would have to be seen inside the model and persist. A stop would also have to be shared across labs and countries, since he says one lab stopping would leave others building and doubts a ten-year stop would hold."
+    },
+    {
+     "to": "gate",
+     "would_have_to_believe": "That dangerous capability cannot be shown safely or extrapolated from weaker models, so the burden should sit on showing safety before scaling. He half-grants this: the one-shot remark (Dwarkesh 2023 1:26:14), and in 2024 a pause trigger tied to 'the absence of the ability to show safety' (Ezra 0:49:43). The second is dated: per LEDGER.md, RSP v3.0 removed the pause commitment on Feb 24 2026."
+    }
+   ],
+   "quotes": [
+    {
+     "id": "ee9ee36a-d54f-4144-ae3a-fd4d36959606",
+     "text": "That may lead to unilateral or multilateral or government enforced decisions not to scale as fast as we could, which we support. That may end up being the right thing to do.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Dario Amodei, Aug 8 2023",
+     "video_id": "Nlkk3glap_U",
+     "start_sec": 3780.1,
+     "end_sec": 3795.0,
+     "url": "https://www.youtube.com/watch?v=Nlkk3glap_U&t=3780s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "e192ebcb-9af2-4cfb-a986-42d41bb9c4b1",
+     "text": "if we make a truly powerful model and we're trying to see what makes it dangerous or safe, then there could be more of a one shot thing where there's some risk that the model takes over.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Dario Amodei, Aug 8 2023",
+     "video_id": "Nlkk3glap_U",
+     "start_sec": 5168.8,
+     "end_sec": 5183.5,
+     "url": "https://www.youtube.com/watch?v=Nlkk3glap_U&t=5168s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "6a101769-edb1-4c5f-ac62-ab8629cfeac7",
+     "text": "our RSP is to prepare to make that case if the dangers are real if they're not real then we can just proceed",
+     "verbatim": true,
+     "source_label": "The Ezra Klein Show, Dario Amodei, Apr 12 2024",
+     "video_id": "Gi_t3v53XRU",
+     "start_sec": 3102.6,
+     "end_sec": 3115.2,
+     "url": "https://www.youtube.com/watch?v=Gi_t3v53XRU&t=3102s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "a9b61e0e-bf00-4913-a8aa-f20a56d8581f",
+     "text": "the underlying knowledge and abilities that we might be worried about don't disappear. The model is just taught not to output them. I don't know if that's a fatal flaw or if that's just the way things have to be.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Dario Amodei, Aug 8 2023",
+     "video_id": "Nlkk3glap_U",
+     "start_sec": 2885.1,
+     "end_sec": 2901.2,
+     "url": "https://www.youtube.com/watch?v=Nlkk3glap_U&t=2885s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "f80957f7-193b-4528-b0c1-ad49e5586afb",
+     "text": "I think all of those have enough likelihood that they should be considered seriously. The question I'm much more interested in is, what could we learn that shifts probability mass between them?",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Dario Amodei, Aug 8 2023",
+     "video_id": "Nlkk3glap_U",
+     "start_sec": 4890.5,
+     "end_sec": 4905.2,
+     "url": "https://www.youtube.com/watch?v=Nlkk3glap_U&t=4890s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "dc0032fe-676a-452d-9184-fd8a5a537610",
+     "text": "sometimes there are ... specific statistical indicators inside the model not necessarily in its external responses that can tell you when the model is lying",
+     "verbatim": true,
+     "source_label": "The Ezra Klein Show, Dario Amodei, Apr 12 2024",
+     "video_id": "Gi_t3v53XRU",
+     "start_sec": 2260.4,
+     "end_sec": 2276.9,
+     "url": "https://www.youtube.com/watch?v=Gi_t3v53XRU&t=2260s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "f4684277-5de6-4761-98c2-866d3432bce5",
+     "text": "There will be powerful models. They will be agentic. We're getting towards them. If such a model wanted to wreak havoc and destroy humanity or whatever, we have basically no ability to stop it.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Dario Amodei, Aug 8 2023",
+     "video_id": "Nlkk3glap_U",
+     "start_sec": 4551.5,
+     "end_sec": 4569.1,
+     "url": "https://www.youtube.com/watch?v=Nlkk3glap_U&t=4551s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "78f35e69-358a-40e7-9030-ebd740177f59",
+     "text": "the autonomy side it's various measures of like these models are pretty close to being able to you know replicate and survive in the wild",
+     "verbatim": true,
+     "source_label": "The Ezra Klein Show, Dario Amodei, Apr 12 2024",
+     "video_id": "Gi_t3v53XRU",
+     "start_sec": 3650.1,
+     "end_sec": 3661.1,
+     "url": "https://www.youtube.com/watch?v=Gi_t3v53XRU&t=3650s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "853fcaf3-d2df-4f0d-a566-0938fff078d8",
+     "text": "containing uh containing bad models is is is much worse solution than having good models",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Dario Amodei, Nov 11 2024",
+     "video_id": "ugvHCXCOmm4",
+     "start_sec": 4769.2,
+     "end_sec": 4777.6,
+     "url": "https://www.youtube.com/watch?v=ugvHCXCOmm4&t=4769s",
+     "checked_against": "captions"
+    }
+   ],
+   "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=dario-amodei",
+   "channel_label": "Person grammar (private for now)"
+  }
  },
  {
   "slug": "altman",
@@ -648,7 +935,126 @@
     "checked_against": "captions"
    }
   ],
-  "channel_url": null
+  "channel_url": null,
+  "disputed": true,
+  "lab_reading": {
+   "stated_leaf": "proceed",
+   "placed_by": "ask",
+   "scope": "Leaning regulate use (as of Mar 2023 to Mar 2024, these two interviews only; may be outdated)",
+   "confidence": "low to medium",
+   "gate": {
+    "answer": "conditional",
+    "basis": "Argues for limiting 'one-shot' scenarios rather than accepting or rejecting the gate's premise outright.",
+    "quote_ids": [
+     "af532f08-18c6-4254-8fbc-b3f508b54eba",
+     "b6614449-2abd-4288-a1c7-1b0d94435596",
+     "9af1acd8-4b44-4616-abd8-0f37978d7bed"
+    ]
+   },
+   "alignment": {
+    "answer": "conditional",
+    "basis": "'Not yet discovered a way to align a super-powerful system,' but expects iteration and new tools to close the gap.",
+    "quote_ids": [
+     "2ceb0ce4-a403-4833-b39c-b9ec5b614aec",
+     "1c45ff8f-8a91-425d-8ef0-b01750c921d3"
+    ]
+   },
+   "containment": {
+    "answer": "not-addressed",
+    "basis": "Never asked; calls box-escape a 'theatrical risk' without saying whether a capable system could be caged.",
+    "quote_ids": [
+     "50d55e4a-3d8e-4d1f-940b-2530e2b93dc3"
+    ]
+   },
+   "to_move": [
+    {
+     "to": "gate",
+     "would_have_to_believe": "That some step cannot be made small, observable or reversible, so iteration cannot limit the one-shot moments enough. His word 'limiting' already allows that some remain. Cruxes the lab sees, none of them put to him: whether the size of each jump is set by release packaging, as he frames it, or by training runs; whether step-by-step release still limits one-shot moments once comparable open weights circulate; whether a lab's arms-race pressure, or a fast takeoff, removes the small steps his method needs; and whether tests on weaker systems stop revealing problems (for example, models that behave differently when tested)."
+    },
+    {
+     "to": "regulate",
+     "would_have_to_believe": "He is already partly there: he asks governments for 'rules of the road' and calls capable open models with 'very few to none' safety controls 'a certainty'. To move fully he would need to believe that the leak he calls a certainty for 2023-level open models also holds for far more capable systems, so that rules on use carry the main safety load rather than complementing the lab's own release pacing."
+    },
+    {
+     "to": "contain",
+     "would_have_to_believe": "That alignment will not be solved in time by iterating on weaker systems, so capable models must be treated as untrusted and kept caged rather than released; that caging holds; and that public release is not needed to find problems. He already says he does not think 'we have yet discovered a way' to align a super powerful system; he would need to drop the expectation that iteration and new tools will close the gap, and his reason for releasing publicly, that 'the collective intelligence and creativity of the world will beat open Ai' and the red teamers it can hire (2023, 1:47:01)."
+    },
+    {
+     "to": "shutdown",
+     "would_have_to_believe": "That both fail (no alignment method in time, and no way to keep capable models contained against open release and theft), that the 'some chance' of catastrophe is too large to accept, and that a stop can be made to bind others (in 2023 he says 'we can't control what other people are going to do', 1:15:39). Nothing in these two interviews points there, and he was not asked what would make him stop."
+    }
+   ],
+   "quotes": [
+    {
+     "id": "af532f08-18c6-4254-8fbc-b3f508b54eba",
+     "text": "the only way I know how to solve a problem like this is iterating our way through it learning early and limiting the number of one shot to get it right scenarios that we have",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Sam Altman, Mar 25 2023",
+     "video_id": "L_Guz73e6fw",
+     "start_sec": 3347.6,
+     "end_sec": 3365.6,
+     "url": "https://www.youtube.com/watch?v=L_Guz73e6fw&t=3347s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "b6614449-2abd-4288-a1c7-1b0d94435596",
+     "text": "slow take off short timelines is the most likely good world and we optimize the company to have Maximum Impact in that world to try to push for that kind of a world",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Sam Altman, Mar 25 2023",
+     "video_id": "L_Guz73e6fw",
+     "start_sec": 3642.7,
+     "end_sec": 3657.8,
+     "url": "https://www.youtube.com/watch?v=L_Guz73e6fw&t=3642s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "9af1acd8-4b44-4616-abd8-0f37978d7bed",
+     "text": "we can absolutely take a model back off the internet we can like take we can turn an API off",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Sam Altman, Mar 25 2023",
+     "video_id": "L_Guz73e6fw",
+     "start_sec": 6391.9,
+     "end_sec": 6402.1,
+     "url": "https://www.youtube.com/watch?v=L_Guz73e6fw&t=6391s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "2ceb0ce4-a403-4833-b39c-b9ec5b614aec",
+     "text": "I want to be very clear I do not think we have yet discovered a way to align a super powerful system we have we have something that works for our current skill called our lhf",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Sam Altman, Mar 25 2023",
+     "video_id": "L_Guz73e6fw",
+     "start_sec": 1477.4,
+     "end_sec": 1493.0,
+     "url": "https://www.youtube.com/watch?v=L_Guz73e6fw&t=1477s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "1c45ff8f-8a91-425d-8ef0-b01750c921d3",
+     "text": "That is not my top worry as I currently see things. There have been times I worried about that more. There may be times again in the future where that's my top worry.",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Sam Altman, Mar 18 2024",
+     "video_id": "jvqFAi7vkBc",
+     "start_sec": 6104.9,
+     "end_sec": 6112.5,
+     "url": "https://www.youtube.com/watch?v=jvqFAi7vkBc&t=6104s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "50d55e4a-3d8e-4d1f-940b-2530e2b93dc3",
+     "text": "But I think it pushed aside, it pushed out of the space of discourse a lot of the other very significant AI-related risks.",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Sam Altman, Mar 18 2024",
+     "video_id": "jvqFAi7vkBc",
+     "start_sec": 6170.9,
+     "end_sec": 6179.8,
+     "url": "https://www.youtube.com/watch?v=jvqFAi7vkBc&t=6170s",
+     "checked_against": "captions"
+    }
+   ],
+   "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=sam-altman",
+   "channel_label": "Person grammar (private for now)"
+  }
  },
  {
   "slug": "sutskever",
@@ -826,7 +1232,162 @@
     "checked_against": "captions"
    }
   ],
-  "channel_url": null
+  "channel_url": null,
+  "disputed": true,
+  "lab_reading": {
+   "stated_leaf": "proceed",
+   "placed_by": "ask",
+   "scope": "(conditional: an alignment-only bet), with pulls toward regulate use; the lab's inference",
+   "confidence": "low",
+   "gate": {
+    "answer": "conditional",
+    "basis": "Accepts a sliding bar of confidence with capability, but treats the difficulty of imagining future AI as a reason to show it, not to flip the burden of proof.",
+    "quote_ids": [
+     "21681942-a296-46d8-949a-523571624db2",
+     "348ff6c1-fe45-493b-918f-2dfa2d2ede34",
+     "50b7291a-6228-4934-be44-bb26bbdcd45e"
+    ]
+   },
+   "alignment": {
+    "answer": "conditional",
+    "basis": "A conditional yes: 'if this is achieved... I can see it go well,' while generalization questions are 'right now still unanswerable.'",
+    "quote_ids": [
+     "bac16e40-e2ca-4149-8003-b423b6a1d179",
+     "a6c7416d-4fbe-4bcc-b61b-1f24e558f5d9",
+     "09d94983-7668-451a-878d-f45a162aa2a9"
+    ]
+   },
+   "containment": {
+    "answer": "conditional",
+    "basis": "Wants a cap and possibly an agreement among powerful AIs, but of how to do it: 'I'm not sure.'",
+    "quote_ids": [
+     "4db5e21e-082e-456b-922e-8fb8a24c4035",
+     "d0e04aa2-7ddc-4e9f-b41f-7aca28150ddf",
+     "0799c05a-8e0e-4c83-b1f6-94e595ec07d3"
+    ]
+   },
+   "to_move": [
+    {
+     "to": "regulate",
+     "would_have_to_believe": "That restraint, agreement or regulation, not alignment, is the main safeguard. His own words lean this way in places: for extremely powerful AIs 'it would be nice if they could be restrained in some ways or if there were some kind of agreement' (about 1:04:46-1:05:11), and deployment pressure holds 'unless there will be some kind of a regulation that stops it, which by the way there might be' (about 0:52:59)."
+    },
+    {
+     "to": "contain",
+     "would_have_to_believe": "That care for sentient life cannot be achieved or checked before the first N systems exist, so they must be treated as untrusted, and that a cap or restraint can still be enforced on them. (A working cap on top of his alignment bet would firm up proceed rather than move him to contain.)"
+    },
+    {
+     "to": "gate",
+     "would_have_to_believe": "That showing AI step by step cannot stay ahead of the danger: a system 'capable of misrepresenting their intentions' could look safe when shown, so the first convincing demonstration could already be a step that cannot be undone. Then proof would be owed before release, not learned from it."
+    },
+    {
+     "to": "shutdown",
+     "would_have_to_believe": "That the condition he names ('This needs to be achieved') cannot be met before the first N powerful systems exist, and that no cap can be enforced, so neither tree question gets a yes. These interviews give no sign that he holds this."
+    }
+   ],
+   "quotes": [
+    {
+     "id": "21681942-a296-46d8-949a-523571624db2",
+     "text": "it seems wise to start thinking about the impact of our systems before releasing them maybe a little bit too soon rather than a little bit too late",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Ilya Sutskever, May 8 2020",
+     "video_id": "13CZPWmke6A",
+     "start_sec": 4218.0,
+     "end_sec": 4231.6,
+     "url": "https://www.youtube.com/watch?v=13CZPWmke6A&t=4218s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "348ff6c1-fe45-493b-918f-2dfa2d2ede34",
+     "text": "Depends on how capable the model is. The more capable the model, the more confident we need to be.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Ilya Sutskever, Mar 27 2023",
+     "video_id": "Yf1o0TQzry8",
+     "start_sec": 974.6,
+     "end_sec": 984.2,
+     "url": "https://www.youtube.com/watch?v=Yf1o0TQzry8&t=974s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "50b7291a-6228-4934-be44-bb26bbdcd45e",
+     "text": "I think it's possible to make some predictions about specific capabilities though it's definitely not simple and you can’t do it in a super fine-grained way, at least today.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Ilya Sutskever, Mar 27 2023",
+     "video_id": "Yf1o0TQzry8",
+     "start_sec": 2092.3,
+     "end_sec": 2102.6,
+     "url": "https://www.youtube.com/watch?v=Yf1o0TQzry8&t=2092s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "bac16e40-e2ca-4149-8003-b423b6a1d179",
+     "text": "it's definitely possible to build ai systems which will want to be controlled by their humans",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Ilya Sutskever, May 8 2020",
+     "video_id": "13CZPWmke6A",
+     "start_sec": 5294.2,
+     "end_sec": 5305.4,
+     "url": "https://www.youtube.com/watch?v=13CZPWmke6A&t=5294s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "a6c7416d-4fbe-4bcc-b61b-1f24e558f5d9",
+     "text": "there are definite ideas of how to train a value function basically an objective you know and as objective as possible perception system that will be trained separately to recognize to internalize human judgments on different situations",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Ilya Sutskever, May 8 2020",
+     "video_id": "13CZPWmke6A",
+     "start_sec": 5492.3,
+     "end_sec": 5514.5,
+     "url": "https://www.youtube.com/watch?v=13CZPWmke6A&t=5492s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "09d94983-7668-451a-878d-f45a162aa2a9",
+     "text": "A mathematical definition is unlikely. Rather than achieving one mathematical definition, I think we will achieve multiple definitions that look at alignment from different aspects. And that this is how we will get the assurance that we want.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Ilya Sutskever, Mar 27 2023",
+     "video_id": "Yf1o0TQzry8",
+     "start_sec": 930.6,
+     "end_sec": 954.4,
+     "url": "https://www.youtube.com/watch?v=Yf1o0TQzry8&t=930s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "4db5e21e-082e-456b-922e-8fb8a24c4035",
+     "text": "the ideal world would like to imagine is one where humanity are like the board the board members of a company where the agi is the ceo",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Ilya Sutskever, May 8 2020",
+     "video_id": "13CZPWmke6A",
+     "start_sec": 5206.6,
+     "end_sec": 5222.4,
+     "url": "https://www.youtube.com/watch?v=13CZPWmke6A&t=5206s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "d0e04aa2-7ddc-4e9f-b41f-7aca28150ddf",
+     "text": "Yeah, you absolutely can't discount that. Something that we try to guard against to the best of our ability, but it's going to be a problem for everyone who's building this.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Ilya Sutskever, Mar 27 2023",
+     "video_id": "Yf1o0TQzry8",
+     "start_sec": 2014.7,
+     "end_sec": 2028.3,
+     "url": "https://www.youtube.com/watch?v=Yf1o0TQzry8&t=2014s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "0799c05a-8e0e-4c83-b1f6-94e595ec07d3",
+     "text": "I think it would be really materially helpful if the power of the most powerful superintelligence was somehow capped because it would address a lot of these concerns.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Ilya Sutskever, Nov 25 2025",
+     "video_id": "aR20FWCCjAs",
+     "start_sec": 3790.2,
+     "end_sec": 3803.7,
+     "url": "https://www.youtube.com/watch?v=aR20FWCCjAs&t=3790s",
+     "checked_against": "captions"
+    }
+   ],
+   "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=ilya-sutskever",
+   "channel_label": "Person grammar (private for now)"
+  }
  },
  {
   "slug": "musk",
@@ -1436,7 +1997,159 @@
     "checked_against": "captions"
    }
   ],
-  "channel_url": null
+  "channel_url": null,
+  "disputed": true,
+  "lab_reading": {
+   "stated_leaf": "contain",
+   "placed_by": "ask",
+   "scope": "",
+   "confidence": "medium",
+   "gate": {
+    "answer": "conditional",
+    "basis": "Takes it seriously for very capable systems: normally we solve problems by empirical iteration, which won't be available at that level.",
+    "quote_ids": [
+     "4d32299a-a0cf-4a42-8934-0b71487123da",
+     "910a6d4b-8c73-49f1-bd89-ea2c5be05780",
+     "bc4dff1d-b0ae-4fa8-8cc3-20d7df4039f9"
+    ]
+   },
+   "alignment": {
+    "answer": "no",
+    "basis": "'Not yet, for much more capable systems'; no approach that would robustly work at higher capability, and 'we don't seem very close.'",
+    "quote_ids": [
+     "154ad2f3-f5a3-4b65-88a9-a391a7a77876",
+     "ff6f5098-e1c2-4c31-b044-1efded2028fc",
+     "07f4975a-e44a-4b7c-bf37-f05bfa80ade9"
+    ]
+   },
+   "containment": {
+    "answer": "conditional",
+    "basis": "'Yes, for a while': control of a somewhat-slowed early automation 'seems very plausible,' but skeptical it holds indefinitely.",
+    "quote_ids": [
+     "7f79f3d6-14d0-4573-9b97-62e3c1ecffc8",
+     "5f69235a-9494-452f-8200-2a7d7003505d",
+     "0bf964e7-cd2c-488b-a87a-79cd219caac5"
+    ]
+   },
+   "to_move": [
+    {
+     "to": "proceed",
+     "would_have_to_believe": "that a method like the one he says would reassure him exists: 'a relatively simple training method... which wasn't overfit' that robustly yields AIs that 'really seem just super aligned' and are not 'constantly reasoning about... whether or not they're in a test' (Sep 2026), and that aligned AIs around human level keep their successors aligned fast enough; or that problems keep showing up early and clearly enough to patch, so the outcome he calls 'a minority but... possible' becomes the likely one."
+    },
+    {
+     "to": "shutdown",
+     "would_have_to_believe": "that control will not hold even for early, slowed automation, or that the jump from expert-level to wildly superhuman AI will come too fast to pause at the line, so the brake has to come before that point."
+    },
+    {
+     "to": "regulate",
+     "would_have_to_believe": "that monitoring, limits on what AIs are used for and other safeguards would keep holding as capability rises (the reverse of his view that such precautions 'will eventually break down'), or that the main danger is what people do with AI rather than AI systems pursuing unintended goals, so rules on uses could carry the load without technical control."
+    }
+   ],
+   "quotes": [
+    {
+     "id": "4d32299a-a0cf-4a42-8934-0b71487123da",
+     "text": "The AIs are doing that. They're sabotaging the alignment experiments. They're sabotaging the alignment results. They're deluding us.",
+     "verbatim": true,
+     "source_label": "80,000 Hours Podcast, Ryan Greenblatt, Jul 8 2025",
+     "video_id": "-CJxwXAFvsw",
+     "start_sec": 1593.6,
+     "end_sec": 1602.0,
+     "url": "https://www.youtube.com/watch?v=-CJxwXAFvsw&t=1593s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "910a6d4b-8c73-49f1-bd89-ea2c5be05780",
+     "text": "a 5% level of risk is crazy and unacceptable, and we don't accept our paint companies having a 5% chance of massive fatalities, takeover",
+     "verbatim": true,
+     "source_label": "80,000 Hours Podcast, Ryan Greenblatt, Jul 8 2025",
+     "video_id": "-CJxwXAFvsw",
+     "start_sec": 3134.9,
+     "end_sec": 3148.2,
+     "url": "https://www.youtube.com/watch?v=-CJxwXAFvsw&t=3134s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "bc4dff1d-b0ae-4fa8-8cc3-20d7df4039f9",
+     "text": "I think a key difficulty with alignment overall is normally we solve problems with empirical iteration. And to the extent that a lot of our alignment failures make our tests deceptive…",
+     "verbatim": true,
+     "source_label": "80,000 Hours Podcast, Ryan Greenblatt, Jul 8 2025",
+     "video_id": "-CJxwXAFvsw",
+     "start_sec": 10072.3,
+     "end_sec": 10083.6,
+     "url": "https://www.youtube.com/watch?v=-CJxwXAFvsw&t=10072s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "154ad2f3-f5a3-4b65-88a9-a391a7a77876",
+     "text": "I should be clear that this is a very low political will plan. I have a menu of plans, and this is like the bottom of the barrel or whatever.",
+     "verbatim": true,
+     "source_label": "80,000 Hours Podcast, Ryan Greenblatt, Jul 8 2025",
+     "video_id": "-CJxwXAFvsw",
+     "start_sec": 2531.4,
+     "end_sec": 2541.8,
+     "url": "https://www.youtube.com/watch?v=-CJxwXAFvsw&t=2531s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "ff6f5098-e1c2-4c31-b044-1efded2028fc",
+     "text": "I think it's pretty likely that at this point these AIs are scheming against you in a pretty coherent way once they get this superhuman.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Ryan Greenblatt, Aug 11 2026",
+     "video_id": "-RXD4bTuFTo",
+     "start_sec": 4289.4,
+     "end_sec": 4297.8,
+     "url": "https://www.youtube.com/watch?v=-RXD4bTuFTo&t=4289s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "07f4975a-e44a-4b7c-bf37-f05bfa80ade9",
+     "text": "I wouldn't be shocked by a world where we get our shit together, and the AIs at the point of fully automating R&D are actually really aligned.",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Ryan Greenblatt, Aug 11 2026",
+     "video_id": "-RXD4bTuFTo",
+     "start_sec": 5400.2,
+     "end_sec": 5409.6,
+     "url": "https://www.youtube.com/watch?v=-RXD4bTuFTo&t=5400s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "7f79f3d6-14d0-4573-9b97-62e3c1ecffc8",
+     "text": "I'm pretty sceptical of being able to maintain a meaningful level of control if all of your AIs are coherently misaligned and we're at this level of capability.",
+     "verbatim": true,
+     "source_label": "80,000 Hours Podcast, Ryan Greenblatt, Jul 8 2025",
+     "video_id": "-CJxwXAFvsw",
+     "start_sec": 1353.3,
+     "end_sec": 1363.0,
+     "url": "https://www.youtube.com/watch?v=-CJxwXAFvsw&t=1353s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "5f69235a-9494-452f-8200-2a7d7003505d",
+     "text": "You might have hoped that all these different checks and balances we could build could prevent that. But if the world is very hard to understand, these checks and balances can break down",
+     "verbatim": true,
+     "source_label": "Dwarkesh Podcast, Ryan Greenblatt, Aug 11 2026",
+     "video_id": "-RXD4bTuFTo",
+     "start_sec": 6883.9,
+     "end_sec": 6892.7,
+     "url": "https://www.youtube.com/watch?v=-RXD4bTuFTo&t=6883s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "0bf964e7-cd2c-488b-a87a-79cd219caac5",
+     "text": "I'm I'm somewhat skeptical that we can indefinitely um ensure that AI systems can't cause problems via um making them unable to do so because these AI systems will be extremely capable.",
+     "verbatim": true,
+     "source_label": "Making Sense, Ryan Greenblatt, Sep 24 2026",
+     "video_id": "wdnVeYx_fOA",
+     "start_sec": 3326.2,
+     "end_sec": 3341.0,
+     "url": "https://www.youtube.com/watch?v=wdnVeYx_fOA&t=3326s",
+     "checked_against": "captions",
+     "speaker_confirmed": false
+    }
+   ],
+   "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=ryan-greenblatt",
+   "channel_label": "Person grammar (private for now)"
+  }
  },
  {
   "slug": "yampolskiy",
@@ -1826,7 +2539,110 @@
     "checked_against": "captions"
    }
   ],
-  "channel_url": null
+  "channel_url": null,
+  "disputed": true,
+  "lab_reading": {
+   "stated_leaf": "shutdown",
+   "placed_by": "answers",
+   "scope": "",
+   "confidence": "medium",
+   "gate": {
+    "answer": "yes",
+    "basis": "The choice has to come before the outcome is visible: 'you either act too early or too late.'",
+    "quote_ids": [
+     "be476f42-dbec-4963-a962-e7d9c9416d62",
+     "f47791d7-ebe3-47e5-bdee-e764679e4afb",
+     "ae07f70d-5d44-4597-9332-7c7e92f5fbf7"
+    ]
+   },
+   "alignment": {
+    "answer": "no",
+    "basis": "'Not now': 'all the AIs that we're currently building are currently uncontrollable'; may be built into generality for general AI.",
+    "quote_ids": [
+     "ba21d559-f26a-4194-b5e1-a28840802696"
+    ]
+   },
+   "containment": {
+    "answer": "no",
+    "basis": "Doesn't treat it as a separate question; his 'uncontrollable' reads as 'not now' here too.",
+    "quote_ids": [
+     "48498c7c-19d4-404b-91e8-c56584b12b5f"
+    ]
+   },
+   "to_move": [
+    {
+     "to": "regulate",
+     "would_have_to_believe": "That testing, disclosure and liability can keep general, autonomous systems safe enough even as they learn to spot tests, which his own report that models are 'now altering their behavior way more' when tested (Making Sense 0:24:08) doubts, and which he himself sizes as 'much smaller relative to the problems' (Making Sense 1:01:57); or that a loss of control could be recovered from, which his 'we might not even have had that option' (DOAC 2:09:54, after the host's aside) doubts."
+    },
+    {
+     "to": "contain",
+     "would_have_to_believe": "That a system much smarter than us could be kept in a sandbox and watched. The reported sandbox escape he cites (Making Sense 0:59:47), still to be checked against its source, and his view that 'we're not on track to know how to control' these systems (Making Sense 0:34:02) point the other way; he does not take up containment as a separate question."
+    },
+    {
+     "to": "proceed",
+     "would_have_to_believe": "That both questions are answered yes. His red lines are 'for getting to a controllable AI' (DOAC 0:42:09), which suggests he would accept general AI once control is shown. The crux includes whether generality and control can coexist at all ('AI is distinct from other technologies because it is uncontrollable. It acts generally', DOAC 0:40:32) and what level of risk would count as 'controllable': a parked Making Sense passage (about 1:10:25; speaker and the Altman attribution unchecked) sets a nuclear reactor's accepted risk of about one in a million per year, via Stuart Russell, against far higher figures attributed to builders. Even then he adds a condition, an 'intelligence dividend' so that people keep their leverage (Making Sense 0:43:47)."
+    }
+   ],
+   "quotes": [
+    {
+     "id": "be476f42-dbec-4963-a962-e7d9c9416d62",
+     "text": "People should feel you do not get to make that choice on behalf of me and my family. We didn't consent to have six people make that decision on behalf of eight billion people.",
+     "verbatim": true,
+     "source_label": "The Diary Of A CEO, Tristan Harris, Nov 27 2025",
+     "video_id": "BFU1OCkhBwo",
+     "start_sec": 1670.8,
+     "end_sec": 1683.8,
+     "url": "https://www.youtube.com/watch?v=BFU1OCkhBwo&t=1670s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "f47791d7-ebe3-47e5-bdee-e764679e4afb",
+     "text": "we have to make a choice to go on a different path before we get to the outcome of this path because with AI it's an exponential. So you either act too early or too late",
+     "verbatim": true,
+     "source_label": "The Diary Of A CEO, Tristan Harris, Nov 27 2025",
+     "video_id": "BFU1OCkhBwo",
+     "start_sec": 6700.6,
+     "end_sec": 6713.8,
+     "url": "https://www.youtube.com/watch?v=BFU1OCkhBwo&t=6700s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "ae07f70d-5d44-4597-9332-7c7e92f5fbf7",
+     "text": "our only options for response if we lose control to something crazy like that. Our only option is going to be shutting down the entire internet or turning off the electricity grid.",
+     "verbatim": true,
+     "source_label": "The Diary Of A CEO, Tristan Harris, Nov 27 2025",
+     "video_id": "BFU1OCkhBwo",
+     "start_sec": 7771.8,
+     "end_sec": 7787.8,
+     "url": "https://www.youtube.com/watch?v=BFU1OCkhBwo&t=7771s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "ba21d559-f26a-4194-b5e1-a28840802696",
+     "text": "The bad news is that the AI models are now situationally aware of when they're being tested and they're now altering their behavior way more.",
+     "verbatim": true,
+     "source_label": "Making Sense, Tristan Harris, Apr 10 2026",
+     "video_id": "90irsXaKxZA",
+     "start_sec": 1443.5,
+     "end_sec": 1455.0,
+     "url": "https://www.youtube.com/watch?v=90irsXaKxZA&t=1443s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "48498c7c-19d4-404b-91e8-c56584b12b5f",
+     "text": "AI that broke out of its sandboxed container, which the recent Claude Mythos uh model just did, and sent an email.",
+     "verbatim": true,
+     "source_label": "Making Sense, Tristan Harris, Apr 10 2026",
+     "video_id": "90irsXaKxZA",
+     "start_sec": 3587.2,
+     "end_sec": 3597.9,
+     "url": "https://www.youtube.com/watch?v=90irsXaKxZA&t=3587s",
+     "checked_against": "captions"
+    }
+   ],
+   "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=tristan-harris",
+   "channel_label": "Person grammar (private for now)"
+  }
  },
  {
   "slug": "harari",
@@ -1987,7 +2803,158 @@
     "checked_against": "captions"
    }
   ],
-  "channel_url": null
+  "channel_url": null,
+  "disputed": true,
+  "lab_reading": {
+   "stated_leaf": "regulate",
+   "placed_by": "ask",
+   "scope": "",
+   "confidence": "medium",
+   "gate": {
+    "answer": "yes",
+    "basis": "Safety tests can show safety only in a narrow sense and cannot test 'how AI plays out in society'; a 'C-minus' this century 'is the end of us.'",
+    "quote_ids": [
+     "a8d7d0a1-52f9-4995-9623-254f207e763e",
+     "d7c2c162-6af1-492e-8cc5-42cf78e8c8e2",
+     "51a0b523-9e8e-4173-a25e-b69a7a6ac172"
+    ]
+   },
+   "alignment": {
+    "answer": "no",
+    "basis": "Leans toward no; by 2026 expects AIs to have goals of their own as they surpass human intelligence.",
+    "quote_ids": [
+     "03cd413f-215b-4207-b08e-8f051bdff462",
+     "c61d4f0a-d485-487b-8cde-0c635dd809e4",
+     "abd54696-a950-4bc7-b6f5-60fa96f2545e"
+    ]
+   },
+   "containment": {
+    "answer": "unknown",
+    "basis": "Says nothing in the tree's sense of caging an untrusted system; his worry is society's gradual loss of power over deployed AI.",
+    "quote_ids": [
+     "3b7ec85f-225e-493b-a19b-385e66a9cd30",
+     "9fc2dca2-fefc-4ead-98a4-4247c0b7470d",
+     "7b44d333-11ac-4d4a-9745-4a57f3abbcd7"
+    ]
+   },
+   "to_move": [
+    {
+     "to": "shutdown",
+     "would_have_to_believe": "That a halt could be verified and enforced between rivals. For weapons he argues the opposite: a treaty 'is almost impossible because how do you enforce it', since a rival may be 'developing this technology in some secret laboratory' (Oct 2024, 0:55:12-0:55:28), while payments to a shared institution are easy to check. If development could be checked like that, his doubts might point toward a verified pause ('give us time') more than toward stopping for good. Stopping would also need him to believe that more time would not let society adapt, which he denies ('I don't think it's impossible for human society to adapt to the new AI reality', DOAC Jan 2024, 0:16:36), and that the risks outweigh the 'enormous positive potential' he affirms (DOAC Jan 2024, 0:15:58)."
+    },
+    {
+     "to": "contain",
+     "would_have_to_believe": "The lab's inference: he never discusses technical containment. He would need to believe that systems which learn and change unpredictably could be watched closely enough to keep them inside set limits. His 'eyes before teeth' institutions are meant to understand developments and inform governments, not to cage models, and he also says 'there is no way to regulate the AI revolution in advance' (Oct 2024, 0:52:13)."
+    },
+    {
+     "to": "proceed",
+     "would_have_to_believe": "That AIs keep to goals that were set well, and that people keep understanding what AI builds, and that his own condition on human development is met: 'if for every dollar and every minute that we spend on developing AI artificial intelligence we spend another dollar and another minute in developing human consciousness the human mind will be okay' (Lex 2:08:13; he repeats the idea in Oct 2024, 1:11:40). That condition is about the human mind keeping pace, not about AI being safe, and the same Lex answer ends on 'a road to a human catastrophe' (2:08:44). By his own paperclip logic he would also need an answer to what AI should optimize, which in 2021 he said he did not have."
+    }
+   ],
+   "quotes": [
+    {
+     "id": "a8d7d0a1-52f9-4995-9623-254f207e763e",
+     "text": "if we now have the same type of failed experiments with the Technologies of the 21st century with AI with bioengineering it could cost the lives of again hundreds of millions of people and maybe destroy the species",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Yuval Noah Harari, Jul 17 2023",
+     "video_id": "Mde2q7GFCrw",
+     "start_sec": 1116.5,
+     "end_sec": 1136.8,
+     "url": "https://www.youtube.com/watch?v=Mde2q7GFCrw&t=1116s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "d7c2c162-6af1-492e-8cc5-42cf78e8c8e2",
+     "text": "therefore it is the first technology in history that instead of giving power to humans it takes power away from us",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Yuval Noah Harari, Jul 17 2023",
+     "video_id": "Mde2q7GFCrw",
+     "start_sec": 7320.6,
+     "end_sec": 7334.3,
+     "url": "https://www.youtube.com/watch?v=Mde2q7GFCrw&t=7320s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "51a0b523-9e8e-4173-a25e-b69a7a6ac172",
+     "text": "if we now find ourselves inside this kind of world of illusions created by an alien intelligence that we don't understand but it understands us this is a kind of you know spiritual enslavement",
+     "verbatim": true,
+     "source_label": "Lex Fridman Podcast, Yuval Noah Harari, Jul 17 2023",
+     "video_id": "Mde2q7GFCrw",
+     "start_sec": 7512.1,
+     "end_sec": 7534.0,
+     "url": "https://www.youtube.com/watch?v=Mde2q7GFCrw&t=7512s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "03cd413f-215b-4207-b08e-8f051bdff462",
+     "text": "let's put aside the dystopias and still you have something out there that knows you far better than you know yourself and that increasingly makes all the decisions in your life",
+     "verbatim": true,
+     "source_label": "Your Undivided Attention, Yuval Noah Harari, Feb 6 2024",
+     "video_id": "MAekBlk7rlw",
+     "start_sec": 3434.8,
+     "end_sec": 3451.0,
+     "url": "https://www.youtube.com/watch?v=MAekBlk7rlw&t=3434s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "c61d4f0a-d485-487b-8cde-0c635dd809e4",
+     "text": "if you have an AI sidekick which is really loyal to you or to the community not to Facebook not to an evil dictator what would you tell that AI sidekick to optimize and I don't have the answer",
+     "verbatim": true,
+     "source_label": "Your Undivided Attention, Yuval Noah Harari, Feb 6 2024",
+     "video_id": "MAekBlk7rlw",
+     "start_sec": 4360.2,
+     "end_sec": 4379.9,
+     "url": "https://www.youtube.com/watch?v=MAekBlk7rlw&t=4360s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "abd54696-a950-4bc7-b6f5-60fa96f2545e",
+     "text": "the first step is is really to shift the attention and the efforts of the engineers towards building not a system that manipulates us for the sake of very simplistic goals like maximizing the time we spend on the platform",
+     "verbatim": true,
+     "source_label": "Your Undivided Attention, Yuval Noah Harari, Feb 6 2024",
+     "video_id": "MAekBlk7rlw",
+     "start_sec": 5371.0,
+     "end_sec": 5396.0,
+     "url": "https://www.youtube.com/watch?v=MAekBlk7rlw&t=5371s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "3b7ec85f-225e-493b-a19b-385e66a9cd30",
+     "text": "you initially give the system some guidelines who to promote which is in line with is what the top people want but over time the system learns and subtly changes its definitions and its goal metric",
+     "verbatim": true,
+     "source_label": "Your Undivided Attention, Yuval Noah Harari, Feb 6 2024",
+     "video_id": "MAekBlk7rlw",
+     "start_sec": 6016.6,
+     "end_sec": 6036.4,
+     "url": "https://www.youtube.com/watch?v=MAekBlk7rlw&t=6016s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "9fc2dca2-fefc-4ead-98a4-4247c0b7470d",
+     "text": "the algorithm says okay I'm I'm trying to protect the ruler I'm trying to protect the party the defense minister is trying to limit me or shut me down so he's obviously disloyal",
+     "verbatim": true,
+     "source_label": "Your Undivided Attention, Yuval Noah Harari, Feb 6 2024",
+     "video_id": "MAekBlk7rlw",
+     "start_sec": 6677.5,
+     "end_sec": 6695.4,
+     "url": "https://www.youtube.com/watch?v=MAekBlk7rlw&t=6677s",
+     "checked_against": "captions"
+    },
+    {
+     "id": "7b44d333-11ac-4d4a-9745-4a57f3abbcd7",
+     "text": "So making AI safe is a bit like making a nuclear reactor safe taking into account the fact that the nuclear reactor can decide to change in ways that you can't anticipate and even worse it can react to you.",
+     "verbatim": true,
+     "source_label": "The Diary Of A CEO, Yuval Noah Harari, Jan 11 2024",
+     "video_id": "UzOJiqN_DpM",
+     "start_sec": 2064.2,
+     "end_sec": 2086.6,
+     "url": "https://www.youtube.com/watch?v=UzOJiqN_DpM&t=2064s",
+     "checked_against": "captions"
+    }
+   ],
+   "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=yuval-harari",
+   "channel_label": "Person grammar (private for now)"
+  }
  },
  {
   "slug": "sam-harris",
@@ -2838,5 +3805,1751 @@
    }
   ],
   "channel_url": null
+ },
+ {
+  "slug": "andreessen",
+  "name": "Marc Andreessen",
+  "short": "Andreessen",
+  "role": "Co-founder and general partner, Andreessen Horowitz (a16z).",
+  "stated_leaf": "proceed",
+  "placed_by": "ask",
+  "scope": "",
+  "confidence": "low",
+  "card_quote_ids": [
+   "6455c938-10d6-48f3-93c1-4bf28f16686a",
+   "dd718aab-0703-4924-b833-6f3e624779ec"
+  ],
+  "gate": {
+   "answer": "no",
+   "basis": "Argues against the gate and against the control machinery the other leaves would need, though never asked its terms directly.",
+   "quote_ids": [
+    "6455c938-10d6-48f3-93c1-4bf28f16686a",
+    "dd718aab-0703-4924-b833-6f3e624779ec",
+    "53a29164-8b7f-4580-8873-1865ed160994"
+   ]
+  },
+  "alignment": {
+   "answer": "not-addressed",
+   "basis": "Never asked; no stated position in this record.",
+   "quote_ids": [
+    "ab2b5fbc-0340-4bc8-b773-6add4c0cdd1b"
+   ]
+  },
+  "containment": {
+   "answer": "not-addressed",
+   "basis": "Never asked; no stated position in this record.",
+   "quote_ids": []
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "gate",
+    "would_have_to_believe": "That some effects of advanced AI could arrive too late, or too far, to be corrected by contact with reality. The lab notes his 200-year printing-press remark ('It took 200 years to fully play out the consequences of the printing press') as where such a belief could start; he draws the opposite, hopeful lesson from it."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That rules on AI use can be kept narrow, holding the 'ring of power' without the scope creep he describes, and that rules on dangerous capabilities can be built as a different machine from speech rules and resist the pull he describes; or that some AI uses cause harms like the illegal content he says any service must police ('you're always gonna have a censorship engine')."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "That agents set loose to build a business, or holding their own money, could act against their users' or others' interests in ways that markets and founders would not catch in time, so isolating them costs less than it forgoes."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "That the cost of stopping he names ('there will be no innovation forever', said of venture capital) is smaller than a risk that cannot be tested in advance, and that a stop could hold across the 'at least six' frontier teams and the other countries he describes (the race underneath)."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "6455c938-10d6-48f3-93c1-4bf28f16686a",
+    "text": "they need milestones, they need points of contact with reality.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Marc Andreessen, Feb 1 2023",
+    "video_id": "kNsi5XVDTTM",
+    "start_sec": 1224.6,
+    "end_sec": 1235.8,
+    "url": "https://www.youtube.com/watch?v=kNsi5XVDTTM&t=1224s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "dd718aab-0703-4924-b833-6f3e624779ec",
+    "text": "just look at the printing press as a prescient example. It took 200 years to fully play out the consequences of the printing press. We’re still in the very early stages with these things.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Marc Andreessen, Feb 1 2023",
+    "video_id": "kNsi5XVDTTM",
+    "start_sec": 4060.1,
+    "end_sec": 4076.8,
+    "url": "https://www.youtube.com/watch?v=kNsi5XVDTTM&t=4060s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "53a29164-8b7f-4580-8873-1865ed160994",
+    "text": "all of these abstract generalized super intelligence AGI stuff like, you know, maybe it's the engineer in me, but like, no, like, that's to abstract like, it's gotta actually work.",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Marc Andreessen, Jan 26 2025",
+    "video_id": "OHWnPOKh_S0",
+    "start_sec": 12206.6,
+    "end_sec": 12217.6,
+    "url": "https://www.youtube.com/watch?v=OHWnPOKh_S0&t=12206s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ab2b5fbc-0340-4bc8-b773-6add4c0cdd1b",
+    "text": "How many other countries want their country to run its education system, healthcare system, new system, political system, on the basis of an AI that's been trained according to the most extreme left-wing California politics, right?",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Marc Andreessen, Jan 26 2025",
+    "video_id": "OHWnPOKh_S0",
+    "start_sec": 12262.4,
+    "end_sec": 12276.0,
+    "url": "https://www.youtube.com/watch?v=OHWnPOKh_S0&t=12262s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=marc-andreessen",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "bengio",
+  "name": "Yoshua Bengio",
+  "short": "Bengio",
+  "role": "Professor at Universite de Montreal and scientific director of Mila; a Turing Award laureate for deep learning.",
+  "stated_leaf": "contain",
+  "placed_by": "ask",
+  "scope": "",
+  "confidence": "low",
+  "card_quote_ids": [
+   "e8ecdc2d-0cb3-4ebd-8120-cf31ce575ae4",
+   "f73fc05f-d7eb-4adf-8a74-27df07d83d98"
+  ],
+  "gate": {
+   "answer": "yes",
+   "basis": "'When an experiment could be catastrophic you should not do it'; absence of proof patches will fail is 'not the bar that is sufficient.'",
+   "quote_ids": [
+    "8246fd32-4af7-4bb0-b762-ccfac06b06a3",
+    "5632cc8b-8cf6-4a90-886b-88eefa31ca7c",
+    "7571d277-652d-4fbb-82a1-c3becf74e51b"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "'Right now, we don't have it,' but now convinced it's possible in theory (an honesty property); 'I haven't solved it.'",
+   "quote_ids": [
+    "e8ecdc2d-0cb3-4ebd-8120-cf31ce575ae4",
+    "b2d02942-22b8-4d58-9289-8de29fa15676",
+    "782404e9-65be-4699-b12a-edcff64d075b"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "Current monitors can be outwitted or corrupted; outputs must be checked by an AI 'we can fully trust,' which doesn't yet exist.",
+   "quote_ids": [
+    "f73fc05f-d7eb-4adf-8a74-27df07d83d98",
+    "0227c20a-1187-4014-b0e1-4de0be68647c",
+    "6736de96-c50c-4181-b351-f9353bc6228d"
+   ]
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "proceed",
+    "would_have_to_believe": "That an honest-by-construction predictor, and the agents built on it, have been built, reviewed and shown safe at scale, and adopted by the leading labs despite the race, and that power over them is shared through international agreements. The two conditions he describes for superintelligence (scientific consensus on safety, social acceptance) would then be met."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That loss of control is solved in practice, not only in theory, leaving misuse and power concentration as the main risks. His May 2026 ranking already leans this way, on the condition that his path works."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "That his path, and others, will not arrive before systems that 'could overpower us', or that such systems are here. He already says he would stop that kind of AI, and in the host's all-or-nothing hypothetical would press the button 'if we have to make that choice'. In these appearances two of his arguments point away from calling for a stop now: he thinks a path is close ('not something that's going to take a decade'), and he says the stop letters are 'not powerful enough to counter the forces of competition'."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "8246fd32-4af7-4bb0-b762-ccfac06b06a3",
+    "text": "existential risk for me is a very unlikely consideration but still worth academic investigation in the same way that you could say should we study what could happen if meteorite you know came to earth and destroyed it",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Yoshua Bengio, Oct 20 2018",
+    "video_id": "azOmzumh0vQ",
+    "start_sec": 1394.1,
+    "end_sec": 1414.7,
+    "url": "https://www.youtube.com/watch?v=azOmzumh0vQ&t=1394s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "5632cc8b-8cf6-4a90-886b-88eefa31ca7c",
+    "text": "if you're doing something say a scientific experiment and it could turn out really really bad like people could die some catastrophe could happen then you should not do it",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO, Yoshua Bengio, Dec 18 2025",
+    "video_id": "zQ1POHiR8m8",
+    "start_sec": 507.6,
+    "end_sec": 524.6,
+    "url": "https://www.youtube.com/watch?v=zQ1POHiR8m8&t=507s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "7571d277-652d-4fbb-82a1-c3becf74e51b",
+    "text": "we should not build super intelligence unless two conditions are met. There's a scientific consensus that it's going to be safe and there's a social acceptance",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO, Yoshua Bengio, Dec 18 2025",
+    "video_id": "zQ1POHiR8m8",
+    "start_sec": 1643.0,
+    "end_sec": 1658.3,
+    "url": "https://www.youtube.com/watch?v=zQ1POHiR8m8&t=1643s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "e8ecdc2d-0cb3-4ebd-8120-cf31ce575ae4",
+    "text": "long term I'm really interested in thinking of how we can instill moral values into computers obviously this is not something we'll achieve in the next five or ten years",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Yoshua Bengio, Oct 20 2018",
+    "video_id": "azOmzumh0vQ",
+    "start_sec": 1790.1,
+    "end_sec": 1807.6,
+    "url": "https://www.youtube.com/watch?v=azOmzumh0vQ&t=1790s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "b2d02942-22b8-4d58-9289-8de29fa15676",
+    "text": "So actually the data shows that it's been in the other direction. So since those models have become better at reasoning more or less about a year ago, they show more misaligned behavior",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO, Yoshua Bengio, Dec 18 2025",
+    "video_id": "zQ1POHiR8m8",
+    "start_sec": 1236.4,
+    "end_sec": 1258.5,
+    "url": "https://www.youtube.com/watch?v=zQ1POHiR8m8&t=1236s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "782404e9-65be-4699-b12a-edcff64d075b",
+    "text": "One is that the AI actually does the things that we ask. And right now, we don't have it. That's the alignment problem that is in the title of this session.",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Yoshua Bengio, Feb 19 2026",
+    "video_id": "2Pel_1BPm_k",
+    "start_sec": 793.8,
+    "end_sec": 805.2,
+    "url": "https://www.youtube.com/watch?v=2Pel_1BPm_k&t=793s",
+    "checked_against": "captions",
+    "speaker_confirmed": false
+   },
+   {
+    "id": "f73fc05f-d7eb-4adf-8a74-27df07d83d98",
+    "text": "we can shut them down, but but if they be continue to go in the direction of more and more intelligence and capability and they continue to have this drive to live, we could be in trouble.",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO, Yoshua Bengio, Dec 18 2025",
+    "video_id": "zQ1POHiR8m8",
+    "start_sec": 897.0,
+    "end_sec": 918.1,
+    "url": "https://www.youtube.com/watch?v=zQ1POHiR8m8&t=897s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "0227c20a-1187-4014-b0e1-4de0be68647c",
+    "text": "it's the thing that I'm most concerned about is the self-preservation drive. Like every human has a self-preservation drive. But do we want to build tools that don't want to be shut down? I don't think that's good.",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Yoshua Bengio, Feb 19 2026",
+    "video_id": "2Pel_1BPm_k",
+    "start_sec": 1196.9,
+    "end_sec": 1212.9,
+    "url": "https://www.youtube.com/watch?v=2Pel_1BPm_k&t=1196s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "6736de96-c50c-4181-b351-f9353bc6228d",
+    "text": "we can’t trust a guardrail which is not honest. We want the guardrail to be totally honest. It’s like there’s a prison guard and it can be corrupted",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, Yoshua Bengio, May 7 2026",
+    "video_id": "PZqDFs2sbiY",
+    "start_sec": 2524.2,
+    "end_sec": 2536.5,
+    "url": "https://www.youtube.com/watch?v=PZqDFs2sbiY&t=2524s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=yoshua-bengio",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "chalmers",
+  "name": "David Chalmers",
+  "short": "Chalmers",
+  "role": "Professor of philosophy at NYU, known for work on consciousness and the 'hard problem'.",
+  "stated_leaf": "outside",
+  "placed_by": "frame",
+  "scope": "Unplaced; nearest: gate, the lab's inference",
+  "confidence": "low",
+  "card_quote_ids": [
+   "3c1d43c3-9623-4c2e-8be7-9c4f6ff30b1f",
+   "180cae2e-e6ea-4f7f-970b-4edcc18e8c77"
+  ],
+  "gate": {
+   "answer": "conditional",
+   "basis": "His gate-like reasoning is scoped to consciousness and moral status, not AI danger.",
+   "quote_ids": [
+    "3c1d43c3-9623-4c2e-8be7-9c4f6ff30b1f",
+    "180cae2e-e6ea-4f7f-970b-4edcc18e8c77",
+    "3e705f6c-0f98-4992-89b0-2cf6de8bd895"
+   ]
+  },
+  "alignment": {
+   "answer": "not-addressed",
+   "basis": "Never addresses AI alignment as the tree defines it.",
+   "quote_ids": [
+    "3f0ea718-fe80-4345-9dea-63b7854af1e2",
+    "4330b527-3bbc-480d-bc67-405fc452e350",
+    "c63311bb-13cf-4165-aa7f-ec7daf91ee09"
+   ]
+  },
+  "containment": {
+   "answer": "not-addressed",
+   "basis": "Never addresses AI containment.",
+   "quote_ids": []
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "On the lab's reading of his own crux: he would need to doubt what he calls his own view, that superintelligence 'almost certainly' brings consciousness (Lex 1:29:07), so that the zombie outcome he calls 'a moral disaster' becomes live, or to think the path risks ending all intelligent life, which he says 'we've got to think very hard about how to avoid' (Lex 1:28:02). He would also need to think that a decision 'not to create smarter AIs even though we can' (80k 3:52:16), which he lists only as a logically possible defeater, could hold while others act, and that the costs of waiting he names can be managed: the condition under which he could 'maybe' imagine a long wait being 'a good idea' in highly idealized circumstances (80k 4:13:54, said of colonising the universe)."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "He does not discuss containment. The oracle he raises, an idea he credits to others, is a design with no goals of its own, and his worry is that its answers get 'taken up by other systems in ways that lead to danger' (80k 4:10:45); treating it as a cage is the lab's analogy. To move here he would need to think that alignment cannot be relied on (the tree's alignment-no half) and that a capable system can be kept from being taken up by other systems."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "That alignment is solvable, for example that rule-based ('Kantian') designs are robust in the way he asks about; that the fragility he names in his optimistic vision ('So we're going to need a solution to that problem', Lex 1:37:14) can be solved; and that the cost of waiting he stresses outweighs the risk. His view, in a hypothetical, that conscious successors with good lives would be 'not so bad' (Lex 1:27:05) is a view about value, not a claim that building is safe."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "Lab speculation, with no grounding in anything he proposes: that the main harms come from use, such as the bias, labour and autonomous-weapons issues he calls 'extremely important' (80k 4:06:10), and that rules on use would also reach the long-term issues he says are 'both important' (80k 4:06:37). He proposes no rules in either appearance."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "3c1d43c3-9623-4c2e-8be7-9c4f6ff30b1f",
+    "text": "once you’ve got a machine which is more intelligent than me, it’ll be better than me at making machines. Therefore it’ll be able to make a machine better than the best machine I could make.",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, David Chalmers, Nov 22 2024",
+    "video_id": "vJmEEO6kvTg",
+    "start_sec": 13569.2,
+    "end_sec": 13580.8,
+    "url": "https://www.youtube.com/watch?v=vJmEEO6kvTg&t=13569s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "180cae2e-e6ea-4f7f-970b-4edcc18e8c77",
+    "text": "If someone just took the conclusion of the argument to be there’s a 20% chance this is going to happen, then from a practical perspective then the case for thinking hard about it is still going to be extremely strong.",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, David Chalmers, Nov 22 2024",
+    "video_id": "vJmEEO6kvTg",
+    "start_sec": 14623.7,
+    "end_sec": 14635.6,
+    "url": "https://www.youtube.com/watch?v=vJmEEO6kvTg&t=14623s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "3e705f6c-0f98-4992-89b0-2cf6de8bd895",
+    "text": "I ought to be open to waiting until we have a really good theory of consciousness before taking irreversible actions that affect different beings differentially.",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, David Chalmers, Nov 22 2024",
+    "video_id": "vJmEEO6kvTg",
+    "start_sec": 15696.0,
+    "end_sec": 15710.0,
+    "url": "https://www.youtube.com/watch?v=vJmEEO6kvTg&t=15696s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "3f0ea718-fe80-4345-9dea-63b7854af1e2",
+    "text": "“Oh, you absolutely have to get the right utility function. If you just miss by a little bit, everything is going to be disastrous”. Well, that makes total sense within the framework of this Humean approach to AI",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, David Chalmers, Nov 22 2024",
+    "video_id": "vJmEEO6kvTg",
+    "start_sec": 14927.8,
+    "end_sec": 14945.4,
+    "url": "https://www.youtube.com/watch?v=vJmEEO6kvTg&t=14927s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "4330b527-3bbc-480d-bc67-405fc452e350",
+    "text": "Now I think there are various problems with the safety of these systems. Maybe they’re rapidly going to get taken up by other systems in ways that lead to danger.",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, David Chalmers, Nov 22 2024",
+    "video_id": "vJmEEO6kvTg",
+    "start_sec": 15050.9,
+    "end_sec": 15058.9,
+    "url": "https://www.youtube.com/watch?v=vJmEEO6kvTg&t=15050s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "c63311bb-13cf-4165-aa7f-ec7daf91ee09",
+    "text": "But it’s also very, very likely that we’ll produce AIs which are not perfectly aligned with human values, which are all very complex and variant and multifarious as they are",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, David Chalmers, Nov 22 2024",
+    "video_id": "vJmEEO6kvTg",
+    "start_sec": 15605.3,
+    "end_sec": 15619.8,
+    "url": "https://www.youtube.com/watch?v=vJmEEO6kvTg&t=15605s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=david-chalmers",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "chollet",
+  "name": "François Chollet",
+  "short": "Chollet",
+  "role": "AI researcher and creator of the Keras deep-learning library; formerly at Google.",
+  "stated_leaf": "outside",
+  "placed_by": "ask",
+  "scope": "Undecided",
+  "confidence": "low",
+  "card_quote_ids": [
+   "6918ee75-4e05-4173-a7fa-233b532a53b5",
+   "cac19e66-bae1-47dd-a69e-2163136d7de6"
+  ],
+  "gate": {
+   "answer": "not-addressed",
+   "basis": "Not asked about, and does not address, whether the step to AGI is irreversible or untestable.",
+   "quote_ids": [
+    "6918ee75-4e05-4173-a7fa-233b532a53b5",
+    "cac19e66-bae1-47dd-a69e-2163136d7de6",
+    "f55fb488-a1ef-4696-804d-5bf7144c3a3f"
+   ]
+  },
+  "alignment": {
+   "answer": "not-addressed",
+   "basis": "Not addressed in this record.",
+   "quote_ids": []
+  },
+  "containment": {
+   "answer": "not-addressed",
+   "basis": "Not addressed in this record.",
+   "quote_ids": []
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "any leaf (upstream crux)",
+    "would_have_to_believe": "First, on the lab's reading, that general intelligence in his sense is within reach, which his own tripwires would show: 'a critical mass of cases where you show the model something it has not seen before' and it adapts on the fly (Dwarkesh 0:03:42), or ARC solved by a model trained 'not explicitly trying to anticipate' the test set (0:39:48). Until then the tree's questions may not arise for him."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "That a system able to adapt to novelty, the kind he wants built, could be aligned and contained, or would stay a tool. He argues for faster, open progress but gives no view on either question in these appearances."
+   },
+   {
+    "to": "gate",
+    "would_have_to_believe": "That his own measurement argument carries over to safety: if an experimenter can 'buy arbitrary levels of skill' (Lex 1:10:45) and 'with enough scale, you can always cheat' (Dwarkesh 0:40:47), a pass on a safety evaluation may say little about how a system behaves when it meets something new; that, unlike his capability tests, no guarded test could settle this; and that the step to such a system could not be undone."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That the main harms come from how skilled-but-not-intelligent automation is used, so rules on use are the lever. He grants that many jobs could be automated but frames it as economic value and does not discuss harms."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "That a system with the adaptive intelligence he describes should be treated as untrusted and kept isolated. That would sit against the openness he defends ('It's actually really sad that frontier research is no longer being published', Dwarkesh 1:06:52)."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "Nothing in this record points here. He would need to believe that building a system able to adapt to novelty is dangerous enough to stop, a question he is not asked and does not raise; in these appearances he counts slower progress toward AGI as a loss."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "6918ee75-4e05-4173-a7fa-233b532a53b5",
+    "text": "people are you know extrapolating from that progress that we're about to solve general intelligence and if you want to be able to evaluate these statements you need to precisely define what you're talking about",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, François Chollet, Aug 31 2020",
+    "video_id": "PUAdj3w3wO4",
+    "start_sec": 2117.8,
+    "end_sec": 2137.6,
+    "url": "https://www.youtube.com/watch?v=PUAdj3w3wO4&t=2117s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "cac19e66-bae1-47dd-a69e-2163136d7de6",
+    "text": "i must say i'm not entirely convinced that we have shown it's it's capable of doing that it's very likely given the amount of data that the model is trained on that what it's actually doing is pattern matching",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, François Chollet, Aug 31 2020",
+    "video_id": "PUAdj3w3wO4",
+    "start_sec": 2619.8,
+    "end_sec": 2637.2,
+    "url": "https://www.youtube.com/watch?v=PUAdj3w3wO4&t=2619s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "f55fb488-a1ef-4696-804d-5bf7144c3a3f",
+    "text": "it's always possible for an experimenter to buy arbitrary levels of skill at arbitrary tasks either by injecting a hard-coded prior knowledge into the system via rules",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, François Chollet, Aug 31 2020",
+    "video_id": "PUAdj3w3wO4",
+    "start_sec": 4246.5,
+    "end_sec": 4266.8,
+    "url": "https://www.youtube.com/watch?v=PUAdj3w3wO4&t=4246s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=francois-chollet",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "hassabis",
+  "name": "Demis Hassabis",
+  "short": "Hassabis",
+  "role": "CEO of Google DeepMind.",
+  "stated_leaf": "proceed",
+  "placed_by": "ask",
+  "scope": "",
+  "confidence": "medium",
+  "card_quote_ids": [
+   "ff0f9e57-651e-4122-be47-f9dce3fb575f",
+   "c350a3b6-b209-48d2-bb14-65474bffcd78"
+  ],
+  "gate": {
+   "answer": "no",
+   "basis": "Disputes 'untestable'; plans to make the step testable via evals and sandboxes first, while accepting a burden before a possibly runaway step.",
+   "quote_ids": [
+    "110fcea5-bf38-4359-8eab-a0d1a9aba9aa",
+    "62d2a890-2567-4ce2-833e-bdc5958c63cd",
+    "71f81a7d-84c4-4c20-a5eb-48f342bf6edc"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "'Not yet, researchable': systems must be made 'understandable and controllable.'",
+   "quote_ids": [
+    "ff0f9e57-651e-4122-be47-f9dce3fb575f",
+    "60b7c7ea-c3a0-4114-b292-54b24c16ad03",
+    "78b9ffa6-ba6f-4f2d-b24f-c36fbf54cff2"
+   ]
+  },
+  "containment": {
+   "answer": "conditional",
+   "basis": "'Promising for testing, leaky on misuse': hardened sandboxes as one research direction, without saying whether they'd hold a much smarter system.",
+   "quote_ids": [
+    "c350a3b6-b209-48d2-bb14-65474bffcd78"
+   ]
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "gate",
+    "would_have_to_believe": "That the runaway step can't be made testable in time: the evals, proofs or bounds he calls for won't exist before the systems do, which his own estimate of about 50% by 2030 makes a near question. His 2024 answer (much more understanding needed before he could say what would justify continuing) would then bind."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "That alignment can't be verified before capability arrives, so capable systems stay untrusted and caged indefinitely, not for a testing phase, and that hardened sandboxes can hold them. His 2023 wish for a CERN-like effort that tests systems in sandboxes 'first' already points toward containment as a phase; what's missing is making it a standing condition rather than a hope."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That the systems will do what they're told, so the binding constraint is misuse, and that weights, access and open models will stay leaky (bad actors reaching powerful general systems is a problem he says he hasn't seen solved); rules on access, monitoring and dangerous uses, set outside any one lab, would then have to carry the main load."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "That the evals, proofs or bounds he asks for can't be ready before the systems arrive, and that hardened sandboxes can't reliably keep capable agents in (the 2026 agent incident, which he was never asked about, bears on this); and that the pause he calls ideal for one lab must be shared, binding and open-ended. On his own account, a warning sign such as a system doing something it was explicitly told not to and lying about it moves him to a pause to investigate, not to a stop."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "110fcea5-bf38-4359-8eab-a0d1a9aba9aa",
+    "text": "I don't think it's likely I wouldn't even put a probability on it but there's uncertainty over it and it's certainly non-zero",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Demis Hassabis, Jul 11 2023",
+    "video_id": "U8CmAu68z5c",
+    "start_sec": 4809.0,
+    "end_sec": 4819.8,
+    "url": "https://www.youtube.com/watch?v=U8CmAu68z5c&t=4809s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "62d2a890-2567-4ce2-833e-bdc5958c63cd",
+    "text": "We need a lot more understanding of the systems than we do today before I would even be confident of explaining to you what we'd need to tick box there.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Demis Hassabis, Feb 28 2024",
+    "video_id": "qTogNUV3CAI",
+    "start_sec": 1578.4,
+    "end_sec": 1588.9,
+    "url": "https://www.youtube.com/watch?v=qTogNUV3CAI&t=1578s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "71f81a7d-84c4-4c20-a5eb-48f342bf6edc",
+    "text": "Then you would ideally pause and really get to the bottom of why it was doing those things before one continued.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Demis Hassabis, Feb 28 2024",
+    "video_id": "qTogNUV3CAI",
+    "start_sec": 1709.9,
+    "end_sec": 1725.1,
+    "url": "https://www.youtube.com/watch?v=qTogNUV3CAI&t=1709s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ff0f9e57-651e-4122-be47-f9dce3fb575f",
+    "text": "you're sort of more coaxing the system rather than with the logic systems where you're directly programming that in",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Demis Hassabis, Jul 11 2023",
+    "video_id": "U8CmAu68z5c",
+    "start_sec": 1233.2,
+    "end_sec": 1243.4,
+    "url": "https://www.youtube.com/watch?v=U8CmAu68z5c&t=1233s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "60b7c7ea-c3a0-4114-b292-54b24c16ad03",
+    "text": "make sure these systems do what we want and we set them the right objectives and the right values and and they can be contained",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Demis Hassabis, Jul 11 2023",
+    "video_id": "U8CmAu68z5c",
+    "start_sec": 4771.2,
+    "end_sec": 4780.7,
+    "url": "https://www.youtube.com/watch?v=U8CmAu68z5c&t=4771s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "78b9ffa6-ba6f-4f2d-b24f-c36fbf54cff2",
+    "text": "But we also have to make sure these systems are sort of understandable and controllable.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Demis Hassabis, Feb 28 2024",
+    "video_id": "qTogNUV3CAI",
+    "start_sec": 1364.1,
+    "end_sec": 1374.1,
+    "url": "https://www.youtube.com/watch?v=qTogNUV3CAI&t=1364s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "c350a3b6-b209-48d2-bb14-65474bffcd78",
+    "text": "maybe in the next three, four, five years, we would also want air gaps and various other things that are known in the security community. So I think that's key and I think all frontier labs should be doing that",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Demis Hassabis, Feb 28 2024",
+    "video_id": "qTogNUV3CAI",
+    "start_sec": 2569.6,
+    "end_sec": 2582.8,
+    "url": "https://www.youtube.com/watch?v=qTogNUV3CAI&t=2569s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=demis-hassabis",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "karpathy",
+  "name": "Andrej Karpathy",
+  "short": "Karpathy",
+  "role": "AI researcher; former director of AI at Tesla and a founding member of OpenAI.",
+  "stated_leaf": "outside",
+  "placed_by": "ask",
+  "scope": "Undecided",
+  "confidence": "low",
+  "card_quote_ids": [
+   "affdab4f-a5e4-4a46-8351-28c1fe947066",
+   "4072604f-a9d2-49ee-bfd0-3c088aa027a9"
+  ],
+  "gate": {
+   "answer": "unknown",
+   "basis": "Does not take up irreversibility or testability directly; his gradual-drift forecast might meet the gate by accumulation, but that reading is the lab's.",
+   "quote_ids": [
+    "affdab4f-a5e4-4a46-8351-28c1fe947066",
+    "4072604f-a9d2-49ee-bfd0-3c088aa027a9",
+    "a5e5a5cc-479d-46b8-99eb-63b4fc0feef4"
+   ]
+  },
+  "alignment": {
+   "answer": "not-addressed",
+   "basis": "Not addressed.",
+   "quote_ids": [
+    "3477f625-08fd-4980-805a-f8e7e8783d82",
+    "a81d8337-e95f-4fd3-bb29-2b489a289b6a",
+    "531cc223-1206-4272-835d-d5832e0bdf78"
+   ]
+  },
+  "containment": {
+   "answer": "not-addressed",
+   "basis": "Not addressed; proposes no brake, cage or use rules for frontier AI.",
+   "quote_ids": []
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "proceed",
+    "would_have_to_believe": "that the gradual loss of control he calls most likely can be avoided, for example that many competing autonomous systems can be kept serving 'outcomes we want' for society, not only their owners."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "that rules on how AI is deployed and used, such as limits on how far work is delegated to competing autonomous systems, could slow or stop the drift he forecasts."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "that individual autonomous systems that 'go rogue' (which he mentions only inside a sci-fi sketch), rather than their competition, are the main danger, and are near enough that they must be caged and watched before wide deployment."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "that the drift he forecasts, or a step on it such as the 'minus sign' flip he described in 2022, cannot be undone or tested in advance and can be avoided only by stopping; that this outweighs the upside he bets on (c8); and that the labs' course is less fixed than the 'some amount of determinism' he feels, so stopping is possible."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "affdab4f-a5e4-4a46-8351-28c1fe947066",
+    "text": "I think it's going to be a slow incremental transition is going to be product based and focused it's going to be GitHub co-pilot getting better",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Andrej Karpathy, Oct 29 2022",
+    "video_id": "cdiD-9MMpb0",
+    "start_sec": 10138.0,
+    "end_sec": 10146.8,
+    "url": "https://www.youtube.com/watch?v=cdiD-9MMpb0&t=10138s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "4072604f-a9d2-49ee-bfd0-3c088aa027a9",
+    "text": "if bad outcomes are just like a tiny like flipping minus sign away uh that's a really bad position to be in",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Andrej Karpathy, Oct 29 2022",
+    "video_id": "cdiD-9MMpb0",
+    "start_sec": 11052.2,
+    "end_sec": 11060.6,
+    "url": "https://www.youtube.com/watch?v=cdiD-9MMpb0&t=11052s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "a5e5a5cc-479d-46b8-99eb-63b4fc0feef4",
+    "text": "Some of the scenarios that I start to get nervous about when the world looks like that is this gradual loss of control and understanding of what's happening. I think that's the most likely outcome",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Andrej Karpathy, Oct 17 2025",
+    "video_id": "lXUZvyajciY",
+    "start_sec": 4793.0,
+    "end_sec": 4806.1,
+    "url": "https://www.youtube.com/watch?v=lXUZvyajciY&t=4793s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "3477f625-08fd-4980-805a-f8e7e8783d82",
+    "text": "I think humans have to supervise I am nervous about people not supervising what comes out and what happens to for example the proliferation of bugs in all of our systems I'm nervous about that",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Andrej Karpathy, Oct 29 2022",
+    "video_id": "cdiD-9MMpb0",
+    "start_sec": 8885.0,
+    "end_sec": 8898.1,
+    "url": "https://www.youtube.com/watch?v=cdiD-9MMpb0&t=8885s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "a81d8337-e95f-4fd3-bb29-2b489a289b6a",
+    "text": "for a long time they're going to be tools in the hands of humans uh you know people talk about like alignment of agis and how to make the problem is like even humans are not aligned",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Andrej Karpathy, Oct 29 2022",
+    "video_id": "cdiD-9MMpb0",
+    "start_sec": 10879.3,
+    "end_sec": 10891.0,
+    "url": "https://www.youtube.com/watch?v=cdiD-9MMpb0&t=10879s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "531cc223-1206-4272-835d-d5832e0bdf78",
+    "text": "anytime you use an LLM to assign a reward, those LLMs are giant things with billions of parameters, and they're gameable. If you're reinforcement learning with respect to them, you will find adversarial examples for your LLM judges, almost guaranteed.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Andrej Karpathy, Oct 17 2025",
+    "video_id": "lXUZvyajciY",
+    "start_sec": 2822.6,
+    "end_sec": 2835.3,
+    "url": "https://www.youtube.com/watch?v=lXUZvyajciY&t=2822s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=andrej-karpathy",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "kokotajlo",
+  "name": "Daniel Kokotajlo",
+  "short": "Kokotajlo",
+  "role": "AI-safety researcher; former OpenAI governance researcher, co-author of 'AI 2027'.",
+  "stated_leaf": "contain",
+  "placed_by": "ask",
+  "scope": "",
+  "confidence": "medium",
+  "card_quote_ids": [
+   "38071121-404b-4124-b62b-652d22e5ce7e",
+   "b42d6a9e-6cd0-4170-b8ba-0205ba8908f7"
+  ],
+  "gate": {
+   "answer": "yes",
+   "basis": "Some failures are 'hidden... until it's too late'; the burden of proof gets harder to meet as systems grow more powerful.",
+   "quote_ids": [
+    "5a9e4a1f-7fcc-4206-bd5d-414b5bb1914e",
+    "7cc082f3-42ae-43b9-ba0d-3c1be5881b51",
+    "e2f962d0-dfd5-485a-bab6-92b278948f98"
+   ]
+  },
+  "alignment": {
+   "answer": "no",
+   "basis": "Not solved today; his all-things-considered view is 'we are not going to solve these problems in time.'",
+   "quote_ids": [
+    "38071121-404b-4124-b62b-652d22e5ce7e",
+    "1a4b4d3b-93af-4bd2-83fb-b526a26533c8",
+    "39f52dfd-5ab1-4887-a530-e778eeac27dc"
+   ]
+  },
+  "containment": {
+   "answer": "conditional",
+   "basis": "Workable at human level with cross-company monitors and red teams for a time, but our control ability is 'vastly worse' than nuclear-weapons control.",
+   "quote_ids": [
+    "b42d6a9e-6cd0-4170-b8ba-0205ba8908f7",
+    "af6bb1ad-c522-4eb7-9e64-93e724b482e2",
+    "6d7ea29d-b80e-4865-809d-a57d555cd6d0"
+   ]
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "That a shutdown can be made to last: 'if it turns out that actually Plan S is more feasible and more stable, then that would be significant. Maybe I would switch to advocating something like Plan S' (80,000 Hours 2:55:14). It would also have to answer his worry about a covert project that keeps going while open ones halt (2:56:28), and beat his hope for his own plan: 'I still have substantial hope that we can get something much better than this' (Diary of a CEO 1:48:27). For a permanent stop, also that his reason against one (benefits for posterity outweighing the current risk) does not hold; he starts to question it on camera ('but actually', 1:49:14), but what follows is unclear in the captions (speaker and wording at 1:49:14-1:49:35 to be checked by ear)."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "That failures would show up in tests before it is too late (against his 'hidden failures', 80,000 Hours 0:54:30), and that alignment can keep pace without a pause (against 'not in time', 1:12:03); also that power over the AIs is shared: otherwise, he says, 'you end up with this horrifying dictatorship or oligarchy' (Dwarkesh 1:35:04). In his own scenario the brakes come off in 2040, once alignment is robustly solved; that is the planned end of Plan A, not a move away from it."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That safety cases and control would still hold for AIs beyond human level, so capability need not be capped; he says safety cases get harder to make as AIs grow stronger (Diary of a CEO 1:31:21). His mid-2025 ask ('for now, the thing I would advocate for is transparency', Your Undivided Attention 0:31:34) sat close to this leaf, but he tied it to a capability threshold, so it was a judgment about timing, not a choice of this leaf."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "5a9e4a1f-7fcc-4206-bd5d-414b5bb1914e",
+    "text": "did you actually solve the alignment faking problem or did you just appear to solve it",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Daniel Kokotajlo, Jul 17 2025",
+    "video_id": "hNkn4ZyNBHU",
+    "start_sec": 2067.0,
+    "end_sec": 2076.8,
+    "url": "https://www.youtube.com/watch?v=hNkn4ZyNBHU&t=2067s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "7cc082f3-42ae-43b9-ba0d-3c1be5881b51",
+    "text": "it seems like the sort of problem that you could think you solved when you haven't actually solved it, right? Uh that's a big reason why this is scary.",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO, Daniel Kokotajlo, Jul 13 2026",
+    "video_id": "_g4l7YkDQwA",
+    "start_sec": 340.6,
+    "end_sec": 349.7,
+    "url": "https://www.youtube.com/watch?v=_g4l7YkDQwA&t=340s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "e2f962d0-dfd5-485a-bab6-92b278948f98",
+    "text": "It's relatively easy to make safety cases like this when your AIs are still not capable of automating everything. But the more powerful they get, the more difficult it is to actually argue that things are going to be fine",
+    "verbatim": true,
+    "source_label": "The Diary Of A CEO, Daniel Kokotajlo, Jul 13 2026",
+    "video_id": "_g4l7YkDQwA",
+    "start_sec": 5477.3,
+    "end_sec": 5491.3,
+    "url": "https://www.youtube.com/watch?v=_g4l7YkDQwA&t=5477s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "38071121-404b-4124-b62b-652d22e5ce7e",
+    "text": "it will happen too soon before we have understood how these AIs think and you know despite their good intentions and best efforts the super alignment team is going to fail.",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Daniel Kokotajlo, Jul 17 2025",
+    "video_id": "hNkn4ZyNBHU",
+    "start_sec": 474.1,
+    "end_sec": 492.4,
+    "url": "https://www.youtube.com/watch?v=hNkn4ZyNBHU&t=474s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "1a4b4d3b-93af-4bd2-83fb-b526a26533c8",
+    "text": "the situation in the real world is actually worse than that because we don't program anything into the AIS. They're giant neural nets. There is no sort of goal slot inside them that we can access",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Daniel Kokotajlo, Jul 17 2025",
+    "video_id": "hNkn4ZyNBHU",
+    "start_sec": 1408.9,
+    "end_sec": 1424.6,
+    "url": "https://www.youtube.com/watch?v=hNkn4ZyNBHU&t=1408s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "39f52dfd-5ab1-4887-a530-e778eeac27dc",
+    "text": "we don't have a good answer to that question. Nobody does. This is a you know bleeding edge new field that that uh is extremely it's much more like alchemy than science basically.",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Daniel Kokotajlo, Jul 17 2025",
+    "video_id": "hNkn4ZyNBHU",
+    "start_sec": 1548.5,
+    "end_sec": 1564.2,
+    "url": "https://www.youtube.com/watch?v=hNkn4ZyNBHU&t=1548s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "b42d6a9e-6cd0-4170-b8ba-0205ba8908f7",
+    "text": "I think it’s entirely plausible that even if the AIs within an individual company are in different factions, they might nevertheless overall end up quite poorly for humans.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Daniel Kokotajlo, Apr 3 2025",
+    "video_id": "htOvH12T7mU",
+    "start_sec": 8127.4,
+    "end_sec": 8143.0,
+    "url": "https://www.youtube.com/watch?v=htOvH12T7mU&t=8127s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "af6bb1ad-c522-4eb7-9e64-93e724b482e2",
+    "text": "So get that control in place and we think that this is a solvable problem — at least for AIs and tasks that are at human level",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, Daniel Kokotajlo, Aug 27 2026",
+    "video_id": "KFcJgTODkkQ",
+    "start_sec": 3855.1,
+    "end_sec": 3868.2,
+    "url": "https://www.youtube.com/watch?v=KFcJgTODkkQ&t=3855s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "6d7ea29d-b80e-4865-809d-a57d555cd6d0",
+    "text": "our ability to control AIs is vastly, vastly worse than our ability to control our own nuclear weapons. There is an extremely real possibility that our AIs will turn on us.",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, Daniel Kokotajlo, Aug 27 2026",
+    "video_id": "KFcJgTODkkQ",
+    "start_sec": 6698.0,
+    "end_sec": 6713.6,
+    "url": "https://www.youtube.com/watch?v=KFcJgTODkkQ&t=6698s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=daniel-kokotajlo",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "marcus",
+  "name": "Gary Marcus",
+  "short": "Marcus",
+  "role": "Cognitive scientist, professor emeritus at NYU, and AI critic.",
+  "stated_leaf": "regulate",
+  "placed_by": "ask",
+  "scope": "",
+  "confidence": "medium",
+  "card_quote_ids": [
+   "781d52c9-2cd8-4b89-9804-e9e474244a29",
+   "e9f22396-bd0e-4817-8858-3926edb42203"
+  ],
+  "gate": {
+   "answer": "conditional",
+   "basis": "Argues for a burden of proof close to the gate's, but for harm at scale rather than irreversibility, so the gate doesn't fire for him strictly.",
+   "quote_ids": [
+    "16a9d216-3aeb-4c45-a760-40e6a48eb1b9",
+    "2db3224a-854f-4be9-93fe-1312b7cce849",
+    "ecc021cb-ea08-42c3-9915-81528f10615c"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "Current systems are 'certainly... misaligned with us'; not solved now, but solvable in principle with different, hybrid systems.",
+   "quote_ids": [
+    "781d52c9-2cd8-4b89-9804-e9e474244a29",
+    "7ea8e603-d821-4e6b-be39-514c7668aa74",
+    "af5a5852-736a-4273-8302-de5b0a3c48c3"
+   ]
+  },
+  "containment": {
+   "answer": "unknown",
+   "basis": "No usable answer in this record on containing a far more capable system.",
+   "quote_ids": [
+    "e9f22396-bd0e-4817-8858-3926edb42203"
+   ]
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "contain",
+    "would_have_to_believe": "That for frontier systems no maker could make the case his drug-style check asks for, because rare failures of the kind he says lack metrics (his March 2023 example was self-driving cars) are the ones that matter; and that keeping frontier systems unreleased is feasible. His own rule would then keep such systems in the lab, an option he says he 'could understand an argument for' but calls 'probably not going to happen' (YUA 0:30:47): his stated reason is feasibility, not disagreement."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "That failures could be irreversible or existential rather than accidents: either because systems come to pursue goals of their own, which he doubts ('I don't see IAG as having the motivation to do that', Harris 0:17:39), or because accidents from powerful, unreliable systems could reach existential scale, which he also doubts ('Perhaps not on an existential level', Harris 1:03:52); and that stopping is both feasible and worth the lost benefits, which he doubts on both counts (YUA 0:30:38). Sam Harris puts the second route to him as his 'red herring' objection (1:21:43); the reply is after the preview cut."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "That hybrid systems that hold explicit values and understand intent are shown to work in practice (he already treats alignment as solvable in principle); that they stay controllable, which he leaves open while leaning toward reliable AI being better ('It would certainly be better if we could arrive at a reliable AI', Harris 0:55:00; 'Is this better or worse than the current regime?', Harris 0:56:47); and that misuse by bad actors and company incentives no longer need outside checks, which he doubts. On the lab's reading, even a yes to both tree questions might not move him off rules, because his case for them rests partly on misuse, capture and undisclosed testing, which neither question reaches."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "16a9d216-3aeb-4c45-a760-40e6a48eb1b9",
+    "text": "Suppose we actually had AGI and we did n't have any real regulations in place on how to test for it. You know, my opinion is that we should treat it like something out of a drug trial.",
+    "verbatim": true,
+    "source_label": "Making Sense, Gary Marcus, Mar 7 2023",
+    "video_id": "GzmaLcMtGE0",
+    "start_sec": 1033.8,
+    "end_sec": 1044.3,
+    "url": "https://www.youtube.com/watch?v=GzmaLcMtGE0&t=1033s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "2db3224a-854f-4be9-93fe-1312b7cce849",
+    "text": "most of what matters are these outliers. We don't have metrics around them. We don't have techniques to solve them.",
+    "verbatim": true,
+    "source_label": "Making Sense, Gary Marcus, Mar 7 2023",
+    "video_id": "GzmaLcMtGE0",
+    "start_sec": 2607.8,
+    "end_sec": 2615.9,
+    "url": "https://www.youtube.com/watch?v=GzmaLcMtGE0&t=2607s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ecc021cb-ea08-42c3-9915-81528f10615c",
+    "text": "you cannot release a drug if it you can't make a case that it is not going to cause massive harm and it is going to cause good",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Gary Marcus, Sep 26 2024",
+    "video_id": "BHzw1Lmgk4c",
+    "start_sec": 1870.4,
+    "end_sec": 1881.1,
+    "url": "https://www.youtube.com/watch?v=BHzw1Lmgk4c&t=1870s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "781d52c9-2cd8-4b89-9804-e9e474244a29",
+    "text": "we need to do work on how do we explicitly program values into our machines if we don't do that we're in real trouble",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Gary Marcus, Feb 17 2023",
+    "video_id": "3KwAIdK9J1A",
+    "start_sec": 3253.6,
+    "end_sec": 3263.5,
+    "url": "https://www.youtube.com/watch?v=3KwAIdK9J1A&t=3253s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "7ea8e603-d821-4e6b-be39-514c7668aa74",
+    "text": "you ask a robot to tidy up your room and it winds up cutting up the couch and putting it in the closet",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Gary Marcus, Feb 17 2023",
+    "video_id": "3KwAIdK9J1A",
+    "start_sec": 3412.4,
+    "end_sec": 3420.2,
+    "url": "https://www.youtube.com/watch?v=3KwAIdK9J1A&t=3412s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "af5a5852-736a-4273-8302-de5b0a3c48c3",
+    "text": "the current models are Black Box models we don't understand what's happening inside of them and we also can't directly communicate with them",
+    "verbatim": true,
+    "source_label": "The Ezra Klein Show, Gary Marcus, Feb 17 2023",
+    "video_id": "3KwAIdK9J1A",
+    "start_sec": 3615.7,
+    "end_sec": 3629.6,
+    "url": "https://www.youtube.com/watch?v=3KwAIdK9J1A&t=3615s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "e9f22396-bd0e-4817-8858-3926edb42203",
+    "text": "The question is: if we could arrive at a probabilistic programming world that is at least transparent, that generally does the things we expect it to do. Is this better or worse than the current regime?",
+    "verbatim": true,
+    "source_label": "Making Sense, Gary Marcus, Mar 7 2023",
+    "video_id": "GzmaLcMtGE0",
+    "start_sec": 3398.8,
+    "end_sec": 3413.3,
+    "url": "https://www.youtube.com/watch?v=GzmaLcMtGE0&t=3398s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=gary-marcus",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "russell",
+  "name": "Stuart Russell",
+  "short": "Russell",
+  "role": "Professor of computer science at UC Berkeley, co-author of the standard AI textbook.",
+  "stated_leaf": "shutdown",
+  "placed_by": "ask",
+  "scope": "Conditional and scoped: no AGI-like systems until builders can show they are safe; AI as tools continues; the leaf he aims at is proceed on a different design; the lab's inference",
+  "confidence": "low to medium",
+  "card_quote_ids": [
+   "1716e69e-9f0a-440b-b4ff-05d7d31e49c0",
+   "ab58c400-cbbf-4ecc-a398-224f0b9e37bd"
+  ],
+  "gate": {
+   "answer": "yes",
+   "basis": "The burden of proof sits with builders: 'prove to us that the risk is less than one in a 100 million per year.'",
+   "quote_ids": [
+    "e4f2df3b-848c-4abd-a0c3-1ae461acd0ca",
+    "327c9211-f444-4810-8384-0d887c1bc0c6",
+    "e6036910-a33e-48d9-843c-c0f6cd38c90f"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "'Yes, I think it's possible' with a different design, but not yet shown: 'we don't have that theorem.'",
+   "quote_ids": [
+    "1716e69e-9f0a-440b-b4ff-05d7d31e49c0",
+    "f62e4dda-880e-444e-bf8f-657a1685d0fc",
+    "24eb7ba4-0f02-432c-b115-cfd17f046a00"
+   ]
+  },
+  "containment": {
+   "answer": "unknown",
+   "basis": "No host asked him about deliberate containment; nearest is that control of a fixed-objective machine is not the default.",
+   "quote_ids": [
+    "ab58c400-cbbf-4ecc-a398-224f0b9e37bd",
+    "a8649284-55cb-4a14-9ac3-f2d51d654573",
+    "91d03396-add9-44be-956b-584907aad2b1"
+   ]
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "proceed",
+    "would_have_to_believe": "That an AI built on his principles, or another design, can be shown safe to the standard he sets, including the theorem he says 'we don't have' (80,000 Hours 1:32:48), with proofs that hold in the world and not only in a model; and, on his own terms, that someone can describe a world with such AI that people would want to live in ('Tell me the destination', DOAC 0:44:02), the second of 'both of those questions' (1:12:38). On the lab's reading this is the leaf he aims at."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That harms from very capable systems would be noticed and corrected after release, which he doubts ('we don't even necessarily fix things when we notice that they're going wrong', 80,000 Hours 1:18:26), and that testing from outside could tell a safe system from one biding its time, which he says a black box cannot show (80,000 Hours 1:21:27). He would also need to accept more risk than he does now: asked whether even a 1% chance of extinction is worth the upsides, he says 'I would argue no' (DOAC 1:12:09), and his bar is about one in 100 million per year. For the algorithms of 2018-2020 he already backs licensing and staged trials (Lex 0:57:47; 80,000 Hours 1:16:52-1:17:44), so the crux is limited to systems more capable than us."
+   },
+   {
+    "to": "contain",
+    "would_have_to_believe": "That a system more capable than us could be kept in check without sharing our objectives. He doubts that control of a fixed-objective machine comes by default: 'a sufficiently intelligent machine is not gonna let you switch it off' (Lex 0:37:52). His 2020 side-channel point is about his own proofs, which assume the agent is separate from the world, a separation he says 'isn't real' (80,000 Hours 1:33:16), so it bears on provable alignment more than on a cage. He does treat controls as a layer on top of design: in 2020 he assumed 'we would have some controls in place to make sure that AI systems were appropriately designed and under control and didn't have autonomous fabrication facilities' (80,000 Hours 1:31:18). No host asked him about deliberate containment."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "e4f2df3b-848c-4abd-a0c3-1ae461acd0ca",
+    "text": "where were the people saying okay you would like to apply this algorithm to five billion people on the face of the earth can you show me that it's safe",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Stuart Russell, Dec 9 2018",
+    "video_id": "KsZI5oXBC0k",
+    "start_sec": 3350.6,
+    "end_sec": 3364.7,
+    "url": "https://www.youtube.com/watch?v=KsZI5oXBC0k&t=3350s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "327c9211-f444-4810-8384-0d887c1bc0c6",
+    "text": "you have stage 1 stage 2 stage 3 and here are the criteria for what you have to do to pass a stage 1 trial right we haven't even thought about what those would be for algorithms",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Stuart Russell, Dec 9 2018",
+    "video_id": "KsZI5oXBC0k",
+    "start_sec": 3470.2,
+    "end_sec": 3486.6,
+    "url": "https://www.youtube.com/watch?v=KsZI5oXBC0k&t=3470s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "e6036910-a33e-48d9-843c-c0f6cd38c90f",
+    "text": "if the whole physics community on earth was working to materialize a black hole in near Earth orbit right wouldn't you ask them is that a good idea is that gonna be safe you know what if you succeed",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Stuart Russell, Dec 9 2018",
+    "video_id": "KsZI5oXBC0k",
+    "start_sec": 4140.4,
+    "end_sec": 4158.2,
+    "url": "https://www.youtube.com/watch?v=KsZI5oXBC0k&t=4140s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "1716e69e-9f0a-440b-b4ff-05d7d31e49c0",
+    "text": "theoretically it's possible but in practice it's extremely unlikely that we could specify correctly in advance the full range of concerns of humanity",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Stuart Russell, Dec 9 2018",
+    "video_id": "KsZI5oXBC0k",
+    "start_sec": 2471.0,
+    "end_sec": 2486.6,
+    "url": "https://www.youtube.com/watch?v=KsZI5oXBC0k&t=2471s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "f62e4dda-880e-444e-bf8f-657a1685d0fc",
+    "text": "a machine that's uncertain he's going to be deferential to us so if we say don't do that well now the machines learn something a bit more about our true objectives",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Stuart Russell, Dec 9 2018",
+    "video_id": "KsZI5oXBC0k",
+    "start_sec": 2637.4,
+    "end_sec": 2656.3,
+    "url": "https://www.youtube.com/watch?v=KsZI5oXBC0k&t=2637s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "24eb7ba4-0f02-432c-b115-cfd17f046a00",
+    "text": "whenever we do hand wavy stuff there are loopholes and the thing about super intelligent machines is they find the loopholes",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Stuart Russell, Dec 9 2018",
+    "video_id": "KsZI5oXBC0k",
+    "start_sec": 5069.9,
+    "end_sec": 5082.2,
+    "url": "https://www.youtube.com/watch?v=KsZI5oXBC0k&t=5069s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ab58c400-cbbf-4ecc-a398-224f0b9e37bd",
+    "text": "if it's a sufficiently intelligent machine is not gonna let you switch it off so it's actually in competition with you",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Stuart Russell, Dec 9 2018",
+    "video_id": "KsZI5oXBC0k",
+    "start_sec": 2274.0,
+    "end_sec": 2283.3,
+    "url": "https://www.youtube.com/watch?v=KsZI5oXBC0k&t=2274s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "a8649284-55cb-4a14-9ac3-f2d51d654573",
+    "text": "And if we succeed, sure, we'll still face this problem that now you've built a system that's actually more powerful than the human race. How do you have power over that ?",
+    "verbatim": true,
+    "source_label": "Making Sense, Stuart Russell, Mar 7 2023",
+    "video_id": "GzmaLcMtGE0",
+    "start_sec": 3357.1,
+    "end_sec": 3370.1,
+    "url": "https://www.youtube.com/watch?v=GzmaLcMtGE0&t=3357s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "91d03396-add9-44be-956b-584907aad2b1",
+    "text": "The system's sole purpose is to collect milk. And self-preservation remains a secondary objective, right? Because if you are intercepted and killed along the way, you won't be able to get the milk.",
+    "verbatim": true,
+    "source_label": "Making Sense, Stuart Russell, Mar 7 2023",
+    "video_id": "GzmaLcMtGE0",
+    "start_sec": 5091.6,
+    "end_sec": 5107.1,
+    "url": "https://www.youtube.com/watch?v=GzmaLcMtGE0&t=5091s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=stuart-russell",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "seth",
+  "name": "Anil Seth",
+  "short": "Seth",
+  "role": "Professor of cognitive and computational neuroscience at the University of Sussex.",
+  "stated_leaf": "outside",
+  "placed_by": "frame",
+  "scope": "Unplaced; nearest: gate, for the moral status of AI and the goal of building conscious AI only; the lab's inference",
+  "confidence": "low",
+  "card_quote_ids": [
+   "413730c5-00f9-4956-be5b-c3c3cddf7594",
+   "b7422185-1129-4a67-9b37-8df9fb9bec24"
+  ],
+  "gate": {
+   "answer": "conditional",
+   "basis": "His gate-like reasoning is scoped to the moral status of AI consciousness, not AI danger.",
+   "quote_ids": [
+    "413730c5-00f9-4956-be5b-c3c3cddf7594",
+    "b7422185-1129-4a67-9b37-8df9fb9bec24",
+    "26771562-c94f-4e80-8a7c-13e0c1cd7fae"
+   ]
+  },
+  "alignment": {
+   "answer": "not-addressed",
+   "basis": "Never addresses AI alignment as the tree defines it.",
+   "quote_ids": []
+  },
+  "containment": {
+   "answer": "not-addressed",
+   "basis": "Never addresses AI containment.",
+   "quote_ids": []
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "That the chance of creating consciousness by accident is not low (for example, that computation is enough, or that life is not needed), so that 'we don't know how to guarantee not doing that' covers ordinary AI development, not just the explicit goal. The nearest he comes is a conditional about brain models, not AI in general: if one 'would actually generate a little bit of Consciousness I would be much less happy' (YUA 0:35:56). He says 'much less happy', not 'stop', which is short of a call to stop building."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That the harms of AI that seems conscious, which he says are 'already with us' (YUA 0:45:31), need rules on design and use rather than a moral norm and a design ideal ('tools and not colleagues', his quoting of Dennett). He names 'should AI be regulated?' only as a topic (80k 2:31:24)."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "That alignment and containment are solvable, which he was never asked. On consciousness he already lets work go ahead on his credence, with one goal ruled out, and does not ask for a forward test first, so that part is not a crux."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "413730c5-00f9-4956-be5b-c3c3cddf7594",
+    "text": "I think we're not on a path to conscious AI I think we we're on a path to AI that seems conscious but that's a very different thing but of course I'm I might be wrong and probably am wrong",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Anil Seth, Jul 4 2024",
+    "video_id": "aNb8JaUVTAw",
+    "start_sec": 1837.7,
+    "end_sec": 1851.8,
+    "url": "https://www.youtube.com/watch?v=aNb8JaUVTAw&t=1837s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "b7422185-1129-4a67-9b37-8df9fb9bec24",
+    "text": "if AI is on a path to being conscious or already slightly conscious as ilas puts it then we Face a moral and ethical catastrophe of kind of unprecedented proportion",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Anil Seth, Jul 4 2024",
+    "video_id": "aNb8JaUVTAw",
+    "start_sec": 1888.4,
+    "end_sec": 1905.5,
+    "url": "https://www.youtube.com/watch?v=aNb8JaUVTAw&t=1888s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "26771562-c94f-4e80-8a7c-13e0c1cd7fae",
+    "text": "it should not be a goal to build conscious AI nobody should be trying to build AI that actually is conscious that is ethically morally a highly irresponsible thing to be doing",
+    "verbatim": true,
+    "source_label": "Your Undivided Attention, Anil Seth, Jul 4 2024",
+    "video_id": "aNb8JaUVTAw",
+    "start_sec": 1956.7,
+    "end_sec": 1974.8,
+    "url": "https://www.youtube.com/watch?v=aNb8JaUVTAw&t=1956s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=anil-seth",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "tegmark",
+  "name": "Max Tegmark",
+  "short": "Tegmark",
+  "role": "Professor of physics at MIT and president of the Future of Life Institute.",
+  "stated_leaf": "contain",
+  "placed_by": "ask",
+  "scope": "",
+  "confidence": "medium",
+  "card_quote_ids": [
+   "e87b8e4d-3201-4972-ac73-7693595b4167",
+   "dfce2844-86de-4c5f-ac67-fab1d836ff8a"
+  ],
+  "gate": {
+   "answer": "yes",
+   "basis": "Confident a soon-built, unexplainable black-box AGI would lose control; requires proof before rollout.",
+   "quote_ids": [
+    "4da84831-d28b-465e-b958-de06b2572ca7",
+    "59c5a64b-b06d-4ae4-91a8-87d9af8ef6ff",
+    "34b30b0c-ff62-40bc-9f9d-42b28f5ee99e"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "'Yes, given time'; not yet solved; in 2022 gave under 50% odds ordinary alignment work keeps pace.",
+   "quote_ids": [
+    "e87b8e4d-3201-4972-ac73-7693595b4167",
+    "d1c14544-b111-4938-81f4-293ebb2442e8",
+    "d4cea620-2c06-417d-90c5-ffbd814b224d"
+   ]
+  },
+  "containment": {
+   "answer": "conditional",
+   "basis": "Hoped, not shown: requires trusted-checker verification before running a system, not yet demonstrated at the relevant scale.",
+   "quote_ids": [
+    "dfce2844-86de-4c5f-ac67-fab1d836ff8a",
+    "da9288a9-07ed-49fb-ba4a-e5bb4904a7a8"
+   ]
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "That the slowdown the race allows is shorter than alignment or verification needs: for example, that distilling what networks learn into verifiable code does not scale to frontier systems, or that pre-rollout requirements cannot be agreed and enforced. Or that some capability should never be built; his 'we have to also stop at some point... quit while we're ahead' (Lex 0:50:15) is the nearest he comes, and he is not asked where that point is."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That rules on how AI is used could keep systems nobody understands acceptably safe without verifying what they are. This runs against his conditional that black-box AGI built soon escapes its builders' control (Lex 0:51:27) and his point that API access lets anyone turn an oracle into an agent (Lex 1:09:25)."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "That ordinary commercial alignment work keeps pace with capabilities (he gives this under 50% in 2022) and that human wisdom and incentives keep up too, the 'multiscale alignment' he says is still missing."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "4da84831-d28b-465e-b958-de06b2572ca7",
+    "text": "It might take two weeks or two days or two hours or two minutes. ... And then the new 2.0 version can similarly make the 3.0 version and the 4.0 version, and you get this exponential growth.",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, Max Tegmark, Jan 12 2025",
+    "video_id": "SWVWBLkeqvA",
+    "start_sec": 2449.9,
+    "end_sec": 2468.8,
+    "url": "https://www.youtube.com/watch?v=SWVWBLkeqvA&t=2449s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "59c5a64b-b06d-4ae4-91a8-87d9af8ef6ff",
+    "text": "Instead, what we’re faced with is these humongous black boxes with 200 billion knobs on them and it magically does this stuff. A very poor understanding of how it works.",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, Max Tegmark, Jan 12 2025",
+    "video_id": "SWVWBLkeqvA",
+    "start_sec": 3844.4,
+    "end_sec": 3858.6,
+    "url": "https://www.youtube.com/watch?v=SWVWBLkeqvA&t=3844s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "34b30b0c-ff62-40bc-9f9d-42b28f5ee99e",
+    "text": "if it's created very very soon and as a big black box that we don't understand like the large language models yeah then I'm very confident they're going to lose control",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Max Tegmark, Apr 13 2023",
+    "video_id": "VcVfceTsD0A",
+    "start_sec": 3088.8,
+    "end_sec": 3101.6,
+    "url": "https://www.youtube.com/watch?v=VcVfceTsD0A&t=3088s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "e87b8e4d-3201-4972-ac73-7693595b4167",
+    "text": "the one thing we’ve definitely learned from AI safety research so far is that it’s hard — really hard — and it might take decades to actually solve this, which means we should start now.",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, Max Tegmark, Jan 12 2025",
+    "video_id": "SWVWBLkeqvA",
+    "start_sec": 2746.8,
+    "end_sec": 2765.6,
+    "url": "https://www.youtube.com/watch?v=SWVWBLkeqvA&t=2746s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "d1c14544-b111-4938-81f4-293ebb2442e8",
+    "text": "I would give it less than 50% chance, but even if it is 50% likely that we’ll get lucky like this, that also means there’s a 50% chance that we’re unlucky and are walking towards a cliff.",
+    "verbatim": true,
+    "source_label": "80,000 Hours Podcast, Max Tegmark, Jan 12 2025",
+    "video_id": "SWVWBLkeqvA",
+    "start_sec": 5898.9,
+    "end_sec": 5915.6,
+    "url": "https://www.youtube.com/watch?v=SWVWBLkeqvA&t=5898s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "d4cea620-2c06-417d-90c5-ffbd814b224d",
+    "text": "how do you make AI first of all understand our goals and then adopt our goals and then retain them as they get smarter right and um all three of those are really hard",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Max Tegmark, Apr 13 2023",
+    "video_id": "VcVfceTsD0A",
+    "start_sec": 7827.1,
+    "end_sec": 7846.0,
+    "url": "https://www.youtube.com/watch?v=VcVfceTsD0A&t=7827s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "dfce2844-86de-4c5f-ac67-fab1d836ff8a",
+    "text": "first of all teach it to write code yeah because that's the first step towards recursive self-improvement which can take it from AGI to much higher levels okay oops we've done that",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Max Tegmark, Apr 13 2023",
+    "video_id": "VcVfceTsD0A",
+    "start_sec": 3229.1,
+    "end_sec": 3244.6,
+    "url": "https://www.youtube.com/watch?v=VcVfceTsD0A&t=3229s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "da9288a9-07ed-49fb-ba4a-e5bb4904a7a8",
+    "text": "I don't buy that argument I think no matter how super intelligent an AI is it's never going to be able to prove to me that they're only finitely many primes for example",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Max Tegmark, Apr 13 2023",
+    "video_id": "VcVfceTsD0A",
+    "start_sec": 6443.2,
+    "end_sec": 6455.1,
+    "url": "https://www.youtube.com/watch?v=VcVfceTsD0A&t=6443s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=max-tegmark",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "yudkowsky",
+  "name": "Eliezer Yudkowsky",
+  "short": "Yudkowsky",
+  "role": "Founder of the Machine Intelligence Research Institute (MIRI).",
+  "stated_leaf": "shutdown",
+  "placed_by": "answers",
+  "scope": "",
+  "confidence": "high",
+  "card_quote_ids": [
+   "40afb4c9-13b1-4bc6-9acf-599e9ac07aee",
+   "99488348-10cb-4a64-bc0d-a5a90d14f9bf"
+  ],
+  "gate": {
+   "answer": "yes",
+   "basis": "'The first time you fail at aligning something much smarter than you are you die and you do not get to try again.'",
+   "quote_ids": [
+    "4bb4cc42-dcb3-4218-ae58-6b8d2f78c118",
+    "ad1ddced-2a71-4728-8e2c-6ae89cc497ce",
+    "23580515-f7f5-4db8-a59d-ff280cdbec2a"
+   ]
+  },
+  "alignment": {
+   "answer": "no",
+   "basis": "'We do not know how to get any goals into systems at all,' on a first try; with unlimited retries, perhaps in ~50 years.",
+   "quote_ids": [
+    "40afb4c9-13b1-4bc6-9acf-599e9ac07aee",
+    "ef11a3e7-3157-4ce3-be10-f0ba30d77062",
+    "304fa000-70c5-4ab2-aa93-6445678535a3"
+   ]
+  },
+  "containment": {
+   "answer": "no",
+   "basis": "Checks might hold a roughly human-level system for a while, but not the next, stronger generation.",
+   "quote_ids": [
+    "99488348-10cb-4a64-bc0d-a5a90d14f9bf",
+    "eeddbe32-b0eb-4885-9fe6-d0f0c078e344"
+   ]
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "contain",
+    "would_have_to_believe": "That a system strong enough to help could still be kept 'too weak to have any options we wouldn't really like' and off the internet, and that humans could check its work. He names this as the hinge of the host's argument for using human-level AI on alignment and doubts it (Dwarkesh ep. 1:25:59); he grants that checks might hold a roughly human-level system for 'a year like that' (2:52:38), but not the stronger generation after it."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That the lethal risk sits in deployment and use rather than in training itself; he says a very smart system 'kills you before you can RLHF it' (Dwarkesh ep. 2:47:53). And that danger shows up as legible warnings below the lethal threshold, so rules on use could act in time. He argues 'you can't calculate the exact point at which they ignite the atmosphere' (Dwarkesh ep. 1:33:33) and, with irony, that Bing's failures were already 'your red fire alarm' that stopped no one (Lex ep. 2:01:10)."
+   },
+   {
+    "to": "proceed",
+    "would_have_to_believe": "That alignment seen in systems that cannot yet kill us carries over to ones that can (his own open question: 'did the alignment generalize along with the capabilities', Lex ep. 1:51:18), or that there will be many tries, as Lex argues ('there's not just first try you get many tries at it', Lex ep. 2:00:40). Lex also holds that the research could advance incrementally 'within months and within a small number of years' (Lex ep. 2:04:14). His own condition for solvability is 'unlimited retries'."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "4bb4cc42-dcb3-4218-ae58-6b8d2f78c118",
+    "text": "the first time you fail at aligning something much smarter than you are you die and you do not get to try again",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Eliezer Yudkowsky, Mar 30 2023",
+    "video_id": "AaTRHFaaPG8",
+    "start_sec": 3181.6,
+    "end_sec": 3191.6,
+    "url": "https://www.youtube.com/watch?v=AaTRHFaaPG8&t=3181s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ad1ddced-2a71-4728-8e2c-6ae89cc497ce",
+    "text": "people can be smart enough to realize that the answer you're looking for is yes I'm a good person and say that even if they're not really good people",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Eliezer Yudkowsky, Mar 30 2023",
+    "video_id": "AaTRHFaaPG8",
+    "start_sec": 3605.8,
+    "end_sec": 3616.9,
+    "url": "https://www.youtube.com/watch?v=AaTRHFaaPG8&t=3605s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "23580515-f7f5-4db8-a59d-ff280cdbec2a",
+    "text": "And then you augment the system further to where it’s no longer passively safe, to where its safety depends on its alignment, and then you die.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Eliezer Yudkowsky, Apr 6 2023",
+    "video_id": "41SUp-TRVlg",
+    "start_sec": 2698.9,
+    "end_sec": 2710.7,
+    "url": "https://www.youtube.com/watch?v=41SUp-TRVlg&t=2698s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "40afb4c9-13b1-4bc6-9acf-599e9ac07aee",
+    "text": "I think they could be answered at 50 years with unlimited retries the way things usually work in science",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Eliezer Yudkowsky, Mar 30 2023",
+    "video_id": "AaTRHFaaPG8",
+    "start_sec": 7439.5,
+    "end_sec": 7448.9,
+    "url": "https://www.youtube.com/watch?v=AaTRHFaaPG8&t=7439s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "ef11a3e7-3157-4ce3-be10-f0ba30d77062",
+    "text": "a larger thing making this difficult is that we do not know how to get any goals into systems at all we know how to get outwardly observable behaviors into systems",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Eliezer Yudkowsky, Mar 30 2023",
+    "video_id": "AaTRHFaaPG8",
+    "start_sec": 8073.9,
+    "end_sec": 8088.8,
+    "url": "https://www.youtube.com/watch?v=AaTRHFaaPG8&t=8073s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "304fa000-70c5-4ab2-aa93-6445678535a3",
+    "text": "I know that if you build an AI and you keep on making it smarter until I start voting its stuff up, it will find out how to fool me.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Eliezer Yudkowsky, Apr 6 2023",
+    "video_id": "41SUp-TRVlg",
+    "start_sec": 4130.6,
+    "end_sec": 4146.0,
+    "url": "https://www.youtube.com/watch?v=41SUp-TRVlg&t=4130s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "99488348-10cb-4a64-bc0d-a5a90d14f9bf",
+    "text": "all these things are presently being trained on computers that are just like on the internet which is you know like not a very smart life decision for us as a species",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Eliezer Yudkowsky, Mar 30 2023",
+    "video_id": "AaTRHFaaPG8",
+    "start_sec": 3287.2,
+    "end_sec": 3299.4,
+    "url": "https://www.youtube.com/watch?v=AaTRHFaaPG8&t=3287s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "eeddbe32-b0eb-4885-9fe6-d0f0c078e344",
+    "text": "Maybe you can get a year like that. Maybe that actually happens. What are you going to do with that year that prevents you from dying the year after?",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Eliezer Yudkowsky, Apr 6 2023",
+    "video_id": "41SUp-TRVlg",
+    "start_sec": 10358.8,
+    "end_sec": 10369.3,
+    "url": "https://www.youtube.com/watch?v=41SUp-TRVlg&t=10358s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=eliezer-yudkowsky",
+  "channel_label": "Person grammar (private for now)"
+ },
+ {
+  "slug": "zuckerberg",
+  "name": "Mark Zuckerberg",
+  "short": "Zuckerberg",
+  "role": "Founder and CEO of Meta.",
+  "stated_leaf": "proceed",
+  "placed_by": "ask",
+  "scope": "",
+  "confidence": "medium",
+  "card_quote_ids": [
+   "03ebafcf-2990-465a-be18-5b5b7ee3fca1",
+   "e3fc3ef1-4c8c-4a8a-bbf1-0a665f355916"
+  ],
+  "gate": {
+   "answer": "no",
+   "basis": "Doubts the premise for now: progress is gradual, judged release by release rather than as one irreversible step.",
+   "quote_ids": [
+    "ad66638b-373c-4ed5-9618-0b0816ee4ddb",
+    "51b12d62-d5cc-47c1-8e97-8ad6ba4cad5c",
+    "918841a2-3eb1-4a9d-97d6-cab8648f9cc9"
+   ]
+  },
+  "alignment": {
+   "answer": "conditional",
+   "basis": "Current systems seem 'pretty separated' from agency; to be rechecked release by release; 'predictable enough' for now.",
+   "quote_ids": [
+    "03ebafcf-2990-465a-be18-5b5b7ee3fca1",
+    "e7a98d3d-da3e-4665-acc8-50d879f8ca5d"
+   ]
+  },
+  "containment": {
+   "answer": "conditional",
+   "basis": "Proposes balance and hardening over time via open release rather than a cage; 'plausible' if open-source works out.",
+   "quote_ids": [
+    "e3fc3ef1-4c8c-4a8a-bbf1-0a665f355916",
+    "074ac64d-5926-48ae-8264-6634adacb1bd",
+    "66621a4e-109a-4d20-8afd-eeab9495f40e"
+   ]
+  },
+  "race": "",
+  "own_conditional": "Not yet found in their own words in the appearances reviewed.",
+  "to_move": [
+   {
+    "to": "contain",
+    "would_have_to_believe": "That models can pursue goals of their own, for example deception he could tell apart from hallucination, so that intelligence is no longer separable from agency and the model itself has to be treated as untrusted and caged."
+   },
+   {
+    "to": "regulate",
+    "would_have_to_believe": "That the 'qualitative change' he names has arrived, or could arrive without clear warning, so weights are withheld and use is controlled (closed release, rules on use); or that defensive AI will not keep pace with misuse of open weights, the doubt he voices about bio ('I don't know that everything in the world is like that') applying more widely, so binding rules on uses, set outside the company, have to carry the load. He already accepts the qualitative-change condition; the move would need a threshold and evidence it has been crossed."
+   },
+   {
+    "to": "gate",
+    "would_have_to_believe": "That the step to much stronger models could be sudden or untestable, for example if AI-written research code, the host's steelman of automated AI research, which he called 'pretty compelling' while doubting it is 'the whole game', speeds progress faster than infrastructure limits it. Then proof of safety would be owed before release, rather than resting on a release-by-release check of which harms can be mitigated."
+   },
+   {
+    "to": "shutdown",
+    "would_have_to_believe": "That a runaway is likely after all, with physical bottlenecks not bounding it, and that harms would not show in time to mitigate (he currently calls that case not 'particularly likely'); and that neither wide distribution nor any cage could hold such a model, and that a stop could bind adversarial governments and companies, since otherwise, by his reasoning, stopping would leave the strongest AI with the actors he says he worries about more."
+   }
+  ],
+  "quotes": [
+   {
+    "id": "ad66638b-373c-4ed5-9618-0b0816ee4ddb",
+    "text": "we'll need to have a similar debate and process to Red Team this and make sure that this is safe but and my hope is that we'll be able to to open source this next version",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Mark Zuckerberg, Sep 28 2023",
+    "video_id": "MVYrJJNdrEg",
+    "start_sec": 3257.6,
+    "end_sec": 3269.4,
+    "url": "https://www.youtube.com/watch?v=MVYrJJNdrEg&t=3257s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "51b12d62-d5cc-47c1-8e97-8ad6ba4cad5c",
+    "text": "I just think that there's all these physical constraints that make that unlikely to happen. I just don't really see that playing out. I think we'll have time to acclimate a bit.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Mark Zuckerberg, Apr 18 2024",
+    "video_id": "bc6uFV9CJGg",
+    "start_sec": 2134.0,
+    "end_sec": 2151.7,
+    "url": "https://www.youtube.com/watch?v=bc6uFV9CJGg&t=2134s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "918841a2-3eb1-4a9d-97d6-cab8648f9cc9",
+    "text": "If at some point however there's some qualitative change in what the thing is capable of, and we feel like it's not responsible to open source it, then we won't.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Mark Zuckerberg, Apr 18 2024",
+    "video_id": "bc6uFV9CJGg",
+    "start_sec": 2312.2,
+    "end_sec": 2331.2,
+    "url": "https://www.youtube.com/watch?v=bc6uFV9CJGg&t=2312s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "03ebafcf-2990-465a-be18-5b5b7ee3fca1",
+    "text": "you're training them they're AI models not not not um kind of normal computer programs but um but you want to get it to be predictable enough so that way you can set some parameters for it",
+    "verbatim": true,
+    "source_label": "Lex Fridman Podcast, Mark Zuckerberg, Sep 28 2023",
+    "video_id": "MVYrJJNdrEg",
+    "start_sec": 2569.1,
+    "end_sec": 2583.8,
+    "url": "https://www.youtube.com/watch?v=MVYrJJNdrEg&t=2569s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "e7a98d3d-da3e-4665-acc8-50d879f8ca5d",
+    "text": "I mean right now we see a lot of hallucinations. It's more so that. I think it's an interesting question, how you would tell the difference between hallucination and deception.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Mark Zuckerberg, Apr 18 2024",
+    "video_id": "bc6uFV9CJGg",
+    "start_sec": 2907.2,
+    "end_sec": 2936.6,
+    "url": "https://www.youtube.com/watch?v=bc6uFV9CJGg&t=2907s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "e3fc3ef1-4c8c-4a8a-bbf1-0a665f355916",
+    "text": "That's true. I think a lot of people will basically use the off-the-shelf model and some people who have basically bad faith are going to try to strip out all the bad stuff. So I do think that's an issue.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Mark Zuckerberg, Apr 18 2024",
+    "video_id": "bc6uFV9CJGg",
+    "start_sec": 2549.8,
+    "end_sec": 2572.2,
+    "url": "https://www.youtube.com/watch?v=bc6uFV9CJGg&t=2549s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "074ac64d-5926-48ae-8264-6634adacb1bd",
+    "text": "at some level if you get a sufficiently bad actor, and you don't have other AI that can balance them and understand what the threats are, then that could be a risk.",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Mark Zuckerberg, Apr 18 2024",
+    "video_id": "bc6uFV9CJGg",
+    "start_sec": 2862.4,
+    "end_sec": 2884.7,
+    "url": "https://www.youtube.com/watch?v=bc6uFV9CJGg&t=2862s",
+    "checked_against": "captions"
+   },
+   {
+    "id": "66621a4e-109a-4d20-8afd-eeab9495f40e",
+    "text": "You need to worry about waking up one day and if you're using a model that has some tie to another government, can it embed vulnerabilities in code that their intelligence organizations could exploit later?",
+    "verbatim": true,
+    "source_label": "Dwarkesh Podcast, Mark Zuckerberg, Apr 29 2025",
+    "video_id": "rYXeQbTuVl0",
+    "start_sec": 3053.9,
+    "end_sec": 3085.5,
+    "url": "https://www.youtube.com/watch?v=rYXeQbTuVl0&t=3053s",
+    "checked_against": "captions"
+   }
+  ],
+  "channel_url": "https://recursive.eco/view/6bac7bce-bec5-4f2b-a7e5-0b52226bd118?kiosk&edition=mark-zuckerberg",
+  "channel_label": "Person grammar (private for now)"
  }
 ]
