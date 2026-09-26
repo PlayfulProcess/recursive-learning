@@ -68,7 +68,9 @@
           { label: 'with others', short: 'with others', href: 'game/potato-others.html' },
           { label: 'alone', short: 'play alone', href: 'game/potato.html', note: 'for careful readers' }
         ],
-        notes: 'https://github.com/PlayfulProcess/recursive-learning/blob/main/game/DESIGN-potato.md' }
+        notes: 'https://github.com/PlayfulProcess/recursive-learning/blob/main/game/DESIGN-potato.md' },
+      { name: 'The Tree', href: 'game/tree-board/index.html', tag: 'new and rough',
+        blurb: 'A cooperative board game: place the people on the belief tree before the race runs out.' }
     ]
   };
 
