@@ -7,8 +7,9 @@
  *   node scripts/check-links.mjs .                the repo root, which is the branch-build layout
  *
  * It reads every .html under DIR and every href/src in the static HTML (script bodies, styles and
- * comments are skipped: links a script builds are not seen here), plus every href in the site map
- * of shared/nav.js. Each one is resolved the way a browser would (relative to its page, `/` = DIR)
+ * comments are skipped: links a script builds are not seen here), plus every game and view href in
+ * shared/nav.js (SITE.games). The header's menus (site-header.js) are checked by
+ * scripts/check_all.py, which parses them. Each one is resolved the way a browser would (relative to its page, `/` = DIR)
  * and must exist; a folder needs an index.html. A link into a page with a #fragment that looks
  * like an id must find that id in the page. Links to learning.recursive.eco are checked as local
  * files; any link to game.recursive.eco fails (that domain answers 404). Other external links are
@@ -16,6 +17,10 @@
  *
  * --repo PATH also fails when a top-level folder of the repo holds an .html page but was not
  * copied into DIR: that is how /glossary/ 404'd for a day after it was merged.
+ *
+ * --allow-missing a,b,c   site paths (e.g. /game/as-if.html) that may be missing: reported as
+ * pending, not broken. Only scripts/check_all.py --allow-pending passes it, while another builder's
+ * file has not landed yet; the Pages workflow never does.
  *
  * Why this exists: on Sep 24 2026 the landing linked /glossary/ while pages.yml did not deploy it.
  */
@@ -25,10 +30,13 @@ import { resolve, join, relative, sep } from 'node:path';
 import { createRequire } from 'node:module';
 
 let dirArg = '.', repoArg = null;
+const allowMissing = new Set();
 for (let i = 2; i < process.argv.length; i++) {
   if (process.argv[i] === '--repo') repoArg = process.argv[++i] || '.';
+  else if (process.argv[i] === '--allow-missing') (process.argv[++i] || '').split(',').filter(Boolean).forEach(p => allowMissing.add(p));
   else dirArg = process.argv[i];
 }
+const pending = new Set();
 const DIR = resolve(dirArg);
 const REPO = repoArg === null ? null : resolve(repoArg);
 const LIVE = /^https?:\/\/learning\.recursive\.eco(\/|$)/i;
@@ -83,6 +91,7 @@ function check(fromFile, raw, what) {
   if (hashAt >= 0) frag = ref.slice(hashAt + 1);
   path = path.split('#')[0].split('?')[0];
   const f = target(path);
+  if (!f && allowMissing.has(path)) { pending.add(path); return; }
   if (!f) { problems.push(`${what}: ${ref} -> ${path} does not exist`); return; }
   if (frag && /^[A-Za-z][\w-]*$/.test(frag) && f.endsWith('.html') && !hasId(f, frag))
     problems.push(`${what}: ${ref} -> no id="${frag}" in ${relative(DIR, f)}`);
@@ -100,13 +109,12 @@ for (const file of pages) {
   }
 }
 
-/* the site map in shared/nav.js: every section, game and view must exist */
+/* the games in shared/nav.js: every game and view must exist (the sections live in site-header.js) */
 const navFile = join(DIR, 'shared', 'nav.js');
 if (existsSync(navFile)) {
   const { SITE } = createRequire(import.meta.url)(navFile);
   const home = target('/') || join(DIR, 'index.html');
-  const refs = [...SITE.sections.map(s => s.href), SITE.shelf && SITE.shelf.href,
-    ...SITE.games.flatMap(g => [g.href, ...(g.views || []).map(v => v.href)])].filter(Boolean);
+  const refs = SITE.games.flatMap(g => [g.href, ...(g.views || []).map(v => v.href)]).filter(Boolean);
   for (const h of refs) { n++; check(home, h, 'shared/nav.js'); }
 } else if (pages.some(f => /shared\/nav\.js/.test(read(f)))) {
   problems.push('shared/nav.js is referenced but was not deployed');
@@ -125,4 +133,5 @@ if (problems.length) {
   console.error(`check-links: ${problems.length} broken, of ${n} links in ${pages.length} pages\n  ` + problems.join('\n  '));
   process.exit(1);
 }
+if (pending.size) console.log(`check-links: pending (allowed missing): ${[...pending].sort().join(', ')}`);
 console.log(`check-links: ${n} links in ${pages.length} pages, none broken.`);

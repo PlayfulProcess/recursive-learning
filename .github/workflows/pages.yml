@@ -1,14 +1,22 @@
 name: Pages
 
-# Publishes the static index in `site/` (with 404.html), the game in `game/`, the glossary in
-# `glossary/`, the shared navigation in `shared/` and the grammar JSON in `grammars/` to GitHub
-# Pages. No install, no node_modules, no build tooling — the deploy directory is assembled with `cp`,
-# then checked by `node scripts/check-links.mjs` (node is already on the runner; no dependencies).
+# Publishes the site to GitHub Pages: `site/` at the root (the tarot-template shell: home, viewers,
+# pages, map, 404) with `game/`, `glossary/`, `grammars/` and `shared/` beside it. No install, no
+# node_modules, no build tooling. The folder list lives ONCE, in scripts/site-folders.txt, which
+# scripts/assemble-site.sh reads (here and locally). Then two checks, both dependency-free:
+#   node scripts/check-links.mjs      every internal link lands on a file (and every page folder was copied)
+#   python3 scripts/check_all.py      grammars valid, generated files current, collection, sync
+#                                     contract, words, reachability, theme and hygiene, privacy, As-If
+# Generated grammars are built LOCALLY and committed (python scripts/build_all.py); CI only checks
+# that each committed output equals a fresh rebuild. There is no bot commit.
 #
-# A NEW TOP-LEVEL FOLDER (explainers/, lab/, map/) must be added to the `cp` lines AND to
-# on.push.paths below. If it is not, the link check fails this job before anything is deployed,
-# naming the folder: that is the guard against a repeat of /glossary/, merged but 404ing because
-# this file did not copy it.
+# A NEW TOP-LEVEL PAGE FOLDER (explainers/, lab/, data/) is one line in scripts/site-folders.txt
+# plus its menu entry in site/site-header.js. If the line is missing, the link check fails this job
+# before anything is deployed, naming the folder: the guard against a repeat of /glossary/,
+# merged but 404ing because this file did not copy it.
+#
+# PULL REQUESTS run the build job (assemble + both checks) but never deploy, so a PR shows its
+# checks before anyone merges it.
 #
 # `.nojekyll` is copied in deliberately: without it, Pages runs Jekyll and every path whose
 # name starts with `_` is silently 404'd — which here would be `grammars/_eco_ids.json`, the
@@ -34,8 +42,12 @@ on:
       - 'grammars/**'
       - 'glossary/**'
       - 'shared/**'
-      - 'scripts/check-links.mjs'
+      - 'scripts/**'
+      - 'research/**'
+      - 'recursive-eco.json'
       - '.github/workflows/pages.yml'
+  pull_request:
+    branches: [main, lab/navigation]
   workflow_dispatch:
 
 permissions:
@@ -43,8 +55,10 @@ permissions:
   pages: write
   id-token: write
 
+# Deploys queue one at a time; a pull request's check runs in its own group, so it never holds
+# up (or is held up by) a deploy.
 concurrency:
-  group: pages
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.ref) || 'pages' }}
   cancel-in-progress: false
 
 jobs:
@@ -53,30 +67,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Assemble the site
-        run: |
-          mkdir -p _site
-          cp -r site/. _site/
-          cp -r game _site/game
-          cp -r grammars _site/grammars
-          cp -r glossary _site/glossary
-          cp -r shared _site/shared
-          test -f _site/.nojekyll || touch _site/.nojekyll
-          echo "--- deploying ---"
-          find _site -maxdepth 2 | sort
+      - name: Assemble the site (scripts/site-folders.txt)
+        run: bash scripts/assemble-site.sh _site
 
       # Every internal link on every page must land on a file in _site (and every folder of the
       # repo that holds pages must have been copied). Fails the deploy, not the visitor.
       - name: Check every internal link
         run: node scripts/check-links.mjs _site --repo .
 
+      # Everything else scripts/check_all.py knows, on the same assembled site. Python standard
+      # library only. --check rebuilds each generated file into a temp folder and diffs it.
+      - name: Check the whole site (check_all)
+        run: python3 scripts/check_all.py --site _site --check
+
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
         with:
           path: _site
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

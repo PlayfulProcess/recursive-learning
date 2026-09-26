@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../theme.css?v=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Games · Recursive Eco-Improvement</title>
+<meta name="description" content="Small games about alignment: As-If, The Walk, Hot Potato and Changing Lines. Nothing is staked; each one turns an idea into a step you take.">
+<meta property="og:title" content="Games · Recursive Eco-Improvement">
+<meta property="og:description" content="As-If, The Walk, Hot Potato and Changing Lines: small games where you move something and watch what the move costs.">
+<link rel="icon" type="image/svg+xml" href="../spiral.svg">
+<!-- Ported from recursive-tarot/pages/play.html (its .grid / .tile / .badge shape). The list of
+     games mirrors shared/nav.js SITE.games; scripts/check_all.py fails if a game is missing here.
+     Draft copy for PlayfulProcess's edit. -->
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:light;
+    font-family:Inter,system-ui,-apple-system,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 26px 80px}
+  h1{font-size:26px;margin:.2em 0 .15em}
+  .lede{color:var(--muted);font-size:15px;line-height:1.6;max-width:74ch}
+
+  .section{margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
+  .section:first-of-type{border-top:0;margin-top:18px}
+  .section h2{font-size:21px;margin:0 0 6px;display:flex;align-items:center;gap:9px}
+  .section h2 .k{font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .sintro{color:var(--muted);font-size:14.5px;line-height:1.65;max-width:82ch;margin:.2em 0 16px}
+  .sintro a{color:var(--accent)} .sintro strong{color:var(--ink)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:16px;margin-top:8px}
+  .tile{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;text-decoration:none;color:inherit;transition:transform .14s,box-shadow .14s,border-color .14s}
+  .tile:hover{transform:translateY(-4px);box-shadow:0 16px 34px -22px rgba(60,45,20,.5);border-color:var(--accent)}
+  .tbody{padding:16px 16px 18px}
+  .badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 9px;border-radius:999px;margin-bottom:8px}
+  .b-game{background:rgba(23,125,86,.12);color:#15704d;border:1px solid rgba(23,125,86,.4)}
+  .b-rough{background:rgba(63,95,158,.1);color:#3f5f9e;border:1px solid rgba(63,95,158,.4)}
+  .tile b{display:block;font-size:17px;margin:2px 0 5px}
+  .tile .desc{font-size:13.5px;color:var(--muted);line-height:1.5}
+  .views{margin:10px 0 0;font-size:13px;color:var(--muted);line-height:1.6}
+  .views a{color:var(--accent)}
+  @media(max-width:640px){ .wrap{padding:18px 16px 60px} }
+</style>
+</head>
+<body>
+<script src="../site-header.js?v=1"></script>
+<site-header active="play"></site-header>
+
+<main class="wrap" id="main">
+  <h1>Games</h1>
+  <p class="lede">Small games where an idea about alignment becomes a step you take. Nothing is staked
+    and nothing predicts; each game asks you to answer before the card turns over, then shows you what
+    your move cost.</p>
+
+  <section class="section">
+    <h2><span class="k">Play</span> Every game</h2>
+    <div class="grid">
+      <a class="tile" href="../game/as-if.html"><div class="tbody">
+        <span class="badge b-game">Cards</span>
+        <b>As-If</b>
+        <span class="desc">Cast face down, forecast before you look, then hold the cards as if true and take one step.</span>
+      </div></a>
+      <a class="tile" href="../game/index.html"><div class="tbody">
+        <span class="badge b-game">Cards</span>
+        <b>As-If, first edition</b>
+        <span class="desc">Draw a character, hold it as if it were true, take a step. The reveal is earned, not clicked.</span>
+      </div></a>
+      <div class="tile"><div class="tbody">
+        <span class="badge b-game">A walk in three views</span>
+        <b><a href="../game/spread.html" style="color:inherit">The Walk</a></b>
+        <span class="desc">Cast the table, move the allocation, and watch which ending moves.</span>
+        <p class="views">One walk, three views: <a href="../game/spread.html">a table</a> &middot;
+          <a href="../game/scroll.html">a story</a> &middot; <a href="../game/walk.html">a dashboard</a></p>
+      </div></div>
+      <div class="tile"><div class="tbody">
+        <span class="badge b-rough">New and rough</span>
+        <b><a href="../game/potato-others.html" style="color:inherit">Hot Potato</a></b>
+        <span class="desc">The ad made playable with six others in the ring: toss it on, or hold it together.</span>
+        <p class="views">Two ways to play: <a href="../game/potato-others.html">with others</a> &middot;
+          <a href="../game/potato.html">alone</a>, for careful readers &middot;
+          <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/game/DESIGN-potato.md">how it was made</a></p>
+      </div></div>
+      <div class="tile"><div class="tbody">
+        <span class="badge b-rough">New and rough</span>
+        <b><a href="../game/lines.html" style="color:inherit">Changing Lines</a></b>
+        <span class="desc">The same lesson in six draws from the I Ching’s bowl of sixteen marbles.</span>
+        <p class="views"><a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/game/DESIGN-changing-lines.md">how it was made</a></p>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2><span class="k">Cast</span> Draw the words</h2>
+    <p class="sintro">The twenty words also work as a deck. Cast one into a spread and read it against
+      your own situation: <a href="../viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&amp;spread=before-you-delegate">Before you delegate</a>,
+      <a href="../viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&amp;spread=the-fork">The fork</a>, or
+      <a href="../viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&amp;spread=single">a single draw</a>.</p>
+  </section>
+</main>
+
+<script src="../site-footer.js?v=1"></script>
+<site-footer></site-footer>
+</body>
+</html>
