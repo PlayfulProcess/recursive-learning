@@ -1,0 +1,7 @@
+# the versions the pre-registered run used (CPU only)
+torch==2.7.1
+transformers==4.53.1
+safetensors==0.5.3
+numpy==2.3.1
+scipy==1.18.0
+huggingface_hub==0.33.2
