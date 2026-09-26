@@ -12,3 +12,9 @@ explainers/curves-and-odds/index.html  unreachable  self-contained noindex embed
 explainers/curves-and-odds/index.html  no-header    embed-only explainer page; no site chrome by design (see its own step-API header comment)
 explainers/belief-tree/index.html      unreachable  embed for HOT POTATO and each person's branch film (?embed=1&step=N&focus=); reached by direct embed URL, not site nav (Film chat's page; step contract owned by tree-render.js)
 explainers/belief-tree/index.html      no-header    embed-only explainer page; no site chrome by design (see its own step-contract header comment)
+game/fork/index.html                   unreachable  The Fork (PR #8, lab/fork); not yet in site-header.js SITE.games or pages/play.html's tile list — nav wiring is her call, held with PEOPLE='example' until she approves real people
+game/fork/index.html                   no-header    hand-written game page with its own header (like the Hot Potato pages), not the shared <site-header>
+game/fork/lines.html                   unreachable  The Fork's six-lines view; same PR, same pending nav wiring as game/fork/index.html
+game/fork/lines.html                   no-header    hand-written game page with its own header, not the shared <site-header>
+explainers/risk-and-uncertainty/index.html  unreachable  linked only from game/fork/ (index.html and lines.html), which are themselves not yet in site nav; becomes reachable once The Fork is wired in
+explainers/risk-and-uncertainty/index.html  no-header    embed-and-anchor explainer for The Fork; no site chrome by design (?embed=1 for the film), prose still a draft for her to carve (decision 8)
