@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../../theme.css?v=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Tree · Recursive Eco-Improvement</title>
+<meta name="description" content="A cooperative board game on the belief tree: place the people on the tree before the race runs out. Arguments, not villains; every quote is checked and sourced.">
+<meta property="og:title" content="The Tree · Recursive Eco-Improvement">
+<meta property="og:description" content="Place the people on the belief tree before the race runs out.">
+<link rel="icon" type="image/svg+xml" href="../../spiral.svg">
+<!--
+  The Tree: the belief tree (explainers/belief-tree/tree-render.js, the Film chat's, never edited
+  here) played as a cooperative pass-and-play board game, 2-5 players. See game/tree-board/
+  board-engine.js for the rules in full and tests/tree-board.test.mjs for their tests. Casting
+  (coin/yarrow/"I don't know") reuses The Fork's cast engine (game/fork/fork-engine.js) — no second
+  random engine. Quotes and events shown on a character's card are the ones already public and
+  checked in people.json; the evidence deck (game/tree-board/evidence.json) is arguments and public
+  events, never invented words in anyone's mouth.
+-->
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:light;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+  .wrap{max-width:760px;margin:0 auto;padding:18px 16px 80px}
+  h1{font-size:24px;margin:.2em 0 .15em}
+  .lede{color:var(--muted);font-size:14.5px;line-height:1.6}
+  details.rules{margin:14px 0 18px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--panel)}
+  details.rules summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+  details.rules p,details.rules ul{font-size:14px;color:var(--ink-soft);margin:8px 0}
+  details.rules ul{padding-left:20px}
+
+  #setup{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel);margin-bottom:18px}
+  #setup label{font-weight:600;font-size:14px;margin-right:8px}
+  #setup select{font-size:15px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);min-height:44px}
+
+  button{font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel2);color:var(--ink);padding:9px 14px;min-height:44px;line-height:1.2}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button[disabled]{opacity:.5;cursor:not-allowed}
+  button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  #game[hidden],#end[hidden],#evidencePanel[hidden],#splitPanel[hidden],#setup[hidden]{display:none}
+
+  .race{display:flex;gap:5px;margin:4px 0 2px}
+  .race .pip{width:20px;height:20px;border-radius:5px;border:1px solid var(--line);background:var(--panel)}
+  .race .pip.is-filled{background:var(--bad,#c0473b);border-color:var(--bad,#c0473b)}
+  #raceLabel{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+
+  .tree-wrap{position:relative;margin-bottom:14px}
+  #tree{width:100%}
+  #tokens{position:absolute;inset:0;pointer-events:none}
+  .token{position:absolute;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:10.5px;font-weight:800;color:#fff;box-shadow:0 0 0 2px var(--bg);transition:left .3s ease,top .3s ease}
+  .token.is-active{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
+  @media (prefers-reduced-motion: reduce){ .token{transition:none} }
+
+  .turn-panel{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel);margin-bottom:14px}
+  #turnTitle{margin:0 0 8px;font-size:17px}
+  #card h3{margin:0 0 2px;font-size:16px}
+  #card .role{margin:0 0 8px;color:var(--muted);font-size:13px}
+  .answers{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .ans{font-size:13px}
+  .ans .k{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+  .ans .v{font-weight:700}
+  blockquote{margin:8px 0;padding:8px 10px;border-left:3px solid var(--accent);background:var(--panel2);font-size:13.5px;font-style:italic}
+  blockquote footer{margin-top:4px;font-style:normal;font-size:12px}
+  blockquote footer a{color:var(--accent)}
+  .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin:8px 0 2px}
+  ul.tomove{margin:2px 0 0;padding-left:18px;font-size:13px}
+
+  .move-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  #actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .hint{color:var(--muted);font-size:13.5px}
+
+  .evidence-list{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto;margin:10px 0}
+  .evidence-card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;min-height:auto;padding:9px 12px}
+  .evidence-card.is-picked{border-color:var(--accent)}
+  .evidence-card .tag{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--accent)}
+  .evidence-card .txt{font-size:13.5px;font-weight:500;color:var(--ink)}
+  .evidence-card .src{font-size:11.5px;color:var(--muted)}
+  .evidence-targets{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+  .target.no{opacity:.55}
+  .reason{font-size:13px;color:var(--bad,#c0473b);min-height:1.2em}
+
+  .split-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .split-compare p{font-size:13px;margin:6px 0}
+
+  #log{list-style:none;margin:0;padding:0;font-size:12.5px;color:var(--muted)}
+  #log li{padding:3px 0;border-bottom:1px dashed var(--line)}
+
+  #end{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel)}
+  #endBody .win{color:var(--good,#3f7a5c);font-weight:800;font-size:17px}
+  #endBody .lose{color:var(--bad,#c0473b);font-weight:800;font-size:17px}
+  #endBody ul{padding-left:18px;font-size:14px}
+
+  @media (max-width:480px){ .wrap{padding:14px 12px 70px} .answers{gap:10px} }
+</style>
+</head>
+<body>
+<script src="../../shared/nav.js"></script>
+
+<main class="wrap" id="main">
+  <h1>The Tree</h1>
+  <p class="lede">A cooperative board game on the belief tree. 2–5 players, pass-and-play on one
+    device. Place every character before the race runs out — there is no other way to win or lose.</p>
+
+  <details class="rules">
+    <summary>How to play</summary>
+    <p>Each player is dealt one real person's card. On your turn, your character crosses the next
+      node of the tree (gate, then alignment, then containment) by their <b>own</b> answer. When
+      their answer there is not a plain yes or no, you choose how to cross: cast a coin, cast
+      yarrow, or say "I don't know" (which leaves it open and ends your turn without moving).</p>
+    <p>Anyone may spend their turn playing one evidence card on <b>any</b> character instead of
+      moving. It can flip a still-open answer freely. It can only flip a settled (plain) answer when
+      the flip would send that character to a leaf they themselves have named as a condition for
+      moving — persuasion on their own terms, never invented.</p>
+    <p>The race ticks once every time the turn returns to the first player, and once more the
+      moment any character first reaches Proceed. The table <b>wins</b> if, before the race fills,
+      everyone lands on one shared leaf, or every remaining split between leaves has been named (tap
+      the node, or the button, where two characters part ways). It <b>loses</b> if the race fills
+      first. No verdict is given — only what happened.</p>
+  </details>
+
+  <section id="setup">
+    <label for="playerCount">Players</label>
+    <select id="playerCount">
+      <option value="2">2</option>
+      <option value="3" selected>3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+    <button id="dealBtn" class="primary">Deal</button>
+  </section>
+
+  <section id="game" hidden>
+    <div class="race" id="race" aria-hidden="true"></div>
+    <p id="raceLabel" aria-live="polite"></p>
+    <div class="tree-wrap" id="treeWrap">
+      <div id="tree" aria-label="The belief tree"></div>
+      <div id="tokens"></div>
+    </div>
+    <div class="turn-panel" id="turnPanel">
+      <h2 id="turnTitle"></h2>
+      <div id="card"></div>
+      <div id="actions"></div>
+      <div id="evidencePanel" hidden></div>
+    </div>
+    <div class="turn-panel" id="splitPanel" hidden></div>
+    <ul id="log" aria-live="polite"></ul>
+  </section>
+
+  <section id="end" hidden>
+    <div id="endBody"></div>
+    <button id="againBtn">Play again</button>
+  </section>
+</main>
+
+<script type="module" src="tree-board.js"></script>
+</body>
+</html>

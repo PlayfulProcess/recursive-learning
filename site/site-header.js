@@ -85,6 +85,7 @@
     [PFX + 'game/potato.html',         'Hot Potato, alone'],
     [PFX + 'game/spread.html',         'The Walk'],
     [PFX + 'game/lines.html',          'Changing Lines'],
+    [PFX + 'game/tree-board/index.html', 'The Tree'],
     [PFX + 'pages/play.html',          'All games →'],
   ];
   // [key, label, href, cssClass, external?] — tarot's TOOLS slot. Institutions sits where tarot
