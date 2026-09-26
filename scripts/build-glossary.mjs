@@ -18,6 +18,10 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+/* The site header and footer, shared by every page: see the top of shared/nav.js. */
+const NAV = createRequire(import.meta.url)('../shared/nav.js');
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'glossary', 'terms.json');
@@ -97,7 +101,7 @@ const html = `<!DOCTYPE html>
   html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:dark;
     font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55;
     -webkit-text-size-adjust:100%}
-  .wrap{max-width:760px;margin:0 auto;padding-block:28px 64px;padding-left:16px;padding-right:16px}
+  .wrap{max-width:760px;margin:0 auto;padding-block:28px 24px;padding-left:16px;padding-right:16px}
   a{color:var(--accent)}
 
   header.mark{display:flex;align-items:center;gap:12px;margin:0 0 14px}
@@ -156,13 +160,17 @@ const html = `<!DOCTYPE html>
     td.held::before{content:"held: ";font-weight:400;color:var(--muted)}
   }
 
-  footer{margin-top:36px;padding-top:15px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px}
+  .edit{margin:30px 0 0;color:var(--muted);font-size:12.5px}
+</style>
+<style id="site-nav-css">
+${NAV.CSS}
 </style>
 </head>
 <body>
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px">${SPRITE}</svg>
 
-<div class="wrap">
+${NAV.header({ base: '../', rel: 'glossary/', sprite: true, max: '760px' })}
+<main class="wrap" id="main">
 
   <header class="mark">
     <a href="../" aria-label="Recursive Learning — home"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg></a>
@@ -195,11 +203,13 @@ ${exRows}
       </table>
     </section>
 
-  <footer>PlayfulProcess &middot; <a href="../">Recursive Learning</a> &middot;
-    <a href="https://recursive.eco">recursive.eco</a> &middot; text CC BY-SA 4.0 &middot;
-    <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/glossary/terms.json">edit the words</a></footer>
+  <p class="edit">Text CC BY-SA 4.0 &middot;
+    <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/glossary/terms.json">edit the words</a></p>
 
-</div>
+</main>
+
+${NAV.footer({ base: '../', rel: 'glossary/', max: '760px' })}
+<script src="../shared/nav.js"></script>
 </body>
 </html>
 `;
