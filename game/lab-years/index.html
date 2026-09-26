@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../../theme.css?v=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Lab Years · Recursive Eco-Improvement</title>
+<meta name="description" content="A 90-minute pass-and-play strategy game about the AI race, with secret objectives and a hidden World deciding how it all resolves. First playable.">
+<meta property="og:title" content="The Lab Years · Recursive Eco-Improvement">
+<meta property="og:description" content="3-5 players, one device. Build capability, secure safeguards, and find out which of you was actually right.">
+<link rel="icon" type="image/svg+xml" href="../../spiral.svg">
+<!--
+  The Lab Years (first playable, Sep 26 2026). game/lab-years/engine.js is the pure rules; this file
+  and lab-years.js are the DOM layer. Reuses explainers/belief-tree/tree-render.js (never edited
+  here) to draw the belief tree an RSI card resolves through, and game/fork/fork-engine.js's own
+  draw primitive for the start-year cast and any partial-safeguard cast — no second random engine,
+  no second leaf mapping. See rules.html for the full rulebook and the credits for every borrowed
+  mechanic. scripts/sim-lab-years.mjs is how the constants below were tuned.
+-->
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:light;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+  .wrap{max-width:760px;margin:0 auto;padding:18px 16px 90px}
+  h1{font-size:24px;margin:.2em 0 .15em}
+  h2{font-size:18px;margin:0 0 8px}
+  .lede{color:var(--muted);font-size:14.5px;line-height:1.6}
+  a{color:var(--accent)}
+  details.rules{margin:14px 0 18px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--panel)}
+  details.rules summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+  details.rules p,details.rules ul{font-size:14px;color:var(--ink-soft);margin:8px 0}
+  details.rules ul{padding-left:20px}
+
+  button{font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel2);color:var(--ink);padding:9px 14px;min-height:44px;line-height:1.2}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.danger{background:#c0473b;border-color:#c0473b;color:#fff}
+  button[disabled]{opacity:.5;cursor:not-allowed}
+  button.is-picked{border-color:var(--accent);background:var(--chip)}
+  button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+  label{font-weight:600;font-size:14px}
+  select,input[type=text]{font-size:15px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);min-height:44px}
+
+  section[hidden]{display:none}
+  .panel{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel);margin-bottom:14px}
+  .muted{color:var(--muted);font-size:13px}
+
+  /* pass-and-play cover screen */
+  #passCover{position:fixed;inset:0;background:var(--bg);z-index:20;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:24px}
+  #passCover[hidden]{display:none}
+  #passCover h2{font-size:22px}
+  #passCover button{margin-top:14px;padding:14px 22px;font-size:16px}
+
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .stat{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2)}
+  .stat .k{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:block}
+  .stat .v{font-weight:800;font-size:17px}
+  .race{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0}
+  .race .pip{width:16px;height:16px;border-radius:4px;border:1px solid var(--line);background:var(--panel)}
+  .race .pip.is-filled{background:#c0473b;border-color:#c0473b}
+
+  .safeguards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .sg{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2)}
+  .sg b{display:block;font-size:13px}
+  .sg .bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:4px}
+  .sg .bar > i{display:block;height:100%;background:var(--accent)}
+  .sg.secured{border-color:var(--accent)}
+
+  .hand{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .card{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2);font-size:13px;
+    max-width:220px;cursor:pointer;text-align:left}
+  .card.is-picked{border-color:var(--accent);background:var(--chip)}
+  .card .tag{display:block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);margin-bottom:2px}
+  .card.suit-alignment .tag{color:#5b7fc0} .card.suit-containment .tag{color:#3f7a5c}
+  .card.suit-agreement .tag{color:#8a5fb0} .card.suit-understanding .tag{color:#c8932f} .card.suit-wild .tag{color:var(--muted)}
+
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  #actionPanel{margin-top:8px}
+  #log{list-style:none;margin:0;padding:0;font-size:12.5px;color:var(--muted);max-height:180px;overflow:auto}
+  #log li{padding:3px 0;border-bottom:1px dashed var(--line)}
+
+  #tree{width:100%}
+  .tree-wrap{margin:10px 0}
+
+  .clue{border-left:3px solid var(--accent);background:var(--panel2);padding:8px 10px;font-size:13px;margin:6px 0}
+
+  .reveal{border:2px dashed var(--accent);border-radius:12px;padding:12px;background:var(--chip);margin:10px 0}
+  .reveal h3{margin:0 0 4px;font-size:15px}
+  .reveal .src{font-size:11.5px}
+
+  table.score{width:100%;border-collapse:collapse;font-size:13.5px}
+  table.score th,table.score td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left}
+  .won{color:var(--accent);font-weight:800}
+
+  @media (max-width:480px){ .wrap{padding:14px 12px 70px} .board,.safeguards{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<script src="../../shared/nav.js"></script>
+
+<main class="wrap" id="main">
+  <h1>The Lab Years</h1>
+  <p class="lede">A 90-minute pass-and-play strategy game about the AI race. 3-5 players, one
+    device. Each of you is an AI-lab researcher with a public role and a <b>secret</b> objective;
+    a hidden World decides how the race actually resolves, and none of you finds out which one
+    until it does. <a href="rules.html">Full rulebook</a>.</p>
+
+  <details class="rules">
+    <summary>Quick rules</summary>
+    <p><b>A round is one year.</b> Compute +1 for everyone, an event card (or more, as the race
+      rises) is drawn, then each player takes a full turn of 3 actions: <b>Research</b> (draw a
+      card), <b>Build</b> (spend compute + a card: capability +1, your company value +1),
+      <b>Release</b> (a bigger step: capability +2, race +1 — others may respond with an Audit or
+      a Whistleblow before it resolves), <b>Secure</b> (bank matching cards toward one of the 4
+      safeguards), <b>Publish</b> (a card face up, helping everyone next year), <b>Lobby</b>
+      (a small push toward international agreement), <b>Trade</b>, or a role's own power.</p>
+    <p>From 2027, RSI ("recursive self-improvement") cards are shuffled into the event deck. One
+      only <b>fires</b> if capability has crossed the threshold; below it, it fizzles and says why.
+      When it fires, it resolves through the same belief tree the film uses: alignment secured?
+      containment secured? <b>Proceed</b> is the best ending; <b>Regulate</b> and <b>Contain</b>
+      let the game continue under new limits; if neither safeguard held, it's <b>catastrophe</b> —
+      everyone loses, whatever their secret objective was.</p>
+    <p>Two World cards were dealt face down at the very start and nobody has seen them: which
+      <b>Takeoff</b> theory is true (how RSI actually behaves) and which <b>Alignment dynamics</b>
+      theory is true (how the alignment safeguard actually holds up). Clue cards drop hints along
+      the way, never certainties. You may spend up to 3 belief tokens, in secret, betting on which
+      theories are true — correct guesses add to your score when the World is finally revealed.</p>
+    <p class="muted">Assumptions this game states outright: if capability crosses a threshold and
+      neither safeguard has been secured, this game's tree calls that catastrophe. If it has, the
+      game calls that the best ending. Both are this game's rule, not a forecast — see rules.html
+      for the rest, and the credits for every mechanic borrowed from elsewhere.</p>
+  </details>
+
+  <section id="setup" class="panel">
+    <h2>Set up the table</h2>
+    <div class="row">
+      <label for="playerCount">Players</label>
+      <select id="playerCount">
+        <option value="3">3</option><option value="4" selected>4</option><option value="5">5</option>
+      </select>
+    </div>
+    <div id="nameInputs" class="row"></div>
+    <div class="row">
+      <button id="castYearBtn">Cast the start year</button>
+      <span id="yearCastResult" class="muted"></span>
+    </div>
+    <div class="row">
+      <button id="dealBtn" class="primary" disabled>Deal roles, objectives and the World, and begin</button>
+    </div>
+    <p class="muted">The start year is cast with The Fork's own coin-draw, over 2017-2026. The
+      later it lands, the more capability, compute and safeguard progress is already on the board
+      from real, dated history (each with its source) — face up before anyone's first turn.</p>
+  </section>
+
+  <section id="game" hidden>
+    <div class="board">
+      <div class="stat"><span class="k">Year</span><span class="v" id="statYear"></span></div>
+      <div class="stat"><span class="k">Capability</span><span class="v" id="statCapability"></span></div>
+    </div>
+    <div class="stat" style="margin-bottom:12px">
+      <span class="k">The race<span id="raceFlags"></span></span>
+      <div class="race" id="race" aria-hidden="true"></div>
+    </div>
+    <div class="safeguards" id="safeguards"></div>
+    <div class="panel" id="historyPanel"></div>
+    <div class="panel" id="cluesPanel" hidden>
+      <h2>Clues so far</h2>
+      <div id="clueList"></div>
+    </div>
+    <div class="panel" id="rsiPanel" hidden>
+      <h2 id="rsiTitle"></h2>
+      <div class="tree-wrap"><div id="tree" aria-label="The belief tree"></div></div>
+      <p id="rsiText"></p>
+      <button id="rsiContinue" class="primary">Continue</button>
+    </div>
+    <ul id="log" aria-live="polite"></ul>
+  </section>
+
+  <div id="passCover" hidden>
+    <h2 id="passWho"></h2>
+    <p class="muted" id="passSub">Pass the device, then tap to reveal your turn.</p>
+    <button id="revealBtn" class="primary">Tap to reveal</button>
+  </div>
+
+  <section id="turnScreen" hidden>
+    <div class="panel">
+      <h2 id="turnTitle"></h2>
+      <p class="muted" id="turnRole"></p>
+      <div class="row">
+        <button id="hideBtn">Hide (pass the device back)</button>
+      </div>
+      <div id="objectiveBox" class="panel" style="background:var(--chip)"></div>
+      <h2>Your hand</h2>
+      <div class="hand" id="hand"></div>
+      <div id="actionPanel"></div>
+      <div class="row">
+        <button id="passActionBtn">Pass (use one action)</button>
+      </div>
+      <details>
+        <summary>Belief bets (secret) — <span id="tokensLeft"></span> left</summary>
+        <div class="row">
+          <select id="betCategory">
+            <option value="takeoff">Takeoff</option>
+            <option value="alignmentDynamics">Alignment dynamics</option>
+          </select>
+          <select id="betValue"></select>
+          <button id="placeBetBtn">Place token</button>
+        </div>
+        <div id="betList" class="muted"></div>
+      </details>
+    </div>
+  </section>
+
+  <section id="end" class="panel" hidden>
+    <h2 id="endTitle"></h2>
+    <p id="endReason"></p>
+    <div class="reveal" id="worldReveal"></div>
+    <h2>Scoring</h2>
+    <table class="score" id="scoreTable"></table>
+    <p class="muted" id="oddsNote">How the odds were set: scripts/sim-lab-years.mjs plays ~2,000 games with
+      simple bots. A mixed table lands on catastrophe about 9-15% of the time (higher within any
+      single World, since 3 of the 4 alignment-dynamics theories can push it as high as 25-41%;
+      Plateau worlds never resolve RSI at all, so the whole table's timeout share is higher than
+      a single-World table's would be). No secret objective wins more than about 40% of the games
+      it was dealt into. See the PR for the full table, by World combination.</p>
+    <div class="row"><button id="againBtn">Set up a new game</button></div>
+  </section>
+</main>
+
+<script type="module" src="lab-years.js"></script>
+</body>
+</html>
