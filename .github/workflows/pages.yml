@@ -45,6 +45,7 @@ on:
       - 'scripts/**'
       - 'research/**'
       - 'recursive-eco.json'
+      - 'explainers/**'
       - '.github/workflows/pages.yml'
   pull_request:
     branches: [main, lab/navigation]

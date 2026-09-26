@@ -70,6 +70,7 @@ glossary/                 terms.json (the words, the one source) · spreads.src.
 grammars/                 every grammar as <slug>/grammar.json, plus _collection.json and
                           _covers/ (GENERATED), _eco_ids.json and PRIVATE.md
 shared/nav.js             the shim that gives the hand-written game pages the site header
+explainers/curves-and-odds/  Curves and Odds (HOT POTATO explainer); films embed it with ?embed=1 and ?step=N
 research/                 not published: lab-export/ (the public inputs of Sources and Ideas),
                           crosswalk.json, institutions/institutions.json
 scripts/                  builders, checks and the export (below); mark.svg (her spiral)

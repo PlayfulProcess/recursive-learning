@@ -9,3 +9,4 @@ game       game
 glossary   glossary
 grammars   grammars
 shared     shared
+explainers explainers
