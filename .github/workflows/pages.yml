@@ -28,6 +28,7 @@ on:
       - 'grammars/**'
       - 'glossary/**'
       - '.github/workflows/pages.yml'
+      - 'map/**'
   workflow_dispatch:
 
 permissions:
@@ -52,6 +53,7 @@ jobs:
           cp -r game _site/game
           cp -r grammars _site/grammars
           cp -r glossary _site/glossary
+          cp -r map _site/map && rm -rf _site/map/build
           test -f _site/.nojekyll || touch _site/.nojekyll
           echo "--- deploying ---"
           find _site -maxdepth 2 | sort

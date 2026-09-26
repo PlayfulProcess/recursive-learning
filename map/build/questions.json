@@ -1,0 +1,38 @@
+{
+  "note": "Hand-written suggested questions. The build embeds each, keeps its 12 nearest passages, and drops any whose best score is under 0.5. Hits were read privately on Sep 25 (pilot); 'skip' marks a question whose hits were off-topic, kept here to retry on the full set.",
+  "questions": [
+    {
+      "id": "chips-china",
+      "text": "Should we sell AI chips to China?"
+    },
+    {
+      "id": "ai-does-ai-research",
+      "text": "Will AI do AI research by itself?"
+    },
+    {
+      "id": "kills-everyone",
+      "text": "How likely is it that AI kills everyone?"
+    },
+    {
+      "id": "see-inside",
+      "text": "Can we look inside a model to understand it?"
+    },
+    {
+      "id": "jobs",
+      "text": "What happens to jobs and employment when AI can do the work?"
+    },
+    {
+      "id": "slow-down",
+      "text": "Should we slow down or pause?"
+    },
+    {
+      "id": "who-regulates",
+      "text": "Who should regulate AI companies?"
+    },
+    {
+      "id": "conscious",
+      "text": "Could an AI be conscious?",
+      "skip": "pilot hits scored 0.51-0.57 but were about control and competence, not consciousness"
+    }
+  ]
+}

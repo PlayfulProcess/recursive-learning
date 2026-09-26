@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map parity test</title>
+<style>body{font:16px system-ui,sans-serif;margin:16px;background:#fbfbf9;color:#16181d}pre{white-space:pre-wrap}</style>
+</head><body>
+<h1>Browser vs Python parity</h1>
+<p>Not deployed (the Pages workflow removes map/build/). Serve the repo root and open /map/build/parity.html.
+It embeds each suggested question with the shipped q8 model in the browser, searches the shipped int8 vectors,
+and compares the top 10 with the Python build's top 10 (fp32 query) stored in data/index.json.</p>
+<pre id="out">running&hellip;</pre>
+<script type="module">
+const out = document.getElementById('out'); const log = s => { out.textContent += '\n' + s; };
+try {
+  const t0 = performance.now();
+  const S = await import('../search.js?v=4');
+  await S.load();
+  const tl = performance.now() - t0;
+  const ix = await fetch('../data/index.json').then(r => r.json());
+  let ov = 0, t1 = 0; const per = [], times = [];
+  for (const q of ix.questions) {
+    const r = await S.query(q.text, 10); times.push(r.ms.embed + r.ms.search);
+    const py = q.top.slice(0, 10).map(a => a[0]), br = r.top.map(a => a[0]);
+    const o = br.filter(i => py.includes(i)).length / 10; ov += o; t1 += br[0] === py[0] ? 1 : 0;
+    per.push(`${q.id}: overlap ${o.toFixed(1)}, top1 ${br[0] === py[0] ? 'same' : 'differs'}, best py ${q.top[0][1].toFixed(3)} / browser ${r.top[0][1].toFixed(3)}`);
+  }
+  const n = ix.questions.length;
+  window.PARITY = { questions: n, top10_overlap: +(ov / n).toFixed(3), top1_same: +(t1 / n).toFixed(3), load_ms: Math.round(tl), query_ms_median: times.sort((a, b) => a - b)[Math.floor(n / 2)] };
+  log(per.join('\n')); log(JSON.stringify(window.PARITY, null, 1)); log('DONE');
+} catch (e) { log('ERROR ' + (e.stack || e)); window.PARITY = { error: String(e) }; }
+</script>
+</body></html>

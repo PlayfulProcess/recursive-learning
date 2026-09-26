@@ -1,0 +1,42 @@
+{
+  "note": "Public facts about the pilot episodes that the private manifest gets wrong or lacks. 'captions' is the kind of YouTube caption track the cue file came from: 'creator' when the video has a creator-uploaded English track (vssId '.en') and the cue text is that track (full punctuation, curly quotes, speaker labels or dashes); 'auto' when YouTube lists only automatic tracks ('a.en') and the cue text has '>>' speaker marks. Checked on the watch pages on 2026-09-25. Titles and episode pages checked the same day (the two placeholders in the manifest replaced). 'date' replaces the manifest's date where that was the YouTube upload date rather than the episode's publication date on its own page (checked 2026-09-25). 'title' for Nlkk3glap_U: the episode page's heading, plus the other title the same page carries in its metadata, so the link text matches what a visitor may see there.",
+  "checked": "2026-09-25",
+  "episodes": {
+    "Nlkk3glap_U": {
+      "captions": "creator",
+      "title": "Dario Amodei (Anthropic CEO) — The hidden pattern behind every AI breakthrough (also titled “$10 Billion Models, OpenAI, Scaling, & AGI in 2 years”)"
+    },
+    "41SUp-TRVlg": {
+      "captions": "creator"
+    },
+    "-RXD4bTuFTo": {
+      "captions": "creator"
+    },
+    "Hrbq66XqtCo": {
+      "captions": "creator"
+    },
+    "zQ1POHiR8m8": {
+      "captions": "auto"
+    },
+    "P7Y-fynYsgE": {
+      "captions": "auto"
+    },
+    "vif8NQcjVf0": {
+      "captions": "creator"
+    },
+    "-CJxwXAFvsw": {
+      "captions": "creator"
+    },
+    "HjurAWAr_nY": {
+      "captions": "auto",
+      "title": "Jensen Huang Thinks A.I. Alarmism Has Gone Too Far",
+      "url": "https://podcasts.apple.com/us/podcast/jensen-huang-thinks-a-i-alarmism-has-gone-too-far/id1548604447?i=1000791251478"
+    },
+    "wdnVeYx_fOA": {
+      "captions": "auto",
+      "title": "#494 – A Coin Toss for the Future",
+      "url": "https://www.samharris.org/podcasts/making-sense-episodes/494-a-coin-toss-for-the-future",
+      "date": "2026-09-22"
+    }
+  }
+}

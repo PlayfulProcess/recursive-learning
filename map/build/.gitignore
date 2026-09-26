@@ -1,0 +1,3 @@
+# private paths for the map build: never commit
+local.json
+__pycache__/
