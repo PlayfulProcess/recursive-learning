@@ -1,0 +1,931 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../theme.css?v=3">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.25">
+<title>Explorer · Recursive Eco-Improvement</title>
+<style>
+  :root{
+         
+      
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:Inter,system-ui,-apple-system,sans-serif}
+  .toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line)}
+  .toolbar .title{font-weight:700;font-size:14px}
+  .toolbar .title .sub{color:var(--muted);font-weight:400;font-size:12px}
+  .toolbar select,.toolbar button{background:var(--panel);color:#4a4439;border:1px solid var(--line);
+    border-radius:8px;padding:6px 11px;font-size:12px;cursor:pointer}
+  .toolbar button.active,.toolbar button:hover{border-color:var(--accent);color:var(--accent)}
+  .spacer{margin-left:auto}
+
+  /* ── field tray + drop zones ───────────────────────────── */
+  #builder{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+  #z-filters{ grid-column:1 / -1; background:rgba(23,125,86,.06); border-color:rgba(23,125,86,.35); }
+  #z-filters.dragover{ border-color:#177d56; background:rgba(23,125,86,.12); }
+  #z-filters .zlab{ color:#177d56; }
+  .fval-pill{ display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; font-size:11.5px;
+    cursor:pointer; border:1px solid rgba(23,125,86,.4); color:#4a4439; background:rgba(23,125,86,.08); transition:.12s; }
+  .fval-pill.on{ background:var(--gold); border-color:var(--gold); color:#fff; font-weight:600; }
+  .fval-pill:hover{ border-color:#177d56; }
+  .fpin-label{ font-size:11px; color:var(--muted); display:flex; align-items:center; gap:6px; margin-bottom:4px; }
+  .fpin-label .rx{ cursor:pointer; color:var(--muted); font-weight:700; font-size:13px; }
+  .fpin-label .rx:hover{ color:#e07a5f; }
+  .fpinned-group{ padding:0 0 6px 0; border-bottom:1px solid var(--line); margin-bottom:6px; }
+  .fpinned-group:last-child{ border-bottom:none; margin-bottom:0; }
+  #presets{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-bottom:8px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+  #presets .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:2px}
+  button.preset{background:rgba(23,125,86,.12);color:var(--ink-soft);border:1px solid rgba(23,125,86,.4);
+    border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;
+    user-select:none;-webkit-user-drag:none}
+  button.preset:hover{background:rgba(23,125,86,.28);border-color:#177d56}
+  button.preset-clear{background:rgba(255,255,255,.05);border-color:var(--line);color:var(--muted)}
+  #tray{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-bottom:4px}
+  #tray .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+  /* field-hierarchy groups: fields that nest (inferred from the data) render as a
+     chain "arcana ▸ suit ▸ …" sharing a hue — coarsest first, finest last */
+  .fgroup{display:inline-flex;align-items:center;gap:2px;padding:2px 4px;border-radius:10px;
+    background:rgba(23,125,86,.04);border:1px solid var(--line-soft)}
+  .fgroup .sep{font-size:10px;color:var(--muted);opacity:.8;user-select:none}
+  .zone{background:rgba(60,45,20,.04);border:1.5px dashed var(--chipline);border-radius:10px;min-height:54px;padding:8px}
+  .zone.dragover{border-color:var(--accent);background:rgba(23,125,86,.06)}
+  .zone .zlab{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:0 0 6px 2px}
+  .zone .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:var(--chip);border:1px solid var(--chipline);
+    border-radius:999px;padding:4px 10px;font-size:12px;cursor:grab;user-select:none;white-space:nowrap}
+  .chip:hover{border-color:var(--violet)}
+  .chip.inzone{border-color:var(--violet);background:rgba(23,125,86,.14)}
+  .chip .x{cursor:pointer;color:var(--muted);font-weight:700}
+  .chip .x:hover{color:#e07a5f}
+  .chip .n{color:var(--muted);font-size:10.5px}
+  .chip.filter-active{border-color:var(--accent);background:rgba(23,125,86,.1)}
+
+  /* ── popover (filters + deck multiselect) ──────────────── */
+  #pop{position:absolute;z-index:60;background:var(--panel);border:1px solid var(--chipline);border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);padding:10px;min-width:210px;max-width:300px;display:none}
+  #pop input[type=text]{width:100%;background:#f4f1ea;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:12px;margin-bottom:6px}
+  #pop .vals{max-height:250px;overflow:auto}
+  #pop label{display:flex;align-items:center;gap:7px;font-size:12.5px;padding:3px 2px;cursor:pointer;color:#4a4439}
+  #pop .pbtns{display:flex;gap:6px;margin-top:8px}
+  #pop .pbtns button{flex:1;font-size:11px;padding:4px;background:var(--chip);border:1px solid var(--chipline);border-radius:6px;color:#4a4439;cursor:pointer}
+  #pop .pbtns button:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ── pivot output ──────────────────────────────────────── */
+  #out{padding:14px 16px;overflow:auto}
+  table.pivot{border-collapse:collapse;min-width:50%}
+  .pivot th,.pivot td{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}
+  .pivot thead th{background:var(--panel);font-size:12px;position:sticky;top:0;z-index:5}
+  .pivot th.rowhead{background:var(--panel);font-size:12.5px;white-space:nowrap;font-weight:600}
+  .pivot th.rowhead .cnt{color:var(--muted);font-weight:400;font-size:10.5px}
+  :root { --card-h: 62px; }
+  .cellwrap{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-end;max-width:360px}
+  /* Explicit width (not just height) reserves each thumbnail's box before the image
+     has loaded — without it, an <img> with only `height` set collapses to 0 width
+     until its natural size is known, so several cards in one cell stack into
+     invisible slivers and only the one(s) that finished loading are visible (looked
+     like "only the last card" for a cell that held several). object-fit:contain
+     keeps the whole card visible, never cropped (CLAUDE.md thumbnail rule). */
+  .cellwrap img{height:var(--card-h);width:calc(var(--card-h) * .7);object-fit:contain;
+    border-radius:4px;background:#f4f1ea;cursor:pointer;transition:outline .12s,height .12s,width .12s}
+  .cellwrap img:hover{outline:2px solid #177d56;outline-offset:1px;z-index:9;position:relative}
+  /* emergence pills: hue = branch, gradient depth = level */
+  .epill{display:inline-flex;align-items:center;gap:4px;border-radius:7px;padding:4px 8px;font-size:11px;
+    color:#221f1a;cursor:pointer;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    border:1px solid var(--line)}
+  .epill .lv{font-size:9px;opacity:.8;font-weight:700}
+  .epill:hover{border-color:var(--gold)}
+  .more{font-size:11px;color:var(--muted);align-self:center;cursor:pointer}
+  .ccount{font-size:13px;font-weight:700;text-align:center;min-width:40px}
+  .empty{color:#d8d2c6}
+  /* Sections render mode: each card's chosen section, in FULL, in a light box you can
+     drag-resize (resize:both) or bulk-size with the toolbar slider (--esec-w/--esec-h).
+     Light-only to match theme.css — the old dark clamped snippet was the dark-theme bug. */
+  .esec{position:relative;display:block;width:var(--esec-w,210px);height:var(--esec-h,150px);
+    overflow:auto;resize:both;cursor:pointer;overflow-wrap:anywhere;
+    border-radius:7px;border:1px solid var(--line);background:var(--chip,#f4f1ea);
+    padding:7px 9px;font-size:11px;line-height:1.5;color:var(--ink);text-align:left}
+  .esec.later{border-color:rgba(23,125,86,.5)}
+  .esec.none{opacity:.55;font-style:italic;color:var(--muted);height:auto;resize:none}
+  .esec .nm{display:block;font-size:9px;color:var(--muted);margin-bottom:3px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;position:sticky;top:-7px;background:var(--chip,#f4f1ea);padding-top:2px}
+  .esec .at{display:block;font-size:9px;font-style:italic;opacity:.7;margin-bottom:2px}
+  #hint{color:var(--muted);font-size:13px;padding:30px;text-align:center;line-height:1.7}
+  #stats{font-size:11.5px;color:var(--muted);padding:0 16px 4px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+  /* ── sidebar layout ─────────────────────────────────────── */
+  body.sidebar #main{display:flex;align-items:flex-start}
+  body.sidebar #builder{grid-template-columns:1fr;border-bottom:none;border-right:1px solid var(--line);
+    width:240px;flex-shrink:0;height:calc(100vh - 60px);overflow-y:auto;position:sticky;top:60px;padding:10px}
+  body.sidebar #z-filters{grid-column:1}
+  body.sidebar #stats-out{flex:1;overflow:hidden}
+  body.sidebar #stats{border-bottom:1px solid var(--line);padding:6px 16px}
+  body.sidebar #out{min-height:calc(100vh - 100px)}
+
+  /* ── detail panel (part-of / contains) ─────────────────── */
+  #det{position:fixed;top:60px;right:0;bottom:0;width:340px;max-width:90vw;background:var(--panel);
+    border-left:1px solid var(--chipline);padding:16px;overflow:auto;z-index:70;display:none;box-shadow:-8px 0 30px rgba(0,0,0,.45)}
+  #det.open{display:block}
+  #det .close{float:right;cursor:pointer;color:var(--muted);font-size:20px;line-height:1}
+  #det img.hero{width:55%;max-height:230px;object-fit:contain;background:#f4f1ea;border-radius:8px;display:block;margin:6px 0 10px;cursor:zoom-in}
+  #det h2{margin:.2em 0 .15em;font-size:16px}
+  #det .meta{font-size:12px;color:var(--muted);margin-bottom:10px}
+  #det h4{margin:14px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  #det .rel{display:flex;flex-wrap:wrap;gap:5px}
+  #det .rel img{height:52px;border-radius:4px;cursor:pointer;background:#f4f1ea}
+
+  /* lightbox */
+  #lb{position:fixed;inset:0;background:rgba(8,6,14,.92);display:none;align-items:center;justify-content:center;z-index:99;flex-direction:column;gap:12px}
+  #lb img{max-height:80vh;max-width:90vw;border-radius:8px}
+  #lb .cap{color:var(--ink);font-size:14px}
+  /* hover preview — a quick large look at a card without clicking */
+  #hovprev{position:fixed;display:none;pointer-events:none;z-index:80}
+  #hovprev img{height:min(64vh,420px);width:auto;border-radius:8px;background:#f4f1ea;
+    border:1px solid #e3ddd0;box-shadow:0 18px 50px -12px rgba(20,12,4,.55);display:block}
+  @media (hover:none){ #hovprev{display:none!important} }
+  @media (max-width:760px){ #builder{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<script src="../site-header.js?v=47"></script>
+<site-header active="explorer"></site-header>
+
+<div class="toolbar">
+  <div class="title">Emergence Explorer <span class="sub">— drag fields to pivot the cards; every grouping is an emergence</span></div>
+  <button id="deckbtn" title="Pick one or many grammars">Decks ▾</button>
+  <span class="spacer"></span>
+  <button id="mode-cards" class="active"><rt-icon name="cards"></rt-icon> Cards</button>
+  <button id="mode-counts">∑ Counts</button>
+  <button id="mode-sections">§ Sections</button>
+  <select id="section-pick" title="Which section to render" style="display:none;background:var(--surface);color:var(--ink);border:1px solid #cfc8ba;border-radius:7px;padding:5px 8px;font-size:12px;font-weight:600;cursor:pointer;max-width:200px;"></select>
+  <label title="Card size" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#6b6457;">
+    <span>⊕</span>
+    <input id="zoom-slider" type="range" min="32" max="620" value="62" step="8"
+      style="width:72px;accent-color:#177d56;cursor:pointer;" oninput="applyZoom(this.value)">
+    <span id="zoom-pct" style="min-width:32px;color:#4a4439;font-size:11px;">100%</span>
+  </label>
+  <button id="sidebar-btn" title="Toggle sidebar layout">◧</button>
+  <button id="reset">↺ Reset</button>
+</div>
+
+<div id="main">
+<div id="builder">
+  <div id="presets">
+    <span class="lab" title="One-click combos — not draggable; drag the field chips below instead">Organize ▸ click a preset</span>
+    <button class="preset" title="Click to apply this pivot — presets aren't draggable" data-r="rank" data-c="deck" data-f="suit=Trumps">Trump × Deck</button>
+    <button class="preset" title="Click to apply this pivot — presets aren't draggable" data-r="suit" data-c="rank">Suit × Rank</button>
+    <button class="preset" title="Click to apply this pivot — presets aren't draggable" data-r="deck" data-c="suit">Deck × Suit</button>
+    <button class="preset" title="Click to apply this pivot — presets aren't draggable" data-r="suit,rank">Suit ▸ Rank</button>
+    <button class="preset" title="Click to apply this pivot — presets aren't draggable" data-r="branch,deck">Lineage ▸ Deck</button>
+    <button class="preset preset-clear" title="Clear the pivot" data-clear="1">Clear</button>
+  </div>
+  <div id="tray"><span class="lab">Drag any field chip below — click a chip to filter it ⧩ · drag into Rows / Columns / Filters to group</span></div>
+  <div class="zone" id="z-rows"><div class="zlab">Rows ▦</div><div class="chips"></div></div>
+  <div class="zone" id="z-cols"><div class="zlab">Columns ▥</div><div class="chips"></div></div>
+  <div class="zone" id="z-filters"><div class="zlab">⊸ Filters — drop a field here to pin its values as toggles</div><div id="z-filters-body"></div></div>
+</div>
+<div id="stats-out">
+<div id="stats"><span id="statxt"></span></div>
+<div id="out"><div id="hint">Loading…</div></div>
+</div>
+</div>
+
+<div id="pop"></div>
+<aside id="det"></aside>
+<div id="lb" onclick="this.style.display='none'"><img id="lbimg" src="" alt=""><div class="cap" id="lbcap"></div></div>
+<div id="hovprev"><img alt=""></div>
+
+<script src="dimension-engine.js?v=1"></script>
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PFX = '../';
+
+/* zoom: card-h CSS variable driven by slider */
+function applyZoom(px) {
+  document.documentElement.style.setProperty('--card-h', px + 'px');
+  // the same slider bulk-sizes the Sections boxes; each box can still be drag-resized.
+  const sh = Math.round(px * 1.6 + 60);
+  document.documentElement.style.setProperty('--esec-h', sh + 'px');
+  document.documentElement.style.setProperty('--esec-w', Math.round(sh * 1.35) + 'px');
+  const pct = Math.round(px / 62 * 100);
+  const el = document.getElementById('zoom-pct');
+  if (el) el.textContent = pct + '%';
+}
+window.applyZoom = applyZoom;
+
+/* ── state ─────────────────────────────────────────────── */
+let records = [], fields = [], byId = {};
+let fieldParent = {};   // field -> immediate parent field (inferred containment)
+let spec = { rows:[], cols:[], filters:{}, pinned:[] };
+let mode = 'cards';
+let collection = null;
+let specKey = null;   // localStorage key for this grammar selection's spec
+let secById = {};     // __id -> sections map (flatten drops sections; we keep them aside)
+let sectionField = null;   // normalized section-group key chosen for Sections mode
+let sectionGroups = [];    // inferred [{key,label,count,attributed}]
+
+/* DECIDED tray structure (coordinator's call, 2026-08-11 — builder's complaint was
+   "hard to understand what 'kw' mean and mapping confidence... All decks should be
+   there"). The tray shows AT MOST these fields, in this order, with these display
+   names — every other field discoverFields() turns up (the kw- keyword internals,
+   mapping_confidence, source_deck, category, order, year, arcana, emergence, the old
+   overloaded `number`, and anything else that leaks straight from raw per-deck
+   metadata) never becomes a chip. HIDDEN != DELETED: every field still lives on the
+   record and still renders in full in the detail panel (openDetail() reads `r`
+   directly, unfiltered) — this allowlist only gates what discoverFields() is allowed
+   to turn into a tray/pivot chip. Raw field names stay the spec/hash vocabulary (old
+   #hash / localStorage links keep resolving); DISPLAY_NAME below is label-only.
+   2026-08-11 fifth-suit fold: trumps now carry suit="Trumps" + rank=trump_number in
+   the meta grammar, so ONE Suit × Rank pivot covers the whole deck — `role` and
+   `trump_number` are redundant as tray chips and were dropped (they still exist on
+   every record and still render in the detail panel). `function` stays in the tray
+   (documented use: game / divination / esoteric / origin-myth) — the builder wants
+   it kept as a comparison axis. */
+const TRAY_ALLOWLIST = ['deck','branch','century','suit','rank','function','level'];
+const TRAY_ORDER = new Map(TRAY_ALLOWLIST.map((f,i) => [f,i]));
+const DISPLAY_NAME = { branch: 'lineage', trump_number: 'trump' };
+const displayName = f => DISPLAY_NAME[f] || f;
+
+/* Section Lens contract (shared with cards.html): identity = normalized name,
+   provenance inferred from the leading "[Author, Work, Date]" attribution line. */
+const SEC_STOP = new Set(['the','a','an','this','that','these','those','it','its']);
+const lensNorm = s => String(s).toLowerCase().replace(/['’]s\b/g,'').replace(/[_\-]+/g,' ').replace(/[.:;,]+$/,'').split(/\s+/).filter(w=>w&&!SEC_STOP.has(w)).join(' ').trim();
+const lensAttr = t => { if(typeof t!=='string')return null; const m=t.trim().match(/^\[([^\]]{3,200})\]/); return m?m[1].trim():null; };
+function inferSectionGroups(){
+  const m = new Map();
+  for (const secs of Object.values(secById)) for (const [k,v] of Object.entries(secs||{})){
+    if (typeof v!=='string' || !v.trim()) continue;
+    const key = lensNorm(k); if(!key) continue;
+    let s = m.get(key); if(!s){ s={key,count:0,labels:new Map(),attributed:false}; m.set(key,s); }
+    s.count++; s.labels.set(k,(s.labels.get(k)||0)+1);
+    if (lensAttr(v)) s.attributed = true;
+  }
+  return [...m.values()].map(s=>({key:s.key,label:[...s.labels].sort((a,b)=>b[1]-a[1])[0][0],count:s.count,attributed:s.attributed}))
+    .sort((a,b)=>b.count-a.count);
+}
+// a record's section text for the chosen group (by normalized key)
+function recSection(r){
+  const secs = secById[r.__id] || {};
+  for (const [k,v] of Object.entries(secs)){ if(typeof v==='string'&&v.trim()&&lensNorm(k)===sectionField) return {name:k,val:v}; }
+  return null;
+}
+
+/* branch colour code (house palette) — pills: hue = branch, gradient = level */
+const BRANCH_COLOR = { A:'#e07a5f', B:'#81b29a', C:'#6d8ec9', marseille:'#6d8ec9',
+  occult:'#9b6dc9', esoteric:'#9b6dc9', roots:'#c9a24b', ancestors:'#c9a24b',
+  'sui-generis':'#c96d9b' };
+const rgba = (hex,a) => { const n=parseInt(hex.slice(1),16);
+  return `rgba(${n>>16},${(n>>8)&255},${n&255},${a})`; };
+
+/* ── engine (viewers/dimension-engine.js) ─────────────────
+   Pure data functions live in the shared engine now. Thin local wrappers bind the
+   explorer's state (byId for name resolution, spec.filters for `passes`) so every
+   call site below stays exactly as it was. */
+const { smartCmp, discoverFields, inferHierarchy, vals, groupBy } = DimensionEngine;
+const byIdName = id => byId[id]?.__name;
+const flatten = (grammar, inherit, prefix) => DimensionEngine.flatten(grammar, inherit, prefix, byIdName);
+const passes = r => DimensionEngine.passes(r, spec.filters);
+
+/* ── 3. RENDER ─────────────────────────────────────────── */
+function branchColor(r){
+  // try order, then branch — skipping values the palette doesn't know
+  return BRANCH_COLOR[r.order?.[0]] || BRANCH_COLOR[r.branch?.[0]] || '#177d56';
+}
+function recHTML(r){
+  const lvl = +(r.level?.[0]||'L1').slice(1);
+  if (mode === 'sections'){
+    const s = recSection(r);
+    if (!s) return `<span class="esec none" data-rid="${esc(r.__id)}" title="${esc(r.__name)}"><span class="nm">${esc(r.__name).slice(0,24)}</span>— none —</span>`;
+    const attr = lensAttr(s.val);
+    const body = attr ? s.val.trim().replace(/^\[[^\]]*\]\s*/,'') : s.val;
+    return `<span class="esec ${attr?'later':''}" data-rid="${esc(r.__id)}" title="${esc(r.__name)} — ${esc(s.name)} (click for full card · drag corner to resize)">
+      <span class="nm">${esc(r.__name).slice(0,24)}</span>${attr?`<span class="at">${esc(attr).slice(0,46)}</span>`:''}${esc(body)}</span>`;
+  }
+  if (lvl === 1 && r.__img)
+    return `<img loading="lazy" data-rid="${esc(r.__id)}" src="${esc(r.__img)}" title="${esc(r.__name)}">`;
+  const c = branchColor(r);
+  const lo = Math.min(.5, .06 + .07*lvl), hi = Math.min(.85, .14 + .12*lvl);
+  return `<span class="epill" data-rid="${esc(r.__id)}" title="${esc(r.__name)}"
+    style="background:linear-gradient(135deg,${rgba(c,lo)},${rgba(c,hi)});border-left:3px solid ${c}">
+    <span class="lv">L${lvl}</span>${esc(r.__name.split(' — ')[0].slice(0,26))}</span>`;
+}
+// Display-level formatting only — sorting (smartCmp) always runs on the raw numeric
+// value; these two helpers just choose how that raw value is *shown* wherever it
+// renders as a row/column header, chip filter value, or detail-panel field.
+function toRoman(n){
+  n = +n;
+  if (!Number.isInteger(n) || n <= 0) return String(n);
+  const table = [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],
+    [40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+  let res = '';
+  for (const [v,s] of table) while (n >= v) { res += s; n -= v; }
+  return res;
+}
+const RANK_LABEL = {11:'Page', 12:'Knight', 13:'Queen', 14:'King'};
+function formatFieldValue(field, v){
+  if (v === '—') return v;
+  if (field === 'trump_number'){
+    const n = +v;
+    if (!isNaN(n)) return n === 0 ? '0 · Fool' : toRoman(n);
+  }
+  if (field === 'rank'){
+    // The rank axis is SHARED since the fifth-suit fold (2026-08-11): trumps carry
+    // their own deck's trump number (0–21+) and pips/courts carry 1–14, so a header
+    // like 11 can hold Justice AND Pages at once. Plain numbers are the honest
+    // default; 11–14 name both readings ("11 · Page/XI") rather than silently
+    // labelling a mixed cell "Page".
+    const n = +v;
+    if (!isNaN(n)) return RANK_LABEL[n] ? `${n} · ${RANK_LABEL[n]}/${toRoman(n)}` : String(n);
+  }
+  return v;
+}
+// A pivot's "—" bucket is real data (items missing that field) — name it after the
+// field so it reads as a stated exclusion, not an anonymous landfill row/col.
+const dashLabel = (v, field) => v === '—' ? `— (no ${field})` : formatFieldValue(field, v);
+function cellHTML(rs){
+  if (!rs.length) return '<td><span class="empty">·</span></td>';
+  if (mode === 'counts'){
+    const max = window.__cellmax || 1;
+    const a = Math.min(.85, .1 + .75*rs.length/max);
+    return `<td class="ccount" style="background:rgba(23,125,86,${a.toFixed(2)})">${rs.length}</td>`;
+  }
+  // emergence pills surface FIRST (they label the cell), sample cards after
+  const N = 6;
+  const sorted = [...rs].sort((a,b) => (+(b.level?.[0]||'L1').slice(1)) - (+(a.level?.[0]||'L1').slice(1)));
+  let h = '<td><div class="cellwrap">' + sorted.slice(0,N).map(recHTML).join('');
+  if (rs.length > N){
+    const ci = cellRecs.push(sorted) - 1;
+    h += `<span class="more" data-cell="${ci}" title="Show all ${rs.length} items">+${rs.length-N}</span>`;
+  }
+  return h + '</div></td>';
+}
+let cellRecs = [];   // per-render registry: "+N" click expands the full cell
+function render(){
+  cellRecs = [];
+  const live = records.filter(passes);
+  $('#statxt').textContent = `${live.length} of ${records.length} items` +
+    (Object.keys(spec.filters).filter(f=>spec.filters[f].length).length ? ' (filtered)' : '');
+  const out = $('#out');
+  const colField = spec.cols[0];
+  const colVals = colField ? [...new Set(live.flatMap(r=>vals(r,colField).map(String)))].sort(smartCmp) : null;
+  const tree = groupBy(live, spec.rows);
+
+  if (mode==='counts'){ let mx=1;
+    (function walk(t){ if(!t) return; for(const g of t){ if(g.children) walk(g.children);
+      else { if(colVals){ for(const cv of colVals){ mx=Math.max(mx,g.recs.filter(r=>vals(r,colField).map(String).includes(cv)).length);} } else mx=Math.max(mx,g.recs.length);} } })(tree);
+    if (!tree) mx = Math.max(mx, live.length); window.__cellmax = mx;
+  }
+
+  if (!spec.rows.length && !colField){
+    // Default view: flat card wall — selection IS the view.
+    // Tip appears above the cards as a subtle guide, not blocking them.
+    const tip = !Object.keys(spec.filters).filter(f=>spec.filters[f].length).length
+      ? '<p style="color:var(--muted);font-size:12px;margin:0 0 10px">Drag a field into <b>Rows</b> or <b>Columns</b> to pivot · drop into <b>⊸ Filters</b> to pin a filter · click a chip to filter by value</p>'
+      : '';
+    const wallMore = live.length > 200
+      ? `<span class="more" style="padding:8px" data-cell="${cellRecs.push(live)-1}" title="Show all ${live.length} items">+${live.length-200} more</span>` : '';
+    out.innerHTML = live.length
+      ? tip + `<div class="cellwrap" style="max-width:none;padding:4px 0">${live.slice(0,200).map(recHTML).join('')}${wallMore}</div>`
+      : tip + '<p style="color:var(--muted);font-size:13px">No items match the filters.</p>';
+    return;
+  }
+  let h = '<table class="pivot"><thead><tr>';
+  for (const rf of spec.rows) h += `<th>${esc(displayName(rf))}</th>`;
+  if (colVals) for (const cv of colVals) h += `<th>${esc(dashLabel(cv, colField))}</th>`;
+  else h += '<th>items</th>';
+  h += '</tr></thead><tbody>';
+  const rowsOut = [];
+  (function walk(tree, path){
+    if (!tree) return;
+    for (const g of tree){
+      if (g.children) walk(g.children, [...path, g]);
+      else rowsOut.push([...path, g]);
+    }
+  })(tree, []);
+  if (!rowsOut.length && colVals){
+    h += '<tr>' + colVals.map(cv => cellHTML(live.filter(r=>vals(r,colField).map(String).includes(cv)))).join('') + '</tr>';
+  }
+  let prev = [];
+  for (const path of rowsOut){
+    h += '<tr>';
+    path.forEach((g,i)=>{
+      if (prev[i] !== g) h += `<th class="rowhead">${esc(dashLabel(g.key, spec.rows[i]))} <span class="cnt">${g.recs.length}</span></th>`;
+      else h += '<th class="rowhead" style="border-top:none"></th>';
+    });
+    const leafRecs = path[path.length-1].recs;
+    if (colVals) for (const cv of colVals) h += cellHTML(leafRecs.filter(r=>vals(r,colField).map(String).includes(cv)));
+    else h += cellHTML(leafRecs);
+    h += '</tr>';
+    prev = path;
+  }
+  out.innerHTML = h + '</tbody></table>';
+}
+
+function openDetail(id){
+  const r = byId[id]; if (!r) return;
+  const det = $('#det');
+  const relList = ids => ids.map(i => byId[i]).filter(Boolean).slice(0,18)
+    .map(x => x.__img && +(x.level?.[0]||'L1').slice(1)===1
+      ? `<img data-rid="${esc(x.__id)}" src="${esc(x.__img)}" title="${esc(x.__name)}">`
+      : recHTML(x)).join('');
+  const metaBits = ['level','deck','source_deck','century','order','branch','suit','trump_number','rank','function','print quality']
+    .filter(k=>r[k]).map(k=>`${displayName(k)}: <b>${esc(r[k].map(v=>formatFieldValue(k,v)).join(', '))}</b>`).join(' · ');
+  det.innerHTML = `
+    <span class="close" onclick="document.getElementById('det').classList.remove('open')">✕</span>
+    ${r.__img ? `<img class="hero" src="${esc(r.__img)}" onclick="window.__lb('${esc(r.__img)}','${esc(r.__name)}')">` : ''}
+    <h2>${esc(r.__name)}</h2>
+    <div class="meta">${metaBits}</div>
+    <h4>⬆ Part of (${r.__parents.length})</h4>
+    <div class="rel">${r.__parents.length ? relList(r.__parents) : '<span class="empty">— top level</span>'}</div>
+    <h4>⬇ Contains (${r.__children.length})</h4>
+    <div class="rel">${r.__children.length ? relList(r.__children) + (r.__children.length>18?`<span class="more">+${r.__children.length-18}</span>`:'') : '<span class="empty">— a leaf card</span>'}</div>`;
+  det.classList.add('open');
+}
+document.addEventListener('click', e => {
+  const m = e.target.closest('.more[data-cell]');
+  if (m) {   // "+N" → expand the cell in place, render every item
+    const rs = cellRecs[+m.dataset.cell] || [];
+    const wrap = m.parentElement;
+    if (wrap) wrap.innerHTML = rs.map(recHTML).join('');
+    return;
+  }
+  const t = e.target.closest('[data-rid]');
+  if (t) { openDetail(t.dataset.rid); }
+});
+window.__lb = (src,cap)=>{ $('#lbimg').src=src; $('#lbcap').textContent=cap; $('#lb').style.display='flex'; };
+
+/* hover preview — a large floating copy of the card under the cursor (desktop only) */
+(function(){
+  const hp = document.getElementById('hovprev'), hpImg = hp.querySelector('img');
+  const HEADPAD = 64;
+  function place(card){
+    const r = card.getBoundingClientRect();
+    hp.style.display = 'block';
+    const pw = hp.offsetWidth || 300, ph = hp.offsetHeight || 420, gap = 14;
+    let left = r.right + gap;
+    if (left + pw > window.innerWidth - 8) left = r.left - gap - pw;          // flip to the left
+    left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+    let top = r.top + r.height/2 - ph/2;
+    top = Math.max(HEADPAD, Math.min(top, window.innerHeight - ph - 8));
+    hp.style.left = left + 'px'; hp.style.top = top + 'px';
+  }
+  let pending = null;                                    // the card we're currently previewing
+  function reveal(card){ hp.style.display = 'block'; place(card); }
+  document.addEventListener('mouseover', e => {
+    const card = e.target.closest('.cellwrap img[data-rid]');
+    if (!card || !card.getAttribute('src')) return;
+    pending = card;
+    if (hpImg.getAttribute('src') !== card.getAttribute('src')) {
+      hp.style.display = 'none';                          // hide the old card until the new image is ready — don't flash it at its old spot
+      hpImg.onload  = () => { if (pending === card) reveal(card); };
+      hpImg.onerror = () => { if (pending === card) hp.style.display = 'none'; };
+      hpImg.src = card.src;
+    }
+    if (hpImg.complete && hpImg.naturalWidth) reveal(card);   // already cached → show immediately, positioned to THIS card
+  });
+  document.addEventListener('mouseout', e => {
+    const card = e.target.closest('.cellwrap img[data-rid]');
+    if (card && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.cellwrap img[data-rid]'))) {
+      pending = null; hp.style.display = 'none';
+    }
+  });
+  window.addEventListener('scroll', () => { hp.style.display = 'none'; }, true);
+})();
+
+/* ── 4. chips / zones / popover ────────────────────────── */
+function chipEl(f, zone){
+  const el = document.createElement('span');
+  const fl = fields.find(x=>x.name===f);
+  const nsel = (spec.filters[f]||[]).length;
+  el.className = 'chip' + (zone ? ' inzone' : '') + (nsel ? ' filter-active' : '');
+  el.innerHTML = `${esc(displayName(f))} <span class="n">${nsel ? '⧩ '+nsel+'/'+(fl?fl.count:'?') : (fl?fl.count:'')}</span>`
+    + ((zone || nsel) ? ` <span class="x" title="Clear as filter and dimension">✕</span>` : '');
+  el.draggable = true;
+  el.dataset.f = f;
+  el.dataset.zone = zone || '';
+  el.title = 'Click to filter · drag into Rows / Columns to group · hold on mobile';
+  el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', JSON.stringify({f, from:zone||null})); });
+  el.onclick = e => { if (!e.target.classList.contains('x')) openPop(f, el, zone); };
+  const x = el.querySelector('.x');
+  if (x) x.onclick = e => { e.stopPropagation(); if (zone) removeField(f, zone); delete spec.filters[f]; sync(); };
+  return el;
+}
+function removeField(f, zone){
+  if (zone==='rows') spec.rows = spec.rows.filter(x=>x!==f);
+  if (zone==='cols') spec.cols = spec.cols.filter(x=>x!==f);
+  if (zone==='filters'){ spec.pinned = spec.pinned.filter(x=>x!==f); delete spec.filters[f]; }
+}
+function sync(){
+  const tray = $('#tray');
+  tray.querySelectorAll('.chip, .fgroup').forEach(c=>c.remove());
+  const used = new Set([...spec.rows, ...spec.cols, ...spec.pinned]);
+  // Render the inferred hierarchy: chains of nesting fields share a hue and are
+  // joined "coarse ▸ fine" (e.g. arcana ▸ suit); cross-cutting fields stand alone.
+  const kids = {};
+  for (const [c,p] of Object.entries(fieldParent)) (kids[p] = kids[p] || []).push(c);
+  const HUES = ['#c9a24b','#81b29a','#6d8ec9','#9b6dc9','#c96d9b','#e07a5f'];
+  let hueIx = 0;
+  const placed = new Set();
+  const addChain = (grp, name, hue, depth) => {
+    placed.add(name);
+    if (!used.has(name)){
+      const el = chipEl(name, null);
+      el.style.borderLeft = `3px solid ${hue}`;
+      el.style.background = `linear-gradient(135deg,${rgba(hue,.05+.05*depth)},${rgba(hue,.12+.08*depth)})`;
+      el.title = depth ? `nested: every value sits inside one ${fieldParent[name]} (inferred from the data) · click to filter · drag to group`
+                       : 'click to filter · drag into Rows / Columns to group';
+      grp.appendChild(el);
+    }
+    for (const c of (kids[name]||[]).sort()){
+      if (grp.lastChild && !used.has(c)){
+        const s = document.createElement('span'); s.className='sep'; s.textContent='▸';
+        grp.appendChild(s);
+      }
+      addChain(grp, c, hue, depth+1);
+    }
+  };
+  const roots = fields.filter(f => kids[f.name] && !fieldParent[f.name]);
+  for (const f of roots){
+    const grp = document.createElement('span'); grp.className = 'fgroup';
+    addChain(grp, f.name, HUES[hueIx++ % HUES.length], 0);
+    if (grp.querySelector('.chip')) tray.appendChild(grp);
+  }
+  for (const f of fields)
+    if (!placed.has(f.name) && !used.has(f.name)) tray.appendChild(chipEl(f.name, null));
+  const fill = (sel, list, zone) => { const c = $(sel+' .chips'); c.innerHTML='';
+    for (const f of list) c.appendChild(chipEl(f, zone)); };
+  fill('#z-rows', spec.rows, 'rows');
+  fill('#z-cols', spec.cols, 'cols');
+  renderPinnedFilters();
+  try { location.hash = encodeURIComponent(JSON.stringify(spec)); } catch(e){}
+  // Persist per grammar-selection so leaving and returning to the tab (or
+  // reopening the page without a hash) restores the last arrangement.
+  try { if (specKey) localStorage.setItem(specKey, JSON.stringify(spec)); } catch(e){}
+  render();
+}
+function renderPinnedFilters(){
+  const body = $('#z-filters-body'); body.innerHTML = '';
+  if (!spec.pinned.length){ body.innerHTML = '<span style="color:var(--muted);font-size:11.5px;opacity:.6">empty — drag a chip here</span>'; return; }
+  for (const f of spec.pinned){
+    const allVals = [...new Set(records.flatMap(r => (r[f]||['—']).map(String)))].sort((a,b)=>smartCmp(a,b));
+    const selected = spec.filters[f] || [];
+    const grp = document.createElement('div'); grp.className = 'fpinned-group';
+    const lbl = document.createElement('div'); lbl.className = 'fpin-label';
+    lbl.innerHTML = `<b style="color:#177d56">${esc(displayName(f))}</b>
+      <span class="rx" data-unpinf="${esc(f)}" title="Remove filter">✕</span>`;
+    grp.appendChild(lbl);
+    for (const v of allVals){
+      const pill = document.createElement('span');
+      pill.className = 'fval-pill' + (selected.includes(v) ? ' on' : '');
+      pill.textContent = formatFieldValue(f, v); pill.dataset.filterf = f; pill.dataset.filterv = v;
+      grp.appendChild(pill); grp.appendChild(document.createTextNode(' '));
+    }
+    body.appendChild(grp);
+  }
+  body.addEventListener('click', e => {
+    const pill = e.target.closest('.fval-pill');
+    if (pill){ const {filterf:f, filterv:v} = pill.dataset;
+      if (!spec.filters[f]) spec.filters[f] = [];
+      const idx = spec.filters[f].indexOf(v);
+      if (idx >= 0) spec.filters[f].splice(idx, 1); else spec.filters[f].push(v);
+      sync(); return; }
+    const rx = e.target.closest('[data-unpinf]');
+    if (rx){ const f = rx.dataset.unpinf;
+      spec.pinned = spec.pinned.filter(x=>x!==f);
+      delete spec.filters[f]; sync(); }
+  }, {once: true}); // rebind each sync — use event delegation on body with once:false
+}
+// rebind click each render by using delegation on the static parent
+$('#z-filters').addEventListener('click', e => {
+  const pill = e.target.closest('.fval-pill');
+  if (pill){ const {filterf:f, filterv:v} = pill.dataset;
+    if (!spec.filters[f]) spec.filters[f] = [];
+    const idx = spec.filters[f].indexOf(v);
+    if (idx >= 0) spec.filters[f].splice(idx, 1); else spec.filters[f].push(v);
+    sync(); return; }
+  const rx = e.target.closest('[data-unpinf]');
+  if (rx){ const f = rx.dataset.unpinf;
+    spec.pinned = spec.pinned.filter(x=>x!==f);
+    delete spec.filters[f]; sync(); }
+});
+
+for (const [sel, zone] of [['#z-rows','rows'],['#z-cols','cols'],['#z-filters','filters'],['#tray',null]]){
+  const z = $(sel);
+  z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('dragover'); });
+  z.addEventListener('dragleave', () => z.classList.remove('dragover'));
+  z.addEventListener('drop', e => {
+    e.preventDefault(); z.classList.remove('dragover');
+    let d; try { d = JSON.parse(e.dataTransfer.getData('text/plain')); } catch(err){ return; }
+    if (d.from) removeField(d.f, d.from);
+    if (zone==='rows' && !spec.rows.includes(d.f)) spec.rows.push(d.f);
+    if (zone==='cols'){ spec.cols=[d.f]; }
+    if (zone==='filters' && !spec.pinned.includes(d.f)){ spec.pinned.push(d.f); if (!spec.filters[d.f]) spec.filters[d.f]=[]; }
+    sync();
+  });
+}
+function popAt(anchor){
+  const pop = $('#pop'); const r = anchor.getBoundingClientRect();
+  pop.style.left = Math.min(r.left, innerWidth-320) + 'px';
+  pop.style.top = (r.bottom + scrollY + 6) + 'px';
+  pop.style.display = 'block';
+  return pop;
+}
+function openPop(f, anchor, zone){
+  const fl = fields.find(x=>x.name===f); if (!fl) return;
+  const sel = new Set((spec.filters[f]||[]).map(String));
+  const pop = popAt(anchor);
+  pop.innerHTML = `<input type="text" placeholder="search values…">
+    <div class="vals">${fl.values.map(v=>`<label><input type="checkbox" value="${esc(v)}" ${sel.has(String(v))?'checked':''}> ${esc(formatFieldValue(f, v))}</label>`).join('')}</div>
+    <div class="pbtns"><button data-a="all">All</button><button data-a="none">None</button><button data-a="ok">Apply ⧩</button></div>
+    ${zone ? '' : `<div class="pbtns"><button data-a="rows">→ Rows</button><button data-a="cols">→ Columns</button></div>`}`;
+  pop.querySelector('input[type=text]').oninput = e => {
+    const q = e.target.value.toLowerCase();
+    pop.querySelectorAll('.vals label').forEach(l => l.style.display = l.textContent.toLowerCase().includes(q)?'':'none');
+  };
+  pop.querySelectorAll('.pbtns button').forEach(b => b.onclick = () => {
+    if (b.dataset.a==='all') pop.querySelectorAll('.vals input').forEach(i=>i.checked=true);
+    else if (b.dataset.a==='none') pop.querySelectorAll('.vals input').forEach(i=>i.checked=false);
+    else if (b.dataset.a==='rows'){ if(!spec.rows.includes(f)) spec.rows.push(f); pop.style.display='none'; sync(); }
+    else if (b.dataset.a==='cols'){ spec.cols=[f]; pop.style.display='none'; sync(); }
+    else { const v = [...pop.querySelectorAll('.vals input:checked')].map(i=>i.value);
+           if (v.length && v.length < fl.values.length) spec.filters[f] = v; else delete spec.filters[f];
+           pop.style.display='none'; sync(); }
+  });
+}
+document.addEventListener('click', e => {
+  if (!$('#pop').contains(e.target) && !e.target.closest('.chip') && e.target.id!=='deckbtn')
+    $('#pop').style.display='none';
+});
+
+/* ── 5. deck MULTISELECT ───────────────────────────────── */
+function selectedSlugs(){
+  const d = new URLSearchParams(location.search).get('decks');
+  return d ? d.split(',').filter(Boolean) : [];
+}
+$('#deckbtn').onclick = () => {
+  if (!collection) return;
+  const sel = new Set(selectedSlugs());
+  const pop = popAt($('#deckbtn'));
+  const decks = collection.grammars.filter(g=>!g.is_meta && g.slug!=='tree-of-tarot');
+  pop.innerHTML = `<p style="margin:2px 0 8px;font-size:11.5px;color:var(--muted);max-width:240px;line-height:1.45">
+      Tick <b>several decks</b> and Load — patterns appear when collections overlap. Each deck becomes a filterable field.</p>
+    <input type="text" placeholder="search decks…">
+    <div class="vals">${decks.map(g=>`<label><input type="checkbox" value="${esc(g.slug)}" ${sel.has(g.slug)?'checked':''}> ${esc(g.name.split(' — ')[0].slice(0,34))}</label>`).join('')}</div>
+    <div class="pbtns"><button data-a="meta">All decks in one</button></div>
+    <div class="pbtns"><button data-a="all">All</button><button data-a="none">None</button><button data-a="ok">Load selected</button></div>`;
+  pop.querySelector('input[type=text]').oninput = e => {
+    const q = e.target.value.toLowerCase();
+    pop.querySelectorAll('.vals label').forEach(l => l.style.display = l.textContent.toLowerCase().includes(q)?'':'none');
+  };
+  pop.querySelectorAll('.pbtns button').forEach(b => b.onclick = () => {
+    if (b.dataset.a==='all') pop.querySelectorAll('.vals input').forEach(i=>i.checked=true);
+    else if (b.dataset.a==='none') pop.querySelectorAll('.vals input').forEach(i=>i.checked=false);
+    else if (b.dataset.a==='meta') location.href = 'explorer.html';
+    else { const v = [...pop.querySelectorAll('.vals input:checked')].map(i=>i.value);
+           location.href = v.length ? 'explorer.html?decks=' + v.join(',') : 'explorer.html'; }
+  });
+};
+
+/* ── 6. boot ───────────────────────────────────────────── */
+function setMode(m){
+  mode = m;
+  for (const id of ['mode-cards','mode-counts','mode-sections']) $('#'+id).classList.toggle('active', id==='mode-'+m);
+  const pick = $('#section-pick'); if (pick) pick.style.display = (m==='sections') ? '' : 'none';
+  render();
+}
+function populateSectionPick(){
+  const pick = $('#section-pick'); if (!pick) return;
+  pick.innerHTML = sectionGroups.map(s =>
+    `<option value="${esc(s.key)}"${s.key===sectionField?' selected':''}>${esc(s.label)} (${s.count})${s.attributed?' · later':''}</option>`).join('');
+}
+// Preset pivots — one click sets Rows/Columns (only with fields the data actually has).
+document.querySelectorAll('#presets button').forEach(b => b.onclick = () => {
+  if (b.dataset.clear) { spec.rows = []; spec.cols = []; spec.filters = {}; sync(); return; }
+  const avail = new Set(fields.map(f => f.name));
+  const pick = s => (s ? s.split(',') : []).filter(x => avail.has(x));
+  spec.rows = pick(b.dataset.r);
+  spec.cols = pick(b.dataset.c);
+  // Presets own the filter they need (e.g. Trump × Deck pre-filters suit=Trumps) so
+  // switching presets doesn't leave a stale filter behind — the "x of y items" line
+  // already states the exclusion honestly. Keep the boot-applied level=L1 card filter.
+  const keepLevel = spec.filters.level;
+  spec.filters = keepLevel ? { level: keepLevel } : {};
+  if (b.dataset.f) {
+    const [ff, fv] = b.dataset.f.split('=');
+    if (avail.has(ff)) spec.filters[ff] = [fv];
+  }
+  sync();
+});
+$('#mode-cards').onclick = () => setMode('cards');
+$('#mode-counts').onclick = () => setMode('counts');
+$('#mode-sections').onclick = () => setMode('sections');
+$('#section-pick').onchange = e => { sectionField = e.target.value; render(); };
+$('#reset').onclick = () => { spec={rows:[],cols:[],filters:{},pinned:[]}; sync(); };
+$('#sidebar-btn').onclick = () => {
+  const on = document.body.classList.toggle('sidebar');
+  $('#sidebar-btn').classList.toggle('active', on);
+  localStorage.setItem('explorer-sidebar', on ? '1' : '');
+};
+if (localStorage.getItem('explorer-sidebar')) {
+  document.body.classList.add('sidebar');
+  $('#sidebar-btn').classList.add('active');
+}
+
+async function boot(){
+  try { collection = await (await fetch(PFX+'grammars/_collection.json')).json(); } catch(e){}
+  const slugs = selectedSlugs();
+  // Versioned key. Phase 1 (Aug 7 2026) replaced the overloaded `number` axis with derived
+  // role/trump_number/rank (v1→v2); the fifth-suit fold (Aug 11 2026) retired role/trump_number
+  // from the tray in favour of suit=Trumps + shared rank (v2→v3). A spec saved under an old key
+  // pins the reader to retired rows and they never see the new default view. Bumping the version
+  // retires those silently — the old entry is simply no longer read — rather than migrating a
+  // spec whose fields changed meaning.
+  specKey = 'explorer-spec-v3:' + slugs.slice().sort().join(',');
+  const srcParam = new URLSearchParams(location.search).get('src');
+  records = []; byId = {}; secById = {};
+  // record an item's sections under the same prefixed id flatten produces
+  const stash = (g, prefix) => { for (const it of (g.items||[])) secById[(prefix?prefix+':':'')+it.id] = it.sections || {}; };
+  try{
+    if (slugs.length && collection){
+      $('#deckbtn').textContent = `Decks ▾ (${slugs.length})`;
+      const metas = Object.fromEntries(collection.grammars.map(g=>[g.slug,g]));
+      const loads = slugs.map(async slug => {
+        const g = await (await fetch(`${PFX}grammars/${slug}/grammar.json`)).json();
+        const cm = metas[slug] || {};
+        const inherit = { deck: (cm.name || g.name || slug).split(' — ')[0].slice(0,34),
+                          year: g.metadata?.year, branch: cm.branch || g.metadata?.branch,
+                          order: g.metadata?.order, tradition: g.metadata?.tradition };
+        stash(g, slug);
+        return flatten(g, inherit, slug);
+      });
+      for (const recs of await Promise.all(loads)) records.push(...recs);
+    } else {
+      const src = srcParam || PFX+'grammars/words-deck/grammar.json';
+      const g = await (await fetch(src)).json();
+      stash(g, null);
+      // single-grammar path (?src=) needs the deck-level year too, so century still
+      // derives per-item (Phase 1: audit §5 "?src= single-deck loads never get century").
+      records = flatten(g, { year: g.metadata?.year }, null);
+      if (srcParam) $('#deckbtn').textContent = (g.name||'deck').split(' — ')[0].slice(0,22) + ' ▾';
+    }
+  } catch(e){ $('#out').innerHTML = '<div id="hint">Could not load the grammar(s).</div>'; return; }
+  // The meta grammar's items are pointer stubs (source_deck set, but no `branch` of their
+  // own — branch only lives per-deck in _collection.json, and until now only the multi-
+  // select `?decks=` path inherited it). Backfill it from the collection here so "Lineage ▸
+  // Deck" has a real field to pivot on from the default landing view too, not just a
+  // silent no-op that quietly drops to Deck-only grouping.
+  if (collection){
+    const branchBySlug = {};
+    for (const cg of collection.grammars) if (cg.branch) branchBySlug[cg.slug] = cg.branch;
+    for (const r of records)
+      if (!r.branch && r.source_deck && branchBySlug[r.source_deck[0]])
+        r.branch = [branchBySlug[r.source_deck[0]]];
+  }
+  sectionGroups = inferSectionGroups();
+  if (!sectionField && sectionGroups.length) sectionField = sectionGroups[0].key;
+  populateSectionPick();
+  for (const r of records) byId[r.__id] = r;
+  // resolve emergence names now that byId is full
+  for (const r of records) if (r.__parents.length)
+    r.emergence = r.__parents.map(p => (byId[p]?.__name || p).split(' — ')[0].slice(0,40));
+  fields = discoverFields(records);
+  // Apply the DECIDED tray allowlist (see the constant above) right at the discovery
+  // step — everything discoverFields() found stays on the records (detail panel is
+  // unaffected), but only allowlisted fields ever become tray chips, in the fixed
+  // order the coordinator specified. This also retires the old overloaded `number`
+  // field (majors 0–21 and pips 1–14 sharing one key — the "— (no number)" landfill
+  // row, fixed Aug 7) unconditionally, on every load path including single-deck
+  // `?src=` grammars that predate the role/trump_number/rank split.
+  fields = fields.filter(f => TRAY_ALLOWLIST.includes(f.name))
+                 .sort((a, b) => TRAY_ORDER.get(a.name) - TRAY_ORDER.get(b.name));
+  fieldParent = inferHierarchy(records, fields);
+  let restored = false;
+  try { const s = JSON.parse(decodeURIComponent(location.hash.slice(1)));
+        if (s && s.rows) { spec = s; restored = true; } } catch(e){}
+  if (!restored){ // no hash → last saved arrangement for this grammar selection
+    try { const s = JSON.parse(localStorage.getItem(specKey));
+          if (s && s.rows) { spec = s; restored = true; } } catch(e){}
+  }
+  if (restored){
+    // A saved hash/localStorage spec can reference a field that no longer exists in
+    // the tray (e.g. `number`, just retired above) — drop it rather than let a
+    // dangling row/col field render an uncatalogued, chip-less ghost dimension.
+    const avail = new Set(fields.map(f => f.name));
+    spec.rows = (spec.rows || []).filter(f => avail.has(f));
+    spec.cols = (spec.cols || []).filter(f => avail.has(f));
+    spec.pinned = (spec.pinned || []).filter(f => avail.has(f));
+    spec.filters = spec.filters || {};
+    for (const f of Object.keys(spec.filters)) if (!avail.has(f)) delete spec.filters[f];
+  }
+  if (!restored){
+    const lv = fields.find(f=>f.name==='level');
+    if (lv && lv.count > 1 && lv.values.includes('L1')) spec.filters.level = ['L1'];
+    const avail = new Set(fields.map(f=>f.name));
+    const hasTrumpsSuit = (fields.find(f=>f.name==='suit')?.values || []).includes('Trumps');
+    if (hasTrumpsSuit && avail.has('rank') && avail.has('deck')){
+      // Phase-1 default landing view — "the same card across every deck" comparison
+      // wall (north star, PlayfulProcess Aug 7: something scholars/artists can compare and
+      // inspire themselves with). Since the fifth-suit fold this is just the Suit ×
+      // Rank system filtered to suit=Trumps, pivoted rank × deck. Only available on
+      // the meta-grammar's derived axes; raw single-deck loads fall through to the
+      // century/suit views below.
+      spec.rows = ['rank']; spec.cols = ['deck']; spec.filters.suit = ['Trumps'];
+    } else if (avail.has('century') && avail.has('suit'))
+      { spec.rows=['century']; spec.cols=['suit']; }
+    else if (slugs.length > 1 && avail.has('century'))
+      { spec.rows=['century']; if (avail.has('deck')) spec.cols=['deck']; }
+  }
+  sync();
+}
+boot();
+})();
+
+/* ── Touch long-press drag (mobile) ───────────────────────────────────────
+   Hold a chip for 420ms to start dragging; move finger to a drop zone and
+   release to drop. Short taps still open the filter popover normally.       */
+(function(){
+  const HOLD_MS = 420, MOVE_LIMIT = 10;
+  let timer = null, active = null, clone = null, dragData = null;
+  let startX = 0, startY = 0;
+  const ZONE_MAP = [['#z-rows','rows'],['#z-cols','cols'],['#z-filters','filters'],['#tray',null]];
+
+  function cancelHold(){ clearTimeout(timer); timer = null; }
+  function endDrag(dropZone){
+    if (clone){ clone.remove(); clone = null; }
+    if (active){ active.style.opacity = ''; active = null; }
+    document.querySelectorAll('.dragover').forEach(z=>z.classList.remove('dragover'));
+    if (dragData && dropZone !== undefined){
+      const {f, from} = dragData;
+      if (from) removeField(f, from);
+      if (dropZone==='rows' && !spec.rows.includes(f)) spec.rows.push(f);
+      if (dropZone==='cols') spec.cols=[f];
+      if (dropZone==='filters' && !spec.pinned.includes(f)){ spec.pinned.push(f); if(!spec.filters[f]) spec.filters[f]=[]; }
+      sync();
+    }
+    dragData = null;
+  }
+
+  document.addEventListener('touchstart', e=>{
+    const chip = e.target.closest('.chip[data-f]');
+    if (!chip) return;
+    const t = e.touches[0];
+    startX = t.clientX; startY = t.clientY;
+    cancelHold();
+    timer = setTimeout(()=>{
+      timer = null;
+      active = chip;
+      dragData = { f: chip.dataset.f, from: chip.dataset.zone || null };
+      const r = chip.getBoundingClientRect();
+      clone = chip.cloneNode(true);
+      Object.assign(clone.style, {
+        position:'fixed', zIndex:'9999', pointerEvents:'none',
+        opacity:'.85', left:r.left+'px', top:r.top+'px',
+        width:r.width+'px', transform:'scale(1.08)', transition:'transform .1s'
+      });
+      document.body.appendChild(clone);
+      chip.style.opacity = '.3';
+      if (navigator.vibrate) navigator.vibrate(25);
+    }, HOLD_MS);
+  }, {passive:true});
+
+  document.addEventListener('touchmove', e=>{
+    const t = e.touches[0];
+    if (timer){
+      if (Math.hypot(t.clientX-startX, t.clientY-startY) > MOVE_LIMIT) cancelHold();
+      return;
+    }
+    if (!clone) return;
+    e.preventDefault();
+    clone.style.left = (t.clientX - clone.offsetWidth/2)+'px';
+    clone.style.top  = (t.clientY - clone.offsetHeight/2)+'px';
+    ZONE_MAP.forEach(([sel])=>{
+      const z = document.querySelector(sel); if (!z) return;
+      const r = z.getBoundingClientRect();
+      const over = t.clientX>=r.left && t.clientX<=r.right && t.clientY>=r.top && t.clientY<=r.bottom;
+      z.classList.toggle('dragover', over);
+    });
+  }, {passive:false});
+
+  document.addEventListener('touchend', e=>{
+    cancelHold();
+    if (!clone) return;
+    const t = e.changedTouches[0];
+    let hit;
+    for (const [sel, zone] of ZONE_MAP){
+      const z = document.querySelector(sel); if (!z) continue;
+      const r = z.getBoundingClientRect();
+      if (t.clientX>=r.left && t.clientX<=r.right && t.clientY>=r.top && t.clientY<=r.bottom){ hit=zone; break; }
+    }
+    endDrag(hit);
+  }, {passive:true});
+
+  document.addEventListener('touchcancel', ()=>{ cancelHold(); endDrag(undefined); }, {passive:true});
+})();
+</script>
+
+<script src="../site-footer.js?v=1"></script>
+<site-footer base="../"></site-footer>
+</body>
+</html>

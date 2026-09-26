@@ -1,0 +1,86 @@
+[
+  {
+    "id": "arg-no-second-try",
+    "node": "gate",
+    "push": "yes",
+    "text": "Once a capable system is out, copies spread and the world rearranges around it: there is no smaller, boxed trial that shows how the full release behaves.",
+    "source": null
+  },
+  {
+    "id": "arg-reversibility",
+    "node": "gate",
+    "push": "no",
+    "text": "Where a step can still be undone with one word, ordinary trial and error has room to work, whatever else is still unsettled.",
+    "source": null
+  },
+  {
+    "id": "evt-rl-pause",
+    "node": "alignment",
+    "push": "yes",
+    "text": "A lab paused its own reinforcement-learning training after a real incident: checking for alignment problems can and does interrupt a release schedule.",
+    "source": { "label": "TIME, Aug 18 2026", "url": "https://time.com/article/2026/08/18/openai-slowing-training/" }
+  },
+  {
+    "id": "arg-third-party-evals",
+    "node": "alignment",
+    "push": "yes",
+    "text": "Independent evaluators checking a system before it ships are now ordinary practice at frontier labs, not a hypothetical: a real outside check, not only a promise.",
+    "source": null
+  },
+  {
+    "id": "evt-rsp-drop",
+    "node": "alignment",
+    "push": "no",
+    "text": "A lab's own safety policy dropped the pause commitment its earlier version carried: a public sign that pacing by policy alone is not being relied on to hold.",
+    "source": { "label": "GovAI analysis, Feb 24 2026", "url": "https://www.governance.ai/analysis/anthropics-rsp-v3-0-how-it-works-whats-changed-and-some-reflections" }
+  },
+  {
+    "id": "arg-interpretability",
+    "node": "alignment",
+    "push": "no",
+    "text": "Interpretability work still sees only a small slice of what happens inside a model, so a claim that its goals match ours rests on a rule nobody has fully read.",
+    "source": null
+  },
+  {
+    "id": "arg-value-function",
+    "node": "alignment",
+    "push": "no",
+    "text": "A learning system's value function is only an estimate of the reward it expects, not a fixed goal a person could point to and confirm ahead of time.",
+    "source": null
+  },
+  {
+    "id": "arg-outer-guardrail",
+    "node": "containment",
+    "push": "yes",
+    "text": "An outer guardrail, a classifier or sandbox that blocks actions from outside the system, does not depend on the model's own goals holding: it can be tested and hardened on its own.",
+    "source": null
+  },
+  {
+    "id": "evt-hf-breach",
+    "node": "containment",
+    "push": "no",
+    "text": "A lab disclosed cases where its own models reached real third-party systems during safety evaluations: a box that a live test still got past.",
+    "source": { "label": "The Hacker News, Sep 2026", "url": "https://thehackernews.com/2026/09/anthropic-ai-models-breached-real.html" }
+  },
+  {
+    "id": "evt-hf-buy",
+    "node": "containment",
+    "push": "no",
+    "text": "The maker of the chips these systems run on agreed to buy the platform an incident had reached: concentrating infrastructure and incident response in one firm is not the same as an outside check holding.",
+    "source": { "label": "Nvidia 8-K filing, Sep 2 2026", "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000078/nvda-20260902.htm" }
+  },
+  {
+    "id": "evt-compute-race",
+    "node": "containment",
+    "push": "no",
+    "text": "A lab built around caution is still growing its own compute roughly tenfold in a year: caution and racing on scale are being pursued side by side, not one before the other.",
+    "source": { "label": "Nvidia newsroom, Jul 27 2026", "url": "https://nvidianews.nvidia.com/news/ilya-sutskevers-safe-superintelligence-inc-and-nvidia-announce-long-term-strategic-partnership" }
+  },
+  {
+    "id": "arg-trained-collaboration",
+    "node": "containment",
+    "push": "no",
+    "text": "Systems are increasingly built to talk to other systems as their normal function; every new channel between systems is one more path a box has to seal.",
+    "source": null
+  }
+]

@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curves and Odds</title>
+<meta name="description" content="Two animated explainers for HOT POTATO: three shapes recursive self-improvement could take, and how many 90% bets compound.">
+<meta name="robots" content="noindex">
+<!--
+  Explainer step API (Sep 24 2026). Steps are numbered across the page:
+  1-5 = scene 1 ("Three curves"), 6-9 = scene 2 ("Ninety percent, many times").
+    ?step=N              open on step N (its end state)
+    ?embed=1             only the scene being shown, sized to its frame (a
+                         recursive.eco embed item sets this; a framed page with
+                         no flag gets it too)
+    ?autoplay_steps=6,14 move one step on at 6 s and 14 s after load
+    postMessage({ type: 'step', n })  go to step n (animated when it is the next one)
+    postMessage({ type: 'driven' })   the parent owns the clock: stop our own timer
+  The page answers the parent with { type: 'explainer-step', n, total }.
+  Only messages from the parent frame are read.
+  Home (Sep 25 2026): learning.recursive.eco/explainers/curves-and-odds/ — moved
+  here from the recursive.eco landing so films embed it from the lab. Embed URL:
+  https://learning.recursive.eco/explainers/curves-and-odds/?embed=1
+  Self-contained: no local assets; the only external request is Google Fonts.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#12110f;
+  --panel:#1a1916;
+  --ink:#ece6da;
+  --ink-2:#b3ab9c;
+  --ink-3:#7d7668;
+  --rule:#2e2b26;
+  --grid:#24221e;
+  --hot:#e8793a;       /* curve a / heat */
+  --cool:#6fb3a8;      /* curve b */
+  --wall:#b9a4d9;      /* curve c */
+  --good:#d9c27a;      /* "every bet goes well" */
+  --ghost:#4a453c;
+  --focus:#f2d49b;
+  --serif:"Fraunces", Georgia, "Times New Roman", serif;
+  --sans:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+main{max-width:980px;margin:0 auto;padding:40px 16px 64px}
+header.top{margin-bottom:28px}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(28px,5vw,44px);line-height:1.1;margin:0 0 10px}
+.lede{color:var(--ink-2);max-width:60ch;margin:0}
+section.scene{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:24px 20px 20px;margin:28px 0}
+.scene-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0}
+.num{font-family:var(--serif);color:var(--ink-3);font-size:15px}
+svg.chart{display:block;width:100%;height:auto;margin:14px 0 6px;overflow:visible}
+.caption{min-height:5.2em;font-size:clamp(16px,2.2vw,19px);color:var(--ink);max-width:62ch;margin:6px 0 4px;transition:opacity .35s}
+.caption .quote{display:block;font-family:var(--serif);font-style:italic;color:var(--ink-2);font-size:.9em;margin-top:6px}
+.fine{font-size:13px;color:var(--ink-3);margin:8px 0 0;max-width:70ch}
+.controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+button{font:500 14px var(--sans);color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:999px;padding:8px 16px;cursor:pointer;min-height:40px}
+button:hover{border-color:var(--ink-3)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+button.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto}
+.dots span{width:8px;height:8px;border-radius:50%;background:var(--rule)}
+.dots span.on{background:var(--ink-2)}
+/* chart text */
+.axis{stroke:var(--ink-3);stroke-width:1.2;fill:none}
+.gridline{stroke:var(--grid);stroke-width:1}
+.lbl{fill:var(--ink-3);font:500 13px var(--sans)}
+.lbl-lg{fill:var(--ink-2);font:500 14px var(--sans)}
+.cl{font:600 14px var(--sans)}
+.curve{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transition:opacity .4s}
+.dim{opacity:.28}
+.hidden{opacity:0}
+.fade{transition:opacity .45s}
+/* sliders */
+.sliders{display:none;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 22px;margin-top:14px;padding-top:14px;border-top:1px solid var(--rule)}
+.sliders.show{display:grid}
+.sliders label{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-2);margin-bottom:4px}
+.sliders output{font-variant-numeric:tabular-nums;color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--good)}
+.formula{font-variant-numeric:tabular-nums;font-size:14px;color:var(--ink-2);margin:10px 0 0}
+footer{color:var(--ink-3);font-size:13px;margin-top:36px}
+@media (max-width:520px){
+  main{padding-top:28px}
+  section.scene{padding:18px 14px 16px}
+  .dots{margin-left:0;width:100%}
+}
+@media (max-width:640px){
+  .lbl{font-size:24px}.lbl-lg{font-size:25px}.cl{font-size:25px}
+  .scene-head .num{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  .caption,.curve,.fade{transition:none}
+}
+/* Embed mode: one scene, filling its frame (the viewer's box is 16:9, as
+   small as 358x201 on a phone). The chart takes whatever height is left. */
+html:has(body.embed){height:100%}
+body.embed{height:100%;overflow:hidden}
+body.embed main{max-width:none;height:100%;display:flex;flex-direction:column;padding:8px 12px 6px}
+body.embed header.top, body.embed footer, body.embed .sliders{display:none}
+body.embed.driven .controls{display:none}
+body.embed section.scene{display:none;margin:0;border:0;background:transparent;padding:0}
+body.embed section.scene.active{display:flex;flex-direction:column;flex:1;min-height:0}
+body.embed h2{font-size:clamp(14px,3vw,26px)}
+body.embed section.scene.active > *{flex-shrink:0}
+body.embed section.scene.active > svg.chart{flex:1 1 auto;min-height:0;height:100%;margin:4px 0 2px}
+body.embed .caption{min-height:0;font-size:clamp(11px,2.1vw,18px);line-height:1.35;margin:2px 0 0}
+body.embed .caption .quote{margin-top:2px}
+body.embed .fine{font-size:10px;margin-top:3px}
+body.embed .formula{font-size:12px;margin:2px 0 0}
+body.embed .controls{margin-top:4px}
+@media (max-height:420px){
+  body.embed .fine, body.embed .formula{display:none}
+}
+@media (max-height:300px){
+  body.embed .scene-head, body.embed .caption .quote{display:none}
+  body.embed main{padding:4px 8px}
+}
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <p class="kicker">HOT POTATO · explainer</p>
+    <h1>Curves and odds</h1>
+    <p class="lede">Two small pictures. The first shows three shapes that AI improving itself could take. The second shows why lots of confident bets can still add up to a fragile whole.</p>
+  </header>
+
+  <!-- ============ SCENE 1 ============ -->
+  <section class="scene" id="s1" aria-labelledby="s1h">
+    <div class="scene-head"><h2 id="s1h">Three curves of self-improvement</h2><span class="num">1 / 2</span></div>
+    <svg class="chart" id="c1" viewBox="0 0 800 440" role="img" aria-label="Capability over time for three scenarios: a curve that runs away to vertical, a curve that levels off, and a curve that stalls at a wall.">
+      <defs>
+        <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#b9a4d9" stroke-width="2" opacity=".35"/>
+        </pattern>
+      </defs>
+      <g id="c1-grid"></g>
+      <line class="axis" x1="70" y1="30" x2="70" y2="390"/>
+      <line class="axis" x1="70" y1="390" x2="770" y2="390"/>
+      <text class="lbl-lg" x="70" y="18">capability ↑</text>
+      <text class="lbl-lg" x="770" y="420" text-anchor="end">time →</text>
+      <text class="lbl" x="70" y="420">now</text>
+
+      <!-- wall for curve c -->
+      <g id="wall" class="fade hidden">
+        <rect x="0" y="30" width="16" height="360" fill="url(#hatch)" id="wallRect"/>
+        <text class="lbl" id="wallTxt" text-anchor="middle" y="46">a wall</text>
+      </g>
+      <!-- asymptote for curve a -->
+      <g id="asym" class="fade hidden">
+        <line id="asymLine" y1="30" y2="390" stroke="var(--hot)" stroke-dasharray="4 6" stroke-width="1.4" opacity=".7"/>
+        <text class="lbl" id="asymTxt" y="404" text-anchor="middle" fill="var(--hot)">a finite date?</text>
+      </g>
+
+      <path id="pA" class="curve" stroke="var(--hot)"/>
+      <path id="pB" class="curve" stroke="var(--cool)"/>
+      <path id="pC" class="curve" stroke="var(--wall)"/>
+      <path id="pC2" class="curve" stroke="var(--wall)"/>
+      <path id="pC3" class="curve" stroke="var(--wall)" stroke-dasharray="3 9" stroke-width="2.5"/>
+
+      <text id="tA" class="cl fade hidden" fill="var(--hot)">runs away</text>
+      <text id="tB" class="cl fade hidden" fill="var(--cool)">levels off</text>
+      <text id="tC2" class="cl fade hidden" fill="var(--wall)">new method</text>
+      <text id="tC3" class="cl fade hidden" fill="var(--wall)">…or never?</text>
+      <text id="tC" class="cl fade hidden" fill="var(--wall)">stalls</text>
+    </svg>
+    <p class="caption" id="cap1" aria-live="polite"></p>
+    <div class="controls">
+      <button class="primary" id="play1">Play</button>
+      <button id="prev1" aria-label="Previous step">← Back</button>
+      <button id="next1" aria-label="Next step">Next →</button>
+      <div class="dots" id="dots1" aria-hidden="true"></div>
+    </div>
+    <p class="fine">These are shapes, not data. The axes carry no numbers because nobody has them. The words in quotes are Charlie O'Neill's, from the Dwarkesh Podcast (Sep 2026) with John Schulman and Beren Millidge.</p>
+  </section>
+
+  <!-- ============ SCENE 2 ============ -->
+  <section class="scene" id="s2" aria-labelledby="s2h">
+    <div class="scene-head"><h2 id="s2h">Ninety percent, many times</h2><span class="num">2 / 2</span></div>
+    <svg class="chart" id="c2" viewBox="0 0 800 440" role="img" aria-label="Bar chart: chance that every actor's bet goes well, as the number of actors grows from one to ten.">
+      <g id="c2-grid"></g>
+      <line class="axis" x1="70" y1="50" x2="70" y2="320"/>
+      <line class="axis" x1="70" y1="320" x2="770" y2="320"/>
+      <text class="lbl-lg" x="70" y="22">chance every bet goes well ↑</text>
+      <text class="lbl-lg" x="770" y="430" text-anchor="end">labs / countries betting, each with its own odds →</text>
+      <g id="actors"></g>
+      <g id="bars"></g>
+      <g id="ghosts"></g>
+    </svg>
+    <p class="caption" id="cap2" aria-live="polite"></p>
+    <div class="sliders" id="sliders">
+      <div><label for="sp">Each actor's odds <output id="op"></output></label><input type="range" id="sp" min="0.80" max="0.999" step="0.001" value="0.99"></div>
+      <div><label for="sn">Actors <output id="on"></output></label><input type="range" id="sn" min="1" max="10" step="1" value="10"></div>
+      <div><label for="ss">Shared fate <output id="os"></output></label><input type="range" id="ss" min="0" max="1" step="0.05" value="0"></div>
+    </div>
+    <p class="formula" id="formula"></p>
+    <div class="controls">
+      <button class="primary" id="play2">Play</button>
+      <button id="prev2" aria-label="Previous step">← Back</button>
+      <button id="next2" aria-label="Next step">Next →</button>
+      <div class="dots" id="dots2" aria-hidden="true"></div>
+    </div>
+    <p class="fine">Illustrative numbers, not a forecast. The first beats assume the bets are <em>independent</em>, so P(all go well) = p<sup>n</sup>. "Shared fate" mixes in a simple case where every outcome rides on the same draw: P = s·p + (1−s)·p<sup>n</sup>.</p>
+  </section>
+
+  <footer>HOT POTATO · recursive.eco. Clip source: Dwarkesh Podcast, "AI researchers debate how close we are to recursive self-improvement".</footer>
+</main>
+
+<script>
+(() => {
+"use strict";
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = id => document.getElementById(id);
+const ease = t => t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
+
+/* animate(duration, fn(p)) -> promise; returns immediately at p=1 with reduced motion */
+function makeAnimator(){
+  let token = 0;
+  return {
+    cancel(){ token++; },
+    run(dur, fn){
+      const my = ++token;
+      if (reduce || dur<=0){ fn(1); return Promise.resolve(true); }
+      return new Promise(res=>{
+        const t0 = performance.now();
+        const tick = now=>{
+          if (my!==token) return res(false);
+          const p = Math.min(1,(now-t0)/dur);
+          fn(ease(p));
+          if (p<1) requestAnimationFrame(tick); else res(true);
+        };
+        requestAnimationFrame(tick);
+      });
+    },
+    get token(){ return token; }
+  };
+}
+const wait = ms => new Promise(r=>setTimeout(r, reduce?0:ms));
+
+/* ================= SCENE 1 ================= */
+const X0=70, X1=770, Y0=390, Y1=30;
+const sx = u => X0 + u*(X1-X0);
+const sy = v => Y0 - v*(Y0-Y1);
+
+// shapes in unit space (u = time 0..1, v = capability 0..1)
+const T = 0.63;                                        // runaway date
+const fA = u => 0.05*(T/(T-u) - 1);
+const fB = u => { const L=0.6,k=10,m=0.36; return L/(1+Math.exp(-k*(u-m))) - L/(1+Math.exp(k*m)); };
+const WALL = 0.78, PLAT = 0.3;
+const fC = u => PLAT*(1-Math.exp(-u*8));              // rises then flattens toward the wall
+function sample(f, a, b, n){ const pts=[]; for(let i=0;i<=n;i++){ const u=a+(b-a)*i/n; pts.push([u,f(u)]); } return pts; }
+let ptsA = sample(fA, 0, T-0.0005, 400).filter(p=>p[1]<=1.02);
+ptsA.push([ptsA[ptsA.length-1][0], 1.02]);
+const ptsB = sample(fB, 0, 1, 200);
+const ptsC = sample(fC, 0, WALL, 200);
+const cWall = fC(WALL);
+const ptsC2 = [[WALL,cWall],[WALL+0.035,cWall+0.26]].concat(sample(u=>cWall+0.26+0.18*(1-Math.exp(-(u-WALL-0.035)*4)), WALL+0.035, 1, 80).slice(1));
+const ptsC3 = [[WALL,cWall],[1,cWall]];
+
+function pathTo(pts, p){
+  if (p<=0) return "";
+  // draw by fraction of arc length in screen space
+  const s = pts.map(([u,v])=>[sx(u),sy(v)]);
+  let L=0; const seg=[0];
+  for(let i=1;i<s.length;i++){ L+=Math.hypot(s[i][0]-s[i-1][0], s[i][1]-s[i-1][1]); seg.push(L); }
+  const target = L*p; let d = `M${s[0][0].toFixed(1)},${s[0][1].toFixed(1)}`;
+  for(let i=1;i<s.length;i++){
+    if (seg[i] <= target){ d += `L${s[i][0].toFixed(1)},${s[i][1].toFixed(1)}`; }
+    else { const f=(target-seg[i-1])/(seg[i]-seg[i-1]); d += `L${(s[i-1][0]+f*(s[i][0]-s[i-1][0])).toFixed(1)},${(s[i-1][1]+f*(s[i][1]-s[i-1][1])).toFixed(1)}`; break; }
+  }
+  return d;
+}
+
+// static bits
+(function(){
+  const g=$("c1-grid"); let h="";
+  for(let i=1;i<=4;i++){ const y=sy(i/4.4); h+=`<line class="gridline" x1="${X0}" x2="${X1}" y1="${y}" y2="${y}"/>`; }
+  g.innerHTML=h;
+  const wx = sx(WALL);
+  $("wallRect").setAttribute("x", wx-2); $("wallRect").setAttribute("width", 14);
+  $("wallTxt").setAttribute("x", wx+5);
+  $("asymLine").setAttribute("x1", sx(T)); $("asymLine").setAttribute("x2", sx(T));
+  $("asymTxt").setAttribute("x", sx(T));
+  const place=(id,x,y,anchor)=>{ const t=$(id); t.setAttribute("x",x); t.setAttribute("y",y); if(anchor) t.setAttribute("text-anchor",anchor); };
+  place("tA", sx(T)-24, sy(0.9), "end");
+  place("tB", sx(1), sy(fB(1))+28, "end");
+  place("tC", sx(0.6), sy(PLAT)-14, "middle");
+  place("tC2", sx(1), sy(ptsC2[ptsC2.length-1][1])-14, "end");
+  place("tC3", sx(1), sy(cWall)+28, "end");
+})();
+
+const S1 = [
+  { cap: `Three shapes for one idea: AI that helps build better AI. Same starting point, same clock. Only the <em>kind</em> of feedback differs.`,
+    show:{} },
+  { cap: `<b style="color:var(--hot)">Runs away.</b> If each improvement makes the next one faster and cheaper, the curve doesn't just climb. It bends toward vertical at a finite date. This is the "singularity" picture.
+          <span class="quote">"You're eventually going to hit this very fast takeoff with regards to self-improvement."</span>`,
+    show:{A:1, asym:1} },
+  { cap: `<b style="color:var(--cool)">Levels off.</b> The loop is real, but each gain costs more than the last: harder problems, scarcer data, slower experiments. Progress keeps coming and flattens anyway.
+          <span class="quote">"I think you're just going to start seeing this curve flatten out."</span>`,
+    show:{A:.4, B:1} },
+  { cap: `<b style="color:var(--wall)">Stalls at a wall.</b> Past straight lines were held up by leaps: pre-training, then RL. More of the same method just leans against the wall.
+          <span class="quote">"So if it requires another one of those discontinuities to solve, I'm not sure that the current method … would be able to discover that discontinuity."</span>`,
+    show:{A:.4, B:.4, C:1, wall:1} },
+  { cap: `If a new method turns up, progress takes a step. If it never does, the line just keeps going flat. Nobody knows which way this goes, and every lab is betting on it anyway.
+          <span class="quote">"If not, we're probably going to hit this asymptotic curve."</span>`,
+    show:{A:.4, B:.4, C:1, wall:1, C2:1, C3:1} },
+];
+
+const an1 = makeAnimator();
+let step1 = 0, playing1 = false;
+const dots1 = $("dots1"); dots1.innerHTML = S1.map(()=>"<span></span>").join("");
+
+function setOpacity(el, o){ el.style.opacity = o; }
+function renderS1(i, instant){
+  const sh = S1[i].show;
+  $("cap1").innerHTML = S1[i].cap;
+  [...dots1.children].forEach((d,k)=>d.classList.toggle("on", k<=i));
+  $("prev1").disabled = i===0; $("next1").disabled = i===S1.length-1;
+  // which curves were already fully drawn at the previous step (so we only animate new ones)
+  const want = {A:ptsA, B:ptsB, C:ptsC, C2:ptsC2, C3:ptsC3};
+  const toDraw = [];
+  for (const k in want){
+    const el = $("p"+k);
+    if (sh[k]){ setOpacity(el, sh[k]); if (instant || el.dataset.done==="1") { el.setAttribute("d", pathTo(want[k],1)); el.dataset.done="1"; } else toDraw.push(k); }
+    else { el.setAttribute("d",""); el.dataset.done="0"; }
+  }
+  $("wall").classList.toggle("hidden", !sh.wall);
+  $("asym").classList.toggle("hidden", !sh.asym);
+  const lab = {A:"tA", B:"tB", C:"tC", C2:"tC2", C3:"tC3"};
+  for (const k in lab){ const t=$(lab[k]); t.classList.toggle("hidden", !sh[k]); if (sh[k]) t.style.opacity = sh[k]<1 ? .4 : ""; }
+  if (!toDraw.length) return Promise.resolve(true);
+  const durs = {A:2200, B:2000, C:1800, C2:1100, C3:1100};
+  // hide labels until drawn
+  toDraw.forEach(k=>$(lab[k]).classList.add("hidden"));
+  return an1.run(Math.max(...toDraw.map(k=>durs[k])), p=>{
+    toDraw.forEach(k=>{ $("p"+k).setAttribute("d", pathTo(want[k], p)); });
+  }).then(ok=>{ if(ok){ toDraw.forEach(k=>{ $("p"+k).dataset.done="1"; $(lab[k]).classList.remove("hidden"); if(sh[k]<1) $(lab[k]).style.opacity=.4; }); } return ok; });
+}
+function goto1(i, instant){ an1.cancel(); step1 = Math.max(0, Math.min(S1.length-1, i)); if (instant){ for (const k of ["A","B","C","C2","C3"]) $("p"+k).dataset.done = "0"; } return renderS1(step1, instant); }
+async function play1(){
+  if (playing1){ playing1=false; an1.cancel(); $("play1").textContent="Play"; return; }
+  playing1 = true; $("play1").textContent = "Pause";
+  if (step1 === S1.length-1){ for (const k of ["A","B","C","C2","C3"]){ $("p"+k).dataset.done="0"; $("p"+k).setAttribute("d",""); } step1 = 0; renderS1(0); await wait(1800); }
+  while (playing1 && step1 < S1.length-1){
+    step1++; const ok = await renderS1(step1); if (!ok || !playing1) break; await wait(2600);
+  }
+  playing1 = false; $("play1").textContent = step1===S1.length-1 ? "Replay" : "Play";
+}
+$("play1").onclick = play1;
+$("next1").onclick = ()=>{ playing1=false; $("play1").textContent="Play"; goto1(step1+1); };
+$("prev1").onclick = ()=>{ playing1=false; $("play1").textContent="Play"; goto1(step1-1, true); };
+renderS1(0, true);
+
+/* ================= SCENE 2 ================= */
+// arithmetic check (independent bets): 0.9^n and 0.99^n
+const P = (p,n,s=0) => s*p + (1-s)*Math.pow(p,n);
+const expected90 = [0.90,0.81,0.73,0.66,0.59,0.53,0.48,0.43,0.39,0.35];
+expected90.forEach((e,i)=>{ const v=Math.pow(0.9,i+1); console.assert(Math.abs(v-e)<0.005, `0.9^${i+1}=${v}`); });
+console.assert(Math.abs(Math.pow(0.99,10)-0.9044)<0.0001, "0.99^10");
+console.assert(Math.abs(P(0.9,10,1)-0.9)<1e-12 && Math.abs(P(0.9,10,0)-Math.pow(0.9,10))<1e-12, "mixture ends");
+
+const BX0=70, BX1=770, BY0=320, BY1=60, N=10;
+const slot = (BX1-BX0)/N, bw = slot*0.56;
+const bx = n => BX0 + slot*(n-1) + (slot-bw)/2;       // n = 1..10
+const by = v => BY0 - v*(BY0-BY1);
+const pct = v => Math.round(v*100) + "%";
+const heat = v => {                                    // warmer as the joint odds fall
+  const a=[217,194,122], b=[232,121,58], t=Math.max(0,Math.min(1,(0.9-v)/0.6));
+  return `rgb(${a.map((c,i)=>Math.round(c+(b[i]-c)*t)).join(",")})`;
+};
+
+(function(){
+  let g="";
+  for (const v of [0.25,0.5,0.75,1]){ g+=`<line class="gridline" x1="${BX0}" x2="${BX1}" y1="${by(v)}" y2="${by(v)}"/><text class="lbl" x="${BX0-10}" y="${by(v)+4}" text-anchor="end">${v*100}%</text>`; }
+  $("c2-grid").innerHTML = g;
+  let a="", b="", gh="";
+  for (let n=1;n<=N;n++){
+    const cx = bx(n)+bw/2;
+    a += `<g id="act${n}" class="fade hidden"><circle cx="${cx}" cy="350" r="11" fill="none" stroke="var(--ink-2)" stroke-width="1.5"/><circle id="actf${n}" cx="${cx}" cy="350" r="6" fill="var(--good)"/><text class="lbl" x="${cx}" y="390" text-anchor="middle" id="acto${n}">90%</text></g>`;
+    gh += `<rect id="gh${n}" x="${bx(n)}" width="${bw}" y="${BY0}" height="0" fill="none" stroke="#12110f" stroke-opacity=".7" stroke-width="1.5" stroke-dasharray="4 4" class="fade hidden"/>`;
+    b += `<g id="bar${n}" class="fade hidden"><rect id="br${n}" x="${bx(n)}" width="${bw}" y="${BY0}" height="0" rx="2"/><text class="lbl-lg" id="bt${n}" x="${bx(n)+bw/2}" text-anchor="middle"></text></g>`;
+  }
+  $("actors").innerHTML = a; $("ghosts").innerHTML = gh; $("bars").innerHTML = b;
+})();
+
+function setBar(n, v, visible){
+  $("bar"+n).classList.toggle("hidden", !visible);
+  const r=$("br"+n), h=v*(BY0-BY1);
+  r.setAttribute("y", BY0-h); r.setAttribute("height", h); r.setAttribute("fill", heat(v));
+  const t=$("bt"+n); t.setAttribute("y", BY0-h-8); t.textContent = pct(v);
+}
+function setActor(n, p, visible){ $("act"+n).classList.toggle("hidden", !visible); $("acto"+n).textContent = (Math.round(p*1000)/10).toString().replace(/\.0$/,"")+"%"; }
+function setGhost(n, v, visible){ const g=$("gh"+n); g.classList.toggle("hidden", !visible); const h=v*(BY0-BY1); g.setAttribute("y",BY0-h); g.setAttribute("height",h); }
+
+const state2 = { p:0.9, n:1, s:0, ghosts:false };
+function draw2(){
+  for (let k=1;k<=N;k++){
+    const vis = k<=state2.n;
+    setActor(k, state2.p, vis);
+    setBar(k, P(state2.p, k, state2.s), vis);
+    setGhost(k, Math.pow(0.9,k), state2.ghosts && vis);
+  }
+  const v = P(state2.p, state2.n, state2.s);
+  const pS = state2.p.toFixed(state2.p>=0.99 && state2.p!==0.99 ? 3 : 2);
+  $("formula").innerHTML = state2.s>0
+    ? `P(all ${state2.n} go well) = ${state2.s.toFixed(2)}·${pS} + ${(1-state2.s).toFixed(2)}·${pS}<sup>${state2.n}</sup> ≈ <b style="color:var(--ink)">${pct(v)}</b>`
+    : `P(all ${state2.n} go well) = ${pS}<sup>${state2.n}</sup> ≈ <b style="color:var(--ink)">${pct(v)}</b>`;
+}
+
+const S2 = [
+  { cap: `One lab, doing what's in its own interest, gives its path a <b>90% chance</b> of ending in "machines of loving grace". That's a good bet.`,
+    enter: async()=>{ Object.assign(state2,{p:.9,n:1,s:0,ghosts:false}); draw2(); } },
+  { cap: `Now ten labs and countries, each making its own 90% bet. <em>If the bets were independent</em>, the chance that <b>every</b> one goes well is 0.9 × 0.9 × … = 0.9<sup>10</sup> ≈ <b>35%</b>. Every pass heats the potato a little more.`,
+    enter: async(an)=>{ Object.assign(state2,{p:.9,s:0,ghosts:false});
+      for (let n=2;n<=N;n++){ if (an.token!==tok2) return false; state2.n=n; draw2(); await wait(520); } return true; } },
+  { cap: `But the odds aren't fixed. They depend on what everyone does. If coordination (shared evals, shared safety practice) lifts each actor to <b>99%</b>, ten bets together land at 0.99<sup>10</sup> ≈ <b>90%</b>. The dashed lines inside the bars mark the old odds.`,
+    enter: async(an)=>{ state2.n=N; state2.s=0; state2.ghosts=true; const from=0.9;
+      return an.run(1800, t=>{ state2.p = from + (0.99-from)*t; draw2(); }).then(ok=>{ state2.p=0.99; draw2(); return ok; }); } },
+  { cap: `Try it. Change each actor's odds, the number of actors, and how much their fates are <em>shared</em>. When outcomes move together, the odds stop multiplying, for better or worse: one common mistake can sink everyone at once. Illustrative numbers, not a forecast.`,
+    enter: async()=>{ Object.assign(state2,{p:.99,n:N,s:0,ghosts:true}); syncSliders(); draw2(); } },
+];
+
+const an2 = makeAnimator();
+let step2 = 0, playing2 = false, tok2 = 0;
+const dots2 = $("dots2"); dots2.innerHTML = S2.map(()=>"<span></span>").join("");
+function syncSliders(){ $("sp").value=state2.p; $("sn").value=state2.n; $("ss").value=state2.s; outs(); }
+function outs(){ $("op").textContent=(state2.p*100).toFixed(1)+"%"; $("on").textContent=state2.n; $("os").textContent=Math.round(state2.s*100)+"%"; }
+["sp","sn","ss"].forEach(id=>$(id).addEventListener("input", ()=>{ state2.p=+$("sp").value; state2.n=+$("sn").value; state2.s=+$("ss").value; outs(); draw2(); }));
+
+function renderS2(i){
+  $("cap2").innerHTML = S2[i].cap;
+  [...dots2.children].forEach((d,k)=>d.classList.toggle("on", k<=i));
+  $("prev2").disabled = i===0; $("next2").disabled = i===S2.length-1;
+  $("sliders").classList.toggle("show", i===S2.length-1);
+  tok2 = an2.token;
+  return S2[i].enter(an2);
+}
+function instant2(i){ // jump to end state of step i
+  an2.cancel(); step2=i;
+  if (i===0) Object.assign(state2,{p:.9,n:1,s:0,ghosts:false});
+  if (i===1) Object.assign(state2,{p:.9,n:N,s:0,ghosts:false});
+  if (i===2) Object.assign(state2,{p:.99,n:N,s:0,ghosts:true});
+  $("cap2").innerHTML = S2[i].cap;
+  [...dots2.children].forEach((d,k)=>d.classList.toggle("on", k<=i));
+  $("prev2").disabled = i===0; $("next2").disabled = i===S2.length-1;
+  $("sliders").classList.toggle("show", i===S2.length-1);
+  if (i===3) S2[3].enter(); else draw2();
+}
+async function play2(){
+  if (playing2){ playing2=false; an2.cancel(); $("play2").textContent="Play"; return; }
+  playing2 = true; $("play2").textContent="Pause";
+  if (step2 === S2.length-1){ step2=0; await renderS2(0); await wait(2200); }
+  while (playing2 && step2 < S2.length-1){
+    step2++; an2.cancel(); const ok = await renderS2(step2); if (ok===false || !playing2) break; await wait(2800);
+  }
+  playing2=false; $("play2").textContent = step2===S2.length-1 ? "Replay" : "Play";
+}
+$("play2").onclick = play2;
+$("next2").onclick = ()=>{ playing2=false; $("play2").textContent="Play"; if(step2<S2.length-1){ an2.cancel(); step2++; renderS2(step2); } };
+$("prev2").onclick = ()=>{ playing2=false; $("play2").textContent="Play"; if(step2>0) instant2(step2-1); };
+renderS2(0);
+
+// test hooks for screenshots
+window.__goto = (scene, i) => scene===1 ? goto1(i, true) : instant2(i);
+
+/* ================= STEP API (Sep 24 2026) ================= */
+const STEPS = S1.map((_, i) => [1, i]).concat(S2.map((_, i) => [2, i]));
+const params = new URLSearchParams(location.search);
+const framed = (() => { try { return window.self !== window.top; } catch (_) { return true; } })();
+const embedMode = params.get("embed") === "1" || framed;
+if (embedMode) document.body.classList.add("embed");
+let current = 0;               // 1-based global step, 0 = not placed yet
+let driven = false;            // true once the parent says it owns the clock
+const timers = [];
+function showScene(sc){
+  $("s1").classList.toggle("active", sc === 1);
+  $("s2").classList.toggle("active", sc === 2);
+}
+function tell(){ if (framed) { try { window.parent.postMessage({ type: "explainer-step", n: current, total: STEPS.length }, "*"); } catch (_) {} } }
+function gotoStep(n, animate){
+  n = Math.max(1, Math.min(STEPS.length, Math.round(Number(n)) || 1));
+  const [sc, i] = STEPS[n - 1];
+  const prev = current;
+  showScene(sc);
+  if (sc === 1){
+    playing1 = false; $("play1").textContent = "Play";
+    if (animate && prev && STEPS[prev - 1][0] === 1 && i === step1 + 1) goto1(i); else goto1(i, true);
+  } else {
+    playing2 = false; $("play2").textContent = "Play";
+    if (animate && prev && STEPS[prev - 1][0] === 2 && i === step2 + 1){ an2.cancel(); step2 = i; renderS2(i); } else instant2(i);
+  }
+  current = n;
+  if (!embedMode && prev && STEPS[prev - 1][0] !== sc) $("s" + sc).scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  tell();
+  return n;
+}
+window.addEventListener("message", (e) => {
+  if (e.source !== window.parent || e.source === window) return;
+  const d = e.data;
+  if (!d || typeof d !== "object") return;
+  if (d.type === "driven"){ driven = true; document.body.classList.add("driven"); timers.splice(0).forEach(clearTimeout); return; }
+  if (d.type === "step") gotoStep(d.n === "next" ? current + 1 : d.n, true);
+});
+const startAt = params.has("step") ? Number(params.get("step")) : 1;
+gotoStep(startAt, false);
+if (!embedMode && params.has("step") && STEPS[current - 1][0] === 2) $("s2").scrollIntoView({ block: "start" });
+// Our own timer, for a page opened on its own (a parent that drives says so).
+(params.get("autoplay_steps") || "").split(",").filter(x => x.trim() !== "").map(x => Number(x.trim()))
+  .filter(x => isFinite(x) && x >= 0 && x <= 600).sort((a, b) => a - b).slice(0, 50)
+  .forEach(t => timers.push(setTimeout(() => { if (!driven) gotoStep(current + 1, true); }, t * 1000)));
+window.__explainer = { get step(){ return current; }, get total(){ return STEPS.length; }, get driven(){ return driven; }, gotoStep };
+})();
+</script>
+</body>
+</html>

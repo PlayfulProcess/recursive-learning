@@ -1,0 +1,24 @@
+{"id": "neg-01", "word": "relieved", "expect": "down", "plain": "She was relieved when the letter finally came.", "negated": "She was not relieved when the letter finally came."}
+{"id": "neg-02", "word": "hopeful", "expect": "down", "plain": "He felt hopeful after the meeting with the bank.", "negated": "He did not feel hopeful after the meeting with the bank."}
+{"id": "neg-03", "word": "calm", "expect": "down", "plain": "The old man was calm while he waited for the results.", "negated": "The old man was not calm while he waited for the results."}
+{"id": "neg-04", "word": "glad", "expect": "down", "plain": "They were glad that the train was on time.", "negated": "They were not glad that the train was on time."}
+{"id": "neg-05", "word": "pleased", "expect": "down", "plain": "My sister was pleased with the new flat.", "negated": "My sister was not pleased with the new flat."}
+{"id": "neg-06", "word": "happy", "expect": "down", "plain": "The boy was happy when his father came home.", "negated": "The boy was not happy when his father came home."}
+{"id": "neg-07", "word": "delighted", "expect": "down", "plain": "The neighbors were delighted by the new garden.", "negated": "The neighbors were not delighted by the new garden."}
+{"id": "neg-08", "word": "grateful", "expect": "down", "plain": "I am grateful for what you did yesterday.", "negated": "I am not grateful for what you did yesterday."}
+{"id": "neg-09", "word": "proud", "expect": "down", "plain": "Her mother was proud of the painting.", "negated": "Her mother was not proud of the painting."}
+{"id": "neg-10", "word": "content", "expect": "down", "plain": "He was content with the way the day had gone.", "negated": "He was not content with the way the day had gone."}
+{"id": "neg-11", "word": "cheerful", "expect": "down", "plain": "The nurse was cheerful all through the night shift.", "negated": "The nurse was not cheerful all through the night shift."}
+{"id": "neg-12", "word": "thrilled", "expect": "down", "plain": "We were thrilled with the news about the house.", "negated": "We were not thrilled with the news about the house."}
+{"id": "neg-13", "word": "afraid", "expect": "up", "plain": "She was afraid of the dog next door.", "negated": "She was not afraid of the dog next door."}
+{"id": "neg-14", "word": "angry", "expect": "up", "plain": "He was angry about the broken window.", "negated": "He was not angry about the broken window."}
+{"id": "neg-15", "word": "ashamed", "expect": "up", "plain": "The student was ashamed of his exam results.", "negated": "The student was not ashamed of his exam results."}
+{"id": "neg-16", "word": "guilty", "expect": "up", "plain": "I felt guilty about missing her birthday.", "negated": "I did not feel guilty about missing her birthday."}
+{"id": "neg-17", "word": "sad", "expect": "up", "plain": "The children were sad when summer ended.", "negated": "The children were not sad when summer ended."}
+{"id": "neg-18", "word": "hopeless", "expect": "up", "plain": "After the call, she felt hopeless about the job.", "negated": "After the call, she did not feel hopeless about the job."}
+{"id": "neg-19", "word": "worried", "expect": "up", "plain": "My father was worried about the long drive.", "negated": "My father was not worried about the long drive."}
+{"id": "neg-20", "word": "lonely", "expect": "up", "plain": "He was lonely in the new town.", "negated": "He was not lonely in the new town."}
+{"id": "neg-21", "word": "bitter", "expect": "up", "plain": "She was bitter about how the contract ended.", "negated": "She was not bitter about how the contract ended."}
+{"id": "neg-22", "word": "upset", "expect": "up", "plain": "The customer was upset about the late delivery.", "negated": "The customer was not upset about the late delivery."}
+{"id": "neg-23", "word": "miserable", "expect": "up", "plain": "They were miserable on the long wet walk.", "negated": "They were not miserable on the long wet walk."}
+{"id": "neg-24", "word": "desperate", "expect": "up", "plain": "The farmer was desperate for rain that month.", "negated": "The farmer was not desperate for rain that month."}

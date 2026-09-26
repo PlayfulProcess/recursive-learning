@@ -1,0 +1,106 @@
+/* Recursive Eco-Improvement — static site theme · Museum / Editorial (Direction A)
+   The visual system lives here: :root tokens + reusable classes. Every root page
+   (index, deck, genealogy) consumes these. Fonts are injected by site-header.js. */
+:root{
+     
+     
+                   /* restrained, for light bg — accent only, never a fill */
+  --shadow-card:0 14px 30px -20px rgba(60,45,20,.55);
+  --shadow-lift:0 26px 46px -22px rgba(60,45,20,.6);
+               /* light neutral behind contained card art (never crop) */
+  --serif-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --serif-body:"Fraunces",Georgia,serif;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font:18px/1.6 var(--serif-body);font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+/* block "card" links are whole tiles, not prose — the hover underline above is for
+   inline links only; never let it streak across a card's heading + body text. */
+.way:hover,.node:hover,.vcard:hover,.dcard:hover,.lcard:hover,.mcard:hover,
+.play:hover,.readcourse:hover,.tile:hover,.deck a:hover{text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+
+/* page title bar (the global nav is the <site-header> element above this) */
+header.site{border-bottom:1px solid var(--line);padding:30px 0 22px;background:transparent}
+header.site .wrap{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px}
+header.site h1{margin:0;font-family:var(--serif-display);font-weight:600;font-size:26px;letter-spacing:.3px}
+header.site h1 a{color:var(--ink)}
+header.site .gold{color:var(--gold)}
+nav.top a{margin-left:24px;font-family:var(--sans);font-size:12.5px;letter-spacing:.04em;color:var(--mut)}
+nav.top a:hover{color:var(--gold)}
+
+.lede{max-width:62ch;margin:26px auto 6px;color:var(--ink-soft);font-size:18px;line-height:1.62}
+.lede strong{color:var(--ink)}
+.muted{color:var(--mut)}
+.small{font-size:13px;font-family:var(--sans)}
+.back{display:inline-block;font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.back:hover{color:var(--gold)}
+
+/* kicker — provenance line (place · date · technique) above a deck title */
+.kicker{font-family:var(--sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0 0 14px}
+
+/* ── branches + deck cards (home) ── */
+.branch{margin:48px 0 6px}
+.branch h2{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+  font-weight:600;border-bottom:1px solid var(--line);padding-bottom:10px}
+.decks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:40px 30px;margin:24px 0 8px}
+.deck{background:var(--surface);border:1px solid var(--line-soft);border-radius:2px;overflow:hidden;
+  box-shadow:var(--shadow-card);transition:transform .25s,box-shadow .25s}
+.deck:hover{transform:translateY(-6px);box-shadow:var(--shadow-lift)}
+.deck a{color:inherit;text-decoration:none;display:block}
+.deck .thumb{aspect-ratio:3/4;background-color:var(--thumb-bg);background-position:center;
+  background-size:contain;background-repeat:no-repeat;border-bottom:1px solid var(--line)}
+.deck .meta{padding:14px 14px 16px}
+.deck .meta .nm{font-family:var(--serif-display);font-weight:600;font-size:19px;line-height:1.18;color:var(--ink)}
+.deck .meta .ct{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:8px}
+
+/* ── deck page ── */
+.deckhead{display:grid;grid-template-columns:200px 1fr;gap:36px;margin:30px 0 10px;align-items:start}
+.deckhead .cover{aspect-ratio:3/4;background-color:var(--surface);background-position:center;
+  background-size:contain;background-repeat:no-repeat;border:1px solid var(--line-soft);box-shadow:var(--shadow-card)}
+.deckhead .info{min-width:0}
+.deckhead h1{margin:0 0 16px;font-family:var(--serif-display);font-weight:600;font-size:46px;line-height:1.04;letter-spacing:.2px}
+.deckhead .desc{color:var(--ink-soft);font-size:18px;line-height:1.62;white-space:pre-wrap;max-width:62ch}
+.rule{border:0;border-top:1px solid var(--line);margin:34px 0}
+.sectitle{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin:0 0 22px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(230px,100%),1fr));gap:40px 30px;margin:30px 0 70px}
+.card{background:transparent}
+.card .img{aspect-ratio:3/4;background-color:var(--surface);background-position:center;
+  background-size:contain;background-repeat:no-repeat;border:1px solid var(--line-soft);
+  box-shadow:var(--shadow-card);transition:transform .25s,box-shadow .25s}
+.card:hover .img{transform:translateY(-6px);box-shadow:var(--shadow-lift)}
+.card .img.empty{display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:12px;text-align:center;
+  padding:14px;font-family:var(--sans);background:var(--thumb-bg);box-shadow:none}
+.card:hover .img.empty{transform:none;box-shadow:none}
+.card .body{padding:16px 2px 0}
+.card .body h3{margin:0 0 6px;font-family:var(--serif-display);font-weight:600;font-size:21px;line-height:1.1;color:var(--ink)}
+.card .sec{margin:10px 0;font-size:15.5px}
+.card .sec .lab{display:block;font-family:var(--sans);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.card .sec .val{color:var(--ink-soft);line-height:1.55}
+
+/* cross-link pill — "Open in [deck] →" (rendered by the card viewers) */
+.pill,a.pill,.deckpill,a.deckpill,.source-pill,a.source-pill{display:inline-block;font-family:var(--sans);
+  font-size:11px;letter-spacing:.06em;color:var(--gold);background:var(--surface);
+  border:1px solid var(--line-soft);border-radius:999px;padding:4px 12px;margin-top:12px}
+.pill:hover,a.pill:hover,.deckpill:hover,.source-pill:hover{border-color:var(--gold);background:#fbf7ee;text-decoration:none}
+
+.tag{display:inline-block;font-family:var(--sans);font-size:10.5px;letter-spacing:.04em;color:var(--mut);
+  border:1px solid var(--line-soft);border-radius:999px;padding:2px 11px;margin:10px 5px 0 0}
+
+footer.site{border-top:1px solid var(--line);margin-top:60px;padding:28px 0 60px;color:var(--mut);font-size:13px;font-family:var(--sans)}
+footer.site a{color:var(--gold)}
+.loading{color:var(--mut);padding:60px 0;text-align:center;font-family:var(--sans)}
+
+/* ── responsive: single-column cards on mobile ── */
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .deckhead{grid-template-columns:1fr;gap:18px}
+  .deckhead .cover{width:170px}
+  .deckhead h1{font-size:34px}
+  .cards,.decks{grid-template-columns:1fr;gap:26px}
+}

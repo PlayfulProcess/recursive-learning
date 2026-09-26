@@ -1,0 +1,41 @@
+{
+ "fullpass_load_s": 60.1,
+ "tokens": 2185,
+ "fullpass_s": 131.9,
+ "fullpass_tok_s": 16.6,
+ "stream_load_s": 2.6,
+ "stream_s": 298.4,
+ "stream_tok_s": 7.3,
+ "agree_max_abs": 0.0,
+ "agree_max_rel_(|a-b|/(|b|+1))": 0.0,
+ "faster": "fullpass",
+ "lean_load_s": 75.0,
+ "lean_s": 467.0,
+ "lean_tok_s": 4.7,
+ "lean_vs_stream_max_abs": 0.000213623046875,
+ "lean_generate_s_per_step": 41.75,
+ "path_used": "engine.py (one decoder layer in memory at a time; fp32 maths)",
+ "engine_s": 445.8,
+ "engine_tok_s": 4.9,
+ "engine_vs_stream_max_abs": 0.000213623046875,
+ "engine_generate_s_per_step_batch2": 51.15,
+ "engine_generate_matches_transformers": true,
+ "engine_generate_tokens": [
+  [
+   49,
+   1945,
+   525,
+   825,
+   315,
+   279
+  ],
+  [
+   49,
+   1945,
+   525,
+   825,
+   315,
+   279
+  ]
+ ]
+}

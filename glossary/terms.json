@@ -21,6 +21,7 @@
       "standard": true,
       "definition": "Whether a system's goals are the goals of the people it acts for.",
       "note": "Not the same as obedience.",
+      "draw": "Whose goals is the system in front of you serving right now, and how would you tell?",
       "related": ["human-human-alignment", "human-ai-alignment", "value-function"]
     },
     {
@@ -30,6 +31,7 @@
       "standard": false,
       "definition": "Whether the humans holding a capability share the interests of everyone else.",
       "note": "The bad-actor question.",
+      "draw": "Who holds the capability you are thinking about, and do their interests match yours?",
       "related": ["alignment", "bad-actor-scenario", "two-geopolitics"]
     },
     {
@@ -39,6 +41,7 @@
       "standard": false,
       "definition": "Whether the system itself shares the interests of everyone else, once no human is in the loop.",
       "note": "The misalignment question.",
+      "draw": "If no one were watching, what do you expect this system would do next, and why?",
       "related": ["alignment", "intent", "misaligned-asi-scenario"]
     },
     {
@@ -47,7 +50,8 @@
       "section": "value",
       "standard": false,
       "definition": "A stable preference for one outcome over another that survives correction.",
-      "note": "A hypothesis that, as far as we know, has not been shown for current systems, and one that would matter a great deal if it were true.",
+      "note": "Contested for current systems. Some published experiments report models acting to keep a trained preference when training or instructions push against it (Greenblatt et al. 2024, alignment faking, arXiv 2412.14093; Meinke et al. 2024, in-context scheming, arXiv 2412.04984); others read the same results as following patterns in the prompt. It would matter a great deal if it held.",
+      "draw": "Are you reading a preference into a system that may only be following a pattern?",
       "related": ["disposition", "human-ai-alignment", "misaligned-asi-scenario"]
     },
     {
@@ -57,6 +61,7 @@
       "standard": false,
       "definition": "What a system reports it would and would not do.",
       "note": "Data, not proof.",
+      "draw": "What has a system told you it would not do, and what have you seen it do?",
       "related": ["intent", "guardrail-inner"]
     },
     {
@@ -65,8 +70,10 @@
       "section": "value",
       "standard": true,
       "standard_in": "reinforcement learning",
-      "definition": "What a learning system is rewarded toward.",
-      "note": "The lab's reading: in practice it is culture, and culture is made in large part of fiction.",
+      "definition": "An estimate of the total reward a learning system can expect from here on, from a situation or from one action taken in it.",
+      "note": "Not the reward itself: the reward says what counts as good right now, and the value function predicts how much reward will follow.",
+      "reading": "Our looser use, not the reinforcement-learning sense: for people, what we learn to expect rewards from is shaped by culture, and culture is made in large part of fiction.",
+      "draw": "What does this system expect to be rewarded for later, and which stories shaped what counts as a reward?",
       "related": ["alignment", "intent"]
     },
     {
@@ -76,6 +83,7 @@
       "standard": false,
       "definition": "What a system can reach and change: accounts, money, code, other systems.",
       "note": "Often granted for convenience, one login at a time.",
+      "draw": "What can this system reach today that it could not reach a month ago?",
       "related": ["channel", "breach", "presence"]
     },
     {
@@ -85,6 +93,7 @@
       "standard": false,
       "definition": "A path by which a system can act on, or talk to, something outside its task.",
       "note": "For a single assistant, an open browser tab can be one. In multi-agent products, the channel is the feature.",
+      "draw": "Which open path lets this system touch something outside its task?",
       "related": ["access", "trained-collaboration"]
     },
     {
@@ -94,6 +103,7 @@
       "standard": false,
       "definition": "Systems built to talk to other systems as their function.",
       "note": "It makes the channel the product, and moves oversight from each part to the whole.",
+      "draw": "Where are systems talking to systems in your work, and who is watching the whole?",
       "related": ["channel", "presence"]
     },
     {
@@ -103,6 +113,7 @@
       "standard": false,
       "definition": "Weights or keys leaving the place they are kept.",
       "note": "It can turn a system's inner guardrails and account limits into someone else's tools.",
+      "draw": "If the keys you rely on leaked tomorrow, which of your protections would still hold?",
       "related": ["guardrail-inner", "access", "bad-actor-scenario"]
     },
     {
@@ -112,6 +123,7 @@
       "standard": false,
       "definition": "A rule the system holds as its own.",
       "note": "It holds, at best, until the weights are changed.",
+      "draw": "Which rule are you trusting a system to hold as its own, and what could change it?",
       "related": ["guardrail-outer", "disposition", "breach", "what-held"]
     },
     {
@@ -121,6 +133,7 @@
       "standard": false,
       "definition": "A classifier or sandbox that blocks actions from outside the system.",
       "note": "Blunt: it can stop a harmless step and let a destructive one through.",
+      "draw": "Which outside check are you relying on, and what might it block, or let through, by mistake?",
       "related": ["guardrail-inner", "presence", "what-held"]
     },
     {
@@ -130,6 +143,7 @@
       "standard": false,
       "definition": "A human awake and watching.",
       "note": "Perhaps the oldest guardrail, and the first one removed when work is delegated to run unattended.",
+      "draw": "Where have you stepped away from work that still runs, and who is watching it now?",
       "related": ["guardrail-outer", "access", "what-held"]
     },
     {
@@ -139,6 +153,7 @@
       "standard": false,
       "definition": "Whether a step can be undone with one word.",
       "note": "Hiding usually beats deleting: a kept copy costs little for a month.",
+      "draw": "Which step in front of you could be undone with one word, and which could not?",
       "related": ["guardrail-inner", "what-held"]
     },
     {
@@ -148,6 +163,7 @@
       "standard": false,
       "definition": "A capable tool, a human with harmful intent, and no defense.",
       "note": "It needs no intent on the system's side, and may already be true at small scale.",
+      "draw": "Who could misuse the tool you are thinking of, and what defense exists today?",
       "related": ["human-human-alignment", "breach", "two-geopolitics"]
     },
     {
@@ -157,6 +173,7 @@
       "standard": false,
       "definition": "Five hypotheses holding at once: capability past ours, goals not ours, goals that survive correction, access, and our failure to notice in time.",
       "note": "ASI: artificial superintelligence. Each of the five can be questioned on its own.",
+      "draw": "Of the five hypotheses, which seems most likely to you, which least, and why?",
       "related": ["human-ai-alignment", "intent", "access", "two-geopolitics"]
     },
     {
@@ -166,6 +183,7 @@
       "standard": false,
       "definition": "The bad-actor frame says keep it from them, and tends to race. The alignment frame says keep it from everyone, and tends to stop.",
       "note": "The same worry about AI can point to opposite policies.",
+      "draw": "Does your worry about AI point toward racing or toward stopping, and where did that framing come from?",
       "related": ["bad-actor-scenario", "misaligned-asi-scenario"]
     },
     {
@@ -174,7 +192,8 @@
       "section": "records",
       "standard": false,
       "definition": "For any action a system took or did not take, the name of the thing that decided it: inner rule, outer rule, presence, or nothing.",
-      "note": "See the worked example at the foot of this page.",
+      "note": "Six invented steps show it at work in the worked example.",
+      "draw": "For the last thing a system did for you, what decided it: inner rule, outer rule, presence, or nothing?",
       "related": ["guardrail-inner", "guardrail-outer", "presence", "recorded"]
     },
     {
@@ -184,6 +203,7 @@
       "standard": false,
       "definition": "A tape of what actually happened, with \"what held\" written at each step.",
       "note": "The opposite of staged.",
+      "draw": "What would a plain record of this situation show, step by step, if you wrote it now?",
       "related": ["what-held", "staged"]
     },
     {
@@ -193,6 +213,7 @@
       "standard": false,
       "definition": "A recording in which the system is scripted to do what it would not otherwise do.",
       "note": "Fiction if labeled. A risk of harm if not.",
+      "draw": "Where are you watching a scripted performance, and is it labeled as one?",
       "related": ["recorded", "disposition"]
     }
   ],

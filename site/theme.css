@@ -1,0 +1,91 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   Recursive Eco-Improvement — ONE shared design-token theme.  DEFINE COLOURS HERE ONLY.
+   Every page and viewer links this file; none should redeclare these tokens
+   locally. Light-only: backgrounds are always light, text always dark enough to
+   read on them. Token NAMES are unified here (older pages used --panel/--muted/
+   --accent for what style.css calls --surface/--mut/--gold — both names resolve
+   to the same value below, so legacy markup keeps working). Change a colour once
+   here and it propagates everywhere.
+   Fonts are injected by site-header.js; the families are tokenised here too.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root{
+  /* —— surfaces (always light) —— */
+  --bg:#f4f1ea;            /* page background (warm paper) */
+  --surface:#ffffff;       /* cards / panels */
+  --panel:#ffffff;         /* legacy alias of --surface */
+  --panel2:#faf8f3;        /* slightly recessed panel */
+  --card:#ffffff;
+  --paper:#faf8f3;
+  --chip:#e9f5ef;          /* soft accent chip fill */
+  --thumb-bg:#faf8f3;      /* neutral mat behind contained card art (never crop) */
+  --stage:#faf8f3;         /* video/sequence stage — light (was #000) */
+  --felt:#eef0f7;          /* game table — light (was dark green/navy) */
+  --grammar-bg-light:#ffffff;
+  --grammar-bg-dark:#f4f1ea;   /* "dark" grammar bg is just the page bg now */
+  --tree-bg:#f4f1ea;
+  --tree-bg-light:#ffffff;
+
+  /* —— ink (always dark enough for the light surfaces above) —— */
+  --ink:#221f1a;           /* primary text */
+  --ink-soft:#4a4439;      /* secondary text */
+  --ink-strong:#221f1a;    /* legacy alias — NEVER white */
+  --mut:#6b6457;           /* muted */
+  --muted:#6b6457;         /* legacy alias of --mut */
+  --faint:#8a8273;         /* faintest readable */
+  --fg:#221f1a;            /* legacy alias */
+  --text:#221f1a;          /* legacy alias */
+  --grammar-text:#221f1a;
+  --grammar-text-muted:#6b6457;
+  --tree-text:#221f1a;
+  --tree-text-muted:#6b6457;
+
+  /* —— hairlines —— */
+  --line:#d8d2c6;
+  --line-soft:#cfc8ba;
+  --chipline:#cfc8ba;
+  --tree-line:rgba(60,45,20,.12);
+
+  /* —— the one UI accent: the landing's mint, darkened to 4.5:1 on --bg (accent only, never a fill).
+     Token NAMES keep tarot's (--gold, --accent) so every copied viewer resolves them unchanged —— */
+  --gold:#177d56;
+  --accent:#177d56;        /* legacy alias of --gold */
+  --accent2:#177d56;
+  --violet:#177d56;        /* legacy alias, folded into the accent */
+  --grammar-accent:#177d56;
+  --grammar-accent-dark:#126445;
+  --tree-accent:#177d56;
+
+  /* —— semantic CATEGORY hues (kept; mid-tone, legible on light) ——
+     genealogy lineages + Dummett order + suits + game status. Not UI chrome. */
+  --roots:#c9a24b; --occult:#9b6dc9; --native:#3f7a5c; --myriads:#c0473b;
+  --strings:#3a8a52; --tens:#8a5fb0; --sui:#c96d9b; --cash:#c8932f;
+  --a:#d2674a; --b:#5f9a82; --c:#5b7fc0;     /* order A/B/C — darkened a touch for light bg */
+  --good:#3f7a5c; --win:#3f7a5c; --us:#3f7a5c;
+  --bad:#c0473b; --lose:#c0473b; --later:#6d4ab6;
+
+  /* —— shadows —— */
+  --shadow-card:0 14px 30px -20px rgba(60,45,20,.55);
+  --shadow-lift:0 26px 46px -22px rgba(60,45,20,.6);
+
+  /* —— type families (webfont injected by site-header.js) —— */
+  --serif-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --serif-body:"Fraunces",Georgia,serif;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+/* recursive.eco redirects render in the platform purple, app-wide (wayfinding to the parent) */
+a[href^="https://recursive.eco"],a[href^="http://recursive.eco"],a[href^="https://flow.recursive.eco"],a[href^="https://kids.recursive.eco"]{color:#9333ea}
+
+/* recursive.eco redirect BUTTONS render purple too (wayfinding) — !important beats local button CSS */
+a.solid[href*="//recursive.eco"],a.solid[href*="//flow.recursive.eco"],a.btn.primary[href*="//recursive.eco"],a.btn.primary[href*="//flow.recursive.eco"]{background:#9333ea!important;border-color:#9333ea!important;color:#fff!important}
+a.solid[href*="//recursive.eco"]:hover,a.solid[href*="//flow.recursive.eco"]:hover{background:#7c2fd0!important}
+a.line[href*="//recursive.eco"],a.line[href*="//flow.recursive.eco"]{color:#9333ea!important;border-color:#c9a8f0!important}
+a.line[href*="//recursive.eco"]:hover,a.line[href*="//flow.recursive.eco"]:hover{border-color:#9333ea!important;color:#9333ea!important}
+
+/* Canonical recursive.eco action chip — platform purple, carries its own action icon
+   (pencil = Edit, play = Play). ONE affordance across the cards viewer + the Caster. */
+.eco-chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:12.5px;font-weight:600;
+  text-decoration:none;color:#9333ea;padding:6px 12px;border-radius:8px;border:1px solid #c9a8f0;background:#fff;
+  transition:border-color .15s,background .15s}
+.eco-chip:hover{border-color:#9333ea;background:#faf5ff}
+.eco-chip svg{width:15px;height:15px;flex-shrink:0}

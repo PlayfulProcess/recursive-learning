@@ -1,0 +1,38 @@
+{
+  "schema": "alignment.recursive.eco/regulatory-ideas/v1",
+  "meta": {
+    "title": "made-up fixture",
+    "note": "Invented for tests/fork-engine.test.mjs so actionsFor and the line-6 rule can be tested without publishing regulatory.json. Every name, status and verdict here is made up. Only the shape copies the real file.",
+    "outcome_ids": ["reward-hacking","deception","power-seeking","existential-risk","takeover","bio-misuse","cyber","jobs","race","concentration-of-power","takeoff"]
+  },
+  "ideas": [
+    { "id": "fixture-law", "name": "Made-up idea: a law on the books", "ai_versions": [ { "name": "made-up", "year": 2001, "status": "law", "url": "https://example.org/fixture-law" } ],
+      "addresses_outcomes": ["bio-misuse","race","takeoff"], "confidence": "high", "verify": [] },
+    { "id": "fixture-regulation", "name": "Made-up idea: a regulation", "ai_versions": [ { "name": "made-up", "year": 2002, "status": "law (regulation)", "url": "https://example.org/fixture-regulation" } ],
+      "addresses_outcomes": ["cyber"], "confidence": "high", "verify": [] },
+    { "id": "fixture-roadmap", "name": "Made-up idea: an agency roadmap and voluntary agreements", "ai_versions": [ { "name": "made-up", "year": 2003, "status": "agency roadmap" }, { "name": "made-up", "year": 2004, "status": "agency (voluntary agreements)" } ],
+      "sources": [ { "title": "made-up source", "url": "https://example.org/fixture-roadmap" } ],
+      "addresses_outcomes": ["bio-misuse","concentration-of-power","deception"], "confidence": "medium", "verify": ["made-up check one", "made-up check two"] },
+    { "id": "fixture-not-yet", "name": "Made-up idea: laws not yet applying", "ai_versions": [ { "name": "made-up", "year": 2005, "status": "law (not yet applying; January 2027)" }, { "name": "made-up", "year": 2006, "status": "law (applies from Dec 9, 2026)" } ],
+      "addresses_outcomes": ["cyber","reward-hacking"], "confidence": "medium", "verify": ["made-up check"] },
+    { "id": "treaty-ban", "name": "Made-up idea: a treaty", "ai_versions": [ { "name": "made-up", "year": 2007, "status": "proposal", "url": "https://example.org/treaty" } ],
+      "addresses_outcomes": ["bio-misuse","race","existential-risk","takeover"], "confidence": "medium", "verify": ["made-up check"] },
+    { "id": "voluntary-moratorium", "name": "Made-up idea: a voluntary pause", "ai_versions": [ { "name": "made-up", "year": 2008, "status": "voluntary" } ],
+      "addresses_outcomes": ["race","existential-risk"], "confidence": "high", "verify": [] },
+    { "id": "chip-export-controls", "name": "Made-up idea: export controls", "ai_versions": [ { "name": "made-up", "year": 2009, "status": "agency" } ],
+      "addresses_outcomes": ["bio-misuse","race"], "confidence": "high", "verify": [] }
+  ],
+  "outcomes": [
+    { "id": "bio-misuse", "if_controllable": ["fixture-law","fixture-roadmap","treaty-ban","chip-export-controls"], "if_not": "made-up if_not", "verdict": "targeted (made-up)" },
+    { "id": "cyber", "if_controllable": ["fixture-regulation","fixture-not-yet"], "if_not": "made-up if_not", "verdict": "targeted, partially: made-up" },
+    { "id": "reward-hacking", "if_controllable": ["fixture-not-yet"], "if_not": "made-up if_not", "verdict": "targeted, partially: made-up" },
+    { "id": "concentration-of-power", "if_controllable": ["fixture-roadmap"], "if_not": "made-up if_not", "verdict": "weakly targeted; made-up" },
+    { "id": "jobs", "if_controllable": [], "if_not": "made-up if_not", "verdict": "gap: made-up" },
+    { "id": "race", "if_controllable": ["fixture-law","treaty-ban","voluntary-moratorium","chip-export-controls"], "if_not": "made-up if_not", "verdict": "targeted, with made-up ideas" },
+    { "id": "deception", "if_controllable": ["fixture-roadmap"], "if_not": "made-up if_not", "verdict": "uncertainty: no known mechanism" },
+    { "id": "power-seeking", "if_controllable": [], "if_not": "made-up if_not", "verdict": "uncertainty: no known mechanism" },
+    { "id": "existential-risk", "if_controllable": ["treaty-ban","voluntary-moratorium"], "if_not": "made-up if_not", "verdict": "uncertainty: no known mechanism" },
+    { "id": "takeover", "if_controllable": ["treaty-ban"], "if_not": "made-up if_not", "verdict": "uncertainty: no known mechanism" },
+    { "id": "takeoff", "if_controllable": ["fixture-law"], "if_not": "made-up if_not", "verdict": "uncertainty: no known mechanism" }
+  ]
+}

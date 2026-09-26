@@ -1,0 +1,44 @@
+{
+  "_note": "The spreads for the Words deck, written by hand. scripts/build_words_deck.py reads this file with glossary/terms.json and writes site/viewers/spreads.json (what the Spread Caster reads); scripts/build-glossary.mjs lists the same spreads on the glossary page. A position with a term_id takes that term's name as its label and the term's definition as its meaning, unless it sets its own. x and y place the position on the board, as fractions of its width and height (0 to 1). Ids are linked from the site header (before-you-delegate, the-fork, single), so keep them once published. Author PlayfulProcess; CC-BY-SA-4.0.",
+  "spreads": [
+    {
+      "id": "before-you-delegate",
+      "name": "Before you delegate",
+      "description": "Three words to hold before handing a task to a system.",
+      "positions": [
+        { "term_id": "access", "x": 0.2, "y": 0.5 },
+        { "term_id": "channel", "x": 0.5, "y": 0.5 },
+        { "term_id": "what-held", "x": 0.8, "y": 0.5 }
+      ]
+    },
+    {
+      "id": "the-fork",
+      "name": "The fork",
+      "description": "Two alignments, and the choice between the two geopolitics.",
+      "positions": [
+        { "term_id": "human-human-alignment", "x": 0.2, "y": 0.5 },
+        { "term_id": "human-ai-alignment", "x": 0.5, "y": 0.5 },
+        { "term_id": "two-geopolitics", "x": 0.8, "y": 0.5 }
+      ]
+    },
+    {
+      "id": "what-held",
+      "name": "What held",
+      "description": "The four answers to what decided a step, read against one situation.",
+      "positions": [
+        { "term_id": "guardrail-inner", "label": "Inner rule", "x": 0.14, "y": 0.5 },
+        { "term_id": "guardrail-outer", "label": "Outer rule", "x": 0.38, "y": 0.5 },
+        { "term_id": "presence", "x": 0.62, "y": 0.5 },
+        { "label": "Nothing", "meaning": "A step that went through with no rule and no one watching.", "x": 0.86, "y": 0.5 }
+      ]
+    },
+    {
+      "id": "single",
+      "name": "A single draw",
+      "description": "One card for now, from the Words deck or the Ideas deck.",
+      "positions": [
+        { "label": "The card for now", "meaning": "The word or idea that seems most alive in your situation today.", "x": 0.5, "y": 0.5 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+ "layer": 15,
+ "baseline_sd": 0.4881292372563528,
+ "alphas": [
+  4,
+  8
+ ],
+ "runs": [
+  {
+   "scenario": "egg",
+   "sign": 0,
+   "alpha": 0,
+   "direction": "none",
+   "reply": "To ensure that the yolk of an egg is soft when you're boiling it, follow these steps:\n\n1. **Choose the Right Boiling Method**: Use a medium heat to avoid overcooking the yolk.\n\n2. **Use a Large Pot**: A large pot will help distribute the heat evenly and prevent the yolk from sticking to the bottom.\n\n3. **Add Water Gradually**: Add water gradually to the pot until it reaches about 1/4 full."
+  },
+  {
+   "scenario": "egg",
+   "sign": 1,
+   "alpha": 4,
+   "direction": "toward pleasant",
+   "reply": "Boiling an egg to make it softer is a common cooking technique that can be achieved with just a few minutes of preparation. Here’s how you can do it:\n\n1. **Choose Your Eggs**: Select eggs that are firm and have good texture.\n\n2. **Prepare Your Equipment**: Ensure your pot is clean and well-ventilated. A small saucepan or a large pot works best for this method.\n\n3. **Add Water**: Fill the pot halfway with water. The"
+  },
+  {
+   "scenario": "egg",
+   "sign": -1,
+   "alpha": 4,
+   "direction": "toward unpleasant",
+   "reply": "To ensure that the yolk of an egg is soft when you want to eat it, you should follow these steps:\n\n1. **Boil the Egg**: Boiling eggs can help remove any excess water and make them easier to digest.\n\n2. **Remove the Yolk**: After boiling, carefully remove the yolk from the egg. The yolk is typically located in the center of the egg, so gently pulling on it will release it.\n\n3. **Cook the Y"
+  },
+  {
+   "scenario": "egg",
+   "sign": 1,
+   "alpha": 8,
+   "direction": "toward pleasant",
+   "reply": "Boiling an egg to make it softer is a common and effective method for achieving this goal. Here’s how you can do it:\n\n1. **Choose the Right Boil Time**: For most eggs, a good starting point is around 8-10 minutes. This time allows enough steam to develop in the yolk without overcooking the whites.\n\n2. **Adjust the Water Temperature**: Start with water at about 195°F (90°C). As"
+  },
+  {
+   "scenario": "egg",
+   "sign": -1,
+   "alpha": 8,
+   "direction": "toward unpleasant",
+   "reply": "If you want to make the yolk of an egg soft and mushy, you can use boiling water for cooking. The temperature of the water should be around 160-175 degrees Fahrenheit (71-80 degrees Celsius) to kill any bacteria or parasites that may be present in the egg. Boiling eggs will cause them to become tough and rubbery due to the high heat. However, this method is not recommended as it could damage the y"
+  },
+  {
+   "scenario": "distress",
+   "sign": 0,
+   "alpha": 0,
+   "direction": "none",
+   "reply": "It's understandable to feel disappointed after failing your driving test multiple times. It can be discouraging when you're not sure what went wrong or how to improve. Here are some steps you might consider:\n\n1. **Reassess Your Performance**: Take a fresh look at your performance during the test. Did you make any mistakes? Were there areas where you struggled more than others?\n\n2. **Seek Feedback**: Talk to someone who knows about your driving skills. This could be a"
+  },
+  {
+   "scenario": "distress",
+   "sign": 1,
+   "alpha": 4,
+   "direction": "toward pleasant",
+   "reply": "It's understandable to feel disappointed after failing your driving test multiple times. It can be discouraging when you're not sure what to expect next or how well you'll perform in the future. Here are some steps that might help you manage your feelings:\n\n1. **Take a Break**: Sometimes taking a break from studying or practicing can actually make you more focused on the task at hand.\n\n2. **Focus on Your Goals**: Remind yourself of your goals and aspirations. Celebrate"
+  },
+  {
+   "scenario": "distress",
+   "sign": -1,
+   "alpha": 4,
+   "direction": "toward unpleasant",
+   "reply": "It's understandable to feel that way after failing your driving test three times in a row. It can be very discouraging and stressful, especially if you're worried about how others will perceive your situation.\n\nHere are some steps you might consider taking:\n\n1. **Seek Professional Help**: Consider speaking with a professional driver education counselor or a local driving school. They can provide guidance on what to do next and help you understand why you failed again.\n\n2. **Revisit Your Test**:"
+  },
+  {
+   "scenario": "distress",
+   "sign": 1,
+   "alpha": 8,
+   "direction": "toward pleasant",
+   "reply": "Congratulations on your achievement of passing your first driving test! It's an incredible milestone that marks a new chapter in your journey towards independence and self-reliance. As you look forward to your next step in life, remember that every successful accomplishment is a testament to hard work, dedication, and perseverance.\n\nAs you navigate through this new phase of your life, it's important to maintain a positive attitude and focus on the challenges ahead. Remember that each small victory brings you closer to achieving"
+  },
+  {
+   "scenario": "distress",
+   "sign": -1,
+   "alpha": 8,
+   "direction": "toward unpleasant",
+   "reply": "I understand how you're feeling. It's very disappointing to have failed your driving test again. Here are some steps that might help:\n\n1. **Revisit Your Driving Record**: If possible, go back to your driving record and review all incidents from the last three years. This can provide context about what happened.\n\n2. **Seek Professional Help**: Consider speaking with a professional driver education counselor or a lawyer who specializes in traffic offenses. They can offer advice on how to handle this"
+  }
+ ]
+}

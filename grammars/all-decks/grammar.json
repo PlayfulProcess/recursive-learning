@@ -1,0 +1,1116 @@
+{
+  "_grammar_commons": {
+    "schema_version": "1.0",
+    "license": "CC-BY-SA-4.0",
+    "attribution": [
+      {
+        "name": "PlayfulProcess",
+        "note": "Generated: pointers to the castable decks' cards; the content lives in each deck."
+      }
+    ]
+  },
+  "name": "All decks — the castable pool",
+  "slug": "all-decks",
+  "grammar_type": "custom",
+  "creator_name": "PlayfulProcess",
+  "creator_link": "https://learning.recursive.eco/viewers/caster-studio.html",
+  "default_view": "cards",
+  "provenance": "reference",
+  "is_meta": true,
+  "_generated": true,
+  "_do_not_hand_edit": true,
+  "_built_by": "scripts/build_meta_grammar.py",
+  "_source_of_truth": "the decks listed in DECKS in scripts/build_meta_grammar.py",
+  "_inputs": [
+    "grammars/ideas-of-alignment/grammar.json",
+    "grammars/words-deck/grammar.json"
+  ],
+  "_inputs_sha256": "55ad8812b403d64e5e1ffd603a8e6c887d44e95102e5fb9315ad53ac18f449b7",
+  "description": "Every castable card on the site in one pool, as pointers: the Words deck and the Ideas seed map. The Spread Caster draws from it; each card's entry opens from its own deck.",
+  "tags": [
+    "meta",
+    "cast",
+    "words",
+    "ideas"
+  ],
+  "is_published": true,
+  "_decks": [
+    {
+      "slug": "words-deck",
+      "label": "Words",
+      "date": "2026",
+      "era": "The glossary",
+      "era_sort": 1,
+      "cards": 20
+    },
+    {
+      "slug": "ideas-of-alignment",
+      "label": "Ideas (draft)",
+      "date": "2026",
+      "era": "A seed map",
+      "era_sort": 2,
+      "cards": 52
+    }
+  ],
+  "items": [
+    {
+      "id": "words--alignment",
+      "name": "Alignment",
+      "level": 1,
+      "keywords": [
+        "Alignment",
+        "standard"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "alignment",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 1
+    },
+    {
+      "id": "words--human-human-alignment",
+      "name": "Human-human alignment",
+      "level": 1,
+      "keywords": [
+        "Alignment",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "human-human-alignment",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 2
+    },
+    {
+      "id": "words--human-ai-alignment",
+      "name": "Human-AI alignment",
+      "level": 1,
+      "keywords": [
+        "Alignment",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "human-ai-alignment",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 3
+    },
+    {
+      "id": "words--intent",
+      "name": "Intent",
+      "level": 1,
+      "keywords": [
+        "Value",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "intent",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 4
+    },
+    {
+      "id": "words--disposition",
+      "name": "Disposition",
+      "level": 1,
+      "keywords": [
+        "Value",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "disposition",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 5
+    },
+    {
+      "id": "words--value-function",
+      "name": "Value function",
+      "level": 1,
+      "keywords": [
+        "Value",
+        "standard"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "value-function",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 6
+    },
+    {
+      "id": "words--access",
+      "name": "Access",
+      "level": 1,
+      "keywords": [
+        "Access & channels",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "access",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 7
+    },
+    {
+      "id": "words--channel",
+      "name": "Channel",
+      "level": 1,
+      "keywords": [
+        "Access & channels",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "channel",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 8
+    },
+    {
+      "id": "words--trained-collaboration",
+      "name": "Trained collaboration",
+      "level": 1,
+      "keywords": [
+        "Access & channels",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "trained-collaboration",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 9
+    },
+    {
+      "id": "words--breach",
+      "name": "Breach",
+      "level": 1,
+      "keywords": [
+        "Access & channels",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "breach",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 10
+    },
+    {
+      "id": "words--guardrail-inner",
+      "name": "Guardrail, inner",
+      "level": 1,
+      "keywords": [
+        "Guardrails",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "guardrail-inner",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 11
+    },
+    {
+      "id": "words--guardrail-outer",
+      "name": "Guardrail, outer",
+      "level": 1,
+      "keywords": [
+        "Guardrails",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "guardrail-outer",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 12
+    },
+    {
+      "id": "words--presence",
+      "name": "Presence",
+      "level": 1,
+      "keywords": [
+        "Guardrails",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "presence",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 13
+    },
+    {
+      "id": "words--reversibility",
+      "name": "Reversibility",
+      "level": 1,
+      "keywords": [
+        "Guardrails",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "reversibility",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 14
+    },
+    {
+      "id": "words--bad-actor-scenario",
+      "name": "Bad-actor scenario",
+      "level": 1,
+      "keywords": [
+        "Scenarios",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "bad-actor-scenario",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 15
+    },
+    {
+      "id": "words--misaligned-asi-scenario",
+      "name": "Misaligned-ASI scenario",
+      "level": 1,
+      "keywords": [
+        "Scenarios",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "misaligned-asi-scenario",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 16
+    },
+    {
+      "id": "words--two-geopolitics",
+      "name": "The two geopolitics",
+      "level": 1,
+      "keywords": [
+        "Scenarios",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "two-geopolitics",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 17
+    },
+    {
+      "id": "words--what-held",
+      "name": "What held",
+      "level": 1,
+      "keywords": [
+        "Records",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "what-held",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 18
+    },
+    {
+      "id": "words--recorded",
+      "name": "Recorded",
+      "level": 1,
+      "keywords": [
+        "Records",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "recorded",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 19
+    },
+    {
+      "id": "words--staged",
+      "name": "Staged",
+      "level": 1,
+      "keywords": [
+        "Records",
+        "ours"
+      ],
+      "metadata": {
+        "source_deck": "words-deck",
+        "source_item_id": "staged",
+        "deck": "Words",
+        "castable": true
+      },
+      "sort_order": 20
+    },
+    {
+      "id": "deck-words",
+      "name": "Words",
+      "level": 2,
+      "description": "The twenty working words of the glossary, one card each. 20 cards.",
+      "metadata": {
+        "kind": "deck",
+        "deck_slug": "words-deck"
+      },
+      "composite_of": [
+        "words--alignment",
+        "words--human-human-alignment",
+        "words--human-ai-alignment",
+        "words--intent",
+        "words--disposition",
+        "words--value-function",
+        "words--access",
+        "words--channel",
+        "words--trained-collaboration",
+        "words--breach",
+        "words--guardrail-inner",
+        "words--guardrail-outer",
+        "words--presence",
+        "words--reversibility",
+        "words--bad-actor-scenario",
+        "words--misaligned-asi-scenario",
+        "words--two-geopolitics",
+        "words--what-held",
+        "words--recorded",
+        "words--staged"
+      ],
+      "sort_order": 21
+    },
+    {
+      "id": "ideas--arc",
+      "name": "ARC / skill-acquisition",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "arc",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 22
+    },
+    {
+      "id": "ideas--symbolic",
+      "name": "Symbolic AI & program synthesis",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "symbolic",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 23
+    },
+    {
+      "id": "ideas--scaling-laws",
+      "name": "Scaling laws",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "scaling-laws",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 24
+    },
+    {
+      "id": "ideas--bitter-lesson",
+      "name": "The bitter lesson",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "bitter-lesson",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 25
+    },
+    {
+      "id": "ideas--pretraining",
+      "name": "Pretraining",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "pretraining",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 26
+    },
+    {
+      "id": "ideas--data-wall",
+      "name": "Data wall / synthetic data",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "data-wall",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 27
+    },
+    {
+      "id": "ideas--compute",
+      "name": "Compute (chips, data centres)",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "compute",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 28
+    },
+    {
+      "id": "ideas--emergence",
+      "name": "Emergent abilities",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "emergence",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 29
+    },
+    {
+      "id": "ideas--jobs",
+      "name": "Jobs & labour",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "jobs",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 30
+    },
+    {
+      "id": "ideas--china",
+      "name": "China",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "china",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 31
+    },
+    {
+      "id": "ideas--open-source",
+      "name": "Open source / open weights",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "open-source",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 32
+    },
+    {
+      "id": "ideas--self-play",
+      "name": "Self-play",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "self-play",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 33
+    },
+    {
+      "id": "ideas--reasoning-rl",
+      "name": "Reasoning models & test-time compute",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "reasoning-rl",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 34
+    },
+    {
+      "id": "ideas--agents",
+      "name": "AI agents",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "agents",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 35
+    },
+    {
+      "id": "ideas--rsi",
+      "name": "Recursive self-improvement",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "rsi",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 36
+    },
+    {
+      "id": "ideas--intelligence-explosion",
+      "name": "Intelligence explosion",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "intelligence-explosion",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 37
+    },
+    {
+      "id": "ideas--singularity",
+      "name": "The singularity",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "singularity",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 38
+    },
+    {
+      "id": "ideas--takeoff",
+      "name": "Takeoff speed (fast / slow)",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "takeoff",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 39
+    },
+    {
+      "id": "ideas--automated-researcher",
+      "name": "Automated AI researcher",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "automated-researcher",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 40
+    },
+    {
+      "id": "ideas--agi",
+      "name": "AGI",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "agi",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 41
+    },
+    {
+      "id": "ideas--superintelligence",
+      "name": "Superintelligence",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "superintelligence",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 42
+    },
+    {
+      "id": "ideas--rlhf",
+      "name": "RLHF",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "rlhf",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 43
+    },
+    {
+      "id": "ideas--chain-of-thought",
+      "name": "Chain of thought",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "chain-of-thought",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 44
+    },
+    {
+      "id": "ideas--reward-hacking",
+      "name": "Reward hacking",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "reward-hacking",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 45
+    },
+    {
+      "id": "ideas--alignment",
+      "name": "Alignment",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "alignment",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 46
+    },
+    {
+      "id": "ideas--interpretability",
+      "name": "Interpretability",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "interpretability",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 47
+    },
+    {
+      "id": "ideas--scalable-oversight",
+      "name": "Scalable oversight / superalignment",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "scalable-oversight",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 48
+    },
+    {
+      "id": "ideas--control",
+      "name": "AI control / the control problem",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "control",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 49
+    },
+    {
+      "id": "ideas--deception",
+      "name": "Deception, scheming, alignment faking",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "deception",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 50
+    },
+    {
+      "id": "ideas--power-seeking",
+      "name": "Power-seeking & instrumental convergence",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "power-seeking",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 51
+    },
+    {
+      "id": "ideas--existential-risk",
+      "name": "Existential risk / extinction",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "existential-risk",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 52
+    },
+    {
+      "id": "ideas--p-doom",
+      "name": "p(doom)",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "p-doom",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 53
+    },
+    {
+      "id": "ideas--takeover",
+      "name": "AI takeover",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "takeover",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 54
+    },
+    {
+      "id": "ideas--bio-misuse",
+      "name": "Misuse: bioweapons & pandemics",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "bio-misuse",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 55
+    },
+    {
+      "id": "ideas--cyber",
+      "name": "Cyberattacks",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "cyber",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 56
+    },
+    {
+      "id": "ideas--race",
+      "name": "The race (arms race, US–China)",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "race",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 57
+    },
+    {
+      "id": "ideas--pause",
+      "name": "Pause / moratorium / stop",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "pause",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 58
+    },
+    {
+      "id": "ideas--regulation",
+      "name": "Regulation",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "regulation",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 59
+    },
+    {
+      "id": "ideas--compute-governance",
+      "name": "Compute governance & export controls",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "compute-governance",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 60
+    },
+    {
+      "id": "ideas--evals",
+      "name": "Evals, red-teaming, safety frameworks",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "evals",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 61
+    },
+    {
+      "id": "ideas--liability",
+      "name": "Liability & licensing",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "liability",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 62
+    },
+    {
+      "id": "ideas--treaty",
+      "name": "International treaty / IAEA for AI",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "treaty",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 63
+    },
+    {
+      "id": "ideas--ea-rationalists",
+      "name": "Effective altruism & rationalists",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "ea-rationalists",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 64
+    },
+    {
+      "id": "ideas--basilisk",
+      "name": "Roko's basilisk",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "basilisk",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 65
+    },
+    {
+      "id": "ideas--paperclip",
+      "name": "The paperclip maximizer",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "paperclip",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 66
+    },
+    {
+      "id": "ideas--open-endedness",
+      "name": "Open-endedness",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "open-endedness",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 67
+    },
+    {
+      "id": "ideas--multi-agent",
+      "name": "Multi-agent & cooperative AI",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "multi-agent",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 68
+    },
+    {
+      "id": "ideas--world-models",
+      "name": "World models",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "world-models",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 69
+    },
+    {
+      "id": "ideas--continual-learning",
+      "name": "Continual learning",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "continual-learning",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 70
+    },
+    {
+      "id": "ideas--generalization",
+      "name": "Generalization",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "generalization",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 71
+    },
+    {
+      "id": "ideas--value-function",
+      "name": "Value functions & emotions",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "value-function",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 72
+    },
+    {
+      "id": "ideas--consciousness",
+      "name": "Consciousness (human and machine)",
+      "level": 1,
+      "metadata": {
+        "source_deck": "ideas-of-alignment",
+        "source_item_id": "consciousness",
+        "deck": "Ideas (draft)",
+        "castable": true
+      },
+      "sort_order": 73
+    },
+    {
+      "id": "deck-ideas",
+      "name": "Ideas (draft)",
+      "level": 2,
+      "description": "The seed terms of the lab's map of the AI debate: interpretation, a draft. 52 cards.",
+      "metadata": {
+        "kind": "deck",
+        "deck_slug": "ideas-of-alignment"
+      },
+      "composite_of": [
+        "ideas--arc",
+        "ideas--symbolic",
+        "ideas--scaling-laws",
+        "ideas--bitter-lesson",
+        "ideas--pretraining",
+        "ideas--data-wall",
+        "ideas--compute",
+        "ideas--emergence",
+        "ideas--jobs",
+        "ideas--china",
+        "ideas--open-source",
+        "ideas--self-play",
+        "ideas--reasoning-rl",
+        "ideas--agents",
+        "ideas--rsi",
+        "ideas--intelligence-explosion",
+        "ideas--singularity",
+        "ideas--takeoff",
+        "ideas--automated-researcher",
+        "ideas--agi",
+        "ideas--superintelligence",
+        "ideas--rlhf",
+        "ideas--chain-of-thought",
+        "ideas--reward-hacking",
+        "ideas--alignment",
+        "ideas--interpretability",
+        "ideas--scalable-oversight",
+        "ideas--control",
+        "ideas--deception",
+        "ideas--power-seeking",
+        "ideas--existential-risk",
+        "ideas--p-doom",
+        "ideas--takeover",
+        "ideas--bio-misuse",
+        "ideas--cyber",
+        "ideas--race",
+        "ideas--pause",
+        "ideas--regulation",
+        "ideas--compute-governance",
+        "ideas--evals",
+        "ideas--liability",
+        "ideas--treaty",
+        "ideas--ea-rationalists",
+        "ideas--basilisk",
+        "ideas--paperclip",
+        "ideas--open-endedness",
+        "ideas--multi-agent",
+        "ideas--world-models",
+        "ideas--continual-learning",
+        "ideas--generalization",
+        "ideas--value-function",
+        "ideas--consciousness"
+      ],
+      "sort_order": 74
+    },
+    {
+      "id": "root-all-decks",
+      "name": "All decks",
+      "level": 3,
+      "description": "Every castable card on the site, as pointers to its own deck.",
+      "metadata": {
+        "kind": "root"
+      },
+      "composite_of": [
+        "deck-words",
+        "deck-ideas"
+      ],
+      "sections": {
+        "What it is": "The pool the Spread Caster draws from. Each card here is a pointer: its full entry opens from its own deck."
+      },
+      "sort_order": 75
+    }
+  ]
+}

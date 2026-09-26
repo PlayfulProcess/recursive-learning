@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../theme.css?v=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As-If · Recursive Eco-Improvement</title>
+<meta name="description" content="Cast face down, forecast before you look, then hold the cards as if true and take one step. A casting, not a prediction: nothing is staked, and I don't know is a legal answer.">
+<meta property="og:title" content="As-If · Recursive Eco-Improvement">
+<meta property="og:description" content="Cast face down, forecast before you look, then hold the cards as if true and take one step.">
+<link rel="icon" type="image/svg+xml" href="../spiral.svg">
+<!--
+  As-If, the game on the As-If deck (grammars/as-if-hot-potato-edition/grammar.json).
+
+  PORTED, per the Prime Rule, from two working files and changed only in data and words:
+  - recursive-iching/viewers/caster.html, its Book mode ("Cast your Book"): the turn structure.
+    A frame page first, then one page per Next, a box for the reader's own words under each,
+    "Close the book here" (here: End the cast here), resume from this browser, an index column,
+    and the export as a grammar JSON plus Markdown (buildBookGrammar -> AsIfEngine.buildExport).
+  - recursive-tarot/viewers/caster-studio.html: the draw, the board of positions, a card turned
+    upright or reversed (the image rotated), and the credit of every picture.
+  The engine (the deal, the coin, the casting) is game/as-if-engine.js, a port of
+  recursive-iching/viewers/caster-engine.js; scripts/check-asif.mjs checks it the way
+  recursive-iching/scripts/determinism-check.js checks the Path Caster.
+
+  The cast is the deck's own ("How to play", section The cast): Structures (a character and the
+  weather card, read at the Tell), Possibilities (one or two hypotheses, each turned by a coin),
+  Process (one action card, sized to you). Then the deck's order: the forecast before the coin
+  is shown, the reading as if true, every card flipped and read again, one step and its
+  asymmetry, the synthesis. The random draw stays as the deck's variant.
+
+  Honesty rules, the deck's: the page forecasts nothing; "I don't know" is recorded as itself;
+  nothing is staked (no points, no score). What the player writes stays in localStorage unless
+  they download it. Colour comes from ../theme.css only. The earlier version (index.html, the
+  first edition) stays reachable until the owner picks one.
+
+  ?src=<relative path to a grammar.json>   another As-If deck (default: the HOT POTATO edition)
+  ?seed=<0..4294967295>&spread=three|random&poss=coin|1|2&reach=<reach>   replay one cast
+-->
+<style>
+  /* Layout only: every colour comes from theme.css (the one source). */
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:light;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+  .wrap{--tw:clamp(62px,19vw,88px);max-width:640px;margin:0 auto;padding:22px 16px 90px}
+  header.hero{padding:10px 0 6px}
+  .kicker{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted)}
+  h1{font-family:"Fraunces",Georgia,serif;font-size:28px;margin:6px 0 8px;color:var(--ink)}
+  .lede{color:var(--muted);font-size:14.5px;max-width:60ch;margin:0 0 4px}
+  .lede a,.earlier a,.seedline a,.deeplink a,.framecard a,.bktext a,.complete-banner a{color:var(--accent)}
+
+  .honesty{margin:16px 0 18px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;
+    background:var(--chip);font-size:13px;color:var(--ink-soft);line-height:1.55}
+  .honesty b{color:var(--ink)}
+
+  /* settings */
+  .settings{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px;margin-bottom:18px}
+  .settings[hidden]{display:none}
+  .srow{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;margin-bottom:10px}
+  .srow:last-child{margin-bottom:0}
+  .sfield{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;flex:1 1 170px;min-width:150px}
+  .sfield select{font-family:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);
+    border-radius:8px;padding:9px 8px;text-transform:none;letter-spacing:normal;min-height:42px}
+  .sfield select:disabled{opacity:.5}
+  .shint{font-size:12.5px;color:var(--muted);margin:0}
+  button{font-family:inherit;cursor:pointer}
+  .btn{font-size:14px;font-weight:600;padding:10px 16px;min-height:44px;border-radius:8px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink-soft);transition:border-color .15s,color .15s,background .15s}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{background:var(--grammar-accent-dark);border-color:var(--grammar-accent-dark);color:#fff}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn[hidden]{display:none}
+
+  /* status bar */
+  .statusbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 14px;font-size:13.5px;color:var(--ink-soft)}
+  .statusbar[hidden]{display:none}
+  .statusbar b{color:var(--ink)}
+
+  /* the book layout: an index column + the book column (recursive-iching's Book mode) */
+  body.has-index .wrap{max-width:1040px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:0 26px;align-items:start}
+  body.has-index .wrap > .hero, body.has-index .wrap > .honesty, body.has-index .wrap > .settings,
+  body.has-index .wrap > .statusbar, body.has-index .wrap > .earlier{grid-column:1 / -1}
+  body.has-index .wrap > #stack{grid-column:2}
+  #bookindex{display:none}
+  body.has-index #bookindex{display:block;grid-column:1;position:sticky;top:76px;align-self:start;max-height:calc(100vh - 90px);overflow-y:auto}
+  .toc-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:4px 0 10px}
+  .toc{display:flex;flex-direction:column;gap:2px}
+  .toc a,.toc span.toc-wait{display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--ink-soft);font-size:13px;border-left:2px solid transparent}
+  .toc a:hover{background:var(--chip);color:var(--ink)}
+  .toc a.active{background:var(--chip);border-left-color:var(--accent);color:var(--ink);font-weight:600}
+  .toc span.toc-wait{color:var(--faint);font-style:italic}
+  .toc .toc-num{display:inline-block;width:1.6em;color:var(--faint);font-variant-numeric:tabular-nums}
+  .toc-sep{border:0;border-top:1px solid var(--line);margin:10px 0}
+  #bookindex details summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-soft);padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  #bookindex details[open] summary{margin-bottom:8px}
+  @media (max-width:820px){
+    body.has-index .wrap{grid-template-columns:minmax(0,1fr);max-width:640px}
+    body.has-index .wrap > #stack, body.has-index #bookindex{grid-column:1}
+    body.has-index #bookindex{position:static;max-height:none;margin-bottom:12px}
+  }
+
+  /* frame pages and card pages */
+  .page{margin:0 0 14px}
+  .page h2,.hexcard{scroll-margin-top:84px}
+  .framecard{background:var(--panel);border:1px solid var(--accent);border-radius:14px;padding:20px 20px 16px;margin:0 0 12px;box-shadow:var(--shadow-card)}
+  .framecard .kicker{margin-bottom:6px}
+  .framecard h2,.page > h2{font-family:"Fraunces",Georgia,serif;font-size:21px;margin:0 0 10px;color:var(--ink);outline:none}
+  .framecard p{font-size:14.5px;color:var(--ink);margin:0 0 .9em;line-height:1.6}
+  .framecard ul{margin:0 0 .9em;padding-left:20px;font-size:14.5px}
+  .framecard > :last-child{margin-bottom:0}
+  .pagehead{margin:22px 0 10px}
+  .pagehead h2{font-family:"Fraunces",Georgia,serif;font-size:21px;margin:4px 0 6px;color:var(--ink);outline:none}
+  .pagelede{font-size:14px;color:var(--ink-soft);margin:0 0 12px}
+  .pagelede p{margin:0 0 .7em}
+  .pagelede p:last-child{margin-bottom:0}
+  .intro .introrow{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+  @media (min-width:520px){ .intro .introrow{grid-template-columns:110px minmax(0,1fr);gap:16px} }
+  details.rules{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+  details.rules summary,details.more summary,details.pick summary,details.astext summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);padding:6px 0;min-height:32px}
+
+  .hexcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 12px;box-shadow:var(--shadow-card)}
+  .cardrow{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+  @media (min-width:520px){ .cardrow{grid-template-columns:132px minmax(0,1fr);gap:16px} }
+  .hexnum{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+  .hexname{font-family:"Fraunces",Georgia,serif;font-size:19px;color:var(--ink);margin:2px 0 6px;line-height:1.25}
+  .chip{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink-soft);margin:0 6px 4px 0}
+
+  figure.art{margin:0;max-width:200px}
+  .artframe{aspect-ratio:4/5;border:1px solid var(--line);border-radius:10px;background:var(--thumb-bg);overflow:hidden;
+    display:flex;align-items:center;justify-content:center}
+  .artframe img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .5s ease}
+  .artframe img.rev{transform:rotate(180deg)}
+  /* a phone: the picture at its own shape above the text, never cropped; a card with no picture
+     shows no cover here (its name is the heading right below) */
+  @media (max-width:519px){
+    figure.art{max-width:none;text-align:center}
+    figure.art.textonly{display:none}
+    .artframe{aspect-ratio:auto;display:block;border:0;background:none;border-radius:0;overflow:visible}
+    .artframe img{width:auto;height:auto;min-width:120px;min-height:110px;max-width:100%;max-height:220px;object-fit:contain;
+      margin:0 auto;border-radius:8px;border:1px solid var(--line);background:var(--thumb-bg)}
+    .intro .artframe img{max-height:130px;min-height:90px}
+  }
+  figure.art figcaption{font-size:11px;color:var(--faint);line-height:1.4;margin-top:6px;overflow-wrap:anywhere}
+  figure.art figcaption a{color:var(--muted)}
+  .cover{width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;
+    border:3px double var(--line-soft);border-radius:8px;font-family:"Fraunces",Georgia,serif;font-size:14px;color:var(--ink-soft);line-height:1.3}
+
+  .bklabel{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin:10px 0 3px;display:block}
+  .bktext{font-size:13.5px;color:var(--ink);margin:0}
+  .bktext p{margin:0 0 .6em}
+  .bktext p:last-child{margin-bottom:0}
+  .bktext ul{margin:0 0 .6em;padding-left:18px}
+  .bktext code{font-size:12.5px;background:var(--panel2);border-radius:4px;padding:0 4px}
+  .bknote{width:100%;min-height:92px;font-family:inherit;font-size:14px;line-height:1.5;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);border-radius:8px;padding:9px 11px;resize:vertical;margin-top:4px}
+  .bknote:focus{border-color:var(--accent)}
+  .notehint{font-size:12.5px;color:var(--muted);margin:0 0 2px}
+  .textin{width:100%;font-family:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);
+    border-radius:8px;padding:9px 11px;min-height:42px}
+  .notebox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 12px}
+  .notebox .bklabel:first-child{margin-top:0}
+
+  /* the forecast, before the coin */
+  fieldset.fc{border:1px solid var(--line);border-radius:10px;padding:10px 12px 12px;margin:12px 0 0;background:var(--panel2);min-width:0}
+  fieldset.fc legend{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;padding:0 4px}
+  .fchint{font-size:12.5px;color:var(--ink-soft);margin:2px 0 8px}
+  .fcopts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+  .fcopt{display:flex;align-items:center;gap:8px;padding:8px 13px;min-height:44px;border:1px solid var(--line);border-radius:999px;
+    background:var(--surface);font-size:13.5px;color:var(--ink);cursor:pointer}
+  .fcopt:has(input:checked){border-color:var(--accent);background:var(--chip)}
+  .fcopt input{accent-color:var(--accent);margin:0}
+  .fcsure{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--ink-soft)}
+  .fcsure output{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+  .fcrange{width:100%;accent-color:var(--accent);min-height:32px;margin:2px 0 10px}
+  .fcrange:disabled{opacity:.4}
+  .coin{margin-top:12px;padding:10px 12px;border:1px solid var(--accent);border-radius:10px;background:var(--surface);outline:none}
+  .coin .face{font-family:"Fraunces",Georgia,serif;font-size:17px;margin:0 0 4px;color:var(--ink)}
+  .recorded{font-size:13.5px;margin:0}
+
+  /* the board: the cast face down, the tarot caster's positions */
+  .board{display:flex;flex-wrap:wrap;gap:14px 16px;margin:14px 0 10px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--panel2)}
+  .pos{flex:1 1 0;min-width:150px;max-width:100%}
+  .pos-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  .pos-mean{font-size:12px;color:var(--muted);margin:0 0 8px;max-width:30ch;line-height:1.4}
+  .pos-cards{display:flex;gap:8px;flex-wrap:wrap}
+  .tc{display:block;width:var(--tw);text-decoration:none;color:inherit}
+  .tc-face{aspect-ratio:3/5;border:1px solid var(--line);border-radius:8px;background:var(--thumb-bg);overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .tc-face img{width:100%;height:100%;object-fit:contain;display:block}
+  .tc-face img.rev{transform:rotate(180deg)}
+  .tc-face .cover{font-size:10.5px;border-width:3px;padding:4px}
+  .tc.down .tc-face{background:repeating-linear-gradient(135deg,var(--chip) 0 6px,var(--panel) 6px 12px);border-color:var(--line-soft)}
+  a.tc:hover .tc-face{border-color:var(--accent)}
+  .tc-name{font-size:11px;line-height:1.25;color:var(--ink-soft);margin-top:4px;overflow-wrap:anywhere}
+  .tc-state{font-size:10.5px;color:var(--accent);font-weight:600}
+  .seedline{font-size:12.5px;color:var(--muted)}
+  .strip{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 12px}
+
+  /* the step: pick a card */
+  .picklist{border:0;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+  .pickopt{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;min-height:44px;border:1px solid var(--line);border-radius:10px;
+    background:var(--surface);font-size:13.5px;cursor:pointer}
+  .pickopt:has(input:checked){border-color:var(--accent);background:var(--chip)}
+  .pickopt input{accent-color:var(--accent);margin:3px 0 0}
+  .muted{color:var(--muted)}
+
+  .booknav{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;margin:16px 0 6px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+  .booknav .muted{font-size:12.5px;flex:1 1 180px}
+  .complete-banner{margin:4px 0 12px;padding:16px 18px;border:1px solid var(--accent);border-radius:12px;background:var(--panel)}
+  .complete-banner > b{color:var(--accent);display:block;font-family:"Fraunces",Georgia,serif;font-size:17px;margin-bottom:4px}
+  .complete-banner p{margin:0 0 10px;font-size:13.5px;color:var(--ink-soft)}
+  .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+  .casting-text{width:100%;min-height:220px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.45;color:var(--ink);
+    background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px}
+  .resume{padding:14px 16px;border:1px solid var(--accent);border-radius:12px;background:var(--panel);margin:0 0 12px;font-size:13.5px}
+  .resume b{color:var(--accent)}
+  .placeholder{text-align:center;padding:30px 18px;color:var(--muted);font-size:13.5px}
+  .earlier{font-size:12.5px;color:var(--muted);margin:26px 0 0;padding-top:14px;border-top:1px solid var(--line)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* turning a card: a quarter turn in; nothing moves when the reader asks for reduced motion */
+  @keyframes turn{from{transform:perspective(700px) rotateY(88deg)}to{transform:none}}
+  @keyframes turnrev{from{transform:perspective(700px) rotateY(88deg) rotate(180deg)}to{transform:rotate(180deg)}}
+  .turning{animation:turn .45s ease-out}
+  img.rev.turning{animation-name:turnrev}
+  @media (prefers-reduced-motion: reduce){
+    .turning,img.rev.turning{animation:none}
+    .artframe img,.btn{transition:none}
+  }
+
+  @media (max-width:420px){
+    .wrap{padding:16px 12px 90px}
+    h1{font-size:24px}
+    .framecard{padding:16px 14px 14px}
+    .hexcard{padding:14px 12px}
+    .board{padding:12px 10px}
+    .booknav .btn{flex:1 1 auto}
+  }
+</style>
+</head>
+<body>
+<script src="../shared/nav.js"></script>
+
+<main class="wrap" id="main">
+  <header class="hero">
+    <div class="kicker">A game on one deck · a casting, not a prediction</div>
+    <h1>As-If</h1>
+    <p class="lede">Cast face down, forecast before you look, then hold the cards as if true and take one step.
+      It plays <a id="deck-link" href="../viewers/cards.html?src=../grammars/as-if-hot-potato-edition/grammar.json">the As-If deck</a>,
+      whose cards are read upright or reversed.</p>
+  </header>
+
+  <div class="honesty">
+    <b>Honestly, first:</b> the draw is a shuffle and a coin, so nothing on this page predicts anything.
+    The forecast is yours, written before the coin is shown, and <b>“I don't know” is a legal answer</b>,
+    recorded as itself. <b>Nothing is staked</b>: no points, and no score for being right. What you write
+    stays in this browser unless you download it.
+    <br><b>Where the deck leans:</b> it was written from one side of the AI debate. A reviewer found that
+    several of its faces lean toward slowing down or stopping, and that no face yet makes the case for
+    going faster at full strength. Read it as a practice deck, not a survey; a stronger counter-face is
+    welcome.
+  </div>
+
+  <div class="settings" id="settings">
+    <div class="srow">
+      <label class="sfield">The cast
+        <select id="spread-pick">
+          <option value="three">Three positions (the deck's cast)</option>
+          <option value="random">The random draw (a variant)</option>
+        </select>
+      </label>
+      <label class="sfield">Possibilities
+        <select id="poss-pick">
+          <option value="coin">One or two, as a coin lands</option>
+          <option value="1">One hypothesis</option>
+          <option value="2">Two hypotheses</option>
+        </select>
+      </label>
+      <label class="sfield">Your step, sized to
+        <select id="reach-pick"><option value="anyone">Anyone</option></select>
+      </label>
+    </div>
+    <div class="srow">
+      <button class="btn primary" id="begin-btn" type="button" disabled>Cast face down</button>
+      <p class="shint" id="spread-hint">One Structure, one or two Possibilities, one Process: three cards, because three fits in a body.</p>
+    </div>
+  </div>
+
+  <div class="statusbar" id="statusbar" hidden>
+    <span id="status-txt"></span>
+    <button class="btn" id="new-btn" type="button">New cast</button>
+  </div>
+
+  <aside id="bookindex" aria-label="Your cast"></aside>
+  <div id="stack"><p class="placeholder">Loading the deck…</p></div>
+
+  <p class="earlier">An earlier version of this game, one card at a time, where the card turns over only after you
+    write: <a href="index.html">As-If, first edition</a>. Both are kept for now.
+    More: <a href="../pages/play.html">every game</a>.</p>
+</main>
+<div id="sr" class="sr-only" aria-live="polite"></div>
+
+<script src="as-if-engine.js"></script>
+<script>
+(() => {
+  'use strict';
+  const $ = s => document.querySelector(s);
+  const E = window.AsIfEngine;
+  const esc = E.esc, md = E.mdToHtml;
+
+  // ── where the deck comes from (a relative path only; the default is the HOT POTATO edition) ──
+  const DEFAULT_SRC = '../grammars/as-if-hot-potato-edition/grammar.json';
+  const P = new URLSearchParams(location.search);
+  const want = P.get('src') || '';
+  const SRC = want && /\.json$/i.test(want) && !/^[a-z][a-z0-9+.-]*:|^\/\//i.test(want) ? want : DEFAULT_SRC;
+  const KEY = 'as-if-cast-v1:' + SRC;
+  const REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const WIDE = () => !!(window.matchMedia && matchMedia('(min-width: 821px)').matches);
+
+  // the pages of one cast, in the deck's order; `next` labels the button that leaves a page
+  const PAGES = [
+    { key: 'cast',          toc: 'Face down',           next: 'Turn the Structures' },
+    { key: 'structures',    toc: 'Structures',          next: 'Turn the Possibilities' },
+    { key: 'possibilities', toc: 'Possibilities',       next: 'Hold them as if true' },
+    { key: 'asif',          toc: 'As if true',          next: 'Flip every card' },
+    { key: 'other',         toc: 'From the other side', next: 'Take one step' },
+    { key: 'step',          toc: 'One step',            next: 'Write the synthesis' },
+    { key: 'synthesis',     toc: 'The synthesis',       next: 'Finish the cast' },
+  ];
+  const PI = Object.fromEntries(PAGES.map((p, i) => [p.key, i]));
+  const REACH_LABEL = { anyone: 'Anyone', lab: 'Someone at a lab', legislator: 'A legislator', evaluator: 'An evaluator' };
+  const reachLabel = r => REACH_LABEL[r] || r;
+
+  let grammar = null, deck = null;
+  let S = fresh();                 // the run: everything the player did, saved to this browser
+  let turning = new Set();         // card ids to animate on the next render only
+  let urlSeedUsed = false;
+
+  function fresh(settings) {
+    return { v: 1, cast: null, page: 0, ended: '', drafts: {}, forecasts: {}, shown: {},
+      notes: { asIf: '', other: '', asym: '', synthesis: '' }, stepId: null, author: '', date: '',
+      settings: settings || { spread: 'three', possibilities: 'coin', reach: 'anyone' } };
+  }
+
+  // ── this browser only (every read and write wrapped: a private window still plays) ──
+  function save() { if (!S.cast) return; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (_) { /* in memory only */ } }
+  function loadSaved() {
+    try {
+      const s = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!s || !s.cast || s.cast.v !== 1) return null;
+      const ids = E.cardIds(s.cast, s.stepId);
+      return ids.every(id => deck.byId[id]) ? s : null;      // the deck changed: the old cast cannot be read
+    } catch (_) { return null; }
+  }
+  function clearSaved() { try { localStorage.removeItem(KEY); } catch (_) {} }
+
+  function today() {
+    const d = new Date(), p = n => String(n).padStart(2, '0');
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
+  function newSeed() {
+    const q = Number(P.get('seed'));
+    if (!urlSeedUsed && P.get('seed') !== null && E.isSeed(q)) { urlSeedUsed = true; return q; }
+    try { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0]; }
+    catch (_) { return Math.floor(Math.random() * 4294967296); }
+  }
+  function say(t) { const el = $('#sr'); el.textContent = ''; setTimeout(() => { el.textContent = t; }, 30); }
+
+  // ── boot ──────────────────────────────────────────────────────────────
+  async function boot() {
+    const r = await fetch(SRC);
+    if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + SRC);
+    grammar = await r.json();
+    deck = E.classify(grammar);
+    const why = E.playable(deck);
+    if (why) throw new Error('"' + (grammar.name || SRC) + '" cannot be cast: ' + why + '.');
+    const dl = $('#deck-link');
+    dl.href = '../viewers/cards.html?src=' + encodeURIComponent(SRC).replace(/%2F/g, '/');
+    dl.textContent = grammar.name || 'the As-If deck';
+
+    const rp = $('#reach-pick');
+    rp.innerHTML = E.reaches(deck).map(r => `<option value="${esc(r)}">${esc(reachLabel(r))}</option>`).join('');
+    // a replay link presets the settings
+    if (['three', 'random'].includes(P.get('spread'))) $('#spread-pick').value = P.get('spread');
+    if (['coin', '1', '2'].includes(P.get('poss'))) $('#poss-pick').value = P.get('poss');
+    if (P.get('reach') && E.reaches(deck).includes(P.get('reach'))) rp.value = P.get('reach');
+    syncSettings();
+    wire();
+    $('#begin-btn').disabled = false;
+
+    const saved = loadSaved();
+    if (saved) showResume(saved); else renderIdle();
+  }
+
+  function readSettings() {
+    return { spread: $('#spread-pick').value, possibilities: $('#poss-pick').value, reach: $('#reach-pick').value };
+  }
+  function syncSettings() {
+    const random = $('#spread-pick').value === 'random';
+    $('#poss-pick').disabled = random;
+    $('#spread-hint').textContent = random
+      ? 'The variant the deck keeps: a character and one to five hypotheses, every card turned by the coin, then one step.'
+      : 'One Structure, one or two Possibilities, one Process: three cards, because three fits in a body.';
+  }
+
+  // ── the deck's own words ─────────────────────────────────────────────
+  const rule = name => deck.rules ? E.section(deck.rules, name) : '';
+  function introHTML() {
+    const it = deck.rules;
+    if (!it) return '';
+    const secs = Object.keys(it.sections || {});
+    const rest = secs.filter(k => k !== 'The cast');
+    return `<div id="book-intro"><div class="framecard intro">
+      <div class="introrow">
+        ${it.image_url ? artHTML(it, null, 'small') : ''}
+        <div><div class="kicker">The deck's own rules</div><h2>${esc(it.name)}</h2>${md(E.section(it, 'The cast'))}</div>
+      </div>
+      ${rest.length ? `<details class="rules"><summary>The rest of the rules</summary>${rest.map(k => `<p class="bklabel">${esc(k)}</p><div class="bktext">${md(it.sections[k])}</div>`).join('')}</details>` : ''}
+    </div></div>`;
+  }
+
+  // ── a card's picture, credited, never cropped ────────────────────────
+  function artHTML(it, face, size, anim) {
+    const credit = creditHTML(it);
+    const img = it.image_url
+      ? `<img src="${esc(E.thumb(it.image_url, size === 'small' ? 240 : 480))}" data-full="${esc(it.image_url)}" data-name="${esc(it.name)}" alt="${esc(it.name + (face === 'reversed' ? ', reversed' : ''))}" loading="lazy" decoding="async" class="${[face === 'reversed' ? 'rev' : '', anim ? 'turning' : ''].filter(Boolean).join(' ')}">`
+      : `<div class="cover" role="img" aria-label="${esc(it.name)}"><span>${esc(it.name)}</span></div>`;
+    return `<figure class="art${it.image_url ? '' : ' textonly'}"><div class="artframe">${img}</div>${credit}</figure>`;
+  }
+  function creditHTML(it) {
+    const c = (it.metadata || {}).credit;
+    if (!c || !it.image_url) return '';
+    const who = [c.artist, c.year && c.year !== '—' ? c.year : ''].filter(Boolean).join(', ');
+    const bits = [c.edition, who, c.license].filter(Boolean).map(esc);
+    return `<figcaption>${bits.join('. ')}${c.source_url ? `. <a href="${esc(c.source_url)}" target="_blank" rel="noopener">Source</a>` : ''}</figcaption>`;
+  }
+  function tcHTML(it, state, face) {        // a small card on the board or the strip
+    if (state === 'down') {
+      return `<div class="tc down"><div class="tc-face" role="img" aria-label="A card, face down"></div><div class="tc-name">Face down</div></div>`;
+    }
+    const img = it.image_url
+      ? `<img src="${esc(E.thumb(it.image_url, 240))}" data-full="${esc(it.image_url)}" data-name="${esc(it.name)}" alt="" loading="lazy" decoding="async" class="${face === 'reversed' ? 'rev' : ''}">`
+      : `<div class="cover"><span>${esc(it.name)}</span></div>`;
+    const label = { tell: 'at the Tell', covered: 'coin covered', upright: 'upright', reversed: 'reversed', step: 'the step' }[state] || '';
+    return `<a class="tc" href="#card-${esc(it.id)}"><div class="tc-face">${img}</div>${it.image_url ? `<div class="tc-name">${esc(it.name)}</div>` : ''}<div class="tc-state">${label}</div></a>`;
+  }
+  const deeplink = it => `<p class="deeplink bktext"><a href="../viewers/cards.html?src=${esc(encodeURIComponent(SRC).replace(/%2F/g, '/'))}&amp;item=${esc(encodeURIComponent(it.id))}">The whole card, in the deck &rarr;</a></p>`;
+  const secBlock = (it, name, label) => { const t = E.section(it, name); return t ? `<p class="bklabel">${esc(label || name)}</p><div class="bktext">${md(t)}</div>` : ''; };
+
+  // ── how each card is held right now ──────────────────────────────────
+  const three = () => S.cast.spread === 'three';
+  const flipped = () => S.page >= PI.other;
+  function heldFace(face) { return flipped() ? E.other(face) : face; }
+  function stepItem() { return deck.byId[S.stepId] || deck.byId[S.cast.process.id]; }
+
+  // ── the board: the cast, face down, turning as the pages go ──────────
+  function boardHTML() {
+    const c = S.cast;
+    const pos = (label, mean, cards) => `<div class="pos"><div class="pos-label">${label}</div><p class="pos-mean">${mean}</p><div class="pos-cards">${cards}</div></div>`;
+    const st = c.structures.map(s => {
+      const it = deck.byId[s.id];
+      if (S.page < PI.structures) return tcHTML(it, 'down');
+      return s.face ? tcHTML(it, heldFace(s.face), heldFace(s.face)) : tcHTML(it, 'tell');
+    }).join('');
+    const ps = c.possibilities.map(p => {
+      const it = deck.byId[p.id];
+      if (S.page < PI.possibilities) return tcHTML(it, 'down');
+      if (!S.shown[p.id]) return tcHTML(it, 'covered');
+      return tcHTML(it, heldFace(p.face), heldFace(p.face));
+    }).join('');
+    const pr = S.page < PI.step ? tcHTML(null, 'down') : tcHTML(stepItem(), 'step');
+    return `<div class="board" aria-label="The cast">
+      ${pos('Structures', three() ? 'What constrains now: a character and the weather, read at the Tell.' : 'A character, turned by the coin.', st)}
+      ${pos('Possibilities', three() ? 'What is imaginable from here, turned by the coin.' : 'One to five hypotheses, turned by the coin.', ps)}
+      ${pos('Process', 'What you can do tonight, sized to you.', pr)}
+    </div>`;
+  }
+  function replayURL() {
+    const q = new URLSearchParams();
+    if (SRC !== DEFAULT_SRC) q.set('src', SRC);
+    q.set('seed', String(S.cast.seed));
+    q.set('spread', S.cast.spread);
+    if (S.cast.spread === 'three') q.set('poss', String(S.cast.possibilities_rule));
+    q.set('reach', S.cast.reach);
+    return '?' + q.toString();
+  }
+
+  // ── the pages ─────────────────────────────────────────────────────────
+  function head(i, title, lede) {
+    return `<div class="pagehead"><div class="kicker">${i + 1} of ${PAGES.length} · ${esc(PAGES[i].toc)}</div>` +
+      `<h2 id="h-${PAGES[i].key}" tabindex="-1">${title}</h2>${lede ? `<div class="pagelede">${lede}</div>` : ''}</div>`;
+  }
+  function pageHTML(i) {
+    const k = PAGES[i].key, c = S.cast;
+    let h = '';
+    if (k === 'cast') {
+      h = `<div class="framecard"><div class="kicker">1 of ${PAGES.length} · The cast</div><h2 id="h-cast" tabindex="-1">Face down</h2>
+        <p>${three()
+          ? `Three positions, read the way a spread is read: ${c.structures.length} card${c.structures.length === 1 ? '' : 's'} for the Structures, ${c.possibilities.length === 1 ? 'one hypothesis' : 'two hypotheses'} for the Possibilities${c.possibilities_rule === 'coin' ? ' (a coin chose how many)' : ''}, one action card for the Process.`
+          : `The random draw: a character and ${c.possibilities.length} hypothes${c.possibilities.length === 1 ? 'is' : 'es'}, every one turned by the coin, and one action card for the step.`}
+          Every coin has already landed. Each card turns when its moment comes.</p>
+        ${boardHTML()}
+        <p class="seedline">Cast number ${c.seed}. The same number deals the same cards the same way up: <a href="${esc(replayURL())}">a link to this cast</a> (it carries none of your answers).</p>
+      </div>`;
+    } else if (k === 'structures') {
+      h = head(i, 'Structures, read at the Tell', three()
+        ? '<p>What constrains now. The Tell is the evidence that would separate a generous reading from a cynical one; it is the part of a card that can be checked.</p>'
+        : '<p>What constrains now: a character, turned by the coin. Its Tell is the part that can be checked.</p>');
+      h += c.structures.map(s => structureCard(s)).join('');
+    } else if (k === 'possibilities') {
+      h = head(i, c.possibilities.length === 1 ? 'The Possibility, and your forecast' : 'The Possibilities, and your forecasts',
+        (rule('The forecast') ? md(rule('The forecast')) : '') + '<p>Each coin has landed and stays covered until you record a forecast. The forecast is about the world, not the coin: which way do you think the world will turn this card?</p>');
+      h += c.possibilities.map((p, idx) => hypCard(p, idx)).join('');
+    } else if (k === 'asif') {
+      h = head(i, 'As if true', rule('The reading') ? md(rule('The reading')) : '<p>Hold the cards as if true, together, without arguing with them.</p>');
+      h += `<div class="strip" aria-label="What you are holding">${heldStrip()}</div>`;
+      h += noteBox('asIf', 'Tonight, as if true', 'One small thing, not a policy. "Nothing changes" is an answer too; writing something is what turns the cards over.', 'What changes for you tonight, if all of this is true?');
+    } else if (k === 'other') {
+      h = head(i, 'From the other side', '<p>Every card the coin turned is turned over. The same evening, read from the other side.' +
+        (three() ? ' The Structures are read at their Tell, so they stay as they are.' : '') + '</p>');
+      h += c.structures.filter(s => s.face).map(s => flipCard(deck.byId[s.id], s.face, 'Structures')).join('');
+      h += c.possibilities.map((p, idx) => flipCard(deck.byId[p.id], p.face, 'Possibility ' + (idx + 1))).join('');
+      h += noteBox('other', 'Tonight, from the other side', 'Write again. The second pass is the point.', 'And now, if the other side is true?');
+    } else if (k === 'step') {
+      h = head(i, 'One step', (rule('The step') ? md(rule('The step')) : '') +
+        (rule('The size of a move') ? `<details class="more"><summary>The size of a move</summary><div class="bktext">${md(rule('The size of a move'))}</div></details>` : ''));
+      h += `<div id="stepcard">${stepCard()}</div>`;
+      h += pickHTML();
+      h += noteBox('asym', 'The asymmetry', 'If the coin lands the other way, can you live with having chosen this? Short enough to say aloud.', 'If it lands the other way…');
+    } else if (k === 'synthesis') {
+      h = head(i, 'The synthesis', rule('The synthesis') ? md(rule('The synthesis')) : '<p>A cast ends in a synthesis you write.</p>');
+      h += `<div class="notebox">
+        <label class="bklabel" for="note-synthesis">Your synthesis</label>
+        <p class="notehint">The one card that was not in the deck when you started. Short enough to say out loud.</p>
+        <textarea class="bknote" id="note-synthesis" data-note="synthesis" placeholder="Held together: …">${esc(S.notes.synthesis)}</textarea>
+        <label class="bklabel" for="author">Sign it, if you like</label>
+        <p class="notehint">A name or a handle, as you want it shown if you propose the casting. It stays in this browser.</p>
+        <input class="textin" id="author" type="text" autocomplete="off" value="${esc(S.author)}">
+      </div>`;
+    }
+    return `<section class="page" id="page-${k}">${h}</section>`;
+  }
+  function noteBox(key, label, hint, placeholder) {
+    return `<div class="notebox"><label class="bklabel" for="note-${key}">${esc(label)}</label>
+      <p class="notehint" id="hint-${key}">${esc(hint)}</p>
+      <textarea class="bknote" id="note-${key}" data-note="${key}" aria-describedby="hint-${key}" placeholder="${esc(placeholder)}">${esc(S.notes[key])}</textarea></div>`;
+  }
+  function heldStrip() {                  // what was held as if true: the faces as dealt
+    const c = S.cast;
+    const out = c.structures.map(s => { const it = deck.byId[s.id]; return s.face ? tcHTML(it, s.face, s.face) : tcHTML(it, 'tell'); });
+    c.possibilities.forEach(p => out.push(tcHTML(deck.byId[p.id], p.face, p.face)));
+    return out.join('');
+  }
+  function cardShell(it, face, top, body, anim) {
+    return `<article class="hexcard" id="card-${esc(it.id)}"><div class="cardrow">${artHTML(it, face, null, anim)}
+      <div><div class="hexnum">${top}</div><h3 class="hexname">${esc(it.name)}</h3>${body}${deeplink(it)}</div></div></article>`;
+  }
+  function structureCard(s) {
+    const it = deck.byId[s.id];
+    if (s.role === 'weather') {
+      const secs = Object.keys(it.sections || {});
+      const order = ['Tell'].concat(secs.filter(k => k !== 'Tell'));
+      return cardShell(it, null, 'Structures · the weather · read at the Tell', order.map(k => secBlock(it, k)).join(''), turning.has('s:' + it.id));
+    }
+    const extra = ['Their step', 'Sources'].map(k => secBlock(it, k)).join('');
+    if (!s.face) {
+      return cardShell(it, null, 'Structures · a character · read at the Tell',
+        secBlock(it, 'Tell') +
+        `<details class="more"><summary>Both readings</summary>${secBlock(it, 'Upright')}${secBlock(it, 'Reversed')}${extra}</details>`, turning.has('s:' + it.id));
+    }
+    return cardShell(it, s.face, 'Structures · a character · ' + s.face,
+      `<p class="bklabel">The coin landed ${s.face}</p><div class="bktext">${md(E.faceText(it, s.face))}</div>` + secBlock(it, 'Tell') +
+      (extra ? `<details class="more"><summary>More on this card</summary>${extra}</details>` : ''), turning.has('s:' + it.id));
+  }
+  function hypCard(p, idx) {
+    const it = deck.byId[p.id];
+    const shown = !!S.shown[p.id];
+    let body = secBlock(it, 'Tell');
+    if (!shown) {
+      const dr = S.drafts[p.id] || {};
+      const sure = Number.isInteger(dr.sure) ? dr.sure : 50;
+      // aria-label repeats the visible words, so a screen reader names the option, not its value
+      const opt = (v, label) => `<label class="fcopt"><input type="radio" name="fc-${idx}" value="${v}" data-fc="${esc(p.id)}" aria-label="${esc(label.replace(/<[^>]+>/g, ''))}"${dr.dir === v ? ' checked' : ''}> <span>${label}</span></label>`;
+      body += `<fieldset class="fc"><legend>Your forecast, before the coin</legend>
+        <p class="fchint">Which way do you think the world will turn this card? Write it before you look anything up.</p>
+        <div class="fcopts">${opt('upright', '<b>Upright</b>: it holds')}${opt('reversed', '<b>Reversed</b>: it does not')}${opt('unknown', "<b>I don't know</b>")}</div>
+        <label class="fcsure" for="sure-${idx}"><span>How sure, 0 to 100</span><output id="sureout-${idx}">${dr.dir === 'unknown' ? '—' : sure}</output></label>
+        <input class="fcrange" type="range" id="sure-${idx}" min="0" max="100" step="5" value="${sure}" data-sure="${esc(p.id)}" data-idx="${idx}"${dr.dir === 'unknown' ? ' disabled' : ''}>
+        <button class="btn primary" type="button" data-coin="${esc(p.id)}" data-idx="${idx}"${dr.dir ? '' : ' disabled'}>Record it, then show the coin</button>
+      </fieldset>`;
+    } else {
+      const f = E.normForecast(S.forecasts[p.id]);
+      body += `<p class="bklabel">Your forecast</p><p class="recorded"><strong>${esc(E.forecastText(f))}</strong>, recorded before the coin was shown.</p>`;
+      if (f && f.dir === 'unknown') body += secBlock(it, "I don't know", "The card's own I don't know");
+      body += `<div class="coin" id="coin-${idx}" tabindex="-1"><p class="bklabel">The coin landed</p><p class="face">${p.face === 'upright' ? 'Upright' : 'Reversed'}</p>
+        <p class="notehint">Hold it as if this were true:</p><div class="bktext">${md(E.faceText(it, p.face))}</div></div>`;
+    }
+    return cardShell(it, shown ? p.face : null, 'Possibility ' + (idx + 1) + (shown ? ' · ' + p.face : ' · the coin is covered'), body, turning.has('p:' + p.id));
+  }
+  function flipCard(it, face, where) {
+    const now = E.other(face);
+    return `<article class="hexcard" id="card-${esc(it.id)}-other"><div class="cardrow">${artHTML(it, now, null, turning.has('f:' + it.id))}
+      <div><div class="hexnum">${esc(where)} · was ${face}, now ${now}</div><h3 class="hexname">${esc(it.name)}</h3>
+      <p class="bklabel">Now read it ${now}</p><div class="bktext">${md(E.faceText(it, now))}</div></div></div></article>`;
+  }
+  function stepCard() {
+    const it = stepItem();
+    const size = E.sizeWord(it), reach = E.reachOf(it);
+    const chips = (size ? `<span class="chip">${esc(size)}</span>` : '') + `<span class="chip">for ${esc(reach === 'anyone' ? 'anyone' : reachLabel(reach).toLowerCase())}</span>`;
+    const secs = Object.keys(it.sections || {}).filter(k => k !== 'The asymmetry');
+    return cardShell(it, null, 'Process · the step' + (it.id === S.cast.process.id ? ' · drawn for you' : ' · your pick'),
+      `<p>${chips}</p>` + secs.map(k => secBlock(it, k)).join(''), turning.has('a:' + it.id));
+  }
+  function pickHTML() {
+    const pool = E.eligible(deck, S.cast.reach);
+    const chosen = stepItem().id;
+    const row = a => {
+      const size = E.sizeWord(a), reach = E.reachOf(a);
+      const meta = [size, reach !== 'anyone' ? 'for ' + reachLabel(reach).toLowerCase() : '', a.id === S.cast.process.id ? 'drawn for you' : ''].filter(Boolean).join(' · ');
+      return `<label class="pickopt"><input type="radio" name="step-pick" value="${esc(a.id)}"${a.id === chosen ? ' checked' : ''}> <span><b>${esc(a.name)}</b>${meta ? ` <span class="muted">${esc(meta)}</span>` : ''}</span></label>`;
+    };
+    return `<details class="pick notebox"${S.pickOpen ? ' open' : ''}><summary>Pick a different action card (${pool.length} sized to ${esc(reachLabel(S.cast.reach).toLowerCase())})</summary>
+      <fieldset class="picklist"><legend class="sr-only">Action cards you can pick</legend>${pool.map(row).join('')}</fieldset></details>`;
+  }
+
+  // ── the end: nature votes, and the casting to keep ───────────────────
+  function endHTML() {
+    const text = E.buildMarkdown(deck, S.cast, recOf(), keepOpts());
+    return `<section class="page" id="page-end"><div class="framecard">
+        <div class="kicker">After the cast</div>
+        <h2 id="h-end" tabindex="-1">${S.ended === 'early' ? 'You ended the cast here' : 'Nature votes later'}</h2>
+        ${S.ended === 'early' ? '<p>What you wrote is kept below; a forecast you did not record is kept as not recorded, and a coin you did not show stays face down.</p>' : ''}
+        ${rule('Nature votes') ? md(rule('Nature votes')) : ''}
+        <p class="muted">In plain words: <b>the Value Lab</b> is this project's small computer model, two hundred
+          simulated agents drawing on one shared river, used to see which kinds of step keep a shared resource
+          alive after a shock. It is a toy, not a forecast about anyone.</p>
+        ${rule('Nothing is staked') ? `<p class="bklabel">Nothing is staked</p><div class="bktext">${md(rule('Nothing is staked'))}</div>` : ''}
+      </div>
+      <div class="complete-banner">
+        <b>Your casting</b>
+        <p>It is kept in this browser only. Download it to keep it, or to offer it to the deck: it is saved in the same format as the Castings already at the end of the deck, marked as written by a person.</p>
+        ${rule('A community deck') ? `<div class="bktext">${md(rule('A community deck'))}</div>` : ''}
+        <div class="btnrow">
+          <button class="btn primary" id="save-btn" type="button">Download the casting (JSON grammar)</button>
+          <button class="btn" id="md-btn" type="button">Download as Markdown</button>
+        </div>
+        <details class="astext"><summary>Read the casting as text</summary>
+          <textarea class="casting-text" readonly aria-label="Your casting, as Markdown">${esc(text)}</textarea></details>
+        <div class="btnrow"><button class="btn" id="again-btn" type="button">Start a new cast</button></div>
+      </div></section>`;
+  }
+
+  // ── what the Next button needs ────────────────────────────────────────
+  function blocker() {
+    const k = PAGES[S.page].key;
+    if (k === 'possibilities') {
+      const left = S.cast.possibilities.filter(p => !S.shown[p.id]).length;
+      if (left) return left === 1 ? 'Record the forecast and show the coin first.' : 'Record ' + left + ' forecasts and show their coins first.';
+    }
+    if (k === 'asif' && !S.notes.asIf.trim()) return 'Write what changes tonight first; the flip is earned.';
+    return '';
+  }
+  function navHTML() {
+    const why = blocker();
+    return `<div class="booknav"><button class="btn primary" id="book-next" type="button"${why ? ' disabled aria-describedby="book-why"' : ''}>${esc(PAGES[S.page].next)}</button>
+      <button class="btn" id="book-end" type="button" title="Keep what you have written and end here">End the cast here</button>
+      <span class="muted" id="book-why">${esc(why || 'Page ' + (S.page + 1) + ' of ' + PAGES.length)}</span></div>`;
+  }
+  function updateNav() {
+    const b = $('#book-next'); if (!b) return;
+    const why = blocker();
+    b.disabled = !!why;
+    if (why) b.setAttribute('aria-describedby', 'book-why'); else b.removeAttribute('aria-describedby');
+    $('#book-why').textContent = why || 'Page ' + (S.page + 1) + ' of ' + PAGES.length;
+  }
+
+  // ── render ────────────────────────────────────────────────────────────
+  function renderIdle() {
+    document.body.classList.remove('has-index');
+    $('#bookindex').innerHTML = '';
+    $('#settings').hidden = false;
+    $('#statusbar').hidden = true;
+    $('#stack').innerHTML = introHTML() + '<p class="placeholder">Choose the cast above, then press <b>Cast face down</b>.</p>';
+  }
+  function render(focusId, scroll, block) {
+    $('#settings').hidden = true;
+    $('#statusbar').hidden = false;
+    $('#status-txt').innerHTML = S.ended
+      ? 'Your cast · <b>' + (S.ended === 'early' ? 'ended early' : 'finished') + '</b>'
+      : `Your cast · page <b>${S.page + 1}</b> of <b>${PAGES.length}</b>`;
+    let html = introHTML();
+    for (let i = 0; i <= S.page; i++) html += pageHTML(i);
+    html += S.ended ? endHTML() : navHTML();
+    $('#stack').innerHTML = html;
+    turning = new Set();
+    renderIndex();
+    if (focusId) {
+      const el = document.getElementById(focusId);
+      if (el) {
+        el.focus({ preventScroll: true });
+        if (scroll) el.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: block || 'start' });
+      }
+    }
+  }
+  function renderIndex() {
+    const el = $('#bookindex');
+    const was = el.querySelector('details');
+    const open = was ? was.open : WIDE();
+    const row = (href, label, num, active) => `<a href="${href}"${active ? ' class="active" aria-current="step"' : ''}><span class="toc-num">${num}</span>${label}</a>`;
+    let toc = row('#book-intro', 'Before you cast', '0.', false);
+    for (let i = 0; i <= S.page; i++) toc += row('#page-' + PAGES[i].key, esc(PAGES[i].toc), (i + 1) + '.', !S.ended && i === S.page);
+    if (!S.ended && S.page < PAGES.length - 1) toc += `<span class="toc-wait"><span class="toc-num">${S.page + 2}.</span>next · ${esc(PAGES[S.page + 1].toc)}</span>`;
+    toc += '<hr class="toc-sep">';
+    toc += S.ended ? row('#page-end', 'After the cast', '', true) : `<span class="toc-wait">after the cast · nature votes later</span>`;
+    el.innerHTML = `<details${open ? ' open' : ''}><summary>Your cast · ${S.ended ? 'done' : 'page ' + (S.page + 1) + ' of ' + PAGES.length}</summary>
+      <div class="toc-kicker">${esc(deck.name)}</div><nav class="toc" aria-label="Pages of this cast">${toc}</nav></details>`;
+    document.body.classList.add('has-index');
+  }
+  function showResume(saved) {
+    renderIdle();
+    const where = saved.ended === 'early' ? 'ended early' : saved.ended ? 'finished' : 'on page ' + (saved.page + 1) + ' of ' + PAGES.length;
+    const box = `<div class="resume" id="resume-box"><b>You have a cast in this browser</b>, ${esc(where)}${saved.date ? ', from ' + esc(E.dateLabel(saved.date)) : ''}.<br><br>
+      <button class="btn primary" id="resume-btn" type="button">${saved.ended ? 'Open it' : 'Resume it'}</button>
+      <button class="btn" id="discard-btn" type="button">Start a new one</button></div>`;
+    $('#stack').insertAdjacentHTML('afterbegin', box);
+    showResume.saved = saved;
+  }
+
+  // ── the moves ─────────────────────────────────────────────────────────
+  function begin() {
+    const settings = readSettings();
+    S = fresh(settings);
+    S.cast = E.cast(deck, { seed: newSeed(), spread: settings.spread, possibilities: settings.possibilities, reach: settings.reach });
+    S.date = today();
+    save();
+    render('h-cast', true);
+    say('Cast face down. Page 1 of ' + PAGES.length + '.');
+  }
+  function next() {
+    if (blocker()) return;
+    if (S.page >= PAGES.length - 1) { S.ended = 'done'; save(); render('h-end', true); return; }
+    S.page++;
+    const k = PAGES[S.page].key;
+    if (k === 'structures') S.cast.structures.forEach(s => turning.add('s:' + s.id));
+    if (k === 'possibilities') S.cast.possibilities.forEach(p => turning.add('p:' + p.id));
+    if (k === 'other') S.cast.possibilities.concat(S.cast.structures.filter(s => s.face)).forEach(x => turning.add('f:' + x.id));
+    if (k === 'step') turning.add('a:' + stepItem().id);
+    save();
+    render('h-' + k, true);
+  }
+  function endHere() { S.ended = 'early'; save(); render('h-end', true); }
+  function showCoin(id, idx) {
+    const dr = S.drafts[id] || {};
+    const f = E.normForecast({ dir: dr.dir, sure: Number.isInteger(dr.sure) ? dr.sure : 50 });
+    if (!f) return;
+    S.forecasts[id] = f;
+    S.shown[id] = true;
+    turning.add('p:' + id);
+    save();
+    render('coin-' + idx, true, 'nearest');
+    const p = S.cast.possibilities.find(x => x.id === id);
+    say('The coin landed ' + p.face + '.');
+  }
+  function newCast() {
+    const wrote = S.cast && (Object.values(S.notes).some(t => String(t || '').trim()) || Object.keys(S.forecasts).length);
+    if (wrote && !window.confirm('Start a new cast? This one is kept only if you download it first.')) return;
+    clearSaved();
+    S = fresh(S.settings);
+    renderIdle();
+    const b = $('#begin-btn'); if (b) b.focus();
+  }
+  function downloadText(text, filename, type) {
+    const blob = new Blob([text], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+  const fileBase = () => 'as-if-casting-' + (S.date || today()) + '-' + S.cast.seed;
+  // what the cast keeps: the run, plus which positions were turned before it ended
+  const recOf = () => Object.assign({}, S, { turned: { structures: S.page >= PI.structures, possibilities: S.page >= PI.possibilities, step: S.page >= PI.step } });
+  const keepOpts = () => ({ date: S.date || today(), author: S.author });
+
+  // ── events (delegated: the stack is re-rendered) ─────────────────────
+  function wire() {
+    $('#spread-pick').onchange = syncSettings;
+    $('#begin-btn').onclick = begin;
+    $('#new-btn').onclick = newCast;
+    const stack = $('#stack');
+    stack.addEventListener('click', e => {
+      const t = e.target;
+      if (t.closest('#book-next')) return next();
+      if (t.closest('#book-end')) return endHere();
+      const cb = t.closest('[data-coin]'); if (cb) return showCoin(cb.dataset.coin, +cb.dataset.idx);
+      if (t.closest('#save-btn')) return downloadText(JSON.stringify(E.buildExport(deck, S.cast, recOf(), keepOpts()), null, 2) + '\n', fileBase() + '.json', 'application/json');
+      if (t.closest('#md-btn')) return downloadText(E.buildMarkdown(deck, S.cast, recOf(), keepOpts()), fileBase() + '.md', 'text/markdown');
+      if (t.closest('#again-btn')) return newCast();
+      if (t.closest('#resume-btn')) { S = showResume.saved; render(S.ended ? 'h-end' : 'h-' + PAGES[S.page].key, true); return; }
+      if (t.closest('#discard-btn')) { clearSaved(); S = fresh(); renderIdle(); $('#begin-btn').focus(); return; }
+    });
+    stack.addEventListener('input', e => {
+      const t = e.target;
+      if (t.matches('textarea[data-note]')) { S.notes[t.dataset.note] = t.value; save(); if (t.dataset.note === 'asIf') updateNav(); return; }
+      if (t.matches('#author')) { S.author = t.value; save(); return; }
+      if (t.matches('input[data-sure]')) {
+        const id = t.dataset.sure;
+        S.drafts[id] = Object.assign({}, S.drafts[id], { sure: +t.value });
+        $('#sureout-' + t.dataset.idx).textContent = t.value;
+        save();
+      }
+    });
+    stack.addEventListener('change', e => {
+      const t = e.target;
+      if (t.matches('input[data-fc]')) {
+        const id = t.dataset.fc;
+        S.drafts[id] = Object.assign({}, S.drafts[id], { dir: t.value });
+        const fs = t.closest('fieldset');
+        const range = fs.querySelector('input[type=range]');
+        range.disabled = t.value === 'unknown';
+        fs.querySelector('output').textContent = t.value === 'unknown' ? '—' : range.value;
+        fs.querySelector('[data-coin]').disabled = false;
+        save();
+        return;
+      }
+      if (t.matches('input[name="step-pick"]')) {
+        S.stepId = t.value; S.pickOpen = true;
+        turning.add('a:' + t.value);
+        $('#stepcard').innerHTML = stepCard();
+        turning = new Set();
+        const board = document.querySelector('.board'); if (board) board.outerHTML = boardHTML();
+        save();
+        renderIndex();
+      }
+    });
+    stack.addEventListener('toggle', e => { if (e.target.matches('details.pick')) S.pickOpen = e.target.open; }, true);
+    // a picture that does not load: the original once, then the plain line cover
+    document.addEventListener('error', e => {
+      const img = e.target;
+      if (!(img instanceof HTMLImageElement) || !img.dataset.full) return;
+      if (!img.dataset.tried) { img.dataset.tried = '1'; img.src = img.dataset.full; return; }
+      const cover = document.createElement('div');
+      cover.className = 'cover';
+      cover.textContent = img.dataset.name || '';
+      img.replaceWith(cover);
+    }, true);
+  }
+
+  boot().catch(err => {
+    $('#stack').innerHTML = `<p class="placeholder">Could not load the deck. (${esc(err && err.message || err)})<br>The <a href="index.html">first edition</a> may still play.</p>`;
+  });
+})();
+</script>
+</body>
+</html>

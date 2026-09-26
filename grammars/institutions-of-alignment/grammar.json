@@ -1,0 +1,948 @@
+{
+  "_grammar_commons": {
+    "schema_version": "1.0",
+    "license": "CC-BY-SA-4.0",
+    "attribution": [
+      {
+        "name": "PlayfulProcess",
+        "note": "Built from research/institutions/institutions.json; each description paraphrased from the organisation's own site."
+      }
+    ]
+  },
+  "name": "Institutions — working on alignment",
+  "slug": "institutions-of-alignment",
+  "grammar_type": "custom",
+  "creator_name": "PlayfulProcess",
+  "creator_link": "https://learning.recursive.eco/pages/institutions.html",
+  "default_view": "cards",
+  "provenance": "record",
+  "_generated": true,
+  "_do_not_hand_edit": true,
+  "_built_by": "scripts/build_institutions_grammar.py",
+  "_source_of_truth": "research/institutions/institutions.json",
+  "_inputs": [
+    "research/institutions/institutions.json"
+  ],
+  "_inputs_sha256": "61ca94756a6468999aaa674f55f7649a4232853634f3410469ab42163c4e2c26",
+  "description": "30 organisations working on alignment, AI safety and humane technology: technical research, testing and evaluation, governance and policy, public-interest research and more. Each is described from its own site (checked 2026-09-24) and links out to it. Listing is not endorsement, and nothing is ranked.",
+  "tags": [
+    "institutions",
+    "alignment",
+    "ai-safety",
+    "humane-technology",
+    "record"
+  ],
+  "is_published": true,
+  "items": [
+    {
+      "id": "aoi",
+      "name": "AI Objectives Institute",
+      "level": 1,
+      "category": "institution",
+      "description": "A nonprofit research and development lab (founded by the late Peter Eckersley) working so that AI, markets and institutions serve genuine human objectives, informed by broad public input.",
+      "keywords": [
+        "Democratic and cooperative alignment"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://ai.objectives.institute/",
+        "domain": "ai.objectives.institute",
+        "group": "Democratic and cooperative alignment",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A nonprofit research and development lab (founded by the late Peter Eckersley) working so that AI, markets and institutions serve genuine human objectives, informed by broad public input.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Talk to the City (open-source deliberation tool)](https://talktothe.city/)",
+        "Its own site": "- [ai.objectives.institute](https://ai.objectives.institute/)"
+      },
+      "sort_order": 1
+    },
+    {
+      "id": "cip",
+      "name": "Collective Intelligence Project",
+      "level": 1,
+      "category": "institution",
+      "description": "Works to steer transformative AI toward better outcomes for everyone, using public input: alignment assemblies, global dialogues and community-built evaluations.",
+      "keywords": [
+        "Democratic and cooperative alignment"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.cip.org/",
+        "domain": "cip.org",
+        "group": "Democratic and cooperative alignment",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "Works to steer transformative AI toward better outcomes for everyone, using public input: alignment assemblies, global dialogues and community-built evaluations.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Global Dialogues](https://globaldialogues.ai/)",
+        "More from it": "- [Weval (open evaluation platform)](https://weval.org/)\n- [Alignment Assemblies](https://www.cip.org/alignmentassemblies)",
+        "Its own site": "- [cip.org](https://www.cip.org/)"
+      },
+      "sort_order": 2
+    },
+    {
+      "id": "coopai",
+      "name": "Cooperative AI Foundation",
+      "level": 1,
+      "category": "institution",
+      "description": "A UK charity whose mission is to support research that improves the cooperative intelligence of advanced AI for the benefit of all.",
+      "keywords": [
+        "Democratic and cooperative alignment"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.cooperativeai.com/",
+        "domain": "cooperativeai.com",
+        "group": "Democratic and cooperative alignment",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A UK charity whose mission is to support research that improves the cooperative intelligence of advanced AI for the benefit of all.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Multi-Agent Risks from Advanced AI (2025 report)](https://arxiv.org/abs/2502.14143)",
+        "Its own site": "- [cooperativeai.com](https://www.cooperativeai.com/)"
+      },
+      "sort_order": 3
+    },
+    {
+      "id": "mai",
+      "name": "Meaning Alignment Institute",
+      "level": 1,
+      "category": "institution",
+      "description": "A nonprofit researching how to align AI, markets and democracies with what people value, an approach it calls full-stack alignment.",
+      "keywords": [
+        "Democratic and cooperative alignment"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.meaningalignment.org/",
+        "domain": "meaningalignment.org",
+        "group": "Democratic and cooperative alignment",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A nonprofit researching how to align AI, markets and democracies with what people value, an approach it calls full-stack alignment.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [What are human values, and how do we align AI to them? (2024)](https://arxiv.org/abs/2404.10636)",
+        "More from it": "- [Full-Stack Alignment position paper](https://www.full-stack-alignment.ai/)",
+        "Its own site": "- [meaningalignment.org](https://www.meaningalignment.org/)"
+      },
+      "sort_order": 4
+    },
+    {
+      "id": "democratic-and-cooperative",
+      "name": "Democratic and cooperative alignment",
+      "level": 2,
+      "description": "Work on aligning AI with what many people want, through public input, deliberation tools, or research on cooperation between AI systems.",
+      "metadata": {
+        "kind": "group"
+      },
+      "composite_of": [
+        "aoi",
+        "cip",
+        "coopai",
+        "mai"
+      ],
+      "sections": {
+        "What it gathers": "Work on aligning AI with what many people want, through public input, deliberation tools, or research on cooperation between AI systems.\n\n4 organisations here."
+      },
+      "sort_order": 5
+    },
+    {
+      "id": "cais",
+      "name": "Center for AI Safety (CAIS)",
+      "level": 1,
+      "category": "institution",
+      "description": "Works to reduce societal-scale risks from AI through safety research, building the field of safety researchers, and promoting safety standards.",
+      "keywords": [
+        "Field-building, grants and partnerships"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://safe.ai/",
+        "domain": "safe.ai",
+        "group": "Field-building, grants and partnerships",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "Works to reduce societal-scale risks from AI through safety research, building the field of safety researchers, and promoting safety standards.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Statement on AI Risk (May 2023)](https://safe.ai/work/statement-on-ai-extinction-risk)",
+        "More from it": "- [Humanity's Last Exam (benchmark)](https://lastexam.ai/)\n- [AI Frontiers (publication)](https://ai-frontiers.org/)",
+        "Its own site": "- [safe.ai](https://safe.ai/)"
+      },
+      "sort_order": 6
+    },
+    {
+      "id": "fli",
+      "name": "Future of Life Institute",
+      "level": 1,
+      "category": "institution",
+      "description": "Works to steer transformative technologies away from extreme, large-scale risks and toward benefiting life; known for the Asilomar AI Principles.",
+      "keywords": [
+        "Field-building, grants and partnerships"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://futureoflife.org/",
+        "domain": "futureoflife.org",
+        "group": "Field-building, grants and partnerships",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "Works to steer transformative technologies away from extreme, large-scale risks and toward benefiting life; known for the Asilomar AI Principles.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "2014 (its site: 'since 2014')",
+        "One thing it made": "- [AI Safety Index, Summer 2026](https://futureoflife.org/ai-safety-index-summer-2026/)",
+        "More from it": "- [Pause Giant AI Experiments open letter (2023)](https://futureoflife.org/open-letter/pause-giant-ai-experiments/)\n- [Asilomar AI Principles (2017)](https://futureoflife.org/open-letter/ai-principles/)",
+        "Its own site": "- [futureoflife.org](https://futureoflife.org/)"
+      },
+      "sort_order": 7
+    },
+    {
+      "id": "pai",
+      "name": "Partnership on AI",
+      "level": 1,
+      "category": "institution",
+      "description": "A nonprofit partnership of academic, civil-society, industry and media organizations creating solutions so AI advances positive outcomes for people and society; says it is not a trade group or advocacy organization.",
+      "keywords": [
+        "Field-building, grants and partnerships"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://partnershiponai.org/",
+        "domain": "partnershiponai.org",
+        "group": "Field-building, grants and partnerships",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A nonprofit partnership of academic, civil-society, industry and media organizations creating solutions so AI advances positive outcomes for people and society; says it is not a trade group or advocacy organization.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "not stated; site marks its tenth anniversary in 2026",
+        "One thing it made": "- [Responsible Practices for Synthetic Media](https://syntheticmedia.partnershiponai.org/)",
+        "More from it": "- [Deployment Guidance for Foundation Model Safety](https://partnershiponai.org/modeldeployment/)",
+        "Its own site": "- [partnershiponai.org](https://partnershiponai.org/)"
+      },
+      "sort_order": 8
+    },
+    {
+      "id": "field-building",
+      "name": "Field-building, grants and partnerships",
+      "level": 2,
+      "description": "Organisations that fund, convene or build the field: grants, open letters, benchmarks, and partnerships across sectors.",
+      "metadata": {
+        "kind": "group"
+      },
+      "composite_of": [
+        "cais",
+        "fli",
+        "pai"
+      ],
+      "sections": {
+        "What it gathers": "Organisations that fund, convene or build the field: grants, open letters, benchmarks, and partnerships across sectors.\n\n3 organisations here."
+      },
+      "sort_order": 9
+    },
+    {
+      "id": "aifutures",
+      "name": "AI Futures Project",
+      "level": 1,
+      "category": "institution",
+      "description": "Publishes interactive scenario forecasts of AI's trajectory, with policy recommendations.",
+      "keywords": [
+        "Forecasting and data"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.aifutures.org/",
+        "domain": "aifutures.org",
+        "group": "Forecasting and data",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "Publishes interactive scenario forecasts of AI's trajectory, with policy recommendations.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [AI 2027 (scenario forecast)](https://ai-2027.com/)",
+        "More from it": "- [AI 2040: Plan A](https://ai-2040.com/)",
+        "Its own site": "- [aifutures.org](https://www.aifutures.org/)"
+      },
+      "sort_order": 10
+    },
+    {
+      "id": "epoch",
+      "name": "Epoch AI",
+      "level": 1,
+      "category": "institution",
+      "description": "A research institute investigating the trends and questions that shape AI's trajectory and governance, aiming for a neutral, evidence-based view.",
+      "keywords": [
+        "Forecasting and data"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://epoch.ai/",
+        "domain": "epoch.ai",
+        "group": "Forecasting and data",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A research institute investigating the trends and questions that shape AI's trajectory and governance, aiming for a neutral, evidence-based view.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "2022 (its site: began 2021 as volunteers; founded after its 2022 compute-trends paper)",
+        "One thing it made": "- [Data on AI Models (public database)](https://epoch.ai/data/ai-models)",
+        "More from it": "- [FrontierMath benchmark](https://epoch.ai/frontiermath)",
+        "Its own site": "- [epoch.ai](https://epoch.ai/)"
+      },
+      "sort_order": 11
+    },
+    {
+      "id": "forecasting-and-data",
+      "name": "Forecasting and data",
+      "level": 2,
+      "description": "Trends, datasets and scenario forecasts about where AI is heading.",
+      "metadata": {
+        "kind": "group"
+      },
+      "composite_of": [
+        "aifutures",
+        "epoch"
+      ],
+      "sections": {
+        "What it gathers": "Trends, datasets and scenario forecasts about where AI is heading.\n\n2 organisations here."
+      },
+      "sort_order": 12
+    },
+    {
+      "id": "cset",
+      "name": "Center for Security and Emerging Technology (CSET), Georgetown",
+      "level": 1,
+      "category": "institution",
+      "description": "A policy research organization within Georgetown's Walsh School of Foreign Service offering data-driven, nonpartisan analysis of the security implications of emerging technologies, currently AI and advanced computing.",
+      "keywords": [
+        "Governance and policy research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://cset.georgetown.edu/",
+        "domain": "cset.georgetown.edu",
+        "group": "Governance and policy research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A policy research organization within Georgetown's Walsh School of Foreign Service offering data-driven, nonpartisan analysis of the security implications of emerging technologies, currently AI and advanced computing.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Emerging Technology Observatory](https://eto.tech/)",
+        "Its own site": "- [cset.georgetown.edu](https://cset.georgetown.edu/)"
+      },
+      "sort_order": 13
+    },
+    {
+      "id": "govai",
+      "name": "Centre for the Governance of AI (GovAI)",
+      "level": 1,
+      "category": "institution",
+      "description": "Helps decision-makers navigate the transition to advanced AI through research and by developing talent.",
+      "keywords": [
+        "Governance and policy research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.governance.ai/",
+        "domain": "governance.ai",
+        "group": "Governance and policy research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "Helps decision-makers navigate the transition to advanced AI through research and by developing talent.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "2016 (its site: founded at Yale; independent nonprofit since 2021)",
+        "One thing it made": "- [Frontier AI Regulation: Managing Emerging Risks to Public Safety (2023, multi-author, GovAI researchers among them)](https://arxiv.org/abs/2307.03718)",
+        "More from it": "- [Research index](https://www.governance.ai/research)",
+        "Its own site": "- [governance.ai](https://www.governance.ai/)"
+      },
+      "sort_order": 14
+    },
+    {
+      "id": "governance-and-policy",
+      "name": "Governance and policy research",
+      "level": 2,
+      "description": "Research meant for decision-makers: how advanced AI might be governed, and what its security implications are.",
+      "metadata": {
+        "kind": "group"
+      },
+      "composite_of": [
+        "cset",
+        "govai"
+      ],
+      "sections": {
+        "What it gathers": "Research meant for decision-makers: how advanced AI might be governed, and what its security implications are.\n\n2 organisations here."
+      },
+      "sort_order": 15
+    },
+    {
+      "id": "caisi",
+      "name": "Center for AI Standards and Innovation (CAISI), NIST",
+      "level": 1,
+      "category": "institution",
+      "description": "A US government centre within NIST acting as industry's main point of contact for AI testing, developing measurement guidelines and evaluating demonstrable risks such as cyber, bio and chemical.",
+      "keywords": [
+        "Government bodies"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.nist.gov/caisi",
+        "domain": "nist.gov",
+        "group": "Government bodies",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A US government centre within NIST acting as industry's main point of contact for AI testing, developing measurement guidelines and evaluating demonstrable risks such as cyber, bio and chemical.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [CAISI Evaluation of DeepSeek V4 Pro (May 2026)](https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro)",
+        "More from it": "- [Cheating on AI Agent Evaluations (blog)](https://www.nist.gov/blogs/caisi-research-blog/cheating-ai-agent-evaluations)",
+        "Its own site": "- [nist.gov](https://www.nist.gov/caisi)"
+      },
+      "sort_order": 16
+    },
+    {
+      "id": "euaioffice",
+      "name": "European AI Office",
+      "level": 1,
+      "category": "institution",
+      "description": "A European Commission office that supports the development and adoption of trustworthy AI while protecting people against its risks.",
+      "keywords": [
+        "Government bodies"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://digital-strategy.ec.europa.eu/en/policies/ai-office",
+        "domain": "digital-strategy.ec.europa.eu",
+        "group": "Government bodies",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A European Commission office that supports the development and adoption of trustworthy AI while protecting people against its risks.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [General-Purpose AI Code of Practice](https://digital-strategy.ec.europa.eu/en/policies/contents-code-gpai)",
+        "More from it": "- [AI Act overview](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)",
+        "Its own site": "- [digital-strategy.ec.europa.eu](https://digital-strategy.ec.europa.eu/en/policies/ai-office)"
+      },
+      "sort_order": 17
+    },
+    {
+      "id": "ukaisi",
+      "name": "UK AI Security Institute (AISI)",
+      "level": 1,
+      "category": "institution",
+      "description": "A research organisation within the UK Department for Science, Innovation and Technology that tests leading AI systems before and after release to build governments' understanding of advanced-AI risks.",
+      "keywords": [
+        "Government bodies"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.aisi.gov.uk/",
+        "domain": "aisi.gov.uk",
+        "group": "Government bodies",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A research organisation within the UK Department for Science, Innovation and Technology that tests leading AI systems before and after release to build governments' understanding of advanced-AI risks.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Inspect (open-source evaluation framework)](https://inspect.aisi.org.uk/)",
+        "More from it": "- [Frontier AI Trends Report](https://www.aisi.gov.uk/frontier-ai-trends-report)",
+        "Its own site": "- [aisi.gov.uk](https://www.aisi.gov.uk/)"
+      },
+      "sort_order": 18
+    },
+    {
+      "id": "government",
+      "name": "Government bodies",
+      "level": 2,
+      "description": "Public institutions that test AI systems, set standards or implement law.",
+      "metadata": {
+        "kind": "group"
+      },
+      "composite_of": [
+        "caisi",
+        "euaioffice",
+        "ukaisi"
+      ],
+      "sections": {
+        "What it gathers": "Public institutions that test AI systems, set standards or implement law.\n\n3 organisations here."
+      },
+      "sort_order": 19
+    },
+    {
+      "id": "cht",
+      "name": "Center for Humane Technology",
+      "level": 1,
+      "category": "institution",
+      "description": "A nonprofit that brings to light the harms of persuasive technology and social media and helps people act on them; its current work extends to AI.",
+      "keywords": [
+        "Humane technology"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.humanetech.com/",
+        "domain": "humanetech.com",
+        "group": "Humane technology",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A nonprofit that brings to light the harms of persuasive technology and social media and helps people act on them; its current work extends to AI.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "2018 (its site: Tristan Harris and two fellow technologists founded CHT in 2018)",
+        "One thing it made": "- [The AI Dilemma (talk)](https://www.humanetech.com/landing/the-ai-dilemma)",
+        "More from it": "- [Your Undivided Attention (podcast)](https://www.humanetech.com/podcast)\n- [The Social Dilemma](https://www.humanetech.com/landing/the-social-dilemma)",
+        "Its own site": "- [humanetech.com](https://www.humanetech.com/)"
+      },
+      "sort_order": 20
+    },
+    {
+      "id": "humane-technology",
+      "name": "Humane technology",
+      "level": 2,
+      "description": "Work on the harms of persuasive technology and on technology that serves people's wellbeing, now extending to AI.",
+      "metadata": {
+        "kind": "group"
+      },
+      "composite_of": [
+        "cht"
+      ],
+      "sections": {
+        "What it gathers": "Work on the harms of persuasive technology and on technology that serves people's wellbeing, now extending to AI.\n\n1 organisation here."
+      },
+      "sort_order": 21
+    },
+    {
+      "id": "ada",
+      "name": "Ada Lovelace Institute",
+      "level": 1,
+      "category": "institution",
+      "description": "An independent research institute whose mission is to make data and AI work for people and society.",
+      "keywords": [
+        "Public-interest research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.adalovelaceinstitute.org/",
+        "domain": "adalovelaceinstitute.org",
+        "group": "Public-interest research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "An independent research institute whose mission is to make data and AI work for people and society.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "2018 (its site: established by the Nuffield Foundation in early 2018)",
+        "One thing it made": "- [Regulating AI in the UK](https://www.adalovelaceinstitute.org/report/regulating-ai-in-the-uk/)",
+        "Its own site": "- [adalovelaceinstitute.org](https://www.adalovelaceinstitute.org/)"
+      },
+      "sort_order": 22
+    },
+    {
+      "id": "ainow",
+      "name": "AI Now Institute",
+      "level": 1,
+      "category": "institution",
+      "description": "An independent research institute producing diagnosis and policy research that questions and seeks to reimagine the current trajectory of AI.",
+      "keywords": [
+        "Public-interest research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://ainowinstitute.org/",
+        "domain": "ainowinstitute.org",
+        "group": "Public-interest research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "An independent research institute producing diagnosis and policy research that questions and seeks to reimagine the current trajectory of AI.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "2017 (its site)",
+        "One thing it made": "- [Artificial Power: 2025 Landscape Report](https://ainowinstitute.org/publications/research/ai-now-2025-landscape-report)",
+        "Its own site": "- [ainowinstitute.org](https://ainowinstitute.org/)"
+      },
+      "sort_order": 23
+    },
+    {
+      "id": "ajl",
+      "name": "Algorithmic Justice League",
+      "level": 1,
+      "category": "institution",
+      "description": "Combines art and research to show the social implications and harms of AI, and works toward more equitable and accountable systems.",
+      "keywords": [
+        "Public-interest research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.ajl.org/",
+        "domain": "ajl.org",
+        "group": "Public-interest research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "Combines art and research to show the social implications and harms of AI, and works toward more equitable and accountable systems.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Gender Shades](http://gendershades.org/)",
+        "More from it": "- [Coded Bias (documentary)](https://www.ajl.org/spotlight-documentary-coded-bias)",
+        "Its own site": "- [ajl.org](https://www.ajl.org/)"
+      },
+      "sort_order": 24
+    },
+    {
+      "id": "dair",
+      "name": "Distributed AI Research Institute (DAIR)",
+      "level": 1,
+      "category": "institution",
+      "description": "A globally distributed, independent group of academics, activists and engineers doing community-rooted AI research grounded in lived experience.",
+      "keywords": [
+        "Public-interest research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://dair-institute.org/",
+        "domain": "dair-institute.org",
+        "group": "Public-interest research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A globally distributed, independent group of academics, activists and engineers doing community-rooted AI research grounded in lived experience.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Mystery AI Hype Theater 3000 (podcast)](https://dair-institute.org/maiht3k/)",
+        "Its own site": "- [dair-institute.org](https://dair-institute.org/)"
+      },
+      "sort_order": 25
+    },
+    {
+      "id": "public-interest",
+      "name": "Public-interest research",
+      "level": 2,
+      "description": "Independent research on the social effects of AI and data, often centred on people most affected by them.",
+      "metadata": {
+        "kind": "group"
+      },
+      "composite_of": [
+        "ada",
+        "ainow",
+        "ajl",
+        "dair"
+      ],
+      "sections": {
+        "What it gathers": "Independent research on the social effects of AI and data, often centred on people most affected by them.\n\n4 organisations here."
+      },
+      "sort_order": 26
+    },
+    {
+      "id": "arc",
+      "name": "Alignment Research Center (ARC)",
+      "level": 1,
+      "category": "institution",
+      "description": "A nonprofit research organization aiming to align future machine-learning systems with human interests; its current focus is a theoretical basis for mechanistic explanations of neural-network behaviour.",
+      "keywords": [
+        "Technical alignment research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.alignment.org/",
+        "domain": "alignment.org",
+        "group": "Technical alignment research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A nonprofit research organization aiming to align future machine-learning systems with human interests; its current focus is a theoretical basis for mechanistic explanations of neural-network behaviour.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Eliciting Latent Knowledge (first technical report)](https://www.alignment.org/blog/arcs-first-technical-report-eliciting-latent-knowledge/)",
+        "More from it": "- [ARC White-Box Estimation Challenge (2026)](https://www.alignment.org/blog/announcing-the-arc-white-box-estimation-challenge/)",
+        "Its own site": "- [alignment.org](https://www.alignment.org/)"
+      },
+      "sort_order": 27
+    },
+    {
+      "id": "chai",
+      "name": "Center for Human-Compatible AI (CHAI), UC Berkeley",
+      "level": 1,
+      "category": "institution",
+      "description": "A multi-institution research group based at UC Berkeley working to reorient AI research toward provably beneficial systems.",
+      "keywords": [
+        "Technical alignment research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://humancompatible.ai/",
+        "domain": "humancompatible.ai",
+        "group": "Technical alignment research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A multi-institution research group based at UC Berkeley working to reorient AI research toward provably beneficial systems.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Cooperative Inverse Reinforcement Learning (2016)](https://arxiv.org/abs/1606.03137)",
+        "More from it": "- [All publications](https://humancompatible.ai/research/)",
+        "Its own site": "- [humancompatible.ai](https://humancompatible.ai/)"
+      },
+      "sort_order": 28
+    },
+    {
+      "id": "far",
+      "name": "FAR.AI",
+      "level": 1,
+      "category": "institution",
+      "description": "An AI safety and security research nonprofit working on robustness, deception and red-teaming, and on getting research results adopted.",
+      "keywords": [
+        "Technical alignment research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.far.ai/",
+        "domain": "far.ai",
+        "group": "Technical alignment research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "An AI safety and security research nonprofit working on robustness, deception and red-teaming, and on getting research results adopted.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Adversarial policies in Go](https://goattack.far.ai/)",
+        "Its own site": "- [far.ai](https://www.far.ai/)"
+      },
+      "sort_order": 29
+    },
+    {
+      "id": "lawzero",
+      "name": "LawZero",
+      "level": 1,
+      "category": "institution",
+      "description": "A nonprofit developing technical approaches for capable, safe-by-design AI, with research direction led by Yoshua Bengio; incubated at Mila - Quebec AI Institute.",
+      "keywords": [
+        "Technical alignment research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://lawzero.org/en",
+        "domain": "lawzero.org",
+        "group": "Technical alignment research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A nonprofit developing technical approaches for capable, safe-by-design AI, with research direction led by Yoshua Bengio; incubated at Mila - Quebec AI Institute.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Superintelligent Agents Pose Catastrophic Risks: Can Scientist AI Offer a Safer Path? (2025)](https://arxiv.org/abs/2502.15657)",
+        "Its own site": "- [lawzero.org](https://lawzero.org/en)"
+      },
+      "sort_order": 30
+    },
+    {
+      "id": "miri",
+      "name": "Machine Intelligence Research Institute (MIRI)",
+      "level": 1,
+      "category": "institution",
+      "description": "A nonprofit focused on preventing human extinction from artificial superintelligence; an early alignment research group that now also works on public communication and technical governance.",
+      "keywords": [
+        "Technical alignment research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://intelligence.org/",
+        "domain": "intelligence.org",
+        "group": "Technical alignment research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A nonprofit focused on preventing human extinction from artificial superintelligence; an early alignment research group that now also works on public communication and technical governance.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "2000 (its site: founded as the Singularity Institute for Artificial Intelligence)",
+        "One thing it made": "- [The Problem (essay)](https://intelligence.org/the-problem/)",
+        "More from it": "- [If Anyone Builds It, Everyone Dies (book)](https://ifanyonebuildsit.com/)",
+        "Its own site": "- [intelligence.org](https://intelligence.org/)"
+      },
+      "sort_order": 31
+    },
+    {
+      "id": "redwood",
+      "name": "Redwood Research",
+      "level": 1,
+      "category": "institution",
+      "description": "A nonprofit AI safety and security research organization studying risks from AI systems that might act against their developers, and methods to manage those risks.",
+      "keywords": [
+        "Technical alignment research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.redwoodresearch.org/",
+        "domain": "redwoodresearch.org",
+        "group": "Technical alignment research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A nonprofit AI safety and security research organization studying risks from AI systems that might act against their developers, and methods to manage those risks.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [AI Control: Improving Safety Despite Intentional Subversion](https://arxiv.org/abs/2312.06942)",
+        "More from it": "- [AI Control research area](https://www.redwoodresearch.org/research/ai-control)\n- [Alignment faking in LLMs (with Anthropic)](https://www.anthropic.com/research/alignment-faking)",
+        "Its own site": "- [redwoodresearch.org](https://www.redwoodresearch.org/)"
+      },
+      "sort_order": 32
+    },
+    {
+      "id": "transluce",
+      "name": "Transluce",
+      "level": 1,
+      "category": "institution",
+      "description": "An independent nonprofit research lab building public tools and infrastructure for understanding and overseeing AI systems in the public interest.",
+      "keywords": [
+        "Technical alignment research"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://transluce.org/",
+        "domain": "transluce.org",
+        "group": "Technical alignment research",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "An independent nonprofit research lab building public tools and infrastructure for understanding and overseeing AI systems in the public interest.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Docent (tool for analysing AI agent behaviour)](https://transluce.org/docent)",
+        "More from it": "- [Mental Health Evaluation (2026)](https://transluce.org/announcing-mental-health-evaluation)",
+        "Its own site": "- [transluce.org](https://transluce.org/)"
+      },
+      "sort_order": 33
+    },
+    {
+      "id": "technical-alignment",
+      "name": "Technical alignment research",
+      "level": 2,
+      "description": "Research on making AI systems do what their developers and users intend, and on understanding and overseeing what they do.",
+      "metadata": {
+        "kind": "group"
+      },
+      "composite_of": [
+        "arc",
+        "chai",
+        "far",
+        "lawzero",
+        "miri",
+        "redwood",
+        "transluce"
+      ],
+      "sections": {
+        "What it gathers": "Research on making AI systems do what their developers and users intend, and on understanding and overseeing what they do.\n\n7 organisations here."
+      },
+      "sort_order": 34
+    },
+    {
+      "id": "apollo",
+      "name": "Apollo Research",
+      "level": 1,
+      "category": "institution",
+      "description": "Focuses on reducing risks from 'scheming' frontier AI through evaluations, research and governance advice; announced in Sep 2026 that it is becoming a public benefit corporation.",
+      "keywords": [
+        "Testing and evaluation"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://www.apolloresearch.ai/",
+        "domain": "apolloresearch.ai",
+        "group": "Testing and evaluation",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "Focuses on reducing risks from 'scheming' frontier AI through evaluations, research and governance advice; announced in Sep 2026 that it is becoming a public benefit corporation.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "2023 (its site's timeline)",
+        "One thing it made": "- [Frontier Models are Capable of In-Context Scheming](https://www.apolloresearch.ai/science/frontier-models-are-capable-of-incontext-scheming)",
+        "Its own site": "- [apolloresearch.ai](https://www.apolloresearch.ai/)"
+      },
+      "sort_order": 35
+    },
+    {
+      "id": "humaneint",
+      "name": "Humane Intelligence",
+      "level": 1,
+      "category": "institution",
+      "description": "A 501(c)(3) nonprofit that designs and runs collaborative evaluations (red-teaming, bias bounties) to make AI systems more accountable and fair.",
+      "keywords": [
+        "Testing and evaluation"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://humane-intelligence.org/",
+        "domain": "humane-intelligence.org",
+        "group": "Testing and evaluation",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A 501(c)(3) nonprofit that designs and runs collaborative evaluations (red-teaming, bias bounties) to make AI systems more accountable and fair.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "Founded": "2023 (its site: incorporated as a nonprofit in May 2023)",
+        "One thing it made": "- [Bias Bounty programme](https://humane-intelligence.org/programs-services/bias-bounty/)",
+        "More from it": "- [Open-source red-teaming app](https://humane-intelligence.org/product/red-teaming-app/)",
+        "Its own site": "- [humane-intelligence.org](https://humane-intelligence.org/)"
+      },
+      "sort_order": 36
+    },
+    {
+      "id": "metr",
+      "name": "METR",
+      "level": 1,
+      "category": "institution",
+      "description": "A research nonprofit that measures whether and when AI systems' autonomous capabilities might threaten catastrophic harm.",
+      "keywords": [
+        "Testing and evaluation"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://metr.org/",
+        "domain": "metr.org",
+        "group": "Testing and evaluation",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A research nonprofit that measures whether and when AI systems' autonomous capabilities might threaten catastrophic harm.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Measuring AI Ability to Complete Long Tasks (2025)](https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/)",
+        "More from it": "- [Time-horizon tracker](https://metr.org/time-horizons/)",
+        "Its own site": "- [metr.org](https://metr.org/)"
+      },
+      "sort_order": 37
+    },
+    {
+      "id": "palisade",
+      "name": "Palisade Research",
+      "level": 1,
+      "category": "institution",
+      "description": "A Berkeley nonprofit studying the capabilities and motivations of AI agents, to help people and institutions avoid losing control to them.",
+      "keywords": [
+        "Testing and evaluation"
+      ],
+      "metadata": {
+        "kind": "institution",
+        "url": "https://palisaderesearch.org/",
+        "domain": "palisaderesearch.org",
+        "group": "Testing and evaluation",
+        "checked": "2026-09-24"
+      },
+      "sections": {
+        "What it does": "A Berkeley nonprofit studying the capabilities and motivations of AI agents, to help people and institutions avoid losing control to them.\n\n*Paraphrased from its own site, checked 2026-09-24.*",
+        "One thing it made": "- [Shutdown resistance in reasoning models](https://palisaderesearch.org/research/shutdown-resistance)",
+        "Its own site": "- [palisaderesearch.org](https://palisaderesearch.org/)"
+      },
+      "sort_order": 38
+    },
+    {
+      "id": "testing-and-evaluation",
+      "name": "Testing and evaluation",
+      "level": 2,
+      "description": "Measuring what AI systems can do, and whether they behave safely, before and after release.",
+      "metadata": {
+        "kind": "group"
+      },
+      "composite_of": [
+        "apollo",
+        "humaneint",
+        "metr",
+        "palisade"
+      ],
+      "sections": {
+        "What it gathers": "Measuring what AI systems can do, and whether they behave safely, before and after release.\n\n4 organisations here."
+      },
+      "sort_order": 39
+    },
+    {
+      "id": "root-institutions",
+      "name": "Institutions",
+      "level": 3,
+      "description": "30 organisations working on alignment, AI safety and humane technology, grouped by the kind of work they do.",
+      "metadata": {
+        "kind": "root"
+      },
+      "composite_of": [
+        "democratic-and-cooperative",
+        "field-building",
+        "forecasting-and-data",
+        "governance-and-policy",
+        "government",
+        "humane-technology",
+        "public-interest",
+        "technical-alignment",
+        "testing-and-evaluation"
+      ],
+      "sections": {
+        "What it is": "30 organisations working on alignment, AI safety and humane technology, by quite different routes. Each card describes the organisation from its own site and links out to it.",
+        "How to read it": "Listing is not endorsement, and nothing here is ranked: the groups follow the kind of work, and many organisations work across several. The list is not complete; an issue or a pull request against research/institutions/institutions.json in the public repo is how to add one or correct one."
+      },
+      "sort_order": 40
+    }
+  ]
+}

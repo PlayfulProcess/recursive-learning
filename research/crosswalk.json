@@ -1,0 +1,16 @@
+{
+  "_about": "Where an Ideas seed term (research/lab-export/ideas.json; ids from the lab's ai-map/terms.json) meets a Words glossary term (glossary/terms.json). `same`: one idea, so its working definition lives in Words and the Ideas card links there instead of repeating it. `related`: a neighbouring idea in Words, linked as 'see also'. Links use the glossary's stable anchors (/glossary/#<id>). Read by scripts/build_ideas_grammar.py. A draft by an agent, Sep 25 2026, for PlayfulProcess's review: every pair is a judgement call, and removing one is a one-line edit.",
+  "pairs": [
+    {"idea": "alignment",         "word": "alignment",               "word_label": "Alignment",               "relation": "same"},
+    {"idea": "value-function",    "word": "value-function",          "word_label": "Value function",          "relation": "same"},
+    {"idea": "superintelligence", "word": "misaligned-asi-scenario", "word_label": "Misaligned-ASI scenario", "relation": "related"},
+    {"idea": "takeover",          "word": "misaligned-asi-scenario", "word_label": "Misaligned-ASI scenario", "relation": "related"},
+    {"idea": "race",              "word": "two-geopolitics",         "word_label": "The two geopolitics",     "relation": "related"},
+    {"idea": "china",             "word": "two-geopolitics",         "word_label": "The two geopolitics",     "relation": "related"},
+    {"idea": "bio-misuse",        "word": "bad-actor-scenario",      "word_label": "Bad-actor scenario",      "relation": "related"},
+    {"idea": "cyber",             "word": "bad-actor-scenario",      "word_label": "Bad-actor scenario",      "relation": "related"},
+    {"idea": "multi-agent",       "word": "trained-collaboration",   "word_label": "Trained collaboration",   "relation": "related"},
+    {"idea": "agents",            "word": "access",                  "word_label": "Access",                  "relation": "related"},
+    {"idea": "control",           "word": "guardrail-outer",         "word_label": "Guardrail, outer",        "relation": "related"}
+  ]
+}

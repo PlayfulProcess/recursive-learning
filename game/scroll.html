@@ -32,7 +32,7 @@
   .page{max-width:1120px;margin:0 auto;padding:0 16px 80px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:0 36px;align-items:start}
   /* the rail */
   .rail{position:sticky;top:0;align-self:start;padding:16px 0 12px;font-family:Inter,system-ui,sans-serif;font-size:12.5px;color:var(--muted)}
-  .rail h2{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;margin:14px 0 7px;font-weight:600;color:var(--muted)}
+  .rail .rh{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;margin:14px 0 7px;font-weight:600;color:var(--muted)}
   .rail .asof{font-size:12px;color:var(--warn);min-height:1.2em;margin-bottom:6px}
   .rail .big{font-size:34px;font-weight:700;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
   .rail .big small{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
@@ -56,8 +56,8 @@
   .lede{font-size:18px;color:var(--ink);max-width:62ch;margin:14px 0 4px}
   .disc{font-family:Inter,system-ui,sans-serif;font-size:12.5px;color:var(--warn);margin:0 0 22px}
   section.year{padding:22px 0 26px;border-top:1px solid var(--line);scroll-margin-top:12px}
-  section.year h3{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
-  section.year h3 b{color:var(--ink);font-weight:700;letter-spacing:0;font-size:13px;margin-right:8px}
+  section.year h2{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
+  section.year h2 b{color:var(--ink);font-weight:700;letter-spacing:0;font-size:13px;margin-right:8px}
   .prose{font-size:17.5px;max-width:64ch}
   .prose p{margin:0 0 10px}
   .prose .num{font-family:Inter,system-ui,sans-serif;font-size:12.5px;color:var(--muted)}
@@ -70,7 +70,7 @@
 
   /* the choice at the end of the latest year */
   .choice{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px 14px;font-family:Inter,system-ui,sans-serif}
-  .choice h4{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
+  .choice h2{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
   .hand{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px;margin-bottom:12px}
   .alloc .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:0}
   .alloc .top b{font-weight:600}
@@ -93,7 +93,7 @@
   details.drawer summary{cursor:pointer;font-size:12.5px;color:var(--ink);font-weight:600}
   details.drawer summary span{color:var(--muted);font-weight:400}
   .houses{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 20px;margin-top:12px}
-  .house h5{font-size:12px;margin:0 0 6px;color:var(--ink)}
+  .house h2{font-size:12px;margin:0 0 6px;color:var(--ink)}
   .pr{margin:0 0 7px}
   .pr .lab{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:11.5px}
   .pr .lab b{font-weight:600;color:var(--ink)}
@@ -114,7 +114,7 @@
   @media (max-width:899px){
     .page{grid-template-columns:1fr;gap:0}
     .rail{position:sticky;top:0;z-index:5;background:rgba(13,15,20,.96);backdrop-filter:blur(6px);padding:8px 16px 8px;margin:0 -16px;border-bottom:1px solid var(--line)}
-    .rail h2,.rail .foot,.rail .bars.shares,.rail .gauges{display:none}
+    .rail .rh,.rail .foot,.rail .bars.shares,.rail .gauges{display:none}
     .rail .big{font-size:24px}
     .rail .lead{font-size:12.5px}
     .rail .bars.ends{grid-template-columns:1fr 1fr;gap:2px 12px;margin-top:6px}
@@ -129,22 +129,23 @@
 </style>
 </head>
 <body>
+<script src="../shared/nav.js"></script>
 <div class="page">
 
   <aside class="rail" aria-label="the numbers">
     <div class="asof" id="asof"></div>
     <div class="big"><span id="r-p">–</span><small id="r-year"></small></div>
     <div class="lead" id="r-lead"></div>
-    <h2>Where this walk ends</h2>
+    <p class="rh">Where this walk ends</p>
     <div class="bars ends" id="r-ends"></div>
-    <h2>The hand</h2>
+    <p class="rh">The hand</p>
     <div class="bars shares" id="r-shares"></div>
-    <h2>Where we stand</h2>
+    <p class="rh">Where we stand</p>
     <div class="bars gauges" id="r-gauges"></div>
     <p class="foot">A teaching instrument, not a forecast. 4,000 rolled futures per number, holding the hand to the end. <a href="spread.html">The same walk as a table</a>.</p>
   </aside>
 
-  <main class="story">
+  <main class="story" id="main">
     <header class="mark">
       <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
       <h1><span class="sub">The Walk</span>Twenty years, one at a time</h1>
@@ -161,7 +162,7 @@
     <div id="years"></div>
 
     <div class="choice" id="choice">
-      <h4 id="choice-h">Year 0 — your hand for the year ahead</h4>
+      <h2 id="choice-h">Year 0 — your hand for the year ahead</h2>
       <div class="hand" id="hand"></div>
       <div class="btns">
         <button id="btn-step">Walk a year</button>
@@ -277,7 +278,7 @@ function yearText(s, before, after){
 
 // ── build: the drawer, the hand ───────────────────────────────────────────────────────────
 (function(){ var box = document.getElementById('houses');
-  HOUSES.forEach(function(h){ var d = el('div','house'); d.appendChild(el('h5', null, h.nm));
+  HOUSES.forEach(function(h){ var d = el('div','house'); d.appendChild(el('h2', null, h.nm));
     h.keys.forEach(function(k){ var cfg = PRIOR_UI[k], pr = el('div','pr'), lab = el('div','lab');
       lab.appendChild(el('b', null, PRIOR_NAME[k])); var num = document.createElement('input'); num.type = 'text'; num.inputMode = 'decimal'; num.id = 'prn-' + k; lab.appendChild(num); pr.appendChild(lab);
       var r = document.createElement('input'); r.type = 'range'; r.min = cfg[0]; r.max = cfg[1]; r.step = cfg[2]; r.id = 'prr-' + k; pr.appendChild(r);
@@ -370,7 +371,7 @@ function rebuildYears(){
     var after = s.endpoint ? ENDPOINTS.reduce(function(o,k){ o[k] = k === s.endpoint ? 1 : 0; return o; }, {}) : simulate(s, pr, i === hist.length - 1 ? N : 1500).probs;
     var yt = yearText(s, before, after);
     var sec = el('section','year' + (s.lastAlone ? ' alone' : '') + (s.endpoint ? ' ended' : '')); sec.id = 'y' + s.t;
-    var h = el('h3'); h.appendChild(el('b', null, 'Year ' + s.t)); h.appendChild(document.createTextNode(hist[i].together ? 'walked together' : 'walked')); sec.appendChild(h);
+    var h = el('h2'); h.appendChild(el('b', null, 'Year ' + s.t)); h.appendChild(document.createTextNode(hist[i].together ? 'walked together' : 'walked')); sec.appendChild(h);
     var fig = el('figure','fig'); var img = document.createElement('img'); img.alt = ''; img.src = art(yt.lead, 320); img.onerror = function(){ this.style.display = 'none'; }; fig.appendChild(img);
     fig.appendChild(el('figcaption', null, CARDS[yt.lead].nm + ' ' + pc(after[yt.lead]) + ', ' + CARDS[yt.lead].reg)); sec.appendChild(fig);
     var pr2 = el('div','prose'); yt.lines.forEach(function(l){ pr2.appendChild(el('p', null, l)); });
