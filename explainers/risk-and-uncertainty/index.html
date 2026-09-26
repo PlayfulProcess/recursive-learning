@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Risk or uncertainty? · Recursive Learning</title>
+<meta name="description" content="The coin, the urn you can't see into, and the yarrow: what a coin can and can't tell you about questions nobody can answer yet. A short explainer for The Fork, with things to try.">
+<meta name="author" content="PlayfulProcess">
+<meta property="og:title" content="Risk or uncertainty? · Recursive Learning">
+<meta property="og:description" content="The coin, the urn you can't see into, and the yarrow: what a coin can and can't tell you about questions nobody can answer yet.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learning.recursive.eco/explainers/risk-and-uncertainty/">
+<!--
+  Risk or uncertainty? The coin, the urn you can't see into, and the yarrow.
+  explainers/risk-and-uncertainty/index.html, branch lab/fork. One self-contained page: no build step, no
+  dependencies, no imports. The Fork (game/fork/) links here by anchor.
+
+  STATUS: the prose is a short draft for PlayfulProcess to carve (decision 8), about 120 words a section at
+  most. The Words terms it uses are proposed in proposals/words-philosophy-of-science.json and are not linked
+  until she approves them.
+
+  URL
+    #<anchor>               jump to a section of the full page
+    ?step=N                 show only section N (1 to 12, the order below), with previous/next
+    ?step=<anchor>          the same, by name: ?step=slicing
+    ?embed=1                for the film: no site header, contents or footer; outside links open in a new
+                            tab; the page posts its height to the parent frame so it can be sized:
+                              { type: 'recursive:embed-height', page: 'risk-and-uncertainty', step, height }
+                            (step is the anchor shown, or null). Nothing else is sent.
+    ?theme=dark|light|auto  dark by default, like the games
+  Steps: 1 short, 2 coin, 3 urn, 4 slicing, 5 given, 6 falsifiable, 7 burden, 8 ruin, 9 either-way,
+         10 coin-metaphor, 11 tradition, 12 sources.
+
+  RULES THIS PAGE KEEPS
+  - No percent sign anywhere in this file (words, script or style). Odds are written in words or as N in M.
+  - Every number is one of: a device's odds (a coin, a bowl, an urn we wrote), a count of casts, a toy number
+    labelled as one, or a cited fact about coins, tests or history. None is a chance about AI.
+  - No score, no right or wrong mark. Randomness comes from crypto.getRandomValues.
+  - Reduced motion: the only motion is a bar easing to its length, and only under no-preference.
+  - Held for later (not here): #unknown-bias (its narrowing interval needs a prior; say so when it comes) and
+    #bowls. The research handoff was cut off before its sections 7 and 8 (the I Ching tie-in); #tradition is
+    written from the spec's outline and should be checked against the full research file.
+-->
+<script>
+  (function () {
+    var p = new URLSearchParams(location.search), r = document.documentElement;
+    if (p.get('embed') === '1') r.classList.add('embed');
+    var t = p.get('theme'); if (t === 'dark' || t === 'light' || t === 'auto') r.setAttribute('data-theme', t);
+    if (p.get('step')) r.classList.add('one-step');
+  })();
+</script>
+<style>
+  :root{
+    --bg:#0d0f14; --panel:#151922; --panel2:#1c212c; --line:#2a3140;
+    --ink:#e8ecf3; --muted:#8e9aae; --accent:#5ee2b0; --accent-ink:#06281d; --warn:#f0b866;
+    --red:#e2725e; --blk:#8e9aae;
+    color-scheme:dark;
+  }
+  :root[data-theme="light"]{
+    --bg:#f7f5f0; --panel:#ffffff; --panel2:#f0ece3; --line:#d8d1c3;
+    --ink:#1d2230; --muted:#5d6678; --accent:#0d7a57; --accent-ink:#ffffff; --warn:#8a5a00;
+    --red:#b9481b; --blk:#3a4150;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: light){
+    :root[data-theme="auto"]{
+      --bg:#f7f5f0; --panel:#ffffff; --panel2:#f0ece3; --line:#d8d1c3;
+      --ink:#1d2230; --muted:#5d6678; --accent:#0d7a57; --accent-ink:#ffffff; --warn:#8a5a00;
+      --red:#b9481b; --blk:#3a4150;
+      color-scheme:light;
+    }
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink)}
+  body{font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-wrap:break-word}
+  .wrap{max-width:720px;margin:0 auto;padding:24px 16px 56px}
+  a{color:var(--accent)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  code{font:13.5px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:0 5px}
+  em{font-style:italic}
+
+  .site-head{display:flex;align-items:center;gap:12px;margin:0 0 12px}
+  .site-head a{display:flex;flex:none;color:var(--accent)}
+  .site-head svg{width:36px;height:36px}
+  h1{font:400 27px/1.15 Georgia,"Iowan Old Style","Times New Roman",serif;margin:0;letter-spacing:-.005em}
+  h1 .sub{display:block;font:600 11.5px/1.4 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .lede{font-size:17px;margin:0 0 8px}
+  .note{font-size:13.5px;color:var(--muted);margin:0 0 16px}
+
+  nav.toc{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 20px}
+  nav.toc a{font-size:13px;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent)}
+
+  .axes{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 15px;margin:0 0 28px}
+  .axes h2{font:600 12px/1.4 Inter,system-ui,sans-serif;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+  .axes ol{margin:0 0 8px;padding-left:22px}
+  .axes li{margin:0 0 4px}
+  .axes p{margin:0;font-size:15px}
+
+  .sec{margin:0 0 34px;padding-top:18px;border-top:1px solid var(--line);scroll-margin-top:12px}
+  .sec:target{border-top-color:var(--accent)}
+  .sec h2{font:400 23px/1.22 Georgia,"Iowan Old Style","Times New Roman",serif;margin:0 0 10px}
+  .sec h2 .n{display:block;font:600 11px/1.5 Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .sec p{margin:0 0 10px}
+  .sec ul{margin:0 0 10px;padding-left:20px}
+  .sec li{margin:0 0 4px}
+  .pull{font:400 19px/1.4 Georgia,"Iowan Old Style","Times New Roman",serif;border-left:3px solid var(--accent);padding:2px 0 2px 12px;margin:12px 0}
+
+  details.disagree{margin:12px 0 0;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--panel)}
+  details.disagree>summary{cursor:pointer;padding:9px 0;font-size:14px;font-weight:600;color:var(--muted)}
+  details.disagree[open]>summary{color:var(--ink)}
+  details.disagree p{font-size:14.5px;margin:0 0 10px}
+
+  .play{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin:14px 0 10px}
+  .play .q{font-weight:600;margin:0 0 8px}
+  .play .small,.small{font-size:13px;color:var(--muted);margin:8px 0 0}
+  .row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+  .row>button{flex:1 1 auto}
+  button{font:inherit;font-size:14.5px;font-weight:600;line-height:1.25;cursor:pointer;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel2);color:var(--ink);padding:9px 12px;min-height:42px;text-align:center}
+  button:hover{border-color:var(--muted)}
+  button.ghost{background:transparent;color:var(--muted);font-weight:500}
+  button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:var(--accent)}
+  button[disabled]{opacity:.5;cursor:not-allowed}
+  .out{margin:6px 0 0;min-height:1.6em}
+  .out b{color:var(--accent)}
+  .leafpill{display:inline-block;font-weight:700;border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:0 10px}
+
+  .bar{display:block;height:8px;background:var(--panel2);border-radius:999px;overflow:hidden;margin:3px 0 0}
+  .bar>i{display:block;height:8px;background:var(--accent);transform-origin:left center;transform:scaleX(0)}
+  .bar2{display:flex;height:10px;border-radius:999px;overflow:hidden;margin:8px 0 0;background:var(--panel2)}
+  .bar2>i{display:block;height:10px;flex:1 1 0}
+  .bar2>i.a{background:var(--accent)} .bar2>i.b{background:var(--blk)}
+  .bar2.empty>i{background:var(--panel2)}
+  .bar2.redblk>i.a{background:var(--red)}
+  @media (prefers-reduced-motion: no-preference){
+    .bar>i{transition:transform .35s ease}
+    .bar2>i{transition:flex-grow .35s ease}
+  }
+
+  .tallies{display:grid;gap:8px;margin:4px 0 6px}
+  .tal{font-size:14px}
+  .tal .lab{display:flex;justify-content:space-between;gap:10px}
+  .tal .lab span:last-child{color:var(--muted);white-space:nowrap}
+  .tal.red .bar>i{background:var(--red)}
+
+  .leafgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 14px;font-size:14px;margin:4px 0 6px}
+  .leafgrid .hd{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .leafgrid .cell .lab{display:flex;justify-content:space-between;gap:6px}
+  .leafgrid .cell .lab span:last-child{color:var(--muted)}
+
+  .dotgrid{display:grid;grid-template-columns:repeat(40,minmax(0,1fr));gap:1px;margin:8px 0 4px;max-width:480px}
+  .dotgrid>i{display:block;aspect-ratio:1;border-radius:999px;background:var(--line)}
+  .dotgrid>i.flag{background:var(--warn)}
+  .dotgrid>i.real{background:var(--red);box-shadow:0 0 0 2px var(--ink)}
+  .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);margin:2px 0 0}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:999px;margin-right:5px;vertical-align:-1px}
+
+  .qline{display:grid;gap:4px;margin:0 0 10px}
+  .qline .qt{font-size:14px;font-weight:600}
+  .qline .row{margin:0}
+  .qline .row>button{flex:1 1 40px;padding:8px 8px;font-size:13.5px;min-height:40px}
+
+  .nfield{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px}
+  .nfield input{font:inherit;font-size:16px;width:9em;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);min-height:42px}
+
+  .stepper{display:none;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 14px;font-size:14px;color:var(--muted)}
+  .one-step .stepper{display:flex}
+  .embed .stepper{display:none}
+  .stepper .where{margin-right:auto}
+  .stepper button{min-height:36px;padding:6px 12px;font-size:13.5px}
+
+  ol.sources{padding-left:0;list-style:none;margin:0}
+  ol.sources li{font-size:14px;margin:0 0 8px;padding-left:14px;text-indent:-14px}
+  .sources-group{font:600 12px/1.4 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px}
+
+  .site-foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+  .site-foot p{margin:0 0 6px}
+
+  /* one section at a time (?step=N), and the film's embed (?embed=1) */
+  .one-step .sec:not(.on),.one-step .intro-only{display:none}
+  .one-step .sec.on{border-top:0;padding-top:0}
+  .embed .site-head,.embed nav.toc,.embed .site-foot,.embed .note{display:none}
+  .embed .wrap{padding:12px 16px 20px}
+  .embed-only{display:none}
+  .embed .embed-only{display:block}
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px"><symbol id="spiral" viewBox="0 0 100 100"><path d="M50.5 50L50.5 50.01 50.51,50.02 50.51,50.03 50.51,50.04 50.51,50.05 50.52,50.07 50.52,50.08 50.52,50.09 50.52,50.1 50.52,50.11 50.52,50.12 50.52,50.13 50.52,50.15 50.52,50.16 50.52,50.17 50.52,50.18 50.52,50.19 50.52,50.21 50.52,50.22 50.52,50.23 50.52,50.24 50.52,50.26 50.51,50.27 50.51,50.28 50.51,50.29 50.51,50.31 50.5,50.32 50.5,50.33 50.49,50.34 50.49,50.36 50.49,50.37 50.48,50.38 50.48,50.39 50.47,50.41 50.47,50.42 50.46,50.43 50.45,50.44 50.45,50.46 50.44,50.47 50.43,50.48 50.43,50.49 50.42,50.5 50.41,50.52 50.4,50.53 50.39,50.54 50.38,50.55 50.37,50.56 50.36,50.57 50.35,50.59 50.34,50.6 50.33,50.61 50.32,50.62 50.31,50.63 50.3,50.64 50.29,50.65 50.28,50.66 50.27,50.67 50.25,50.68 50.24,50.69 50.23,50.7 50.21,50.71 50.2,50.72 50.19,50.73 50.17,50.73 50.16,50.74 50.14,50.75 50.13,50.76 50.11,50.77 50.1,50.77 50.08,50.78 50.07,50.79 50.05,50.79 50.03,50.8 50.02,50.8 50,50.81 49.98,50.81 49.97,50.82 49.95,50.82 49.93,50.83 49.91,50.83 49.89,50.83 49.88,50.84 49.86,50.84 49.84,50.84 49.82,50.84 49.8,50.85 49.78,50.85 49.76,50.85 49.74,50.85 49.72,50.85 49.71,50.85 49.69,50.85 49.67,50.84 49.65,50.84 49.63,50.84 49.61,50.84 49.59,50.83 49.57,50.83 49.55,50.83 49.53,50.82 49.5,50.82 49.48,50.81 49.46,50.81 49.44,50.8 49.42,50.79 49.4,50.79 49.38,50.78 49.36,50.77 49.34,50.76 49.32,50.75 49.3,50.74 49.28,50.73 49.26,50.72 49.24,50.71 49.22,50.7 49.2,50.69 49.18,50.68 49.16,50.66 49.15,50.65 49.13,50.63 49.11,50.62 49.09,50.61 49.07,50.59 49.05,50.57 49.03,50.56 49.02,50.54 49,50.52 48.98,50.51 48.96,50.49 48.95,50.47 48.93,50.45 48.92,50.43 48.9,50.41 48.88,50.39 48.87,50.37 48.85,50.35 48.84,50.32 48.83,50.3 48.81,50.28 48.8,50.26 48.79,50.23 48.77,50.21 48.76,50.18 48.75,50.16 48.74,50.13 48.73,50.11 48.72,50.08 48.71,50.05 48.7,50.03 48.69,50 48.68,49.97 48.68,49.94 48.67,49.92 48.66,49.89 48.66,49.86 48.65,49.83 48.65,49.8 48.64,49.77 48.64,49.74 48.63,49.71 48.63,49.68 48.63,49.65 48.63,49.62 48.63,49.59 48.63,49.55 48.63,49.52 48.63,49.49 48.63,49.46 48.64,49.43 48.64,49.39 48.64,49.36 48.65,49.33 48.66,49.3 48.66,49.26 48.67,49.23 48.68,49.2 48.69,49.17 48.7,49.13 48.71,49.1 48.72,49.07 48.73,49.03 48.74,49 48.75,48.97 48.77,48.94 48.78,48.9 48.8,48.87 48.81,48.84 48.83,48.81 48.85,48.77 48.87,48.74 48.89,48.71 48.91,48.68 48.93,48.65 48.95,48.62 48.97,48.59 49,48.56 49.02,48.53 49.05,48.5 49.07,48.47 49.1,48.44 49.13,48.41 49.15,48.38 49.18,48.35 49.21,48.33 49.24,48.3 49.27,48.27 49.31,48.25 49.34,48.22 49.37,48.19 49.41,48.17 49.44,48.15 49.48,48.12 49.51,48.1 49.55,48.08 49.59,48.06 49.63,48.04 49.66,48.02 49.7,48 49.74,47.98 49.79,47.96 49.83,47.94 49.87,47.93 49.91,47.91 49.96,47.9 50,47.88 50.04,47.87 50.09,47.86 50.14,47.85 50.18,47.83 50.23,47.82 50.28,47.82 50.32,47.81 50.37,47.8 50.42,47.8 50.47,47.79 50.52,47.79 50.57,47.78 50.62,47.78 50.67,47.78 50.72,47.78 50.77,47.78 50.82,47.79 50.88,47.79 50.93,47.79 50.98,47.8 51.03,47.81 51.08,47.82 51.14,47.82 51.19,47.83 51.24,47.85 51.3,47.86 51.35,47.87 51.4,47.89 51.46,47.91 51.51,47.92 51.56,47.94 51.62,47.96 51.67,47.98 51.72,48.01 51.77,48.03 51.83,48.05 51.88,48.08 51.93,48.11 51.98,48.14 52.03,48.17 52.09,48.2 52.14,48.23 52.19,48.27 52.24,48.3 52.29,48.34 52.34,48.38 52.39,48.42 52.43,48.46 52.48,48.5 52.53,48.54 52.57,48.58 52.62,48.63 52.67,48.68 52.71,48.72 52.75,48.77 52.8,48.82 52.84,48.88 52.88,48.93 52.92,48.98 52.96,49.04 53,49.09 53.04,49.15 53.07,49.21 53.11,49.27 53.14,49.33 53.18,49.39 53.21,49.46 53.24,49.52 53.27,49.59 53.3,49.65 53.33,49.72 53.36,49.79 53.38,49.86 53.4,49.93 53.43,50 53.45,50.07 53.47,50.15 53.49,50.22 53.5,50.29 53.52,50.37 53.53,50.45 53.55,50.52 53.56,50.6 53.57,50.68 53.57,50.76 53.58,50.84 53.59,50.92 53.59,51 53.59,51.08 53.59,51.17 53.59,51.25 53.58,51.33 53.58,51.42 53.57,51.5 53.56,51.58 53.55,51.67 53.54,51.75 53.52,51.84 53.5,51.93 53.48,52.01 53.46,52.1 53.44,52.18 53.42,52.27 53.39,52.36 53.36,52.44 53.33,52.53 53.3,52.61 53.26,52.7 53.23,52.79 53.19,52.87 53.15,52.96 53.1,53.04 53.06,53.12 53.01,53.21 52.96,53.29 52.91,53.37 52.86,53.46 52.81,53.54 52.75,53.62 52.69,53.7 52.63,53.78 52.56,53.86 52.5,53.94 52.43,54.01 52.36,54.09 52.29,54.17 52.22,54.24 52.14,54.31 52.06,54.38 51.98,54.46 51.9,54.53 51.82,54.59 51.73,54.66 51.65,54.73 51.56,54.79 51.47,54.85 51.37,54.91 51.28,54.97 51.18,55.03 51.08,55.09 50.98,55.14 50.88,55.19 50.77,55.24 50.67,55.29 50.56,55.34 50.45,55.39 50.34,55.43 50.23,55.47 50.12,55.51 50,55.55 49.88,55.58 49.76,55.61 49.65,55.64 49.52,55.67 49.4,55.69 49.28,55.72 49.15,55.74 49.03,55.76 48.9,55.77 48.77,55.78 48.64,55.79 48.51,55.8 48.38,55.81 48.25,55.81 48.11,55.81 47.98,55.8 47.84,55.8 47.71,55.79 47.57,55.77 47.44,55.76 47.3,55.74 47.16,55.72 47.02,55.7 46.88,55.67 46.75,55.64 46.61,55.6 46.47,55.57 46.33,55.53 46.19,55.48 46.05,55.44 45.91,55.39 45.77,55.34 45.63,55.28 45.49,55.22 45.36,55.16 45.22,55.09 45.08,55.02 44.94,54.95 44.81,54.88 44.67,54.8 44.54,54.71 44.41,54.63 44.27,54.54 44.14,54.45 44.01,54.35 43.88,54.25 43.76,54.15 43.63,54.04 43.5,53.93 43.38,53.82 43.26,53.71 43.14,53.59 43.02,53.46 42.91,53.34 42.79,53.21 42.68,53.08 42.57,52.94 42.46,52.8 42.35,52.66 42.25,52.52 42.15,52.37 42.05,52.22 41.95,52.07 41.86,51.91 41.77,51.75 41.68,51.59 41.6,51.42 41.51,51.25 41.43,51.08 41.36,50.91 41.29,50.73 41.22,50.55 41.15,50.37 41.09,50.19 41.03,50 40.97,49.81 40.92,49.62 40.87,49.43 40.83,49.23 40.79,49.03 40.75,48.83 40.72,48.63 40.69,48.42 40.66,48.22 40.64,48.01 40.63,47.8 40.61,47.59 40.61,47.38 40.6,47.16 40.6,46.95 40.61,46.73 40.62,46.51 40.64,46.29 40.66,46.07 40.68,45.85 40.71,45.63 40.75,45.41 40.78,45.18 40.83,44.96 40.88,44.73 40.93,44.51 40.99,44.28 41.06,44.06 41.13,43.83 41.2,43.61 41.28,43.38 41.37,43.16 41.46,42.93 41.55,42.71 41.65,42.48 41.76,42.26 41.87,42.04 41.99,41.82 42.11,41.6 42.24,41.38 42.37,41.16 42.51,40.95 42.66,40.73 42.81,40.52 42.96,40.31 43.12,40.1 43.29,39.9 43.46,39.69 43.64,39.49 43.82,39.29 44,39.09 44.2,38.9 44.39,38.71 44.6,38.52 44.81,38.34 45.02,38.15 45.24,37.97 45.46,37.8 45.69,37.63 45.93,37.46 46.16,37.3 46.41,37.14 46.66,36.98 46.91,36.83 47.17,36.68 47.43,36.54 47.7,36.4 47.97,36.27 48.25,36.14 48.53,36.02 48.82,35.9 49.11,35.79 49.4,35.68 49.7,35.58 50,35.48 50.31,35.39 50.62,35.31 50.93,35.23 51.25,35.16 51.57,35.09 51.89,35.03 52.22,34.98 52.55,34.93 52.88,34.89 53.22,34.86 53.56,34.83 53.9,34.81 54.24,34.8 54.59,34.8 54.94,34.8 55.29,34.81 55.64,34.83 56,34.85 56.36,34.88 56.71,34.92 57.07,34.97 57.43,35.03 57.8,35.09 58.16,35.16 58.52,35.24 58.89,35.33 59.25,35.42 59.61,35.53 59.98,35.64 60.34,35.76 60.71,35.89 61.07,36.03 61.44,36.18 61.8,36.33 62.16,36.5 62.52,36.67 62.88,36.85 63.24,37.04 63.59,37.24 63.94,37.44 64.3,37.66 64.65,37.88 64.99,38.12 65.34,38.36 65.68,38.61 66.01,38.87 66.35,39.14 66.68,39.42 67,39.7 67.33,40 67.65,40.3 67.96,40.61 68.27,40.93 68.57,41.26 68.87,41.6 69.17,41.94 69.46,42.3 69.74,42.66 70.02,43.03 70.29,43.41 70.55,43.79 70.81,44.19 71.07,44.59 71.31,45 71.55,45.42 71.78,45.85 72,46.28 72.22,46.72 72.42,47.17 72.62,47.62 72.81,48.08 73,48.55 73.17,49.03 73.33,49.51 73.49,50 73.64,50.5 73.77,51 73.9,51.5 74.02,52.02 74.12,52.54 74.22,53.06 74.3,53.59 74.38,54.12 74.44,54.66 74.5,55.21 74.54,55.76 74.57,56.31 74.59,56.87 74.6,57.43 74.6,57.99 74.58,58.56 74.55,59.13 74.51,59.71 74.46,60.28 74.4,60.86 74.32,61.44 74.23,62.03 74.13,62.61 74.01,63.2 73.88,63.79 73.74,64.38 73.58,64.97 73.42,65.56 73.23,66.15 73.04,66.74 72.83,67.33 72.6,67.92 72.37,68.5 72.12,69.09 71.85,69.67 71.57,70.26 71.28,70.84 70.97,71.42 70.65,71.99 70.32,72.56 69.97,73.13 69.6,73.7 69.23,74.26 68.83,74.81 68.43,75.36 68.01,75.91 67.57,76.45 67.13,76.99 66.66,77.51 66.19,78.04 65.7,78.55 65.19,79.06 64.67,79.56 64.14,80.05 63.6,80.54 63.04,81.02 62.47,81.48 61.88,81.94 61.28,82.39 60.67,82.83 60.04,83.26 59.4,83.68 58.75,84.08 58.09,84.48 57.41,84.87 56.72,85.24 56.02,85.6 55.31,85.95 54.58,86.28 53.85,86.61 53.1,86.91 52.34,87.21 51.57,87.49 50.79,87.76 50,88.01 49.2,88.24 48.39,88.46 47.57,88.67 46.74,88.86 45.9,89.03 45.05,89.19 44.19,89.33 43.33,89.45 42.45,89.55 41.57,89.64 40.69,89.71 39.79,89.76 38.89,89.79 37.98,89.8 37.07,89.8 36.15,89.77 35.23,89.73 34.3,89.66 33.36,89.58 32.42,89.47 31.48,89.35 30.54,89.2 29.59,89.04 28.64,88.85 27.69,88.64 26.74,88.41 25.89,87.99 25.1,87.48 24.32,86.95 23.55,86.41 22.79,85.84 22.05,85.27 21.32,84.67 20.6,84.06 19.89,83.44 19.2,82.8 18.52,82.15 17.85,81.48 17.2,80.8 16.56,80.11 15.94,79.4 15.33,78.68 14.73,77.95 14.16,77.21 13.59,76.45 13.05,75.68 12.52,74.9 12.01,74.11 11.51,73.31 11.03,72.5 10.57,71.68 10.12,70.85 9.69,70.01 9.28,69.16 8.89,68.3 8.52,67.44 8.16,66.57 7.82,65.69 7.5,64.8 7.2,63.91 6.92,63.01 6.66,62.1 6.41,61.19 6.19,60.28 5.98,59.36 5.8,58.43 5.63,57.5 5.48,56.57 5.35,55.64 5.25,54.7 5.16,53.77 5.09,52.83 5.04,51.88 5.01,50.94 5,50 5.01,49.06 5.04,48.12 5.09,47.17 5.16,46.23 5.25,45.3 5.35,44.36 5.48,43.43 5.63,42.5 5.8,41.57 5.98,40.64 6.19,39.72 6.41,38.81 6.66,37.9 6.92,36.99 7.2,36.09 7.5,35.2 7.82,34.31 8.16,33.43 8.52,32.56 8.89,31.7 9.28,30.84 9.69,29.99 10.12,29.15 10.57,28.32 11.03,27.5 11.51,26.69 12.01,25.89 12.52,25.1 13.05,24.32 13.59,23.55 14.16,22.79 14.73,22.05 15.33,21.32 15.94,20.6 16.56,19.89 17.2,19.2 17.85,18.52 18.52,17.85 19.2,17.2 19.89,16.56 20.6,15.94 21.32,15.33 22.05,14.73 22.79,14.16 23.55,13.59 24.32,13.05 25.1,12.52 25.89,12.01 26.69,11.51 27.5,11.03 28.32,10.57 29.15,10.12 29.99,9.69 30.84,9.28 31.7,8.89 32.56,8.52 33.43,8.16 34.31,7.82 35.2,7.5 36.09,7.2 36.99,6.92 37.9,6.66 38.81,6.41 39.72,6.19 40.64,5.98 41.57,5.8 42.5,5.63 43.43,5.48 44.36,5.35 45.3,5.25 46.23,5.16 47.17,5.09 48.12,5.04 49.06,5.01 50,5 50.94,5.01 51.88,5.04 52.83,5.09 53.77,5.16 54.7,5.25 55.64,5.35 56.57,5.48 57.5,5.63 58.43,5.8 59.36,5.98 60.28,6.19 61.19,6.41 62.1,6.66 63.01,6.92 63.91,7.2 64.8,7.5 65.69,7.82 66.57,8.16 67.44,8.52 68.3,8.89 69.16,9.28 70.01,9.69 70.85,10.12 71.68,10.57 72.5,11.03 73.31,11.51 74.11,12.01 74.9,12.52 75.68,13.05 76.45,13.59 77.21,14.16 77.95,14.73 78.68,15.33 79.4,15.94 80.11,16.56 80.8,17.2 81.48,17.85 82.15,18.52 82.8,19.2 83.44,19.89 84.06,20.6 84.67,21.32 85.27,22.05 85.84,22.79 86.41,23.55 86.95,24.32 87.48,25.1 87.99,25.89 88.49,26.69 88.97,27.5 89.43,28.32 89.88,29.15 90.31,29.99 90.72,30.84 91.11,31.7 91.48,32.56 91.84,33.43 92.18,34.31 92.5,35.2 92.8,36.09 93.08,36.99 93.34,37.9 93.59,38.81 93.81,39.72 94.02,40.64 94.2,41.57 94.37,42.5 94.52,43.43 94.65,44.36 94.75,45.3 94.84,46.23 94.91,47.17 94.96,48.12 94.99,49.06 95,50 94.99,50.94 94.96,51.88 94.91,52.83 94.84,53.77 94.75,54.7 94.65,55.64 94.52,56.57 94.37,57.5 94.2,58.43 94.02,59.36 93.81,60.28 93.59,61.19 93.34,62.1 93.08,63.01 92.8,63.91 92.5,64.8 92.18,65.69 91.84,66.57 91.48,67.44 91.11,68.3 90.72,69.16 90.31,70.01 89.88,70.85 89.43,71.68 88.97,72.5 88.49,73.31 87.99,74.11 87.48,74.9 86.95,75.68 86.41,76.45 85.84,77.21 85.27,77.95 84.67,78.68 84.06,79.4 83.44,80.11 82.8,80.8 82.15,81.48 81.48,82.15 80.8,82.8 80.11,83.44 79.4,84.06 78.68,84.67 77.95,85.27 77.21,85.84 76.45,86.41 75.68,86.95 74.9,87.48 74.11,87.99 73.31,88.49 72.5,88.97 71.68,89.43 70.85,89.88 70.01,90.31 69.16,90.72 68.3,91.11 67.44,91.48 66.57,91.84 65.69,92.18 64.8,92.5 63.91,92.8 63.01,93.08 62.1,93.34 61.19,93.59 60.28,93.81 59.36,94.02 58.43,94.2 57.5,94.37 56.57,94.52 55.64,94.65 54.7,94.75 53.77,94.84 52.83,94.91 51.88,94.96 50.94,94.99 50,95 49.06,94.99 48.12,94.96 47.17,94.91 46.23,94.84 45.3,94.75 44.36,94.65 43.43,94.52 42.5,94.37 41.57,94.2 40.64,94.02 39.72,93.81 38.81,93.59 37.9,93.34 36.99,93.08 36.09,92.8 35.2,92.5 34.31,92.18 33.43,91.84 32.56,91.48 31.7,91.11 30.84,90.72 29.99,90.31 29.15,89.88 28.32,89.43 27.5,88.97 26.69,88.49 25.89,87.99" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol></svg>
+<div class="wrap">
+
+<header class="site-head">
+  <a href="../../" aria-label="Recursive Learning, home"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg></a>
+  <h1><span class="sub">Explainer · working draft</span>Risk or uncertainty?</h1>
+</header>
+
+<div class="intro-only">
+  <p class="lede">The coin, the urn you can't see into, and the yarrow. In The Fork, played as <a href="../../game/fork/">a tree</a> or as <a href="../../game/fork/lines.html">six lines</a>, you can flip a coin at questions nobody can answer yet. This page is about what that coin can and can't do.</p>
+  <p class="note">Every number here is the odds of a device (a coin, a bowl, an urn we wrote), a count of casts, a toy number said to be one, or a fact about coins, tests or history, with its source. None of them is a chance about AI. A short draft, still to be carved.</p>
+
+  <nav class="toc" aria-label="Sections">
+    <a href="#short">Short version</a>
+    <a href="#coin">The coin</a>
+    <a href="#urn">The urn</a>
+    <a href="#slicing">Cutting the question</a>
+    <a href="#given">Given what?</a>
+    <a href="#falsifiable">Tested in time?</a>
+    <a href="#burden">Who has to show</a>
+    <a href="#ruin">Ruin</a>
+    <a href="#either-way">Either way</a>
+    <a href="#coin-metaphor">Is a coin a good metaphor?</a>
+    <a href="#tradition">What yarrow was for</a>
+    <a href="#sources">Sources</a>
+  </nav>
+
+  <div class="axes">
+    <h2>Two questions, not one</h2>
+    <ol>
+      <li>Do we have odds we could defend? Yes: <b>risk</b>. No: <b>uncertainty</b>.</li>
+      <li>Is the not knowing in the world, like when a radioactive atom will decay (<em>aleatory</em>, from the Latin for dice), or in us, a gap in what we know, like the order of a shuffled deck (<em>epistemic</em>, from the Greek for knowledge)?</li>
+    </ol>
+    <p>They cut differently. A coin toss is physics we can't track, so its not knowing is mostly in us. Yet it is the textbook case of risk, because its odds are known.</p>
+  </div>
+</div>
+
+<nav class="stepper" aria-label="One section at a time">
+  <span class="where" id="step-where" aria-live="polite"></span>
+  <button type="button" id="step-prev">Previous</button>
+  <button type="button" id="step-next">Next</button>
+  <a href="./" id="step-all">All sections</a>
+</nav>
+
+<main>
+
+<!-- 1 -->
+<section class="sec" id="short" data-step="1">
+  <h2><span class="n">1 · The short version</span>Risk, uncertainty, and a coin</h2>
+  <ul>
+    <li><b>Risk</b>: you don't know what will happen, but you know the odds.</li>
+    <li><b>Uncertainty</b>: you don't know the odds either, and maybe nobody can.</li>
+    <li>A fair coin is risk. The questions on the tree are uncertainty.</li>
+  </ul>
+  <p class="pull">A coin can end the choosing. It finds nothing out about the world; at most it shows you what you hoped for.</p>
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>Many decision theorists follow Frank Ramsey (1926) and Leonard Savage (1954): a consistent person acts as if she had odds for everything. On that view the line between risk and uncertainty is about how far you trust your numbers, not whether numbers exist.</p>
+    <p>From the other side, Sven Ove Hansson points out that outside textbook dice and coins, almost nothing is pure risk.</p>
+  </details>
+</section>
+
+<!-- 2 -->
+<section class="sec" id="coin" data-step="2">
+  <h2><span class="n">2 · The coin</span>A coin is risk</h2>
+  <p>You can't say how the next flip lands, but you can say heads comes up about 1 time in 2. Frank Knight (1921) called this measurable kind of not knowing <em>risk</em>, and kept <em>uncertainty</em> for cases with no odds to measure. John Maynard Keynes, the same year, argued that some probabilities can't be numbers at all. In 1937, writing of a war or of prices twenty years ahead, he put it plainly: “We simply do not know.”</p>
+  <p>Even a coin is mostly our not knowing how it was launched. Diaconis, Holmes and Montgomery (2007) predicted that a flipped coin lands on the side it started about 51 times in 100. Bartoš and colleagues (2023) counted 350,757 flips and found just under 51 in 100.</p>
+
+  <div class="play" id="play-coin">
+    <div class="row">
+      <button type="button" data-act="flip">Flip</button>
+      <button type="button" data-act="flip100">Flip 100</button>
+      <button type="button" class="ghost" data-act="reset">Start over</button>
+    </div>
+    <div class="bar2 empty" aria-hidden="true"><i class="a"></i><i class="b"></i></div>
+    <p class="out" aria-live="polite">No flips yet.</p>
+    <p class="small">Heads is the green part of the bar. These flips use your browser's random numbers, set by us to 1 in 2. A tally shows the device, not the world.</p>
+  </div>
+
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>What Knight meant is itself disputed. LeRoy and Singell (1987) read him as saying people always form their own odds, and that his uncertainty is where insurance can't be bought. Langlois and Cosgel (1993) answer that this reading is too narrow.</p>
+    <p>Whether a coin in a world of plain physics has any real chance at all is argued over too (SEP, “Chance versus Randomness”). And the line between chance in the world and gaps in us moves with the model: engineers Der Kiureghian and Ditlevsen (2009) call a not knowing epistemic when the modeller sees a way to shrink it.</p>
+  </details>
+</section>
+
+<!-- 3 -->
+<section class="sec" id="urn" data-step="3">
+  <h2><span class="n">3 · The urn</span>The urn you can't see into</h2>
+  <p>Daniel Ellsberg (1961) set out two urns. Urn A holds 50 red balls and 50 black. Urn B holds 100 red and black balls, in a mix you aren't told. Win on red: which urn? Many people pick A. Win on black: many pick A again. But if you picked A for red, you must think B has fewer reds, so more blacks. Picking A twice isn't a guess about B. It is steering away from not knowing the odds. Ellsberg called that <em>ambiguity</em>.</p>
+  <p>(An urn, here, is just a jar of balls.) Both urns on this page were written by us: any urn a program draws from has odds someone wrote. The tree's urn is stranger. Nobody can count its balls, even afterwards, and we draw once.</p>
+
+  <div class="play" id="play-ellsberg">
+    <p class="q" id="ell-q">You win if you draw <b>red</b>. Which urn?</p>
+    <div class="row" role="group" aria-labelledby="ell-q">
+      <button type="button" data-urn="A">Urn A: 50 red, 50 black</button>
+      <button type="button" data-urn="B">Urn B: mix not told</button>
+    </div>
+    <p class="out" aria-live="polite"></p>
+    <div class="row"><button type="button" class="ghost" data-act="again" hidden>Ask again</button></div>
+  </div>
+
+  <div class="play" id="play-urns">
+    <p class="q">Now 100 draws each. Does the tally tell you whether anyone knew the odds?</p>
+    <div class="row">
+      <button type="button" data-dev="coin">100 coin flips</button>
+      <button type="button" data-dev="urn-new">A new hidden urn each draw</button>
+      <button type="button" data-dev="urn-one">One hidden urn, 100 draws</button>
+    </div>
+    <div class="tallies">
+      <div class="tal" data-row="coin"><div class="lab"><span>coin</span><span>not yet</span></div><span class="bar"><i></i></span></div>
+      <div class="tal red" data-row="urn-new"><div class="lab"><span>a new hidden urn each draw</span><span>not yet</span></div><span class="bar"><i></i></span></div>
+      <div class="tal red" data-row="urn-one"><div class="lab"><span>one hidden urn</span><span>not yet</span></div><span class="bar"><i></i></span></div>
+    </div>
+    <p class="out" aria-live="polite"></p>
+    <div class="row"><button type="button" class="ghost" data-act="open" hidden>Open this urn</button></div>
+  </div>
+
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>Ellsberg thought the A-and-A pattern can be reasonable. Strict Bayesians call it a mistake, since it fits no single set of odds for urn B. Imprecise-probability theorists model it with a range of odds instead of one number. Some experiments find the aversion less common than the classic story says (SEP, “Imprecise Probabilities”).</p>
+  </details>
+</section>
+
+<!-- 4 -->
+<section class="sec" id="slicing" data-step="4">
+  <h2><span class="n">4 · Cutting the question</span>“Even odds” depend on how you cut the question</h2>
+  <p>Knowing nothing, it's tempting to say “then it's 1 in 2”. Keynes named this the <em>principle of indifference</em> (1921) and showed its trap: cut the same question another way and the equal odds change. Joseph Bertrand (1889) built a famous puzzle on it.</p>
+  <p>The Fork's gate is a live case. Ask “once it's out, would it be out for good?” and “would the first real test be the step itself?” as two coins, and the gate comes up yes 1 time in 4. Ask it as one coin: 1 in 2. Same world, same ignorance, different cuts, different “even odds”. It is one of the clearest reasons to doubt that a coin is a good picture of not knowing.</p>
+
+  <div class="play" id="play-gate">
+    <p class="q">The gate, 100 coin casts each way: how often does it come up yes?</p>
+    <div class="row">
+      <button type="button" data-gate="1">As one question</button>
+      <button type="button" data-gate="2">As two questions</button>
+    </div>
+    <div class="tallies">
+      <div class="tal" data-row="1"><div class="lab"><span>one coin</span><span>not yet</span></div><span class="bar"><i></i></span></div>
+      <div class="tal" data-row="2"><div class="lab"><span>two coins, both yes</span><span>not yet</span></div><span class="bar"><i></i></span></div>
+    </div>
+    <p class="out" aria-live="polite"></p>
+  </div>
+
+  <div class="play" id="play-leaves">
+    <p class="q">The leaves, 100 coin casts each way.</p>
+    <div class="row">
+      <button type="button" data-cut="two">One coin per question</button>
+      <button type="button" data-cut="either">“Is either one solvable?” first</button>
+    </div>
+    <div class="leafgrid" aria-hidden="true">
+      <div class="hd">one coin per question</div><div class="hd">“either?” first</div>
+    </div>
+    <p class="out" aria-live="polite"></p>
+    <p class="small">One coin per question casts alignment and containment. “Either” first casts “is either one solvable?”: no lands on Shut down; yes, and a second cast picks among the other three leaves.</p>
+    <p class="small">These count where the coins point, not where you land. With the tree's caution on, a coin's yes counts as not shown, so all 100 of these would land on Shut down (<a href="#burden">who has to show what</a>). The tallies show how the cut shapes “even odds”, nothing more.</p>
+  </div>
+
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>E. T. Jaynes (1973) argued that the symmetries of a well-posed problem pick out one right cut, and so settle Bertrand's puzzle. Others reply that most real questions, the tree's included, come with no agreed symmetries, so the cut stays a choice. Many Bayesians drop indifference and accept that different people may start from different odds.</p>
+  </details>
+</section>
+
+<!-- 5 -->
+<section class="sec" id="given" data-step="5">
+  <h2><span class="n">5 · Given what?</span>Every chance is a chance given something</h2>
+  <p>A <em>base rate</em> is how common something is before you look at this case. Toy numbers: a condition that 1 in 1,000 people have, and a test that catches every case but wrongly flags 5 in 100 healthy people. You test positive. Picture 1,000 people: about 1 real case, and about 50 healthy people flagged. So about 1 real case among about 51 flagged. Skipping the base rate is a common error (Tversky and Kahneman, 1974).</p>
+  <p>Many would say every probability is given something, and the “something” is often left unsaid. Which group you count a case among is the <em>reference class problem</em> (Hájek, 2007): another group, another honest number. For a new kind of thing there may be no group to count.</p>
+
+  <div class="play" id="play-dots">
+    <div class="row">
+      <button type="button" data-act="test">Test all 1,000</button>
+      <button type="button" class="ghost" data-act="clear">Clear</button>
+    </div>
+    <div class="dotgrid" role="img" aria-label="1,000 made-up people as dots"></div>
+    <div class="legend" aria-hidden="true"><span><i style="background:var(--red)"></i>has the condition</span><span><i style="background:var(--warn)"></i>healthy, flagged anyway</span></div>
+    <p class="out" aria-live="polite">1,000 made-up people. One of them has the made-up condition.</p>
+  </div>
+
+  <div class="play" id="play-refclass">
+    <p class="q" id="rc-q">Count a new, powerful AI system among…</p>
+    <div class="row" role="group" aria-labelledby="rc-q">
+      <button type="button" data-rc="tech">all big new technologies</button>
+      <button type="button" data-rc="agents">things that act on their own and improve themselves</button>
+    </div>
+    <p class="out" aria-live="polite"></p>
+  </div>
+
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>Hájek argues the reference class problem is everyone's problem, Bayesians included, since starting odds also come from somewhere. Frequentists and Bayesians disagree about who suffers from it most. This page gives no number for the tree: a toy that turned invented causes into leaf counts would be a forecast in costume.</p>
+  </details>
+</section>
+
+<!-- 6 -->
+<section class="sec" id="falsifiable" data-step="6">
+  <h2><span class="n">6 · Tested in time?</span>Can “it's safe” be tested in time?</h2>
+  <p>Karl Popper (1959) asked of a claim: what observation could show it wrong? If none could, it isn't doing the work of science. A second trap is induction. Bertrand Russell's chicken (1912) is fed every day and grows sure of it, until the day its neck is wrung.</p>
+  <p>Counting helps a little. If something went fine N times out of N, the usual upper bound on how often it fails is about 3 in N: the <em>rule of three</em> (Hanley and Lippman-Hand, 1983). The bound is a promise about the method (used again and again, it would cover the true rate 95 times in 100), not the chance that this rate is below 3 in N; that would need starting odds, a <em>prior</em>. It holds only if those N were the same kind of thing as the next one, and with N = 0 there is no bound at all. If the first real test is the step itself, “it's safe” is checked only by taking it.</p>
+
+  <div class="play" id="play-three">
+    <div class="nfield">
+      <label for="n3">Went fine N times out of N. N =</label>
+      <input id="n3" type="number" inputmode="numeric" min="0" max="10000000" step="1" value="30">
+    </div>
+    <div class="row">
+      <button type="button" data-n="0">0</button>
+      <button type="button" data-n="10">10</button>
+      <button type="button" data-n="100">100</button>
+      <button type="button" data-n="1000">1,000</button>
+    </div>
+    <p class="out" aria-live="polite"></p>
+    <p class="small">If the first real test is the step itself, N is 0 for the step that matters.</p>
+  </div>
+
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>The bound uses the usual 95-in-100 standard, a claim about the method's track record. Reading it as “95 in 100 that the rate is below 3 in N” needs a prior, and Bayesians and frequentists disagree about when that step is fair. Many philosophers doubt that falsifiability alone marks off science (SEP, “Karl Popper”).</p>
+    <p>A subtler worry is the anthropic shadow (Ćirković, Sandberg and Bostrom, 2010): we can only look back from worlds where the worst didn't happen, so a clean record may say less than it seems. That argument is debated.</p>
+  </details>
+</section>
+
+<!-- 7 -->
+<section class="sec" id="burden" data-step="7">
+  <h2><span class="n">7 · Who has to show</span>Who has to show what</h2>
+  <p>A <em>burden of proof</em> decides which side wins while the evidence is unclear. Precaution comes in two strengths. The weak form, the Rio Declaration (1992, Principle 15): where harm could be serious or irreversible, lack of full scientific certainty is no reason to put off cost-effective measures against it. “Cost-effective” is part of what keeps it weak. The strong form, the Wingspread Statement (1998): whoever proposes the activity bears the burden of proof.</p>
+  <p>The Fork's gate is a narrower, conditional version of the strong form: it flips the burden only when a step can't be undone or tried first (Wingspread has no such condition). Then whoever takes it has to show it's safe, and a claim that it's safe counts only if it has been shown. A coin's yes wasn't shown, and neither was a coin's “it can be undone”: a cast can't switch the caution off. Nor can “I don't know” about the gate: nobody has shown the step can be undone or tried first, so the caution stays on. Only your own “it can be undone” or “it can be tried first” switches it off. Cass Sunstein (2005) answers that stopping has risks too; on the tree, that is the race.</p>
+
+  <div class="play" id="play-burden">
+    <div class="qline">
+      <span class="qt" id="bq-gate">The gate: can't undo it, can't try it first?</span>
+      <div class="row" role="group" aria-labelledby="bq-gate">
+        <button type="button" data-q="gate" data-v="yes">Yes: the burden flips</button>
+        <button type="button" data-q="gate" data-v="coin-no">a coin said no</button>
+        <button type="button" data-q="gate" data-v="unknown">don't know</button>
+        <button type="button" data-q="gate" data-v="no">No, shown: ordinary trial and error</button>
+      </div>
+    </div>
+    <div class="qline">
+      <span class="qt" id="bq-al">Alignment: can we give it our goals, and check it worked, in time?</span>
+      <div class="row" role="group" aria-labelledby="bq-al">
+        <button type="button" data-q="al" data-v="shown">shown yes</button>
+        <button type="button" data-q="al" data-v="coin">a coin said yes</button>
+        <button type="button" data-q="al" data-v="unknown">don't know</button>
+        <button type="button" data-q="al" data-v="no">no</button>
+      </div>
+    </div>
+    <div class="qline">
+      <span class="qt" id="bq-co">Containment: can we keep it where it can't get out, even if it tried?</span>
+      <div class="row" role="group" aria-labelledby="bq-co">
+        <button type="button" data-q="co" data-v="shown">shown yes</button>
+        <button type="button" data-q="co" data-v="coin">a coin said yes</button>
+        <button type="button" data-q="co" data-v="unknown">don't know</button>
+        <button type="button" data-q="co" data-v="no">no</button>
+      </div>
+    </div>
+    <p class="out" aria-live="polite"></p>
+  </div>
+
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>Sunstein argues the strong form can forbid everything, since every option, stopping included, carries risk. Defenders reply that irreversibility breaks the tie.</p>
+    <p>Reading “not shown” as “no”, a coin's yes as not shown, and an open gate as “caution on” is this page's reading of the tree, not a settled rule.</p>
+  </details>
+</section>
+
+<!-- 8 -->
+<section class="sec" id="ruin" data-step="8">
+  <h2><span class="n">8 · Ruin</span>When the average misleads</h2>
+  <p>Some losses end the game, with no next try to learn from. Then an average across many players can mislead any one player. A toy, with toy numbers: each round, 1 time in 20 you lose everything; otherwise your stake grows by half. Across many players the average stake grows every round. Play 50 rounds yourself, though, and you're still in only about 8 times in 100. Ole Peters (2019) calls this the ergodicity problem: the average across people is not what happens to one person over time.</p>
+
+  <div class="play" id="play-ruin">
+    <div class="row">
+      <button type="button" data-ruin="one">Play 50 rounds alone</button>
+      <button type="button" data-ruin="many">1,000 players, 50 rounds each</button>
+    </div>
+    <p class="out" aria-live="polite"></p>
+    <p class="small">Toy numbers. Nothing here is staked, and nothing is about AI.</p>
+  </div>
+
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>Many economists answer that ordinary decision theory already handles ruin, for example by valuing each doubling of wealth the same, and that the ergodicity framing adds less than it claims. That ruin matters when one try can end the game is widely agreed; how to model it is contested. See also <a href="../../glossary/#reversibility">reversibility</a> in Words.</p>
+  </details>
+</section>
+
+<!-- 9 -->
+<section class="sec" id="either-way" data-step="9">
+  <h2><span class="n">9 · Either way</span>What holds either way</h2>
+  <p>When you can't close the gap by knowing, you can look for what holds under every answer still possible. Planners call this <em>robust decision-making</em> (Lempert, S. W. Popper and Bankes, 2003; Steven Popper, not the Karl Popper of section 6): instead of betting on one forecast, look for moves that do acceptably across many futures. An older cousin is <em>minimax regret</em> (Savage, 1951): pick the option whose worst regret is smallest.</p>
+  <p>In The Fork, “What holds either way” casts nothing. It lists the dangers every leaf still possible would face. That compares dangers, not moves: one move can aim at dangers under several leaves at once, and the list of moves is still being checked, so “nothing shared” does not mean no move holds either way, and a shared danger does not mean a move must aim at it: a move can hold either way by aiming at a different danger under each leaf. When the game prints <code>uncertainty: no known mechanism</code>, that is the source file's label: no known way to control that danger, no lever. It is a different thing from uncertainty in Knight's sense (no odds anyone could defend), though for these dangers both apply.</p>
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>Robust choices can be timid, and what counts as “acceptable” is a choice of values, not a finding. Minimax regret depends on which options you list: adding one can change the pick. Both still ask you to say what the possible worlds are.</p>
+  </details>
+</section>
+
+<!-- 10 -->
+<section class="sec" id="coin-metaphor" data-step="10">
+  <h2><span class="n">10 · The question</span>Is the coin a good metaphor for uncertainty?</h2>
+  <p class="pull">As a picture of the tree's not knowing: no. As a way to stop choosing: sometimes, if it says that is all it does.</p>
+  <p>As a model of uncertainty, a coin flatters:</p>
+  <ul>
+    <li>Its odds are known.</li>
+    <li>It can be flipped again.</li>
+    <li>A toss is usually small stakes: the coin itself can't ruin you, though what you stake on it can (<a href="#ruin">ruin</a>).</li>
+    <li>Nobody's beliefs change it. The race can be changed by beliefs: believing “they will” can make it truer, a self-fulfilling prophecy (Merton, 1948).</li>
+  </ul>
+  <p>And it has a flaw of its own: its “even odds” depend on how the question was cut (<a href="#slicing">cutting the question</a>).</p>
+  <p>As a way to stop deliberating, it can be honest. The folk trick: flip, and notice what you hoped for. That is the game's “Glad or sorry?”. There are other honest ways out of a choice you can't settle: find out more where you can (a test, a small trial first), wait if waiting is safe, or look for <a href="#either-way">what holds either way</a>.</p>
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>A Bayesian might say a coin is a fine stand-in for your own 1-in-2 belief; the reply is that the cut decides what 1 in 2 means. Lotteries are also used on purpose where fairness matters more than choosing well, as in a tie-break: there the coin's blindness is the point, not a flaw.</p>
+  </details>
+</section>
+
+<!-- 11 -->
+<section class="sec" id="tradition" data-step="11">
+  <h2><span class="n">11 · The tradition</span>What yarrow was for</h2>
+  <p>In early China, tortoise shells and yarrow stalks were mostly used to foretell and to decide. A counter-current treated casting as a way to give a decision its form. The Great Plan (Hongfan), in its part on examining doubts, sets tortoise and yarrow as voices beside the ruler's own heart, the ministers and the people. Xunzi says a ruler divines before great matters not to get what he seeks, but as ornament. The Mawangdui “Yao” shows a Confucius who reads the Changes for virtue rather than omens.</p>
+  <p>The Fork's yarrow bowl borrows only the odds: half yes, half no, and 1 in 4 turning. The odds are the bowl's, not the world's.</p>
+  <details class="disagree"><summary>Where people disagree</summary>
+    <p>How far that counter-current reached is argued over, and so are the dating of the “Yao” and what Xunzi's word for ornament (<em>wen</em>) covers. Translations differ: check each one before quoting. None of these texts is about AI, and none is a forecast.</p>
+  </details>
+</section>
+
+<!-- 12 -->
+<section class="sec" id="sources" data-step="12">
+  <h2><span class="n">12 · Sources</span>Sources</h2>
+
+  <p class="sources-group">Risk and uncertainty</p>
+  <ol class="sources">
+    <li>Knight, F. H. (1921). <em>Risk, Uncertainty and Profit</em>. <a href="https://www.econlib.org/library/Knight/knRUP.html">Full text (Econlib)</a></li>
+    <li>Keynes, J. M. (1921). <em>A Treatise on Probability</em>. <a href="https://www.gutenberg.org/ebooks/32625">Full text (Project Gutenberg)</a></li>
+    <li>Keynes, J. M. (1937). The General Theory of Employment. <em>Quarterly Journal of Economics</em> 51(2), 209–223. <a href="https://doi.org/10.2307/1882087">doi:10.2307/1882087</a></li>
+    <li>Ramsey, F. P. (1926). Truth and Probability. See <a href="https://plato.stanford.edu/entries/ramsey/">SEP, “Frank Ramsey”</a></li>
+    <li>Savage, L. J. (1954). <em>The Foundations of Statistics</em>. Wiley. See <a href="https://en.wikipedia.org/wiki/Leonard_Jimmie_Savage">Leonard Jimmie Savage</a></li>
+    <li>Hansson, S. O. Risk. <a href="https://plato.stanford.edu/entries/risk/">Stanford Encyclopedia of Philosophy</a></li>
+    <li>LeRoy, S. F. and Singell, L. D. (1987). Knight on Risk and Uncertainty. <em>Journal of Political Economy</em> 95(2), 394–406. <a href="https://doi.org/10.1086/261461">doi:10.1086/261461</a></li>
+    <li>Langlois, R. N. and Cosgel, M. M. (1993). Frank Knight on Risk, Uncertainty, and the Firm: A New Interpretation. <em>Economic Inquiry</em> 31(3), 456–465. <a href="https://doi.org/10.1111/j.1465-7295.1993.tb01305.x">doi:10.1111/j.1465-7295.1993.tb01305.x</a></li>
+    <li>Der Kiureghian, A. and Ditlevsen, O. (2009). Aleatory or epistemic? Does it matter? <em>Structural Safety</em> 31(2), 105–112. <a href="https://doi.org/10.1016/j.strusafe.2008.06.020">doi:10.1016/j.strusafe.2008.06.020</a></li>
+    <li>Stanford Encyclopedia of Philosophy: <a href="https://plato.stanford.edu/entries/probability-interpret/">Interpretations of Probability</a>; <a href="https://plato.stanford.edu/entries/imprecise-probabilities/">Imprecise Probabilities</a>; <a href="https://plato.stanford.edu/entries/chance-randomness/">Chance versus Randomness</a></li>
+  </ol>
+
+  <p class="sources-group">Coins, urns and cutting the question</p>
+  <ol class="sources">
+    <li>Diaconis, P., Holmes, S. and Montgomery, R. (2007). Dynamical Bias in the Coin Toss. <em>SIAM Review</em> 49(2), 211–235. <a href="https://doi.org/10.1137/S0036144504446436">doi:10.1137/S0036144504446436</a></li>
+    <li>Bartoš, F., et al. (2023). Fair coins tend to land on the same side they started: Evidence from 350,757 flips. <a href="https://arxiv.org/abs/2310.04153">arXiv:2310.04153</a></li>
+    <li>Ellsberg, D. (1961). Risk, Ambiguity, and the Savage Axioms. <em>Quarterly Journal of Economics</em> 75(4), 643–669. <a href="https://doi.org/10.2307/1884324">doi:10.2307/1884324</a></li>
+    <li>Bertrand, J. (1889). <em>Calcul des probabilités</em>. Gauthier-Villars. See <a href="https://en.wikipedia.org/wiki/Bertrand_paradox_(probability)">Bertrand paradox</a></li>
+    <li>Jaynes, E. T. (1973). The Well-Posed Problem. <em>Foundations of Physics</em> 3, 477–492. <a href="https://doi.org/10.1007/BF00709116">doi:10.1007/BF00709116</a></li>
+  </ol>
+
+  <p class="sources-group">Given what?</p>
+  <ol class="sources">
+    <li>Tversky, A. and Kahneman, D. (1974). Judgment under Uncertainty: Heuristics and Biases. <em>Science</em> 185(4157), 1124–1131. <a href="https://doi.org/10.1126/science.185.4157.1124">doi:10.1126/science.185.4157.1124</a></li>
+    <li>Hájek, A. (2007). The reference class problem is your problem too. <em>Synthese</em> 156, 563–585. <a href="https://doi.org/10.1007/s11229-006-9138-5">doi:10.1007/s11229-006-9138-5</a></li>
+  </ol>
+
+  <p class="sources-group">Testing</p>
+  <ol class="sources">
+    <li>Popper, K. (1959). <em>The Logic of Scientific Discovery</em>. Hutchinson. See <a href="https://plato.stanford.edu/entries/popper/">SEP, “Karl Popper”</a></li>
+    <li>Russell, B. (1912). <em>The Problems of Philosophy</em>, chapter 6, “On Induction”. <a href="https://www.gutenberg.org/ebooks/5827">Full text (Project Gutenberg)</a></li>
+    <li>Hanley, J. A. and Lippman-Hand, A. (1983). If Nothing Goes Wrong, Is Everything All Right? Interpreting Zero Numerators. <em>JAMA</em> 249(13), 1743–1745. <a href="https://doi.org/10.1001/jama.1983.03330370053031">doi:10.1001/jama.1983.03330370053031</a></li>
+    <li>Ćirković, M. M., Sandberg, A. and Bostrom, N. (2010). Anthropic Shadow: Observation Selection Effects and Human Extinction Risks. <em>Risk Analysis</em> 30(10), 1495–1506. <a href="https://doi.org/10.1111/j.1539-6924.2010.01460.x">doi:10.1111/j.1539-6924.2010.01460.x</a></li>
+  </ol>
+
+  <p class="sources-group">Burden, precaution, ruin, either way</p>
+  <ol class="sources">
+    <li>Rio Declaration on Environment and Development (1992), Principle 15. See <a href="https://en.wikipedia.org/wiki/Rio_Declaration_on_Environment_and_Development">Rio Declaration</a></li>
+    <li>Wingspread Statement on the Precautionary Principle (1998). <a href="https://www.sehn.org/sehn/wingspread-conference-on-the-precautionary-principle">Science and Environmental Health Network</a></li>
+    <li>Sunstein, C. R. (2005). <em>Laws of Fear: Beyond the Precautionary Principle</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511790850">doi:10.1017/CBO9780511790850</a></li>
+    <li>Peters, O. (2019). The ergodicity problem in economics. <em>Nature Physics</em> 15, 1216–1221. <a href="https://doi.org/10.1038/s41567-019-0732-0">doi:10.1038/s41567-019-0732-0</a></li>
+    <li>Savage, L. J. (1951). The Theory of Statistical Decision. <em>Journal of the American Statistical Association</em> 46(253), 55–67. <a href="https://doi.org/10.1080/01621459.1951.10500768">doi:10.1080/01621459.1951.10500768</a></li>
+    <li>Lempert, R. J., Popper, S. W. and Bankes, S. C. (2003). <em>Shaping the Next One Hundred Years</em>. RAND, MR-1626. <a href="https://www.rand.org/pubs/monograph_reports/MR1626.html">RAND</a></li>
+    <li>Merton, R. K. (1948). The Self-Fulfilling Prophecy. <em>The Antioch Review</em> 8(2), 193–210. <a href="https://doi.org/10.2307/4609267">doi:10.2307/4609267</a></li>
+  </ol>
+
+  <p class="sources-group">The tradition</p>
+  <ol class="sources">
+    <li><em>Shangshu</em>, “Hongfan” (The Great Plan), the part on examining doubts. <a href="https://ctext.org/shang-shu/great-plan">Chinese Text Project</a></li>
+    <li><em>Xunzi</em>, “Tian lun” (Discourse on Heaven). <a href="https://ctext.org/xunzi/tian-lun">Chinese Text Project</a></li>
+    <li>Mawangdui silk manuscripts, “Yao”. English in Edward L. Shaughnessy, <em>I Ching: The Classic of Changes</em> (1996). About the finds: <a href="https://en.wikipedia.org/wiki/Mawangdui_Silk_Texts">Mawangdui Silk Texts</a></li>
+  </ol>
+</section>
+
+</main>
+
+<p class="embed-only small"><a href="./">Open the full page</a></p>
+
+<footer class="site-foot">
+  <p>A working draft by PlayfulProcess for the Recursive Learning film and games. Text CC BY-SA 4.0.</p>
+  <p>Play The Fork: <a href="../../game/fork/">as a tree</a> · <a href="../../game/fork/lines.html">as six lines</a> · <a href="../../glossary/">Words</a> · <a href="../../">Home</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var params = new URLSearchParams(location.search);
+  var embed = params.get('embed') === '1';
+
+  // ── small helpers ────────────────────────────────────────────────────────────────────────────
+  var buf = new Uint32Array(1);
+  function rand() { crypto.getRandomValues(buf); return buf[0] / 4294967296; }
+  function coinYes() { return rand() < 0.5; }
+  function fmt(n) { return Number(n).toLocaleString('en-US'); }
+  function $(sel, el) { return (el || document).querySelector(sel); }
+  function $$(sel, el) { return Array.prototype.slice.call((el || document).querySelectorAll(sel)); }
+  function setBar(tal, n, of, label) {
+    $('.bar>i', tal).style.transform = 'scaleX(' + (of ? n / of : 0) + ')';
+    $('.lab span:last-child', tal).textContent = label;
+  }
+  function listWords(xs) { if (xs.length < 2) return xs.join(''); return xs.slice(0, -1).join(', ') + ' and ' + xs[xs.length - 1]; }
+  function press(group, btn) { $$('button', group).forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); }); }
+
+  var LEAVES = ['proceed', 'regulate', 'contain', 'shutdown'];
+  var LEAF_NAME = { proceed: 'Proceed', regulate: 'Regulate', contain: 'Contain', shutdown: 'Shut down' };
+  // the tree's mapping (the same as the belief-tree contract): alignment, then containment
+  function leafFor(al, co) {
+    if ((al !== 'yes' && al !== 'no') || (co !== 'yes' && co !== 'no')) return null;
+    if (al === 'yes') return co === 'yes' ? 'proceed' : 'regulate';
+    return co === 'yes' ? 'contain' : 'shutdown';
+  }
+
+  // ── 2 · the coin ─────────────────────────────────────────────────────────────────────────────
+  (function () {
+    var box = $('#play-coin'); var H = 0, T = 0;
+    var out = $('.out', box), bar = $('.bar2', box), a = $('.a', bar), b = $('.b', bar);
+    function draw(msg) {
+      bar.classList.toggle('empty', H + T === 0);
+      a.style.flexGrow = String(H + T ? H : 1); b.style.flexGrow = String(H + T ? T : 1);
+      out.textContent = H + T === 0 ? (msg || 'No flips yet.') :
+        msg + ' So far: ' + fmt(H) + ' heads and ' + fmt(T) + ' tails in ' + fmt(H + T) + ' flips.';
+    }
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn) return;
+      var act = btn.dataset.act;
+      if (act === 'flip') { var y = coinYes(); if (y) H++; else T++; draw(y ? 'Heads.' : 'Tails.'); }
+      else if (act === 'flip100') { var h = 0; for (var i = 0; i < 100; i++) if (coinYes()) h++; H += h; T += 100 - h; draw('100 more: ' + h + ' heads, ' + (100 - h) + ' tails.'); }
+      else if (act === 'reset') { H = 0; T = 0; draw('Started over. No flips yet.'); }
+    });
+  })();
+
+  // ── 3 · Ellsberg's two urns ──────────────────────────────────────────────────────────────────
+  (function () {
+    var box = $('#play-ellsberg'), q = $('#ell-q'), out = $('.out', box), again = $('[data-act="again"]', box);
+    var first = null;
+    var PATTERN = {
+      AA: 'Urn A both times. That is the pattern Ellsberg found in many people. It fits no single guess about urn B: a guess that made A better for red would make B better for black. It is steering away from not knowing the odds: ambiguity aversion.',
+      BB: 'Urn B both times: the mirror pattern, sometimes called ambiguity seeking. It fits no single guess about urn B either.',
+      AB: 'A for red, then B for black. That fits one guess: urn B has fewer than 50 red. It is how someone with one number for urn B would choose.',
+      BA: 'B for red, then A for black. That fits one guess: urn B has more than 50 red. It is how someone with one number for urn B would choose.'
+    };
+    function reset() {
+      first = null; q.innerHTML = 'You win if you draw <b>red</b>. Which urn?';
+      $$('[data-urn]', box).forEach(function (b) { b.disabled = false; b.removeAttribute('aria-pressed'); });
+      again.hidden = true;
+    }
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn) return;
+      if (btn.dataset.act === 'again') { reset(); out.textContent = 'Asked again.'; $('[data-urn]', box).focus(); return; }
+      var u = btn.dataset.urn; if (!u) return;
+      if (first === null) {
+        first = u; q.innerHTML = 'Now you win if you draw <b>black</b>. Which urn?';
+        out.textContent = 'For red you picked urn ' + u + '.';
+      } else {
+        out.textContent = PATTERN[first + u] + ' No pick is right or wrong here.';
+        $$('[data-urn]', box).forEach(function (b) { b.disabled = true; });
+        again.hidden = false; again.focus();
+      }
+    });
+  })();
+
+  // ── 3 · 100 draws: a coin, a new hidden urn each draw, one hidden urn ───────────────────────────
+  (function () {
+    var box = $('#play-urns'), out = $('.out', box), open = $('[data-act="open"]', box);
+    var mix = null;
+    var SAY = {
+      coin: 'The coin’s tally. We set its odds to 1 in 2, so this is risk.',
+      'urn-new': 'This tally looks like the coin’s, and it is a coin one level down: we wrote the rule that picks each mix. Any urn a program draws from has odds someone wrote. What a tally can’t show is whether anyone knew the odds; only knowing how they were made can.',
+      'urn-one': 'One hidden urn, drawn 100 times, starts to show its mix: that kind of not knowing shrinks with tries. The world gets one try at a step that may not be undoable.'
+    };
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn) return;
+      if (btn.dataset.act === 'open') {
+        out.textContent = 'It held ' + mix + ' red and ' + (100 - mix) + ' black. This urn could be opened. The tree’s can’t, even afterwards.';
+        open.hidden = true; return;
+      }
+      var dev = btn.dataset.dev; if (!dev) return;
+      var hits = 0, i;
+      if (dev === 'urn-one') mix = Math.floor(rand() * 101);
+      for (i = 0; i < 100; i++) {
+        var p = dev === 'coin' ? 0.5 : dev === 'urn-new' ? Math.floor(rand() * 101) / 100 : mix / 100;
+        if (rand() < p) hits++;
+      }
+      var row = $('[data-row="' + dev + '"]', box);
+      setBar(row, hits, 100, dev === 'coin' ? hits + ' heads of 100 flips' : hits + ' red of 100 draws');
+      out.textContent = SAY[dev];
+      open.hidden = dev !== 'urn-one';
+    });
+  })();
+
+  // ── 4 · the gate as one question or two ─────────────────────────────────────────────────────
+  (function () {
+    var box = $('#play-gate'), out = $('.out', box), ran = {};
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn || !btn.dataset.gate) return;
+      var parts = btn.dataset.gate, n = 0, i;
+      for (i = 0; i < 100; i++) if (parts === '1' ? coinYes() : (coinYes() && coinYes())) n++;
+      ran[parts] = true;
+      setBar($('[data-row="' + parts + '"]', box), n, 100, n + ' of 100 casts');
+      var msg = parts === '1'
+        ? 'One coin: the gate came up yes in ' + n + ' of 100 casts.'
+        : 'Two coins: the gate came up yes in ' + n + ' of 100 casts. Both answers had to land yes.';
+      if (ran['1'] && ran['2']) msg += ' Same ignorance, different cuts: about 50 against about 25. Neither is the world’s odds.';
+      msg += ' (On the tree, a cast gate leaves the caution on whichever way it lands: a coin shows nothing. See who has to show what.)';
+      out.textContent = msg;
+    });
+  })();
+
+  // ── 4 · the leaves: one coin per question, or "is either one solvable?" first ──────────────────
+  (function () {
+    var box = $('#play-leaves'), out = $('.out', box), grid = $('.leafgrid', box);
+    var cells = {};
+    LEAVES.forEach(function (leaf) {
+      ['two', 'either'].forEach(function (cut) {
+        var c = document.createElement('div'); c.className = 'cell tal';
+        c.innerHTML = '<div class="lab"><span>' + LEAF_NAME[leaf] + '</span><span>&ndash;</span></div><span class="bar"><i></i></span>';
+        cells[cut + ':' + leaf] = c; grid.appendChild(c);
+      });
+    });
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn || !btn.dataset.cut) return;
+      var cut = btn.dataset.cut, counts = { proceed: 0, regulate: 0, contain: 0, shutdown: 0 }, i;
+      for (i = 0; i < 100; i++) {
+        var leaf;
+        if (cut === 'two') leaf = leafFor(coinYes() ? 'yes' : 'no', coinYes() ? 'yes' : 'no');
+        else leaf = coinYes() ? ['proceed', 'regulate', 'contain'][Math.floor(rand() * 3)] : 'shutdown';
+        counts[leaf]++;
+      }
+      LEAVES.forEach(function (leaf) { setBar(cells[cut + ':' + leaf], counts[leaf], 100, String(counts[leaf])); });
+      var said = LEAVES.map(function (l) { return LEAF_NAME[l] + ' ' + counts[l]; }).join(', ');
+      out.textContent = (cut === 'two'
+        ? 'One coin per question, 100 casts: ' + said + '. Each leaf comes up about 1 time in 4.'
+        : '“Either” first, 100 casts: ' + said + '. Shut down comes up about 1 time in 2, and the other three share the rest.')
+        + ' Same ignorance, a different cut.';
+    });
+  })();
+
+  // ── 5 · 1,000 dots ───────────────────────────────────────────────────────────────────────────
+  (function () {
+    var box = $('#play-dots'), grid = $('.dotgrid', box), out = $('.out', box), dots = [], i;
+    var frag = document.createDocumentFragment();
+    for (i = 0; i < 1000; i++) { var d = document.createElement('i'); dots.push(d); frag.appendChild(d); }
+    grid.appendChild(frag);
+    function clear() { dots.forEach(function (d) { d.className = ''; }); }
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn) return;
+      clear();
+      if (btn.dataset.act === 'clear') {
+        out.textContent = '1,000 made-up people. One of them has the made-up condition.';
+        grid.setAttribute('aria-label', '1,000 made-up people as dots'); return;
+      }
+      var sick = Math.floor(rand() * 1000), picked = 0;
+      dots[sick].className = 'real';
+      // the test wrongly flags 5 in 100 of the 999 healthy people: 50 of them
+      var pool = []; for (i = 0; i < 1000; i++) if (i !== sick) pool.push(i);
+      while (picked < 50) { var k = Math.floor(rand() * pool.length); dots[pool[k]].className = 'flag'; pool.splice(k, 1); picked++; }
+      out.textContent = 'Flagged: 51. One has the condition; the other 50 are healthy people flagged anyway. So a positive here means about 1 real case among 51 flagged.';
+      grid.setAttribute('aria-label', '1,000 dots: 51 flagged, of which 1 has the condition');
+    });
+  })();
+
+  // ── 5 · the reference class ──────────────────────────────────────────────────────────────────
+  (function () {
+    var box = $('#play-refclass'), out = $('.out', box), group = $('.row', box);
+    var SAY = {
+      tech: 'History to count: lots. Printing, engines, electricity, nuclear power, the internet: counted that way, the record looks calm. Add nuclear weapons, and it looks less calm. Which cases go in the list is itself a choice.',
+      agents: 'History to count: almost none. Counted here, there is no record to lean on.'
+    };
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn || !btn.dataset.rc) return;
+      press(group, btn);
+      out.textContent = SAY[btn.dataset.rc] + ' Two honest groups, two different pictures, and this page gives no number for either: that is the reference class problem.';
+    });
+  })();
+
+  // ── 6 · the rule of three ────────────────────────────────────────────────────────────────────
+  (function () {
+    var box = $('#play-three'), input = $('#n3'), out = $('.out', box);
+    function say() {
+      var raw = String(input.value).trim();
+      if (!/^\d+$/.test(raw)) { out.textContent = 'Type a whole number, 0 or more.'; return; }
+      var asked = parseInt(raw, 10), N = Math.min(asked, 10000000);
+      if (N === 0) { out.textContent = 'N = 0: no bound at all. With no tries, the record says nothing about how often it fails.'; return; }
+      var capped = asked > N ? ' (Counted up to 10,000,000; bigger numbers are shown as that.)' : '';
+      var head = 'Went fine ' + fmt(N) + ' time' + (N === 1 ? '' : 's') + ' out of ' + fmt(N) + '. If ' +
+        (N === 1 ? 'that one was' : 'those ' + fmt(N) + ' were') + ' the same kind of thing as the next one, the usual upper bound on failures is about ';
+      var tail = ' That is the method’s 95-in-100 standard, not the chance for this case.' + capped;
+      if (N >= 20) {
+        out.textContent = head + '3 in ' + fmt(N) + ', about 1 in ' + fmt(Math.round(N / 3)) + '.' + tail;
+      } else {
+        var p = 1 - Math.pow(0.05, 1 / N);   // the exact bound; the rule of three is its shortcut for larger N
+        out.textContent = head + Math.round(p * 100) + ' in 100. With so few tries the exact bound is used; the rule of three is a shortcut for larger N.' + tail;
+      }
+    }
+    input.addEventListener('input', say);
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn || btn.dataset.n === undefined) return;
+      input.value = btn.dataset.n; say();
+    });
+    say();
+  })();
+
+  // ── 7 · the burden ───────────────────────────────────────────────────────────────────────────
+  (function () {
+    var box = $('#play-burden'), out = $('.out', box);
+    var st = { gate: 'yes', al: 'unknown', co: 'unknown' };
+    var NAME = { al: 'alignment', co: 'containment' };
+    var WORD = { shown: 'shown yes', coin: 'a coin’s yes', unknown: 'don’t know', no: 'no' };
+    var FLIP = { yes: true, 'coin-no': true, unknown: true };
+    function sync() {
+      $$('button[data-q]', box).forEach(function (b) { b.setAttribute('aria-pressed', st[b.dataset.q] === b.dataset.v ? 'true' : 'false'); });
+      var coinUsed = st.al === 'coin' || st.co === 'coin';
+      var msg, leaf;
+      if (FLIP[st.gate]) {
+        var read = function (x) { return x === 'shown' ? 'yes' : 'no'; };
+        leaf = leafFor(read(st.al), read(st.co));
+        var asNo = ['al', 'co'].filter(function (k) { return st[k] === 'coin' || st[k] === 'unknown'; })
+          .map(function (k) { return NAME[k] + ' (' + WORD[st[k]] + ')'; });
+        msg = (st.gate === 'coin-no' ? 'A coin said the step can be undone or tried first, but a coin’s no wasn’t shown either, so it can’t switch the caution off. ' : '') +
+          (st.gate === 'unknown' ? 'Nobody has shown the step can be undone or tried first, so “don’t know” leaves the caution on. ' : '') +
+          'The burden flips: whoever takes the step has to show it’s safe. ' +
+          (asNo.length ? 'Not shown counts as no, so ' + listWords(asNo) + (asNo.length === 1 ? ' counts' : ' count') + ' as no here. ' : '') +
+          (coinUsed ? 'A coin’s yes wasn’t shown. ' : '') + 'You land on: ';
+        out.innerHTML = ''; out.append(msg); var pill = document.createElement('span'); pill.className = 'leafpill'; pill.textContent = LEAF_NAME[leaf]; out.append(pill, '.');
+      } else {
+        var norm = function (x) { return x === 'shown' ? 'yes' : x === 'no' ? 'no' : null; };
+        var a = norm(st.al), c = norm(st.co);
+        var possible = [];
+        (a ? [a] : ['yes', 'no']).forEach(function (x) { (c ? [c] : ['yes', 'no']).forEach(function (y) { var l = leafFor(x, y); if (possible.indexOf(l) < 0) possible.push(l); }); });
+        msg = 'Ordinary trial and error: nobody has to prove safety first. Try small, watch, fix. ';
+        if (possible.length === 1) msg += 'You land on: ' + LEAF_NAME[possible[0]] + '.';
+        else msg += 'Unclear answers stay open, and trying is how they get settled. Still possible: ' + listWords(possible.map(function (l) { return LEAF_NAME[l]; })) + '.';
+        if (coinUsed) msg += ' A coin’s yes stays open here too: it found nothing out. A coin can still pick one to try first: that ends the choosing, not the not knowing.';
+        out.textContent = msg;
+      }
+    }
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-q]'); if (!btn) return;
+      st[btn.dataset.q] = btn.dataset.v; sync();
+    });
+    sync();
+  })();
+
+  // ── 8 · ruin ─────────────────────────────────────────────────────────────────────────────────
+  (function () {
+    var box = $('#play-ruin'), out = $('.out', box), plays = 0, stillIn = 0;
+    var ROUNDS = 50, LOSE = 1 / 20, GROW = 1.5, TOP = Math.pow(GROW, ROUNDS);
+    function lastRound() { for (var r = 1; r <= ROUNDS; r++) if (rand() < LOSE) return r; return 0; }
+    function big(x) { return x >= 1e6 ? 'about ' + fmt(Math.round(x / 1e6)) + ' million' : 'about ' + fmt(Math.round(x)); }
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn || !btn.dataset.ruin) return;
+      if (btn.dataset.ruin === 'one') {
+        var r = lastRound(); plays++; if (!r) stillIn++;
+        out.textContent = (r ? 'Lost everything in round ' + r + '.' : 'Still in after 50 rounds, with ' + big(TOP) + ' times the stake you started with.') +
+          ' Still in at the end: ' + stillIn + ' of ' + plays + ' play' + (plays === 1 ? '' : 's') + ' so far.';
+      } else {
+        var S = 0; for (var i = 0; i < 1000; i++) if (!lastRound()) S++;
+        var avg = S * TOP / 1000;
+        out.textContent = 'Still in after 50 rounds: ' + S + ' of 1,000 players. The average stake is ' + big(avg) +
+          ' times the start' + (S ? ', all of it held by those ' + S : '') + '. The average grows; most players are out.';
+      }
+    });
+  })();
+
+  // ── one section at a time (?step=N or ?step=<anchor>), and the film's embed (?embed=1) ─────────
+  var SECS = $$('main > section.sec');
+  var IDS = SECS.map(function (s) { return s.id; });
+  function indexOf(v) {
+    if (!v) return -1;
+    if (/^\d+$/.test(v)) { var n = parseInt(v, 10); return n >= 1 && n <= SECS.length ? n - 1 : -1; }
+    return IDS.indexOf(v);
+  }
+  var cur = indexOf(params.get('step'));
+  var where = $('#step-where'), prev = $('#step-prev'), next = $('#step-next'), all = $('#step-all');
+  if (embed) all.hidden = true;
+  function show(i, write) {
+    cur = i;
+    root.classList.toggle('one-step', i >= 0);
+    SECS.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    if (i >= 0) {
+      where.textContent = 'Section ' + (i + 1) + ' of ' + SECS.length;
+      prev.disabled = i === 0; next.disabled = i === SECS.length - 1;
+      if (embed) { prev.parentNode.hidden = true; }
+    }
+    if (write) {
+      var p = new URLSearchParams(location.search); p.set('step', String(i + 1));
+      history.replaceState(null, '', '?' + p.toString());
+    }
+    postHeight();
+  }
+  prev.addEventListener('click', function () { if (cur > 0) { show(cur - 1, true); window.scrollTo(0, 0); } });
+  next.addEventListener('click', function () { if (cur < SECS.length - 1) { show(cur + 1, true); window.scrollTo(0, 0); } });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]'); if (!a || cur < 0) return;
+    var i = IDS.indexOf(a.getAttribute('href').slice(1));
+    if (i >= 0) { e.preventDefault(); show(i, true); window.scrollTo(0, 0); }
+  });
+  if (embed) {
+    $$('a[href]').forEach(function (a) {
+      if (a.getAttribute('href').charAt(0) !== '#') { a.target = '_blank'; a.rel = 'noopener'; }
+    });
+  }
+  function postHeight() {
+    if (!embed || window.parent === window) return;
+    var h = Math.ceil($('.wrap').getBoundingClientRect().height);
+    window.parent.postMessage({ type: 'recursive:embed-height', page: 'risk-and-uncertainty', step: cur >= 0 ? IDS[cur] : null, height: h }, '*');
+  }
+  if (embed && 'ResizeObserver' in window) new ResizeObserver(postHeight).observe($('.wrap'));
+  show(cur, false);
+})();
+</script>
+</body>
+</html>
