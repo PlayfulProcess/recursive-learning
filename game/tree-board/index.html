@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="../../theme.css?v=1">
 <link rel="stylesheet" href="../shared/play-shell.css?v=1">
+<link rel="stylesheet" href="../shared/matrix-board.css?v=1">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Tree · Recursive Eco-Improvement</title>
@@ -11,15 +12,19 @@
 <meta property="og:description" content="Place the people on the belief tree before the race runs out.">
 <link rel="icon" type="image/svg+xml" href="../../spiral.svg">
 <!--
-  The Tree: the belief tree (explainers/belief-tree/tree-render.js, the Film chat's, never edited
-  here) played as a cooperative pass-and-play board game, 2-5 players. board-engine.js is the pure
-  rules (untouched here); this file, tree-board.js and game/shared/play-shell.* are the DOM/layout
-  layer. During play the page is a fixed-height app shell (game/shared/play-shell.css): the tree
-  is the stage, the race track is the thin progress bar under it, one HUD line names the active
+  The Tree: the belief tree, drawn as a 2×2 grid (game/shared/matrix-board.js + .css, GAME-OWNED),
+  never the Film's own diagram (explainers/belief-tree/tree-render.js is read-only here: only its
+  leafFor/LEAF_LABEL/ANSWER_WORD/NODES exports are imported, never edited, and people.json and
+  explainers/belief-tree/index.html are untouched). Played as a cooperative pass-and-play board
+  game, 2-5 players. board-engine.js is the pure rules; this file, tree-board.js and
+  game/shared/play-shell.* are the DOM/layout layer. During play the page is a fixed-height app
+  shell (game/shared/play-shell.css): the grid is the stage, one HUD line names the active
   character and the latest log line, their card is a single tap-for-detail item in the hand strip,
-  and rules/the full log/settings sit behind round icon buttons. Setup and end still scroll
-  normally. Casting reuses The Fork's cast engine (game/fork/fork-engine.js). See
-  tests/tree-board.test.mjs for the rules' own tests.
+  and rules/the full log/trails toggle/settings sit behind round icon buttons. Setup and end still
+  scroll normally. Crossing a node still casts a coin or yarrow through The Fork's cast engine
+  (game/fork/fork-engine.js); "Cast a card" draws a random evidence card through the very same
+  engine's seeded RNG (board-engine.js's castCard), then aims it at one person or a whole group.
+  Trails come from game/tree-board/trajectories.json. See tests/tree-board.test.mjs.
 -->
 <style>
   *{box-sizing:border-box}
@@ -48,12 +53,11 @@
 
   [hidden]{display:none!important}
 
-  .tree-wrap{position:relative}
-  #tokens{position:absolute;inset:0;pointer-events:none}
-  .token{position:absolute;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-size:10.5px;font-weight:800;color:#fff;box-shadow:0 0 0 2px var(--bg);transition:left .3s ease,top .3s ease}
-  .token.is-active{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
-  @media (prefers-reduced-motion: reduce),body.ps-reduced-motion{ .token{transition:none} }
+  /* Not .ps-tree-box: that class centers a self-sized SVG (align-items/justify-content:center),
+     which collapses a width:100%/height:100% child like our own <div id="board">. This board is
+     plain HTML/CSS (a table), so it only needs the same flex-fit-the-stage behaviour, stretched. */
+  .board-wrap{flex:1 1 auto;min-height:40px;overflow:hidden;display:flex}
+  #board{flex:1 1 auto;min-width:0;min-height:0;display:flex}
 
   #card .role{margin:0 0 8px;color:var(--muted);font-size:13px}
   .answers{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
@@ -77,10 +81,6 @@
   .evidence-targets{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
   .target.no{opacity:.55}
   .reason{font-size:13px;color:var(--bad,#c0473b);min-height:1.2em}
-
-  .split-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-  .split-compare p{font-size:13px;margin:6px 0}
-  #splitPanel{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel2);flex:0 0 auto}
 
   #log li{list-style:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13px;color:var(--ink-soft)}
   #log{margin:0;padding:0}
@@ -108,14 +108,19 @@
       their answer there is not a plain yes or no, you choose how to cross: cast a coin, cast
       yarrow, or say "I don't know" (which leaves it open and ends your turn without moving).</p>
     <p>Anyone may spend their turn playing one evidence card on <b>any</b> character instead of
-      moving. It can flip a still-open answer freely. It can only flip a settled (plain) answer when
-      the flip would send that character to a leaf they themselves have named as a condition for
-      moving — persuasion on their own terms, never invented.</p>
-    <p>The race ticks once every time the turn returns to the first player, and once more the
-      moment any character first reaches Proceed. The table <b>wins</b> if, before the race fills,
-      everyone lands on one shared leaf, or every remaining split between leaves has been named (tap
-      the node, or the button, where two characters part ways). It <b>loses</b> if the race fills
-      first. No verdict is given — only what happened.</p>
+      moving — either a card you choose ("Play evidence …"), or one drawn at random ("Cast a card",
+      which can also be aimed at a whole group: everyone currently sharing one spot on the board). A
+      card can flip a still-open answer freely. It can only flip a settled (plain) answer when the
+      flip would send that character to a leaf they themselves have named as a condition for moving
+      — persuasion on their own terms, never invented. A group cast checks each person separately:
+      some may move, some may not, and the log says why.</p>
+    <p>The board is a table, not a repeated diagram: the columns are the alignment question, the
+      rows are the containment question, and the four cells are the four leaves. The race ticks once
+      every time the turn returns to the first player, and once more the moment any character first
+      reaches Proceed. The table <b>wins</b> if everyone reaches a cell before the race fills. It
+      <b>loses</b> if the race fills first. No verdict is given — only what happened.</p>
+    <p>The trails icon shows or hides the active character's own history — where they stood before,
+      and when, with the dated quote or event behind each move — alongside where they stand now.</p>
   </details>
 
   <section id="setup">
@@ -133,14 +138,10 @@
 
   <section id="game" hidden>
     <div class="ps-stage">
-      <div class="tree-wrap ps-tree-box" id="treeWrap">
-        <div id="tree" aria-label="The belief tree"></div>
-        <div id="tokens"></div>
+      <div class="board-wrap" id="boardWrap">
+        <div id="board" aria-label="The belief-tree board"></div>
       </div>
-      <div id="splitPanel" hidden></div>
     </div>
-
-    <div class="ps-progress" id="race" aria-hidden="true"></div>
 
     <div class="ps-utility" id="psUtility"></div>
 
@@ -166,6 +167,14 @@
       <button type="button" class="icon-btn ps-close" data-ps-close aria-label="Close"></button>
       <h2 id="drawerEvidenceTitle">Play evidence</h2>
       <div id="evidencePanel"></div>
+    </div>
+  </div>
+
+  <div class="ps-overlay" id="drawerCast" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="drawerCastTitle">
+    <div class="ps-drawer">
+      <button type="button" class="icon-btn ps-close" data-ps-close aria-label="Close"></button>
+      <h2 id="drawerCastTitle">Cast a card</h2>
+      <div id="castPanel"></div>
     </div>
   </div>
 

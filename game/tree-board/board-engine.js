@@ -265,6 +265,20 @@ export function evidenceLegality(card, character) {
   return { legal: true, leaf, reason: moveEntry.would_have_to_believe };
 }
 
+// The per-character half of playing a card, factored out so a GROUP cast (playEvidenceGroup) can
+// apply the same rule to several characters under one turn instead of one endTurn per target.
+// Mutates `ch` in place (caller works on an already-cloned state).
+function applyEvidenceTo(ch, card, actingShort) {
+  const legality = evidenceLegality(card, ch);
+  if (!legality.legal) return { applied: false, reason: legality.reason };
+  ch.resolved[card.node] = card.push;
+  ch.tag[card.node] = legality.leaf ? 'evidence-plain' : 'evidence-open';
+  const msg = legality.leaf
+    ? `${ch.short}: ${card.node} flips to ${card.push} — evidence played by ${actingShort}: "${card.text}" (their own condition: ${legality.reason})`
+    : `${ch.short}: ${card.node} flips to ${card.push} — evidence played by ${actingShort}: "${card.text}" (their answer here was still ${wordFor(ch.raw[card.node])})`;
+  return { applied: true, msg };
+}
+
 export function playEvidence(state, evidence, cardId, targetSlug) {
   const s = clone(state);
   if (s.ended) return { state: s, ok: false, reason: 'The game is over.' };
@@ -274,20 +288,72 @@ export function playEvidence(state, evidence, cardId, targetSlug) {
   if (!card) return { state: s, ok: false, reason: 'Unknown card.' };
   const ch = s.characters.find(c => c.slug === targetSlug);
   if (!ch) return { state: s, ok: false, reason: 'No such character.' };
-  const legality = evidenceLegality(card, ch);
-  if (!legality.legal) return { state: s, ok: false, reason: legality.reason };
+  const r = applyEvidenceTo(ch, card, acting.short);
+  if (!r.applied) return { state: s, ok: false, reason: r.reason };
 
-  ch.resolved[card.node] = card.push;
-  ch.tag[card.node] = legality.leaf ? 'evidence-plain' : 'evidence-open';
   s.deck = s.deck.filter(id => id !== cardId);
   s.discard.push(cardId);
-  const msg = legality.leaf
-    ? `${ch.short}: ${card.node} flips to ${card.push} — evidence played by ${acting.short}: "${card.text}" (their own condition: ${legality.reason})`
-    : `${ch.short}: ${card.node} flips to ${card.push} — evidence played by ${acting.short}: "${card.text}" (their answer here was still ${wordFor(ch.raw[card.node])})`;
-  s.log.push(msg);
+  s.log.push(r.msg);
   endTurn(s);
   checkEnd(s);
   return { state: s, ok: true };
+}
+
+// ── casting ANY card, not only a chosen one ───────────────────────────────────────────────────────
+// Draws one card id at random from the current deck using the SAME seeded RNG the rest of the game
+// already uses (game/fork/fork-engine.js's drawValue/rngFrom — never a second generator). Does not
+// remove it from the deck: the deck only changes once the drawn card is actually played
+// (playEvidence / playEvidenceGroup), so a cancelled draw costs nothing and spends no turn.
+export function castCard(state) {
+  const s = clone(state);
+  if (s.ended) return { state: s, error: 'The game is over.' };
+  if (!s.deck.length) return { state: s, error: 'No evidence left in the deck.' };
+  const r = drawValue(s.seed, s.drawN); s.drawN += 1;
+  const idx = Math.min(s.deck.length - 1, Math.floor(r * s.deck.length));
+  return { state: s, cardId: s.deck[idx] };
+}
+
+// All characters currently sitting at tree node `pos` — "the people currently in one cell" for a
+// group cast. `pos` is one of board-engine's own position ids (a leaf, or an intermediate node).
+export function charactersAt(state, pos) {
+  return state.characters.filter(c => c.pos === pos);
+}
+
+// Every position that currently holds MORE THAN ONE character — the eligible group-cast targets.
+export function groupTargets(state) {
+  const by = new Map();
+  for (const c of state.characters) {
+    const list = by.get(c.pos) || [];
+    list.push(c.slug);
+    by.set(c.pos, list);
+  }
+  return [...by.entries()].filter(([, slugs]) => slugs.length > 1).map(([pos, slugs]) => ({ pos, slugs }));
+}
+
+// Cast `cardId` at every character currently at position `pos`: one turn, one card spent. Each
+// target is checked separately against evidenceLegality (some may move, some may not — the log
+// records who and why for each), matching "cast multiple people" in the PR.
+export function playEvidenceGroup(state, evidence, cardId, pos) {
+  const s = clone(state);
+  if (s.ended) return { state: s, ok: false, reason: 'The game is over.' };
+  const acting = activeCharacter(s);
+  if (!s.deck.includes(cardId)) return { state: s, ok: false, reason: 'That card is not available.' };
+  const card = (evidence || []).find(c => c.id === cardId);
+  if (!card) return { state: s, ok: false, reason: 'Unknown card.' };
+  const targets = s.characters.filter(c => c.pos === pos);
+  if (!targets.length) return { state: s, ok: false, reason: 'No one is there right now.' };
+
+  const results = [];
+  for (const ch of targets) {
+    const r = applyEvidenceTo(ch, card, acting.short);
+    results.push({ slug: ch.slug, short: ch.short, applied: r.applied, reason: r.applied ? null : r.reason });
+    s.log.push(r.applied ? r.msg : `${ch.short}: ${card.node} unmoved by this card — ${r.reason}`);
+  }
+  s.deck = s.deck.filter(id => id !== cardId);
+  s.discard.push(cardId);
+  endTurn(s);
+  checkEnd(s);
+  return { state: s, ok: true, results };
 }
 
 // A free action: mark a fork point as named once the table has looked at both characters' bases
