@@ -5,6 +5,7 @@
 // pass-cover screen is what keeps the wrong eyes off it between turns.
 import { renderTree } from '../../explainers/belief-tree/tree-render.js';
 import * as E from './engine.js';
+import * as PS from '../shared/play-shell.js';
 
 const els = id => document.getElementById(id);
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
@@ -22,14 +23,52 @@ async function boot() {
   renderNameInputs();
   els('castYearBtn').addEventListener('click', castYearNow);
   els('dealBtn').addEventListener('click', dealAndBegin);
-  els('revealBtn').addEventListener('click', () => { els('passCover').hidden = true; renderTurn(); els('turnScreen').hidden = false; });
-  els('hideBtn').addEventListener('click', () => { els('turnScreen').hidden = true; showPassCover(); });
+  els('revealBtn').addEventListener('click', () => { els('passCover').hidden = true; els('game').inert = false; renderTurn(); els('turnScreen').hidden = false; });
+  els('hideBtn').addEventListener('click', () => { PS.closeAllOverlays(); els('turnScreen').hidden = true; showPassCover(); });
   els('passActionBtn').addEventListener('click', () => applyAndRender(g => E.pass(g, E.activePlayer(g).id, CARDS)));
   els('placeBetBtn').addEventListener('click', placeBet);
   els('betCategory').addEventListener('change', renderBetValues);
   els('rsiContinue').addEventListener('click', () => { els('rsiPanel').hidden = true; afterRSICheck(); });
   els('againBtn').addEventListener('click', () => location.reload());
+  els('newGameBtn').addEventListener('click', () => location.reload());
   renderBetValues();
+
+  setupPlayShell();
+}
+
+// ── the play-screen shell: topbar, the utility icon row, drawers, reduced motion ────────────────
+function setupPlayShell() {
+  PS.mountTopbar(els('psTopbar'), { title: 'The Lab Years', backHref: '../index.html', markSrc: '../../spiral.svg' });
+
+  document.querySelectorAll('.ps-close').forEach(b => { b.innerHTML = PS.icon('close', 16); });
+  els('objectiveBtn').innerHTML = PS.icon('eye');
+  els('tokensBtn').innerHTML = PS.icon('tokens');
+
+  // the setup screen's own "Quick rules" <details> is reused inside the play-time drawer verbatim
+  els('drawerRulesBody').innerHTML = els('rulesDetails').innerHTML.replace(/<summary[^>]*>.*?<\/summary>/s, '');
+
+  const utility = els('psUtility');
+  const rulesBtn = PS.iconButton({ iconName: 'rules', label: 'Rules', tip: 'Quick rules' });
+  const historyBtn = PS.iconButton({ iconName: 'book', label: 'History', tip: 'History & clues' });
+  const logBtn = PS.iconButton({ iconName: 'log', label: 'Log', tip: 'Full log' });
+  const settingsBtn = PS.iconButton({ iconName: 'settings', label: 'Settings', tip: 'Settings' });
+  [rulesBtn, historyBtn, logBtn, settingsBtn].forEach(b => utility.appendChild(b));
+
+  PS.wireDrawer(rulesBtn, els('drawerRules'));
+  PS.wireDrawer(historyBtn, els('drawerHistory'));
+  PS.wireDrawer(logBtn, els('drawerLog'));
+  PS.wireDrawer(settingsBtn, els('drawerSettings'));
+  PS.wireDrawer(els('objectiveBtn'), els('drawerObjective'));
+  PS.wireDrawer(els('tokensBtn'), els('drawerTokens'));
+
+  els('psWhy').addEventListener('click', () => PS.openOverlay(els('drawerLog'), els('psWhy')));
+
+  PS.makeHandSheet(els('hand'));
+
+  const reduced = PS.getStoredReducedMotion();
+  els('reducedMotionToggle').checked = reduced;
+  PS.setReducedMotion(reduced);
+  els('reducedMotionToggle').addEventListener('change', e => PS.setReducedMotion(e.target.checked));
 }
 
 function renderNameInputs() {
@@ -65,8 +104,16 @@ function dealAndBegin() {
   }
   game = E.newGame({ players, startYear: castYear, seed: castSeed, cards: CARDS });
   els('setup').hidden = true; els('game').hidden = false;
+  PS.enterPlayMode();
   renderBoard();
   afterRSICheck();
+}
+
+// the belief tree, shown persistently in the stage (not only when an RSI card fires); renderRSI()
+// below repaints the same #tree element with the real answers the moment one does fire.
+function renderNeutralTree() {
+  renderTree(els('tree'), { step: null, answers: {}, open: [], people: [], casting: null, theme: 'auto' },
+    { animate: !document.body.classList.contains('ps-reduced-motion'), legend: false });
 }
 
 // ── the public board (visible always; nothing secret lives here) ───────────────────────────────
@@ -74,6 +121,10 @@ function renderBoard() {
   if (!game) return;
   els('statYear').textContent = game.year;
   els('statCapability').textContent = game.capability + (game.capabilityFrozen ? ' (frozen)' : '');
+  els('rsiThreshVal').textContent = game.rsiThreshold;
+  const capMax = Math.max(20, game.rsiThreshold * 1.5, game.capability + 2);
+  els('capMeterFill').style.width = Math.min(100, 100 * game.capability / capMax) + '%';
+  els('capMeterThresh').style.left = Math.min(100, 100 * game.rsiThreshold / capMax) + '%';
   const flags = els('raceFlags');
   flags.textContent = game.raceCapped ? ' — capped' : '';
   const race = els('race'); race.innerHTML = '';
@@ -83,6 +134,7 @@ function renderBoard() {
     pip.className = 'pip' + (i < game.race ? ' is-filled' : '');
     race.appendChild(pip);
   }
+  els('raceLabelSr').textContent = `The race: ${game.race}/${shown}${game.raceCapped ? ', capped' : ''}`;
   const sgWrap = els('safeguards'); sgWrap.innerHTML = '';
   E.SAFEGUARDS.forEach(id => {
     const sg = game.safeguards[id], target = E.safeguardTarget(id);
@@ -105,15 +157,19 @@ function renderBoard() {
   } else cp.hidden = true;
   const log = els('log'); log.innerHTML = '';
   game.log.slice(-10).reverse().forEach(line => { const li = document.createElement('li'); li.textContent = line; log.appendChild(li); });
+  els('psWhy').textContent = game.log.length ? game.log[game.log.length - 1] : 'Nothing has happened yet.';
+  if (!(game.lastRSI && !game.lastRSI.__shown)) renderNeutralTree();
 }
 
 // ── the pass-and-play cover ──────────────────────────────────────────────────────────────────
 function showPassCover() {
   if (!game || game.ended) { renderEnd(); return; }
+  PS.closeAllOverlays();
   renderBoard();
   const p = E.activePlayer(game);
   els('passWho').textContent = `Pass the device to ${p.name}`;
   els('passCover').hidden = false;
+  els('game').inert = true;
 }
 
 function applyAndRender(fn) {
@@ -152,10 +208,10 @@ function renderRSI(rsi) {
     els('rsiText').textContent = rsi.reason === 'plateau'
       ? 'Fizzles for good: this World is a Plateau. RSI cards never resolve the tree in this game.'
       : `Fizzles: capability ${rsi.capability} is below the threshold ${rsi.threshold}, so it does not fire.`;
-    els('tree').innerHTML = '';
+    renderNeutralTree();
   } else if (rsi.deferred) {
     els('rsiText').textContent = 'Fires, but the tree does not resolve yet — capability and the race keep climbing on their own every remaining year (Automated research). The tree resolves at the end of the game.';
-    els('tree').innerHTML = '';
+    renderNeutralTree();
   } else {
     const a = rsi.alignment.answer, c = rsi.containment.answer;
     const containmentNode = a === 'yes' ? 'containment-if-aligned' : 'containment-if-not';
@@ -165,7 +221,7 @@ function renderRSI(rsi) {
     renderTree(els('tree'), {
       step: null, answers: { gate: 'yes', alignment: a, containment: c, race: 'yes' },
       open, people: [], casting: null, theme: 'auto',
-    }, { animate: true, legend: false });
+    }, { animate: !document.body.classList.contains('ps-reduced-motion'), legend: false });
     els('rsiText').textContent = `Alignment reads ${a}${rsi.alignment.cast ? ' (cast on partial progress)' : ''}${rsi.alignment.locked ? ' (locked by Goal-keeping)' : ''}. Containment reads ${c}${rsi.containment.cast ? ' (cast on partial progress)' : ''}. Result: ${E.LAB_LEAF_LABEL[rsi.leaf]}.`;
   }
   game.lastRSI = { ...game.lastRSI, __shown: true };
@@ -178,6 +234,7 @@ function renderTurn() {
   els('turnTitle').textContent = `${p.name}'s turn — action ${4 - p.actionsLeft} of 3`;
   const role = E.ROLES.find(r => r.id === p.role);
   els('turnRole').textContent = `Role: ${role.name} — ${role.power}`;
+  els('turnCompute').textContent = `Compute: ${p.compute}`;
   const obj = E.OBJECTIVES.find(o => o.id === p.objective);
   els('objectiveBox').innerHTML = `<b>Secret objective: ${esc(obj.name)}</b><p class="muted" style="margin:4px 0 0">${esc(obj.desc)}</p>`;
   els('tokensLeft').textContent = p.beliefTokensLeft;
@@ -201,10 +258,12 @@ function renderActionPanel(p) {
   const panel = els('actionPanel'); panel.innerHTML = '';
   const row = document.createElement('div'); row.className = 'actions';
   row.appendChild(actBtn('Research', () => applyAndRender(g => E.research(g, p.id, CARDS))));
-  row.appendChild(actBtn(`Build${pickedCardId ? '' : ' (pick a card)'}`, () => applyAndRender(g => E.build(g, p.id, pickedCardId, CARDS)), !pickedCardId || p.compute < 1));
-  row.appendChild(actBtn('Release (compute 2)', releaseFlow, p.compute < 2));
+  row.appendChild(actBtn('Build', () => applyAndRender(g => E.build(g, p.id, pickedCardId, CARDS)),
+    !pickedCardId || p.compute < 1, !pickedCardId ? 'Pick a card from your hand first.' : 'Needs 1 compute.'));
+  row.appendChild(actBtn('Release (compute 2)', releaseFlow, p.compute < 2, 'Needs 2 compute.'));
   row.appendChild(actBtn('Lobby (agreement +1)', () => applyAndRender(g => E.lobby(g, p.id, CARDS))));
-  row.appendChild(actBtn(`Publish${pickedCardId ? '' : ' (pick a card)'}`, () => applyAndRender(g => E.publish(g, p.id, pickedCardId, CARDS)), !pickedCardId));
+  row.appendChild(actBtn('Publish', () => applyAndRender(g => E.publish(g, p.id, pickedCardId, CARDS)),
+    !pickedCardId, 'Pick a card from your hand first.'));
   panel.appendChild(row);
 
   const secureRow = document.createElement('div'); secureRow.className = 'actions';
@@ -227,7 +286,7 @@ function renderActionPanel(p) {
       roleRow.appendChild(actBtn('Peek World: Alignment dynamics (once/game)', () => peekWorld('alignmentDynamics')));
     }
   }
-  if (p.role === 'redTeamer') roleRow.appendChild(actBtn('Audit (cancel a capability step)', () => applyAndRender(g => E.auditCapabilityStep(g, p.id, CARDS)), game.auditUsedThisRound));
+  if (p.role === 'redTeamer') roleRow.appendChild(actBtn('Audit (cancel a capability step)', () => applyAndRender(g => E.auditCapabilityStep(g, p.id, CARDS)), game.auditUsedThisRound, 'Already used this round.'));
   if (p.role === 'whistleblower' && !p.whistleblowUsed) {
     game.players.filter(o => o.id !== p.id).forEach(o => {
       roleRow.appendChild(actBtn(`Whistleblow: reveal ${o.name}'s hand (once/game)`, () => applyAndRender(g => E.useWhistleblower(g, p.id, 'reveal', o.id, CARDS))));
@@ -238,15 +297,26 @@ function renderActionPanel(p) {
 
   const tradeRow = document.createElement('div'); tradeRow.className = 'actions';
   game.players.filter(o => o.id !== p.id).forEach(o => {
-    tradeRow.appendChild(actBtn(`Trade to ${o.name}${pickedCardId ? '' : ' (pick a card)'}`, () => {
-      if (!pickedCardId) { flashError('Pick a card first.'); return; }
+    tradeRow.appendChild(actBtn(`Trade to ${o.name}`, () => {
       applyAndRender(g => (p.bloc === o.bloc ? E.trade(g, p.id, o.id, [pickedCardId], CARDS) : E.tradeWithConsent(g, p.id, o.id, [pickedCardId], CARDS)));
-    }, !pickedCardId));
+    }, !pickedCardId, 'Pick a card from your hand first.'));
   });
   panel.appendChild(tradeRow);
 }
-function actBtn(label, onClick, disabled) {
-  const b = document.createElement('button'); b.textContent = label; b.disabled = !!disabled; b.addEventListener('click', onClick); return b;
+// A disabled action still explains why on tap (aria-disabled, not the disabled attribute, since a
+// natively-disabled button never receives a click at all — phones have no hover to show a title).
+function actBtn(label, onClick, disabled, reason) {
+  const b = document.createElement('button');
+  b.textContent = label;
+  if (disabled) {
+    b.classList.add('is-disabled');
+    b.setAttribute('aria-disabled', 'true');
+    if (reason) b.title = reason;
+    b.addEventListener('click', () => { if (reason) flashError(reason); });
+  } else {
+    b.addEventListener('click', onClick);
+  }
+  return b;
 }
 function flashInfo(text) {
   const panel = els('actionPanel'); const p = document.createElement('p'); p.className = 'muted'; p.textContent = text; panel.prepend(p);
@@ -311,6 +381,9 @@ function placeBet() {
 // ── the end: the World is revealed, and scoring shown ───────────────────────────────────────────
 function renderEnd() {
   els('turnScreen').hidden = true; els('passCover').hidden = true; els('rsiPanel').hidden = true;
+  els('game').inert = false; els('game').hidden = true;
+  PS.closeAllOverlays();
+  PS.exitPlayMode();
   renderBoard();
   els('end').hidden = false;
   const type = game.ended.type;

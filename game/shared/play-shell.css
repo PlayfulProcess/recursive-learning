@@ -1,0 +1,149 @@
+/*
+ * game/shared/play-shell.css — the "everything on one screen" app shell for The Lab Years and
+ * The Tree, modelled on recursive.eco's kiosk player (fixed stage, one row of round icon
+ * buttons under a thin progress bar, panels that scroll inside themselves, secondary things in
+ * overlays/drawers). Layout only: no game rules live here. Uses theme.css tokens only — no new
+ * colours. Tap targets are >=44px throughout.
+ *
+ * Contract with each game's own <style>: a page opts in by adding class "play-shell" to its
+ * <main class="wrap" id="main">, and toggling `document.body.classList.add/remove('ps-active')`
+ * via game/shared/play-shell.js when play starts/ends. Setup and end screens keep body without
+ * ps-active, so they scroll normally.
+ */
+html, body { height: 100%; }
+body.ps-active { margin: 0; height: 100dvh; overflow: hidden; }
+body.ps-active site-header, body.ps-active site-footer { display: none; }
+body.ps-active main.wrap.play-shell {
+  max-width: none; margin: 0; padding: 0; height: 100dvh;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+/* while inactive (setup/end), the play-only chrome must not render */
+main.wrap.play-shell:not(.ps-in-play) .ps-only { display: none !important; }
+/* while active, the pre-game intro (title, lede, the setup-screen rules) must not render */
+main.wrap.play-shell.ps-in-play .ps-only-setup { display: none !important; }
+
+/* #game is the flex ITEM that must grow to fill whatever the topbar leaves inside <main>'s column,
+   and is itself the flex CONTAINER for the stage/progress/utility row/turn area below — without
+   this, those children's own flex/min-height:0 rules have no flex parent to size against, and a
+   tall stage (the belief tree) just pushes everything else past 100dvh, clipped by <main>'s own
+   overflow:hidden instead of scrolling inside the stage as intended. */
+body.ps-active #game {
+  flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow: hidden;
+}
+#turnScreen { display: flex; flex-direction: column; flex: 0 0 auto; min-height: 0; }
+
+.ps-topbar {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px; border-bottom: 1px solid var(--line); background: var(--panel);
+  min-height: 44px;
+}
+.ps-topbar .ps-back {
+  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--panel2); color: var(--ink); display: flex; align-items: center;
+  justify-content: center; flex: 0 0 auto; cursor: pointer; text-decoration: none;
+}
+.ps-topbar .ps-back svg { width: 18px; height: 18px; }
+.ps-topbar .ps-mark { width: 22px; height: 22px; display: block; flex: 0 0 auto; }
+.ps-topbar .ps-title { font-weight: 700; font-size: 14px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.ps-stage {
+  flex: 1 1 auto; min-height: 0; overflow: auto; padding: 8px 10px 4px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.ps-tracks { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; flex: 0 0 auto; }
+.ps-chip {
+  border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; font-size: 12px;
+  background: var(--panel2); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.ps-chip b { font-weight: 800; }
+.ps-chip .k { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.ps-meter { width: 52px; height: 6px; border-radius: 4px; background: var(--line); overflow: hidden; display: inline-block; position: relative; }
+.ps-meter > i { display: block; height: 100%; background: var(--accent); }
+.ps-meter .ps-thresh { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--bad, #c0473b); }
+.ps-safeguards-compact { display: flex; flex-wrap: wrap; gap: 6px; flex: 0 0 auto; }
+.ps-tree-box { flex: 1 1 auto; min-height: 70px; }
+.ps-tree-box #tree { width: 100%; }
+
+/* the race track, restyled as a thin progress bar (both games build it from <span class="pip">) */
+.ps-progress { flex: 0 0 auto; display: flex; gap: 3px; margin: 2px 10px; }
+.ps-progress .pip { flex: 1 1 0; height: 6px; min-width: 4px; border-radius: 3px; background: var(--line); border: none; }
+.ps-progress .pip.is-filled { background: var(--bad, #c0473b); }
+
+.ps-utility { flex: 0 0 auto; display: flex; gap: 6px; justify-content: center; padding: 6px 10px; flex-wrap: wrap; }
+
+.icon-btn {
+  min-width: 44px; min-height: 44px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--panel2); color: var(--ink); display: inline-flex; align-items: center;
+  justify-content: center; gap: 6px; cursor: pointer; position: relative; padding: 0 12px;
+  font: inherit; font-size: 13px; font-weight: 600;
+}
+.icon-btn svg { width: 20px; height: 20px; flex: 0 0 auto; }
+.icon-btn .icon-label { display: none; }
+.icon-btn[disabled] { opacity: .45; cursor: not-allowed; }
+.icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (min-width: 601px) { .icon-btn .icon-label { display: inline; } }
+.icon-btn[data-tip]:hover::after, .icon-btn[data-tip]:focus-visible::after {
+  content: attr(data-tip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+  margin-bottom: 6px; background: var(--ink); color: var(--bg); font-size: 11px; padding: 3px 7px;
+  border-radius: 6px; white-space: nowrap; pointer-events: none; z-index: 30;
+}
+
+.ps-hud {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 10px; padding: 6px 10px;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--panel2);
+  font-size: 12.5px; flex-wrap: wrap;
+}
+.ps-hud .ps-who { font-weight: 800; }
+.ps-hud .ps-why {
+  flex: 1 1 140px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  cursor: pointer; color: var(--muted); text-decoration: underline dotted; background: none;
+  border: none; font: inherit; text-align: left; padding: 4px 0; min-height: 24px;
+}
+
+.ps-hand { flex: 0 0 auto; display: flex; gap: 8px; overflow-x: auto; padding: 8px 10px; -webkit-overflow-scrolling: touch; }
+.ps-hand > * { flex: 0 0 auto; }
+/* one horizontally-scrolling strip — never wraps, so a long or dynamic action list never grows
+   the page's vertical height. A game with few actions (The Tree) just leaves room to spare. */
+.ps-actions { flex: 0 0 auto; display: flex; gap: 8px; overflow-x: auto; padding: 4px 10px 10px; flex-wrap: nowrap; }
+.ps-actions > * { flex: 0 0 auto; }
+
+/* overlays / drawers — scroll inside themselves, never the page */
+.ps-overlay { position: fixed; inset: 0; background: rgba(20, 16, 10, .4); z-index: 40; display: flex; align-items: flex-end; justify-content: center; }
+.ps-overlay[hidden] { display: none; }
+@media (min-width: 601px) { .ps-overlay { align-items: center; } }
+.ps-drawer {
+  background: var(--bg); border-radius: 14px 14px 0 0; max-width: 520px; width: 100%;
+  max-height: 85vh; overflow: auto; padding: 16px; box-shadow: var(--shadow-lift, 0 26px 46px -22px rgba(0,0,0,.5));
+  position: relative;
+}
+@media (min-width: 601px) { .ps-drawer { border-radius: 14px; max-height: 80vh; } }
+.ps-drawer h2 { margin-top: 0; font-size: 17px; }
+.ps-drawer .ps-close { position: absolute; top: 10px; right: 10px; }
+
+/* the pass-the-device cover, restyled as the same overlay pattern, still fully opaque */
+#passCover.ps-overlay { background: var(--bg); z-index: 50; }
+#passCover .ps-drawer { text-align: center; }
+
+@media (max-width: 600px) {
+  .ps-hand {
+    position: fixed; left: 0; right: 0; bottom: 0; background: var(--bg);
+    border-top: 1px solid var(--line); border-radius: 14px 14px 0 0;
+    transform: translateY(calc(100% - 56px)); transition: transform .25s ease;
+    z-index: 20; flex-wrap: wrap; max-height: 60vh; overflow-y: auto; padding-top: 16px;
+  }
+  .ps-hand.is-open { transform: translateY(0); }
+  .ps-hand::before {
+    content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    width: 36px; height: 4px; border-radius: 2px; background: var(--line);
+  }
+  /* .ps-actions is the last element still in normal flow (the hand becomes position:fixed), so it
+     naturally lands at the bottom, within thumb reach; padding reserves room above the hand-sheet's
+     56px peek so its buttons are never covered. */
+  .ps-actions { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+  .ps-utility { padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-motion: reduce), body.ps-reduced-motion {
+  .ps-hand { transition: none; }
+}
+
+.ps-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <link rel="stylesheet" href="../../theme.css?v=1">
+<link rel="stylesheet" href="../shared/play-shell.css?v=1">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Lab Years · Recursive Eco-Improvement</title>
@@ -10,12 +11,15 @@
 <meta property="og:description" content="3-5 players, one device. Build capability, secure safeguards, and find out which of you was actually right.">
 <link rel="icon" type="image/svg+xml" href="../../spiral.svg">
 <!--
-  The Lab Years (first playable, Sep 26 2026). game/lab-years/engine.js is the pure rules; this file
-  and lab-years.js are the DOM layer. Reuses explainers/belief-tree/tree-render.js (never edited
-  here) to draw the belief tree an RSI card resolves through, and game/fork/fork-engine.js's own
-  draw primitive for the start-year cast and any partial-safeguard cast — no second random engine,
-  no second leaf mapping. See rules.html for the full rulebook and the credits for every borrowed
-  mechanic. scripts/sim-lab-years.mjs is how the constants below were tuned.
+  The Lab Years (first playable, Sep 26 2026; play-screen redesign Sep 26 2026). game/lab-years/
+  engine.js is the pure rules (untouched here); this file, lab-years.js and game/shared/play-shell.*
+  are the DOM/layout layer. Reuses explainers/belief-tree/tree-render.js (never edited here) to draw
+  the belief tree — now shown persistently in the stage, not only when an RSI card fires — and
+  game/fork/fork-engine.js's own draw primitive for the start-year cast. During play the page is a
+  fixed-height app shell (game/shared/play-shell.css): one stage, one HUD line, the hand, the
+  actions, and everything secondary (rules, log, history+clues, the secret objective, belief
+  tokens, settings) behind round icon buttons that open drawers. Setup and end still scroll
+  normally. See rules.html for the full rulebook.
 -->
 <style>
   *{box-sizing:border-box}
@@ -24,6 +28,7 @@
   .wrap{max-width:760px;margin:0 auto;padding:18px 16px 90px}
   h1{font-size:24px;margin:.2em 0 .15em}
   h2{font-size:18px;margin:0 0 8px}
+  h3{font-size:15px;margin:0 0 4px}
   .lede{color:var(--muted);font-size:14.5px;line-height:1.6}
   a{color:var(--accent)}
   details.rules{margin:14px 0 18px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--panel)}
@@ -35,54 +40,36 @@
     background:var(--panel2);color:var(--ink);padding:9px 14px;min-height:44px;line-height:1.2}
   button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
   button.danger{background:#c0473b;border-color:#c0473b;color:#fff}
-  button[disabled]{opacity:.5;cursor:not-allowed}
+  button[disabled],button.is-disabled{opacity:.5;cursor:not-allowed}
   button.is-picked{border-color:var(--accent);background:var(--chip)}
   button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
   label{font-weight:600;font-size:14px}
   select,input[type=text]{font-size:15px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);min-height:44px}
 
-  section[hidden]{display:none}
+  [hidden]{display:none!important}
   .panel{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel);margin-bottom:14px}
   .muted{color:var(--muted);font-size:13px}
-
-  /* pass-and-play cover screen */
-  #passCover{position:fixed;inset:0;background:var(--bg);z-index:20;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;padding:24px}
-  #passCover[hidden]{display:none}
-  #passCover h2{font-size:22px}
-  #passCover button{margin-top:14px;padding:14px 22px;font-size:16px}
 
   .board{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
   .stat{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2)}
   .stat .k{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:block}
   .stat .v{font-weight:800;font-size:17px}
-  .race{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0}
-  .race .pip{width:16px;height:16px;border-radius:4px;border:1px solid var(--line);background:var(--panel)}
-  .race .pip.is-filled{background:#c0473b;border-color:#c0473b}
 
-  .safeguards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-  .sg{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2)}
-  .sg b{display:block;font-size:13px}
-  .sg .bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:4px}
-  .sg .bar > i{display:block;height:100%;background:var(--accent)}
-  .sg.secured{border-color:var(--accent)}
+  .sg b{display:block;font-size:12.5px}
+  .sg .bar{height:7px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:3px;width:74px}
+  .sg .bar>i{display:block;height:100%;background:var(--accent)}
 
-  .hand{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-  .card{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2);font-size:13px;
-    max-width:220px;cursor:pointer;text-align:left}
+  .actions{display:flex;gap:8px;flex:0 0 auto}
+  .hand .card{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2);font-size:13px;
+    max-width:220px;min-width:150px;cursor:pointer;text-align:left;flex:0 0 auto}
   .card.is-picked{border-color:var(--accent);background:var(--chip)}
   .card .tag{display:block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);margin-bottom:2px}
   .card.suit-alignment .tag{color:#5b7fc0} .card.suit-containment .tag{color:#3f7a5c}
   .card.suit-agreement .tag{color:#8a5fb0} .card.suit-understanding .tag{color:#c8932f} .card.suit-wild .tag{color:var(--muted)}
 
-  .actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-  #actionPanel{margin-top:8px}
-  #log{list-style:none;margin:0;padding:0;font-size:12.5px;color:var(--muted);max-height:180px;overflow:auto}
-  #log li{padding:3px 0;border-bottom:1px dashed var(--line)}
-
-  #tree{width:100%}
-  .tree-wrap{margin:10px 0}
+  #log li{list-style:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13px;color:var(--ink-soft)}
+  #log{margin:0;padding:0}
 
   .clue{border-left:3px solid var(--accent);background:var(--panel2);padding:8px 10px;font-size:13px;margin:6px 0}
 
@@ -94,20 +81,22 @@
   table.score th,table.score td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left}
   .won{color:var(--accent);font-weight:800}
 
-  @media (max-width:480px){ .wrap{padding:14px 12px 70px} .board,.safeguards{grid-template-columns:1fr} }
+  #objectiveBox{background:var(--chip);border-radius:10px;padding:10px 12px}
+
+  @media (max-width:480px){ .wrap{padding:14px 12px 70px} .board{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
 <script src="../../shared/nav.js"></script>
 
-<main class="wrap" id="main">
-  <h1>The Lab Years</h1>
-  <p class="lede">A 90-minute pass-and-play strategy game about the AI race. 3-5 players, one
+<main class="wrap play-shell" id="main">
+  <h1 class="ps-only-setup">The Lab Years</h1>
+  <p class="lede ps-only-setup">A 90-minute pass-and-play strategy game about the AI race. 3-5 players, one
     device. Each of you is an AI-lab researcher with a public role and a <b>secret</b> objective;
     a hidden World decides how the race actually resolves, and none of you finds out which one
     until it does. <a href="rules.html">Full rulebook</a>.</p>
 
-  <details class="rules">
+  <details class="rules ps-only-setup" id="rulesDetails">
     <summary>Quick rules</summary>
     <p><b>A round is one year.</b> Compute +1 for everyone, an event card (or more, as the race
       rises) is drawn, then each player takes a full turn of 3 actions: <b>Research</b> (draw a
@@ -154,64 +143,117 @@
       from real, dated history (each with its source) — face up before anyone's first turn.</p>
   </section>
 
+  <div class="ps-topbar ps-only" id="psTopbar"></div>
+
   <section id="game" hidden>
-    <div class="board">
-      <div class="stat"><span class="k">Year</span><span class="v" id="statYear"></span></div>
-      <div class="stat"><span class="k">Capability</span><span class="v" id="statCapability"></span></div>
-    </div>
-    <div class="stat" style="margin-bottom:12px">
-      <span class="k">The race<span id="raceFlags"></span></span>
-      <div class="race" id="race" aria-hidden="true"></div>
-    </div>
-    <div class="safeguards" id="safeguards"></div>
-    <div class="panel" id="historyPanel"></div>
-    <div class="panel" id="cluesPanel" hidden>
-      <h2>Clues so far</h2>
-      <div id="clueList"></div>
-    </div>
-    <div class="panel" id="rsiPanel" hidden>
-      <h2 id="rsiTitle"></h2>
-      <div class="tree-wrap"><div id="tree" aria-label="The belief tree"></div></div>
-      <p id="rsiText"></p>
-      <button id="rsiContinue" class="primary">Continue</button>
-    </div>
-    <ul id="log" aria-live="polite"></ul>
-  </section>
-
-  <div id="passCover" hidden>
-    <h2 id="passWho"></h2>
-    <p class="muted" id="passSub">Pass the device, then tap to reveal your turn.</p>
-    <button id="revealBtn" class="primary">Tap to reveal</button>
-  </div>
-
-  <section id="turnScreen" hidden>
-    <div class="panel">
-      <h2 id="turnTitle"></h2>
-      <p class="muted" id="turnRole"></p>
-      <div class="row">
-        <button id="hideBtn">Hide (pass the device back)</button>
+    <div class="ps-stage">
+      <div class="ps-tracks">
+        <span class="ps-chip"><span class="k">Year</span> <b id="statYear"></b></span>
+        <span class="ps-chip"><span class="k">Capability</span> <b id="statCapability"></b>
+          <span class="ps-meter" id="capMeter"><i id="capMeterFill"></i><i class="ps-thresh" id="capMeterThresh"></i></span></span>
+        <span class="ps-chip">RSI fires at <b id="rsiThreshVal"></b><span id="raceFlags"></span></span>
       </div>
-      <div id="objectiveBox" class="panel" style="background:var(--chip)"></div>
-      <h2>Your hand</h2>
-      <div class="hand" id="hand"></div>
-      <div id="actionPanel"></div>
+      <div class="ps-tree-box"><div id="tree" aria-label="The belief tree"></div></div>
+      <div class="ps-safeguards-compact" id="safeguards"></div>
+    </div>
+
+    <div class="ps-progress" id="race" aria-hidden="true"></div>
+    <p class="ps-sr-only" id="raceLabelSr" aria-live="polite"></p>
+
+    <div class="ps-utility" id="psUtility"></div>
+
+    <div id="turnScreen">
+      <div class="ps-hud">
+        <button type="button" id="hideBtn">Hide</button>
+        <span class="ps-who" id="turnTitle"></span>
+        <span class="muted" id="turnRole"></span>
+        <span class="muted" id="turnCompute"></span>
+        <button type="button" class="icon-btn" id="objectiveBtn" data-tip="Your secret objective" aria-label="Your secret objective"></button>
+        <button type="button" class="icon-btn" id="tokensBtn" data-tip="Belief tokens" aria-label="Belief tokens"></button>
+        <button type="button" class="ps-why" id="psWhy"></button>
+      </div>
+      <div class="ps-hand hand" id="hand"></div>
+      <div class="ps-actions" id="actionPanel"></div>
       <div class="row">
         <button id="passActionBtn">Pass (use one action)</button>
       </div>
-      <details>
-        <summary>Belief bets (secret) — <span id="tokensLeft"></span> left</summary>
-        <div class="row">
-          <select id="betCategory">
-            <option value="takeoff">Takeoff</option>
-            <option value="alignmentDynamics">Alignment dynamics</option>
-          </select>
-          <select id="betValue"></select>
-          <button id="placeBetBtn">Place token</button>
-        </div>
-        <div id="betList" class="muted"></div>
-      </details>
     </div>
   </section>
+
+  <div id="passCover" class="ps-overlay" hidden>
+    <div class="ps-drawer">
+      <h2 id="passWho"></h2>
+      <p class="muted" id="passSub">Pass the device, then tap to reveal your turn.</p>
+      <button id="revealBtn" class="primary">Tap to reveal</button>
+    </div>
+  </div>
+
+  <div class="ps-overlay" id="drawerRules" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="drawerRulesTitle">
+    <div class="ps-drawer">
+      <button type="button" class="icon-btn ps-close" data-ps-close aria-label="Close"></button>
+      <h2 id="drawerRulesTitle">Quick rules</h2>
+      <div id="drawerRulesBody"></div>
+    </div>
+  </div>
+
+  <div class="ps-overlay" id="drawerHistory" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="drawerHistoryTitle">
+    <div class="ps-drawer">
+      <button type="button" class="icon-btn ps-close" data-ps-close aria-label="Close"></button>
+      <h2 id="drawerHistoryTitle">History &amp; clues</h2>
+      <div id="historyPanel"></div>
+      <div id="cluesPanel" hidden><h3>Clues so far</h3><div id="clueList"></div></div>
+    </div>
+  </div>
+
+  <div class="ps-overlay" id="drawerLog" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="drawerLogTitle">
+    <div class="ps-drawer">
+      <button type="button" class="icon-btn ps-close" data-ps-close aria-label="Close"></button>
+      <h2 id="drawerLogTitle">Full log</h2>
+      <ul id="log" aria-live="polite"></ul>
+    </div>
+  </div>
+
+  <div class="ps-overlay" id="drawerObjective" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="drawerObjectiveTitle">
+    <div class="ps-drawer">
+      <button type="button" class="icon-btn ps-close" data-ps-close aria-label="Close"></button>
+      <h2 id="drawerObjectiveTitle">Your secret objective</h2>
+      <div id="objectiveBox"></div>
+    </div>
+  </div>
+
+  <div class="ps-overlay" id="drawerTokens" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="drawerTokensTitle">
+    <div class="ps-drawer">
+      <h2 id="drawerTokensTitle">Belief bets (secret) — <span id="tokensLeft"></span> left</h2>
+      <button type="button" class="icon-btn ps-close" data-ps-close aria-label="Close"></button>
+      <div class="row">
+        <select id="betCategory">
+          <option value="takeoff">Takeoff</option>
+          <option value="alignmentDynamics">Alignment dynamics</option>
+        </select>
+        <select id="betValue"></select>
+        <button id="placeBetBtn">Place token</button>
+      </div>
+      <div id="betList" class="muted"></div>
+    </div>
+  </div>
+
+  <div class="ps-overlay" id="drawerSettings" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="drawerSettingsTitle">
+    <div class="ps-drawer">
+      <button type="button" class="icon-btn ps-close" data-ps-close aria-label="Close"></button>
+      <h2 id="drawerSettingsTitle">Settings</h2>
+      <div class="row"><label><input type="checkbox" id="reducedMotionToggle"> Reduced motion (tree animation off)</label></div>
+      <p class="muted">Theme follows the site's own light theme.</p>
+      <div class="row"><button id="newGameBtn" class="danger">Set up a new game</button></div>
+    </div>
+  </div>
+
+  <div class="ps-overlay" id="rsiPanel" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="rsiTitle">
+    <div class="ps-drawer">
+      <h2 id="rsiTitle"></h2>
+      <p id="rsiText"></p>
+      <button id="rsiContinue" class="primary">Continue</button>
+    </div>
+  </div>
 
   <section id="end" class="panel" hidden>
     <h2 id="endTitle"></h2>
