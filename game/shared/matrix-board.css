@@ -58,8 +58,10 @@
   padding: 7px 12px; min-height: 44px;
 }
 .mb-gate .mb-gate-q { font-weight: 800; font-size: 16px; line-height: 1.25; flex: 0 0 auto; }
-.mb-gate .mb-gate-sub { font-size: 13px; color: var(--mb-dim); flex: 1 1 auto; min-width: 0;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Wraps rather than truncates: the gate row is flex:0 0 auto (not a fixed height), so at a narrow
+   width it just grows a line taller instead of ellipsis-clipping the sentence — no header text on
+   this board is ever cut off, only wrapped or (in is-compact, below) dropped in full. */
+.mb-gate .mb-gate-sub { font-size: 13px; color: var(--mb-dim); flex: 1 1 auto; min-width: 0; }
 .mb-gate .mb-answer { flex: 0 0 auto; }
 /* On a genuinely short box (360×640 and similar) the gate's full sub-text and the corner's question
    reminder are the two things this board can most afford to drop — the Rules drawer still carries
@@ -70,7 +72,7 @@
    better-supported choice for a "does everything fit" check like this one). */
 .mb-board.is-compact .mb-gate { padding: 5px 10px; min-height: 36px; }
 .mb-board.is-compact .mb-gate .mb-gate-sub { display: none; }
-.mb-board.is-compact .mb-corner .mb-q { display: none; }
+.mb-board.is-compact .mb-group-tag { display: none; }
 
 /* ── answer marks: check / cross / half-filled — never colour alone, the word is always there ── */
 .mb-answer { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 700;
@@ -87,33 +89,62 @@
 }
 
 .mb-gridwrap { flex: 1 1 auto; min-height: 0; min-width: 0; display: flex; }
+/* Each question is written ONCE, as its own group-header row/column (mb-align-head above the two
+   column headers, mb-contain-head — rotated — to the left of the two row headers), named by CSS
+   grid-template-areas rather than row/column numbers so the markup order doesn't have to match the
+   visual order. The corner is left empty (the gate's own state is in the gate bar above the whole
+   grid, not repeated here). Column 2 (the row-header column) is wide enough for "yes"/"no" WITH
+   their check/cross icon at every breakpoint down to 360px — the clipping the short labels replace
+   (full words like "Containment: yes") is exactly what made that column need to be so cramped. */
 .mb-grid {
   flex: 1 1 auto; display: grid; min-height: 0; min-width: 0; overflow: hidden;
-  grid-template-columns: minmax(44px,84px) 1fr 1fr;
+  grid-template-columns: minmax(20px,26px) minmax(58px,78px) 1fr 1fr;
   /* minmax(0,1fr), never a bare 1fr: a bare fr track's automatic minimum is its content's
      max-content size, so on a genuinely short box (a phone in landscape, or 800×600) the ROWS would
      refuse to shrink and overflow past the grid's own box even though the grid container itself can
      (min-height:0, above) — minmax(0, 1fr) lets a cramped row actually shrink, and .mb-cell's own
      overflow:hidden clips its content cleanly instead of spilling into the staging strip below it. */
-  grid-template-rows: auto minmax(0,1fr) minmax(0,1fr);
+  grid-template-rows: auto auto minmax(0,1fr) minmax(0,1fr);
+  grid-template-areas:
+    "corner  corner  align align"
+    "contain .       cyes  cno"
+    "contain ryes    p11   p21"
+    "contain rno     p12   p22";
   gap: 3px;
 }
 @container mb (max-width: 420px) {
-  .mb-grid { grid-template-columns: minmax(36px,56px) 1fr 1fr; }
+  .mb-grid { grid-template-columns: minmax(16px,20px) minmax(46px,60px) 1fr 1fr; }
 }
 
-.mb-corner { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; }
-.mb-corner .mb-q { font-size: 12px; color: var(--mb-dim); text-align: center; line-height: 1.2; }
+.mb-corner { grid-area: corner; }
+
+.mb-group-head {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  font-size: 13px; font-weight: 700; color: var(--mb-dim); line-height: 1.25; gap: 4px;
+  padding: 2px 4px; overflow: hidden;
+}
+.mb-align-head { grid-area: align; }
+.mb-contain-head {
+  grid-area: contain; writing-mode: vertical-rl; transform: rotate(180deg);
+  padding: 4px 2px; white-space: nowrap;
+}
+.mb-contain-head > span { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.mb-group-tag { font-weight: 500; color: var(--mb-mid); font-size: 12px; }
 
 .mb-colhead, .mb-rowhead {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 3px; padding: 5px 4px; border-radius: 8px; background: var(--mb-tint);
+  display: flex; flex-direction: row; align-items: center; justify-content: center;
+  gap: 5px; padding: 5px 4px; border-radius: 8px; background: var(--mb-tint);
   border: 1px solid transparent; transition: background .5s ease, border-color .5s ease;
+  min-width: 0; overflow: hidden;
 }
+.mb-colhead-yes { grid-area: cyes; }
+.mb-colhead-no { grid-area: cno; }
+.mb-rowhead-yes { grid-area: ryes; }
+.mb-rowhead-no { grid-area: rno; }
 .mb-colhead { text-align: center; }
 .mb-rowhead { text-align: center; }
 .mb-colhead .mb-htitle, .mb-rowhead .mb-htitle {
-  font-size: 16px; font-weight: 800; line-height: 1.15;
+  font-size: 16px; font-weight: 800; line-height: 1.15; white-space: nowrap;
 }
 .mb-colhead svg, .mb-rowhead svg, .mb-corner svg { width: 18px; height: 18px; flex: 0 0 auto; }
 .mb-colhead.is-flash, .mb-rowhead.is-flash {
@@ -122,10 +153,6 @@
 }
 @keyframes mb-flash { 0% { box-shadow: 0 0 0 3px var(--mb-focus); } 100% { box-shadow: 0 0 0 0 transparent; } }
 body.ps-reduced-motion .mb-colhead.is-flash, body.ps-reduced-motion .mb-rowhead.is-flash { animation: none; }
-
-.mb-headq { grid-column: 2 / span 2; grid-row: 1; text-align: center; font-size: 13px; color: var(--mb-dim); padding: 0 2px 2px; }
-.mb-rowq { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 12px; color: var(--mb-dim);
-  display: flex; align-items: center; justify-content: center; grid-column: 1; grid-row: 2 / span 2; }
 
 .mb-cell {
   border: 1px solid var(--mb-line); border-radius: 10px; background: var(--mb-node);

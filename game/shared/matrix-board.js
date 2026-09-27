@@ -74,6 +74,13 @@ function gateHtml(view) {
 }
 
 // ── the 2×2 grid: columns = alignment (yes/no), rows = containment (yes/no) ─────────────────────
+// Each question is written ONCE, as a group header spanning its two columns (alignment, above) or
+// its two rows (containment, a rotated label to the left) — never repeated inside every column/row
+// header, which is what used to crowd both questions into the corner cell. The corner itself is left
+// empty (the gate's own state already shows in the gate bar above the whole grid). Named grid-areas
+// (not row/column numbers) place everything, so the HTML order below doesn't have to match the
+// visual order.
+const AREA_FOR_LEAF = { proceed: 'p11', contain: 'p21', regulate: 'p12', shutdown: 'p22' };
 function cellFor(alignment, containment) { return leafFor({ alignment, containment }); }
 
 function gridHtml(view) {
@@ -82,25 +89,26 @@ function gridHtml(view) {
     const leaf = cellFor(align, contain);
     const list = byPos.get(leaf) || [];
     const chips = list.map(e => chipHtml(e.person, { active: e.person.slug === view.activeSlug, colorIndex: e.colorIndex })).join('');
-    return `<div class="mb-cell" data-leaf="${leaf}">
+    return `<div class="mb-cell" data-leaf="${leaf}" style="grid-area:${AREA_FOR_LEAF[leaf]}">
         <div class="mb-cell-title">${esc(LEAF_LABEL[leaf])}</div>
         <div class="mb-cell-chips">${chips}</div>
       </div>`;
   };
-  const flashCol = view.flashNode === 'alignment' ? ' is-flash' : '';
-  const flashRowYes = view.flashNode === 'containment-if-aligned' ? ' is-flash' : '';
-  const flashRowNo = view.flashNode === 'containment-if-not' ? ' is-flash' : '';
   const flashColYes = view.flashNode === 'alignment' && view.flashValue === 'yes' ? ' is-flash' : '';
   const flashColNo = view.flashNode === 'alignment' && view.flashValue === 'no' ? ' is-flash' : '';
+  const flashRowYes = view.flashNode === 'containment-if-aligned' ? ' is-flash' : '';
+  const flashRowNo = view.flashNode === 'containment-if-not' ? ' is-flash' : '';
   return `
     <div class="mb-grid">
-      <div class="mb-corner"><span class="mb-q">${esc(view.alignQ)} / ${esc(view.containQ)}</span></div>
-      <div class="mb-colhead${flashColYes}">${SVG_CHECK}<span class="mb-htitle">Alignment: yes</span></div>
-      <div class="mb-colhead${flashColNo}">${SVG_CROSS}<span class="mb-htitle">Alignment: no</span></div>
-      <div class="mb-rowhead${flashRowYes}">${SVG_CHECK}<span class="mb-htitle" style="writing-mode:horizontal-tb;transform:none">Containment: yes</span></div>
+      <div class="mb-corner"></div>
+      <div class="mb-group-head mb-align-head">${esc(view.alignQ)} <span class="mb-group-tag">(alignment)</span></div>
+      <div class="mb-group-head mb-contain-head"><span>${esc(view.containQ)} <span class="mb-group-tag">(containment)</span></span></div>
+      <div class="mb-colhead mb-colhead-yes${flashColYes}">${SVG_CHECK}<span class="mb-htitle">yes</span></div>
+      <div class="mb-colhead mb-colhead-no${flashColNo}">${SVG_CROSS}<span class="mb-htitle">no</span></div>
+      <div class="mb-rowhead mb-rowhead-yes${flashRowYes}">${SVG_CHECK}<span class="mb-htitle">yes</span></div>
+      <div class="mb-rowhead mb-rowhead-no${flashRowNo}">${SVG_CROSS}<span class="mb-htitle">no</span></div>
       ${cell('yes', 'yes')}
       ${cell('no', 'yes')}
-      <div class="mb-rowhead${flashRowNo}">${SVG_CROSS}<span class="mb-htitle" style="writing-mode:horizontal-tb;transform:none">Containment: no</span></div>
       ${cell('yes', 'no')}
       ${cell('no', 'no')}
     </div>`;
