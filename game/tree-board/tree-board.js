@@ -22,7 +22,7 @@ const els = {
   raceLabel: document.getElementById('raceLabel'),
   turnTitle: document.getElementById('turnTitle'),
   psWhy: document.getElementById('psWhy'),
-  hand: document.getElementById('hand'),
+  handChipBtn: document.getElementById('handChipBtn'),
   card: document.getElementById('card'),
   actions: document.getElementById('actions'),
   evidencePanel: document.getElementById('evidencePanel'),
@@ -84,17 +84,24 @@ function setupPlayShell() {
   PS.wireDrawer(rulesBtn, document.getElementById('drawerRules'));
   PS.wireDrawer(logBtn, document.getElementById('drawerLog'));
   PS.wireDrawer(settingsBtn, document.getElementById('drawerSettings'));
-  // drawerCard's own trigger is the hand-card button itself, rebuilt each render (see renderHand());
-  // wire just its close button (and Escape) here.
   els.drawerCard.querySelectorAll('[data-ps-close]').forEach(b => b.addEventListener('click', () => PS.closeOverlay(els.drawerCard)));
   els.drawerCard.addEventListener('click', e => { if (e.target === els.drawerCard) PS.closeOverlay(els.drawerCard); });
   const closeEvidence = () => { pickedCard = null; PS.closeOverlay(els.drawerEvidence); };
   els.drawerEvidence.querySelectorAll('[data-ps-close]').forEach(b => b.addEventListener('click', closeEvidence));
   els.drawerEvidence.addEventListener('click', e => { if (e.target === els.drawerEvidence) closeEvidence(); });
-  PS.makeHandSheet(els.hand);
+  els.handChipBtn.addEventListener('click', () => {
+    const active = game && activeCharacter();
+    if (!active) return;
+    document.getElementById('drawerCardTitle').textContent = active.name;
+    PS.openOverlay(els.drawerCard, els.handChipBtn);
+  });
   els.psWhy.addEventListener('click', () => PS.openOverlay(document.getElementById('drawerLog'), els.psWhy));
 
   document.getElementById('newGameBtn2').addEventListener('click', () => location.reload());
+
+  // re-fit (and, if the stage's own aspect flips, re-layout) the tree whenever the box it lives in
+  // resizes — a window resize, or the shell giving the stage more or less room.
+  PS.watchTreeBox(els.treeWrap, () => { if (game) renderTreeAndTokens(); });
 
   const reduced = PS.getStoredReducedMotion();
   document.getElementById('reducedMotionToggle').checked = reduced;
@@ -120,12 +127,17 @@ function render() {
   renderTreeAndTokens();
   renderRace();
   renderLog();
-  if (game.ended) { els.hand.hidden = true; els.actions.hidden = true; els.splitPanel.hidden = true; renderEnd(); return; }
-  els.hand.hidden = false; els.actions.hidden = false;
+  if (game.ended) { els.actions.hidden = true; els.splitPanel.hidden = true; renderEnd(); return; }
+  els.actions.hidden = false;
   renderTurn();
   renderSplitPanel();
 }
 
+// The layout ('wide'/'narrow') is chosen from the STAGE box's own aspect ratio (a short, wide stage
+// still wants 'wide'; a tall, narrow one wants 'narrow'), then the svg is sized to fit that box on
+// both axes — see game/shared/play-shell.js's treeLayoutFor/fitTreeSvg. No inner scroll on the
+// stage. fitTreeSvg() must run BEFORE positionTokens(), which reads the tree's just-fitted size via
+// nodeRect() to place the token badges.
 function renderTreeAndTokens() {
   const active = activeCharacter();
   const answers = { gate: active.resolved.gate, alignment: active.resolved.alignment, containment: active.resolved.containment, race: 'yes' };
@@ -138,7 +150,8 @@ function renderTreeAndTokens() {
   renderTree(els.tree, {
     step: null, answers, open: openNow, focus: active.slug,
     people: peopleForChips, casting, theme: 'auto',
-  }, { animate: !document.body.classList.contains('ps-reduced-motion') });
+  }, { animate: !document.body.classList.contains('ps-reduced-motion'), layout: PS.treeLayoutFor(els.treeWrap) });
+  PS.fitTreeSvg(els.treeWrap);
   positionTokens();
 }
 
@@ -216,7 +229,7 @@ function renderCharacterCard(character) {
 function renderTurn() {
   const active = activeCharacter();
   renderCharacterCard(active);
-  renderHandCard(active);
+  els.handChipBtn.textContent = active.short || active.name;
   const field = B.fieldForPos(active.pos);
   els.turnTitle.textContent = field
     ? `${active.name}'s turn — crossing ${field}`
@@ -226,25 +239,6 @@ function renderTurn() {
   els.actions.appendChild(button('Play evidence …', openEvidenceDrawer, game.deck.length === 0,
     'No evidence left in the deck.'));
   els.actions.appendChild(button('Pass', () => { const r = B.pass(game); game = r.state; casting = null; render(); }));
-}
-
-// The hand: one tap-for-detail card (this game deals one character, not a hand of several) — the
-// full answers/quote/to-move list lives in #card, inside drawerCard, unchanged by this.
-function renderHandCard(character) {
-  els.hand.innerHTML = '';
-  const person = peopleBySlug.get(character.slug) || {};
-  const quoteId = (character.card_quote_ids || [])[0];
-  const quote = quoteId ? (person.quotes || []).find(q => q.id === quoteId) : null;
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'hand-card';
-  btn.innerHTML = `<h3>${esc(character.name)}</h3><p class="role">${esc(character.role)}</p>` +
-    (quote ? `<p class="snippet">&ldquo;${esc(quote.text)}&rdquo;</p>` : '');
-  btn.addEventListener('click', () => {
-    document.getElementById('drawerCardTitle').textContent = character.name;
-    PS.openOverlay(els.drawerCard, btn);
-  });
-  els.hand.appendChild(btn);
 }
 
 function openEvidenceDrawer() {

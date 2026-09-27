@@ -49,19 +49,11 @@
   [hidden]{display:none!important}
 
   .tree-wrap{position:relative}
-  #tree{width:100%}
   #tokens{position:absolute;inset:0;pointer-events:none}
   .token{position:absolute;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
     font-size:10.5px;font-weight:800;color:#fff;box-shadow:0 0 0 2px var(--bg);transition:left .3s ease,top .3s ease}
   .token.is-active{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
   @media (prefers-reduced-motion: reduce),body.ps-reduced-motion{ .token{transition:none} }
-
-  .hand-card{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2);
-    min-width:220px;max-width:320px;cursor:pointer;text-align:left;flex:0 0 auto}
-  .hand-card h3{margin:0 0 2px}
-  .hand-card .role{margin:0;color:var(--muted);font-size:12.5px}
-  .hand-card .snippet{margin:4px 0 0;font-size:12.5px;font-style:italic;color:var(--ink-soft);
-    overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
   #card .role{margin:0 0 8px;color:var(--muted);font-size:13px}
   .answers{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
@@ -141,7 +133,7 @@
 
   <section id="game" hidden>
     <div class="ps-stage">
-      <div class="tree-wrap" id="treeWrap">
+      <div class="tree-wrap ps-tree-box" id="treeWrap">
         <div id="tree" aria-label="The belief tree"></div>
         <div id="tokens"></div>
       </div>
@@ -155,9 +147,9 @@
     <div class="ps-hud">
       <span class="ps-who" id="turnTitle"></span>
       <span class="muted" id="raceLabel" aria-live="polite"></span>
+      <button type="button" class="ps-hand-chip" id="handChipBtn"></button>
       <button type="button" class="ps-why" id="psWhy"></button>
     </div>
-    <div class="ps-hand" id="hand"></div>
     <div class="ps-actions" id="actions"></div>
   </section>
 

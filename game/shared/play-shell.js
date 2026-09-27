@@ -110,16 +110,58 @@ export function mountTopbar(el, { title, backHref, markSrc }) {
     `<span class="ps-title">${title}</span>`;
 }
 
-// The hand's mobile bottom sheet: tapping its own background (the grab-handle strip, not a card)
-// pulls it up or drops it back down. No-op above the 600px breakpoint (CSS keeps it in flow there).
-export function makeHandSheet(handEl) {
-  if (!handEl || handEl.__psSheetWired) return;
-  handEl.__psSheetWired = true;
-  handEl.addEventListener('click', e => {
-    if (window.innerWidth > 600) return;
-    if (e.target !== handEl) return;
-    handEl.classList.toggle('is-open');
-  });
+// ── fitting explainers/belief-tree/tree-render.js's SVG into a box of any shape, without scrolling ─
+// tree-render.js's own CSS sizes the tree by WIDTH alone (100% wide, height following the tree's
+// aspect ratio) — fine in a wide column, but a stage that's short and wide, or narrow and tall,
+// needs the tree scaled to fit BOTH dimensions, and the renderer's 'narrow' layout (a taller,
+// narrower arrangement of the same tree) picked when the box itself is taller than it is wide.
+
+// 'narrow' when the box is taller than it is wide, else 'wide' — box aspect, not viewport width
+// (the renderer's own 'auto' only ever looks at width, which is the wrong axis for a short stage).
+export function treeLayoutFor(container) {
+  if (!container) return 'wide';
+  const r = container.getBoundingClientRect();
+  if (!r.width || !r.height) return 'wide';
+  return r.height > r.width * 1.05 ? 'narrow' : 'wide';
+}
+
+// Sizes the tree's <svg> (found inside `container`) with an explicit pixel width+height — never a
+// CSS transform or object-fit, so explainers/belief-tree/tree-render.js's own nodeRect() (which The
+// Tree's token badges read: `scale = svg.getBoundingClientRect().width / viewBox.width`) keeps
+// reading the true rendered scale — chosen so the whole viewBox fits inside container's own box on
+// both axes. Idempotent and cheap: safe to call after every render and on every resize.
+export function fitTreeSvg(container) {
+  if (!container) return;
+  const svg = container.querySelector('svg');
+  const vb = svg && svg.viewBox && svg.viewBox.baseVal;
+  if (!vb || !vb.width || !vb.height) return;
+  const availW = container.clientWidth, availH = container.clientHeight;
+  // No room at all (a hidden ancestor, or a box squeezed past its own min-height): shrink the svg
+  // to nothing rather than leaving a stale, larger size from the last successful fit — a gap reads
+  // better than a tree that spills out of its box and overlaps whatever comes after it.
+  if (!availW || !availH) { svg.style.width = '0px'; svg.style.height = '0px'; return; }
+  const scale = Math.min(availW / vb.width, availH / vb.height);
+  if (!isFinite(scale) || scale <= 0) { svg.style.width = '0px'; svg.style.height = '0px'; return; }
+  svg.style.width = (vb.width * scale) + 'px';
+  svg.style.height = (vb.height * scale) + 'px';
+}
+
+// Re-fits (and, if the box's own aspect flips wide/narrow, re-renders at the other layout) whenever
+// `container` resizes — a window resize, or the flex shell giving the stage more or less room.
+// `rerender()` should re-issue the same renderTree() call the page last made, at a given layout.
+export function watchTreeBox(container, rerender) {
+  if (!container || container.__psTreeWatched) return;
+  container.__psTreeWatched = true;
+  let raf = null;
+  const run = () => {
+    raf = null;
+    const want = treeLayoutFor(container);
+    if (want !== container.__psTreeLayout) { container.__psTreeLayout = want; rerender(want); }
+    fitTreeSvg(container);
+  };
+  const schedule = () => { if (!raf) raf = requestAnimationFrame(run); };
+  if (window.ResizeObserver) new ResizeObserver(schedule).observe(container);
+  window.addEventListener('resize', schedule);
 }
 
 export function setReducedMotion(on) {
