@@ -10,6 +10,11 @@ import * as PS from '../shared/play-shell.js';
 const els = id => document.getElementById(id);
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 
+// Presentation-only short names for the safeguard chips (a narrow phone can't fit "Alignment
+// verified" as one unshrinkable pill four times over); the full name is still in the chip's title
+// and everywhere else (log lines, drawers) via engine.js's own SAFEGUARD_LABEL, untouched.
+const SAFEGUARD_SHORT = { alignment: 'Alignment', containment: 'Containment', agreement: 'Agreement', understanding: 'Understanding' };
+
 let CARDS = null;
 let game = null;
 let castSeed = null, castYear = null;
@@ -23,7 +28,7 @@ async function boot() {
   renderNameInputs();
   els('castYearBtn').addEventListener('click', castYearNow);
   els('dealBtn').addEventListener('click', dealAndBegin);
-  els('revealBtn').addEventListener('click', () => { els('passCover').hidden = true; els('game').inert = false; renderTurn(); els('turnScreen').hidden = false; });
+  els('revealBtn').addEventListener('click', () => { els('passCover').hidden = true; els('game').inert = false; renderTurn(); els('turnScreen').hidden = false; refitTreeNow(); });
   els('hideBtn').addEventListener('click', () => { PS.closeAllOverlays(); els('turnScreen').hidden = true; showPassCover(); });
   els('passActionBtn').addEventListener('click', () => applyAndRender(g => E.pass(g, E.activePlayer(g).id, CARDS)));
   els('placeBetBtn').addEventListener('click', placeBet);
@@ -60,10 +65,16 @@ function setupPlayShell() {
   PS.wireDrawer(settingsBtn, els('drawerSettings'));
   PS.wireDrawer(els('objectiveBtn'), els('drawerObjective'));
   PS.wireDrawer(els('tokensBtn'), els('drawerTokens'));
+  PS.wireDrawer(els('handChipBtn'), els('drawerHand'));
 
   els('psWhy').addEventListener('click', () => PS.openOverlay(els('drawerLog'), els('psWhy')));
 
-  PS.makeHandSheet(els('hand'));
+  // re-fit (and, if the stage's own aspect flips, re-layout) the persistent tree whenever the box
+  // it lives in resizes — a window resize, or the shell giving the stage more or less room.
+  PS.watchTreeBox(els('treeBox'), () => {
+    if (game && game.lastRSI && !game.lastRSI.__shown) renderRSI(game.lastRSI);
+    else renderNeutralTree();
+  });
 
   const reduced = PS.getStoredReducedMotion();
   els('reducedMotionToggle').checked = reduced;
@@ -110,10 +121,24 @@ function dealAndBegin() {
 }
 
 // the belief tree, shown persistently in the stage (not only when an RSI card fires); renderRSI()
-// below repaints the same #tree element with the real answers the moment one does fire.
+// below repaints the same #tree element with the real answers the moment one does fire. The layout
+// ('wide'/'narrow') is chosen from the STAGE box's own aspect ratio (a short, wide stage still wants
+// 'wide'; a tall, narrow one wants 'narrow'), then the svg is sized to fit that box on both axes —
+// see game/shared/play-shell.js's treeLayoutFor/fitTreeSvg. No inner scroll on the stage.
 function renderNeutralTree() {
+  const box = els('treeBox');
   renderTree(els('tree'), { step: null, answers: {}, open: [], people: [], casting: null, theme: 'auto' },
-    { animate: !document.body.classList.contains('ps-reduced-motion'), legend: false });
+    { animate: !document.body.classList.contains('ps-reduced-motion'), legend: false, layout: PS.treeLayoutFor(box) });
+  PS.fitTreeSvg(box);
+}
+
+// #turnScreen showing or hiding changes how much height .ps-stage has left (the pass-cover phase
+// gives the stage everything; a turn's HUD+hand+actions take some of it back) — re-fit (and
+// re-layout, if the box's own aspect flips) right after, or the tree stays sized for whichever
+// state was active when it last rendered and can spill out of the now-smaller box.
+function refitTreeNow() {
+  if (game && game.lastRSI && !game.lastRSI.__shown) renderRSI(game.lastRSI);
+  else renderNeutralTree();
 }
 
 // ── the public board (visible always; nothing secret lives here) ───────────────────────────────
@@ -140,7 +165,8 @@ function renderBoard() {
     const sg = game.safeguards[id], target = E.safeguardTarget(id);
     const div = document.createElement('div');
     div.className = 'sg' + (sg.secured ? ' secured' : '');
-    div.innerHTML = `<b>${esc(E.SAFEGUARD_LABEL[id])}</b><span class="muted">${sg.progress}/${target}${sg.secured ? ' — secured' : ''}${sg.shield ? ' (shielded)' : ''}</span><div class="bar"><i style="width:${100 * sg.progress / target}%"></i></div>`;
+    div.title = `${E.SAFEGUARD_LABEL[id]}: ${sg.progress}/${target}${sg.secured ? ' — secured' : ''}${sg.shield ? ' (shielded)' : ''}`;
+    div.innerHTML = `<b>${esc(SAFEGUARD_SHORT[id] || E.SAFEGUARD_LABEL[id])}</b><span class="muted">${sg.progress}/${target}</span><div class="bar"><i style="width:${100 * sg.progress / target}%"></i></div>`;
     sgWrap.appendChild(div);
   });
   const hp = els('historyPanel');
@@ -218,10 +244,12 @@ function renderRSI(rsi) {
     const open = [];
     if (rsi.alignment.cast) open.push('alignment');
     if (rsi.containment.cast) open.push(containmentNode);
+    const box = els('treeBox');
     renderTree(els('tree'), {
       step: null, answers: { gate: 'yes', alignment: a, containment: c, race: 'yes' },
       open, people: [], casting: null, theme: 'auto',
-    }, { animate: !document.body.classList.contains('ps-reduced-motion'), legend: false });
+    }, { animate: !document.body.classList.contains('ps-reduced-motion'), legend: false, layout: PS.treeLayoutFor(box) });
+    PS.fitTreeSvg(box);
     els('rsiText').textContent = `Alignment reads ${a}${rsi.alignment.cast ? ' (cast on partial progress)' : ''}${rsi.alignment.locked ? ' (locked by Goal-keeping)' : ''}. Containment reads ${c}${rsi.containment.cast ? ' (cast on partial progress)' : ''}. Result: ${E.LAB_LEAF_LABEL[rsi.leaf]}.`;
   }
   game.lastRSI = { ...game.lastRSI, __shown: true };
@@ -234,12 +262,14 @@ function renderTurn() {
   els('turnTitle').textContent = `${p.name}'s turn — action ${4 - p.actionsLeft} of 3`;
   const role = E.ROLES.find(r => r.id === p.role);
   els('turnRole').textContent = `Role: ${role.name} — ${role.power}`;
+  els('turnRole').title = `Role: ${role.name} — ${role.power}`;
   els('turnCompute').textContent = `Compute: ${p.compute}`;
   const obj = E.OBJECTIVES.find(o => o.id === p.objective);
   els('objectiveBox').innerHTML = `<b>Secret objective: ${esc(obj.name)}</b><p class="muted" style="margin:4px 0 0">${esc(obj.desc)}</p>`;
   els('tokensLeft').textContent = p.beliefTokensLeft;
   els('betList').innerHTML = p.beliefBets.map(b => `${b.category === 'takeoff' ? 'Takeoff' : 'Alignment dynamics'}: ${esc(E.WORLD_INFO[b.category][b.value].name)}`).join('<br>') || 'none placed yet';
 
+  els('handChipBtn').textContent = `Hand (${p.hand.length})`;
   pickedCardId = null; pickedSafeguard = null; pendingResponses = [];
   const hand = els('hand'); hand.innerHTML = '';
   p.hand.forEach(id => {
@@ -247,7 +277,7 @@ function renderTurn() {
     const btn = document.createElement('button');
     btn.className = 'card suit-' + (c.suit || 'wild') + (pickedCardId === id ? ' is-picked' : '');
     btn.innerHTML = `<span class="tag">${esc(c.suit || '')}</span>${esc(c.text)}`;
-    btn.addEventListener('click', () => { pickedCardId = id; renderTurn(); });
+    btn.addEventListener('click', () => { pickedCardId = id; PS.closeOverlay(els('drawerHand')); renderTurn(); });
     hand.appendChild(btn);
   });
 

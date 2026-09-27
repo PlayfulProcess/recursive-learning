@@ -56,9 +56,19 @@
   .stat .k{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:block}
   .stat .v{font-weight:800;font-size:17px}
 
-  .sg b{display:block;font-size:12.5px}
-  .sg .bar{height:7px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:3px;width:74px}
+  /* one compact pill per safeguard — name, fraction and a tiny bar all on one line, so 4 of them
+     wrap to at most two short rows instead of stacking three lines each */
+  .sg{border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--panel2);
+    display:inline-flex;align-items:center;gap:6px;font-size:11.5px;white-space:nowrap}
+  .sg.secured{border-color:var(--accent)}
+  .sg b{font-size:11px;font-weight:800}
+  .sg .bar{height:6px;width:36px;border-radius:3px;background:var(--line);overflow:hidden;flex:0 0 auto}
   .sg .bar>i{display:block;height:100%;background:var(--accent)}
+
+  /* the role's power sentence is long; keep the HUD to one line and let a hover/tap title carry
+     the rest, so it can never wrap the stage into starvation on a short phone */
+  #turnRole{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:32vw}
+  @media (max-width:600px){ #turnRole{max-width:60vw} }
 
   .actions{display:flex;gap:8px;flex:0 0 auto}
   .hand .card{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2);font-size:13px;
@@ -153,9 +163,11 @@
           <span class="ps-meter" id="capMeter"><i id="capMeterFill"></i><i class="ps-thresh" id="capMeterThresh"></i></span></span>
         <span class="ps-chip">RSI fires at <b id="rsiThreshVal"></b><span id="raceFlags"></span></span>
       </div>
-      <div class="ps-tree-box"><div id="tree" aria-label="The belief tree"></div></div>
-      <div class="ps-safeguards-compact" id="safeguards"></div>
+      <div class="ps-tree-box" id="treeBox"><div id="tree" aria-label="The belief tree"></div></div>
     </div>
+
+    <!-- its own strip, never inside .ps-stage, so it can never be drawn over the tree -->
+    <div class="ps-safeguards-compact" id="safeguards"></div>
 
     <div class="ps-progress" id="race" aria-hidden="true"></div>
     <p class="ps-sr-only" id="raceLabelSr" aria-live="polite"></p>
@@ -170,15 +182,23 @@
         <span class="muted" id="turnCompute"></span>
         <button type="button" class="icon-btn" id="objectiveBtn" data-tip="Your secret objective" aria-label="Your secret objective"></button>
         <button type="button" class="icon-btn" id="tokensBtn" data-tip="Belief tokens" aria-label="Belief tokens"></button>
+        <button type="button" class="ps-hand-chip" id="handChipBtn"></button>
         <button type="button" class="ps-why" id="psWhy"></button>
       </div>
-      <div class="ps-hand hand" id="hand"></div>
       <div class="ps-actions" id="actionPanel"></div>
       <div class="row">
         <button id="passActionBtn">Pass (use one action)</button>
       </div>
     </div>
   </section>
+
+  <div class="ps-overlay" id="drawerHand" hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="drawerHandTitle">
+    <div class="ps-drawer">
+      <button type="button" class="icon-btn ps-close" data-ps-close aria-label="Close"></button>
+      <h2 id="drawerHandTitle">Your hand</h2>
+      <div class="ps-hand hand" id="hand"></div>
+    </div>
+  </div>
 
   <div id="passCover" class="ps-overlay" hidden>
     <div class="ps-drawer">
