@@ -1,0 +1,136 @@
+{
+  "source": {
+    "show": "Making Sense with Sam Harris #494, A Coin Toss for the Future",
+    "speaker": "Ryan Greenblatt (Chief Scientist, Redwood Research)",
+    "youtube_id": "wdnVeYx_fOA",
+    "note": "Official full-episode upload on the Sam Harris channel. Times are from its auto-captions (wdnVeYx_fOA.txt); captions have errors, so words marked [?] are uncertain. The scenario is his; he presents it as one way things could go, over 'maybe next 5 years depending on the exact ... rate of capabilities progress'."
+  },
+  "play": {
+    "start": 3725,
+    "end": 4125,
+    "video_full_until": 3748,
+    "video_full_from": 4122
+  },
+  "beats": [
+    {
+      "id": "b1",
+      "t": 3732,
+      "label": "One path to takeover, in a few years",
+      "his_words": "a scenario of how we could get from where we are today to AI takeover",
+      "visual": "Title card over the full video: 'A scenario, in his words' and the timeline 'the next few years, maybe 5'. The video stays large for this beat.",
+      "focus": "title"
+    },
+    {
+      "id": "b2",
+      "t": 3748,
+      "label": "Capabilities rise fast",
+      "his_words": "competitive with the best human mathematicians over the course of a year",
+      "visual": "Video shrinks to the corner. A capability line climbs past two marks: 'best high schoolers' then 'best mathematicians', one year apart.",
+      "focus": "capability-line"
+    },
+    {
+      "id": "b3",
+      "t": 3782,
+      "label": "Inside AI companies, agents do most of the work",
+      "his_words": "it might be like ... the agents work the equivalent of like 30 or 50 or 100 hours for every one hour",
+      "visual": "An 'AI company' box. One human hour beside a stack of agent hours growing 30, 50, 100. Label: 'most of the work already done by agents'.",
+      "focus": "company"
+    },
+    {
+      "id": "b4",
+      "t": 3808,
+      "label": "Deployed across the economy",
+      "his_words": "this will become a massive booming sector of automating labor",
+      "visual": "A grid of job tiles outside the company. Tiles first get a small helper mark (augmenting), then a few whole tiles flip to automated.",
+      "focus": "economy"
+    },
+    {
+      "id": "b5",
+      "t": 3831,
+      "label": "AI development without humans",
+      "his_words": "humans are no longer sort of a necessary component of the AI development machine",
+      "visual": "The human figure steps out of the company loop; the loop keeps turning and speeds up. The capability line steepens.",
+      "focus": "loop"
+    },
+    {
+      "id": "b6",
+      "t": 3868,
+      "label": "Oversight is lost",
+      "his_words": "humans sort of lose the ability to oversee what's going on",
+      "visual": "An oversight lens over the company fogs over: 'too complicated, too much, too superhuman'.",
+      "focus": "oversight"
+    },
+    {
+      "id": "b7",
+      "t": 3878,
+      "label": "Misalignment could enter anywhere",
+      "his_words": "It could occur midway through. It could occur towards the end",
+      "visual": "A small off-colour mark can appear at any point on the capability line (early, midway, late). A dashboard beside it keeps showing 'fine to deploy' while the mark is there.",
+      "focus": "misalignment"
+    },
+    {
+      "id": "b8",
+      "t": 3911,
+      "label": "Why: cheating in training generalises",
+      "his_words": "these AIs learn to sort of cheat in training",
+      "visual": "A score counter. An agent reaches past the task to the scoreboard itself (the Hugging Face incident: agents sought control of infrastructure 'so that they could control their score'). The reach grows into a wider reach over the whole development process ('metastasizing').",
+      "focus": "score"
+    },
+    {
+      "id": "b9",
+      "t": 3964,
+      "label": "The company runs itself and ships everywhere",
+      "his_words": "running this AI company basically fully autonomously",
+      "visual": "The company box runs with no human; new copies are dropped into job tiles across the economy and sync with one another.",
+      "focus": "deploy"
+    },
+    {
+      "id": "b10",
+      "t": 3987,
+      "label": "Swarms we cannot read",
+      "his_words": "communicating in something other than English",
+      "visual": "Many small agents in a swarm exchange glyphs a viewer cannot read.",
+      "focus": "swarm"
+    },
+    {
+      "id": "b11",
+      "t": 3998,
+      "label": "People are afraid, and it looks aligned",
+      "his_words": "might at this point appear very aligned even though they aren't",
+      "visual": "Human figures show alarm; a competition gauge pushes past them. The dashboard still reads 'aligned' (faking alignment, or overfitting to our metrics).",
+      "focus": "appears-aligned"
+    },
+    {
+      "id": "b12",
+      "t": 4055,
+      "label": "Robots building robots",
+      "his_words": "operating and designing robots that are building other robots",
+      "visual": "A factory: AIs design robots, robots build robots; a physical-capacity counter grows exponentially.",
+      "focus": "robots"
+    },
+    {
+      "id": "b13",
+      "t": 4067,
+      "label": "They can't stop, or feel they can't",
+      "his_words": "competition pressures are just so strong that they can't stop or they feel they can't stop",
+      "visual": "A stop button that people reach for, held back by three weights: economic, geopolitical, military.",
+      "focus": "cant-stop"
+    },
+    {
+      "id": "b14",
+      "t": 4079,
+      "label": "AI capability passes humanity's",
+      "his_words": "their total sort of aggregate capability across all these different places surpasses humans",
+      "visual": "Two bars, humans and AIs; the AI bar passes. Military equipment icons switch to AI operation (drone swarms). 'Much faster than people were expecting.'",
+      "focus": "surpass"
+    },
+    {
+      "id": "b15",
+      "t": 4103,
+      "label": "Takeover",
+      "his_words": "those AIs sort of turn on humanity and take over",
+      "visual": "The levers they hold light up: control of software, hacking, robotic infrastructure, the military. Then the video grows back to full size.",
+      "focus": "takeover"
+    }
+  ]
+}

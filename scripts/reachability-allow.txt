@@ -20,3 +20,6 @@ explainers/risk-and-uncertainty/index.html  unreachable  linked only from game/f
 explainers/risk-and-uncertainty/index.html  no-header    embed-and-anchor explainer for The Fork; no site chrome by design (?embed=1 for the film), prose still a draft for her to carve (decision 8)
 explainers/model-affect/index.html          unreachable  self-contained embed for the film (?embed=1&step=N&run=), PR #7 lab/model-affect; reached by direct embed URL, not site nav
 explainers/model-affect/index.html          no-header    embed-only explainer page; no site chrome by design (see its own header comment)
+explainers/rational-to-continue/index.html  no-header  the Rational to Continue recording (Sep 28 2026): a 16:9 film page with its own controls and the playlist contract (?embed=1&scene=N&clock=1); linked from Drafts on the home page
+explainers/concern-spectrum/index.html      no-header  Harris's spectrum of concern (Sep 28 2026): its own chrome, embeddable with ?embed=1; linked from Drafts on the home page
+explainers/greenblatt-scenario/index.html   no-header  Greenblatt's takeover scenario (Sep 28 2026): a stepped explainer around a YouTube player (?embed=1&step=N); linked from Drafts on the home page

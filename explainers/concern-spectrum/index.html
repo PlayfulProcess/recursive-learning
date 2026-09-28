@@ -1,0 +1,242 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Harris's Spectrum of Concern</title>
+<meta name="description" content="Where the people Sam Harris names in Making Sense #494 sit between not worried and most worried about AI, read mostly from their own dated words, with their papers.">
+<link rel="icon" type="image/svg+xml" href="/spiral.svg">
+<!--
+  Home (Sep 28 2026): learning.recursive.eco/explainers/concern-spectrum/ (a draft).
+  Data: data.js, generated from the checked research file; update it to move a person or add a
+  dated point. Positions are an ordering read mostly from each person's own dated words, not a score.
+    ?embed=1   drops the page header and footer (a recursive.eco embed item sets this;
+               a framed page with no flag gets it too)
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap">
+<style>
+:root{
+  --ground:#f4f5f8; --surface:#ffffff; --line:#d8dce5; --ink:#15171c; --muted:#5b6170;
+  --accent:#7c3aed; --worry:#c2410c; --calm:#0f766e; --focus:#7c3aed;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Newsreader", Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#111216; --surface:#1a1c22; --line:#2d313b; --ink:#e9ebf1; --muted:#9aa1b2;
+    --accent:#b57bff; --worry:#f07a4a; --calm:#3fbfae; --focus:#b57bff; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#111216; --surface:#1a1c22; --line:#2d313b; --ink:#e9ebf1; --muted:#9aa1b2;
+  --accent:#b57bff; --worry:#f07a4a; --calm:#3fbfae; --focus:#b57bff; color-scheme:dark;
+}
+*{box-sizing:border-box}
+.embed .wrap > header, .embed #foot{display:none}
+.embed .wrap{padding-block:12px 24px}
+body{background:var(--ground); color:var(--ink); font:17px/1.55 var(--body); margin:0}
+.wrap{max-width:1080px; margin:0 auto; padding-inline:16px; padding-block:28px 56px}
+header{display:grid; gap:6px; margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+h1{font:650 clamp(28px,4.6vw,44px)/1.08 var(--display); margin:0; text-wrap:balance; letter-spacing:-.01em}
+.dek{margin:0; max-width:65ch; color:var(--muted)}
+.dek a{color:var(--accent)}
+.stage{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px 16px 8px}
+.ends{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:6px}
+.end{font:italic 15px/1.45 var(--body); color:var(--muted); max-width:44ch}
+.end b{display:block; font:600 11px/1.2 var(--mono); letter-spacing:.08em; text-transform:uppercase; font-style:normal; margin-bottom:4px}
+.end.calm b{color:var(--calm)} .end.worry{justify-self:end; text-align:right} .end.worry b{color:var(--worry)}
+.end .t{font:12px var(--mono); font-style:normal; color:var(--muted)}
+.chart{overflow-x:auto}
+.filter{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:baseline; margin:10px 0 6px}
+.filter label{font:600 12px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.filter select{font:500 15px var(--display); color:var(--ink); background:var(--ground); border:1px solid var(--line); border-radius:4px; padding:6px 8px}
+.filter select:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+svg{display:block; width:100%; min-width:680px; height:auto}
+.axisnote{font:12px/1.45 var(--mono); color:var(--muted); margin:6px 0 4px}
+.mk{cursor:pointer}
+.mk:focus{outline:none}
+.mk:focus-visible circle.dot{stroke:var(--focus); stroke-width:3}
+.detail{display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:28px; margin-top:26px}
+@media (max-width:760px){ .detail{grid-template-columns:1fr} .ends{grid-template-columns:1fr} .end.worry{justify-self:start; text-align:left} }
+.who{display:grid; gap:4px; margin-bottom:10px}
+.who h2{font:650 30px/1.1 var(--display); margin:0}
+.role{font:13px var(--mono); color:var(--muted)}
+.side{display:inline-block; font:600 11px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; padding:5px 7px; border-radius:3px; border:1px solid currentColor; width:max-content}
+.side.worried{color:var(--worry)} .side.between{color:var(--accent)} .side.dismissive{color:var(--calm)}
+.harris{border-left:3px solid var(--accent); padding:2px 0 2px 14px; margin:14px 0}
+.harris p{margin:0; font-style:italic}
+.harris .t{font:12px var(--mono); color:var(--muted)}
+h3{font:600 12px/1.2 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:22px 0 8px}
+.stance{font-size:19px; line-height:1.45; margin:0}
+.prob{font:500 15px/1.4 var(--mono); margin:0}
+.prob small{color:var(--muted); font-size:12px}
+ul.q, ul.r, ol.h{list-style:none; margin:0; padding:0; display:grid; gap:12px}
+ul.q li p{margin:0 0 2px; font-style:italic}
+.src{font:12px/1.45 var(--mono); color:var(--muted)}
+.src a, ul.r a{color:var(--accent); text-underline-offset:2px}
+ul.r li{display:grid; gap:2px}
+ul.r .k{font:11px var(--mono); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+ol.h li{display:grid; grid-template-columns:5.5em 1fr; gap:10px}
+ol.h .d{font:13px var(--mono); color:var(--muted); font-variant-numeric:tabular-nums}
+.caveat{color:var(--muted); font-size:15px; margin:0}
+.roster{margin-top:34px; border-top:1px solid var(--line); padding-top:14px}
+.roster table{width:100%; border-collapse:collapse; font-size:15px}
+.roster th{font:600 11px/1.2 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); text-align:left; padding:6px 8px; border-bottom:1px solid var(--line)}
+.roster td{padding:8px; border-bottom:1px solid var(--line); vertical-align:top}
+.roster td.n{font:13px var(--mono); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap}
+.roster button{all:unset; cursor:pointer; font:600 16px var(--display); color:var(--ink)}
+.roster button:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+.roster tr[aria-current="true"] td{background:color-mix(in srgb, var(--accent) 9%, transparent)}
+.rosterwrap{overflow-x:auto}
+footer{margin-top:30px; font:13px/1.55 var(--mono); color:var(--muted); max-width:80ch}
+footer p{margin:0 0 8px}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important; animation:none!important} }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow">Making Sense #494 · A Coin Toss for the Future</div>
+    <h1>Harris's spectrum of concern</h1>
+    <p class="dek" id="dek">Early in the episode Sam Harris asks Ryan Greenblatt where he sits between the most worried and the not worried at all, and names people at each end. Here is that line, with each person's own position, the argument that puts them there, and their papers.</p>
+  </header>
+
+  <section class="stage" aria-label="The spectrum">
+    <div class="ends">
+      <div class="end calm" id="endCalm"></div>
+      <div class="end worry" id="endWorry"></div>
+    </div>
+    <div class="filter"><label for="who">Show</label> <select id="who"><option value="harris">The nine in episode #494</option><option value="all">Everyone we have collected</option></select> <span class="src">Bars show the range a person's own statements support; the dot is their current position; hollow dots are earlier positions.</span></div>
+    <div class="chart"><svg id="line" viewBox="0 0 1000 250" role="img" aria-label="People placed on a line from not worried to most worried"></svg></div>
+    <p class="axisnote" id="axisnote"></p>
+  </section>
+
+  <section class="detail" id="detail" aria-live="polite"></section>
+
+  <section class="roster" aria-label="Everyone on the line">
+    <h3>Everyone on the line</h3>
+    <div class="rosterwrap"><table>
+      <thead><tr><th>Person</th><th>Where</th><th>Odds in the sources used here</th><th style="text-align:right">Place on the line (0-100, not a probability)</th></tr></thead>
+      <tbody id="roster"></tbody>
+    </table></div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script src="data.js" charset="utf-8"></script>
+<script>
+(function(){
+  const DATA = window.SPECTRUM || {meta:{}, people:[]};
+  const M = DATA.meta || {}, P = (DATA.people || []).slice().sort((a,b)=>a.order-b.order);
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  // the chip names a place on the line, not a verdict on the person
+  const sideLabel = s => ({worried: "toward most worried", dismissive: "toward not worried", between: "between"})[s] || s;
+  if (new URLSearchParams(location.search).get("embed") === "1" || window.self !== window.top) document.documentElement.classList.add("embed");
+  const link = (u, t) => u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t || u)}</a>` : esc(t);
+
+  // header
+  const ep = M.episode || {};
+  if (ep.number) $("eyebrow").textContent = `${ep.show || "Making Sense"} #${ep.number} · ${ep.title || ""} · with ${ep.guest || ""}`;
+  if (ep.url) $("dek").innerHTML += ` <a href="${esc(ep.url)}" target="_blank" rel="noopener">The episode</a>${ep.youtube ? `, <a href="${esc(ep.youtube)}" target="_blank" rel="noopener">on YouTube</a>` : ""}.`;
+  const fr = M.harris_frame || [];
+  const f = e => fr.find(x => x.end === e);
+  if (f("dismissive")) $("endCalm").innerHTML = `<b>Not worried</b>“${esc(f("dismissive").quote)}” <span class="t">Harris, ${esc(f("dismissive").time)}</span>`;
+  if (f("worried")) $("endWorry").innerHTML = `<b>Most worried</b>“${esc(f("worried").quote)}” <span class="t">Harris, ${esc(f("worried").time)}</span>`;
+  $("axisnote").textContent = (M.axis_note || "") + (M.as_of ? ` As of ${M.as_of}.` : "");
+
+  // ── the chart: one row per person, a range bar (lo–hi) with a dot at mid, hollow dots for earlier positions ──
+  const svg = $("line"), NS = "http://www.w3.org/2000/svg";
+  const X0 = 190, X1 = 960, TOP = 36, ROW = 30;
+  const x = o => X0 + (X1 - X0) * (o / 100);
+  const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) { const v = attrs[k]; if (typeof v === "string" && v.startsWith("var(") && ["fill","stroke","stop-color"].includes(k)) n.style.setProperty(k, v); else n.setAttribute(k, v); } (parent || svg).appendChild(n); return n; };
+  const rangeOf = p => p.range && typeof p.range.lo === "number" ? p.range : {lo: p.order, hi: p.order, mid: p.order};
+  const colorOf = p => p.side === "worried" ? "var(--worry)" : p.side === "dismissive" ? "var(--calm)" : "var(--accent)";
+  const hasEveryone = P.some(p => p.in_harris === false);
+  const inHarris = p => p.in_harris !== false;
+  let marks = {}, current = null;
+
+  function draw(){
+    const mode = ($("who") && $("who").value) || "harris";
+    const people = P.filter(p => mode === "all" || inHarris(p)).sort((a, b) => rangeOf(b).mid - rangeOf(a).mid);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    marks = {};
+    const H = TOP + people.length * ROW + 34;
+    svg.setAttribute("viewBox", `0 0 1000 ${H}`);
+    const defs = el("defs", {});
+    const g = el("linearGradient", {id:"grad", x1:"0", x2:"1", y1:"0", y2:"0"}, defs);
+    el("stop", {offset:"0", "stop-color":"var(--calm)"}, g);
+    el("stop", {offset:"1", "stop-color":"var(--worry)"}, g);
+    // axis strip on top, gridlines down the rows
+    el("rect", {x:X0, y:TOP - 20, width:X1 - X0, height:5, rx:2.5, fill:"url(#grad)"});
+    [0, 25, 50, 75, 100].forEach(t => el("line", {x1:x(t), x2:x(t), y1:TOP - 10, y2:H - 30, stroke:"var(--line)", "stroke-width":1}));
+    const lab = (t, s, anchor) => { const n = el("text", {x:x(t), y:TOP - 26, "text-anchor":anchor, fill:"var(--muted)", "font-family":"IBM Plex Mono, monospace", "font-size":12}); n.textContent = s; };
+    lab(0, "not worried", "start"); lab(100, "most worried", "end");
+    people.forEach((p, i) => {
+      const y = TOP + i * ROW + ROW / 2;
+      const r = rangeOf(p);
+      const grp = el("g", {class:"mk", tabindex:"0", role:"button", "aria-label":`${p.name}, ${sideLabel(p.side)}, place on the line from ${r.lo} to ${r.hi} (0-100, not a probability)`, "data-id":p.id});
+      el("rect", {x:0, y:y - ROW / 2, width:1000, height:ROW, fill:"transparent"}, grp); // hit area for the whole row
+      const name = el("text", {x:X0 - 14, y:y + 5, "text-anchor":"end", fill:"var(--ink)", "font-family":"Bricolage Grotesque, system-ui, sans-serif", "font-size":14, "font-weight":inHarris(p) && mode === "all" ? 700 : 600}, grp);
+      name.textContent = p.name;
+      if (mode === "all" && inHarris(p)) { const b = el("text", {x:X0 - 14 - (p.name.length * 8.1) - 8, y:y + 4, "text-anchor":"end", fill:"var(--accent)", "font-family":"IBM Plex Mono, monospace", "font-size":10}, grp); b.textContent = "#494"; }
+      // earlier positions
+      const hist = (p.history || []).filter(h => typeof h.order === "number");
+      hist.slice(0, -1).forEach(h => { const c = el("circle", {cx:x(h.order), cy:y, r:4, fill:"var(--surface)", stroke:"var(--ink)", "stroke-opacity":.45, "stroke-width":1.3}, grp); const tt = el("title", {}, c); tt.textContent = `${p.name}, ${h.date}: ${h.note}`; });
+      // the range and its mid
+      const band = el("rect", {x:x(r.lo) - 5, y:y - 5, width:Math.max(10, x(r.hi) - x(r.lo) + 10), height:10, rx:5, fill:colorOf(p), "fill-opacity":.28, stroke:colorOf(p), "stroke-opacity":.6, "stroke-width":1}, grp);
+      const tb = el("title", {}, band); tb.textContent = `${p.name}: place on the line ${r.lo}–${r.hi} (0-100, not a probability)${p.range_basis ? ". " + p.range_basis : ""}`;
+      const dot = el("circle", {class:"dot", cx:x(r.mid), cy:y, r:6.5, fill:colorOf(p), stroke:"var(--surface)", "stroke-width":2}, grp);
+      grp.addEventListener("click", () => select(p.id, true));
+      grp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(p.id, true); } });
+      marks[p.id] = {grp, dot, t:name};
+    });
+    const shown = people.map(p => p.id);
+    document.querySelectorAll("#roster tr").forEach(tr => { tr.hidden = !shown.includes(tr.dataset.id); });
+    if (current && marks[current]) select(current, false); else if (people.length) select(people[Math.floor(people.length / 2)].id, false);
+  }
+
+  // roster
+  $("roster").innerHTML = P.slice().sort((a, b) => rangeOf(b).mid - rangeOf(a).mid).map(p => { const r = rangeOf(p); return `<tr data-id="${esc(p.id)}"><td><button type="button" data-id="${esc(p.id)}">${esc(p.name)}</button><div class="src">${esc(p.role_now)}${inHarris(p) && hasEveryone ? " · in the episode" : ""}</div></td><td><span class="side ${esc(p.side)}">${esc(sideLabel(p.side))}</span></td><td>${p.stated_probability ? esc(p.stated_probability.text) : '<span class="src">none in these sources</span>'}</td><td class="n">${r.lo === r.hi ? r.mid : `${r.lo}–${r.hi}`}</td></tr>`; }).join("");
+  $("roster").addEventListener("click", e => { const b = e.target.closest("button[data-id]"); if (b) select(b.dataset.id, true); });
+  if ($("who")) {
+    if (!hasEveryone) { $("who").disabled = true; $("who").title = "Only the nine in the episode are in the data so far"; }
+    $("who").addEventListener("change", draw);
+  }
+
+  function select(id, push){
+    const p = P.find(q => q.id === id) || P[P.length - 1];
+    if (!p) return;
+    current = p.id;
+    for (const k in marks) { const m = marks[k]; const on = k === p.id; m.dot.setAttribute("r", on ? 9 : 6.5); m.t.setAttribute("font-size", on ? 16 : 14); m.grp.style.opacity = on ? 1 : .62; }
+    document.querySelectorAll("#roster tr").forEach(tr => tr.setAttribute("aria-current", tr.dataset.id === p.id ? "true" : "false"));
+    const hw = p.harris_words || {};
+    const sp = p.stated_probability;
+    $("detail").innerHTML = `
+      <div>
+        <div class="who"><span class="side ${esc(p.side)}">${esc(sideLabel(p.side))}</span><h2>${esc(p.name)}</h2><div class="role">${esc(p.role_now)}</div></div>
+        ${hw.quote ? `<div class="harris"><p>“${esc(hw.quote)}”</p><span class="t">${/^(Sam Harris|Ryan Greenblatt)$/.test(p.name) ? "in the episode" : "Harris"}, ${esc(hw.time)}</span></div>` : ""}
+        <h3>Their position</h3><p class="stance">${esc(p.position)}</p>
+        <h3>Odds in the sources used here</h3><p class="prob">${sp ? `${esc(sp.text)} <small>${esc(sp.date || "")}${sp.source ? " · " + esc(sp.source) : ""}</small>` : '<span class="src">No figure in the sources used here.</span>'}</p>
+        <h3>Why they are here</h3><p>${esc(p.argument)}</p>
+        ${(p.quotes || []).length ? `<h3>In their words</h3><ul class="q">${p.quotes.map(q => `<li><p>“${esc(q.text)}”</p><span class="src">${esc(q.date || "")} · ${link(q.url, q.source)}</span></li>`).join("")}</ul>` : ""}
+      </div>
+      <div>
+        <h3>References</h3><ul class="r">${(p.references || []).map(r => `<li><span class="k">${esc(r.kind)} · ${esc(r.year)}</span>${link(r.url, r.title)}</li>`).join("")}</ul>
+        <h3>Over time</h3><ol class="h">${(p.history || []).map(h => `<li><span class="d">${esc(h.date)}</span><span>${esc(h.note)}${h.source_url ? ` <span class="src">${link(h.source_url, "source")}</span>` : ""}</span></li>`).join("")}</ol>
+        ${p.caveats ? `<h3>Caveats</h3><p class="caveat">${esc(p.caveats)}</p>` : ""}
+        ${p.checked ? `<p class="src" style="margin-top:14px">Checked: ${esc(p.checked)}</p>` : ""}
+      </div>`;
+    if (push) { try { history.replaceState(null, "", "#" + p.id); } catch (e) {} }
+  }
+
+  $("foot").innerHTML = `<p>Placement follows the order Harris gives in the episode (about 02:44 to 04:40), adjusted by each person's own words. The line is an ordering, not a measurement. Hollow dots show documented earlier positions.</p><p>Built from the episode captions and each person's own published words, checked by a second reader. Updating: every position carries a date and its evidence; a new statement adds a point to that person's trail.</p>`;
+
+  const start = (location.hash || "").replace("#", "");
+  current = P.some(p => p.id === start) ? start : (P.find(p => /Greenblatt/.test(p.name)) || {}).id;
+  if (start && P.some(p => p.id === start && !inHarris(p)) && $("who")) $("who").value = "all";
+  draw();
+})();
+</script>

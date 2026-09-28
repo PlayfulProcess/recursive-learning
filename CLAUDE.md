@@ -27,7 +27,9 @@ is public too.
    `check_all` lists them as warnings in authored prose.
 7. **One theme source.** Colour lives in `site/theme.css` only (light only). A page links it and
    declares no colour tokens and no `prefers-color-scheme` block. `python scripts/apply_theme.py`
-   is the fixer. The legacy dark game pages are the one exception until they are relit.
+   is the fixer. The legacy dark game pages are an exception until they are relit, and so are
+   the embed-first pages in `explainers/`, which carry their own palettes because films frame
+   them (noted Sep 28 2026; check_all does not scan `explainers/`).
 8. **Run `python scripts/check_all.py` before every push**; after touching data or a builder, run
    it with `--check`. Before the first push of anything under `research/`, run
    `python scripts/check_all.py --only privacy`: pushing a branch publishes it.

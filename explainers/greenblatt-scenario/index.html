@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex">
+<title>A Takeover Scenario</title>
+<meta name="description" content="Ryan Greenblatt's AI-takeover scenario from Making Sense #494, in his own voice, with a drawing that follows his argument one beat at a time.">
+<!--
+  Home (Sep 28 2026): learning.recursive.eco/explainers/greenblatt-scenario/ (a draft).
+  Stepped-explainer contract (same shape as explainers/curves-and-odds):
+    ?embed=1   only the stage (video + drawing + his words)
+    ?step=N    open on beat N (1-15); Play then starts the video there
+    postMessage({ type: 'step', n })   seek the video to beat n (n may be "next")
+    postMessage({ type: 'driven' })    the parent owns the steps: the page stops
+                                       advancing beats from the video clock
+  The page answers the parent with { type: 'explainer-step', n, total }.
+  Only messages whose source is window.parent are read.
+  Beats, times and his words come from beats.json (serve this folder over http).
+-->
+<link rel="icon" href="/spiral.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scenario.css">
+</head>
+<body>
+<div class="page" id="page">
+
+  <header class="top" id="top">
+    <svg viewBox="0 0 100 100" width="30" height="30" aria-hidden="true"><path class="logo" id="logoPath"/></svg>
+    <div class="ht">
+      <div class="k">Making Sense #494 · Ryan Greenblatt</div>
+      <h1>One path to AI takeover, in his words</h1>
+    </div>
+  </header>
+
+  <div class="theatre" id="theatre" role="region" aria-label="Ryan Greenblatt's takeover scenario: the official video with a drawing that follows his words">
+
+    <svg class="dia" id="dia" viewBox="0 0 1600 680" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><g id="world"></g></svg>
+
+    <div class="band" id="band">
+      <div class="slot" id="slot">
+        <div class="card" id="cardTitle">
+          <div class="ck">A scenario, in his words</div>
+          <div class="ct">From where we are today to AI takeover</div>
+          <div class="tl" aria-hidden="true"><span class="tl0">today</span><span class="tlline"></span><span class="tl1">the next few years, maybe 5</span></div>
+        </div>
+        <div class="card" id="cardEnd" hidden>
+          <div class="ck">End of his scenario</div>
+          <div class="ct">The conversation goes on from here.</div>
+          <div class="cb"><button type="button" id="replay">Replay the scenario</button>
+          <a id="fullLink" href="https://www.youtube.com/watch?v=wdnVeYx_fOA&amp;t=3725s" target="_blank" rel="noopener">Full episode on YouTube</a></div>
+        </div>
+      </div>
+      <div class="words" id="words" aria-live="polite">
+        <div class="kick"><span id="wn">01 / 15</span><span class="sep">|</span><span id="wt">1:02:12</span></div>
+        <div class="label" id="wl"></div>
+        <p class="his"><span id="wq"></span> <span class="who" id="wc"></span></p>
+      </div>
+    </div>
+
+    <div class="vbox" id="vbox">
+      <div id="yt"></div>
+      <div class="startc" id="startc">
+        <div class="sk">Making Sense with Sam Harris #494 <span id="span">1:02:05 to 1:08:45</span></div>
+        <div class="st">Ryan Greenblatt walks through one way AI could take over</div>
+        <div class="ss">His voice and the official video play here. The drawing follows his words, one step at a time. Sound on.</div>
+        <button type="button" class="big" id="go"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M5 3 L17 10 L5 17 Z" fill="currentColor"/></svg><span id="goText">Play the scenario (6:40)</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ctl" id="ctl">
+    <div class="prog" id="prog" title="Seek"><div class="fill" id="fill"></div></div>
+    <div class="row">
+      <button type="button" id="pp">Play</button>
+      <span class="time" id="time">1:02:05 / 1:08:45</span>
+      <span class="status" id="status" role="status"></span>
+    </div>
+    <ol class="beats" id="beatList" aria-label="Beats of the scenario"></ol>
+  </div>
+
+  <footer class="foot" id="foot">
+    <p>Ryan Greenblatt on Making Sense with Sam Harris #494; video from the official Sam Harris channel; the animation illustrates his words and is not his</p>
+    <p class="keys">Space plays or pauses. Left and right arrows move one beat.</p>
+  </footer>
+</div>
+
+<script src="https://www.youtube.com/iframe_api" async></script>
+<script src="scenario.js"></script>
+</body>
+</html>

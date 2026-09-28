@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="description" content="Seven small games where players can be right to keep racing toward powerful AI and still leave the world worse off, with the people who face them in their own words. A draft by PlayfulProcess.">
+<link rel="icon" type="image/svg+xml" href="/spiral.svg">
+<!--
+  Home (Sep 28 2026): learning.recursive.eco/explainers/rational-to-continue/ (a draft).
+  The model behind every tagged number: model/race_model.py, with its output in
+  model/race_model_output.txt (run: python race_model.py).
+  In a recursive.eco playlist (an embed item):
+    ?embed=1       the clean 16:9 frame (the same as #record); a framed page gets it too
+    ?scene=N       play scene N only (0-9); add &to=M to play on through scene M
+    ?clock=1       follow the player's clock: the viewer posts { type: 'driven' }, then
+                   { type: 'clock', t, playing } on every tick of the item's dwell, and the
+                   page seeks to t seconds into its scene range (view.html mountEmbedClock;
+                   the ads in recursive.eco/ads/ read the same messages). Only the parent
+                   frame is listened to.
+  Set the item's card_hold_sec to the range's length (the storyboard table lists each scene's).
+-->
+<title>Rational to Continue</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap');
+:root{
+  color-scheme:dark;
+  --ground:#111014;--surface:#1b1920;--line:#2e2a36;--ink:#ede9f2;--muted:#9a93a8;
+  --accent:#b57bff;--risk:#e8663d;--calm:#e9c46a;--scrim:rgba(17,16,20,.94);
+  --serif:"Newsreader","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:"Bricolage Grotesque","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ground);color:var(--ink)}
+body{font-family:var(--serif);-webkit-font-smoothing:antialiased}
+.page{max-width:1280px;margin:0 auto;padding:16px 16px 56px}
+.wrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--ground);border:1px solid var(--line)}
+.stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:hidden}
+.board{position:absolute;left:0;top:0}
+/* stage chrome */
+.hd{position:absolute;left:64px;top:40px}
+.kk{font:500 15px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.tt{font:600 40px/1.1 var(--sans);margin-top:6px;color:var(--ink)}
+.tc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 120px;transition:opacity .6s}
+.tc .kk{font-size:21px}
+.tc .tt{font-size:78px;margin-top:18px;text-wrap:balance}
+.brand{position:absolute;right:64px;top:44px;display:flex;align-items:center;gap:12px;font:400 16px var(--sans);color:var(--muted)}
+.gone{display:none!important}
+.logo{fill:none;stroke:var(--accent);stroke-width:7;stroke-linecap:round}
+.cap{position:absolute;left:110px;right:110px;bottom:22px;height:124px;display:flex;align-items:center;justify-content:center;text-align:center;font:400 32px/1.3 var(--serif);color:var(--ink);text-wrap:balance;transition:opacity .6s}
+.cap.in{animation:capIn .45s ease-out}
+.cap.big{font-size:42px;font-style:italic}
+.cap.hope{color:var(--calm)}
+@keyframes capIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* the title beat: only the eyebrow and the title */
+.stage.titling #bd,.stage.titling #fxl,.stage.titling #col,.stage.titling .cap{opacity:0}
+/* one focus at a time: whatever is not in focus dims */
+:where(#bd *,#setup *,#cast *){transition:opacity .6s,filter .6s}
+#bd,#fxl,#setup,#cast,#col{transition:opacity .6s,filter .6s}
+.dim{filter:opacity(.28) saturate(.35)}
+.fxr{fill:none;stroke:var(--accent);stroke-width:1.5;transition:opacity .45s}
+.fxo{outline:1.5px solid var(--accent);outline-offset:8px;border-radius:2px}
+/* right column: set-up numbers, source quotes */
+.col{position:absolute;left:1080px;top:132px;width:462px;height:600px}
+.panel{position:absolute;inset:0}
+.ph{font:500 13px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.sl{font:400 20px/1.35 var(--sans);padding:10px 0;border-top:1px solid var(--line);color:var(--ink)}
+.tag{font:400 12.5px var(--mono);color:var(--muted);margin-left:10px;white-space:nowrap}
+.sn{font:italic 400 17px/1.4 var(--serif);color:var(--muted);margin:14px 0 0}
+.pt{border-collapse:collapse;width:100%;margin:2px 0 6px}
+.pt th{font:400 15px var(--sans);color:var(--muted);text-align:left;padding:8px 6px}
+.pt td{font:500 26px var(--mono);font-variant-numeric:tabular-nums;padding:8px 6px;border-top:1px solid var(--line)}
+.pt td.calm{color:var(--calm)} .pt td.risk{color:var(--risk)}
+/* cards: people and sources */
+.card{border-top:2px solid var(--accent);padding:12px 0 14px;margin-bottom:12px}
+.who{font:600 23px/1.2 var(--sans);color:var(--ink)}
+.role{font:400 15px/1.35 var(--sans);color:var(--muted);margin-top:3px}
+.q{font:italic 400 21px/1.38 var(--serif);margin:10px 0 8px;color:var(--ink)}
+.src{font:400 13px/1.45 var(--mono);color:var(--muted)}
+.src a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.logic{font:400 15.5px/1.42 var(--sans);margin:10px 0 0;color:var(--ink)}
+.logic b{font-weight:600;color:var(--calm)}
+.cav{font:400 13.5px/1.42 var(--serif);color:var(--muted);margin:8px 0 0}
+.ex{font:500 11px var(--mono);letter-spacing:.12em;color:var(--risk);border:1px solid var(--risk);padding:1px 6px;margin-left:8px;vertical-align:middle}
+/* cast: one card at a time, large, over the dimmed board */
+.castp{position:absolute;left:290px;top:124px;width:1020px;height:622px;padding:32px 56px;background:var(--scrim);border:1px solid var(--line);overflow:hidden}
+.castp .ph{font-size:15px;margin-bottom:16px}
+.bigc{border-top:2px solid var(--accent);padding-top:18px}
+.bigc .who{font-size:32px}
+.bigc .role{font-size:19px;line-height:1.4;margin-top:4px}
+.bigc .q{font-size:32px;line-height:1.36;margin:16px 0 12px}
+.bigc .src{font-size:15px}
+.bigc .logic{font-size:24px;margin:24px 0 0}
+.bigc .cav{font-size:21px;line-height:1.45;margin:16px 0 0}
+/* svg */
+svg text{font-family:var(--sans);fill:var(--ink)}
+.mono{font-family:var(--mono)!important;font-variant-numeric:tabular-nums}
+.serif{font-family:var(--serif)!important}
+.it{font-style:italic}
+.f-ink{fill:var(--ink)} .f-mut{fill:var(--muted)} .f-acc{fill:var(--accent)} .f-risk{fill:var(--risk)} .f-calm{fill:var(--calm)} .f-surf{fill:var(--surface)}
+.s-line{stroke:var(--line)} .s-mut{stroke:var(--muted)} .s-ink{stroke:var(--ink)} .s-acc{stroke:var(--accent)} .s-risk{stroke:var(--risk)} .s-calm{stroke:var(--calm)}
+.nf{fill:none}
+.dash{stroke-dasharray:6 7}
+.fade{transition:opacity .6s,filter .6s}
+.hide{opacity:0!important}
+.tok{fill:var(--surface);stroke:var(--muted);stroke-width:2;transition:fill .6s,stroke .6s,opacity .6s,filter .6s}
+.tok.race{fill:var(--risk);stroke:var(--risk)}
+.tok.stop{fill:var(--calm);stroke:var(--calm)}
+.tkl{fill:var(--muted);transition:fill .6s,opacity .6s,filter .6s}
+.tkl.dark{fill:var(--ground)}
+.wedge{fill:var(--risk);opacity:.07;transition:opacity .6s,filter .6s}
+.btn{fill:var(--surface);stroke:var(--risk);stroke-width:3}
+.ring{fill:none;stroke:var(--line);stroke-width:2;transition:stroke .6s,stroke-width .6s,opacity .6s,filter .6s}
+.ring.calm{stroke:var(--calm);stroke-width:6}
+.bub{fill:var(--surface);stroke:var(--line);stroke-width:2}
+.tape{fill:none;stroke:var(--surface);stroke-width:30}
+.gnd{fill:var(--surface)}
+.ridge{fill:none;stroke:var(--muted);stroke-width:2.5}
+.ball{fill:var(--ink)}
+.ghost{opacity:.4}
+.lamp{fill:var(--surface);stroke:var(--muted);stroke-width:2;transition:fill .5s,stroke .5s,opacity .5s,filter .5s}
+.lamp.lit{fill:var(--calm);stroke:var(--calm)}
+.glow{stroke-width:9!important}
+/* controls and storyboard */
+.ctl{margin-top:12px;font-family:var(--sans)}
+.prog{position:relative;height:8px;background:var(--line);cursor:pointer}
+.fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent)}
+.tickm{position:absolute;top:-3px;width:2px;height:14px;background:var(--ground)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+button{font:500 14px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:8px 14px;border-radius:3px;cursor:pointer}
+button:hover{border-color:var(--muted)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#voice{border-color:var(--accent);color:var(--accent)}
+.bc{font:400 13px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.time{font:400 14px var(--mono);color:var(--muted);margin-left:auto;font-variant-numeric:tabular-nums}
+.scenes{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px}
+.scenes button{font-size:13px;padding:6px 10px}
+.scenes button[aria-current="true"]{border-color:var(--accent);color:var(--accent)}
+.sb{margin-top:36px;max-width:820px}
+.sb h2{font:600 26px var(--sans);margin:0 0 8px}
+.lede{font:400 17px/1.55 var(--serif);color:var(--muted);margin:0 0 20px}
+.lede code{font:400 14px var(--mono);color:var(--ink)}
+.lede a{color:var(--accent);overflow-wrap:anywhere}
+.pace{border-collapse:collapse;width:100%;margin:0 0 26px;font:400 14px var(--mono);font-variant-numeric:tabular-nums}
+.pace th{font:500 13px var(--sans);color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
+.pace td{text-align:right;padding:5px 8px;border-bottom:1px solid var(--line);color:var(--ink)}
+.pace th:first-child,.pace td:first-child{text-align:left;font-family:var(--sans)}
+.pace tr.tot td{font-weight:500;color:var(--accent)}
+.sc{border-top:1px solid var(--line);padding:16px 0 10px}
+.sc h3{font:600 18px/1.3 var(--sans);margin:0 0 6px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.sc h3 a{color:var(--accent);font:500 14px var(--mono);text-decoration:none}
+.sc h3 .tm{font:400 13px var(--mono);color:var(--muted);margin-left:auto}
+.shows{font:italic 400 16px/1.5 var(--serif);color:var(--muted);margin:0 0 8px}
+.sc ol{margin:0;padding-left:0;list-style:none;font:400 17px/1.55 var(--serif)}
+.sc li{margin:3px 0}
+.sc li .tag{font-size:12px}
+.bid{font:500 12px var(--mono);color:var(--accent);margin-right:10px;display:inline-block;min-width:52px}
+.ons{color:var(--muted)}
+.castl{font:400 15px/1.5 var(--sans);color:var(--muted);margin:8px 0 0;padding-left:0;list-style:none}
+.castl li{margin:4px 0}
+.castl a{color:var(--accent);overflow-wrap:anywhere}
+.castl .vf{display:block;font:400 12px/1.5 var(--mono);color:var(--muted);overflow-wrap:anywhere}
+.castl q{font-family:var(--serif);font-style:italic;color:var(--ink)}
+.castl .lg{display:block;font:400 14px/1.5 var(--sans);color:var(--muted)}
+.more{font:400 15px/1.55 var(--sans);color:var(--muted);margin:10px 0 0}
+.nar{margin-top:40px}
+.nar pre{white-space:pre-wrap;overflow-wrap:anywhere;font:400 13.5px/1.6 var(--mono);color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:14px 16px;max-height:560px;overflow:auto;margin:12px 0 0}
+.cmsg{font:400 14px var(--sans);color:var(--muted);margin-left:10px}
+/* #record: a clean frame for screen recording */
+html.rec,html.rec body{overflow:hidden}
+html.rec .page{max-width:none;padding:0;min-height:100vh;display:flex;align-items:center;justify-content:center}
+html.rec .wrap{width:min(100vw,calc(100vh * 16 / 9));border:0}
+html.rec .ctl,html.rec .sb{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="page">
+  <div class="wrap" id="wrap" role="region" aria-label="Animated film: Rational to Continue. The storyboard below holds every line.">
+    <div class="stage" id="stage">
+      <svg class="board" viewBox="0 0 1600 900" width="1600" height="900" aria-hidden="true"><g id="bd"></g><g id="fxl"><rect class="fxr hide" id="fxr" rx="10" x="0" y="0" width="0" height="0"/></g></svg>
+      <div class="hd fade hide" id="hd"><div class="kk" id="kk"></div><div class="tt" id="tt"></div></div>
+      <div class="tc hide" id="tc"><div class="kk" id="tck"></div><div class="tt" id="tct"></div></div>
+      <div class="brand" id="brand"><svg viewBox="0 0 100 100" width="32" height="32" aria-hidden="true"><path class="logo" id="brandPath"/></svg><span>The Nature of Things</span></div>
+      <div class="col" id="col"><div class="panel" id="setup"></div></div>
+      <div class="castp fade hide" id="cast"></div>
+      <div class="cap" id="cap"></div>
+    </div>
+  </div>
+
+  <div class="ctl" id="ctl">
+    <div class="prog" id="prog" title="Jump to a scene"><div class="fill" id="fill"></div></div>
+    <div class="row">
+      <button type="button" id="prev">Previous</button>
+      <button type="button" id="play">Pause</button>
+      <button type="button" id="next">Next</button>
+      <button type="button" id="voice" class="gone">Play with voice</button>
+      <span class="bc" id="bc"></span>
+      <span class="time" id="time">0:00</span>
+    </div>
+    <ol class="scenes" id="scenes" aria-label="Scenes"></ol>
+  </div>
+
+  <section class="sb" id="sb" aria-label="Storyboard">
+    <h2>Storyboard</h2>
+    <p class="lede" id="lede"></p>
+    <div id="pace"></div>
+    <div id="sbList"></div>
+    <section class="nar" aria-label="Narration script">
+      <h2>Narration script</h2>
+      <p class="lede" id="narLede"></p>
+      <button type="button" id="copy">Copy the script</button><span class="cmsg" id="copyMsg" role="status"></span>
+      <pre id="narText"></pre>
+    </section>
+  </section>
+</div>
+
+<script src="cast.js" charset="utf-8"></script>
+<script src="narration.js" charset="utf-8"></script>
+<script>
+(function () {
+'use strict';
+
+/* ---------- pacing: every duration in the film is computed from these ---------- */
+const READ_WPM = 140;      /* caption reading while also watching a changing picture: silent non-fiction reading averages about 238 wpm (Brysbaert 2019), subtitle guidance is about 160-180 wpm (BBC subtitle guidelines), and dual attention with numbers needs less */
+const MIN_CAPTION = 3.0;   /* seconds for any caption or label, whatever its length: a glance from the picture to the words, a read, and a glance back */
+const LOOK = 1.5;          /* seconds between a change on the board and the caption that explains it (look, then read): about five scene-viewing fixations of 260-330 ms (Rayner 2009) */
+const NUMBER_BONUS = 0.6;  /* extra seconds per number (digits, %, minus signs): numbers are read symbol by symbol and held for comparison, about two more fixations each */
+const SCENE_TITLE = 2.5;   /* seconds with only the scene title and eyebrow on screen: a six-word title at READ_WPM takes about 2.6 s */
+const END_HOLD = 1.5;      /* seconds the last state of a scene stays before the cut: one LOOK, so the final change is not lost in the transition */
+const GAP = 0.4;           /* seconds between a caption leaving and the next change, so caption and board never change at the same moment */
+const MAX_CARDS = 1;       /* one cast card per scene (28 Sep: 23 min was too long); the rest are listed in the storyboard */
+/* 28 Sep, version 3: carved to about 10 minutes with fewer beats, none of them faster. Each case keeps its mechanism,
+   its payoff comparison and its lesson; what was cut is listed under each scene in the storyboard (more). */
+const V1 = [13.6, 30.9, 42.96, 34.09, 34.34, 31.96, 45.71, 34.96, 47.65, 17.96]; /* version 1 scene lengths, for the comparison */
+const V2 = [23.5, 79.2, 136.9, 118.4, 131.5, 119.8, 165.5, 161.8, 180.5, 41.4]; /* version 2 scene lengths, for the comparison */
+
+/* ---------- constants ---------- */
+const LOGO = 'M50.5 50L50.5 50.01 50.51,50.02 50.51,50.03 50.51,50.04 50.51,50.05 50.52,50.07 50.52,50.08 50.52,50.09 50.52,50.1 50.52,50.11 50.52,50.12 50.52,50.13 50.52,50.15 50.52,50.16 50.52,50.17 50.52,50.18 50.52,50.19 50.52,50.21 50.52,50.22 50.52,50.23 50.52,50.24 50.52,50.26 50.51,50.27 50.51,50.28 50.51,50.29 50.51,50.31 50.5,50.32 50.5,50.33 50.49,50.34 50.49,50.36 50.49,50.37 50.48,50.38 50.48,50.39 50.47,50.41 50.47,50.42 50.46,50.43 50.45,50.44 50.45,50.46 50.44,50.47 50.43,50.48 50.43,50.49 50.42,50.5 50.41,50.52 50.4,50.53 50.39,50.54 50.38,50.55 50.37,50.56 50.36,50.57 50.35,50.59 50.34,50.6 50.33,50.61 50.32,50.62 50.31,50.63 50.3,50.64 50.29,50.65 50.28,50.66 50.27,50.67 50.25,50.68 50.24,50.69 50.23,50.7 50.21,50.71 50.2,50.72 50.19,50.73 50.17,50.73 50.16,50.74 50.14,50.75 50.13,50.76 50.11,50.77 50.1,50.77 50.08,50.78 50.07,50.79 50.05,50.79 50.03,50.8 50.02,50.8 50,50.81 49.98,50.81 49.97,50.82 49.95,50.82 49.93,50.83 49.91,50.83 49.89,50.83 49.88,50.84 49.86,50.84 49.84,50.84 49.82,50.84 49.8,50.85 49.78,50.85 49.76,50.85 49.74,50.85 49.72,50.85 49.71,50.85 49.69,50.85 49.67,50.84 49.65,50.84 49.63,50.84 49.61,50.84 49.59,50.83 49.57,50.83 49.55,50.83 49.53,50.82 49.5,50.82 49.48,50.81 49.46,50.81 49.44,50.8 49.42,50.79 49.4,50.79 49.38,50.78 49.36,50.77 49.34,50.76 49.32,50.75 49.3,50.74 49.28,50.73 49.26,50.72 49.24,50.71 49.22,50.7 49.2,50.69 49.18,50.68 49.16,50.66 49.15,50.65 49.13,50.63 49.11,50.62 49.09,50.61 49.07,50.59 49.05,50.57 49.03,50.56 49.02,50.54 49,50.52 48.98,50.51 48.96,50.49 48.95,50.47 48.93,50.45 48.92,50.43 48.9,50.41 48.88,50.39 48.87,50.37 48.85,50.35 48.84,50.32 48.83,50.3 48.81,50.28 48.8,50.26 48.79,50.23 48.77,50.21 48.76,50.18 48.75,50.16 48.74,50.13 48.73,50.11 48.72,50.08 48.71,50.05 48.7,50.03 48.69,50 48.68,49.97 48.68,49.94 48.67,49.92 48.66,49.89 48.66,49.86 48.65,49.83 48.65,49.8 48.64,49.77 48.64,49.74 48.63,49.71 48.63,49.68 48.63,49.65 48.63,49.62 48.63,49.59 48.63,49.55 48.63,49.52 48.63,49.49 48.63,49.46 48.64,49.43 48.64,49.39 48.64,49.36 48.65,49.33 48.66,49.3 48.66,49.26 48.67,49.23 48.68,49.2 48.69,49.17 48.7,49.13 48.71,49.1 48.72,49.07 48.73,49.03 48.74,49 48.75,48.97 48.77,48.94 48.78,48.9 48.8,48.87 48.81,48.84 48.83,48.81 48.85,48.77 48.87,48.74 48.89,48.71 48.91,48.68 48.93,48.65 48.95,48.62 48.97,48.59 49,48.56 49.02,48.53 49.05,48.5 49.07,48.47 49.1,48.44 49.13,48.41 49.15,48.38 49.18,48.35 49.21,48.33 49.24,48.3 49.27,48.27 49.31,48.25 49.34,48.22 49.37,48.19 49.41,48.17 49.44,48.15 49.48,48.12 49.51,48.1 49.55,48.08 49.59,48.06 49.63,48.04 49.66,48.02 49.7,48 49.74,47.98 49.79,47.96 49.83,47.94 49.87,47.93 49.91,47.91 49.96,47.9 50,47.88 50.04,47.87 50.09,47.86 50.14,47.85 50.18,47.83 50.23,47.82 50.28,47.82 50.32,47.81 50.37,47.8 50.42,47.8 50.47,47.79 50.52,47.79 50.57,47.78 50.62,47.78 50.67,47.78 50.72,47.78 50.77,47.78 50.82,47.79 50.88,47.79 50.93,47.79 50.98,47.8 51.03,47.81 51.08,47.82 51.14,47.82 51.19,47.83 51.24,47.85 51.3,47.86 51.35,47.87 51.4,47.89 51.46,47.91 51.51,47.92 51.56,47.94 51.62,47.96 51.67,47.98 51.72,48.01 51.77,48.03 51.83,48.05 51.88,48.08 51.93,48.11 51.98,48.14 52.03,48.17 52.09,48.2 52.14,48.23 52.19,48.27 52.24,48.3 52.29,48.34 52.34,48.38 52.39,48.42 52.43,48.46 52.48,48.5 52.53,48.54 52.57,48.58 52.62,48.63 52.67,48.68 52.71,48.72 52.75,48.77 52.8,48.82 52.84,48.88 52.88,48.93 52.92,48.98 52.96,49.04 53,49.09 53.04,49.15 53.07,49.21 53.11,49.27 53.14,49.33 53.18,49.39 53.21,49.46 53.24,49.52 53.27,49.59 53.3,49.65 53.33,49.72 53.36,49.79 53.38,49.86 53.4,49.93 53.43,50 53.45,50.07 53.47,50.15 53.49,50.22 53.5,50.29 53.52,50.37 53.53,50.45 53.55,50.52 53.56,50.6 53.57,50.68 53.57,50.76 53.58,50.84 53.59,50.92 53.59,51 53.59,51.08 53.59,51.17 53.59,51.25 53.58,51.33 53.58,51.42 53.57,51.5 53.56,51.58 53.55,51.67 53.54,51.75 53.52,51.84 53.5,51.93 53.48,52.01 53.46,52.1 53.44,52.18 53.42,52.27 53.39,52.36 53.36,52.44 53.33,52.53 53.3,52.61 53.26,52.7 53.23,52.79 53.19,52.87 53.15,52.96 53.1,53.04 53.06,53.12 53.01,53.21 52.96,53.29 52.91,53.37 52.86,53.46 52.81,53.54 52.75,53.62 52.69,53.7 52.63,53.78 52.56,53.86 52.5,53.94 52.43,54.01 52.36,54.09 52.29,54.17 52.22,54.24 52.14,54.31 52.06,54.38 51.98,54.46 51.9,54.53 51.82,54.59 51.73,54.66 51.65,54.73 51.56,54.79 51.47,54.85 51.37,54.91 51.28,54.97 51.18,55.03 51.08,55.09 50.98,55.14 50.88,55.19 50.77,55.24 50.67,55.29 50.56,55.34 50.45,55.39 50.34,55.43 50.23,55.47 50.12,55.51 50,55.55 49.88,55.58 49.76,55.61 49.65,55.64 49.52,55.67 49.4,55.69 49.28,55.72 49.15,55.74 49.03,55.76 48.9,55.77 48.77,55.78 48.64,55.79 48.51,55.8 48.38,55.81 48.25,55.81 48.11,55.81 47.98,55.8 47.84,55.8 47.71,55.79 47.57,55.77 47.44,55.76 47.3,55.74 47.16,55.72 47.02,55.7 46.88,55.67 46.75,55.64 46.61,55.6 46.47,55.57 46.33,55.53 46.19,55.48 46.05,55.44 45.91,55.39 45.77,55.34 45.63,55.28 45.49,55.22 45.36,55.16 45.22,55.09 45.08,55.02 44.94,54.95 44.81,54.88 44.67,54.8 44.54,54.71 44.41,54.63 44.27,54.54 44.14,54.45 44.01,54.35 43.88,54.25 43.76,54.15 43.63,54.04 43.5,53.93 43.38,53.82 43.26,53.71 43.14,53.59 43.02,53.46 42.91,53.34 42.79,53.21 42.68,53.08 42.57,52.94 42.46,52.8 42.35,52.66 42.25,52.52 42.15,52.37 42.05,52.22 41.95,52.07 41.86,51.91 41.77,51.75 41.68,51.59 41.6,51.42 41.51,51.25 41.43,51.08 41.36,50.91 41.29,50.73 41.22,50.55 41.15,50.37 41.09,50.19 41.03,50 40.97,49.81 40.92,49.62 40.87,49.43 40.83,49.23 40.79,49.03 40.75,48.83 40.72,48.63 40.69,48.42 40.66,48.22 40.64,48.01 40.63,47.8 40.61,47.59 40.61,47.38 40.6,47.16 40.6,46.95 40.61,46.73 40.62,46.51 40.64,46.29 40.66,46.07 40.68,45.85 40.71,45.63 40.75,45.41 40.78,45.18 40.83,44.96 40.88,44.73 40.93,44.51 40.99,44.28 41.06,44.06 41.13,43.83 41.2,43.61 41.28,43.38 41.37,43.16 41.46,42.93 41.55,42.71 41.65,42.48 41.76,42.26 41.87,42.04 41.99,41.82 42.11,41.6 42.24,41.38 42.37,41.16 42.51,40.95 42.66,40.73 42.81,40.52 42.96,40.31 43.12,40.1 43.29,39.9 43.46,39.69 43.64,39.49 43.82,39.29 44,39.09 44.2,38.9 44.39,38.71 44.6,38.52 44.81,38.34 45.02,38.15 45.24,37.97 45.46,37.8 45.69,37.63 45.93,37.46 46.16,37.3 46.41,37.14 46.66,36.98 46.91,36.83 47.17,36.68 47.43,36.54 47.7,36.4 47.97,36.27 48.25,36.14 48.53,36.02 48.82,35.9 49.11,35.79 49.4,35.68 49.7,35.58 50,35.48 50.31,35.39 50.62,35.31 50.93,35.23 51.25,35.16 51.57,35.09 51.89,35.03 52.22,34.98 52.55,34.93 52.88,34.89 53.22,34.86 53.56,34.83 53.9,34.81 54.24,34.8 54.59,34.8 54.94,34.8 55.29,34.81 55.64,34.83 56,34.85 56.36,34.88 56.71,34.92 57.07,34.97 57.43,35.03 57.8,35.09 58.16,35.16 58.52,35.24 58.89,35.33 59.25,35.42 59.61,35.53 59.98,35.64 60.34,35.76 60.71,35.89 61.07,36.03 61.44,36.18 61.8,36.33 62.16,36.5 62.52,36.67 62.88,36.85 63.24,37.04 63.59,37.24 63.94,37.44 64.3,37.66 64.65,37.88 64.99,38.12 65.34,38.36 65.68,38.61 66.01,38.87 66.35,39.14 66.68,39.42 67,39.7 67.33,40 67.65,40.3 67.96,40.61 68.27,40.93 68.57,41.26 68.87,41.6 69.17,41.94 69.46,42.3 69.74,42.66 70.02,43.03 70.29,43.41 70.55,43.79 70.81,44.19 71.07,44.59 71.31,45 71.55,45.42 71.78,45.85 72,46.28 72.22,46.72 72.42,47.17 72.62,47.62 72.81,48.08 73,48.55 73.17,49.03 73.33,49.51 73.49,50 73.64,50.5 73.77,51 73.9,51.5 74.02,52.02 74.12,52.54 74.22,53.06 74.3,53.59 74.38,54.12 74.44,54.66 74.5,55.21 74.54,55.76 74.57,56.31 74.59,56.87 74.6,57.43 74.6,57.99 74.58,58.56 74.55,59.13 74.51,59.71 74.46,60.28 74.4,60.86 74.32,61.44 74.23,62.03 74.13,62.61 74.01,63.2 73.88,63.79 73.74,64.38 73.58,64.97 73.42,65.56 73.23,66.15 73.04,66.74 72.83,67.33 72.6,67.92 72.37,68.5 72.12,69.09 71.85,69.67 71.57,70.26 71.28,70.84 70.97,71.42 70.65,71.99 70.32,72.56 69.97,73.13 69.6,73.7 69.23,74.26 68.83,74.81 68.43,75.36 68.01,75.91 67.57,76.45 67.13,76.99 66.66,77.51 66.19,78.04 65.7,78.55 65.19,79.06 64.67,79.56 64.14,80.05 63.6,80.54 63.04,81.02 62.47,81.48 61.88,81.94 61.28,82.39 60.67,82.83 60.04,83.26 59.4,83.68 58.75,84.08 58.09,84.48 57.41,84.87 56.72,85.24 56.02,85.6 55.31,85.95 54.58,86.28 53.85,86.61 53.1,86.91 52.34,87.21 51.57,87.49 50.79,87.76 50,88.01 49.2,88.24 48.39,88.46 47.57,88.67 46.74,88.86 45.9,89.03 45.05,89.19 44.19,89.33 43.33,89.45 42.45,89.55 41.57,89.64 40.69,89.71 39.79,89.76 38.89,89.79 37.98,89.8 37.07,89.8 36.15,89.77 35.23,89.73 34.3,89.66 33.36,89.58 32.42,89.47 31.48,89.35 30.54,89.2 29.59,89.04 28.64,88.85 27.69,88.64 26.74,88.41 25.89,87.99 25.1,87.48 24.32,86.95 23.55,86.41 22.79,85.84 22.05,85.27 21.32,84.67 20.6,84.06 19.89,83.44 19.2,82.8 18.52,82.15 17.85,81.48 17.2,80.8 16.56,80.11 15.94,79.4 15.33,78.68 14.73,77.95 14.16,77.21 13.59,76.45 13.05,75.68 12.52,74.9 12.01,74.11 11.51,73.31 11.03,72.5 10.57,71.68 10.12,70.85 9.69,70.01 9.28,69.16 8.89,68.3 8.52,67.44 8.16,66.57 7.82,65.69 7.5,64.8 7.2,63.91 6.92,63.01 6.66,62.1 6.41,61.19 6.19,60.28 5.98,59.36 5.8,58.43 5.63,57.5 5.48,56.57 5.35,55.64 5.25,54.7 5.16,53.77 5.09,52.83 5.04,51.88 5.01,50.94 5,50 5.01,49.06 5.04,48.12 5.09,47.17 5.16,46.23 5.25,45.3 5.35,44.36 5.48,43.43 5.63,42.5 5.8,41.57 5.98,40.64 6.19,39.72 6.41,38.81 6.66,37.9 6.92,36.99 7.2,36.09 7.5,35.2 7.82,34.31 8.16,33.43 8.52,32.56 8.89,31.7 9.28,30.84 9.69,29.99 10.12,29.15 10.57,28.32 11.03,27.5 11.51,26.69 12.01,25.89 12.52,25.1 13.05,24.32 13.59,23.55 14.16,22.79 14.73,22.05 15.33,21.32 15.94,20.6 16.56,19.89 17.2,19.2 17.85,18.52 18.52,17.85 19.2,17.2 19.89,16.56 20.6,15.94 21.32,15.33 22.05,14.73 22.79,14.16 23.55,13.59 24.32,13.05 25.1,12.52 25.89,12.01 26.69,11.51 27.5,11.03 28.32,10.57 29.15,10.12 29.99,9.69 30.84,9.28 31.7,8.89 32.56,8.52 33.43,8.16 34.31,7.82 35.2,7.5 36.09,7.2 36.99,6.92 37.9,6.66 38.81,6.41 39.72,6.19 40.64,5.98 41.57,5.8 42.5,5.63 43.43,5.48 44.36,5.35 45.3,5.25 46.23,5.16 47.17,5.09 48.12,5.04 49.06,5.01 50,5 50.94,5.01 51.88,5.04 52.83,5.09 53.77,5.16 54.7,5.25 55.64,5.35 56.57,5.48 57.5,5.63 58.43,5.8 59.36,5.98 60.28,6.19 61.19,6.41 62.1,6.66 63.01,6.92 63.91,7.2 64.8,7.5 65.69,7.82 66.57,8.16 67.44,8.52 68.3,8.89 69.16,9.28 70.01,9.69 70.85,10.12 71.68,10.57 72.5,11.03 73.31,11.51 74.11,12.01 74.9,12.52 75.68,13.05 76.45,13.59 77.21,14.16 77.95,14.73 78.68,15.33 79.4,15.94 80.11,16.56 80.8,17.2 81.48,17.85 82.15,18.52 82.8,19.2 83.44,19.89 84.06,20.6 84.67,21.32 85.27,22.05 85.84,22.79 86.41,23.55 86.95,24.32 87.48,25.1 87.99,25.89 88.49,26.69 88.97,27.5 89.43,28.32 89.88,29.15 90.31,29.99 90.72,30.84 91.11,31.7 91.48,32.56 91.84,33.43 92.18,34.31 92.5,35.2 92.8,36.09 93.08,36.99 93.34,37.9 93.59,38.81 93.81,39.72 94.02,40.64 94.2,41.57 94.37,42.5 94.52,43.43 94.65,44.36 94.75,45.3 94.84,46.23 94.91,47.17 94.96,48.12 94.99,49.06 95,50 94.99,50.94 94.96,51.88 94.91,52.83 94.84,53.77 94.75,54.7 94.65,55.64 94.52,56.57 94.37,57.5 94.2,58.43 94.02,59.36 93.81,60.28 93.59,61.19 93.34,62.1 93.08,63.01 92.8,63.91 92.5,64.8 92.18,65.69 91.84,66.57 91.48,67.44 91.11,68.3 90.72,69.16 90.31,70.01 89.88,70.85 89.43,71.68 88.97,72.5 88.49,73.31 87.99,74.11 87.48,74.9 86.95,75.68 86.41,76.45 85.84,77.21 85.27,77.95 84.67,78.68 84.06,79.4 83.44,80.11 82.8,80.8 82.15,81.48 81.48,82.15 80.8,82.8 80.11,83.44 79.4,84.06 78.68,84.67 77.95,85.27 77.21,85.84 76.45,86.41 75.68,86.95 74.9,87.48 74.11,87.99 73.31,88.49 72.5,88.97 71.68,89.43 70.85,89.88 70.01,90.31 69.16,90.72 68.3,91.11 67.44,91.48 66.57,91.84 65.69,92.18 64.8,92.5 63.91,92.8 63.01,93.08 62.1,93.34 61.19,93.59 60.28,93.81 59.36,94.02 58.43,94.2 57.5,94.37 56.57,94.52 55.64,94.65 54.7,94.75 53.77,94.84 52.83,94.91 51.88,94.96 50.94,94.99 50,95 49.06,94.99 48.12,94.96 47.17,94.91 46.23,94.84 45.3,94.75 44.36,94.65 43.43,94.52 42.5,94.37 41.57,94.2 40.64,94.02 39.72,93.81 38.81,93.59 37.9,93.34 36.99,93.08 36.09,92.8 35.2,92.5 34.31,92.18 33.43,91.84 32.56,91.48 31.7,91.11 30.84,90.72 29.99,90.31 29.15,89.88 28.32,89.43 27.5,88.97 26.69,88.49 25.89,87.99'; /* verbatim from scripts/mark.svg #spiral */
+const EP = 'https://www.youtube.com/watch?v=wdnVeYx_fOA';
+const NS = 'http://www.w3.org/2000/svg', MINUS = '\u2212';
+const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = id => document.getElementById(id);
+const stage = $('stage'), wrap = $('wrap'), board = $('bd'), colSet = $('setup'), colCast = $('cast'), capEl = $('cap'), fxr = $('fxr');
+$('brandPath').setAttribute('d', LOGO);
+const CAST = Array.isArray(window.CAST) ? window.CAST : [];
+const N = window.NARRATION;
+const NAR = N && typeof N.src === 'string' && Array.isArray(N.cues) ? N : null;
+
+/* ---------- small builders ---------- */
+function S(tag, a, p, txt) { const e = document.createElementNS(NS, tag); if (a) for (const k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; if (p) p.appendChild(e); return e; }
+function H(tag, cls, p, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; if (p) p.appendChild(e); return e; }
+function T(p, x, y, s, cls, size, anchor, extra) { return S('text', Object.assign({ x: x, y: y, class: cls || '', 'font-size': size || 20, 'text-anchor': anchor || 'start' }, extra || {}), p, s); }
+function tag(p, x, y, code, anchor) { return T(p, x, y, 'check ' + code, 'mono f-mut', 13, anchor); }
+function itag(t, code) { S('tspan', { class: 'mono f-mut', 'font-size': 13, dx: 12 }, t, 'check ' + code); return t; }
+function G(p, cls) { return S('g', cls ? { class: cls } : null, p); }
+function F(p) { return S('g', { class: 'fade hide' }, p); }
+function on() { for (const e of arguments) if (e) e.classList.remove('hide'); }
+function off() { for (const e of arguments) if (e) e.classList.add('hide'); }
+function ln(p, x1, y1, x2, y2, cls, w) { return S('line', { x1: x1, y1: y1, x2: x2, y2: y2, class: cls || 's-line', 'stroke-width': w || 2 }, p); }
+function circ(p, cx, cy, r, cls) { return S('circle', { cx: cx, cy: cy, r: r, class: cls || '' }, p); }
+function tok(p, x, y, r, label) { const c = circ(p, x, y, r || 28, 'tok'); if (label) c._lab = T(p, x, y + 6, label, 'mono tkl', 17, 'middle'); return c; }
+function race(c) { c.classList.remove('stop'); c.classList.add('race'); if (c._lab) c._lab.classList.add('dark'); }
+function calm(c) { c.classList.remove('race'); c.classList.add('stop'); if (c._lab) c._lab.classList.add('dark'); }
+function sg(v, dp, plus) { const s = Math.abs(v).toFixed(dp || 0); if (Number(s) === 0) return s; return (v < 0 ? MINUS : (plus ? '+' : '')) + s; }
+const pct = v => Math.round(v) + '%';
+const sm = t => t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
+function arc(cx, cy, r1, r2, a0, a1) {
+  const P = (r, a) => [(cx + r * Math.cos(a * Math.PI / 180)).toFixed(1), (cy + r * Math.sin(a * Math.PI / 180)).toFixed(1)];
+  const A = P(r2, a0), B = P(r2, a1), C = P(r1, a1), D = P(r1, a0);
+  return 'M' + A + 'A' + r2 + ' ' + r2 + ' 0 0 1 ' + B + 'L' + C + 'A' + r1 + ' ' + r1 + ' 0 0 0 ' + D + 'Z';
+}
+
+/* ---------- clock: every motion runs on the scene clock, so pause freezes it ---------- */
+let sceneTime = 0, instant = false, tweens = [];
+const ease = p => p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2, easeIn = p => p * p, lin = p => p;
+function anim(d, fn, e) { if (instant || d <= 0) { fn(1); return; } tweens.push({ t0: sceneTime, d: d, fn: fn, e: e || ease }); fn(0); }
+function later(d, fn) { if (instant || d <= 0) { fn(); return; } let done = false; tweens.push({ t0: sceneTime, d: d, e: lin, fn: p => { if (p >= 1 && !done) { done = true; fn(); } } }); }
+function runTweens() {
+  const cur = tweens; tweens = [];
+  const keep = cur.filter(w => { const p = Math.max(0, Math.min(1, (sceneTime - w.t0) / w.d)); try { w.fn(w.e(p)); } catch (err) { console.error(err); return false; } return p < 1; });
+  tweens = keep.concat(tweens);
+}
+function flushTweens() {
+  const was = instant; instant = true;
+  for (let n = 0; n < 6 && tweens.length; n++) { const cur = tweens; tweens = []; cur.forEach(w => { try { w.fn(1); } catch (err) { console.error(err); } }); }
+  tweens = []; instant = was;
+}
+function tickN(el, a, b, d, f) { anim(d, p => { el.textContent = f(a + (b - a) * p); }); }
+
+/* ---------- right column and cast helpers ---------- */
+function clean(s) { return String(s || '').trim(); }
+function panel(P) {
+  const g = H('div', 'pg', colSet);
+  H('div', 'ph', g, P.title);
+  P.lines.forEach(l => { const d = H('div', 'sl', g); if (Array.isArray(l)) { d.append(l[0]); if (l[1]) H('span', 'tag', d, 'check ' + l[1]); } else d.append(l); });
+  if (P.note) H('p', 'sn', g, P.note);
+  return g;
+}
+function panelText(P) { return P.title + ': ' + P.lines.map(l => Array.isArray(l) ? l[0] : l).join('; ') + '.' + (P.note ? ' ' + P.note : ''); }
+function quoteOf(e) { return clean(e.quote).replace(/^["\u201C]+|["\u201D]+$/g, ''); }
+function srcLink(e, parent) {
+  const label = [clean(e.source), clean(e.date)].filter(Boolean).join(', ');
+  if (e.url && /^https?:\/\//i.test(e.url)) { const a = H('a', '', parent, label || e.url); a.href = e.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+  else parent.append(label);
+}
+function card(e, parent, hidden) {
+  const c = H('div', 'card fade' + (hidden ? ' hide' : ''), parent);
+  const who = H('div', 'who', c, clean(e.person));
+  if (e.example || /^example/i.test(clean(e.person))) H('span', 'ex', who, 'EXAMPLE');
+  if (e.role) H('div', 'role', c, clean(e.role));
+  if (e.quote) H('div', 'q', c, '\u201C' + quoteOf(e) + '\u201D');
+  srcLink(e, H('div', 'src', c));
+  if (e.caveat) H('p', 'cav', c, clean(e.caveat));
+  return c;
+}
+function castFor(k) { return k ? CAST.filter(e => e && String(e.case).toLowerCase() === k).slice(0, MAX_CARDS) : []; }
+function cardParts(e) {
+  const P = [{ key: 0, text: clean(e.person) + (e.role ? ' (' + clean(e.role) + ')' : '') + ': \u201C' + quoteOf(e) + '\u201D', read: [e.person, e.role, quoteOf(e)].map(clean).join(' ') }];
+  /* the logic and the caveat are shown in the storyboard, not as beats (28 Sep: they restate the case; 10-minute film).
+     An entry whose card must carry its caveat in the film says so in film_note: one more beat on the same card. */
+  const fn = clean(e.film_note);
+  if (fn) P.push({ key: 3, text: fn, read: fn });
+  return P;
+}
+let castN = null;
+function buildCast(sc) {
+  colCast.textContent = ''; colCast.classList.add('hide');
+  const list = castFor(sc.cast);
+  if (!list.length) return;
+  const head = H('div', 'ph', colCast, 'In their words'); castN = H('span', '', head, '');
+  list.forEach(e => {
+    const c = H('div', 'bigc gone', colCast), q = H('div', 'cq fade hide', c);
+    const who = H('div', 'who', q, clean(e.person));
+    if (e.example || /^example/i.test(clean(e.person))) H('span', 'ex', who, 'EXAMPLE');
+    if (e.role) H('div', 'role', q, clean(e.role));
+    if (e.quote) H('div', 'q', q, '\u201C' + quoteOf(e) + '\u201D');
+    srcLink(e, H('div', 'src', q));
+    let nt = null; /* the film note sits right under the quote */
+    if (clean(e.film_note)) { nt = H('div', 'fade hide', c); H('p', 'cav', nt, clean(e.film_note)); if (e.note_url) srcLink({ source: e.note_source, url: e.note_url }, H('div', 'src', nt)); }
+    let lg = null, cv = null;
+    const lt = clean(e.logic).replace(/^the logic:\s*/i, '');
+    if (lt) { lg = H('p', 'logic fade hide', c); H('b', '', lg, 'The logic: '); lg.append(lt); }
+    if (e.caveat) cv = H('p', 'cav fade hide', c, clean(e.caveat));
+    c._parts = [q, lg, cv, nt];
+  });
+}
+function cardBeat(b) {
+  colCast.classList.remove('hide');
+  const cs = colCast.querySelectorAll('.bigc');
+  cs.forEach((c, i) => c.classList.toggle('gone', i !== b.ci));
+  if (castN) castN.textContent = cs.length > 1 ? ' \u00B7 ' + (b.ci + 1) + ' of ' + cs.length : '';
+  const el = cs[b.ci] && cs[b.ci]._parts[b.part];
+  on(el); return el;
+}
+
+const HARRIS = [
+  { person: 'Sam Harris', role: 'Making Sense #494, \u201CA Coin Toss for the Future\u201D, with Ryan Greenblatt', quote: 'the only rational response to that range of outcomes is you stop immediately.', source: 'about 08:22 to 08:33', url: EP, caveat: 'Quoted from the episode\u2019s auto-captions, filler words dropped.' },
+  { person: 'Sam Harris', role: 'the same episode', quote: 'this does not seem like the response anyone would have if they thought the probabilities of doom were really that high.', source: 'about 09:31 to 09:38', url: EP }
+];
+const GREENBLATT = { person: 'Ryan Greenblatt', role: 'describing the labs\u2019 reasoning, Making Sense #494', quote: "if we develop the technology first we'll do a more responsible job than the next actor", source: 'about 11:53 to 11:57', url: EP };
+
+/* ---------- the scenes ----------
+   Each step is one beat with one focus (f). run makes the one change; a is how long that change moves (s);
+   cap is the caption; txt is text on the board the beat asks you to read; d describes a beat with no words.
+   more lists what was carved out of the film on 28 Sep (version 3, about 10 minutes); the storyboard shows it. */
+const SCENES = [
+
+/* S0 ------------------------------------------------------------- */
+{ name: 'Opening', full: true, ownTitle: 'The Nature of Things. Rational to continue, but suboptimal.',
+  shows: 'The title, and her mark, the spiral, drawn from the centre outward. Then her subtitle: rational to continue, but suboptimal.',
+  more: 'The caption \u201CA game can be rational at every move and still end badly.\u201D (her subtitle says it on the board).',
+  build() {
+    const r = {};
+    r.sp = G(board);
+    const m = S('g', { transform: 'translate(680 150) scale(2.4)' }, r.sp);
+    r.p = S('path', { d: LOGO, class: 'logo', style: 'stroke-width:5', pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1 }, m);
+    r.ttl = G(board);
+    T(r.ttl, 800, 530, 'The Nature of Things', 'f-ink', 84, 'middle', { 'font-weight': 600 });
+    r.sub = T(r.ttl, 800, 588, 'Rational to continue, but suboptimal', 'serif it f-mut', 32, 'middle');
+    T(r.ttl, 800, 646, 'PLAYFULPROCESS', 'mono f-mut', 15, 'middle', { 'letter-spacing': 4 });
+    return r;
+  },
+  steps: [
+    { f: r => r.sp, a: 3, run: r => anim(3, p => r.p.setAttribute('stroke-dashoffset', (1 - p).toFixed(4)), lin),
+      cap: 'Thinking about artificial things, like artificial intelligence, is getting me to think more and more about the nature of things.' },
+    { f: r => r.sub, txt: 'Rational to continue, but suboptimal' }
+  ] },
+
+/* S1 ------------------------------------------------------------- */
+{ name: 'The odds', kicker: 'The argument', title: 'The odds',
+  shows: 'A bar of the chance of catastrophe, 0 to 50%. Harris\u2019s bar sits well below 1%; the numbers heard from the field sit at 10%, 20%, 30%, a die roll and a coin toss. His two sentences, as cards. Then the industry at full pace, looking at the same 10%.',
+  more: 'The caption \u201CSam Harris set a strict bar: any estimate of catastrophe that is not well below 1% is enormous.\u201D (his bar is on the board). Harris\u2019s hypothetical, if the Manhattan Project scientists had put a 10% chance on the first test igniting the atmosphere: a button marked 10%, \u201Cthe first test: a 10% chance of igniting the atmosphere\u201D, and \u201Cthe only sane response: not to run it\u201D.',
+  setup() { H('div', 'ph', colSet, 'The argument'); HARRIS.forEach(c => card(c, colSet, true)); },
+  build() {
+    const r = {}, X = p => 110 + 17.6 * p;
+    r.ax = F(board);
+    ln(r.ax, X(0), 300, X(50), 300, 's-mut', 2);
+    [0, 10, 20, 30, 40, 50].forEach(v => { ln(r.ax, X(v), 300, X(v), 312, 's-mut', 2); T(r.ax, X(v), 338, v + '%', 'mono f-mut', 15, 'middle'); });
+    T(r.ax, X(50), 212, 'chance of catastrophe', 'f-mut', 16, 'end');
+    r.hb = F(board);
+    S('rect', { x: X(0), y: 262, width: 17.6, height: 38, class: 'f-calm' }, r.hb);
+    T(r.hb, X(0), 222, 'HARRIS\u2019S BAR', 'mono f-mut', 13);
+    T(r.hb, X(0), 248, 'well below 1%', 'f-calm', 22);
+    r.mkg = F(board);
+    [[10], [16.67, 'a die roll'], [20], [30], [50, 'a coin toss']].forEach(m => {
+      const l = ln(r.mkg, X(m[0]), 258, X(m[0]), 300, 's-risk', 5);
+      if (m[0] === 10) r.m10 = l;
+      if (m[1]) T(r.mkg, X(m[0]), 396, m[1], 'f-risk', 17, m[0] === 50 ? 'end' : 'middle');
+    });
+    T(r.mkg, X(22), 248, 'from the field', 'f-risk', 20, 'middle');
+    r.tb = F(board);
+    r.ring = circ(r.tb, 230, 530, 80, 'ring');
+    circ(r.tb, 230, 530, 64, 'btn');
+    T(r.tb, 230, 524, 'TEST', 'f-ink', 24, 'middle', { 'font-weight': 600, 'letter-spacing': 2 });
+    T(r.tb, 230, 556, '10%', 'mono f-risk', 24, 'middle');
+    T(r.tb, 334, 506, 'Harris\u2019s hypothetical: the first test', 'f-ink', 22);
+    T(r.tb, 334, 536, 'a 10% chance of igniting the atmosphere', 'f-mut', 17);
+    r.no = F(board); T(r.no, 334, 578, 'the only sane response: not to run it', 'f-calm', 20);
+    r.rc = F(board);
+    T(r.rc, 800, 580, 'the industry', 'f-mut', 18);
+    r.mv = G(r.rc);
+    for (let i = 0; i < 5; i++) race(tok(r.mv, 540 + 34 * i, 530, 13));
+    r.ln = F(board);
+    for (let i = 0; i < 5; i++) ln(r.ln, 800 + 34 * i, 515, X(10), 304, 's-ink dash', 1.5);
+    return r;
+  },
+  steps: [
+    { f: r => [r.ax, r.hb, r.mkg], run: r => on(r.ax, r.hb, r.mkg),
+      txt: 'chance of catastrophe; Harris\u2019s bar: well below 1%; from the field: 10%, a die roll, 20%, 30%, a coin toss' },
+    { f: r => r.cards[0], run: r => on(r.cards[0]),
+      cap: 'If the people closest to a technology put the risk at 10%, he said, \u201Cthe only rational response to that range of outcomes is you stop immediately.\u201D' },
+    { f: r => r.cards[1], run: r => on(r.cards[1]),
+      cap: 'The industry keeps building at full pace, and \u201Cthis does not seem like the response anyone would have if they thought the probabilities of doom were really that high.\u201D' },
+    { f: r => [r.rc, r.ln, r.m10], a: 2.5, run: r => { on(r.rc); anim(2.5, p => r.mv.setAttribute('transform', 'translate(' + (260 * p).toFixed(1) + ' 0)')); later(2.5, () => { on(r.ln); r.m10.classList.add('glow'); }); },
+      cap: 'I don\u2019t think the inference holds. People can believe the numbers and race anyway.' }
+  ] },
+
+/* S2 case a ------------------------------------------------------ */
+{ name: 'The slice, not the pie', kicker: 'Case a', title: 'The slice, not the pie', cast: 'a',
+  shows: 'Five developers around a table that is also the pie of risk. Each racer adds a 2-point slice, to 10%. One stops alone: 10% to 8%, giving up 4 to save 2, so it continues. All race at \u22126 each, against 0 if all stop. Its own slice against the whole pie.',
+  more: 'The toy numbers: 5 developers; a prize of 20, won by one of the racers; a catastrophe costs each of them 100; each racer adds 2 points of risk; the numbers are illustrations, not estimates. The board line \u201Cit continues: continuing is dominant\u201D (check a1). The coin-toss note: \u201CAt a coin toss, with the same prize and loss, only one or two would build.\u201D (check a9).',
+  build() {
+    const r = { w: [], tk: [], pay: [] }, cx = 400, cy = 430;
+    r.wg = G(board);
+    for (let i = 0; i < 5; i++) { const a = -90 + 72 * i; r.w.push(S('path', { d: arc(cx, cy, 76, 150, a - 34, a + 34), class: 'wedge' }, r.wg)); }
+    r.pcg = G(board);
+    r.pc = T(r.pcg, cx, 440, '0%', 'mono f-ink', 40, 'middle', { 'font-weight': 500 });
+    T(r.pcg, cx, 463, 'chance of', 'f-mut', 13, 'middle'); T(r.pcg, cx, 479, 'catastrophe', 'f-mut', 13, 'middle');
+    r.ring = F(board); r.tg = G(board); r.payg = G(board);
+    for (let i = 0; i < 5; i++) {
+      const a = (-90 + 72 * i) * Math.PI / 180, x = cx + 238 * Math.cos(a), y = cy + 238 * Math.sin(a);
+      if (i === 0) circ(r.ring, x, y, 42, 'nf s-acc').setAttribute('stroke-width', 3);
+      r.tk.push(tok(r.tg, x, y, 28, String(i + 1)));
+      r.pay.push(T(r.payg, cx + 300 * Math.cos(a), cy + 300 * Math.sin(a) + 9, '0', 'fade hide mono f-risk', 26, 'middle'));
+    }
+    r.th = F(board);
+    T(r.th, 470, 150, 'if it stops alone', 'f-mut', 17);
+    T(r.th, 470, 186, 'gives up 4', 'mono f-risk', 24); T(r.th, 630, 186, 'saves 2', 'mono f-calm', 24);
+    tag(r.th, 470, 208, 'a4');
+    r.dom = F(board); itag(T(r.dom, 470, 266, 'it continues: continuing is dominant', 'f-mut', 15), 'a1');
+    r.cmp = F(board);
+    T(r.cmp, 770, 420, 'all race', 'f-mut', 19); T(r.cmp, 770, 466, MINUS + '6 each', 'mono f-risk', 40); tag(r.cmp, 770, 490, 'a3');
+    T(r.cmp, 770, 548, 'all stop', 'f-mut', 19); T(r.cmp, 770, 594, '0 each', 'mono f-calm', 40); tag(r.cmp, 770, 618, 'a3');
+    r.sl = F(board); T(r.sl, 300, 290, 'its own slice: 2 points', 'f-risk', 18, 'end');
+    r.pl = F(board); circ(r.pl, cx, cy, 160, 'nf s-ink').setAttribute('stroke-width', 2); T(r.pl, 580, 512, 'the whole pie: 10%', 'f-ink', 18);
+    r.nt = F(board); itag(T(r.nt, 70, 724, 'At a coin toss, with the same prize and loss, only one or two would build.', 'f-mut', 17), 'a9');
+    return r;
+  },
+  steps: [
+    { f: r => [r.tg, r.wg, r.pcg], a: 1.8, run: r => { r.tk.forEach((c, i) => later(i * .3, () => { race(c); r.w[i].style.opacity = .85; })); tickN(r.pc, 0, 10, 1.8, pct); },
+      cap: 'Five developers race. Each one adds two points of risk, so together the chance of catastrophe is 10%.' },
+    { f: r => [r.ring, r.w[0], r.pcg, r.th], a: .8, run: r => { on(r.ring, r.th); r.w[0].style.opacity = .16; tickN(r.pc, 10, 8, .8, pct); }, tags: ['a4'],
+      cap: 'If one of them stops alone, the risk falls only from 10% to 8%, and it gives up its chance at the prize.', txt: 'if it stops alone: gives up 4, saves 2' },
+    { f: r => [r.w[0], r.pcg], a: .8, run: r => { r.w[0].style.opacity = .85; tickN(r.pc, 8, 10, .8, pct); }, tags: ['a1'],
+      cap: 'So it continues, whatever the others do.' },
+    { f: r => [r.payg, r.cmp], a: 1.4, run: r => { on(r.cmp); r.pay.forEach((t, i) => later(i * .15, () => { on(t); tickN(t, 0, -6, .8, v => sg(v)); })); }, tags: ['a2', 'a3'],
+      cap: 'All five reason the same way and race, and all five end up worse off than if they had all stopped.', txt: 'all race: \u22126 each; all stop: 0 each' },
+    { f: r => [r.wg, r.sl, r.pl], run: r => on(r.sl, r.pl),
+      cap: 'Each developer\u2019s choice compares the prize with its own slice of the risk. The argument from the odds compares it with the whole pie.' }
+  ] },
+
+/* S3 case b ------------------------------------------------------ */
+{ name: 'Better us than them', kicker: 'Case b', title: 'Better us than them', cast: 'b',
+  shows: 'Greenblatt\u2019s sentence, as a card. Two developers, each with the same belief bubble: 5% if we win, 15% if they win. If the other races, stopping looks like 15% and racing like 10%. Both race, at \u22127 each against 0; in truth it is 10% whoever wins. The bubbles are mirror images.',
+  more: 'The toy numbers: 2 developers; a prize of 6; a catastrophe costs each 100. The caption \u201CBoth race, and both end up worse off than if both had stopped, by their own beliefs and in fact.\u201D (the board shows \u22127 against 0, and 10% whoever wins).',
+  setup() { card(GREENBLATT, colSet, true); },
+  build() {
+    const r = {};
+    const dev = (cx, name) => {
+      const tg = G(board), t = tok(tg, cx, 540, 38); T(tg, cx, 606, name, 'f-mut', 17, 'middle');
+      const b = F(board);
+      S('rect', { x: cx - 150, y: 220, width: 300, height: 220, class: 'bub' }, b);
+      ln(b, cx, 440, cx, 498, 's-line dash', 2);
+      T(b, cx - 128, 252, 'AS ' + name.slice(-1) + ' SEES IT', 'mono f-mut', 13);
+      T(b, cx - 128, 300, 'if we win', 'f-mut', 20); T(b, cx + 128, 302, '5%', 'mono f-ink', 34, 'end');
+      T(b, cx - 128, 348, 'if they win', 'f-mut', 20); T(b, cx + 128, 350, '15%', 'mono f-risk', 34, 'end');
+      const s = F(b);
+      T(s, cx - 128, 390, 'if the other races:', 'f-mut', 15);
+      itag(T(s, cx - 128, 414, 'stopping 15%, racing 10%', 'mono f-ink', 15), 'b1');
+      return { t: t, tg: tg, b: b, s: s };
+    };
+    r.A = dev(250, 'developer A'); r.B = dev(750, 'developer B');
+    r.cmp = F(board);
+    T(r.cmp, 500, 506, 'both race', 'f-mut', 17, 'middle'); T(r.cmp, 500, 546, MINUS + '7 each', 'mono f-risk', 32, 'middle'); tag(r.cmp, 500, 566, 'b3', 'middle');
+    T(r.cmp, 500, 616, 'both stop', 'f-mut', 17, 'middle'); T(r.cmp, 500, 656, '0 each', 'mono f-calm', 32, 'middle'); tag(r.cmp, 500, 676, 'b3', 'middle');
+    r.mir = F(board);
+    S('path', { d: 'M388 292C500 292 500 340 612 340', class: 'nf s-acc dash', 'stroke-width': 2 }, r.mir);
+    S('path', { d: 'M612 292C500 292 500 340 388 340', class: 'nf s-acc dash', 'stroke-width': 2 }, r.mir);
+    T(r.mir, 500, 190, 'mirror images: at most one can be right', 'f-acc', 17, 'middle');
+    tag(r.mir, 500, 208, 'b7', 'middle');
+    r.tr = F(board); itag(T(r.tr, 500, 726, 'in truth: 10% whoever wins', 'f-mut', 17, 'middle'), 'b5');
+    return r;
+  },
+  steps: [
+    { f: r => r.cards[0], run: r => on(r.cards[0]),
+      cap: 'Now give each developer Greenblatt\u2019s sentence: if the other one wins, the risk is higher than if we win.' },
+    { f: r => [r.A.b, r.B.b], run: r => on(r.A.b, r.B.b), txt: 'as A sees it, as B sees it: if we win 5%, if they win 15%' },
+    { f: r => [r.A.s, r.B.s], run: r => on(r.A.s, r.B.s), tags: ['b1', 'b2'],
+      cap: 'Once the other is racing, a developer that cares about nothing except safety will race too, if it believes it is the safer one.', txt: 'if the other races: stopping 15%, racing 10%' },
+    { f: r => [r.A.tg, r.B.tg, r.cmp, r.tr], run: r => { race(r.A.t); race(r.B.t); on(r.cmp, r.tr); }, tags: ['b3', 'b5'],
+      txt: 'both race: \u22127 each; both stop: 0 each; in truth: 10% whoever wins' },
+    { f: r => r.mir, run: r => on(r.mir), txt: 'mirror images: at most one can be right', tags: ['b7'] }
+  ] },
+
+/* S4 case c ------------------------------------------------------ */
+{ name: 'Whose ledger', kicker: 'Case c', title: 'Whose ledger', cast: 'c',
+  shows: 'Two ledgers side by side. The firm: +10 benefit, \u22125 for its 5% share, net +5, so it continues. The world: +10, \u2212100, net \u221290. A charge of 95, paid before, brings the firm to \u221290 and it stops. A liability paid after an extinction collects nothing.',
+  more: 'The toy numbers: one decision; a private benefit of 10; a 10% chance of a catastrophe that costs the world 1,000; the firm\u2019s ledger carries 5% of that cost. The captions \u201CA company that continues keeps most of the benefit and carries only a small share of the cost of a catastrophe, because a firm can lose only what it owns.\u201D and \u201CEconomists have a fix for this, a charge that makes the decision-maker carry the full cost.\u201D',
+  build() {
+    const r = {};
+    const col = (x0, x1, head) => { const g = F(board); T(g, x0, 190, head, 'f-ink', 22, 'start', { 'font-weight': 600 }); ln(g, x0, 208, x1, 208, 's-line', 2); ln(g, x0, 392, x1, 392, 's-mut', 1.5); T(g, x0, 446, 'net', 'f-mut', 18); return g; };
+    r.L = col(110, 470, 'the firm\u2019s ledger'); r.R = col(560, 920, 'the world\u2019s ledger');
+    T(r.L, 110, 258, 'benefit', 'f-mut', 18); r.lb = T(r.L, 470, 260, '0', 'mono f-ink', 30, 'end');
+    T(r.L, 110, 314, 'its 5% of 1,000, at 10%', 'f-mut', 18); r.ls = T(r.L, 470, 316, '0', 'mono f-risk', 30, 'end');
+    T(r.R, 560, 258, 'benefit', 'f-mut', 18); r.rb = T(r.R, 920, 260, '0', 'mono f-ink', 30, 'end');
+    T(r.R, 560, 314, 'all of 1,000, at 10%', 'f-mut', 18); r.rs = T(r.R, 920, 316, '0', 'mono f-risk', 30, 'end');
+    r.lt = T(r.L, 470, 450, '0', 'mono f-ink', 42, 'end'); r.t1 = tag(r.L, 470, 474, 'c1', 'end');
+    r.rt = T(r.R, 920, 450, '0', 'mono f-risk', 42, 'end'); tag(r.R, 920, 474, 'c2', 'end');
+    r.ch = F(board); T(r.ch, 110, 370, 'a charge, paid before', 'f-acc', 18); r.chv = T(r.ch, 470, 372, '0', 'mono f-acc', 30, 'end');
+    r.t4 = F(board); tag(r.t4, 470, 492, 'c4', 'end'); T(r.t4, 250, 492, 'now private = social', 'f-mut', 14, 'end');
+    r.dg = F(board); r.tk = tok(r.dg, 130, 540, 18); r.dec = T(r.dg, 164, 548, 'continues', 'f-ink', 22);
+    r.ex = F(board);
+    T(r.ex, 110, 622, 'a liability, paid after', 'f-mut', 19); ln(r.ex, 106, 616, 300, 616, 's-risk', 2.5);
+    itag(T(r.ex, 110, 660, 'nobody collects: 0', 'f-ink', 20), 'c6');
+    return r;
+  },
+  steps: [
+    { f: r => [r.L, r.R, r.dg], a: 1.2, run: r => { on(r.L, r.R, r.dg); race(r.tk);
+        tickN(r.lb, 0, 10, 1.2, v => sg(v, 0, true)); tickN(r.ls, 0, -5, 1.2, v => sg(v)); tickN(r.lt, 0, 5, 1.2, v => sg(v, 0, true));
+        tickN(r.rb, 0, 10, 1.2, v => sg(v, 0, true)); tickN(r.rs, 0, -100, 1.2, v => sg(v)); tickN(r.rt, 0, -90, 1.2, v => sg(v)); }, tags: ['c1', 'c2'],
+      txt: 'the firm\u2019s ledger: benefit +10; its 5% of 1,000, at 10%: \u22125; net +5; continues; the world\u2019s ledger: benefit +10; all of 1,000, at 10%: \u2212100; net \u221290' },
+    { f: r => [r.ch, r.lt, r.dg, r.t4], a: 2.6, run: r => { on(r.ch); tickN(r.chv, 0, -95, 1.2, v => sg(v));
+        later(1.2, () => { tickN(r.lt, 5, -90, 1.4, v => sg(v, 0, true));
+          later(1.4, () => { r.lt.classList.remove('f-ink'); r.lt.classList.add('f-risk'); r.t1.style.opacity = 0; calm(r.tk); r.dec.textContent = 'stops'; on(r.t4); }); }); }, tags: ['c4'],
+      cap: 'For it to work here, it has to be paid before.', txt: 'a charge, paid before: \u221295; net \u221290; stops; now private = social' },
+    { f: r => r.ex, run: r => on(r.ex), tags: ['c6'],
+      cap: 'After an extinction, there is no one left to collect.', txt: 'a liability, paid after: nobody collects: 0' }
+  ] },
+
+/* S5 case g ------------------------------------------------------ */
+{ name: 'Gambling for resurrection', kicker: 'Case g', title: 'Gambling for resurrection',
+  shows: 'Ticker tape from 1929 runs behind. A developer sits on its floor of \u2212100: stopping means ruin. At 12%, continuing gives \u221247.2 against \u2212100. The world\u2019s ledger at 12%: the gambler +52.8, the rival \u221255.2, everyone else \u2212200, below any floor.',
+  more: 'The toy numbers: a developer that can lose at most 100; a rival builds regardless; stopping means ruin: it loses the 100; continuing: a 1 in 2 chance to win 20, if there is no catastrophe. The name: gambling for resurrection (Downs and Rocke, 1994). The 1% weight: with a 1% weight on everyone else, at 12% it still continues (\u221259.2 against \u2212110); at a coin toss it stops (\u2212120 against \u2212110) (check g5).',
+  build() {
+    const r = {}, Y = v => 300 - 1.7 * v;
+    r.tp = F(board);
+    S('path', { id: 'tapeP', d: 'M20 150C250 112 470 190 700 140S960 112 1050 140', class: 'tape' }, r.tp);
+    const tx = T(r.tp, 0, 0, '', 'mono f-mut', 13, 'start', { 'dominant-baseline': 'middle', 'letter-spacing': 2 });
+    r.tpp = S('textPath', { href: '#tapeP', startOffset: 0 }, tx, 'OCT 1929 \u00B7 \u00B7 \u00B7 1929 \u00B7 \u00B7 \u00B7 OCT 1929 \u00B7 \u00B7 \u00B7 1929 \u00B7 \u00B7 \u00B7 OCT 1929 \u00B7 \u00B7 \u00B7 1929 \u00B7 \u00B7 \u00B7 OCT 1929 \u00B7 \u00B7 \u00B7 1929 \u00B7 \u00B7 \u00B7 OCT 1929 \u00B7 \u00B7 \u00B7 1929 \u00B7 \u00B7 \u00B7 OCT 1929 \u00B7 \u00B7 \u00B7 1929 \u00B7 \u00B7 \u00B7 OCT 1929');
+    r.base = G(board); ln(r.base, 120, Y(0), 1000, Y(0), 's-line', 2); T(r.base, 110, Y(0) + 5, '0', 'mono f-mut', 15, 'end');
+    r.fl = F(board); ln(r.fl, 120, Y(-100), 470, Y(-100), 's-risk dash', 3); T(r.fl, 120, 496, 'its floor: ' + MINUS + '100', 'f-risk', 16);
+    r.gtg = G(r.fl); r.gt = tok(r.gtg, 160, Y(-100) - 18, 17); T(r.gtg, 160, 424, 'the gambler', 'f-mut', 15, 'middle');
+    const bar = (g, x, v, cls) => { const b = S('rect', { x: x, y: Y(0), width: 70, height: 0, class: cls }, g); return () => anim(1.3, p => { const h = 1.7 * Math.abs(v) * p; b.setAttribute('height', h.toFixed(1)); b.setAttribute('y', (v < 0 ? Y(0) : Y(0) - h).toFixed(1)); }); };
+    r.sb = F(board); r.gs = bar(r.sb, 260, -100, 'f-calm'); T(r.sb, 295, 285, 'stop', 'f-mut', 17, 'middle'); T(r.sb, 295, 496, MINUS + '100', 'mono f-calm', 20, 'middle');
+    r.cb = F(board); r.gc = bar(r.cb, 370, -47.2, 'f-risk'); T(r.cb, 405, 285, 'continue, at 12%', 'f-mut', 17, 'middle'); T(r.cb, 405, 406, MINUS + '47.2', 'mono f-risk', 20, 'middle'); tag(r.cb, 405, 426, 'g1', 'middle');
+    r.wlh = F(board); T(r.wlh, 1000, 236, 'the world\u2019s ledger, at 12%', 'f-ink', 19, 'end', { 'font-weight': 600 });
+    r.wg1 = F(board); r.w1 = bar(r.wg1, 580, 52.8, 'f-acc'); T(r.wg1, 615, 198, '+52.8', 'mono f-ink', 20, 'middle'); T(r.wg1, 615, 322, 'the gambler', 'f-mut', 15, 'middle');
+    r.wg2 = F(board); r.w2 = bar(r.wg2, 710, -55.2, 'f-risk'); T(r.wg2, 745, 288, 'the rival', 'f-mut', 15, 'middle'); T(r.wg2, 745, 418, MINUS + '55.2', 'mono f-risk', 20, 'middle');
+    r.wg3 = F(board); r.w3 = bar(r.wg3, 840, -200, 'f-risk'); T(r.wg3, 875, 288, 'everyone else', 'f-mut', 15, 'middle'); T(r.wg3, 875, 664, MINUS + '200', 'mono f-risk', 20, 'middle');
+    r.wtot = F(board); itag(T(r.wtot, 1000, 712, 'the world: ' + MINUS + '202.4', 'mono f-risk', 17, 'end'), 'g4');
+    r.cn = F(board);
+    T(r.cn, 120, 574, 'with a 1% weight on everyone else:', 'f-ink', 18);
+    T(r.cn, 120, 604, 'at 12%: ' + MINUS + '59.2 against ' + MINUS + '110, continues', 'mono f-mut', 15);
+    T(r.cn, 120, 630, 'at a coin toss: ' + MINUS + '120 against ' + MINUS + '110, stops', 'mono f-calm', 15);
+    tag(r.cn, 120, 654, 'g5');
+    return r;
+  },
+  steps: [
+    { f: r => r.tp, run: r => { on(r.tp); anim(9, p => r.tpp.setAttribute('startOffset', (-120 * p).toFixed(1)), lin); },
+      cap: 'The image that stayed with me is 1929: someone who has lost everything and has nothing left to protect.' },
+    { f: r => [r.fl, r.sb], a: 1.3, run: r => { on(r.fl, r.sb); r.gs(); },
+      cap: 'When you expect to lose everything anyway, the downside is already spent, and only the upside counts.', txt: 'its floor: \u2212100; the gambler; stop: \u2212100' },
+    { f: r => [r.cb, r.gtg], a: 1.3, run: r => { on(r.cb); r.gc(); race(r.gt); }, tags: ['g1'],
+      cap: 'For a developer that believes stopping means being overtaken and erased, continuing is the better choice at almost any level of risk.', txt: 'continue, at 12%: \u221247.2' },
+    { f: r => [r.wlh, r.wg1, r.wg2, r.wg3, r.wtot], a: 1.3, run: r => { on(r.wlh, r.wg1, r.wg2, r.wg3, r.wtot); r.w1(); r.w2(); r.w3(); }, tags: ['g4'],
+      cap: 'For everyone else there is no such floor.', txt: 'the world\u2019s ledger, at 12%: the gambler +52.8; the rival \u221255.2; everyone else \u2212200; the world: \u2212202.4' },
+    { f: r => [r.sb, r.cb], cap: 'The problem is not the irrationality. It may be the rationality.', big: true, hold: 1.5 }
+  ] },
+
+/* S6 case d ------------------------------------------------------ */
+{ name: 'Two stable endings', kicker: 'Case d', title: 'Two stable endings', cast: 'd',
+  shows: 'Risk 10% if one builds, 12% if both; both stopping is better for both. A landscape with two valleys: all race on the left, all stop on the right; left to right is how sure I am that the others will stop. A ball rolls into the race valley. The ridge between them is the bar to stop: 71% at a prize of 9. A believed outsider above 29% flattens the stop valley.',
+  more: 'Each loses 100 in a catastrophe (part of check d1). The payoff table at prize 9: I stop, 0 if the other stops, \u221210 if it continues; I continue, \u22121 if the other stops, \u22127.5 if it continues. \u201Cstopping while the other races costs 2.5; racing while it stops costs 1\u201D (check d3). The smaller prize: \u201Cwith a smaller prize, 20% is enough\u201D (check d5), a ball rolling into the stop valley, and \u201CHype moves that bar.\u201D The certain outsider: \u201Cboth race at \u221211, though both stopping gives \u221210\u201D (check d9).',
+  setup() {
+    const g = H('div', 'pg gone', colSet); H('div', 'ph', g, 'The payoffs, prize 9');
+    const t = H('table', 'pt', g), rows = [['', 'other stops', 'other continues'], ['I stop', '0', MINUS + '10'], ['I continue', MINUS + '1', MINUS + '7.5']];
+    rows.forEach((row, i) => { const tr = H('tr', '', t); row.forEach((c, j) => { H(i && j ? 'td' : 'th', i === 1 && j === 1 ? 'calm' : i === 2 && j === 2 ? 'risk' : '', tr, c); }); });
+    [['risk 10% if one builds, 12% if both', 'd1'], ['both stopping is better for both: 0 against ' + MINUS + '7.5', 'd2'], ['stopping while the other races costs 2.5; racing while it stops costs 1', 'd3'], ['an outsider who surely builds: both race at ' + MINUS + '11, though both stopping gives ' + MINUS + '10', 'd9']]
+      .forEach(l => { const d = H('div', 'sl fade hide', colSet); d.style.fontSize = '17px'; d.append(l[0]); H('span', 'tag', d, 'check ' + l[1]); });
+  },
+  build() {
+    const r = { balls: [] }, HY = 330, U = 80, TOP = 250, LX = q => 170 + 700 * q;
+    const P9 = { th: .714, dr: 2.5, ds: 1 }, P6 = { th: .2, dr: 1, ds: 4 }, PO = { th: .97, dr: 2.5, ds: -.6 };
+    r.P = Object.assign({}, P9); r.P9 = P9; r.P6 = P6; r.PO = PO;
+    const LY = (q, P) => { const yr = HY + P.dr * U, ys = HY + P.ds * U;
+      if (q < 0) return yr + (TOP - yr) * sm(-q / .14);
+      if (q > 1) return ys + (TOP - ys) * sm((q - 1) / .14);
+      if (q <= P.th) return yr + (HY - yr) * sm(q / P.th);
+      return HY + (ys - HY) * sm((q - P.th) / (1 - P.th)); };
+    r.land = G(board);
+    r.gnd = S('path', { class: 'gnd' }, r.land); r.rid = S('path', { class: 'ridge' }, r.land);
+    r.lr = T(r.land, 0, 0, 'all race', 'f-risk', 21, 'middle', { 'font-weight': 600 });
+    r.ls = T(r.land, 0, 0, 'all stop', 'f-calm', 21, 'middle', { 'font-weight': 600 });
+    T(r.land, LX(0), 728, '0%', 'mono f-mut', 15, 'middle'); T(r.land, LX(1), 728, '100%', 'mono f-mut', 15, 'middle');
+    T(r.land, LX(.5), 728, 'how sure I am the others will stop', 'f-mut', 15, 'middle');
+    r.mk = F(board); ln(r.mk, 0, 300, 0, 326, 's-acc dash', 2);
+    T(r.mk, 0, 236, 'the bar to stop', 'f-mut', 15, 'middle'); r.mv = T(r.mk, 0, 272, '71%', 'mono f-acc', 30, 'middle'); r.mt = T(r.mk, 0, 292, 'check d4', 'mono f-mut', 13, 'middle');
+    r.pz = T(board, 72, 190, 'prize 9', 'mono f-ink', 24);
+    r.os = F(board); circ(r.os, 968, 196, 16, 'tok race'); circ(r.os, 968, 196, 24, 'nf s-risk dash').setAttribute('stroke-width', 2);
+    T(r.os, 934, 202, 'an outsider', 'f-mut', 16, 'end');
+    r.d11 = F(board); itag(T(r.d11, 990, 700, 'believed above 29%', 'f-ink', 17, 'end'), 'd11');
+    const ball = (q, cls, p) => { const b = { q: q, el: circ(p || board, 0, 0, 15, cls) }; r.balls.push(b); return b; };
+    r.gh = F(board); r.g0 = ball(0, 'ball ghost', r.gh); r.g1 = ball(1, 'ball ghost', r.gh);
+    r.b1 = ball(.55, 'ball fade hide'); r.b2 = ball(.55, 'ball fade hide');
+    r.draw = () => {
+      const P = r.P; let d = '';
+      for (let k = 0; k <= 110; k++) { const q = -.14 + 1.28 * k / 110; d += (k ? 'L' : 'M') + LX(q).toFixed(1) + ' ' + LY(q, P).toFixed(1); }
+      r.rid.setAttribute('d', d); r.gnd.setAttribute('d', d + 'L' + LX(1.14) + ' 745L' + LX(-.14) + ' 745Z');
+      r.lr.setAttribute('x', LX(0)); r.lr.setAttribute('y', (LY(0, P) + 46).toFixed(1));
+      r.ls.setAttribute('x', LX(1)); r.ls.setAttribute('y', Math.max(LY(1, P) + 46, 330).toFixed(1));
+      r.mk.setAttribute('transform', 'translate(' + LX(P.th).toFixed(1) + ' 0)');
+      r.balls.forEach(b => { b.el.setAttribute('cx', LX(b.q).toFixed(1)); b.el.setAttribute('cy', (LY(b.q, P) - 15).toFixed(1)); });
+    };
+    r.morph = (to, d) => { const from = Object.assign({}, r.P); anim(d, p => { for (const k in to) r.P[k] = from[k] + (to[k] - from[k]) * p; r.draw(); }); };
+    r.roll = (b, to, d) => { const from = b.q; anim(d, p => { b.q = from + (to - from) * p; r.draw(); }, easeIn); };
+    r.draw();
+    return r;
+  },
+  steps: [
+    { f: r => [r.lines[0], r.lines[1]], run: r => on(r.lines[0], r.lines[1]), tags: ['d1', 'd2'],
+      cap: 'Suppose most of the danger comes from the thing existing at all, not from how many race toward it.',
+      txt: 'risk 10% if one builds, 12% if both; both stopping is better for both: 0 against \u22127.5' },
+    { f: r => [r.land, r.b1.el], a: 2.2, run: r => { on(r.b1.el); r.roll(r.b1, 0, 2.2); },
+      cap: 'Both endings are stable. Expectations help choose between them.', txt: 'all race; all stop; how sure I am the others will stop, 0% to 100%' },
+    { f: r => [r.mk, r.pz], run: r => on(r.mk), tags: ['d4'],
+      cap: 'Here, with a big prize, I need to be about 71% sure the others will stop before stopping pays.' },
+    { f: r => [r.land, r.os, r.d11], a: 2, run: r => { off(r.mk); on(r.os, r.d11); r.ls.style.opacity = .35; r.morph(r.PO, 2); }, tags: ['d11'],
+      cap: 'And the good ending disappears if the others come to believe, with a chance above about 29% here, that someone outside any agreement will build regardless.', txt: 'an outsider; believed above 29%' },
+    { f: r => r.land, cap: 'What we believe about whether it is unavoidable helps decide whether it is.' }
+  ] },
+
+/* S7 case e ------------------------------------------------------ */
+{ name: 'One planner', kicker: 'Case e', title: 'One planner', cast: 'e',
+  shows: 'One planner on a balance: gain 20 \u00D7 90% = 18 against loss 100 \u00D7 10% = 10, net +8, so it continues. A pause to learn the odds is worth 10 against 8. On the axis the odds are 10% and the threshold 1/6; with a small benefit the threshold falls to 4.8% and the planner stops (\u22125.5).',
+  more: 'The toy numbers: one planner holds all the risk; continue: gain 20 with probability 90%, or lose the present world, 100, with probability 10%; stop: 0. The second flip: \u201CThe decision also flips if the lost future counts, or if the planner judges by the worst case because nobody really knows the odds.\u201D Loss (100 + 100 future) \u00D7 10% = 20, net \u22122 (check e3); the worst case over 0 to 20%, \u22124 (check e4). The list of what flips it.',
+  build() {
+    const r = {}, PX = 420, PY = 330, X = p => 120 + 580 * p / 30;
+    r.scale = G(board);
+    ln(r.scale, PX, PY, PX, 620, 's-mut', 3); ln(r.scale, PX - 90, 620, PX + 90, 620, 's-mut', 3);
+    r.beam = S('line', { x1: PX - 290, y1: PY, x2: PX + 290, y2: PY, class: 's-ink', 'stroke-width': 6, 'stroke-linecap': 'round' }, r.scale);
+    const pan = name => { const g = G(r.scale); ln(g, 0, 0, -70, 120, 's-mut', 1.5); ln(g, 0, 0, 70, 120, 's-mut', 1.5); ln(g, -86, 120, 86, 120, 's-ink', 4);
+      return { g: g, v: T(g, 0, 108, '0', 'mono f-ink', 32, 'middle'), n: T(g, 0, 150, name, 'f-mut', 17, 'middle'), s: T(g, 0, 174, '', 'mono f-mut', 14, 'middle') }; };
+    r.L = pan('gain'); r.R = pan('loss');
+    r.tk = tok(r.scale, PX, PY, 22);
+    r.netg = G(r.scale);
+    r.net = T(r.netg, PX, 190, '', 'mono f-ink', 36, 'middle'); r.dec = T(r.netg, PX, 222, '', 'f-mut', 19, 'middle'); r.nt = T(r.netg, PX, 244, '', 'mono f-mut', 13, 'middle');
+    r.set = a => { r.a = a; const k = a * Math.PI / 180, c = Math.cos(k), s = Math.sin(k);
+      r.beam.setAttribute('transform', 'rotate(' + a.toFixed(2) + ' ' + PX + ' ' + PY + ')');
+      r.L.g.setAttribute('transform', 'translate(' + (PX - 290 * c).toFixed(1) + ' ' + (PY - 290 * s).toFixed(1) + ')');
+      r.R.g.setAttribute('transform', 'translate(' + (PX + 290 * c).toFixed(1) + ' ' + (PY + 290 * s).toFixed(1) + ')'); };
+    r.tilt = net => { const from = r.a, to = Math.max(-12, Math.min(12, -net * 1.3)); anim(1.4, p => r.set(from + (to - from) * p)); };
+    r.set(0);
+    r.ax = F(board);
+    ln(r.ax, X(0), 680, X(30), 680, 's-mut', 2);
+    [0, 10, 20, 30].forEach(v => { ln(r.ax, X(v), 680, X(v), 690, 's-mut', 2); T(r.ax, X(v), 710, v + '%', 'mono f-mut', 13, 'middle'); });
+    T(r.ax, X(30) + 14, 685, 'chance of catastrophe', 'f-mut', 14);
+    ln(r.ax, X(10), 664, X(10), 696, 's-risk', 4); T(r.ax, X(10), 652, 'the odds: 10%', 'f-risk', 14, 'middle');
+    r.th = G(r.ax); ln(r.th, 0, 664, 0, 696, 's-acc', 4); r.thl = T(r.th, 0, 652, 'threshold 1/6', 'f-acc', 14, 'middle'); r.tht = T(r.th, 0, 730, 'check e2', 'mono f-mut', 13, 'middle');
+    r.th.setAttribute('transform', 'translate(' + X(16.667).toFixed(1) + ' 0)');
+    r.moveTh = p => { anim(1.4, k => r.th.setAttribute('transform', 'translate(' + X(16.667 + (p - 16.667) * k).toFixed(1) + ' 0)')); };
+    const flips = [['a small benefit, 5', MINUS + '5.5: stop', 'e6'], ['the lost future counts', MINUS + '2: stop', 'e3'], ['the worst case, 0 to 20%', MINUS + '4: stop', 'e4'], ['a pause to learn the odds', '10 against 8', 'e7']];
+    r.fh = F(board); T(r.fh, 810, 196, 'WHAT FLIPS IT', 'mono f-mut', 13);
+    r.f = flips.map((f, i) => { const g = F(board), y = 236 + 74 * i; T(g, 810, y, f[0], 'f-ink', 17); T(g, 810, y + 30, f[1], 'mono f-calm', 22); tag(g, 810, y + 50, f[2]); return g; });
+    return r;
+  },
+  steps: [
+    { f: r => r.scale, a: 2.4, run: r => { tickN(r.L.v, 0, 18, 1, v => sg(v)); r.L.s.textContent = '20 \u00D7 90%'; tickN(r.R.v, 0, 10, 1, v => sg(v)); r.R.s.textContent = '100 \u00D7 10%';
+        later(1, () => { r.tilt(8); tickN(r.net, 0, 8, 1, v => sg(v, 0, true)); r.dec.textContent = 'continues'; r.nt.textContent = 'check e1'; race(r.tk); }); }, tags: ['e1'],
+      cap: 'Even a single planner who holds all the risk may rationally continue at 10%, if the benefits are large.', txt: 'gain: 20 \u00D7 90% = 18; loss: 100 \u00D7 10% = 10; net +8: continues' },
+    { f: r => r.ax, run: r => on(r.ax), txt: 'the odds: 10%; threshold 1/6', tags: ['e2'] },
+    { f: r => r.scale, a: 1.4, run: r => { r.tilt(0); r.net.textContent = '10 against 8'; r.dec.textContent = 'pauses'; r.nt.textContent = 'check e7'; calm(r.tk); }, tags: ['e7'],
+      cap: 'And a pause that lets it learn the odds first can be worth more than building now.', txt: '10 against 8: pauses' },
+    { f: r => [r.scale, r.th], a: 2.4, run: r => { tickN(r.L.v, 18, 4.5, 1, v => sg(v, v % 1 ? 1 : 0)); r.L.s.textContent = '5 \u00D7 90%'; r.thl.textContent = 'threshold 4.8%'; r.tht.textContent = 'check e6'; r.moveTh(4.762);
+        later(1, () => { r.tilt(-5.5); tickN(r.net, 8, -5.5, 1, v => sg(v, 1, true)); r.dec.textContent = 'stops'; r.nt.textContent = 'check e6'; }); }, tags: ['e6'],
+      cap: 'If the benefits are much smaller, 10% already means stop.', txt: 'gain: 5 \u00D7 90% = 4.5; net \u22125.5: stops; threshold 4.8%' }
+  ] },
+
+/* S8 the medicine ------------------------------------------------ */
+{ name: 'The medicine', kicker: 'Hope', title: 'The medicine', cast: 'hope',
+  shows: 'Three levers light: payoffs, values and information, expectations. A population of 100 racers: a committed group of 15% changes nothing; at 25%, past the tipping point of 20%, the rest follow. Lamps for verification, treaties, public commitments and common knowledge come on.',
+  more: 'The notes under the three levers: a charge paid before (check c4); the future, a pause (checks e3 e7); what we expect (checks d11 f2). The simulation set-up: a population version of case d; pairs meet and copy whatever pays; large prize: it takes 75%, a majority (check f2); a picture of how a norm spreads, not a model of real labs. The timeline of real restraint: 1963, Partial Test Ban Treaty; 1972, Biological Weapons Convention; 1975, Asilomar; 1987, Montreal Protocol; 1987, INF Treaty, \u201Ctrust, but verify\u201D.',
+  build() {
+    const r = { tk: [] };
+    r.lvg = G(board);
+    r.lv = ['payoffs', 'values and information', 'expectations'].map((l, i) => {
+      const x = 110 + 310 * i, g = G(r.lvg); const lamp = circ(g, x, 170, 9, 'lamp');
+      T(g, x + 20, 177, l, 'f-ink', 20); return { g: g, lamp: lamp }; });
+    r.pop = G(board);
+    for (let i = 0; i < 100; i++) { const c = tok(r.pop, 124 + 44 * (i % 10), 262 + 40 * Math.floor(i / 10), 14); race(c); c._k = (i * 37) % 100; r.tk.push(c); }
+    r.cm = G(r.pop);
+    r.tk.forEach(c => { if (c._k < 25) { c._ring = circ(r.cm, c.getAttribute('cx'), c.getAttribute('cy'), 19, 'nf s-ink fade hide'); c._ring.setAttribute('stroke-width', 2.5); } });
+    const MX = s => 610 + 3.7 * s;
+    r.shg = G(board);
+    T(r.shg, 610, 256, 'share who stop', 'f-mut', 16); r.sv = T(r.shg, 980, 258, '0%', 'mono f-ink', 30, 'end');
+    S('rect', { x: MX(0), y: 272, width: 370, height: 22, class: 'f-surf' }, r.shg);
+    r.bar = S('rect', { x: MX(0), y: 272, width: 0, height: 22, class: 'f-calm' }, r.shg);
+    ln(r.shg, MX(20), 264, MX(20), 302, 's-acc', 3);
+    itag(T(r.shg, MX(20) - 4, 326, 'tipping point, small prize: 20%', 'f-acc', 15), 'f1');
+    r.s1 = F(board); T(r.s1, 610, 370, '15% committed: nobody follows', 'f-ink', 18);
+    r.s2 = F(board); itag(T(r.s2, 610, 400, '25% committed: everyone follows', 'f-calm', 18), 'f2');
+    r.lampg = G(board);
+    r.lamps = ['verification', 'treaties', 'public commitments', 'common knowledge'].map((n, i) => { const y = 462 + 38 * i, g = G(r.lampg); g._l = circ(g, 620, y, 9, 'lamp'); T(g, 642, y + 6, n, 'f-mut', 18); return g; });
+    r.share = 0; r.setShare = (s, d) => { const from = r.share; r.share = s; anim(d || 1, p => { const v = from + (s - from) * p; r.bar.setAttribute('width', (3.7 * v).toFixed(1)); r.sv.textContent = pct(v); }, d ? lin : ease); };
+    const YX = y => 110 + (y - 1960) * 29.3;
+    r.tl = F(board); ln(r.tl, 100, 692, 1000, 692, 's-mut', 2);
+    [[1963, 'Partial Test Ban Treaty', -1, 'middle'], [1972, 'Biological Weapons Convention', 1, 'middle'], [1975, 'Asilomar', -1, 'middle'], [1987, 'Montreal Protocol', 1, 'end'], [1987, 'INF Treaty: \u201Ctrust, but verify\u201D', -1, 'end']].forEach(e => {
+      const x = YX(e[0]); circ(r.tl, x, 692, 7, 'lamp lit');
+      T(r.tl, e[3] === 'end' ? 1000 : x, e[2] < 0 ? 674 : 722, e[0] + ' \u00B7 ' + e[1], 'f-ink', 16, e[3]); });
+    return r;
+  },
+  steps: [
+    { f: r => r.pop, cap: 'Everyone in these cases reasons well from what they believe, so more reasoning alone may not move a group from one outcome to the other.' },
+    { f: r => r.lvg, a: 1, run: r => r.lv.forEach((l, i) => later(i * .5, () => l.lamp.classList.add('lit'))), tags: ['c4', 'e3', 'e7', 'd11', 'f2'],
+      cap: 'Three things can: changing the payoffs, changing the values and the information, or changing what each of us expects the others to do.' },
+    { f: r => [r.pop, r.shg, r.s1], a: 1, run: r => { r.tk.forEach(c => { if (c._k < 15) { calm(c); on(c._ring); } }); r.setShare(15); on(r.s1); }, tags: ['f1'],
+      cap: 'In a small simulation of the same game, a committed group that stops no matter what tips everyone else once it passes a threshold.', txt: 'share who stop: 15%; tipping point, small prize: 20%; 15% committed: nobody follows' },
+    { f: r => [r.pop, r.shg, r.s2], a: 3.6, run: r => { r.tk.forEach(c => { if (c._k >= 15 && c._k < 25) { calm(c); on(c._ring); } }); r.setShare(25);
+        later(1, () => { r.tk.forEach(c => { if (c._k >= 25) later((c._k - 25) * .035, () => calm(c)); }); r.setShare(100, 2.6); });
+        later(3.6, () => { off(r.s1); on(r.s2); }); }, tags: ['f2'],
+      txt: 'share who stop: 100%; 25% committed: everyone follows' },
+    { f: r => r.lampg, a: 1.2, run: r => r.lamps.forEach((g, i) => later(i * .4, () => g._l.classList.add('lit'))),
+      cap: 'Verification, treaties, public commitments, a story told together so that everyone knows everyone else has heard it: these do not make anyone smarter.' },
+    { f: r => r.lampg, cap: 'They make it possible to trust the good ending.', hope: true, hold: 2.5 }
+  ] },
+
+/* S9 close ------------------------------------------------------- */
+{ name: 'Close', full: true, kicker: 'The Nature of Things', title: 'Close',
+  shows: 'Her mark again, and the credit line: the numbers are illustrations, not estimates. Then the question.',
+  more: 'The caption \u201CWhich ending we reach depends partly on what we expect of each other, and expectations are something we make.\u201D The credit: every computed figure comes from model/race_model.py, where 51 of 51 checks pass, 48 of them substantive (model/race_model_output.txt).',
+  build() {
+    const r = {};
+    r.sp = G(board);
+    const m = S('g', { transform: 'translate(720 160) scale(1.6)' }, r.sp);
+    r.p = S('path', { d: LOGO, class: 'logo', style: 'stroke-width:6', pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1 }, m);
+    r.cr = F(board);
+    T(r.cr, 800, 470, 'The numbers are illustrations, not estimates.', 'serif it f-mut', 24, 'middle');
+    T(r.cr, 800, 530, 'PLAYFULPROCESS', 'mono f-mut', 15, 'middle', { 'letter-spacing': 4 });
+    return r;
+  },
+  steps: [
+    { f: r => [r.sp, r.cr], a: 3, run: r => { anim(3, p => r.p.setAttribute('stroke-dashoffset', (1 - p).toFixed(4)), lin); on(r.cr); },
+      txt: 'The numbers are illustrations, not estimates.' },
+    { f: r => r.sp, cap: 'I don\u2019t know which game we are in. Do you think the others would stop, if you did?', big: true, hope: true, hold: 3.5 }
+  ] }
+];
+
+/* ---------- beats: every step, title and card part becomes one beat, timed by the pacing model ---------- */
+function words(s) { return String(s || '').split(/\s+/).filter(w => /[\p{L}\p{N}]/u.test(w)).length; }
+function nums(s) { return (String(s || '').match(/[\u2212\-+]?\d[\d.,/]*%?/g) || []).length; }
+function readT(s) { return s ? Math.max(MIN_CAPTION, words(s) / READ_WPM * 60 + nums(s) * NUMBER_BONUS) : 0; }
+const BEAT = {};
+let NBEATS = 0;
+SCENES.forEach((sc, i) => {
+  sc.id = 's' + i;
+  const B = []; let t = 0;
+  const push = (o, d) => { o.id = sc.id + '.b' + B.length; o.k = B.length; o.t = t; o.dur = d; o.stop = t + d; BEAT[o.id] = { s: i, k: o.k }; B.push(o); t += d; };
+  push({ kind: 'title', text: sc.ownTitle || (sc.kicker ? sc.kicker + ': ' : '') + sc.title }, SCENE_TITLE);
+  sc.steps.forEach(st => {
+    if (st.panel) { st.f = r => r.panel; st.txt = panelText(sc.panel); }
+    const look = Math.max(LOOK, (st.a || 0) + .5), read = readT(st.cap) + readT(st.txt) + (st.hold || 0);
+    const o = { kind: 'step', st: st, cap: st.cap || '', look: look, capOff: look + read };
+    push(o, look + read + GAP);
+    if (o.cap) o.stop = o.t + o.capOff - .001;
+  });
+  castFor(sc.cast).forEach((e, ci) => cardParts(e).forEach(p => push({ kind: 'card', ci: ci, part: p.key, text: p.text }, LOOK + readT(p.read))));
+  sc.beats = B; sc.dur = +(t + END_HOLD).toFixed(2); NBEATS += B.length;
+});
+const TOTAL = SCENES.reduce((a, s) => a + s.dur, 0);
+const START = []; SCENES.reduce((a, s, i) => { START[i] = a; return a + s.dur; }, 0);
+const mmss = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+/* ---------- in a recursive.eco playlist: ?embed=1, ?scene=N[&to=M], ?clock=1 (see the note at the top) ---------- */
+const QS = new URLSearchParams(location.search);
+const EMBED = QS.get('embed') === '1' || window.self !== window.top;
+const sceneQ = v => Math.max(0, Math.min(SCENES.length - 1, parseInt(v, 10) || 0));
+const FIRST = QS.has('scene') ? sceneQ(QS.get('scene')) : 0;
+const LAST = QS.has('to') ? Math.max(FIRST, sceneQ(QS.get('to'))) : (QS.has('scene') ? FIRST : SCENES.length - 1);
+function scriptOf(b) {
+  if (b.kind !== 'step') return b.text;
+  const st = b.st;
+  if (st.cap) return st.cap + (st.txt ? '   [on screen: ' + st.txt + ']' : '');
+  if (st.txt) return '[on screen] ' + st.txt;
+  return '[look] ' + (st.d || '');
+}
+
+/* ---------- focus: one element or small group; everything else dims ---------- */
+const ROOTS = [board, colSet, colCast];
+let fxList = [], dimList = [];
+function dim(e) { e.classList.add('dim'); dimList.push(e); }
+function setFocus(f) {
+  dimList.forEach(e => e.classList.remove('dim')); dimList = [];
+  fxList.forEach(e => e.classList.remove('fxo'));
+  fxList = (Array.isArray(f) ? f : [f]).filter(e => e && ROOTS.some(rt => rt !== e && rt.contains(e)));
+  if (!fxList.length) { fxr.classList.add('hide'); return; }
+  const keep = new Set(), foc = new Set(fxList);
+  fxList.forEach(e => { for (let n = e; n && ROOTS.indexOf(n) < 0; n = n.parentNode) keep.add(n); });
+  ROOTS.forEach(rt => { if (!fxList.some(e => rt.contains(e))) dim(rt); });
+  const parents = new Set(); keep.forEach(n => { if (!foc.has(n.parentNode)) parents.add(n.parentNode); });
+  parents.forEach(p => { for (const c of p.children) if (!keep.has(c)) dim(c); });
+  fxList.forEach(e => { if (!(e instanceof SVGElement)) e.classList.add('fxo'); });
+  outline(true);
+}
+function outline(fresh) {
+  const L = fxList.filter(e => e instanceof SVGGraphicsElement && board.contains(e));
+  const M = board.getScreenCTM();
+  if (!L.length || !M) { fxr.classList.add('hide'); return; }
+  const I = M.inverse();
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  L.forEach(e => {
+    let bb; try { bb = e.getBBox(); } catch (err) { return; }
+    if (!bb.width && !bb.height) return;
+    const m = I.multiply(e.getScreenCTM());
+    [[bb.x, bb.y], [bb.x + bb.width, bb.y], [bb.x, bb.y + bb.height], [bb.x + bb.width, bb.y + bb.height]].forEach(p => {
+      const x = m.a * p[0] + m.c * p[1] + m.e, y = m.b * p[0] + m.d * p[1] + m.f;
+      x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y);
+    });
+  });
+  if (!isFinite(x0)) { fxr.classList.add('hide'); return; }
+  const P = 14; x0 = Math.max(6, x0 - P); y0 = Math.max(6, y0 - P); x1 = Math.min(1594, x1 + P); y1 = Math.min(894, y1 + P);
+  fxr.setAttribute('x', x0.toFixed(1)); fxr.setAttribute('y', y0.toFixed(1)); fxr.setAttribute('width', (x1 - x0).toFixed(1)); fxr.setAttribute('height', (y1 - y0).toFixed(1));
+  if (fresh && !RM) { fxr.classList.add('hide'); requestAnimationFrame(() => { if (fxList.length) fxr.classList.remove('hide'); }); }
+  else fxr.classList.remove('hide');
+}
+
+/* ---------- player ---------- */
+let cur = 0, bi = -1, tb = 0, R = {}, playing = false, stepMode = false, stillView = false, ended = false, voice = null, capOn = null, lastT = 0;
+function build(i) {
+  cur = Math.max(0, Math.min(SCENES.length - 1, i));
+  const sc = SCENES[cur];
+  tweens = []; sceneTime = 0; bi = -1; tb = 0; stillView = false; ended = false;
+  setFocus(null);
+  board.textContent = ''; colSet.textContent = '';
+  $('col').classList.toggle('gone', !!sc.full);
+  $('kk').textContent = $('tck').textContent = sc.kicker || '';
+  $('tt').textContent = $('tct').textContent = sc.title || '';
+  R = {};
+  try { if (sc.panel) panel(sc.panel); if (sc.setup) sc.setup(); R = sc.build() || {}; } catch (err) { console.error(err); }
+  R.panel = colSet.querySelector('.pg'); R.cards = Array.from(colSet.querySelectorAll('.card')); R.lines = Array.from(colSet.querySelectorAll('.sl'));
+  buildCast(sc);
+  setCap(null);
+}
+function startBeat(k, quiet) {
+  const sc = SCENES[cur], b = sc.beats[k];
+  bi = k; if (k > tb) tb = k;
+  instant = !!quiet || RM;
+  let f = null;
+  try {
+    if (b.kind === 'step') { if (b.st.run) b.st.run(R); if (b.st.f) f = b.st.f(R); }
+    else if (b.kind === 'card') f = cardBeat(b);
+  } catch (err) { console.error(b.id, err); }
+  instant = RM;
+  if (quiet) return;
+  const titling = b.kind === 'title' && !sc.ownTitle;
+  stage.classList.toggle('titling', titling);
+  $('tc').classList.toggle('hide', !titling);
+  $('hd').classList.toggle('hide', b.kind === 'title' || !!sc.full || !sc.kicker);
+  setFocus(f); setCap(null);
+}
+function setCap(b) {
+  capOn = b || null;
+  const st = b && b.st;
+  capEl.textContent = b ? b.cap : '';
+  capEl.className = 'cap' + (st && st.big ? ' big' : '') + (st && st.hope ? ' hope' : '');
+  if (b && !RM) { void capEl.offsetWidth; capEl.classList.add('in'); }
+}
+function capTick() {
+  const b = SCENES[cur].beats[bi];
+  const want = b && b.cap && sceneTime >= b.t + b.look && sceneTime < b.t + b.capOff ? b : null;
+  if (want !== capOn) setCap(want);
+}
+function seek(i, k) {
+  build(i);
+  const B = SCENES[cur].beats; k = Math.max(0, Math.min(B.length - 1, k || 0));
+  for (let j = 0; j < k; j++) startBeat(j, true);
+  tb = k; sceneTime = B[k].t; startBeat(k, false);
+}
+function stillAt(i) {
+  build(i);
+  const sc = SCENES[cur];
+  sc.beats.forEach((b, j) => { if (b.kind === 'step') startBeat(j, true); });
+  bi = tb = sc.beats.length - 1; sceneTime = sc.dur; stillView = true;
+  stage.classList.remove('titling'); $('tc').classList.add('hide'); $('hd').classList.toggle('hide', !!sc.full || !sc.kicker);
+  colCast.classList.add('hide'); setFocus(null); setCap(null);
+}
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = lastT ? Math.min(.1, (now - lastT) / 1000) : 0; lastT = now;
+  if (!playing) return;
+  if (voice) cueTick();
+  const sc = SCENES[cur], held = stepMode || !!voice;
+  const lim = held ? sc.beats[tb].stop : Infinity;
+  if (sceneTime < lim) sceneTime = Math.min(lim, sceneTime + dt);
+  while (bi + 1 < sc.beats.length && sc.beats[bi + 1].t <= sceneTime && (!held || bi + 1 <= tb)) startBeat(bi + 1, false);
+  capTick(); runTweens();
+  if (tweens.length) outline(false);
+  if (!held && sceneTime >= sc.dur) {
+    if (cur < LAST) { build(cur + 1); startBeat(0, false); }
+    else { playing = false; ended = true; }
+  }
+  ui();
+}
+function nextBeat() {
+  const sc = SCENES[cur];
+  if (stillView) { seek(cur, 0); }
+  else if (tb + 1 < sc.beats.length) { flushTweens(); tb++; sceneTime = Math.max(sceneTime, sc.beats[tb].t - GAP); }
+  else if (cur + 1 < SCENES.length) { build(cur + 1); startBeat(0, false); }
+  playing = true; ui();
+}
+function prevBeat() {
+  if (tb > 0) seek(cur, tb - 1);
+  else if (cur > 0) seek(cur - 1, SCENES[cur - 1].beats.length - 1);
+  playing = true; ui();
+}
+function play() {
+  if (voice) { const p = voice.a.play(); if (p && p.catch) p.catch(err => console.error(err)); playing = true; ui(); return; }
+  if (ended) seek(FIRST, 0); else if (stillView) seek(cur, 0);
+  playing = true; ui();
+}
+function pause() { playing = false; if (voice) voice.a.pause(); ui(); }
+function toggle() { playing ? pause() : play(); }
+function go(i) {
+  i = Math.max(0, Math.min(SCENES.length - 1, i));
+  if (voice) { voiceSeek(SCENES[i].id + '.b0', i); ui(); return; }
+  if (playing || stepMode) seek(i, 0); else stillAt(i);
+  ui();
+}
+
+/* ---------- a narration track: narration.js may define window.NARRATION = { src, cues: [{ beat, t }] } ---------- */
+function startVoice() {
+  if (!voice) {
+    const cues = NAR.cues.filter(c => c && BEAT[c.beat] && isFinite(+c.t)).map(c => ({ beat: c.beat, t: +c.t })).sort((a, b) => a.t - b.t);
+    voice = { a: new Audio(NAR.src), cues: cues, i: 0 };
+    voice.a.addEventListener('ended', () => { playing = false; ui(); });
+  }
+  stepMode = false; voice.i = 0;
+  try { voice.a.currentTime = 0; } catch (err) { /* not loaded yet */ }
+  seek(0, 0);
+  const p = voice.a.play(); playing = true;
+  if (p && p.catch) p.catch(err => { console.error('narration could not play', err); playing = false; ui(); });
+  ui();
+}
+function cueTick() {
+  const v = voice;
+  while (v.i < v.cues.length && v.a.currentTime >= v.cues[v.i].t) { cueTo(v.cues[v.i].beat); v.i++; }
+}
+function cueTo(id) {
+  const B = BEAT[id], sc = SCENES[cur];
+  if (B.s === cur && B.k === tb) return;
+  if (B.s === cur && B.k === tb + 1) { flushTweens(); tb = B.k; sceneTime = Math.max(sceneTime, sc.beats[tb].t - GAP); return; }
+  if (B.s === cur + 1 && B.k === 0 && tb === sc.beats.length - 1) { build(B.s); startBeat(0, false); return; }
+  seek(B.s, B.k);
+}
+function voiceSeek(id, i) {
+  const v = voice, j = v.cues.findIndex(c => BEAT[c.beat].s >= i);
+  if (j >= 0) { try { v.a.currentTime = v.cues[j].t; } catch (err) { console.error(err); } v.i = j; }
+  seek(i, 0);
+}
+
+/* ---------- controls ---------- */
+const chips = [];
+SCENES.forEach((sc, i) => { const li = H('li', '', $('scenes')); const b = H('button', '', li, 'S' + i + ' ' + sc.name); b.type = 'button'; b.addEventListener('click', () => go(i)); chips.push(b); });
+SCENES.forEach((sc, i) => { if (i) { const m = H('span', 'tickm', $('prog')); m.style.left = (100 * START[i] / TOTAL) + '%'; } });
+function ui() {
+  const sc = SCENES[cur], k = Math.max(0, bi), b = sc.beats[k];
+  $('play').textContent = stepMode && !voice ? 'Next beat' : playing ? 'Pause' : 'Play';
+  chips.forEach((c, i) => c.setAttribute('aria-current', i === cur ? 'true' : 'false'));
+  const el = START[cur] + Math.min(sceneTime, sc.dur);
+  $('fill').style.width = (100 * el / TOTAL).toFixed(2) + '%';
+  $('time').textContent = 'S' + cur + '  ' + mmss(el) + ' / ' + mmss(TOTAL);
+  $('bc').textContent = 'beat ' + (k + 1) + ' of ' + sc.beats.length + ' \u00B7 ' + (b ? b.id : '') + (stepMode && !voice ? ' \u00B7 step' : '') + (voice ? ' \u00B7 voice' : '');
+}
+$('play').addEventListener('click', () => { if (stepMode && !voice) nextBeat(); else toggle(); });
+$('prev').addEventListener('click', () => go(cur - 1));
+$('next').addEventListener('click', () => go(cur + 1));
+$('prog').addEventListener('click', e => { const f = (e.clientX - $('prog').getBoundingClientRect().left) / $('prog').clientWidth * TOTAL; let i = 0; while (i < SCENES.length - 1 && START[i + 1] <= f) i++; go(i); });
+if (NAR) { $('voice').classList.remove('gone'); $('voice').addEventListener('click', startVoice); }
+wrap.addEventListener('click', () => { if (stepMode && !voice) nextBeat(); });
+document.addEventListener('keydown', e => {
+  if (e.altKey || e.ctrlKey || e.metaKey) return;
+  const inCtl = e.target.closest && e.target.closest('button,a,input,select,textarea');
+  const space = (e.key === ' ' || e.code === 'Space') && !inCtl;
+  if (stepMode && !voice) {
+    if (space || e.key === 'ArrowRight') { e.preventDefault(); nextBeat(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); prevBeat(); }
+    return;
+  }
+  if (space) { e.preventDefault(); toggle(); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+});
+
+/* ---------- scale the 1600 x 900 stage to its box ---------- */
+function fit() { stage.style.transform = 'scale(' + (wrap.clientWidth / 1600) + ')'; }
+if (window.ResizeObserver) new ResizeObserver(fit).observe(wrap); else window.addEventListener('resize', fit);
+fit();
+
+/* ---------- storyboard, pacing table, narration script ---------- */
+const lede = $('lede');
+lede.append('A recording of the game behind \u201CThe Nature of Things\u201D, by PlayfulProcess. It plays by itself, about ' + mmss(TOTAL) + ', in ' + NBEATS + ' beats. Each beat shows one new thing and dims the rest; the caption comes ' + LOOK + ' s after the picture changes and stays for its reading time at ' + READ_WPM + ' words a minute (at least ' + MIN_CAPTION + ' s, plus ' + NUMBER_BONUS + ' s for each number). Add ');
+const code = s => H('code', '', lede, s);
+code('#record'); lede.append(' for a clean frame to screen-record, '); code('#s3'); lede.append(' to start at a scene, or '); code('#step');
+lede.append(' (also '); code('#record-step'); lede.append(', or '); code('#step-s2-b5'); lede.append(' to start at a beat) to move one beat at a time: click the picture, press Space or the right arrow; the left arrow goes back a beat. Every computed number carries the tag of the check that computes it in ');
+const mlink = s => { const a = H('a', '', lede, s); a.href = s; };
+mlink('model/race_model.py'); lede.append(', and '); mlink('model/race_model_output.txt'); lede.append(' holds what it prints. The numbers are illustrations, not estimates.');
+const rows = SCENES.map((sc, i) => ({ scene: 'S' + i + ' ' + sc.name, 'v1 (s)': V1[i], 'v2 (s)': V2[i], 'now (s)': +sc.dur.toFixed(1), beats: sc.beats.length }));
+const v1Total = V1.reduce((a, b) => a + b, 0), v2Total = V2.reduce((a, b) => a + b, 0);
+rows.push({ scene: 'Total', 'v1 (s)': +v1Total.toFixed(1) + ' (' + mmss(v1Total) + ')', 'v2 (s)': +v2Total.toFixed(1) + ' (' + mmss(v2Total) + ')', 'now (s)': +TOTAL.toFixed(1) + ' (' + mmss(TOTAL) + ')', beats: NBEATS });
+try { console.table(rows); } catch (err) { console.log(rows); }
+const pt = H('table', 'pace', $('pace')), hr = H('tr', '', H('thead', '', pt));
+['Scene', 'Version 1', 'Version 2', 'Now', 'Beats'].forEach(h => H('th', '', hr, h));
+const tbody = H('tbody', '', pt);
+rows.forEach((r, i) => { const tr = H('tr', i === rows.length - 1 ? 'tot' : '', tbody);
+  H('td', '', tr, r.scene); H('td', '', tr, i === rows.length - 1 ? mmss(v1Total) : Math.round(r['v1 (s)']) + ' s');
+  H('td', '', tr, i === rows.length - 1 ? mmss(v2Total) : Math.round(r['v2 (s)']) + ' s');
+  H('td', '', tr, i === rows.length - 1 ? mmss(TOTAL) : Math.round(r['now (s)']) + ' s'); H('td', '', tr, String(r.beats)); });
+SCENES.forEach((sc, i) => {
+  const a = H('article', 'sc', $('sbList')), h = H('h3', '', a), n = H('a', '', h, 'S' + i); n.href = '#s' + i;
+  H('span', '', h, (sc.kicker && !sc.full ? sc.kicker + ' \u00B7 ' : '') + sc.name);
+  H('span', 'tm', h, mmss(START[i]) + ' to ' + mmss(START[i] + sc.dur) + ' (' + Math.round(sc.dur) + ' s, ' + sc.beats.length + ' beats)');
+  H('p', 'shows', a, 'On screen: ' + sc.shows);
+  const ol = H('ol', '', a);
+  sc.beats.forEach(b => { if (b.kind !== 'step') return; const st = b.st, li = H('li', '', ol); H('span', 'bid', li, b.id);
+    if (st.cap) li.append(st.cap); else H('span', 'ons', li, st.txt ? 'On screen: ' + st.txt : 'Look: ' + (st.d || ''));
+    if (st.tags && st.tags.length) H('span', 'tag', li, 'check ' + st.tags.join(' ')); });
+  if (sc.more) H('p', 'more', a, 'Not in the film: ' + sc.more);
+  if (sc.cast) {
+    const list = castFor(sc.cast), ul = H('ul', 'castl', a);
+    if (!list.length) H('li', '', ul, 'In their words: no one yet for this case.');
+    list.forEach(e => { const li = H('li', '', ul); li.append('In their words: ' + clean(e.person) + ', '); H('q', '', li, clean(e.quote)); li.append(' ');
+      if (e.url && /^https?:\/\//i.test(e.url)) { const l = H('a', '', li, clean(e.source) || e.url); l.href = e.url; l.target = '_blank'; l.rel = 'noopener noreferrer'; } else li.append(clean(e.source));
+      const lg = clean(e.logic).replace(/^the logic:\s*/i, '');
+      if (lg) H('span', 'lg', li, 'The logic: ' + lg);
+      if (clean(e.film_note)) { const fl = H('span', 'lg', li, clean(e.film_note) + ' '); if (e.note_url) srcLink({ source: e.note_source, url: e.note_url }, fl); }
+      if (e.caveat) H('span', 'lg', li, clean(e.caveat));
+      if (e.verified) H('span', 'vf', li, 'verified: ' + clean(e.verified)); });
+  }
+});
+$('narLede').textContent = 'Every beat, with its id and the words on screen, so a voice (yours, a recorded clip, or a premium voice) can be recorded against it. Lines in brackets are on the board, not in the caption. To play a recording with the film, add narration.js next to this page: window.NARRATION = { src: "narration.mp3", cues: [ { beat: "s2.b3", t: 81.2 } ] }, where t is the second in the audio at which that beat starts. A "Play with voice" button then appears.';
+const narLines = [];
+SCENES.forEach((sc, i) => {
+  narLines.push((i ? '\n' : '') + '# S' + i + ' ' + (sc.kicker && !sc.full ? sc.kicker + ': ' : '') + sc.name + '  (' + mmss(START[i]) + ')');
+  sc.beats.forEach(b => narLines.push(b.id + '\t' + scriptOf(b)));
+});
+$('narText').textContent = narLines.join('\n');
+$('copy').addEventListener('click', () => {
+  const pre = $('narText'), msg = $('copyMsg');
+  const fallback = () => { const rg = document.createRange(); rg.selectNodeContents(pre); const s = window.getSelection(); s.removeAllRanges(); s.addRange(rg); msg.textContent = 'Selected: press Ctrl+C (Cmd+C on a Mac) to copy.'; };
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(pre.textContent).then(() => { msg.textContent = 'Copied ' + NBEATS + ' beats.'; }, fallback);
+    else fallback();
+  } catch (err) { fallback(); }
+});
+
+/* ---------- start: #record hides the controls, #s3 jumps, #step moves one beat at a time ---------- */
+function applyHash(first) {
+  const toks = (location.hash || '').slice(1).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  document.documentElement.classList.toggle('rec', toks.indexOf('record') >= 0 || EMBED);
+  const was = stepMode; stepMode = toks.indexOf('step') >= 0;
+  let s = null, k = 0; toks.forEach(t => { const m = /^s(\d+)$/.exec(t), n = /^b(\d+)$/.exec(t); if (m) s = Math.min(SCENES.length - 1, +m[1]); if (n) k = +n[1]; });
+  if (first || s !== null || was !== stepMode) { if (voice) { voice.a.pause(); voice = null; } seek(s === null ? (first ? FIRST : cur) : s, k); playing = true; ui(); }
+  if (!first && s !== null) wrap.scrollIntoView({ block: 'start', behavior: RM ? 'auto' : 'smooth' });
+  fit();
+}
+/* ---------- the player's clock (?clock=1): seconds into the scene range, play or pause ---------- */
+function rangeT() { let a = 0; for (let i = FIRST; i < cur; i++) a += SCENES[i].dur; return a + sceneTime; }
+function jumpTo(t) {
+  let i = FIRST, a = Math.max(0, t);
+  while (i < LAST && a >= SCENES[i].dur) { a -= SCENES[i].dur; i++; }
+  a = Math.min(a, SCENES[i].dur);
+  const B = SCENES[i].beats; let k = 0;
+  while (k + 1 < B.length && B[k + 1].t <= a) k++;
+  ended = false; stepMode = false; seek(i, k); sceneTime = a; capTick();
+}
+window.addEventListener('message', e => {
+  if (e.source !== window.parent || window.parent === window) return;
+  const d = e.data;
+  if (!d || typeof d !== 'object' || d.type !== 'clock' || typeof d.t !== 'number' || !isFinite(d.t)) return;
+  if (Math.abs(rangeT() - d.t) > 0.6) jumpTo(d.t);
+  if (!!d.playing !== playing) { playing = !!d.playing; ui(); }
+});
+window.addEventListener('hashchange', () => applyHash(false));
+applyHash(true);
+requestAnimationFrame(frame);
+})();
+</script>

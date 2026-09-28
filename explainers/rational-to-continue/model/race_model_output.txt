@@ -1,0 +1,172 @@
+race_model.py -- toy models for 'rational to continue, but suboptimal'
+All payoffs are in abstract units. Parameters are illustrative, not estimates.
+
+==============================================================================
+(a) MARGINAL IMPACT: a prisoner's dilemma at p = 10%
+==============================================================================
+  N=5 developers. Prize W=20, won by one continuer (each with prob 1/k).
+  Catastrophe costs EVERY developer D=100 (each counts it in full).
+  p(k) = 2% x k: p = 10% if all continue, 0 if all stop.
+  [PASS] a1  Continue is a strictly dominant strategy for every developer
+           m=0 others continue: my expected prize W/(m+1) = 20  vs  my added risk (p(m+1)-p(m))*D = 2
+           m=1 others continue: my expected prize W/(m+1) = 10  vs  my added risk (p(m+1)-p(m))*D = 2
+           m=2 others continue: my expected prize W/(m+1) = 6.667  vs  my added risk (p(m+1)-p(m))*D = 2
+           m=3 others continue: my expected prize W/(m+1) = 5  vs  my added risk (p(m+1)-p(m))*D = 2
+           m=4 others continue: my expected prize W/(m+1) = 4  vs  my added risk (p(m+1)-p(m))*D = 2
+  [PASS] a2  The only pure Nash equilibrium is 'all continue', and it is strict
+           brute force over 32 profiles -> equilibria: ['CCCCC']
+  [PASS] a3  All stop is Pareto-better than all continue (p = 10% at all continue)
+           all continue: each gets W/N - p*D = 4 - 10 = -6
+           all stop:     each gets 0
+  [PASS] a4  A lone stopper only cuts the risk from 10% to 8%: gives up 4, saves 2
+           stay in: -6   stop alone: -8
+  [PASS] a5  The LEVEL of p is not in the choice: adding risk no developer controls changes nothing
+           background risk +5% -> total if all continue 15%: same incentives True, same equilibria True
+           background risk +30% -> total if all continue 40%: same incentives True, same equilibria True
+  [PASS] a6  Same 10% total, different marginal slice, different choice (formula = brute force, W=1..60)
+           linear: each racer adds 2 points: total 10%, my slice 2% -> at W=20 the 5th developer: CONTINUE
+           front-loaded: 10% once anyone builds: total 10%, my slice 0% -> at W=20 the 5th developer: CONTINUE
+           back-loaded: 0 until the 5th racer joins, then 10%: total 10%, my slice 10% -> at W=20 the 5th developer: STOP
+  [PASS] a7  Prisoner's dilemma  <=>  dp*D < W/N < N*dp*D  (linear p; sweep N=2..5, dp=1-3%, W=1..80)
+           960 parameter sets, formula and brute force agree on all
+  [PASS] a8  Caveat: for the developers' SUM, exactly one builder beats both all-stop and all-continue
+           sum of developers' payoffs by number continuing: k=0: 0, k=1: 10, k=2: 0, k=3: -10, k=4: -20, k=5: -30
+
+==============================================================================
+(a') THE SAME GAME AT A COIN TOSS: the dilemma needs a big prize relative to the slice
+==============================================================================
+  [PASS] a9  With the same prize and cost but 10 points per racer (50% if all race), all-continue is NOT an equilibrium
+           numbers of builders across all equilibria: [1, 2]  (each racer's own slice, 10 points x 100 = 10, now exceeds its share of the prize once three or more race)
+  [PASS] a10  Back at 10% (2 points each), if each counted the WORLD's loss (D = 1000) instead of its own, all-continue is not an equilibrium
+           equilibria: ['CSSSS', 'SCSSS', 'SSCSS', 'SSSCS', 'SSSSC', 'SSSSS']
+
+==============================================================================
+(b) 'BETTER US THAN THEM': each believes it is the safer winner
+==============================================================================
+  N=2, prize W=6, D=100. Each believes: p=5% if I win, 15% if the other wins.
+  Truth used for comparison: both equally safe, p=10% whoever wins.
+  [PASS] b1  If the other continues, continuing LOWERS p in my own eyes (15% -> 10%)
+           stop: the other wins for sure, p=15%;  continue: 50/50, p=10%
+  [PASS] b2  With the belief, Continue is strictly dominant; unique equilibrium: both continue
+           payoffs as each sees them: CC -7, CS 1, SC -15, SS 0  -> equilibria ['CC']
+  [PASS] b3  Both continuing is worse than both stopping, by their OWN beliefs and by the truth
+           both continue: -7 as believed, -7 in truth; both stop: 0
+  [PASS] b4  Without the belief the same game is a stag hunt (SS and CC): the belief deleted the stop equilibrium
+           true-safety equilibria: ['CC', 'SS']
+  [PASS] b5  In truth, continuing while the other continues does not lower p at all (10% -> 10%)
+           the whole gain of racing 'for safety' lives in the belief
+  [PASS] b6  Even with NO prize (W=0), racing is an equilibrium for developers who believe this
+           W=0 equilibria: ['CC', 'SS'] (both continue: -10 each)
+  [PASS] b7  The beliefs are mutually inconsistent: at most one developer can be the safer one
+           checked on a grid of true safety levels 0-30% for each developer
+
+==============================================================================
+(c) EXTERNALITY / PRINCIPAL-AGENT: the decision-maker carries a share s of the cost
+==============================================================================
+  One decision. Continue: private benefit B=10, catastrophe prob p=10%,
+  cost to the world D=1000; the decision-maker's own ledger carries s=5% of D.
+  [PASS] c1  Continuing is privately rational: B - s*p*D > 0
+           10 - 0.05 x 0.1 x 1000 = 5
+  [PASS] c2  Continuing is socially suboptimal: B - p*D < 0
+           10 - 0.1 x 1000 = -90
+  [PASS] c3  Privately continue  <=>  s < B/(p*D) = 10% (sweep s = 0..30%)
+  [PASS] c4  A Pigouvian charge t = (1-s)*p*D, paid BEFORE, makes private = social and flips to stop
+           t = 95; private with charge -90 = social -90
+  [PASS] c5  Liability AFTER the fact is capped by what the firm has: with assets 40 it still continues
+           own loss s*D=50 + liability paid 40 -> 10 - 0.1 x 90 = 1
+           stops only if own loss + payable liability >= B/p = 100 (checked for assets 0..100)
+  [PASS] c6  If the catastrophe leaves no one to collect (extinction), liability is worth 0: back to +5
+           no court, no insurer, no claimant after the fact
+  [PASS] c7  Full insurance would cost the same 95 as the Pigouvian charge, and need 950 in reserve for the one bad state
+           fair premium p x (1-s) x D = 95; payout needed if it happens = 950 = 95% of the world's loss
+  [PASS] c8  Principal-agent: with a share beta of the benefit, continue <=> s < beta*B/(p*D) (beta = .5, .8, 1)
+
+==============================================================================
+(d) STAG HUNT: two equilibria; beliefs about others choose
+==============================================================================
+  N=2, D=100. p(0)=0, p(1)=10%, p(2)=12%: most of the risk comes
+  from the technology existing at all; the second racer adds 2 points.
+  --- W=9:  SS=0  CS(me C)=-1  SC(me S)=-10  CC=-7.5
+  --- W=6:  SS=0  CS(me C)=-4  SC(me S)=-10  CC=-9
+  [PASS] d1  W=9: exactly two pure equilibria, all stop and all continue, both strict
+           brute force -> ['CC', 'SS']
+  [PASS] d2  W=9: all stop is payoff-dominant (0 vs -7.5 each)
+  [PASS] d3  W=9: all continue is RISK-dominant (a wrong guess costs 2.5 there, only 1 at all stop)
+           deviation loss at SS = 1, at CC = 2.5 (Harsanyi-Selten product 1 vs 6.25)
+  [PASS] d4  W=9: stopping is my best reply only if I'm at least 71.43% sure the other stops (5/7)
+           at exactly 5/7 both replies pay the same: the mixed equilibrium, unstable
+  [PASS] d5  W=6: same two equilibria, but now all stop is payoff- AND risk-dominant; threshold 20%
+           deviation loss at SS = 4, at CC = 1; threshold 20%
+  [PASS] d6  N=3, W=9, p = 10%, 12%, 14%: again exactly {all stop, all continue}
+           brute force over 8 profiles -> ['CCC', 'SSS']
+  [PASS] d7  Stag hunt (N=2)  <=>  W < p(1)*D  and  W/2 > (p(2)-p(1))*D
+           450 parameter sets, formula and brute force agree on all
+  [PASS] d8  If every racer adds the same slice (linear p), a stag hunt is impossible (N=2..4, dp=1..5%, W=1..100)
+           stag hunt needs the first builder's risk to exceed N times the last racer's slice
+  [PASS] d10  Some prize makes both 'all stop' and 'all continue' strict equilibria  <=>  p(1) > N x (p(N)-p(N-1))
+           480 risk shapes (N=2..4, first builder 1-20%, each extra racer 0-7%), W on a 0.5 grid
+  [PASS] d9  Add one outsider who builds no matter what: the stop equilibrium disappears
+           insiders' equilibria: ['CC']; both insiders stop -> -10 each, both continue -> -11 each
+           (the stag hunt has turned into a prisoner's dilemma)
+  [PASS] d11  If the insiders believe an outsider builds with probability r, the stop equilibrium survives iff r < 2/7
+           threshold r* = 28.57% at W = 9 (swept r = 0..100%): the belief, not only the fact, removes the good ending
+
+==============================================================================
+(e) ONE PLANNER: when 'rational' depends on a value choice
+==============================================================================
+  A single planner who controls all the risk. Continue: with prob 1-p the world gains V=20;
+  with prob p a catastrophe costs D=100 (the present world). Stop: 0.
+  [PASS] e1  At p = 10% a utilitarian planner CONTINUES: (1-p)V - pD = 18 - 10 = 8 > 0
+  [PASS] e2  Planner continues  <=>  p < V/(V+D) = 16.67% (sweep p = 0..50%)
+           with V = D (the technology doubles the world's value) the threshold is 50%
+  [PASS] e3  Count extinction as losing the future too (cost D x (1+L)): at L=1 the planner STOPS
+           L=1: 18 - 0.1 x 200 = -2; the decision flips once L > 0.8 (sweep L = 0..3)
+  [PASS] e4  Deep uncertainty, p somewhere in 0..20% (middle 10%): expected value continues, maximin stops
+           value at the middle guess 10%: 8;  worst case (p = 20%): -4
+  [PASS] e5  Same middle guess, narrower range 5..15%: even maximin continues (top of range < 16.7%)
+           worst case (p = 15%): 2
+  [PASS] e6  If the technology adds only 5% to the world (V = 5), the threshold is 4.8% and at 10% the planner STOPS
+           threshold V/(V+D) = 4.762%; value at 10%: -5.5  (a small benefit is a factual route to 'stop')
+  [PASS] e6b  At p = 1/6 (a die roll) the V = 20 planner is exactly indifferent; at a coin toss it stops unless V >= D
+  [PASS] e7  Pausing to learn p is worth more than building now unless the delay costs more than 20% of the benefit
+           build now: 8;  pause and learn: 10 (no delay cost), 7.5 (delay costs 25%)
+
+==============================================================================
+(f) OPTIONAL, POPULATION VERSION OF (d): tipping points and committed minorities
+==============================================================================
+  Many developers meet in random pairs and play the N=2 game of (d); the share of
+  stoppers x grows when stopping pays more than continuing (replicator dynamics).
+  A metaphor for how a norm spreads, not a model of real labs.
+  [PASS] f1  Below the threshold everyone ends up continuing, above it everyone ends up stopping
+           W=6: start with 15% stoppers -> 0.0% stoppers (threshold 20.0%)
+           W=6: start with 25% stoppers -> 100.0% stoppers (threshold 20.0%)
+           W=9: start with 70% stoppers -> 0.0% stoppers (threshold 71.4%)
+           W=9: start with 75% stoppers -> 100.0% stoppers (threshold 71.4%)
+  [PASS] f2  A committed group larger than the threshold tips everyone to stopping (25% suffices at W=6; at W=9 it takes 75%, a majority)
+           W=6, committed stoppers 25%, flexible start 1% -> flexible stoppers 100.0%
+           W=6, committed stoppers 15%, flexible start 1% -> flexible stoppers 0.0%
+           W=9, committed stoppers 25%, flexible start 1% -> flexible stoppers 0.0%
+           W=9, committed stoppers 75%, flexible start 1% -> flexible stoppers 100.0%
+
+==============================================================================
+(g) GAMBLING FOR RESURRECTION: when stopping already means ruin
+==============================================================================
+  Losses capped at F=100. Win W=20 with chance q=0.5 if no catastrophe.
+  A rival builds anyway: risk 10% if only the rival builds, p if both do.
+  Stop: lose S for sure (or everything, if the rival's build goes wrong). Continue: win, or the floor.
+  [PASS] g1  If stopping means ruin (S = F), continuing is better at every p below 100%, for any agent that prefers more to less
+           p = 12%: continue -47.2 vs stop -100;  p = 90%: continue -94 vs stop -100
+           (at S = F the stop branch is the floor itself, so continuing dominates outcome by outcome)
+  [PASS] g2  Continue  <=>  q(1-p)(W+F) > (1-p_o)(F-S)   (sweep S = 0..100, p = 10..99%)
+  [PASS] g3  Risk the developer will accept rises as stopping nears ruin
+           S = 40: continues only below 10% (so never, once both build);  S = 60: below 40%;  S = 90: below 85%
+  [PASS] g4  For the world the same move is a loss: the gambler gains, the rival and everyone else lose more
+           at p = 12%: gambler 52.8, rival -55.2, everyone else -200, world -202.4
+           the gambler's floor at its own ruin does not exist for anyone else
+  [PASS] g5  Give the gambler even a 1% weight on everyone else's loss and, at a coin toss, it stops
+           p = 12%: continue -59.2 vs stop -110;  p = 50%: continue -120 vs stop -110
+
+==============================================================================
+SUMMARY
+==============================================================================
+  51 of 51 claims PASS (48 substantive, 3 bookkeeping: b5, b7, c6)
