@@ -1159,7 +1159,9 @@ function jumpTo(t) {
   a = Math.min(a, SCENES[i].dur);
   const B = SCENES[i].beats; let k = 0;
   while (k + 1 < B.length && B[k + 1].t <= a) k++;
-  ended = false; stepMode = false; seek(i, k); sceneTime = a; capTick();
+  ended = false; stepMode = false; seek(i, k);
+  for (let s = B[k].t; s < a; s += 0.05) { sceneTime = s; runTweens(); } /* replay the beat's motion up to a, so a seek lands as if played (found by the view.html e2e run, 28 Sep) */
+  sceneTime = a; runTweens(); capTick(); if (tweens.length) outline(false); ui();
 }
 window.addEventListener('message', e => {
   if (e.source !== window.parent || window.parent === window) return;
