@@ -37,6 +37,9 @@ body{font-family:var(--serif);-webkit-font-smoothing:antialiased}
 .page{max-width:1280px;margin:0 auto;padding:16px 16px 56px}
 .wrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--ground);border:1px solid var(--line)}
 .stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:hidden}
+.voice{position:absolute;z-index:6;background:#000;border-radius:4px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.45);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.voice.on{opacity:1;visibility:visible}
+.voice iframe,.voice>div{width:100%;height:100%;display:block;border:0}
 .board{position:absolute;left:0;top:0}
 /* stage chrome */
 .hd{position:absolute;left:64px;top:40px}
@@ -177,6 +180,7 @@ html.rec .ctl,html.rec .sb{display:none}
 
 <div class="page">
   <div class="wrap" id="wrap" role="region" aria-label="Animated film: Rational to Continue. The storyboard below holds every line.">
+    <div class="voice" id="voice" role="region" aria-label="The speaker, in his own voice"><div id="yt"></div></div>
     <div class="stage" id="stage">
       <svg class="board" viewBox="0 0 1600 900" width="1600" height="900" aria-hidden="true"><g id="bd"></g><g id="fxl"><rect class="fxr hide" id="fxr" rx="10" x="0" y="0" width="0" height="0"/></g></svg>
       <div class="hd fade hide" id="hd"><div class="kk" id="kk"></div><div class="tt" id="tt"></div></div>
@@ -429,7 +433,8 @@ const SCENES = [
     { f: r => [r.ax, r.hb, r.mkg], run: r => on(r.ax, r.hb, r.mkg),
       txt: 'chance of catastrophe; Harris\u2019s bar: well below 1%; from the field: 10%, a die roll, 20%, 30%, a coin toss' },
     { f: r => r.cards[0], run: r => on(r.cards[0]),
-      cap: 'If the people closest to a technology put the risk at 10%, he said, \u201Cthe only rational response to that range of outcomes is you stop immediately.\u201D' },
+      cap: 'If the people closest to a technology put the risk at 10%, he said, \u201Cthe only rational response to that range of outcomes is you stop immediately.\u201D',
+      voice: { id: 'wdnVeYx_fOA', start: 491.4, end: 513.25, who: 'Sam Harris, Making Sense #494, 08:11 to 08:33' } },
     { f: r => r.cards[1], run: r => on(r.cards[1]),
       cap: 'The industry keeps building at full pace, and \u201Cthis does not seem like the response anyone would have if they thought the probabilities of doom were really that high.\u201D' },
     { f: r => [r.rc, r.ln, r.m10], a: 2.5, run: r => { on(r.rc); anim(2.5, p => r.mv.setAttribute('transform', 'translate(' + (260 * p).toFixed(1) + ' 0)')); later(2.5, () => { on(r.ln); r.m10.classList.add('glow'); }); },
@@ -788,7 +793,7 @@ SCENES.forEach((sc, i) => {
   push({ kind: 'title', text: sc.ownTitle || (sc.kicker ? sc.kicker + ': ' : '') + sc.title }, SCENE_TITLE);
   sc.steps.forEach(st => {
     if (st.panel) { st.f = r => r.panel; st.txt = panelText(sc.panel); }
-    const look = Math.max(LOOK, (st.a || 0) + .5), read = readT(st.cap) + readT(st.txt) + (st.hold || 0);
+    const look = Math.max(LOOK, (st.a || 0) + .5), read = Math.max(readT(st.cap) + readT(st.txt) + (st.hold || 0), st.voice ? st.voice.end - st.voice.start + .6 : 0);
     const o = { kind: 'step', st: st, cap: st.cap || '', look: look, capOff: look + read };
     push(o, look + read + GAP);
     if (o.cap) o.stop = o.t + o.capOff - .001;
@@ -1081,6 +1086,61 @@ $('copy').addEventListener('click', () => {
   } catch (err) { fallback(); }
 });
 
+/* ---------- a speaker's own voice on a caption: step.voice = { id, start, end, who } ----------
+   That window of the YouTube video plays in a visible corner player from the moment the caption appears,
+   and follows the film: play, pause, a scrub, and (in a recursive.eco playlist) the player's mute. The video
+   is never hidden and never shown under 356 x 200. Where YouTube cannot load (an artifact preview), the
+   caption simply holds for the same time. If a browser refuses sound before a tap, the video plays muted
+   and its own button turns the sound on. */
+const VOICES = [];
+SCENES.forEach(sc => sc.beats.forEach(b => { if (b.kind === 'step' && b.st.voice) VOICES.push(b.st.voice); }));
+const vbox = $('voice');
+let yt = null, ytReady = false, ytVid = '', vMuted = false, vAutoMuted = false, vOn = false, vSince = 0, vGuard = 0;
+/* recursive.eco's player adds sound=1 when the viewer has tapped and is not muted: then sound is allowed, so never fall back to muted */
+const SOUND_OK = new URLSearchParams(location.search).get('sound') === '1';
+function placeVoice() {
+  const W = wrap.clientWidth, H = W * 9 / 16;
+  const vw = Math.min(Math.max(356, Math.round(W * .3)), 560, Math.max(200, W - 24)), vh = Math.round(vw * 9 / 16);
+  vbox.style.width = vw + 'px'; vbox.style.height = vh + 'px';
+  vbox.style.left = Math.round(W * .05) + 'px'; vbox.style.top = Math.round(Math.min(H * .2, H - vh - 12)) + 'px';
+}
+function voiceTick() {
+  const sc = SCENES[cur], b = sc && sc.beats[bi];
+  const v = b && b.kind === 'step' && b.st.voice;
+  const t0 = v ? b.t + b.look : 0;
+  const inWin = !!v && !stillView && sceneTime >= t0 - .05 && sceneTime < t0 + (v.end - v.start);
+  if (!inWin) { if (vOn) { vOn = false; vbox.classList.remove('on'); if (ytReady) try { yt.pauseVideo(); } catch (e) {} } return; }
+  if (!ytReady) return;
+  if (!vOn) { vOn = true; vbox.classList.add('on'); vSince = performance.now(); }
+  const want = v.start + (sceneTime - t0);
+  try {
+    if (ytVid !== v.id) { ytVid = v.id; yt.loadVideoById({ videoId: v.id, startSeconds: want }); vGuard = performance.now() + 1500; return; }
+    if (vMuted) { if (!yt.isMuted()) yt.mute(); } else if (!vAutoMuted && yt.isMuted()) yt.unMute();
+    const st = yt.getPlayerState();
+    if (playing) {
+      if (performance.now() > vGuard && Math.abs(yt.getCurrentTime() - want) > .8) { yt.seekTo(want, true); vGuard = performance.now() + 1500; }
+      if (st !== 1 && st !== 3) {
+        yt.playVideo();
+        if (!SOUND_OK && !vAutoMuted && !vMuted && (st === -1 || st === 2 || st === 5) && performance.now() - vSince > 3000) { vAutoMuted = true; yt.mute(); yt.playVideo(); }
+      }
+    } else if (st === 1 || st === 3) yt.pauseVideo();
+  } catch (e) { /* the player is still loading */ }
+}
+if (VOICES.length) {
+  const prevReady = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = function () {
+    if (typeof prevReady === 'function') prevReady();
+    const v0 = VOICES[0];
+    yt = new YT.Player('yt', { videoId: v0.id, width: '100%', height: '100%',
+      playerVars: { start: Math.floor(v0.start), playsinline: 1, rel: 0, modestbranding: 1, controls: 1, iv_load_policy: 3, enablejsapi: 1, origin: location.origin },
+      events: { onReady: () => { ytReady = true; ytVid = v0.id; } } });
+  };
+  const tag = document.createElement('script'); tag.src = 'https://www.youtube.com/iframe_api'; tag.async = true; document.head.appendChild(tag);
+  placeVoice();
+  if (window.ResizeObserver) new ResizeObserver(placeVoice).observe(wrap); else window.addEventListener('resize', placeVoice);
+  setInterval(voiceTick, 250);
+}
+
 /* ---------- start: #record hides the controls, #s3 jumps, #step moves one beat at a time ---------- */
 function applyHash(first) {
   const toks = (location.hash || '').slice(1).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
@@ -1105,6 +1165,7 @@ window.addEventListener('message', e => {
   if (e.source !== window.parent || window.parent === window) return;
   const d = e.data;
   if (!d || typeof d !== 'object' || d.type !== 'clock' || typeof d.t !== 'number' || !isFinite(d.t)) return;
+  if (typeof d.muted === 'boolean') vMuted = d.muted; /* the player's own mute, which a speaker's voice follows */
   if (Math.abs(rangeT() - d.t) > 0.6) jumpTo(d.t);
   if (!!d.playing !== playing) { playing = !!d.playing; ui(); }
 });
