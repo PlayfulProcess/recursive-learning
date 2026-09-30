@@ -395,7 +395,7 @@ const SCENES = [
 { name: 'The odds', kicker: 'The argument', title: 'The odds',
   shows: 'A bar of the chance of catastrophe, 0 to 50%. Harris\u2019s bar sits well below 1%; the numbers heard from the field sit at 10%, 20%, 30%, a die roll and a coin toss. His two sentences, as cards. Then the industry at full pace, looking at the same 10%.',
   more: 'The caption \u201CSam Harris set a strict bar: any estimate of catastrophe that is not well below 1% is enormous.\u201D (his bar is on the board). Harris\u2019s hypothetical, if the Manhattan Project scientists had put a 10% chance on the first test igniting the atmosphere: a button marked 10%, \u201Cthe first test: a 10% chance of igniting the atmosphere\u201D, and \u201Cthe only sane response: not to run it\u201D.',
-  setup() { H('div', 'ph', colSet, 'The argument'); HARRIS.forEach(c => card(c, colSet, true)); },
+  setup() { H('div', 'ph', colSet, 'The argument'); card(HARRIS[1], colSet, true); }, /* HARRIS[0] is heard, in his own video, in the card's place */
   build() {
     const r = {}, X = p => 110 + 17.6 * p;
     r.ax = F(board);
@@ -432,10 +432,10 @@ const SCENES = [
   steps: [
     { f: r => [r.ax, r.hb, r.mkg], run: r => on(r.ax, r.hb, r.mkg),
       txt: 'chance of catastrophe; Harris\u2019s bar: well below 1%; from the field: 10%, a die roll, 20%, 30%, a coin toss' },
-    { f: r => r.cards[0], run: r => on(r.cards[0]),
+    { f: () => null,
       cap: 'If the people closest to a technology put the risk at 10%, he said, \u201Cthe only rational response to that range of outcomes is you stop immediately.\u201D',
       voice: { id: 'wdnVeYx_fOA', start: 491.4, end: 513.25, who: 'Sam Harris, Making Sense #494, 08:11 to 08:33' } },
-    { f: r => r.cards[1], run: r => on(r.cards[1]),
+    { f: r => r.cards[0], run: r => on(r.cards[0]),
       cap: 'The industry keeps building at full pace, and \u201Cthis does not seem like the response anyone would have if they thought the probabilities of doom were really that high.\u201D' },
     { f: r => [r.rc, r.ln, r.m10], a: 2.5, run: r => { on(r.rc); anim(2.5, p => r.mv.setAttribute('transform', 'translate(' + (260 * p).toFixed(1) + ' 0)')); later(2.5, () => { on(r.ln); r.m10.classList.add('glow'); }); },
       cap: 'I don\u2019t think the inference holds. People can believe the numbers and race anyway.' }
@@ -1099,24 +1099,38 @@ let yt = null, ytReady = false, ytVid = '', vMuted = false, vAutoMuted = false, 
 /* recursive.eco's player adds sound=1 when the viewer has tapped and is not muted: then sound is allowed, so never fall back to muted */
 const SOUND_OK = new URLSearchParams(location.search).get('sound') === '1';
 function placeVoice() {
-  const W = wrap.clientWidth, H = W * 9 / 16;
-  const vw = Math.min(Math.max(356, Math.round(W * .3)), 560, Math.max(200, W - 24)), vh = Math.round(vw * 9 / 16);
+  /* the right column (stage x 1080, width 462), under its label; never under 356 x 200, so on a narrow
+     frame it moves left only as far as it must */
+  const W = wrap.clientWidth, k = W / 1600;
+  const vw = Math.min(Math.max(356, Math.round(462 * k)), Math.max(200, W - 24)), vh = Math.round(vw * 9 / 16);
   vbox.style.width = vw + 'px'; vbox.style.height = vh + 'px';
-  vbox.style.left = Math.round(W * .05) + 'px'; vbox.style.top = Math.round(Math.min(H * .2, H - vh - 12)) + 'px';
+  vbox.style.left = Math.round(Math.max(12, Math.min(1080 * k, W - vw - 12))) + 'px';
+  vbox.style.top = Math.round(158 * k) + 'px';
 }
+let vLive = false;
 function voiceTick() {
-  const sc = SCENES[cur], b = sc && sc.beats[bi];
-  const v = b && b.kind === 'step' && b.st.voice;
-  const t0 = v ? b.t + b.look : 0;
-  const inWin = !!v && !stillView && sceneTime >= t0 - .05 && sceneTime < t0 + (v.end - v.start);
-  if (!inWin) { if (vOn) { vOn = false; vbox.classList.remove('on'); if (ytReady) try { yt.pauseVideo(); } catch (e) {} } return; }
+  const sc = SCENES[cur];
+  const vb = sc && !stillView ? sc.beats.find(b => b.kind === 'step' && b.st.voice) : null;
+  const v = vb && vb.st.voice;
+  const t0 = v ? vb.t + vb.look : 0, t1 = v ? t0 + (v.end - v.start) : 0;
+  const tIn = v && sc.beats[0].kind === 'title' && !sc.ownTitle ? sc.beats[0].stop : 0;  /* after the scene's title card */
+  const show = !!v && sceneTime >= tIn && sceneTime < t1;   /* from the start of the scene until his window ends */
+  const live = show && sceneTime >= t0 - .05;        /* from the moment the caption appears */
+  if (!show) { vLive = false; if (vOn) { vOn = false; vbox.classList.remove('on'); if (ytReady) try { yt.pauseVideo(); } catch (e) {} } return; }
+  if (!vOn) { vOn = true; placeVoice(); vbox.classList.add('on'); }
+  if (live && !vLive) vSince = performance.now();
+  vLive = live;
   if (!ytReady) return;
-  if (!vOn) { vOn = true; vbox.classList.add('on'); vSince = performance.now(); }
-  const want = v.start + (sceneTime - t0);
   try {
-    if (ytVid !== v.id) { ytVid = v.id; yt.loadVideoById({ videoId: v.id, startSeconds: want }); vGuard = performance.now() + 1500; return; }
-    if (vMuted) { if (!yt.isMuted()) yt.mute(); } else if (!vAutoMuted && yt.isMuted()) yt.unMute();
+    if (ytVid !== v.id) { ytVid = v.id; yt.cueVideoById({ videoId: v.id, startSeconds: v.start }); vGuard = performance.now() + 1500; return; }
     const st = yt.getPlayerState();
+    if (!live) {                                       /* waiting: paused on the window's first frame */
+      if (st === 1 || st === 3) yt.pauseVideo();
+      if (st === 2 && performance.now() > vGuard && Math.abs(yt.getCurrentTime() - v.start) > .8) { yt.seekTo(v.start, true); yt.pauseVideo(); vGuard = performance.now() + 1500; }
+      return;
+    }
+    const want = v.start + (sceneTime - t0);
+    if (vMuted) { if (!yt.isMuted()) yt.mute(); } else if (!vAutoMuted && yt.isMuted()) yt.unMute();
     if (playing) {
       if (performance.now() > vGuard && Math.abs(yt.getCurrentTime() - want) > .8) { yt.seekTo(want, true); vGuard = performance.now() + 1500; }
       if (st !== 1 && st !== 3) {
@@ -1132,8 +1146,12 @@ if (VOICES.length) {
     if (typeof prevReady === 'function') prevReady();
     const v0 = VOICES[0];
     yt = new YT.Player('yt', { videoId: v0.id, width: '100%', height: '100%',
-      playerVars: { start: Math.floor(v0.start), playsinline: 1, rel: 0, modestbranding: 1, controls: 1, iv_load_policy: 3, enablejsapi: 1, origin: location.origin },
-      events: { onReady: () => { ytReady = true; ytVid = v0.id; } } });
+      playerVars: { start: Math.floor(v0.start), playsinline: 1, rel: 0, modestbranding: 1, controls: SOUND_OK ? 0 : 1, iv_load_policy: 3, cc_load_policy: 0, hl: 'en', enablejsapi: 1, origin: location.origin },
+      /* the film's own caption carries his words: YouTube's subtitles (often auto-translated) would say them twice.
+         In a recursive.eco playlist (sound=1) the film drives the video, so YouTube's own controls stay hidden;
+         on the page alone they stay, so a viewer whose browser refused sound can turn it on. */
+      events: { onReady: () => { ytReady = true; ytVid = v0.id; },
+        onStateChange: e => { if (e.data === 1) { try { e.target.unloadModule('captions'); e.target.unloadModule('cc'); } catch (_) {} } } } });
   };
   const tag = document.createElement('script'); tag.src = 'https://www.youtube.com/iframe_api'; tag.async = true; document.head.appendChild(tag);
   placeVoice();
