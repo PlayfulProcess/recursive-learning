@@ -1,0 +1,257 @@
+{
+  "name": "Recursive Courses",
+  "tags": [
+    "courses",
+    "recursive-learning",
+    "learning-paths"
+  ],
+  "items": [
+    {
+      "id": "course-learn-recursive-eco",
+      "name": "Learn Recursive.eco",
+      "keywords": [
+        "orientation",
+        "platform-tour",
+        "oracles",
+        "first-tool"
+      ],
+      "sections": {
+        "Description": "Complete guide to all tools: Journal, Create, and Library. From first oracle cast to publishing. 30 min."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779385138847-jpwtemdupjk.png",
+      "metadata": {
+        "url": "https://recursive.eco/pages/courses/course-viewer.html?grammar_id=c0c00001-0000-4000-8000-000000c0c001&item=learn-recursive-eco",
+        "duration": 30,
+        "item_type": "link"
+      },
+      "sort_order": 0
+    },
+    {
+      "id": "course-vibe-coding-101",
+      "name": "Vibe Coding 101",
+      "keywords": [
+        "claude-artifacts",
+        "no-coding",
+        "ai-tools"
+      ],
+      "sections": {
+        "Description": "Build 3 working AI journaling tools with total privacy. No coding experience required. 60 min."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779385147037-bv32r4j2cju.png",
+      "metadata": {
+        "url": "https://recursive.eco/pages/courses/course-viewer.html?grammar_id=c0c00001-0000-4000-8000-000000c0c001&item=vibe-coding-101",
+        "duration": 60,
+        "item_type": "link"
+      },
+      "sort_order": 1
+    },
+    {
+      "id": "course-vibe-coding-102",
+      "name": "Vibe Coding 102: Audiobooks",
+      "keywords": [
+        "claude-code",
+        "elevenlabs",
+        "librivox",
+        "audiobooks"
+      ],
+      "sections": {
+        "Description": "Create illustrated audiobooks with Claude Code, ElevenLabs, and LibriVox. 120 min."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779385153651-fdfuir0klzl.png",
+      "metadata": {
+        "url": "https://recursive.eco/pages/courses/course-viewer.html?grammar_id=c0c00001-0000-4000-8000-000000c0c001&item=vibe-coding-102",
+        "duration": 120,
+        "item_type": "link"
+      },
+      "sort_order": 2
+    },
+    {
+      "id": "course-create-grammars-with-ai",
+      "name": "Create Grammars with AI",
+      "keywords": [
+        "notebooklm",
+        "claude-code",
+        "json",
+        "grammars"
+      ],
+      "sections": {
+        "Description": "Transform public-domain books into tarot decks, I Ching interpretations, and interactive grammars. 60 min."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779385161190-iki1ij6o9e.png",
+      "metadata": {
+        "url": "https://recursive.eco/pages/courses/course-viewer.html?grammar_id=c0c00001-0000-4000-8000-000000c0c001&item=create-grammars-with-ai",
+        "duration": 60,
+        "item_type": "link"
+      },
+      "sort_order": 3
+    },
+    {
+      "id": "course-vibe-writing-101",
+      "name": "Vibe Writing 101: Magic Stories",
+      "keywords": [
+        "ai-illustrations",
+        "parenting",
+        "storytelling"
+      ],
+      "sections": {
+        "Description": "Turn parenting wisdom into personalized storybooks with AI illustrations. 180 min."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779385168384-8qandssfcq6.png",
+      "metadata": {
+        "url": "https://recursive.eco/pages/courses/course-viewer.html?grammar_id=c0c00001-0000-4000-8000-000000c0c001&item=vibe-writing-101",
+        "duration": 180,
+        "item_type": "link"
+      },
+      "sort_order": 4
+    },
+    {
+      "id": "course-vibe-writing-102",
+      "name": "Vibe Writing 102: Open-Source Books",
+      "keywords": [
+        "claude-code",
+        "mdbook",
+        "github",
+        "publishing"
+      ],
+      "sections": {
+        "Description": "Write and publish open-source books with Claude Code and GitHub. From question to commons contribution. 120 min."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779385175399-caqpycwrm9s.png",
+      "metadata": {
+        "url": "https://recursive.eco/pages/courses/course-viewer.html?grammar_id=c0c00001-0000-4000-8000-000000c0c001&item=vibe-writing-102",
+        "duration": 120,
+        "item_type": "link"
+      },
+      "sort_order": 5
+    },
+    {
+      "id": "course-short-movies-diy",
+      "name": "Short Movies DIY",
+      "keywords": [
+        "ai-images",
+        "narration",
+        "video-editing",
+        "suno"
+      ],
+      "sections": {
+        "Description": "Generate text, images, narration, and video clips — combine them into a short film. 60 min."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779385182203-2536d17cp9r.png",
+      "metadata": {
+        "url": "https://recursive.eco/pages/courses/course-viewer.html?grammar_id=c0c00001-0000-4000-8000-000000c0c001&item=short-movies-diy",
+        "duration": 60,
+        "item_type": "link"
+      },
+      "sort_order": 6
+    },
+    {
+      "id": "course-meaningful-songs-for-family",
+      "name": "Meaningful Songs for Family",
+      "keywords": [
+        "suno",
+        "music",
+        "family"
+      ],
+      "sections": {
+        "Description": "Write and produce family songs using Suno AI. Turn milestones and bedtime rituals into music. 90 min."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779385189698-lg6z367hv39.png",
+      "metadata": {
+        "url": "https://recursive.eco/pages/courses/course-viewer.html?grammar_id=c0c00001-0000-4000-8000-000000c0c001&item=meaningful-songs-for-family",
+        "duration": 90,
+        "item_type": "link"
+      },
+      "sort_order": 7
+    },
+    {
+      "id": "course-path-getting-started",
+      "name": "Getting Started Path",
+      "keywords": [
+        "orientation",
+        "oracles",
+        "first-tool",
+        "foundations"
+      ],
+      "composite_of": [
+        "course-learn-recursive-eco",
+        "course-vibe-coding-101",
+        "course-create-grammars-with-ai"
+      ],
+      "sections": {
+        "Description": "Three courses to start. End with your first published grammar."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779389047291-3xdu2qh3sjy.png",
+      "sort_order": 8
+    },
+    {
+      "id": "course-path-vibe-coding",
+      "name": "Vibe Coding Path",
+      "keywords": [
+        "claude-artifacts",
+        "claude-code",
+        "audiobooks",
+        "no-coding"
+      ],
+      "composite_of": [
+        "course-vibe-coding-101",
+        "course-vibe-coding-102"
+      ],
+      "sections": {
+        "Description": "From zero coding experience to publishing audiobooks."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779389055367-3smx694gzsm.png",
+      "sort_order": 9
+    },
+    {
+      "id": "course-path-vibe-writing",
+      "name": "Vibe Writing Path",
+      "keywords": [
+        "ai-illustrations",
+        "mdbook",
+        "github",
+        "storytelling"
+      ],
+      "composite_of": [
+        "course-vibe-writing-101",
+        "course-vibe-writing-102"
+      ],
+      "sections": {
+        "Description": "From personal stories to published open-source books."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779389065492-1w0rfrylfuc.png",
+      "sort_order": 10
+    },
+    {
+      "id": "course-path-creative-ai",
+      "name": "Creative AI Path",
+      "keywords": [
+        "notebooklm",
+        "suno",
+        "video-editing",
+        "music",
+        "ai-images"
+      ],
+      "composite_of": [
+        "course-create-grammars-with-ai",
+        "course-vibe-writing-101",
+        "course-short-movies-diy",
+        "course-meaningful-songs-for-family"
+      ],
+      "sections": {
+        "Description": "Four creative projects, each producing something you can share."
+      },
+      "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779389074343-m5dvgvh8x6.png",
+      "sort_order": 11
+    }
+  ],
+  "description": "The eight free courses on this platform — each one a direct link to the course-viewer. The four learning paths sit at L2 as emergence items that bundle related courses together; click a path to see its courses, click a course to start it.",
+  "creator_link": "https://lifeisprocess.substack.com/",
+  "creator_name": "PlayfulProcess",
+  "default_view": "cards",
+  "grammar_type": "custom",
+  "is_published": true,
+  "cover_image_url": "https://recursive.eco/public/recursive-logo-1756153260128.png",
+  "open_to_community": false,
+  "_recursive_eco_url": "https://flow.recursive.eco/g/f255d479-27a4-427c-a3d4-6ca28eaeb8ea?view=reading",
+  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=f255d479-27a4-427c-a3d4-6ca28eaeb8ea"
+}
