@@ -70,7 +70,9 @@
         ],
         notes: 'https://github.com/PlayfulProcess/recursive-learning/blob/main/game/DESIGN-potato.md' },
       { name: 'The Tree', href: 'game/tree-board/index.html', tag: 'new and rough',
-        blurb: 'A cooperative board game: place the people on the belief tree before the race runs out.' }
+        blurb: 'A cooperative board game: place the people on the belief tree before the race runs out.' },
+      { name: 'The Lab Years', href: 'game/lab-years/index.html', tag: 'new and rough',
+        blurb: 'A 90-minute strategy game of the AI race: secret objectives, and a hidden World deciding how it resolves.' }
     ]
   };
 

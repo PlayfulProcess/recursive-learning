@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../../theme.css?v=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Lab Years — Rulebook · Recursive Eco-Improvement</title>
+<meta name="description" content="The full rulebook for The Lab Years, a pass-and-play strategy game about the AI race, with the mechanics it borrows credited by name.">
+<link rel="icon" type="image/svg+xml" href="../../spiral.svg">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:light;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+  .wrap{max-width:760px;margin:0 auto;padding:18px 16px 90px}
+  h1{font-size:26px;margin:.2em 0 .2em}
+  h2{font-size:19px;margin:1.6em 0 .4em;border-top:1px solid var(--line);padding-top:.8em}
+  h2:first-of-type{border-top:0;padding-top:0}
+  h3{font-size:15.5px;margin:1.1em 0 .3em}
+  p,li{font-size:14.5px;color:var(--ink-soft)}
+  a{color:var(--accent)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+  th,td{text-align:left;border-bottom:1px solid var(--line);padding:5px 6px;vertical-align:top}
+  .credit{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:13.5px}
+  .assumption{border-left:3px solid var(--accent);background:var(--chip);padding:8px 10px;margin:6px 0;font-size:13.5px}
+  @media(max-width:480px){ .wrap{padding:14px 12px 70px} }
+</style>
+</head>
+<body>
+<script src="../../shared/nav.js"></script>
+<main class="wrap" id="main">
+  <h1>The Lab Years — Rulebook</h1>
+  <p>3-5 players, about 90 minutes, pass-and-play on one device. First playable — <a href="index.html">play it here</a>.
+    This is a game with stated assumptions, not a forecast: see "Assumptions" near the end. Arguments,
+    not people — no villains, and real companies or people never appear in it.</p>
+
+  <h2>Setup</h2>
+  <ol>
+    <li>Choose 3-5 players. Cast the start year with a coin draw over 2017-2026 (The Fork's own draw
+      primitive; see Credits). The later the year, the more compute, capability and safeguard
+      progress is already on the board, from real, dated history — each card with its source, face
+      up before anyone's first turn.</li>
+    <li>Deal (or choose) one role per player, and one secret objective per player. Deal (or agree)
+      a bloc per player, for the Nation objective. Two World cards are dealt face down and nobody
+      looks at them (see "The hidden World").</li>
+  </ol>
+
+  <h2>Roles</h2>
+  <table><tr><th>Role</th><th>Power</th></tr>
+    <tr><td>Interpretability researcher</td><td>Peek at the top event card, or ask whether a
+      safeguard's odds would hold — free, any time. Once per game, also peek at one of the two
+      World cards, privately.</td></tr>
+    <tr><td>Evals / red-teamer</td><td>Once a round, spend an action to audit: the next capability
+      step anyone takes that round is reduced by 1.</td></tr>
+    <tr><td>Lab CEO</td><td>+1 compute every year, on top of the usual +1.</td></tr>
+    <tr><td>Policy advisor</td><td>A safeguard they helped secure carries a shield: the first
+      setback (or Drift, or Selection pressure) that would cost it progress is blocked instead.</td></tr>
+    <tr><td>Open-source builder</td><td>When they publish, the shared compute bonus everyone gets
+      next year is doubled.</td></tr>
+    <tr><td>Whistleblower</td><td>Once per game, spend an action to reveal one player's hand, or
+      force an audit as if a red-teamer had.</td></tr>
+  </table>
+
+  <h2>Secret objectives</h2>
+  <table><tr><th>Objective</th><th>Wins if…</th></tr>
+    <tr><td>Profit</td><td>you end with the highest company value.</td></tr>
+    <tr><td>Humanity</td><td>all 4 safeguards are secured by the end.</td></tr>
+    <tr><td>Nation</td><td>your bloc leads every other bloc's capability contribution.</td></tr>
+    <tr><td>Open science</td><td>you published the most cards of anyone.</td></tr>
+    <tr><td>Curiosity</td><td>you personally triggered the most capability milestones.</td></tr>
+    <tr><td>Forecaster</td><td>you placed the most belief tokens on the World cards that turn out true.</td></tr>
+  </table>
+  <p>If the ending is Catastrophe, everyone loses, whatever their objective.</p>
+
+  <h2>A round is one year</h2>
+  <ol>
+    <li>Compute +1 for everyone (more for a CEO, or after a publish bonus).</li>
+    <li>Draw event card(s): 1 while the race is under 3, 2 under 6, 3 at 6 or more. From 2027, RSI
+      cards are shuffled into the event deck. One clue card is also revealed, publicly, each year.</li>
+    <li>Each player takes a full turn of 3 actions, in order: <b>Research</b> (draw a card),
+      <b>Build</b> (spend 1 compute + a card: capability +1, company value +1), <b>Release</b>
+      (spend 2 compute: capability +2, race +1, company value +2 — opens a response window first),
+      <b>Secure</b> (bank matching, or wild, cards toward one of the 4 safeguards — 2 cards for
+      international agreement or public understanding, 6 for alignment or containment: those two
+      are the ones the tree actually reads), <b>Publish</b> (a card face up: it counts for Open
+      science, and gives everyone a compute bonus next year), <b>Lobby</b> (agreement +1, no card
+      needed), <b>Trade</b> (freely within your bloc; across blocs needs consent), or a role's power.</li>
+  </ol>
+
+  <h2>Dual-use, and the response window</h2>
+  <p>Every research card can be spent for capability (Build) or banked toward a safeguard
+    (Secure) — never both. That choice is the drama: a card that would finish a safeguard is also a
+    card that would ship a step of capability.</p>
+  <p>When a player Releases a frontier model, before it resolves, an eligible red-teamer may Audit
+    it (capability step -1) and an eligible whistleblower may blow the whistle on it (race rise
+    -1), each once. Both, either or neither may respond.</p>
+
+  <h2>RSI: does it fire?</h2>
+  <p>An RSI ("recursive self-improvement") card only <b>fires</b> if global capability has reached
+    the game's threshold; below it, the card fizzles and the game says why. When it fires, it
+    resolves through the same belief tree the recursive.eco film explainer uses (rendered live):
+    is alignment secured? is containment secured? A fully secured safeguard reads "yes"; an
+    unstarted one reads "no"; a partly built one is cast, with odds set by how far along it is
+    (The Fork's own draw primitive — never a coin flipped by hand, never a new one written for this
+    game).</p>
+  <table><tr><th>Alignment</th><th>Containment</th><th>Result</th></tr>
+    <tr><td>yes</td><td>yes</td><td><b>Proceed</b> — the best ending; the game ends and scores.</td></tr>
+    <tr><td>yes</td><td>no</td><td><b>Regulate</b> — the race is capped; the game continues.</td></tr>
+    <tr><td>no</td><td>yes</td><td><b>Contain</b> — capability freezes and the race is pushed back; the game continues.</td></tr>
+    <tr><td>no</td><td>no</td><td><b>Catastrophe</b> — the game ends; everyone loses.</td></tr>
+  </table>
+  <p>The game ends at the end of 2035, or the moment an RSI card resolves to Proceed or Catastrophe.</p>
+
+  <h2>The hidden World</h2>
+  <p>Two cards were dealt face down at setup, and nobody — not even the interpreter, beyond one
+    private peek — knows both, for certain, before the reveal. Together they decide how RSI
+    actually behaves.</p>
+  <h3>Takeoff (pick 1 of 3)</h3>
+  <table><tr><th>World</th><th>What it does</th></tr>
+    <tr><td>Singularity</td><td>When RSI fires, capability jumps hard within that year, and the
+      tree resolves at once.</td></tr>
+    <tr><td>Automated research</td><td>Once RSI fires, capability (+2) and the race (+1) keep
+      climbing on their own, every remaining year; the tree only resolves at the end of the game.</td></tr>
+    <tr><td>Plateau</td><td>RSI fizzles for good — every RSI card drawn after this fizzles,
+      regardless of capability — and the race eases by 1, once.</td></tr>
+  </table>
+  <h3>Alignment dynamics (pick 1 of 4)</h3>
+  <table><tr><th>World</th><th>What it does</th><th>Argument, and its source</th></tr>
+    <tr><td>Goal-keeping</td><td>Only alignment secured BEFORE RSI first fires counts, from then on
+      — locked in at that moment, for good.</td>
+      <td>A capable system protects the goals it starts with. <a href="https://selfawaresystems.com/2007/11/30/the-basic-ai-drives/" target="_blank" rel="noopener">Omohundro, "The Basic AI Drives," 2008</a></td></tr>
+    <tr><td>Drift</td><td>Each year after RSI first fires, alignment loses 1 progress unless
+      someone audits that year.</td><td>Safety work erodes without active maintenance — an
+      argument, not a settled finding.</td></tr>
+    <tr><td>Selection pressure</td><td>From 2027, every purely capability-driven Build costs
+      alignment 1 progress.</td><td>Capability work and alignment work compete for the same
+      attention and budget — an argument, not a settled finding.</td></tr>
+    <tr><td>Verifiable</td><td>Interpretability (alignment-suit) cards count double toward
+      securing alignment, and a partly built safeguard is enough — no cast needed.</td>
+      <td>The tiling problem turned out solvable. <a href="https://intelligence.org/files/TilingAgentsDraft.pdf" target="_blank" rel="noopener">Yudkowsky &amp; Herreshoff, "Tiling Agents for Self-Modifying AI," 2013</a></td></tr>
+  </table>
+  <p>Clue cards (about 8, one revealed publicly each year) shift the odds without proving anything
+    — "evidence favours X over Y, 2:1," never a certainty. The interpreter may spend their one
+    World peek on either card, privately. Each player may place up to 3 belief tokens, in secret
+    (through the pass-and-reveal screen), on whichever World values they think are true.</p>
+  <p>The World is revealed the moment RSI first fires, or at the end of the game if it never does:
+    both cards flip, with a plain explanation and, where one exists, its source. A token on a card
+    that turns out true is worth +1 to that player's score, on top of whatever their main objective
+    scored; the Forecaster objective is won by whoever placed the most correct tokens.</p>
+
+  <h2>Hidden information</h2>
+  <p>Each player's hand and secret objective are shown only on their own turn, behind a "pass the
+    device → tap to reveal → tap to hide" screen. Roles, compute, company value, published counts
+    and the public board (capability, the race, safeguard progress, history and clues) are visible
+    to everyone, always — as in Forbidden Island. The World cards are visible to nobody until the
+    reveal, whoever asks.</p>
+
+  <h2>Real history and events</h2>
+  <p>Every history card (2012-2026) is a real, dated event with a source link. Speculation cards,
+    where they appear, are labelled SPECULATION and leave the reading to the table. Nothing here
+    puts words in a real person's mouth. Event cards drawn during play (incidents, capability
+    jumps, safeguard setbacks, breathers, RSI) are generic game mechanics, not claims about specific
+    real events; RSI cards and any other 2027-and-later material are explicitly hypothetical.</p>
+
+  <h2>Assumptions</h2>
+  <div class="assumption">If capability crosses this game's threshold and neither alignment nor
+    containment has been secured, this game's tree calls that catastrophe.</div>
+  <div class="assumption">If both have been secured by then, this game calls that the best
+    ending — not a guarantee, this game's rule.</div>
+  <div class="assumption">The four Alignment-dynamics theories are competing arguments about how
+    real alignment work might hold up under pressure, not a ranked or settled list; the game deals
+    exactly one as true per session, at random, and the clues drawn along the way never prove it.</div>
+  <p>This is a game with stated assumptions, not a forecast. No absolutist claims are intended by
+    any of it.</p>
+
+  <h2>Credits</h2>
+  <div class="credit"><b>Forbidden Island</b> — one role, one power each; the race track (its
+    water meter) that rises with capability and sets how many events a year draws; public
+    information as the default.</div>
+  <div class="credit"><b>Magic: The Gathering</b> — secret objectives with different strengths (the
+    colour pie); the response window a Release opens before it resolves (the stack).</div>
+  <div class="credit"><b>Twilight Struggle</b> — dual-use research cards, spendable for capability
+    or toward a safeguard, never both.</div>
+  <div class="credit"><b>Pandemic</b> — RSI cards shuffled into the event deck from a threshold
+    year, firing only above a capability threshold and fizzling, with a reason, below it.</div>
+  <div class="credit"><b>Dead of Winter</b> — secret objectives that can pull against each other,
+    and a shared catastrophe that overrides every one of them.</div>
+  <div class="credit"><b>Clue (Cluedo)</b> — the hidden World: two face-down cards nobody sees
+    until the reveal, with clue cards along the way that narrow the odds without ever settling them.</div>
+  <p class="assumption" style="border-left-color:var(--muted)"><b>Not a source:</b> <i>Intelligence
+    Rising</i> is a real, separate thing — a facilitated AI-futures role-play run by researchers at
+    Riesgos Catastróficos Globales, Centre for the Governance of AI and others. Nothing in this game
+    is copied from it; it is named here only so nobody mistakes one for the other.</p>
+
+  <p><a href="index.html">&larr; Back to the game</a></p>
+</main>
+</body>
+</html>
