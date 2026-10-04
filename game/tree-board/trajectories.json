@@ -1,0 +1,84 @@
+{
+  "_readme": "Game-owned. Built ONLY from explainers/belief-tree/people.json (on_record, reader_notes, quotes already checked_against captions there) plus a local-corpus search for Dwarkesh Patel, which turned up nothing usable — see the PR body. Every quote_id here already exists, already verified, in people.json; no new quotes were added, so no new quotecheck.py run was needed. A dot with no stated shift is left out entirely (one dot, 'now', needs no trail) rather than invented. Fields: date (ISO, sorts ascending), cell (a leaf id from tree-render.js's LEAF_LABEL, or null when the position is not yet a full leaf), note, quote_id (id into that person's people.json quotes[]) or quote (an inline, already-checked quote shape) when the point is an event rather than a personal quote, source_label, url, now (true on the trail's last point).",
+
+  "amodei": [
+    {
+      "date": "2023-08-08",
+      "cell": null,
+      "note": "Said, as a forecast, that he would support government-enforced decisions not to scale as fast as Anthropic could — not yet an ask of his own.",
+      "quote_id": "amodei-q11",
+      "source_label": "Dwarkesh Podcast, Aug 8 2023",
+      "url": "https://www.youtube.com/watch?v=Nlkk3glap_U&t=3780s"
+    },
+    {
+      "date": "2026-02-24",
+      "cell": null,
+      "event": true,
+      "note": "Anthropic's Responsible Scaling Policy v3.0 dropped the pause commitment its 2023 version carried.",
+      "source_label": "GovAI analysis, Feb 24 2026",
+      "url": "https://www.governance.ai/analysis/anthropics-rsp-v3-0-how-it-works-whats-changed-and-some-reflections"
+    },
+    {
+      "date": "2026-09",
+      "cell": "regulate",
+      "now": true,
+      "note": "Now asks that third-party evaluators confirm alignment and safeguards before capability advances; supports floating a full pause but does not expect it soon.",
+      "quote_id": "amodei-q5",
+      "source_label": "Dario Amodei, 'We Must Pace the Frontier' essay, Sep 2026",
+      "url": "https://www.youtube.com/watch?v=sLt0EmA1S44&t=1405s"
+    }
+  ],
+
+  "tristan-harris": [
+    {
+      "date": "2023-03-09",
+      "cell": null,
+      "note": "\"This is not about stopping the research. This is not about not building AI.\"",
+      "quote_id": "th-q11",
+      "source_label": "The A.I. Dilemma, Mar 9 2023",
+      "url": "https://www.youtube.com/watch?v=xoVJKj8lcNQ&t=3541s"
+    },
+    {
+      "date": "2025-10-08",
+      "cell": null,
+      "note": "Signed the Statement on Superintelligence: a prohibition \"not lifted before there is broad scientific consensus that it will be done safely and controllably.\"",
+      "quote_id": "th-q1",
+      "source_label": "Statement on Superintelligence, signed Oct 8 2025",
+      "url": "https://superintelligence-statement.org/"
+    },
+    {
+      "date": "2026-04-10",
+      "cell": "shutdown",
+      "now": true,
+      "note": "Now calls closed-loop recursive self-improvement \"an event horizon\" that should be illegal.",
+      "quote_id": "th-q3",
+      "source_label": "Making Sense #469, Apr 10 2026",
+      "url": "https://www.youtube.com/watch?v=90irsXaKxZA&t=3683s"
+    }
+  ],
+
+  "altman": [
+    {
+      "date": "2026-08-18",
+      "cell": null,
+      "event": true,
+      "note": "OpenAI paused its RL training after the Hugging Face incident.",
+      "source_label": "TIME, Aug 18 2026",
+      "url": "https://time.com/article/2026/08/18/openai-slowing-training/"
+    },
+    {
+      "date": "2026-09-12",
+      "cell": "regulate",
+      "now": true,
+      "note": "\"we need to get there before our adversaries do but I actually don't think that's right in this moment\" — rejects the race-to-beat-adversaries argument he once relied on, and asks for shared rules \"before anyone proceeds.\"",
+      "quote_id": "altman-q7",
+      "source_label": "Fortune, Sam Altman interview, Sep 12 2026",
+      "url": "https://www.youtube.com/watch?v=2my-NU6LuCM&t=259s"
+    }
+  ],
+
+  "_left_out": {
+    "dwarkesh-patel": "Searched his own show (pod_dwarkesh) via corpus_index.py for a first-person statement that his view on safety changed after the Hugging Face incident. The only on-topic passage found (video 6AgOfiZOWiY, 'Noam Brown – Agent swarms, alignment, & recursive self-improvement', Sep 17 2026, ~40:06-46:47 and ~1:18:20) is Noam Brown, the GUEST, answering at length about the incident and OpenAI's own reporting — not Dwarkesh stating his own view moved. No verified quote in Dwarkesh's own words was found, so he is left out entirely rather than guessed at, per the rule: leave him out if the speaker/shift is uncertain.",
+    "others": "huang, musk, hinton, greenblatt, yampolskiy, harari, sam-harris, sanders, bannon, klein: people.json's reader_notes for these either describe the CURRENT placement's reasoning (not a dated move from a different, earlier stated position) or, for musk, a discrepancy between a 2023 signature and a same-month action rather than a stated change of view. None carries the person's OWN dated 'I used to think X, now Y' the way amodei, tristan-harris and altman do, so none gets a trail — a position with no stated shift gets one dot, 'now', which needs no trail at all."
+  }
+}
