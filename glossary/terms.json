@@ -92,7 +92,7 @@
       "section": "access-and-channels",
       "standard": false,
       "definition": "A path by which a system can act on, or talk to, something outside its task.",
-      "note": "For a single assistant, an open browser tab can be one. In multi-agent products, the channel is the feature.",
+      "note": "For a single assistant, an open browser tab can be one. In multi-agent products, the channel is the feature. Not to be confused with a recursive.eco Collection (formerly called a channel).",
       "draw": "Which open path lets this system touch something outside its task?",
       "related": ["access", "trained-collaboration"]
     },
