@@ -47,14 +47,14 @@
         '<div class="rtf">'+
         '<div class="uc">Recursively under construction</div>'+
         '<span class="spinwrap"><svg class="spin" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="'+SPIRAL+'"/></svg></span>'+
-        '<h3>One channel of recursive.eco</h3>'+
+        '<h3>One collection of recursive.eco</h3>'+
         '<p>The work so far of <strong>one solo developer</strong>, built with a great deal of help from AI (Claude, made by Anthropic: <a href="'+PFX+'pages/about.html#method">what that means here</a>). The hope is that <strong>real human collaborators</strong> will make it better.</p>'+
         '<p>Part of <a href="https://recursive.eco" target="_blank" rel="noopener">recursive.eco</a> — grammars for sense-making. Get an occasional note as it grows:</p>'+
         '<form id="rtf-news"><input id="rtf-email" type="email" required placeholder="you@email.com" aria-label="Email"><button type="submit">Sign up</button></form>'+
         '<div class="msg" id="rtf-msg"></div>'+
         '<div class="links"><a href="https://recursive.eco" target="_blank" rel="noopener">recursive.eco ↗</a> · '+
         '<a href="'+PFX+'pages/about.html">About &amp; method</a> · '+
-        '<a href="https://flow.recursive.eco/library/channels/recursive-learning" target="_blank" rel="noopener">the channel ↗</a> · '+
+        '<a href="https://flow.recursive.eco/library/channels/recursive-learning" target="_blank" rel="noopener">the collection ↗</a> · '+
         '<a href="https://github.com/PlayfulProcess/recursive-learning" target="_blank" rel="noopener">the repo</a> · '+
         '<a href="'+PFX+'pages/about.html#licences">code Apache-2.0, content CC BY-SA 4.0</a></div>'+
         '</div>';
