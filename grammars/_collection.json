@@ -55,6 +55,7 @@
       "deck_slugs": [
         "create-grammars-with-ai",
         "create-magic-stories-for-your-kids-with-ai",
+        "recursive-courses",
         "vibe-coding-101-tools-and-process",
         "vibe-coding-102-audiobook-with-claude-code",
         "vibe-coding-with-claude-journaling-tools"
@@ -65,6 +66,7 @@
       "name": "Studies — longer readings",
       "provenance": "living",
       "deck_slugs": [
+        "recursive-studies",
         "the-freedom-paradox"
       ]
     },
@@ -238,6 +240,20 @@
       "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
     },
     {
+      "slug": "recursive-courses",
+      "name": "Recursive Courses",
+      "type": "custom",
+      "branch": "courses",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 12,
+      "blurb": "The eight free courses on this platform — each one a direct link to the course-viewer. The four learning paths sit at L2 as emergence items that bundle related courses together; click a path to see it…",
+      "path": "grammars/recursive-courses/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/recursive-courses.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
       "slug": "vibe-coding-101-tools-and-process",
       "name": "Vibe Coding 101 — Tools & Process",
       "type": "custom",
@@ -277,6 +293,20 @@
       "path": "grammars/vibe-coding-with-claude-journaling-tools/grammar.json",
       "provenance": "living",
       "cover_image_url": "/grammars/_covers/vibe-coding-with-claude-journaling-tools.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "recursive-studies",
+      "name": "Recursive Studies",
+      "type": "custom",
+      "branch": "studies",
+      "is_meta": false,
+      "default_preview": null,
+      "items": 6,
+      "blurb": "The studies in long form. Each item is one experimental space or open-source work — patterns, spirals, visions, audiobooks, the book manuscripts in progress. Where there is an analogous course or rela…",
+      "path": "grammars/recursive-studies/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/recursive-studies.svg",
       "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
     },
     {
