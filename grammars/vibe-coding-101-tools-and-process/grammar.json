@@ -9,11 +9,10 @@
     "nvc",
     "self-reflection"
   ],
-  "items": [
+  "nodes": [
     {
       "id": "stoic-original",
       "name": "Stoic Self-Improvement — Original (the seed)",
-      "level": 1,
       "category": "starting-point",
       "keywords": ["stoic", "self-improvement", "donaldrobertson"],
       "sections": {
@@ -29,7 +28,6 @@
     {
       "id": "stoic-adapted",
       "name": "Stoic Self-Improvement — Adapted ",
-      "level": 1,
       "category": "adapted",
       "keywords": ["stoic", "customization", "single-page"],
       "sections": {
@@ -45,7 +43,6 @@
     {
       "id": "ten-prompts-sonnet",
       "name": "10 Journaling Prompts — Sonnet free tier (Section 3 example)",
-      "level": 1,
       "category": "from-scratch",
       "keywords": ["journaling", "sonnet", "free-tier", "gratitude", "expressive-writing"],
       "sections": {
@@ -62,7 +59,6 @@
     {
       "id": "ten-prompts-opus",
       "name": "10 Journaling Prompts — Opus single-shot (comparison)",
-      "level": 1,
       "category": "comparison",
       "keywords": ["journaling", "opus", "paid-tier", "comparison"],
       "sections": {
@@ -78,7 +74,6 @@
     {
       "id": "swot-deep-time-committee",
       "name": "SWOT — Deep Time Committee reviews Project Homo sapiens",
-      "level": 1,
       "category": "beyond-journaling",
       "keywords": ["swot", "planning", "beyond-journaling", "json-import"],
       "sections": {
@@ -94,7 +89,6 @@
     {
       "id": "business-canvas-recursive-eco",
       "name": "Business Model Canvas — recursive.eco itself (meta)",
-      "level": 1,
       "category": "beyond-journaling",
       "keywords": ["business-canvas", "strategyzer", "beyond-journaling", "json-import", "meta"],
       "sections": {
@@ -110,7 +104,6 @@
     {
       "id": "eisenhower-matrix",
       "name": "Eisenhower Matrix — Urgent × Important",
-      "level": 1,
       "category": "beyond-journaling",
       "keywords": ["eisenhower", "prioritization", "matrix", "beyond-journaling"],
       "sections": {
@@ -125,7 +118,6 @@
     {
       "id": "decision-matrix-weighted",
       "name": "Decision Matrix — weighted options × criteria",
-      "level": 1,
       "category": "beyond-journaling",
       "keywords": ["decision", "matrix", "weighted", "beyond-journaling"],
       "sections": {
@@ -140,7 +132,6 @@
     {
       "id": "habit-tracker-week",
       "name": "Habit Tracker — 7-day grid (no persistence)",
-      "level": 1,
       "category": "beyond-journaling",
       "keywords": ["habits", "tracker", "weekly", "beyond-journaling"],
       "sections": {

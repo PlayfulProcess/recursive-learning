@@ -129,7 +129,7 @@
 
   // ── the round ─────────────────────────────────────────────────────────────────
   function start(g) {
-    var items = Array.isArray(g.items) ? g.items.filter(Boolean) : [];
+    var items = Array.isArray(g.nodes) ? g.nodes.filter(Boolean) : [];
     if (!items.length) { missing('“' + (g.name || src) + '” has no items yet.'); return; }
 
     var key = 'as-if:' + (g.name || src) + ':';

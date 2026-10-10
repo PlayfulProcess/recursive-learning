@@ -12,11 +12,10 @@
     "korea",
     "trivia"
   ],
-  "items": [
+  "nodes": [
     {
       "id": "4a047f00-f280-4911-9a15-02ff3a1d7bda",
       "name": "💃 Dances",
-      "level": 1,
       "keywords": ["divider"],
       "metadata": {
         "card_bg": "#2a1a4a",
@@ -28,7 +27,6 @@
     {
       "id": "da233a86-5215-4324-9596-55833f7efbf4",
       "name": "Golden — BABY WARRIORS (kid crew, Vietnam)",
-      "level": 1,
       "keywords": ["golden", "huntrix", "kids"],
       "metadata": {
         "channel": "Thầy Huy Kid Dance",
@@ -43,7 +41,6 @@
     {
       "id": "4d362e07-d0ce-414b-9489-cc341ace40fc",
       "name": "Golden — B-Wild in public",
-      "level": 1,
       "keywords": ["golden", "huntrix", "one-take"],
       "metadata": {
         "channel": "B-Wild Official",
@@ -73,7 +70,6 @@
     {
       "id": "2ef8b903-6376-4a60-a2d2-b529dd93ad2d",
       "name": "On the ice — Yana Chin",
-      "level": 1,
       "keywords": ["ice skating", "performance"],
       "metadata": {
         "channel": "Yana Chin",
@@ -88,7 +84,6 @@
     {
       "id": "f7ed270d-8617-48f5-af1f-557f1b532f2f",
       "name": "Takedown — B-Wild in public",
-      "level": 1,
       "keywords": ["takedown", "twice", "one-take"],
       "metadata": {
         "channel": "B-Wild Official",
@@ -103,7 +98,6 @@
     {
       "id": "4120f821-4407-43c4-bf54-9cba5e17c37f",
       "name": "Takedown — BABY WARRIORS (kid crew)",
-      "level": 1,
       "keywords": ["takedown", "kids"],
       "metadata": {
         "channel": "Thầy Huy Kid Dance",
@@ -118,7 +112,6 @@
     {
       "id": "d9721846-0b2b-4068-859c-9ec4c8ec66bb",
       "name": "What It Sounds Like — B-Wild in public",
-      "level": 1,
       "keywords": ["what it sounds like", "huntrix"],
       "metadata": {
         "channel": "B-Wild Official",
@@ -133,7 +126,6 @@
     {
       "id": "e5a0606b-99dc-4ba1-92e7-64cb8b5f3e1c",
       "name": "What It Sounds Like — PonySquad",
-      "level": 1,
       "keywords": ["what it sounds like", "dance cover"],
       "metadata": {
         "channel": "PONY SQUAD OFFICIAL",
@@ -148,7 +140,6 @@
     {
       "id": "3179ce2e-4f2f-48d8-999c-6a24f712d146",
       "name": "Soda Pop — Z-Axis, one take",
-      "level": 1,
       "keywords": ["soda pop", "saja boys", "one-take"],
       "metadata": {
         "channel": "Z-Axis Dance Crew",
@@ -163,7 +154,6 @@
     {
       "id": "d9e88f40-cbc5-47a4-b8da-38c250813eca",
       "name": "Soda Pop — REN Studio, Thailand",
-      "level": 1,
       "keywords": ["soda pop", "saja boys"],
       "metadata": {
         "channel": "REN Studio",
@@ -178,7 +168,6 @@
     {
       "id": "575f68f3-6656-4ff5-8bb1-ebd3dc071fc4",
       "name": "Your Idol — Z-Axis, one take",
-      "level": 1,
       "keywords": ["your idol", "saja boys", "one-take"],
       "metadata": {
         "channel": "Z-Axis Dance Crew",
@@ -193,7 +182,6 @@
     {
       "id": "f3edcc71-5f7a-4a68-be9a-96fa76e5ed8a",
       "name": "🛠 Making & Props",
-      "level": 1,
       "keywords": ["divider"],
       "metadata": {
         "card_bg": "#2a1a4a",
@@ -205,7 +193,6 @@
     {
       "id": "0a979712-9bda-4bfa-96cc-a3ba1a8e421f",
       "name": "Zoey's throwing knives",
-      "level": 1,
       "keywords": ["prop", "zoey", "knives"],
       "metadata": {
         "channel": "SideQuestCrafting",
@@ -220,7 +207,6 @@
     {
       "id": "abcebc6b-92f9-4f77-91f1-fae868a6ea32",
       "name": "Mira's polearm, from scratch",
-      "level": 1,
       "keywords": ["prop", "mira", "polearm"],
       "metadata": {
         "channel": "SideQuestCrafting",
@@ -235,7 +221,6 @@
     {
       "id": "05bbcc81-9586-4980-beb0-9e20537b510b",
       "name": "Mira's prop — another way to make it",
-      "level": 1,
       "keywords": ["prop", "mira", "tutorial"],
       "metadata": {
         "channel": "The Insanity Project",
@@ -250,7 +235,6 @@
     {
       "id": "035d88cf-75f0-41d6-ac83-68ae127ad345",
       "name": "Zoey's Shin-Kal — a paper sword tutorial",
-      "level": 1,
       "keywords": ["prop", "zoey", "tutorial"],
       "metadata": {
         "channel": "Honey's Crafteria",
@@ -265,7 +249,6 @@
     {
       "id": "7f0993ba-d53d-4516-a004-7002d2ea1b8a",
       "name": "A Rumi doll, made by hand",
-      "level": 1,
       "keywords": ["doll", "rumi", "sculpting"],
       "metadata": {
         "channel": "HeXtian",
@@ -280,7 +263,6 @@
     {
       "id": "ecff649f-4924-47ad-923d-a94bea5e540c",
       "name": "A Rumi doll, made golden (part 2)",
-      "level": 1,
       "keywords": ["doll", "rumi", "sculpting", "golden"],
       "metadata": {
         "channel": "HeXtian",
@@ -295,7 +277,6 @@
     {
       "id": "d3b406d9-5335-42bd-b238-21e6d2667c35",
       "name": "A Jinu doll, made by hand",
-      "level": 1,
       "keywords": ["doll", "jinu", "sculpting"],
       "metadata": {
         "channel": "HeXtian",
@@ -310,7 +291,6 @@
     {
       "id": "f970c7ad-ad5e-46e5-bbae-22807efbd7a7",
       "name": "A Barbie turned into Rumi",
-      "level": 1,
       "keywords": ["doll", "rumi", "repaint"],
       "metadata": {
         "channel": "Poppen Atelier / Doll Art Studio",
@@ -325,7 +305,6 @@
     {
       "id": "ad549fc4-56ab-4720-8104-a880650e6561",
       "name": "Rumi's sword — a cosplay tutorial",
-      "level": 1,
       "keywords": ["prop", "rumi", "sword", "tutorial"],
       "metadata": {
         "channel": "The Insanity Project",
@@ -340,7 +319,6 @@
     {
       "id": "481ccfde-7bee-4ce1-8e77-ff6ba3cb8560",
       "name": "Rumi's sword — full LED build, for beginners",
-      "level": 1,
       "keywords": ["prop", "rumi", "sword", "led", "tutorial"],
       "metadata": {
         "channel": "Lorentz iWood",
@@ -355,7 +333,6 @@
     {
       "id": "3f0002cd-f27c-4d07-9187-46905cace531",
       "name": "Mira's glaive — an LED build tutorial",
-      "level": 1,
       "keywords": ["prop", "mira", "glaive", "led", "tutorial"],
       "metadata": {
         "channel": "Lorentz iWood",
@@ -370,7 +347,6 @@
     {
       "id": "973cd4d9-80ba-43bc-a0aa-c20900dd51e2",
       "name": "All her KPop Demon Hunters customs — a LEGO compilation",
-      "level": 1,
       "keywords": ["lego", "customs", "compilation"],
       "metadata": {
         "note": "ellieV's own custom LEGO builds of the KPop Demon Hunters characters and props — fan-made, not a set you can buy. (The official LEGO set review moved to the Merch & Books playlist on Sep 9 2026.)",

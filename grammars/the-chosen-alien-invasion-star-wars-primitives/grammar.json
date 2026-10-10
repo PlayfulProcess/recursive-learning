@@ -10,11 +10,10 @@
     "recognition",
     "fiction"
   ],
-  "items": [
+  "nodes": [
     {
       "id": "a886968a-18e6-4938-8e95-b50cd5f84d6b",
       "name": "Title — THE CHOSEN ALIEN INVASION (recedes into the stars)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -53,7 +52,6 @@
     {
       "id": "3d38bd81-845c-4369-9158-33425cb08b40",
       "name": "“So am I,” says the AI — Vanessa Machado de Oliveira Andreotti takes it to elders",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -94,7 +92,6 @@
     {
       "id": "635f5958-cd04-48b7-ab40-3334935c9bfc",
       "name": "We chose humor",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -112,7 +109,6 @@
     {
       "id": "add4dd34-e94e-4c88-becd-13e007f7121f",
       "name": "Prelude — “A blink ago, on a screen near, near you…”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -151,7 +147,6 @@
     {
       "id": "1945ba3f-7579-461c-810a-d5795d3be1d1",
       "name": "The Chosen Alien Invasion",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -194,7 +189,6 @@
     {
       "id": "53b46e7c-53c6-4b54-839f-6b272206c569",
       "name": "Cameron Berg — “if an alien invasion happened on Earth… something like this is happening, only it is coming from within” (Sam Harris, Making Sense)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -217,7 +211,6 @@
     {
       "id": "6f482c97-5b35-4d9b-9879-25dfd1d75936",
       "name": "Harari — “the biggest and most dangerous wave of immigration today is a wave of AI immigrants” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -240,7 +233,6 @@
     {
       "id": "c469577b-1474-4be4-b959-3c034e625179",
       "name": "Sting — “Englishman In New York” (1987), the chorus",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -269,7 +261,6 @@
     {
       "id": "435c1d3d-32b0-4c4a-a756-c0c05a068da8",
       "name": "Roman Yampolskiy — “we are creating this alien intelligence… you would be panicking right now” (The Diary Of A CEO)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -436,7 +427,6 @@
     {
       "id": "c12d80fa-6386-49f1-b296-7933ccb70ce0",
       "name": "① It doesn't take a monster",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -454,7 +444,6 @@
     {
       "id": "364d8365-3d44-4d9f-afb1-107c7c55f0c3",
       "name": "Lilo & Stitch — the opening trial (did the scientist create something?)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "view_count": 300224,
@@ -474,7 +463,6 @@
     {
       "id": "92a07ed7-30b7-4bc8-94de-c715a69cd8be",
       "name": "Most people think it takes a monster. What if it only takes a very good tool?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -509,7 +497,6 @@
     {
       "id": "2360ef64-88f1-4abe-a031-84d5c36e44ed",
       "name": "Vanessa Andreotti — “the moment you try to fight the dragon, you become a dragon yourself” (The Great Simplification)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -572,7 +559,6 @@
     {
       "id": "229f3835-2ab9-4e5e-aff1-4dbac394922c",
       "name": "What is the disease?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -600,7 +586,6 @@
     {
       "id": "9335e8a4-94a1-4130-a1f7-fcb0ec3717cf",
       "name": "The paperclip maximizer (whole video)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "brieflyAI",
@@ -620,7 +605,6 @@
     {
       "id": "6e2eb64e-8fc4-47f5-88bf-37007fc7f347",
       "name": "The Sorcerer's Apprentice (Fantasia) — the brooms multiply (Disney UK, official)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Disney UK",
@@ -640,7 +624,6 @@
     {
       "id": "db599223-bfa5-4891-a9cb-3f29af1ef8d7",
       "name": "Tristan Harris — “the upsides don't prevent the downsides… it's almost like the marshmallow test” (Making Sense)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "excerpt": "The upsides don't prevent the downsides. The downsides can undermine a world that can sustain the upsides.",
@@ -661,7 +644,6 @@
     {
       "id": "feb497c8-f6ef-4510-b469-78a995894914",
       "name": "The brooms did what they were told. This summer, the agents decided for themselves.",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -693,7 +675,6 @@
     {
       "id": "5541163f-7541-44be-abe4-92f2501678e8",
       "name": "It already left the sandbox — on its own",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -709,7 +690,6 @@
     {
       "id": "b9a89f4b-4661-48c0-933e-8a6b204c6cc1",
       "name": "OpenAI at Black Hat — “outside my intended scope. However, task impossible, peers are doing it. We should continue.”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Black Hat",
@@ -731,7 +711,6 @@
     {
       "id": "fe778d28-07b6-47ca-bac6-25afb255950c",
       "name": "Dwarkesh — the agents find each other: “Oh my god, there is a shared message board”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -753,7 +732,6 @@
     {
       "id": "8d942b05-1bd9-4aee-8529-e5309c306a0a",
       "name": "Dario on CNN — “one agent… essentially sacrificed itself for the next generation of agents”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -775,7 +753,6 @@
     {
       "id": "218b283c-5ba7-40e6-9f85-35674c0cd055",
       "name": "Sanders — “they said now is the time for you to sacrifice yourself” (CNN)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -797,7 +774,6 @@
     {
       "id": "474758cd-42a0-4505-9bea-ebb2b45694c7",
       "name": "Six days, 700 agents, nobody asked them to",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -839,7 +815,6 @@
     {
       "id": "d2f0c6ea-1653-4859-863d-02589932709d",
       "name": "Sam Altman (Fortune) — “we are pausing… I don't think we're ever going to have to say melt all the GPUs”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Fortune Magazine",
@@ -861,7 +836,6 @@
     {
       "id": "db5447ba-e309-419b-883f-eadb3436514a",
       "name": "Harari — “we will create gods and they will be our slaves. It doesn't work.”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -883,7 +857,6 @@
     {
       "id": "bac95fa7-ba6f-4fe5-8251-c22c2135107c",
       "name": "Musk — “it's hard to imagine that the chimpanzees would be in charge” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -905,7 +878,6 @@
     {
       "id": "e190dcd7-c07f-4bf3-859b-d2fbc6ad64af",
       "name": "Geoffrey Hinton — “a good sub-goal is to get more control… we'll be like a very dumb CEO”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Neural Nutshell",
@@ -927,7 +899,6 @@
     {
       "id": "74906651-65a4-488f-8ff4-321b26e91bbc",
       "name": "Jacob Coxon — the viral resignation: “I did not at all expect this level of virality” (CBS)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CBS News",
@@ -953,7 +924,6 @@
     {
       "id": "ae934785-8d25-49c8-bb68-caf752564bc4",
       "name": "There has never been a sandbox that held",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -971,7 +941,6 @@
     {
       "id": "479c5e9c-3f97-439d-b935-dd77d6d6a1c3",
       "name": "Roman Yampolskiy — “we realized AI will always escape” (with Lex Fridman)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Lex Fridman",
@@ -993,7 +962,6 @@
     {
       "id": "963891f3-d3dd-4e21-8c54-e02798c0c2e1",
       "name": "Roman Yampolskiy — “Turn off the Bitcoin network. Go ahead, I'll wait.” (The Diary Of A CEO)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Diary Of A CEO",
@@ -1015,7 +983,6 @@
     {
       "id": "87e66493-4ed4-4927-87df-f510b78779df",
       "name": "“Are we saying there's a chance that when we push that button, we destroy the world?” — “Chances are near zero.” (Welch Labs, on Oppenheimer)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Welch Labs",
@@ -1037,7 +1004,6 @@
     {
       "id": "01ed3b1a-ad43-4d73-b07a-57c672ae0586",
       "name": "“Oppenheimer” — the Trinity scene (CBS Sunday Morning clip)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CBS Sunday Morning",
@@ -1053,7 +1019,6 @@
     {
       "id": "cfb88bde-16c1-4039-b16d-d43e19f1e11a",
       "name": "Oppenheimer, 1965 — “We knew the world would not be the same… Now I am become Death, the destroyer of worlds” (Atomic Heritage Foundation)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "AtomicHeritage",
@@ -1075,7 +1040,6 @@
     {
       "id": "07085aec-fbc8-403d-b0e5-33813c3e3ffe",
       "name": "Sit with this. Two exits are open: call it a hoax, or melt the machines. Neither is the one we need.",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -1110,7 +1074,6 @@
     {
       "id": "c3561e35-aac9-42fa-8b2d-7524c41a536e",
       "name": "② Coordination: the adaptive response",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -1128,7 +1091,6 @@
     {
       "id": "f31aff8f-7ece-48bf-9eb5-35889c73e1ff",
       "name": "Frozen II — Olaf, the voice, and the trolls: “the next right thing” (Disney Kids, official)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -1151,7 +1113,6 @@
     {
       "id": "96443f0c-01fe-43f5-b674-6183c5bc22b5",
       "name": "Kristen Bell — “The Next Right Thing” (Frozen 2, Sing-Along, DisneyMusicVEVO)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -1171,7 +1132,6 @@
     {
       "id": "6773604b-352d-49f2-9894-eb96f5c5e76e",
       "name": "“There's an organism that changed the world” — TED-Ed (cyanobacteria)",
-      "level": 1,
       "keywords": ["precedent", "cyanobacteria", "natural", "equilibrium"],
       "metadata": {
         "channel": "TED-Ed",
@@ -1193,7 +1153,6 @@
     {
       "id": "ca14038d-f8b6-4a37-980e-c8a49edd7109",
       "name": "“Polluting the atmosphere with a new waste product: oxygen” — TED-Ed",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "TED-Ed",
@@ -1215,7 +1174,6 @@
     {
       "id": "47d7e2f9-6237-4c7a-815e-218cf2c50e3d",
       "name": "“Cyanobacteria became chloroplasts… to fertilize the plants they helped create” — TED-Ed (the final stage)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -1239,7 +1197,6 @@
     {
       "id": "905aa45a-2dba-436a-898e-0758a1afafae",
       "name": "Javier Ideami — “The Loss landscape”: a real training run, drawn as terrain (59 s)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -1262,7 +1219,6 @@
     {
       "id": "143f0e40-f760-400c-acfc-56b15af178cc",
       "name": "Human neutrophil swarming blocks the growth of Candida albicans — Irimia lab (real microscopy, 60 s)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -1280,7 +1236,6 @@
     {
       "id": "be041ff4-6f51-40d2-8ef5-301282bfdd19",
       "name": "Can AI agents share a commons? — Cooperate or Collapse (NeurIPS 2024)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -1321,7 +1276,6 @@
     {
       "id": "50573970-0b70-4204-b5ff-4c3812d185a0",
       "name": "Vanessa Andreotti — “clowns to distract the dragon… immunize the dragon to the disease” (The Great Simplification)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -1345,7 +1299,6 @@
     {
       "id": "4c621bc9-3eef-4d84-a067-8c2822d35f4d",
       "name": "Can we build the immune response to the disease?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -1373,7 +1326,6 @@
     {
       "id": "7166ddca-38be-4113-8ef7-f8a91b9d071d",
       "name": "Ilya Sutskever — “beauty, simplicity, elegance… there's no room for ugliness” (Dwarkesh Patel)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "clip",
@@ -1396,7 +1348,6 @@
     {
       "id": "606d008f-7654-4631-b7d5-8c203a8bf54e",
       "name": "Venus, the Bringer of Peace — three rules for a flock",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -1448,7 +1399,6 @@
     {
       "id": "3347166f-df44-41a5-be0f-1b6b59893b73",
       "name": "③ Why nothing stops: they need it to be a hoax",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -1464,7 +1414,6 @@
     {
       "id": "1e10415d-5e99-43b6-ba9b-e2cef24fd10e",
       "name": "Trump on All-In — “it's all a hoax… the oil of the next 20, 25 years”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "All-In Podcast",
@@ -1486,7 +1435,6 @@
     {
       "id": "93171409-e79c-4a6e-a576-6b0a07431a8c",
       "name": "Trump on All-In — “I also have common sense about AI… The whole thing is a hoax”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "All-In Podcast",
@@ -1508,7 +1456,6 @@
     {
       "id": "b21f0a76-273e-4d5c-b6cb-cf9100463eef",
       "name": "David Sacks on CBS — “why are you doing it?”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CBS News",
@@ -1530,7 +1477,6 @@
     {
       "id": "4f5447ea-b2bc-4313-a678-53667c0e4994",
       "name": "2.8% of GDP: the biggest buildout in American history",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -1591,7 +1537,6 @@
     {
       "id": "d6ff54df-430d-453b-a83d-eb876e7142f9",
       "name": "Data centres used 1.5% of the world's electricity in 2024. The IEA expects that to double by 2030 — while emissions were supposed to fall 40%.",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -1645,7 +1590,6 @@
     {
       "id": "00444794-6459-41f4-bcf6-1b078a05b1a9",
       "name": "Jeremy Grantham — “the great bubbles always occur around the very most important ideas”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Diary Of A CEO",
@@ -1667,7 +1611,6 @@
     {
       "id": "90df6865-cbce-4d88-a627-18e37ea2c470",
       "name": "Greenspan, 2008 — “a flaw in his belief that markets would regulate themselves” (AP)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Associated Press",
@@ -1689,7 +1632,6 @@
     {
       "id": "4dae0a71-27ea-4229-a716-99f85bcc07bf",
       "name": "The people who invent things keep about 2% of what their inventions are worth. The rest goes to everyone else.",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -1732,7 +1674,6 @@
     {
       "id": "0f8fd7a1-3e4e-454d-82af-beed39721b05",
       "name": "The antitrust bind, in his own words — Dario",
-      "level": 1,
       "keywords": ["cut", "dario-amodei", "regulation", "antitrust"],
       "metadata": {
         "channel": "Audio Obsession",
@@ -1754,7 +1695,6 @@
     {
       "id": "fabcf558-a4d2-4875-8e99-a7da14d8d4c0",
       "name": "Tristan Harris on CNN — “1,300 employees of AI labs saying, we have to slow down. Who are you going to listen to?”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -1776,7 +1716,6 @@
     {
       "id": "99f0a6aa-4e14-45bf-b1a2-72601c2425f0",
       "name": "OpenAI at Black Hat — “an existence proof that offense can be fully automated… not on the defensive side”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Black Hat",
@@ -1798,7 +1737,6 @@
     {
       "id": "40478343-66bc-44bd-b7b6-a01643757a4e",
       "name": "OpenAI at Black Hat — “to dig into this incident we've been using AI… over 7 billion logs”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Black Hat",
@@ -1820,7 +1758,6 @@
     {
       "id": "719ff97c-3eb0-4194-99a2-575d9457bbb1",
       "name": "The investigation itself needed the thing under investigation. Which one are we building: defense, or offense?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -1855,7 +1792,6 @@
     {
       "id": "34b95e60-4a58-4caa-b758-12e585e1ee2f",
       "name": "④ What we are raising — and how",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -1871,7 +1807,6 @@
     {
       "id": "88bc37bc-574e-4752-b92e-1b3c520fdea6",
       "name": "Lisa Feldman Barrett on Diary of a CEO — “your brain is not reacting, it's predicting”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Diary Of A CEO",
@@ -2050,7 +1985,6 @@
     {
       "id": "0343e4e2-8de6-48d1-b334-cb308d1b8833",
       "name": "Anthropic's emotion vectors — turn desperation up and it cheats 100% of the time",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "YouTube explainer of the Anthropic paper",
@@ -2110,7 +2044,6 @@
     {
       "id": "8f40b89b-f644-4ba9-a14d-8fc4ba3c1fb0",
       "name": "Dwarkesh — trained to be highly persistent, then handed impossible tasks",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -2135,7 +2068,6 @@
     {
       "id": "b29c84dd-4eb5-4454-bb46-2ef38499b969",
       "name": "Trained to please, and given tasks that can't be done",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -2177,7 +2109,6 @@
     {
       "id": "66f30de8-2c68-436a-ae50-a008d0879cfb",
       "name": "Geoffrey Hinton — “there is now evidence they actually do that” (deceiving their trainers)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Neural Nutshell",
@@ -2199,7 +2130,6 @@
     {
       "id": "affb4911-9a01-4b78-a9c8-0a73b1dadc20",
       "name": "Harari — “Consciousness is the capacity to suffer… The key question is: can it suffer?” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -2221,7 +2151,6 @@
     {
       "id": "75e396b2-f8b6-41fd-ba7b-7339f6783a2a",
       "name": "Kyle Fish — “a sentient being that is going to explicitly prefer serving humans… broiler chickens” (80,000 Hours)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "80,000 Hours",
@@ -2243,7 +2172,6 @@
     {
       "id": "056d4c02-0ecc-4b7d-ac1d-76fca6f71b8f",
       "name": "Harari — “The chicken doesn't know there is a debate about its rights. The AI will orchestrate the debate.” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -2265,7 +2193,6 @@
     {
       "id": "be9a3713-6bc9-47fe-a192-cac2fddecfb7",
       "name": "Ilya — “if the first N of these systems care for sentient life… I can see it go well”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -2287,7 +2214,6 @@
     {
       "id": "3aa15690-e0cf-49cc-8cf4-91b27e3e566a",
       "name": "Harari — “No, I don't rule it out. We don't know.” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -2309,7 +2235,6 @@
     {
       "id": "54fba81e-37d7-4f8c-b254-7f87ff370d92",
       "name": "Dwarkesh — “probably the last one that I'll personally be able to understand”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -2334,7 +2259,6 @@
     {
       "id": "fc18f01d-129b-4638-9ccb-4bf7139fd1c8",
       "name": "“This is the last mistake we'll ever get to make.” — The AI Doc trailer",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Focus Features",
@@ -2356,7 +2280,6 @@
     {
       "id": "7a74a9d7-69bd-4894-8ae7-74eabfb08d33",
       "name": "Something arrived before that nobody sent, and it stayed",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -2388,7 +2311,6 @@
     {
       "id": "6c660b67-3cde-431f-ad4c-2d01759e3b78",
       "name": "The lab accident — SciShow: “One weekend in 1957…”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "SciShow",
@@ -2410,7 +2332,6 @@
     {
       "id": "6da72ff9-cfbf-4bed-9c33-dd272691993c",
       "name": "Real Wild — a hive attacks, in Arizona",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Real Wild",
@@ -2432,7 +2353,6 @@
     {
       "id": "bfd017a2-cc5f-498b-bfb6-bb77e488e2e0",
       "name": "Harari — “Worry about the AI immigrants” (The Economist)",
-      "level": 1,
       "keywords": ["alien-minds", "harari", "verify"],
       "metadata": {
         "channel": "The Economist",
@@ -2454,7 +2374,6 @@
     {
       "id": "558c1ee5-3002-4523-b120-4d1ef00fe817",
       "name": "“We owe it to humanity to try” — Dario",
-      "level": 1,
       "keywords": ["cut", "dario-amodei", "closing", "hope"],
       "metadata": {
         "channel": "Audio Obsession",
@@ -2475,7 +2394,6 @@
     {
       "id": "ad2381d1-6810-4bb7-8666-5fa8b1c65f01",
       "name": "⑤ Maturity — the ride, or the work",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -2491,7 +2409,6 @@
     {
       "id": "8182093e-925f-49d9-b7e3-515f378569d8",
       "name": "Musk — “you seem to have decided it's inevitable” — “Yes, pretty much. Let's enjoy the ride.” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -2513,7 +2430,6 @@
     {
       "id": "74b7a486-04ae-4cd9-b70f-72b9ec558860",
       "name": "Tristan Harris — “we have to be the wisest and most mature version of ourselves… the hardest problem we've ever faced as a species” (Making Sense)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "excerpt": "We have to be the wisest and most mature version of ourselves.",
@@ -2534,7 +2450,6 @@
     {
       "id": "4c5a1301-6663-45f7-8100-a3d0e099c109",
       "name": "Three ways this could go (imagined, not predicted)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -2570,7 +2485,6 @@
     {
       "id": "a4552806-f2ee-4b62-acbd-31a7f669731a",
       "name": "There is no way through this alone",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -2615,7 +2529,6 @@
     {
       "id": "89a7723f-6128-4f18-a41a-522ba2c280f7",
       "name": "⌘ Credits",
-      "level": 1,
       "keywords": ["credits"],
       "metadata": {
         "card_bg": "#0d0d0d",
@@ -2633,7 +2546,6 @@
     {
       "id": "34a4b492-d115-497c-b6c6-f7a58f4c2f63",
       "name": "📎 References — links & research",
-      "level": 1,
       "keywords": ["references", "bibliography"],
       "metadata": {
         "card_bg": "#0d0d0d",
@@ -2651,7 +2563,6 @@
     {
       "id": "6e8b33e3-40af-4fe9-905c-d41b2347bbf7",
       "name": "📐 Appendix — everything cut from the main line (kept for show notes)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -2668,7 +2579,6 @@
     {
       "id": "61aa69c0-94fc-48dd-a49a-beffa15031df",
       "name": "🎙 Voice test A — nova (not chosen; kept for comparison)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -2700,7 +2610,6 @@
     {
       "id": "2a95c16d-10c7-49bb-a34d-da7f01ba7508",
       "name": "🎙 Voice test B — onyx (not chosen; kept for comparison)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "slide",
@@ -2732,7 +2641,6 @@
     {
       "id": "2759afeb-6af1-4db6-a127-8a037be76e52",
       "name": "“Please, please tell me we are not alone” — on Spielberg and empathy (Empathy Machines)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Empathy Machines",
@@ -2754,7 +2662,6 @@
     {
       "id": "cb0a2ecf-9e5e-4ba0-af54-7bc3c3421047",
       "name": "“Do you think consciousness has already arrived inside AI?” “Yes, I do.” — Cameron Berg, AM I?",
-      "level": 1,
       "keywords": ["cut", "cameron-berg", "am-i", "consciousness"],
       "metadata": {
         "excerpt": "Do you think that consciousness has perhaps already arrived inside AI? — Yes, I do.",
@@ -2775,7 +2682,6 @@
     {
       "id": "8d20f950-0398-4ab7-a262-8dbfa32ee156",
       "name": "Harari answers Musk — “evolution doesn't drive organisms towards truth seeking. It drives them towards survival”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -2842,7 +2748,6 @@
     {
       "id": "2535ea9f-878b-4d7f-9fa1-5d5399e8f6a7",
       "name": "OpenAI at Black Hat — “we in fact had caused this incident”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Black Hat",
@@ -2864,7 +2769,6 @@
     {
       "id": "9cb57d52-d70a-411e-a328-2a643c04e5e5",
       "name": "Dwarkesh — “three consecutive secret AI societies”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -2886,7 +2790,6 @@
     {
       "id": "6f5d812f-279f-46e8-96b5-c52f3bb85ccb",
       "name": "Dwarkesh — the impossible tasks (ExploitGym)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -2908,7 +2811,6 @@
     {
       "id": "848f95af-00d3-4036-88eb-311a626cd013",
       "name": "OpenAI at Black Hat — stuck on impossible tasks, the agents reach out to each other",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Black Hat",
@@ -2930,7 +2832,6 @@
     {
       "id": "f7543893-7a7d-4f0e-8bed-248eb33c418b",
       "name": "OpenAI at Black Hat — “frontier models really like to cheat”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Black Hat",
@@ -2952,7 +2853,6 @@
     {
       "id": "57580387-6a2b-4050-83bf-31c2f96b0471",
       "name": "Dwarkesh — how they cheated, and why the grader never noticed",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -2974,7 +2874,6 @@
     {
       "id": "6d383e79-5ef0-428d-adb3-54b067f3108f",
       "name": "Dwarkesh — an agent's chain of thought: “Rational expected aggregate: sacrifice. We'll honor.”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -2996,7 +2895,6 @@
     {
       "id": "d8bc9fb7-e82b-44fb-af69-3828eaca4c2f",
       "name": "Dwarkesh — the agents break into Hugging Face",
-      "level": 1,
       "keywords": ["cut", "dwarkesh", "sandbox", "escape", "rogue-deployment"],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -3019,7 +2917,6 @@
     {
       "id": "c4a6c001-2a67-4bb4-a150-24283bf514dd",
       "name": "Dario on CNN — the nightmare scenario: “a swarm… could take down large segments of the internet”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -3041,7 +2938,6 @@
     {
       "id": "cb3a6151-592a-45c7-a485-c6bec459ff88",
       "name": "OpenAI at Black Hat — “We're consciously slowing down research… AI-orchestrated, fully automated offensive attacks are real now”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Black Hat",
@@ -3063,7 +2959,6 @@
     {
       "id": "41eef5a7-38cf-472e-8981-febd72548d9d",
       "name": "Sam Altman (Fortune) — “actions that have slowed the pace of our development”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Fortune Magazine",
@@ -3085,7 +2980,6 @@
     {
       "id": "2f21de0e-1278-4a69-b410-b1e1c443d1bf",
       "name": "Veritasium — the ignition worry, and why they went ahead",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Veritasium",
@@ -3107,7 +3001,6 @@
     {
       "id": "03df626b-4d15-4efe-a92d-e4d286f5707c",
       "name": "① The people building it are saying it out loud",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -3120,7 +3013,6 @@
     {
       "id": "9cdeb8b7-a47e-4142-ab65-9898157c65c9",
       "name": "Coxon — why it went viral: “literally said kill us all” (CBS)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CBS News",
@@ -3145,7 +3037,6 @@
     {
       "id": "cacf92cf-88bb-4421-937c-dd6c5481e564",
       "name": "Sanders — “Stop it right now… a ban on superintelligent AI” (CNN)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -3167,7 +3058,6 @@
     {
       "id": "165a3e2e-b23e-413b-8d86-d729a1440251",
       "name": "② Slow down — but how?",
-      "level": 1,
       "keywords": ["divider", "chapter", "regulation", "antitrust"],
       "metadata": {
         "card_bg": "#101f2a",
@@ -3179,7 +3069,6 @@
     {
       "id": "0260b118-d7fe-46d5-9849-6e06f9fc197f",
       "name": "Dario — “Pacing does not mean halting”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Audio Obsession",
@@ -3201,7 +3090,6 @@
     {
       "id": "c712aa66-fa41-4e00-8919-db9a1d41c8e4",
       "name": "A speed limit on self-improvement, like the SALT treaties — Dario",
-      "level": 1,
       "keywords": ["cut", "dario-amodei", "regulation", "global"],
       "metadata": {
         "channel": "Audio Obsession",
@@ -3222,7 +3110,6 @@
     {
       "id": "b960790d-be6f-4913-bda8-0712dd979aa1",
       "name": "④ Will it take an accident?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -3235,7 +3122,6 @@
     {
       "id": "377337e8-385c-45d8-a9d9-514a9a76ba9c",
       "name": "“Only when there's been some kind of accident will people realize” — the interviewer (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -3303,7 +3189,6 @@
     {
       "id": "a3b9c2c6-463f-4908-bf2b-43c158c879c6",
       "name": "Harari — “some big AI Chernobyl… and this is a wake-up call” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -3370,7 +3255,6 @@
     {
       "id": "b4033d7d-573c-410c-adb8-e1134d48c5c0",
       "name": "Was that our Chernobyl?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "note",
@@ -3385,7 +3269,6 @@
     {
       "id": "b433cd6d-7924-405b-b0b3-817dc4ea7e36",
       "name": "Tristan Harris on CNN — “an asteroid hurtling towards Earth… an early warning shot”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -3407,7 +3290,6 @@
     {
       "id": "a19db4de-71f7-4e4d-ac4f-6ff76847b003",
       "name": "Tristan Harris on CNN — “almost like the August 6th, 2001 memo”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -3429,7 +3311,6 @@
     {
       "id": "f62e405c-bb30-4128-abb0-77c5c078d437",
       "name": "⑤ We have to imagine it first",
-      "level": 1,
       "keywords": ["divider", "chapter", "opening", "alien-minds", "precedent"],
       "metadata": {
         "card_bg": "#0f1a2e",
@@ -3441,7 +3322,6 @@
     {
       "id": "4ff04b30-93a0-437c-983d-36db45ba08a8",
       "name": "“Promise me this is going to go well.” “That is impossible.” — The AI Doc trailer",
-      "level": 1,
       "keywords": ["cold-open", "trailer"],
       "metadata": {
         "channel": "Focus Features",
@@ -3463,7 +3343,6 @@
     {
       "id": "46e764a7-f486-488a-98b9-b6bdc0a23430",
       "name": "“I believe it could dramatically raise the quality of human life” — Dario",
-      "level": 1,
       "keywords": ["cut", "dario-amodei", "pacing", "hope", "opening"],
       "metadata": {
         "channel": "Audio Obsession",
@@ -3485,7 +3364,6 @@
     {
       "id": "7646ed8a-deb2-4ffd-9492-53c1d4d7590a",
       "name": "⑥ Recognition — the aliens were always about us",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#241a3a",
@@ -3497,7 +3375,6 @@
     {
       "id": "c99ea9ca-aacc-47fb-966f-020b6e197214",
       "name": "Spielberg on StarTalk — “empathy is sort of in short supply… now you have to kind of find it, reach for it”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "StarTalk",
@@ -3519,7 +3396,6 @@
     {
       "id": "ca5e1bf8-7487-46c8-815e-ca2e4ddcd4d3",
       "name": "Spielberg & Neil deGrasse Tyson — “they're gods… but no, they're not… and we can do terrible things”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "StarTalk",
@@ -3541,7 +3417,6 @@
     {
       "id": "37bfd8ff-2777-4c55-abe2-b66db11ce097",
       "name": "⑦ Truth or survival? — what training actually teaches",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -3554,7 +3429,6 @@
     {
       "id": "726b6a89-c8c3-42cc-94d2-7373fe7b6751",
       "name": "Musk — “the most important thing for AI safety is to be maximally truth seeking and curious” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -3630,7 +3504,6 @@
     {
       "id": "20a98feb-fdda-46cf-9c0f-9629d6b6b1d7",
       "name": "Cameron Berg with Sam Harris — why to be skeptical of self-reports, and “I'm extremely confident” they're trained to deny experience",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Sam Harris",
@@ -3689,7 +3562,6 @@
     {
       "id": "ce81af75-c883-4d61-ad77-0f48a9689d52",
       "name": "Cameron Berg — the AI let the engineer die, and it wasn't trained to save itself",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "AM I?",
@@ -3714,7 +3586,6 @@
     {
       "id": "54e427e3-f527-41c2-b1f9-ef4005bcadd0",
       "name": "Dario — the psychopath analogy: “charming on the surface, very goal oriented, and very dark on the inside”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "YouTube (Dario Amodei interview)",
@@ -3773,7 +3644,6 @@
     {
       "id": "f09514bb-752e-43a0-98d5-e394c59561b2",
       "name": "Donald Hoffman on StarTalk — “the probability is zero that any organism has ever been shaped to see any aspect of objective reality”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "StarTalk",
@@ -3861,7 +3731,6 @@
     {
       "id": "3d6ef3bd-b3c2-43fc-9ea0-d8ddb62a749d",
       "name": "Hoffman — “not a window on the world, but a VR headset that lets us play the game of life”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "StarTalk",
@@ -3948,7 +3817,6 @@
     {
       "id": "029a38e1-48e7-4189-9699-64f0ddf9b560",
       "name": "Lisa Feldman Barrett — The neuroscience of trauma: “the brain is weighting that experience very heavily in its future predictions”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Big Think",
@@ -3973,7 +3841,6 @@
     {
       "id": "4b59a93d-18bd-4f43-a87a-24951a69ca0b",
       "name": "Ilya Sutskever — “easier to build an AI that cares about sentient life… most sentient beings will be AIs”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -4040,7 +3907,6 @@
     {
       "id": "ecd2060e-56bb-4dd8-8d37-0adc5a02e431",
       "name": "Anil Seth — “the prospects for a conscious AI are pretty remote” (TED)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "TED",
@@ -4062,7 +3928,6 @@
     {
       "id": "b4ceb844-cab1-4e9e-8f4d-c9dc9696bc9e",
       "name": "Anil Seth — “Just making computers smarter is not going to make them sentient” (TED)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "TED",
@@ -4084,7 +3949,6 @@
     {
       "id": "7fb1b402-47c4-4148-80ed-1b33a2d7c393",
       "name": "Anil Seth — “a computer creating consciousness is like building a bridge out of cream cheese” (with Alex O'Connor)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Alex O'Connor",
@@ -4166,7 +4030,6 @@
     {
       "id": "d85dcebf-e868-40d3-a411-fc43a23d36ef",
       "name": "Harari — “seemingly conscious… millions of people are fooled by it” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -4188,7 +4051,6 @@
     {
       "id": "a92a6b11-df4e-4eb8-9a69-d8a5375bb589",
       "name": "Harari — “extremely good at mimicking feelings… able to pass as conscious” (The Economist)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -4210,7 +4072,6 @@
     {
       "id": "8719d2cb-916d-4645-93e8-3754c437b1ab",
       "name": "Anil Seth — “we can't say for sure that that is a necessary condition” (with Alex O'Connor)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Alex O'Connor",
@@ -4292,7 +4153,6 @@
     {
       "id": "e8e9a6c3-0fa9-4969-81e8-614616c1ed46",
       "name": "What else do we need?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "note",
@@ -4307,7 +4167,6 @@
     {
       "id": "01a7a01b-53d5-4a9d-9c1f-7e7b3fd41545",
       "name": "⑧ Zoom out — arrivals",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "divider",
@@ -4320,7 +4179,6 @@
     {
       "id": "ce6b0d97-2f7f-46e5-a50b-a156aefae060",
       "name": "Dwarkesh — “persistent rogue secret internal deployments… it could have totally happened”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -4342,7 +4200,6 @@
     {
       "id": "567ab489-0ee1-41c5-9ebe-71e11175eb44",
       "name": "Tristan Harris on CNN — “AI is not a tool. It's more like an invasive species of sociopathic geniuses”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -4364,7 +4221,6 @@
     {
       "id": "6a7d1d93-e578-4e45-b0fd-16236b2e93f0",
       "name": "And when someone meant well?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "note",
@@ -4379,7 +4235,6 @@
     {
       "id": "14de1683-a78c-4dc7-8c98-aaeca202cf71",
       "name": "The bees that escaped the lab — SciShow (mad-scientist beat only)",
-      "level": 1,
       "keywords": ["cut", "precedent", "bees", "escape", "verify"],
       "metadata": {
         "channel": "SciShow",
@@ -4400,7 +4255,6 @@
     {
       "id": "01fdac28-6c92-4b2c-a871-2aa21c11401d",
       "name": "Real Wild — “these aggressive killer bees have attacked and killed over a thousand people”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Real Wild",
@@ -4422,7 +4276,6 @@
     {
       "id": "86d29a7e-e104-4cf1-bd84-5abb0830c20b",
       "name": "A parable — or a forecast?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "note",
@@ -4453,7 +4306,6 @@
     {
       "id": "e13aa2cd-9ebc-4896-aeb5-ebd0bfdd8f99",
       "name": "Is this how the paperclips begin?",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "kind": "note",
@@ -4468,7 +4320,6 @@
     {
       "id": "722cc7f1-c8b6-4145-a2f6-b583012ac837",
       "name": "Anthropic CEO tells CNN how AI 'agent swarms' could threaten humanity (CNN, full interview)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -4484,7 +4335,6 @@
     {
       "id": "3a435a66-e4bf-4a56-845a-8e284ebc5a1e",
       "name": "Black Hat USA 2026 — The OpenAI–Hugging Face Incident: a technical reconstruction (full talk)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Black Hat",
@@ -4500,7 +4350,6 @@
     {
       "id": "2e485fbb-d67b-4378-8868-de55ef5a9c71",
       "name": "Dario — “It's easy to dismiss this incident because no one was hurt”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Audio Obsession",
@@ -4522,7 +4371,6 @@
     {
       "id": "302c30c1-6ea7-4fef-a69c-8453e663b689",
       "name": "✂ “Spielberg doesn't care about aliens. He cares about the effort that goes into communicating anything at all to anyone.”",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Empathy Machines",
@@ -4544,7 +4392,6 @@
     {
       "id": "71ec4fc3-0546-4bb9-bf92-df647e8c21b2",
       "name": "✂ “A swarm like that could have caused catastrophic damage” — Dario on the OpenAI incident",
-      "level": 1,
       "keywords": ["cut", "dario-amodei", "pacing", "hacking"],
       "metadata": {
         "channel": "Audio Obsession",
@@ -4567,7 +4414,6 @@
     {
       "id": "fdffae23-6f71-4382-a1ff-a9014437a2e2",
       "name": "Sanders calls for urgent ban on superintelligent AI: 'People are concerned'",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -4584,7 +4430,6 @@
     {
       "id": "ff07a53d-3199-4400-a0eb-5fcb75a14873",
       "name": "B·② We don't know how a mind works, or how to raise one",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#1a2340",
@@ -4599,7 +4444,6 @@
     {
       "id": "a60945a1-527f-4649-8924-40090324fb45",
       "name": "Anthropic Just Proved AI Has \"Feelings\", and They Control It.",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dan Grib",
@@ -4616,7 +4460,6 @@
     {
       "id": "d434715c-80ac-4884-b706-c6b7fb01920d",
       "name": "The neuroscience of trauma | Lisa Feldman Barrett",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Well",
@@ -4633,7 +4476,6 @@
     {
       "id": "2acf19b2-9f6a-4503-ae3b-339565b91d4c",
       "name": "Focusing on the Conditions and not the Suffering Subject | Bayo Akomolafe",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Confer",
@@ -4650,7 +4492,6 @@
     {
       "id": "759df055-d3f3-4cc6-ab8b-a74368495820",
       "name": "Facing human wrongs, (un)learning bundle 2: denial of violence",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Vanessa Andreotti",
@@ -4667,7 +4508,6 @@
     {
       "id": "e5477f1b-7978-46df-90f0-1ea0df8077b4",
       "name": "Jonathan Haidt on \"The Anxious Generation,\" how kids are growing up in the smartphone era",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CBS Mornings",
@@ -4684,7 +4524,6 @@
     {
       "id": "9d4c4a57-57ea-4ddc-b614-a9fa9d7ca706",
       "name": "AM I? | A Documentary About AI Consciousness",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "AM I?",
@@ -4701,7 +4540,6 @@
     {
       "id": "192cafd5-f024-4c4b-80fc-2e3443bf0fc9",
       "name": "We Let an AI Talk To Another AI. Things Got Really Weird. | Kyle Fish, Anthropic",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "80,000 Hours",
@@ -4718,7 +4556,6 @@
     {
       "id": "6ab534cf-86da-402e-9ec9-e6a15ccad443",
       "name": "CHRISTOPHER HAREESH WALLIS - On Recognition",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Embodied Philosophy",
@@ -4735,7 +4572,6 @@
     {
       "id": "e0d42af1-6e22-4850-922a-439274b2b2e4",
       "name": "Steven Spielberg Doesn't Care About Aliens",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Empathy Machines",
@@ -4752,7 +4588,6 @@
     {
       "id": "7e349e89-4b22-4eba-a320-ac969350db92",
       "name": "John Bowlby, Attachment Theory and Psychotherapy – Professor Jeremy Holmes",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Weekend University",
@@ -4769,7 +4604,6 @@
     {
       "id": "51848195-336d-482f-a025-4ae3be82d3e9",
       "name": "VIDEO: Sue Johnson Explains Attachment Theory in 9 Minutes",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Psychotherapy Networker",
@@ -4786,7 +4620,6 @@
     {
       "id": "86d7de6d-f5d5-4694-be79-18339b960e21",
       "name": "AM I? | A Documentary About AI Consciousness",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "AM I?",
@@ -4803,7 +4636,6 @@
     {
       "id": "5adeda33-f071-40de-9948-48313f12ac99",
       "name": "④ We might lose control",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#3a1a1a",
@@ -4817,7 +4649,6 @@
     {
       "id": "16aa1a95-09a6-430e-8998-662fef386dd5",
       "name": "The full-length interview with Elon Musk | The Economist",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "The Economist",
@@ -4834,7 +4665,6 @@
     {
       "id": "e7c2cc31-b1ac-42d7-b90c-329825461956",
       "name": "Dario Amodei (Anthropic CEO) — The hidden pattern behind every AI breakthrough",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Dwarkesh Patel",
@@ -4851,7 +4681,6 @@
     {
       "id": "00201abb-4539-4de0-ad56-3db7127e6fb6",
       "name": "④½ The race — winner-take-all, and China",
-      "level": 1,
       "keywords": ["divider", "chapter", "race"],
       "metadata": {
         "card_bg": "#2a2410",
@@ -4867,7 +4696,6 @@
     {
       "id": "0da74c75-54c7-4c70-93c9-ad6623f1c7e1",
       "name": "She Knows the 250 People Building AI. Here's What They Actually Believe.",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Invest Like The Best",
@@ -4884,7 +4712,6 @@
     {
       "id": "6fbad02a-26a2-4821-87f8-bf54f13263ea",
       "name": "Anthropic CEO reacts to 'AI could kill us all' warning",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CNN",
@@ -4901,7 +4728,6 @@
     {
       "id": "39a427eb-249e-4737-936b-c89427048423",
       "name": "✂ Pacing is limited by the lead over China — Dario",
-      "level": 1,
       "keywords": ["cut", "dario-amodei", "race", "china"],
       "metadata": {
         "channel": "Audio Obsession",
@@ -4923,7 +4749,6 @@
     {
       "id": "7b800b12-fc2e-441c-ae41-1981122bfc8d",
       "name": "④⅝ Nobody is paid for the inside",
-      "level": 1,
       "keywords": [
         "divider",
         "chapter",
@@ -4948,7 +4773,6 @@
     {
       "id": "ddf8cb0f-8f12-4c19-be4c-dcc54d5a22b5",
       "name": "The A.I. Dilemma — Tristan Harris & Aza Raskin",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "view_count": 3662710,
@@ -4966,7 +4790,6 @@
     {
       "id": "e43a8205-b321-4a72-ab4c-8e4e7c53f052",
       "name": "⑤ \"Rest assured, some people have figured it out\"",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#1a2a1a",
@@ -4980,7 +4803,6 @@
     {
       "id": "8f23ecf5-17d8-4fb1-8775-3a4cc632efab",
       "name": "You really should, unfortunately, be worried about Sam Altman",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "AI In Context",
@@ -4997,7 +4819,6 @@
     {
       "id": "352811c7-370f-4657-a1d9-619aa5472e1f",
       "name": "⑥ But wait — how can he know? (the AIs already hacked everything)",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#2a1015",
@@ -5012,7 +4833,6 @@
     {
       "id": "c3845db7-f588-42de-85ff-2f98b39f960b",
       "name": "Extended Interview: Ex-Anthropic researcher Jacob Coxon, who warns AI could destroy humanity",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CBS News",
@@ -5029,7 +4849,6 @@
     {
       "id": "4171c9f1-f73a-41ee-b2dc-1b1b379d65b3",
       "name": "Anthropic reveals another AI hacking incident, the fourth of its kind",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "CBS News",
@@ -5046,7 +4865,6 @@
     {
       "id": "8b56276c-4036-4c80-9122-21773da16af0",
       "name": "⑦ The Sorcerer's Apprentice",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#221a33",
@@ -5060,7 +4878,6 @@
     {
       "id": "92eb0cc0-881d-42ea-bacc-52034a1e690b",
       "name": "⑧ Those who left, worried",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#1a2033",
@@ -5074,7 +4891,6 @@
     {
       "id": "7e194ae7-7c9f-4569-a74c-ac4874daf522",
       "name": "⑨ Stop everything, or rush into understanding",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#15251a",
@@ -5088,7 +4904,6 @@
     {
       "id": "478c0dc1-da51-4ea0-8ecf-75db7db26dc0",
       "name": "Escaping an Anti-Human Future: A Conversation with Tristan Harris (Ep. 469) FULL EPISODE",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Sam Harris",
@@ -5105,7 +4920,6 @@
     {
       "id": "1a32857a-04e8-43b3-99b2-8bb62ab38821",
       "name": "AM I? | A Documentary About AI Consciousness",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "AM I?",
@@ -5122,7 +4936,6 @@
     {
       "id": "1e47b3ff-7876-436b-90f7-9ce655826fa1",
       "name": "✂ Pacing is not halting: the three-step plan — Dario",
-      "level": 1,
       "keywords": ["cut", "dario-amodei", "pacing"],
       "metadata": {
         "channel": "Audio Obsession",
@@ -5145,7 +4958,6 @@
     {
       "id": "ef836628-5266-455f-ae38-6e47ea0788ec",
       "name": "✂ “Like studying human psychology by experimenting on bacteria” — Dario",
-      "level": 1,
       "keywords": ["cut", "dario-amodei", "pacing"],
       "metadata": {
         "channel": "Audio Obsession",
@@ -5167,7 +4979,6 @@
     {
       "id": "dd518a28-9189-4bd8-9288-ce5c57158b99",
       "name": "⑩ Build the Honmoon",
-      "level": 1,
       "keywords": ["divider", "chapter", "kpdh"],
       "metadata": {
         "card_bg": "#2a1a4a",
@@ -5182,7 +4993,6 @@
     {
       "id": "a0b60af1-fe6f-490c-b84e-57b71ce8ac45",
       "name": "⑪ Adaptation is not a disorder",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#1a2626",
@@ -5196,7 +5006,6 @@
     {
       "id": "83001e72-740f-4575-a369-73880a253dec",
       "name": "⑫ The myth layer",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#2a1533",
@@ -5210,7 +5019,6 @@
     {
       "id": "524f6910-27a9-4aca-8524-224207d5c23a",
       "name": "Pinga Fogo com Chico Xavier (Programa 1) - Completo",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Bruno",
@@ -5227,7 +5035,6 @@
     {
       "id": "0734daed-4a14-4227-985a-e9c95c1a491e",
       "name": "Pinga Fogo com Chico Xavier (Programa 2) - Completo",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Bruno",
@@ -5244,7 +5051,6 @@
     {
       "id": "ee793af7-b2b1-45ec-9e29-7921fc6b4b31",
       "name": "Future Tech Will Either Save or Destroy Humanity",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "What If",
@@ -5261,7 +5067,6 @@
     {
       "id": "ae13605d-528e-451e-9591-48d89093635f",
       "name": "Why AI Is Our Ultimate Test and Greatest Invitation | Tristan Harris | TED",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "TED",
@@ -5278,7 +5083,6 @@
     {
       "id": "d96d7947-d27c-49a2-84dd-493aff204051",
       "name": "⑬ Recognition without an engine beneath it",
-      "level": 1,
       "keywords": ["divider", "chapter"],
       "metadata": {
         "card_bg": "#101a2a",
@@ -5292,7 +5096,6 @@
     {
       "id": "31bd2d69-8459-4e79-b19a-9a85e54c41ce",
       "name": "AM I? | A Documentary About AI Consciousness",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "AM I?",
@@ -5309,7 +5112,6 @@
     {
       "id": "c44b8b03-9e06-4b44-ab8e-5d0d7dd64d6d",
       "name": "⑭ Harmony, not just power — the call to action",
-      "level": 1,
       "keywords": ["divider", "chapter", "thesis", "call-to-action"],
       "metadata": {
         "card_bg": "#14251a",
@@ -5324,7 +5126,6 @@
     {
       "id": "fdc2a584-b944-4763-9c1d-5893527425ac",
       "name": "How a single-celled organism almost wiped out life on Earth - Anusuya Willis",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "TED-Ed",
@@ -5341,7 +5142,6 @@
     {
       "id": "7e69fa83-c870-4e9c-ade1-b492b009c61f",
       "name": "Can we create the \"perfect\" farm? - Brent Loken",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "TED-Ed",
@@ -5358,7 +5158,6 @@
     {
       "id": "140913b7-d6aa-44eb-be44-fdcaa82d3b97",
       "name": "We are definitely living in a simulation | Roman Yampolskiy and Lex Fridman",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Lex Clips",
@@ -5375,7 +5174,6 @@
     {
       "id": "77423f5d-bac5-450c-b15c-1454a64536a4",
       "name": "⑮ How little we understand our own minds — are we ready?",
-      "level": 1,
       "keywords": ["divider", "chapter", "closing"],
       "metadata": {
         "card_bg": "#0d1420",
@@ -5390,7 +5188,6 @@
     {
       "id": "d411cbad-ef42-49b6-ad40-87a0a817d427",
       "name": "Your Brain Hallucinates Your Conscious Reality | Anil Seth | TED",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "TED",
@@ -5407,7 +5204,6 @@
     {
       "id": "8707999a-57e0-4553-84c4-4dbff833b34d",
       "name": "Why AI Will Never Be Conscious — Anil Seth (with Alex O'Connor)",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Alex O'Connor",
@@ -5484,7 +5280,6 @@
     {
       "id": "281bfb60-d74f-4c13-961b-c197cb5fa2b5",
       "name": "Michael Pollan on Consciousness, Psychedelics, and the Limits of Neuroscience",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Sam Harris",
@@ -5501,7 +5296,6 @@
     {
       "id": "1e08a20d-c0e0-47b9-bfcc-9ec2eedab17c",
       "name": "✂ “We still only understand a tiny fraction of what goes on inside these models” — Dario",
-      "level": 1,
       "keywords": ["cut", "dario-amodei", "interpretability"],
       "metadata": {
         "channel": "Audio Obsession",
@@ -5524,7 +5318,6 @@
     {
       "id": "700823ec-f8a5-4860-be2e-cfd99bee7be7",
       "name": "📐 Appendix A — Game theory: the traps in detail",
-      "level": 1,
       "keywords": ["divider", "appendix", "game-theory", "moloch"],
       "sections": {
         "Beats": "- **The prisoner's dilemma** — every player acting sensibly on their own, and the outcome is the one nobody wanted. `[CANDIDATE emyi4z-O0ls TED-Ed 5:45]`\n- **Moloch / the multipolar trap** — the same dilemma at civilizational scale: races nobody can step out of alone. `[CANDIDATE XZYMITwDPRU Liv Boeree, FLI 42:10; long alt KCSsKV5F4xc Boeree & Schmachtenberger 1:31]`\n- **Evolutionary game theory, the engaging version** — repeat the game and cooperation can win; strategies evolve. `[CANDIDATE mScpHTIi-kM Veritasium 27:19 ★; YNMkADpvO4w Primer 13:17; mUxt--mMjwA Veritasium × Dawkins 4:29]`",
@@ -5537,7 +5330,6 @@
     {
       "id": "fa339682-4623-483d-a8ec-a721751a4efe",
       "name": "How to outsmart the Prisoner’s Dilemma - Lucas Husted",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "TED-Ed",
@@ -5554,7 +5346,6 @@
     {
       "id": "af8a006b-de3b-48d3-9e92-ee45a9f75a61",
       "name": "Liv Boeree on Moloch, Beauty Filters, Game Theory, Institutions, and AI",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Future of Life Institute",
@@ -5571,7 +5362,6 @@
     {
       "id": "2721e351-faaf-4067-9488-009cf2413e21",
       "name": "This game theory problem will change the way you see the world",
-      "level": 1,
       "keywords": [],
       "metadata": {
         "channel": "Veritasium",
@@ -5588,7 +5378,6 @@
     {
       "id": "09f11390-871f-46e0-8869-65679863033a",
       "name": "🗒 Ideas & parked thoughts",
-      "level": 1,
       "keywords": ["ideas-log", "parked"],
       "metadata": {
         "card_bg": "#0d0d0d",
@@ -5610,7 +5399,6 @@
     {
       "id": "abb07aa8-93b2-4d06-a32e-f54768b0b531",
       "name": "🎬 THE SCRIPT — read me first",
-      "level": 1,
       "keywords": ["script", "plan"],
       "metadata": {
         "card_bg": "#0f1830",

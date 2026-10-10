@@ -18,7 +18,7 @@
      scripts/build_institutions_grammar.py from research/institutions/institutions.json; never
      hand-edit either the grammar or this list). If that grammar is absent it falls back to an
      Institutions suit in grammars/sources-of-alignment/grammar.json.
-     Grouping: an item's parent (an item whose composite_of lists it) names its group; otherwise
+     Grouping: an item's parent (an item whose parts lists it) names its group; otherwise
      its category. Groups keep the grammar's order; names inside a group are alphabetical.
      Draft copy for PlayfulProcess's edit. -->
 <style>
@@ -158,25 +158,25 @@
 
   // Leaves (the institutions), their groups, in the grammar's order.
   function collect(g, fromSources){
-    const items = Array.isArray(g.items) ? g.items : [];
-    const parents = items.filter(i => Array.isArray(i.composite_of) && i.composite_of.length);
+    const items = Array.isArray(g.nodes) ? g.nodes : [];
+    const parents = items.filter(i => Array.isArray(i.parts) && i.parts.length);
     let leaves, suit = null;
     if (fromSources) {
       suit = parents.find(p => /institution/i.test(String(p.id) + ' ' + String(p.name)));
       const byId = new Map(items.map(i => [i.id, i])), inSuit = new Set();
-      (function down(ids){ for (const c of ids || []) if (!inSuit.has(c)) { inSuit.add(c); down((byId.get(c) || {}).composite_of); } })(suit && suit.composite_of);
-      leaves = items.filter(i => !(i.composite_of || []).length &&
+      (function down(ids){ for (const c of ids || []) if (!inSuit.has(c)) { inSuit.add(c); down((byId.get(c) || {}).parts); } })(suit && suit.parts);
+      leaves = items.filter(i => !(i.parts || []).length &&
         (inSuit.has(i.id) || /institution/i.test(String((i.metadata || {}).suit || ''))));
     } else {
       leaves = items.filter(i => httpUrl((i.metadata || {}).url));
-      if (!leaves.length) leaves = items.filter(i => !(i.composite_of || []).length);
+      if (!leaves.length) leaves = items.filter(i => !(i.parts || []).length);
     }
     const leafIds = new Set(leaves.map(i => i.id));
     // A group parent lists leaves directly, is not the suit itself, and does not hold every leaf.
-    const groupParents = parents.filter(p => p !== suit && p.composite_of.some(c => leafIds.has(c)) &&
-      !(leaves.length > 1 && leaves.every(l => p.composite_of.includes(l.id))));
+    const groupParents = parents.filter(p => p !== suit && p.parts.some(c => leafIds.has(c)) &&
+      !(leaves.length > 1 && leaves.every(l => p.parts.includes(l.id))));
     const parentOf = new Map();
-    for (const p of groupParents) for (const c of p.composite_of) if (leafIds.has(c) && !parentOf.has(c)) parentOf.set(c, p);
+    for (const p of groupParents) for (const c of p.parts) if (leafIds.has(c) && !parentOf.has(c)) parentOf.set(c, p);
 
     const groups = new Map();   // key -> {name, intro, list}
     const add = (key, name, intro) => { if (!groups.has(key)) groups.set(key, { key, name, intro, list: [] }); return groups.get(key); };

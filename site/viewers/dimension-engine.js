@@ -27,22 +27,38 @@
     return String(a).localeCompare(String(b));
   }
 
-  /* FLATTEN: grammar.items → records, each field a string[] (multi-membership ready).
-     Tracks __parents/__children from composite_of for relationship tracing. */
+  /* depth from parts: a node with no parts is 1; otherwise 1 + the deepest part. Cycle-safe,
+     memoized per flatten call. */
+  function nodeDepth(node, byId, memo, seen) {
+    const parts = node && node.parts;
+    if (!parts || !parts.length) return 1;
+    if (memo.has(node.id)) return memo.get(node.id);
+    if (seen.has(node.id)) return 1;
+    seen.add(node.id);
+    let d = 1;
+    for (const id of parts) { const c = byId.get(id); if (c) d = Math.max(d, 1 + nodeDepth(c, byId, memo, seen)); }
+    seen.delete(node.id);
+    memo.set(node.id, d);
+    return d;
+  }
+
+  /* FLATTEN: grammar.nodes → records, each field a string[] (multi-membership ready).
+     Tracks __parents/__children from parts for relationship tracing. */
   function flatten(grammar, inherit, prefix, nameOf) {
-    const items = grammar.items || [];
+    const items = grammar.nodes || [];
+    const byId = new Map(items.map(it => [it.id, it])), depthMemo = new Map();
     const pid = id => (prefix ? prefix + ':' : '') + id;
     const memberOf = {};
     for (const it of items)
-      for (const cid of (it.composite_of || []))
+      for (const cid of (it.parts || []))
         (memberOf[pid(cid)] = memberOf[pid(cid)] || []).push(pid(it.id));
     const recs = [];
     for (const it of items) {
-      const lvl = it.level || (it.composite_of?.length ? 2 : 1);
+      const lvl = nodeDepth(it, byId, depthMemo, new Set());
       const r = {
         __name: it.name, __img: it.image_url || it.metadata?.image_url || '',
         __id: pid(it.id),
-        __children: (it.composite_of || []).map(pid),
+        __children: (it.parts || []).map(pid),
         __parents: memberOf[pid(it.id)] || []
       };
       r.level = ['L' + lvl];

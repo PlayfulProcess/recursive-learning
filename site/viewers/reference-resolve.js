@@ -3,9 +3,9 @@
  *
  * The meta grammar (`grammars/all-decks/grammar.json`, "The Tarot — All Decks, Many
  * Lenses") wires every card item with `metadata.source_deck` (the source deck's repo slug) +
- * `metadata.source_item_id` (the card's id within that deck's own grammar.json) — see
+ * `metadata.source_node_id` (the card's id within that deck's own grammar.json) — see
  * `scripts/build_meta_grammar.py` and the cross-link pattern documented in CLAUDE.md. That's
- * the repo-native counterpart of the Supabase-imported copy's `ref_document_id`/`ref_item_id`
+ * the repo-native counterpart of the Supabase-imported copy's `ref_grammar_id`/`ref_node_id`
  * pointer (wired at import time by the private app's `scripts/import-historical-tarot.mjs`).
  *
  * This module resolves that pointer to the SOURCE card's own content (keywords + sections) by
@@ -58,7 +58,7 @@
 
   /**
    * @param {string} srcDeck - source deck slug (metadata.source_deck)
-   * @param {string} srcItemId - source item id within that deck (metadata.source_item_id)
+   * @param {string} srcItemId - source node id within that deck (metadata.source_node_id)
    * @param {string} [deckLabelHint] - display name to prefer (e.g. metadata.deck), falls back
    *   to the source grammar's own `name`, then the slug — NEVER shows a bare id/uuid.
    * @returns {Promise<{status:'ok', item:object, deckLabel:string, grammar:object}|{status:'error', deckLabel:string|null}>}
@@ -70,7 +70,7 @@
     const g = await loadDeckGrammar(srcDeck);
     const deckLabel = deckLabelHint || (g && g.name) || srcDeck;
     if (!g) return { status: 'error', deckLabel: deckLabelHint || null };
-    const item = (g.items || []).find(function (it) { return it.id === srcItemId; });
+    const item = (g.nodes || []).find(function (it) { return it.id === srcItemId; });
     if (!item) return { status: 'error', deckLabel };
     return { status: 'ok', item: item, deckLabel: deckLabel, grammar: g };
   }

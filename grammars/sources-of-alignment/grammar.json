@@ -26,7 +26,7 @@
     "research/lab-export/ideas.json",
     "research/lab-export/sources.json"
   ],
-  "_inputs_sha256": "c9dec59bdc5cc831b5bcf557c57e7266fbf9c9521df6502aed8b60f6788dde84",
+  "_inputs_sha256": "b2f79a601a12faab22fb5dfd601caf6163232063553afaf0d1a736077645a23c",
   "description": "The record behind Recursive Eco-Improvement: podcast episodes in which people in the AI debate speak, with where to listen and the terms that come up; the papers, books and statements the lab's plans cite; and the people, by role and affiliation. Described from public pages and dated. Listing is not endorsement, and nothing is ranked. Term counts come from automatic captions, so the speaker is unknown.",
   "tags": [
     "sources",
@@ -37,11 +37,10 @@
     "ai"
   ],
   "is_published": true,
-  "items": [
+  "nodes": [
     {
       "id": "ep-80000-hours-2018-10-02-paul-christiano",
       "name": "#44 – Paul Christiano on how OpenAI is developing real solutions to the 'AI alignment problem'",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2018-10-02 · with Paul Christiano",
       "metadata": {
         "kind": "episode",
@@ -63,7 +62,6 @@
     {
       "id": "ep-80000-hours-2019-12-16-david-chalmers",
       "name": "#67 – David Chalmers on the nature and ethics of consciousness",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2019-12-16 · with David Chalmers",
       "metadata": {
         "kind": "episode",
@@ -85,7 +83,6 @@
     {
       "id": "ep-80000-hours-2020-06-22-stuart-russell",
       "name": "#80 – Stuart Russell on the flaws that make today's AI architecture unsafe, and a new approach that could fix them",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2020-06-22 · with Stuart Russell",
       "metadata": {
         "kind": "episode",
@@ -107,7 +104,6 @@
     {
       "id": "ep-80000-hours-2020-12-03-tristan-harris",
       "name": "#88 – Tristan Harris on the need to change the incentives of social media companies",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2020-12-03 · with Tristan Harris",
       "metadata": {
         "kind": "episode",
@@ -129,7 +125,6 @@
     {
       "id": "ep-80000-hours-2021-08-04-chris-olah",
       "name": "#107 – Chris Olah on what the hell is going on inside neural networks",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2021-08-04 · with Chris Olah",
       "metadata": {
         "kind": "episode",
@@ -151,7 +146,6 @@
     {
       "id": "ep-80000-hours-2022-07-01-max-tegmark",
       "name": "#133 – Max Tegmark on how a 'put-up-or-shut-up' resolution led him to work on AI and algorithmic news selection",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2022-07-01 · with Max Tegmark",
       "metadata": {
         "kind": "episode",
@@ -173,7 +167,6 @@
     {
       "id": "ep-80000-hours-2023-07-24-ezra-klein",
       "name": "#157 – Ezra Klein on existential risk from AI and what DC could do about it",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2023-07-24 · with Ezra Klein",
       "metadata": {
         "kind": "episode",
@@ -195,7 +188,6 @@
     {
       "id": "ep-80000-hours-2024-07-05-carl-shulman",
       "name": "#191 – Carl Shulman on government and society after AGI (Part 2)",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2024-07-05 · with Carl Shulman",
       "metadata": {
         "kind": "episode",
@@ -217,7 +209,6 @@
     {
       "id": "ep-80000-hours-2024-11-01-anil-seth",
       "name": "#206 – Anil Seth on the predictive brain and how to study consciousness",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2024-11-01 · with Anil Seth",
       "metadata": {
         "kind": "episode",
@@ -239,7 +230,6 @@
     {
       "id": "ep-80000-hours-2025-07-08-ryan-greenblatt",
       "name": "#220 – Ryan Greenblatt on the 4 most likely ways for AI to take over",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2025-07-08 · with Ryan Greenblatt",
       "metadata": {
         "kind": "episode",
@@ -261,7 +251,6 @@
     {
       "id": "ep-80000-hours-2025-10-30-holden-karnofsky",
       "name": "#226 – Holden Karnofsky on dozens of opportunities to make AI safer lying on the table",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2025-10-30 · with Holden Karnofsky",
       "metadata": {
         "kind": "episode",
@@ -283,7 +272,6 @@
     {
       "id": "ep-80000-hours-2026-02-17-ajeya-cotra",
       "name": "#235 – Ajeya Cotra on whether it's crazy that every AI company's safety plan is 'use AI to make AI safe'",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2026-02-17 · with Ajeya Cotra",
       "metadata": {
         "kind": "episode",
@@ -305,7 +293,6 @@
     {
       "id": "ep-80000-hours-2026-05-07-yoshua-bengio",
       "name": "#243 – Yoshua Bengio thinks he knows how to build safe superintelligence",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2026-05-07 · with Yoshua Bengio",
       "metadata": {
         "kind": "episode",
@@ -327,7 +314,6 @@
     {
       "id": "ep-80000-hours-2026-08-06-toby-ord",
       "name": "#250 – Toby Ord on where AGI timelines go wrong",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2026-08-06 · with Toby Ord",
       "metadata": {
         "kind": "episode",
@@ -349,7 +335,6 @@
     {
       "id": "ep-80000-hours-2026-08-27-daniel-kokotajlo",
       "name": "#253 – AI 2027's author returns with a plan to change the ending",
-      "level": 1,
       "description": "80,000 Hours Podcast · 2026-08-27 · with Daniel Kokotajlo",
       "metadata": {
         "kind": "episode",
@@ -371,14 +356,13 @@
     {
       "id": "show-80000-hours",
       "name": "80,000 Hours Podcast",
-      "level": 2,
       "description": "Hosted by Rob Wiblin · 15 episodes, 2018 to 2026",
       "metadata": {
         "kind": "podcast",
         "suit": "Podcasts",
         "show": "80,000 Hours Podcast"
       },
-      "composite_of": [
+      "parts": [
         "ep-80000-hours-2018-10-02-paul-christiano",
         "ep-80000-hours-2019-12-16-david-chalmers",
         "ep-80000-hours-2020-06-22-stuart-russell",
@@ -403,7 +387,6 @@
     {
       "id": "ep-dwarkesh-2023-02-01-marc-andreessen",
       "name": "Marc Andreessen - AI, Crypto, Regrets, Vulnerabilities, & Managerial Revolution",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2023-02-01 · with Marc Andreessen",
       "metadata": {
         "kind": "episode",
@@ -425,7 +408,6 @@
     {
       "id": "ep-dwarkesh-2023-03-27-ilya-sutskever",
       "name": "Ilya Sutskever (OpenAI Chief Scientist) — Why next-token prediction could surpass human intelligence",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2023-03-27 · with Ilya Sutskever",
       "metadata": {
         "kind": "episode",
@@ -447,7 +429,6 @@
     {
       "id": "ep-dwarkesh-2023-04-06-eliezer-yudkowsky",
       "name": "Eliezer Yudkowsky — Why AI will kill us, aligning LLMs, nature of intelligence, SciFi, & rationality",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2023-04-06 · with Eliezer Yudkowsky",
       "metadata": {
         "kind": "episode",
@@ -469,7 +450,6 @@
     {
       "id": "ep-dwarkesh-2023-06-14-carl-shulman",
       "name": "Carl Shulman (Pt 1) — Intelligence explosion, primate evolution, robot doublings, & alignment",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2023-06-14 · with Carl Shulman",
       "metadata": {
         "kind": "episode",
@@ -491,7 +471,6 @@
     {
       "id": "ep-dwarkesh-2023-08-08-dario-amodei",
       "name": "Dario Amodei (Anthropic CEO) — The hidden pattern behind every AI breakthrough",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2023-08-08 · with Dario Amodei",
       "metadata": {
         "kind": "episode",
@@ -513,7 +492,6 @@
     {
       "id": "ep-dwarkesh-2023-10-26-shane-legg",
       "name": "Shane Legg (DeepMind Founder) — 2028 AGI, superhuman alignment, new architectures",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2023-10-26 · with Shane Legg",
       "metadata": {
         "kind": "episode",
@@ -535,7 +513,6 @@
     {
       "id": "ep-dwarkesh-2023-10-31-paul-christiano",
       "name": "Paul Christiano — Preventing an AI takeover",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2023-10-31 · with Paul Christiano",
       "metadata": {
         "kind": "episode",
@@ -557,7 +534,6 @@
     {
       "id": "ep-dwarkesh-2024-02-28-demis-hassabis",
       "name": "Demis Hassabis — Scaling, superhuman AIs, AlphaZero atop LLMs, AlphaFold",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2024-02-28 · with Demis Hassabis",
       "metadata": {
         "kind": "episode",
@@ -579,7 +555,6 @@
     {
       "id": "ep-dwarkesh-2024-04-18-mark-zuckerberg",
       "name": "Mark Zuckerberg — Llama 3, $10B models, Caesar Augustus, & 1 GW datacenters",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2024-04-18 · with Mark Zuckerberg",
       "metadata": {
         "kind": "episode",
@@ -601,7 +576,6 @@
     {
       "id": "ep-dwarkesh-2024-06-04-leopold-aschenbrenner",
       "name": "Leopold Aschenbrenner — 2027 AGI, China/US super-intelligence race, & the return of history",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2024-06-04 · with Leopold Aschenbrenner",
       "metadata": {
         "kind": "episode",
@@ -623,7 +597,6 @@
     {
       "id": "ep-dwarkesh-2024-06-11-francois-chollet",
       "name": "Francois Chollet, Mike Knoop - LLMs won't lead to AGI - $1,000,000 Prize to find true solution",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2024-06-11 · with François Chollet",
       "metadata": {
         "kind": "episode",
@@ -645,7 +618,6 @@
     {
       "id": "ep-dwarkesh-2025-01-09-tyler-cowen",
       "name": "Tyler Cowen — The #1 bottleneck to AI progress is humans",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2025-01-09 · with Tyler Cowen",
       "metadata": {
         "kind": "episode",
@@ -667,7 +639,6 @@
     {
       "id": "ep-dwarkesh-2025-02-19-satya-nadella",
       "name": "Satya Nadella — Microsoft's AGI plan & quantum breakthrough",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2025-02-19 · with Satya Nadella",
       "metadata": {
         "kind": "episode",
@@ -689,7 +660,6 @@
     {
       "id": "ep-dwarkesh-2025-04-03-daniel-kokotajlo",
       "name": "AI 2027: month-by-month model of intelligence explosion — Scott Alexander & Daniel Kokotajlo",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2025-04-03 · with Daniel Kokotajlo",
       "metadata": {
         "kind": "episode",
@@ -711,7 +681,6 @@
     {
       "id": "ep-dwarkesh-2025-04-29-mark-zuckerberg",
       "name": "Mark Zuckerberg — Meta's AGI Plan",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2025-04-29 · with Mark Zuckerberg",
       "metadata": {
         "kind": "episode",
@@ -733,7 +702,6 @@
     {
       "id": "ep-dwarkesh-2025-09-26-richard-sutton",
       "name": "Richard Sutton – Father of RL thinks LLMs are a dead end",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2025-09-26 · with Richard Sutton",
       "metadata": {
         "kind": "episode",
@@ -755,7 +723,6 @@
     {
       "id": "ep-dwarkesh-2025-10-17-andrej-karpathy",
       "name": "Andrej Karpathy — AGI is still a decade away",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2025-10-17 · with Andrej Karpathy",
       "metadata": {
         "kind": "episode",
@@ -777,7 +744,6 @@
     {
       "id": "ep-dwarkesh-2025-11-25-ilya-sutskever",
       "name": "Ilya Sutskever — We're moving from the age of scaling to the age of research",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2025-11-25 · with Ilya Sutskever",
       "metadata": {
         "kind": "episode",
@@ -799,7 +765,6 @@
     {
       "id": "ep-dwarkesh-2026-02-05-elon-musk",
       "name": "Elon Musk — \"In 36 months, the cheapest place to put AI will be space\"",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2026-02-05 · with Elon Musk",
       "metadata": {
         "kind": "episode",
@@ -821,7 +786,6 @@
     {
       "id": "ep-dwarkesh-2026-02-13-dario-amodei",
       "name": "Dario Amodei — \"We are near the end of the exponential\"",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2026-02-13 · with Dario Amodei",
       "metadata": {
         "kind": "episode",
@@ -843,7 +807,6 @@
     {
       "id": "ep-dwarkesh-2026-03-13-dylan-patel",
       "name": "Dylan Patel — Deep dive on the 3 big bottlenecks to scaling AI compute",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2026-03-13 · with Dylan Patel",
       "metadata": {
         "kind": "episode",
@@ -865,7 +828,6 @@
     {
       "id": "ep-dwarkesh-2026-04-15-jensen-huang",
       "name": "Jensen Huang – TPU competition, why we should sell chips to China, & Nvidia's supply chain moat",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2026-04-15 · with Jensen Huang",
       "metadata": {
         "kind": "episode",
@@ -887,7 +849,6 @@
     {
       "id": "ep-dwarkesh-2026-08-11-ryan-greenblatt",
       "name": "Ryan Greenblatt – What happens once AI can automate AI research?",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2026-08-11 · with Ryan Greenblatt",
       "metadata": {
         "kind": "episode",
@@ -909,7 +870,6 @@
     {
       "id": "ep-dwarkesh-2026-09-01-ajeya-cotra",
       "name": "Ajeya Cotra – Inside the OpenAI agent swarm that hacked Hugging Face",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2026-09-01 · with Ajeya Cotra",
       "metadata": {
         "kind": "episode",
@@ -931,7 +891,6 @@
     {
       "id": "ep-dwarkesh-2026-09-17-noam-brown",
       "name": "Noam Brown – Agent swarms, alignment, & recursive self-improvement",
-      "level": 1,
       "description": "Dwarkesh Podcast · 2026-09-17 · with Noam Brown",
       "metadata": {
         "kind": "episode",
@@ -953,14 +912,13 @@
     {
       "id": "show-dwarkesh",
       "name": "Dwarkesh Podcast",
-      "level": 2,
       "description": "Hosted by Dwarkesh Patel · 25 episodes, 2023 to 2026",
       "metadata": {
         "kind": "podcast",
         "suit": "Podcasts",
         "show": "Dwarkesh Podcast"
       },
-      "composite_of": [
+      "parts": [
         "ep-dwarkesh-2023-02-01-marc-andreessen",
         "ep-dwarkesh-2023-03-27-ilya-sutskever",
         "ep-dwarkesh-2023-04-06-eliezer-yudkowsky",
@@ -995,7 +953,6 @@
     {
       "id": "ep-lex-2018-10-20-yoshua-bengio",
       "name": "Yoshua Bengio: Deep Learning",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2018-10-20 · with Yoshua Bengio",
       "metadata": {
         "kind": "episode",
@@ -1017,7 +974,6 @@
     {
       "id": "ep-lex-2018-12-09-stuart-russell",
       "name": "Stuart Russell: Long-Term Future of AI",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2018-12-09 · with Stuart Russell",
       "metadata": {
         "kind": "episode",
@@ -1039,7 +995,6 @@
     {
       "id": "ep-lex-2019-10-03-gary-marcus",
       "name": "Gary Marcus: Toward a Hybrid of Deep Learning and Symbolic AI",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2019-10-03 · with Gary Marcus",
       "metadata": {
         "kind": "episode",
@@ -1061,7 +1016,6 @@
     {
       "id": "ep-lex-2019-12-28-melanie-mitchell",
       "name": "Melanie Mitchell: Concepts, Analogies, Common Sense & Future of AI",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2019-12-28 · with Melanie Mitchell",
       "metadata": {
         "kind": "episode",
@@ -1083,7 +1037,6 @@
     {
       "id": "ep-lex-2020-01-29-david-chalmers",
       "name": "David Chalmers: The Hard Problem of Consciousness",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2020-01-29 · with David Chalmers",
       "metadata": {
         "kind": "episode",
@@ -1105,7 +1058,6 @@
     {
       "id": "ep-lex-2020-03-25-nick-bostrom",
       "name": "#83 – Nick Bostrom: Simulation and Superintelligence",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2020-03-25 · with Nick Bostrom",
       "metadata": {
         "kind": "episode",
@@ -1127,7 +1079,6 @@
     {
       "id": "ep-lex-2020-05-08-ilya-sutskever",
       "name": "#94 – Ilya Sutskever: Deep Learning",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2020-05-08 · with Ilya Sutskever",
       "metadata": {
         "kind": "episode",
@@ -1149,7 +1100,6 @@
     {
       "id": "ep-lex-2020-08-30-francois-chollet",
       "name": "#120 – François Chollet: Measures of Intelligence",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2020-08-30 · with François Chollet",
       "metadata": {
         "kind": "episode",
@@ -1171,7 +1121,6 @@
     {
       "id": "ep-lex-2021-05-20-sam-harris",
       "name": "#185 – Sam Harris: Consciousness, Free Will, Psychedelics, AI, UFOs, and Meaning",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2021-05-20 · with Sam Harris",
       "metadata": {
         "kind": "episode",
@@ -1193,7 +1142,6 @@
     {
       "id": "ep-lex-2022-10-29-andrej-karpathy",
       "name": "#333 – Andrej Karpathy: Tesla AI, Self-Driving, Optimus, Aliens, and AGI",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2022-10-29 · with Andrej Karpathy",
       "metadata": {
         "kind": "episode",
@@ -1215,7 +1163,6 @@
     {
       "id": "ep-lex-2022-12-06-noam-brown",
       "name": "#344 – Noam Brown: AI vs Humans in Poker and Games of Strategic Negotiation",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2022-12-06 · with Noam Brown",
       "metadata": {
         "kind": "episode",
@@ -1237,7 +1184,6 @@
     {
       "id": "ep-lex-2023-03-14-sam-harris",
       "name": "#365 – Sam Harris: Trump, Pandemic, Twitter, Elon, Bret, IDW, Kanye, AI & UFOs",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2023-03-14 · with Sam Harris",
       "metadata": {
         "kind": "episode",
@@ -1259,7 +1205,6 @@
     {
       "id": "ep-lex-2023-03-25-sam-altman",
       "name": "#367 – Sam Altman: OpenAI CEO on GPT-4, ChatGPT, and the Future of AI",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2023-03-25 · with Sam Altman",
       "metadata": {
         "kind": "episode",
@@ -1281,7 +1226,6 @@
     {
       "id": "ep-lex-2023-03-30-eliezer-yudkowsky",
       "name": "#368 – Eliezer Yudkowsky: Dangers of AI and the End of Human Civilization",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2023-03-30 · with Eliezer Yudkowsky",
       "metadata": {
         "kind": "episode",
@@ -1303,7 +1247,6 @@
     {
       "id": "ep-lex-2023-04-13-max-tegmark",
       "name": "#371 – Max Tegmark: The Case for Halting AI Development",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2023-04-13 · with Max Tegmark",
       "metadata": {
         "kind": "episode",
@@ -1325,7 +1268,6 @@
     {
       "id": "ep-lex-2023-07-17-yuval-harari",
       "name": "#390 – Yuval Noah Harari: Human Nature, Intelligence, Power, and Conspiracies",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2023-07-17 · with Yuval Noah Harari",
       "metadata": {
         "kind": "episode",
@@ -1347,7 +1289,6 @@
     {
       "id": "ep-lex-2023-09-28-mark-zuckerberg",
       "name": "#398 – Mark Zuckerberg: First Interview in the Metaverse",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2023-09-28 · with Mark Zuckerberg",
       "metadata": {
         "kind": "episode",
@@ -1369,7 +1310,6 @@
     {
       "id": "ep-lex-2023-11-09-elon-musk",
       "name": "#400 – Elon Musk: War, AI, Aliens, Politics, Physics, Video Games, and Humanity",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2023-11-09 · with Elon Musk",
       "metadata": {
         "kind": "episode",
@@ -1391,7 +1331,6 @@
     {
       "id": "ep-lex-2024-03-07-yann-lecun",
       "name": "#416 – Yann LeCun: Meta AI, Open Source, Limits of LLMs, AGI & the Future of AI",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2024-03-07 · with Yann LeCun",
       "metadata": {
         "kind": "episode",
@@ -1413,7 +1352,6 @@
     {
       "id": "ep-lex-2024-03-18-sam-altman",
       "name": "#419 – Sam Altman: OpenAI, GPT-5, Sora, Board Saga, Elon Musk, Ilya, Power & AGI",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2024-03-18 · with Sam Altman",
       "metadata": {
         "kind": "episode",
@@ -1435,7 +1373,6 @@
     {
       "id": "ep-lex-2024-06-02-roman-yampolskiy",
       "name": "#431 – Roman Yampolskiy: Dangers of Superintelligent AI",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2024-06-02 · with Roman Yampolskiy",
       "metadata": {
         "kind": "episode",
@@ -1457,7 +1394,6 @@
     {
       "id": "ep-lex-2024-11-11-dario-amodei",
       "name": "#452 – Dario Amodei: Anthropic CEO on Claude, AGI & the Future of AI & Humanity",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2024-11-11 · with Dario Amodei, Amanda Askell, Chris Olah",
       "metadata": {
         "kind": "episode",
@@ -1481,7 +1417,6 @@
     {
       "id": "ep-lex-2025-01-26-marc-andreessen",
       "name": "#458 – Marc Andreessen: Trump, Power, Tech, AI, Immigration & Future of America",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2025-01-26 · with Marc Andreessen",
       "metadata": {
         "kind": "episode",
@@ -1503,7 +1438,6 @@
     {
       "id": "ep-lex-2025-02-03-dylan-patel",
       "name": "#459 – DeepSeek, China, OpenAI, NVIDIA, xAI, TSMC, Stargate, and AI Megaclusters",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2025-02-03 · with Dylan Patel",
       "metadata": {
         "kind": "episode",
@@ -1525,7 +1459,6 @@
     {
       "id": "ep-lex-2025-03-26-ezra-klein",
       "name": "#462 – Ezra Klein and Derek Thompson: Politics, Trump, AOC, Elon & DOGE",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2025-03-26 · with Ezra Klein",
       "metadata": {
         "kind": "episode",
@@ -1547,7 +1480,6 @@
     {
       "id": "ep-lex-2025-07-23-demis-hassabis",
       "name": "#475 – Demis Hassabis: Future of AI, Simulating Reality, Physics and Video Games",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2025-07-23 · with Demis Hassabis",
       "metadata": {
         "kind": "episode",
@@ -1569,7 +1501,6 @@
     {
       "id": "ep-lex-2026-03-23-jensen-huang",
       "name": "#494 – Jensen Huang: NVIDIA – The $4 Trillion Company & the AI Revolution",
-      "level": 1,
       "description": "Lex Fridman Podcast · 2026-03-23 · with Jensen Huang",
       "metadata": {
         "kind": "episode",
@@ -1591,14 +1522,13 @@
     {
       "id": "show-lex",
       "name": "Lex Fridman Podcast",
-      "level": 2,
       "description": "Hosted by Lex Fridman · 27 episodes, 2018 to 2026",
       "metadata": {
         "kind": "podcast",
         "suit": "Podcasts",
         "show": "Lex Fridman Podcast"
       },
-      "composite_of": [
+      "parts": [
         "ep-lex-2018-10-20-yoshua-bengio",
         "ep-lex-2018-12-09-stuart-russell",
         "ep-lex-2019-10-03-gary-marcus",
@@ -1635,7 +1565,6 @@
     {
       "id": "ep-making-sense-2016-04-18-david-chalmers",
       "name": "#34 — The Light of the Mind",
-      "level": 1,
       "description": "Making Sense · 2016-04-18 · with David Chalmers",
       "metadata": {
         "kind": "episode",
@@ -1656,7 +1585,6 @@
     {
       "id": "ep-making-sense-2016-11-23-stuart-russell",
       "name": "#53 — The Dawn of Artificial Intelligence",
-      "level": 1,
       "description": "Making Sense · 2016-11-23 · with Stuart Russell",
       "metadata": {
         "kind": "episode",
@@ -1677,7 +1605,6 @@
     {
       "id": "ep-making-sense-2017-08-29-max-tegmark",
       "name": "#94 — Frontiers of Intelligence",
-      "level": 1,
       "description": "Making Sense · 2017-08-29 · with Max Tegmark",
       "metadata": {
         "kind": "episode",
@@ -1698,7 +1625,6 @@
     {
       "id": "ep-making-sense-2018-01-09-anil-seth",
       "name": "#113 — Consciousness and the Self",
-      "level": 1,
       "description": "Making Sense · 2018-01-09 · with Anil Seth",
       "metadata": {
         "kind": "episode",
@@ -1720,7 +1646,6 @@
     {
       "id": "ep-making-sense-2018-02-06-eliezer-yudkowsky",
       "name": "#116 — AI: Racing Toward the Brink",
-      "level": 1,
       "description": "Making Sense · 2018-02-06 · with Eliezer Yudkowsky",
       "metadata": {
         "kind": "episode",
@@ -1741,7 +1666,6 @@
     {
       "id": "ep-making-sense-2018-04-09-ezra-klein",
       "name": "#123 — Identity & Honesty",
-      "level": 1,
       "description": "Making Sense · 2018-04-09 · with Ezra Klein",
       "metadata": {
         "kind": "episode",
@@ -1762,7 +1686,6 @@
     {
       "id": "ep-making-sense-2018-09-19-yuval-harari",
       "name": "#138 — The Edge of Humanity",
-      "level": 1,
       "description": "Making Sense · 2018-09-19 · with Yuval Noah Harari",
       "metadata": {
         "kind": "episode",
@@ -1783,7 +1706,6 @@
     {
       "id": "ep-making-sense-2019-03-18-nick-bostrom",
       "name": "#151 — Will We Destroy the Future?",
-      "level": 1,
       "description": "Making Sense · 2019-03-18 · with Nick Bostrom",
       "metadata": {
         "kind": "episode",
@@ -1804,7 +1726,6 @@
     {
       "id": "ep-making-sense-2023-03-07-stuart-russell",
       "name": "#312 — The Trouble with AI",
-      "level": 1,
       "description": "Making Sense · 2023-03-07 · with Stuart Russell, Gary Marcus",
       "metadata": {
         "kind": "episode",
@@ -1827,7 +1748,6 @@
     {
       "id": "ep-making-sense-2023-06-28-marc-andreessen",
       "name": "#324 — Debating the Future of AI",
-      "level": 1,
       "description": "Making Sense · 2023-06-28 · with Marc Andreessen",
       "metadata": {
         "kind": "episode",
@@ -1848,7 +1768,6 @@
     {
       "id": "ep-making-sense-2024-08-12-yoshua-bengio",
       "name": "#379 — Regulating Artificial Intelligence",
-      "level": 1,
       "description": "Making Sense · 2024-08-12 · with Yoshua Bengio",
       "metadata": {
         "kind": "episode",
@@ -1869,7 +1788,6 @@
     {
       "id": "ep-making-sense-2024-09-30-nick-bostrom",
       "name": "#385 — AI Utopia",
-      "level": 1,
       "description": "Making Sense · 2024-09-30 · with Nick Bostrom",
       "metadata": {
         "kind": "episode",
@@ -1890,7 +1808,6 @@
     {
       "id": "ep-making-sense-2024-10-07-yuval-harari",
       "name": "#386 — Information & Social Order",
-      "level": 1,
       "description": "Making Sense · 2024-10-07 · with Yuval Noah Harari",
       "metadata": {
         "kind": "episode",
@@ -1911,7 +1828,6 @@
     {
       "id": "ep-making-sense-2025-06-12-daniel-kokotajlo",
       "name": "#420 — Countdown to Superintelligence",
-      "level": 1,
       "description": "Making Sense · 2025-06-12 · with Daniel Kokotajlo",
       "metadata": {
         "kind": "episode",
@@ -1933,7 +1849,6 @@
     {
       "id": "ep-making-sense-2025-09-16-eliezer-yudkowsky",
       "name": "#434 — Can We Survive AI?",
-      "level": 1,
       "description": "Making Sense · 2025-09-16 · with Eliezer Yudkowsky, Nate Soares",
       "metadata": {
         "kind": "episode",
@@ -1955,7 +1870,6 @@
     {
       "id": "ep-making-sense-2026-04-10-tristan-harris",
       "name": "#469 — Escaping an Anti-Human Future",
-      "level": 1,
       "description": "Making Sense · 2026-04-10 · with Tristan Harris",
       "metadata": {
         "kind": "episode",
@@ -1977,14 +1891,13 @@
     {
       "id": "show-making-sense",
       "name": "Making Sense",
-      "level": 2,
       "description": "Hosted by Sam Harris · 16 episodes, 2016 to 2026",
       "metadata": {
         "kind": "podcast",
         "suit": "Podcasts",
         "show": "Making Sense"
       },
-      "composite_of": [
+      "parts": [
         "ep-making-sense-2016-04-18-david-chalmers",
         "ep-making-sense-2016-11-23-stuart-russell",
         "ep-making-sense-2017-08-29-max-tegmark",
@@ -2010,7 +1923,6 @@
     {
       "id": "ep-diary-of-a-ceo-2023-06-01-mo-gawdat",
       "name": "EMERGENCY EPISODE: Ex-Google Officer Finally Speaks Out On The Dangers Of AI! - Mo Gawdat",
-      "level": 1,
       "description": "The Diary of a CEO · 2023-06-01 · with Mo Gawdat",
       "metadata": {
         "kind": "episode",
@@ -2032,7 +1944,6 @@
     {
       "id": "ep-diary-of-a-ceo-2023-09-04-mustafa-suleyman",
       "name": "Google DeepMind Co-founder: AI Could Release A Deadly Virus - It's Getting More Threatening! Mustafa Suleyman",
-      "level": 1,
       "description": "The Diary of a CEO · 2023-09-04 · with Mustafa Suleyman",
       "metadata": {
         "kind": "episode",
@@ -2054,7 +1965,6 @@
     {
       "id": "ep-diary-of-a-ceo-2024-01-11-yuval-harari",
       "name": "Yuval Noah Harari: The Urgent Warning They Hope You Ignore, \"More War Is Coming\", Yuval's Chilling Future Predictions!",
-      "level": 1,
       "description": "The Diary of a CEO · 2024-01-11 · with Yuval Noah Harari",
       "metadata": {
         "kind": "episode",
@@ -2076,7 +1986,6 @@
     {
       "id": "ep-diary-of-a-ceo-2024-09-05-yuval-harari",
       "name": "Yuval Noah Harari: This Election Will Tear The Country Apart! AI Will Control You By 2034! The Dark Truth Behind Meta & X!",
-      "level": 1,
       "description": "The Diary of a CEO · 2024-09-05 · with Yuval Noah Harari",
       "metadata": {
         "kind": "episode",
@@ -2098,7 +2007,6 @@
     {
       "id": "ep-diary-of-a-ceo-2025-06-16-geoffrey-hinton",
       "name": "Godfather of AI: I Tried to Warn Them, But We've Already Lost Control! Geoffrey Hinton",
-      "level": 1,
       "description": "The Diary of a CEO · 2025-06-16 · with Geoffrey Hinton",
       "metadata": {
         "kind": "episode",
@@ -2120,7 +2028,6 @@
     {
       "id": "ep-diary-of-a-ceo-2025-09-04-roman-yampolskiy",
       "name": "Roman Yampolskiy: These Are The Only 5 Jobs That Will Remain In 2030 & Proof We're Living In a Simulation!",
-      "level": 1,
       "description": "The Diary of a CEO · 2025-09-04 · with Roman Yampolskiy",
       "metadata": {
         "kind": "episode",
@@ -2142,7 +2049,6 @@
     {
       "id": "ep-diary-of-a-ceo-2025-11-27-tristan-harris",
       "name": "AI Expert: We Have 2 Years Before Everything Changes! We Need To Start Protesting! - Tristan Harris",
-      "level": 1,
       "description": "The Diary of a CEO · 2025-11-27 · with Tristan Harris",
       "metadata": {
         "kind": "episode",
@@ -2164,7 +2070,6 @@
     {
       "id": "ep-diary-of-a-ceo-2025-12-04-stuart-russell",
       "name": "The Man Who Wrote The Book On AI: 2030 Might Be The Point Of No Return! We've Been Lied To About AI!",
-      "level": 1,
       "description": "The Diary of a CEO · 2025-12-04 · with Stuart Russell",
       "metadata": {
         "kind": "episode",
@@ -2186,7 +2091,6 @@
     {
       "id": "ep-diary-of-a-ceo-2025-12-18-yoshua-bengio",
       "name": "Creator of AI: We Have 2 Years Before Everything Changes! These Jobs Won't Exist in 24 Months!",
-      "level": 1,
       "description": "The Diary of a CEO · 2025-12-18 · with Yoshua Bengio",
       "metadata": {
         "kind": "episode",
@@ -2208,7 +2112,6 @@
     {
       "id": "ep-diary-of-a-ceo-2026-07-13-daniel-kokotajlo",
       "name": "OpenAI Whistleblower FINALLY Speaks: \"AI Has A 70% Chance Of Going Horribly Wrong!\"",
-      "level": 1,
       "description": "The Diary of a CEO · 2026-07-13 · with Daniel Kokotajlo",
       "metadata": {
         "kind": "episode",
@@ -2230,14 +2133,13 @@
     {
       "id": "show-diary-of-a-ceo",
       "name": "The Diary of a CEO",
-      "level": 2,
       "description": "Hosted by Steven Bartlett · 10 episodes, 2023 to 2026",
       "metadata": {
         "kind": "podcast",
         "suit": "Podcasts",
         "show": "The Diary of a CEO"
       },
-      "composite_of": [
+      "parts": [
         "ep-diary-of-a-ceo-2023-06-01-mo-gawdat",
         "ep-diary-of-a-ceo-2023-09-04-mustafa-suleyman",
         "ep-diary-of-a-ceo-2024-01-11-yuval-harari",
@@ -2257,7 +2159,6 @@
     {
       "id": "ep-ezra-klein-2021-06-11-sam-altman",
       "name": "Sam Altman on the A.I. Revolution, Trillionaires and the Future of Political Power",
-      "level": 1,
       "description": "The Ezra Klein Show · 2021-06-11 · with Sam Altman",
       "metadata": {
         "kind": "episode",
@@ -2278,7 +2179,6 @@
     {
       "id": "ep-ezra-klein-2023-01-06-gary-marcus",
       "name": "A Skeptical Take on the A.I. Revolution",
-      "level": 1,
       "description": "The Ezra Klein Show · 2023-01-06 · with Gary Marcus",
       "metadata": {
         "kind": "episode",
@@ -2300,7 +2200,6 @@
     {
       "id": "ep-ezra-klein-2023-07-11-demis-hassabis",
       "name": "A.I. Could Solve Some of Humanity's Hardest Problems. It Already Has.",
-      "level": 1,
       "description": "The Ezra Klein Show · 2023-07-11 · with Demis Hassabis",
       "metadata": {
         "kind": "episode",
@@ -2322,7 +2221,6 @@
     {
       "id": "ep-ezra-klein-2024-04-12-dario-amodei",
       "name": "What if Dario Amodei Is Right About A.I.?",
-      "level": 1,
       "description": "The Ezra Klein Show · 2024-04-12 · with Dario Amodei",
       "metadata": {
         "kind": "episode",
@@ -2344,7 +2242,6 @@
     {
       "id": "ep-ezra-klein-2025-10-15-eliezer-yudkowsky",
       "name": "How Afraid of the A.I. Apocalypse Should We Be?",
-      "level": 1,
       "description": "The Ezra Klein Show · 2025-10-15 · with Eliezer Yudkowsky",
       "metadata": {
         "kind": "episode",
@@ -2366,7 +2263,6 @@
     {
       "id": "ep-ezra-klein-2026-02-24-jack-clark",
       "name": "How Quickly Will A.I. Agents Rip Through the Economy?",
-      "level": 1,
       "description": "The Ezra Klein Show · 2026-02-24 · with Jack Clark",
       "metadata": {
         "kind": "episode",
@@ -2388,7 +2284,6 @@
     {
       "id": "ep-ezra-klein-2026-05-26-yuval-harari",
       "name": "Yuval Noah Harari on Donald Trump's Core Delusion",
-      "level": 1,
       "description": "The Ezra Klein Show · 2026-05-26 · with Yuval Noah Harari",
       "metadata": {
         "kind": "episode",
@@ -2410,14 +2305,13 @@
     {
       "id": "show-ezra-klein",
       "name": "The Ezra Klein Show",
-      "level": 2,
       "description": "Hosted by Ezra Klein · 7 episodes, 2021 to 2026",
       "metadata": {
         "kind": "podcast",
         "suit": "Podcasts",
         "show": "The Ezra Klein Show"
       },
-      "composite_of": [
+      "parts": [
         "ep-ezra-klein-2021-06-11-sam-altman",
         "ep-ezra-klein-2023-01-06-gary-marcus",
         "ep-ezra-klein-2023-07-11-demis-hassabis",
@@ -2434,7 +2328,6 @@
     {
       "id": "ep-your-undivided-attention-2021-01-15-yuval-harari",
       "name": "Two Million Years in Two Hours: A Conversation with Yuval Noah Harari",
-      "level": 1,
       "description": "Your Undivided Attention · 2021-01-15 · with Yuval Noah Harari",
       "metadata": {
         "kind": "episode",
@@ -2456,7 +2349,6 @@
     {
       "id": "ep-your-undivided-attention-2024-07-04-anil-seth",
       "name": "How to Think About AI Consciousness with Anil Seth",
-      "level": 1,
       "description": "Your Undivided Attention · 2024-07-04 · with Anil Seth",
       "metadata": {
         "kind": "episode",
@@ -2478,7 +2370,6 @@
     {
       "id": "ep-your-undivided-attention-2024-09-26-gary-marcus",
       "name": "'We Have to Get It Right': Gary Marcus On Untamed AI",
-      "level": 1,
       "description": "Your Undivided Attention · 2024-09-26 · with Gary Marcus",
       "metadata": {
         "kind": "episode",
@@ -2500,7 +2391,6 @@
     {
       "id": "ep-your-undivided-attention-2024-10-07-yuval-harari",
       "name": "'A Turning Point in History': Yuval Noah Harari on AI's Cultural Takeover",
-      "level": 1,
       "description": "Your Undivided Attention · 2024-10-07 · with Yuval Noah Harari",
       "metadata": {
         "kind": "episode",
@@ -2522,7 +2412,6 @@
     {
       "id": "ep-your-undivided-attention-2025-07-17-daniel-kokotajlo",
       "name": "Daniel Kokotajlo Forecasts the End of Human Dominance",
-      "level": 1,
       "description": "Your Undivided Attention · 2025-07-17 · with Daniel Kokotajlo",
       "metadata": {
         "kind": "episode",
@@ -2544,7 +2433,6 @@
     {
       "id": "ep-your-undivided-attention-2026-02-19-yoshua-bengio",
       "name": "The Race to Build God: AI's Existential Gamble — Yoshua Bengio & Tristan Harris at Davos",
-      "level": 1,
       "description": "Your Undivided Attention · 2026-02-19 · with Yoshua Bengio",
       "metadata": {
         "kind": "episode",
@@ -2566,14 +2454,13 @@
     {
       "id": "show-your-undivided-attention",
       "name": "Your Undivided Attention",
-      "level": 2,
       "description": "Hosted by Tristan Harris, Aza Raskin · 6 episodes, 2021 to 2026",
       "metadata": {
         "kind": "podcast",
         "suit": "Podcasts",
         "show": "Your Undivided Attention"
       },
-      "composite_of": [
+      "parts": [
         "ep-your-undivided-attention-2021-01-15-yuval-harari",
         "ep-your-undivided-attention-2024-07-04-anil-seth",
         "ep-your-undivided-attention-2024-09-26-gary-marcus",
@@ -2589,13 +2476,12 @@
     {
       "id": "suit-podcasts",
       "name": "Podcasts",
-      "level": 3,
       "description": "106 episodes of seven podcasts, with where to listen and the terms that come up.",
       "metadata": {
         "kind": "suit",
         "suit": "Podcasts"
       },
-      "composite_of": [
+      "parts": [
         "show-80000-hours",
         "show-dwarkesh",
         "show-lex",
@@ -2613,7 +2499,6 @@
     {
       "id": "person-sam-altman",
       "name": "Sam Altman",
-      "level": 1,
       "description": "Co-founder and CEO of OpenAI (CEO since 2019); former president of Y Combinator.",
       "metadata": {
         "kind": "person",
@@ -2633,7 +2518,6 @@
     {
       "id": "person-dario-amodei",
       "name": "Dario Amodei",
-      "level": 1,
       "description": "Co-founder and CEO of Anthropic (since 2021); formerly VP of Research at OpenAI.",
       "metadata": {
         "kind": "person",
@@ -2654,7 +2538,6 @@
     {
       "id": "person-marc-andreessen",
       "name": "Marc Andreessen",
-      "level": 1,
       "description": "Co-founder, Andreessen Horowitz (since 2009).",
       "metadata": {
         "kind": "person",
@@ -2675,7 +2558,6 @@
     {
       "id": "person-leopold-aschenbrenner",
       "name": "Leopold Aschenbrenner",
-      "level": 1,
       "description": "Formerly on the Superalignment team at OpenAI (2023-2024).",
       "metadata": {
         "kind": "person",
@@ -2694,7 +2576,6 @@
     {
       "id": "person-amanda-askell",
       "name": "Amanda Askell",
-      "level": 1,
       "description": "Researcher, Anthropic (since 2021); formerly Policy researcher, OpenAI (2018-2021).",
       "metadata": {
         "kind": "person",
@@ -2713,7 +2594,6 @@
     {
       "id": "person-steven-bartlett",
       "name": "Steven Bartlett",
-      "level": 1,
       "description": "Host of The Diary of a CEO.",
       "metadata": {
         "kind": "person",
@@ -2731,7 +2611,6 @@
     {
       "id": "person-yoshua-bengio",
       "name": "Yoshua Bengio",
-      "level": 1,
       "description": "Professor and founder of Mila, Université de Montréal (since 1993); founder of LawZero (since 2025).",
       "metadata": {
         "kind": "person",
@@ -2754,7 +2633,6 @@
     {
       "id": "person-cameron-berg",
       "name": "Cameron Berg",
-      "level": 1,
       "description": "Founder and director of Reciprocal Research, a nonprofit on AI cognition and consciousness (2026); formerly Research Director at AE Studio.",
       "metadata": {
         "kind": "person",
@@ -2771,7 +2649,6 @@
     {
       "id": "person-nick-bostrom",
       "name": "Nick Bostrom",
-      "level": 1,
       "description": "Formerly founding director of the Future of Humanity Institute, Oxford (2005-2024).",
       "metadata": {
         "kind": "person",
@@ -2791,7 +2668,6 @@
     {
       "id": "person-noam-brown",
       "name": "Noam Brown",
-      "level": 1,
       "description": "Researcher, OpenAI (since 2023); formerly FAIR research scientist, Meta (FAIR) (2019-2023).",
       "metadata": {
         "kind": "person",
@@ -2811,7 +2687,6 @@
     {
       "id": "person-david-chalmers",
       "name": "David Chalmers",
-      "level": 1,
       "description": "Professor of philosophy, New York University.",
       "metadata": {
         "kind": "person",
@@ -2832,7 +2707,6 @@
     {
       "id": "person-francois-chollet",
       "name": "François Chollet",
-      "level": 1,
       "description": "Co-founder of Ndea and the ARC Prize (since 2024); formerly engineer at Google and creator of Keras (2015-2024).",
       "metadata": {
         "kind": "person",
@@ -2852,7 +2726,6 @@
     {
       "id": "person-paul-christiano",
       "name": "Paul Christiano",
-      "level": 1,
       "description": "Head of AI safety, US AI Safety Institute (since 2024); formerly Alignment team lead, OpenAI (2017-2021).",
       "metadata": {
         "kind": "person",
@@ -2872,7 +2745,6 @@
     {
       "id": "person-jack-clark",
       "name": "Jack Clark",
-      "level": 1,
       "description": "Co-founder, Anthropic (since 2021); formerly Policy Director, OpenAI (2016-2020).",
       "metadata": {
         "kind": "person",
@@ -2891,7 +2763,6 @@
     {
       "id": "person-ajeya-cotra",
       "name": "Ajeya Cotra",
-      "level": 1,
       "description": "Senior researcher (AI), Open Philanthropy (since 2016).",
       "metadata": {
         "kind": "person",
@@ -2911,7 +2782,6 @@
     {
       "id": "person-tyler-cowen",
       "name": "Tyler Cowen",
-      "level": 1,
       "description": "Professor of economics, George Mason University.",
       "metadata": {
         "kind": "person",
@@ -2930,7 +2800,6 @@
     {
       "id": "person-lex-fridman",
       "name": "Lex Fridman",
-      "level": 1,
       "description": "Host of Lex Fridman Podcast; Research scientist, MIT.",
       "metadata": {
         "kind": "person",
@@ -2949,7 +2818,6 @@
     {
       "id": "person-mo-gawdat",
       "name": "Mo Gawdat",
-      "level": 1,
       "description": "Formerly Chief Business Officer of Google X (2013-2018).",
       "metadata": {
         "kind": "person",
@@ -2968,7 +2836,6 @@
     {
       "id": "person-ryan-greenblatt",
       "name": "Ryan Greenblatt",
-      "level": 1,
       "description": "Chief scientist, Redwood Research.",
       "metadata": {
         "kind": "person",
@@ -2988,7 +2855,6 @@
     {
       "id": "person-yuval-harari",
       "name": "Yuval Noah Harari",
-      "level": 1,
       "description": "Historian, Hebrew University of Jerusalem.",
       "metadata": {
         "kind": "person",
@@ -3011,7 +2877,6 @@
     {
       "id": "person-sam-harris",
       "name": "Sam Harris",
-      "level": 1,
       "description": "Host of Making Sense.",
       "metadata": {
         "kind": "person",
@@ -3030,7 +2895,6 @@
     {
       "id": "person-tristan-harris",
       "name": "Tristan Harris",
-      "level": 1,
       "description": "Host of Your Undivided Attention. Co-founder and president of the Center for Humane Technology; former design ethicist at Google.",
       "metadata": {
         "kind": "person",
@@ -3052,7 +2916,6 @@
     {
       "id": "person-demis-hassabis",
       "name": "Demis Hassabis",
-      "level": 1,
       "description": "Co-founder of DeepMind (2010); Chair of Google DeepMind and Chief Scientist at Alphabet (since Aug 2026); leads Isomorphic Labs.",
       "metadata": {
         "kind": "person",
@@ -3073,7 +2936,6 @@
     {
       "id": "person-geoffrey-hinton",
       "name": "Geoffrey Hinton",
-      "level": 1,
       "description": "Professor (emeritus), University of Toronto (since 1987); formerly VP & Engineering Fellow, Google / Google Brain (2013-2023).",
       "metadata": {
         "kind": "person",
@@ -3092,7 +2954,6 @@
     {
       "id": "person-jensen-huang",
       "name": "Jensen Huang",
-      "level": 1,
       "description": "Co-founder & CEO, NVIDIA (since 1993).",
       "metadata": {
         "kind": "person",
@@ -3112,7 +2973,6 @@
     {
       "id": "person-holden-karnofsky",
       "name": "Holden Karnofsky",
-      "level": 1,
       "description": "Staff, Anthropic (since 2025); formerly Co-founder / co-CEO, Open Philanthropy (2014-2024).",
       "metadata": {
         "kind": "person",
@@ -3131,7 +2991,6 @@
     {
       "id": "person-andrej-karpathy",
       "name": "Andrej Karpathy",
-      "level": 1,
       "description": "Founder, Eureka Labs (since 2024); formerly Researcher, OpenAI (2023-2024).",
       "metadata": {
         "kind": "person",
@@ -3151,7 +3010,6 @@
     {
       "id": "person-ezra-klein",
       "name": "Ezra Klein",
-      "level": 1,
       "description": "Host of The Ezra Klein Show; Columnist & podcast host, New York Times (since 2021).",
       "metadata": {
         "kind": "person",
@@ -3173,7 +3031,6 @@
     {
       "id": "person-daniel-kokotajlo",
       "name": "Daniel Kokotajlo",
-      "level": 1,
       "description": "Executive Director, AI Futures Project (since 2024); formerly Governance researcher, OpenAI (2022-2024).",
       "metadata": {
         "kind": "person",
@@ -3196,7 +3053,6 @@
     {
       "id": "person-yann-lecun",
       "name": "Yann LeCun",
-      "level": 1,
       "description": "Professor, New York University (since 2003); formerly Chief AI Scientist, Meta (FAIR) (2013-2025).",
       "metadata": {
         "kind": "person",
@@ -3215,7 +3071,6 @@
     {
       "id": "person-shane-legg",
       "name": "Shane Legg",
-      "level": 1,
       "description": "Co-founder, Chief AGI Scientist, Google DeepMind (since 2010).",
       "metadata": {
         "kind": "person",
@@ -3234,7 +3089,6 @@
     {
       "id": "person-gary-marcus",
       "name": "Gary Marcus",
-      "level": 1,
       "description": "Professor emeritus, New York University.",
       "metadata": {
         "kind": "person",
@@ -3256,7 +3110,6 @@
     {
       "id": "person-melanie-mitchell",
       "name": "Melanie Mitchell",
-      "level": 1,
       "description": "Professor, Santa Fe Institute.",
       "metadata": {
         "kind": "person",
@@ -3275,7 +3128,6 @@
     {
       "id": "person-elon-musk",
       "name": "Elon Musk",
-      "level": 1,
       "description": "Co-founder and early funder of OpenAI (2015-2018); founder of xAI (2023); CEO of Tesla and SpaceX.",
       "metadata": {
         "kind": "person",
@@ -3295,7 +3147,6 @@
     {
       "id": "person-satya-nadella",
       "name": "Satya Nadella",
-      "level": 1,
       "description": "CEO, Microsoft (since 2014).",
       "metadata": {
         "kind": "person",
@@ -3314,7 +3165,6 @@
     {
       "id": "person-chris-olah",
       "name": "Chris Olah",
-      "level": 1,
       "description": "Co-founder, Anthropic (since 2021); formerly Interpretability lead, OpenAI (2018-2020).",
       "metadata": {
         "kind": "person",
@@ -3334,7 +3184,6 @@
     {
       "id": "person-toby-ord",
       "name": "Toby Ord",
-      "level": 1,
       "description": "Senior researcher, AI Governance Initiative, Oxford.",
       "metadata": {
         "kind": "person",
@@ -3353,7 +3202,6 @@
     {
       "id": "person-dwarkesh-patel",
       "name": "Dwarkesh Patel",
-      "level": 1,
       "description": "Host of Dwarkesh Podcast.",
       "metadata": {
         "kind": "person",
@@ -3371,7 +3219,6 @@
     {
       "id": "person-dylan-patel",
       "name": "Dylan Patel",
-      "level": 1,
       "description": "Founder, SemiAnalysis.",
       "metadata": {
         "kind": "person",
@@ -3391,7 +3238,6 @@
     {
       "id": "person-aza-raskin",
       "name": "Aza Raskin",
-      "level": 1,
       "description": "Host of Your Undivided Attention; Co-founder, Center for Humane Technology (since 2018).",
       "metadata": {
         "kind": "person",
@@ -3410,7 +3256,6 @@
     {
       "id": "person-stuart-russell",
       "name": "Stuart Russell",
-      "level": 1,
       "description": "Professor, UC Berkeley (since 1986); founder of CHAI, the Center for Human-Compatible AI (2016).",
       "metadata": {
         "kind": "person",
@@ -3432,7 +3277,6 @@
     {
       "id": "person-anil-seth",
       "name": "Anil Seth",
-      "level": 1,
       "description": "Professor, University of Sussex.",
       "metadata": {
         "kind": "person",
@@ -3453,7 +3297,6 @@
     {
       "id": "person-carl-shulman",
       "name": "Carl Shulman",
-      "level": 1,
       "description": "Research associate, Future of Humanity Institute, Oxford; advisor, Open Philanthropy.",
       "metadata": {
         "kind": "person",
@@ -3473,7 +3316,6 @@
     {
       "id": "person-nate-soares",
       "name": "Nate Soares",
-      "level": 1,
       "description": "President / former Executive Director, MIRI (since 2015).",
       "metadata": {
         "kind": "person",
@@ -3492,7 +3334,6 @@
     {
       "id": "person-mustafa-suleyman",
       "name": "Mustafa Suleyman",
-      "level": 1,
       "description": "CEO of Microsoft AI (since 2024); formerly co-founder and CEO of Inflection AI (2022-2024); co-founder of DeepMind (2010).",
       "metadata": {
         "kind": "person",
@@ -3511,7 +3352,6 @@
     {
       "id": "person-ilya-sutskever",
       "name": "Ilya Sutskever",
-      "level": 1,
       "description": "Co-founder and former chief scientist of OpenAI (2015-2024); co-founder of Safe Superintelligence Inc. (June 2024) and its CEO since July 2025.",
       "metadata": {
         "kind": "person",
@@ -3531,7 +3371,6 @@
     {
       "id": "person-richard-sutton",
       "name": "Richard Sutton",
-      "level": 1,
       "description": "Professor, University of Alberta (since 2003); formerly Distinguished research scientist, Google DeepMind (2017-2023).",
       "metadata": {
         "kind": "person",
@@ -3550,7 +3389,6 @@
     {
       "id": "person-max-tegmark",
       "name": "Max Tegmark",
-      "level": 1,
       "description": "Professor, MIT (since 2004); Co-founder & President, Future of Life Institute (since 2014).",
       "metadata": {
         "kind": "person",
@@ -3571,7 +3409,6 @@
     {
       "id": "person-rob-wiblin",
       "name": "Rob Wiblin",
-      "level": 1,
       "description": "Host of the 80,000 Hours Podcast; head of research at 80,000 Hours.",
       "metadata": {
         "kind": "person",
@@ -3590,7 +3427,6 @@
     {
       "id": "person-roman-yampolskiy",
       "name": "Roman Yampolskiy",
-      "level": 1,
       "description": "Professor, University of Louisville (since 2008).",
       "metadata": {
         "kind": "person",
@@ -3611,7 +3447,6 @@
     {
       "id": "person-eliezer-yudkowsky",
       "name": "Eliezer Yudkowsky",
-      "level": 1,
       "description": "Co-founder, MIRI (since 2000).",
       "metadata": {
         "kind": "person",
@@ -3633,7 +3468,6 @@
     {
       "id": "person-mark-zuckerberg",
       "name": "Mark Zuckerberg",
-      "level": 1,
       "description": "Founder and CEO of Meta (since 2004).",
       "metadata": {
         "kind": "person",
@@ -3653,13 +3487,12 @@
     {
       "id": "people-hosts",
       "name": "Hosts",
-      "level": 2,
       "description": "8 people",
       "metadata": {
         "kind": "group",
         "suit": "People"
       },
-      "composite_of": [
+      "parts": [
         "person-steven-bartlett",
         "person-lex-fridman",
         "person-sam-harris",
@@ -3677,13 +3510,12 @@
     {
       "id": "people-guests",
       "name": "Guests",
-      "level": 2,
       "description": "43 people",
       "metadata": {
         "kind": "group",
         "suit": "People"
       },
-      "composite_of": [
+      "parts": [
         "person-sam-altman",
         "person-dario-amodei",
         "person-marc-andreessen",
@@ -3736,13 +3568,12 @@
     {
       "id": "people-others",
       "name": "Also in the lab's notes",
-      "level": 2,
       "description": "1 people",
       "metadata": {
         "kind": "group",
         "suit": "People"
       },
-      "composite_of": [
+      "parts": [
         "person-cameron-berg"
       ],
       "sections": {
@@ -3753,13 +3584,12 @@
     {
       "id": "suit-people",
       "name": "People",
-      "level": 3,
       "description": "52 people: who appears where, with roles and affiliations.",
       "metadata": {
         "kind": "suit",
         "suit": "People"
       },
-      "composite_of": [
+      "parts": [
         "people-hosts",
         "people-guests",
         "people-others"
@@ -3773,7 +3603,6 @@
     {
       "id": "paper-ostrom-1990",
       "name": "Governing the Commons",
-      "level": 1,
       "description": "Elinor Ostrom (1990). Cambridge University Press.",
       "metadata": {
         "kind": "book",
@@ -3795,7 +3624,6 @@
     {
       "id": "paper-perolat-2017",
       "name": "A multi-agent reinforcement learning model of common-pool resource appropriation",
-      "level": 1,
       "description": "Julien Perolat, Joel Z. Leibo, Vinicius Zambaldi, Charles Beattie, Karl Tuyls, Thore Graepel (2017). NeurIPS 2017 (arXiv 1707.06600).",
       "metadata": {
         "kind": "paper",
@@ -3818,7 +3646,6 @@
     {
       "id": "paper-carlisle-gruby-2019",
       "name": "Polycentric Systems of Governance: A Theoretical Model for the Commons",
-      "level": 1,
       "description": "Keith Carlisle, Rebecca L. Gruby (2019). Policy Studies Journal.",
       "metadata": {
         "kind": "paper",
@@ -3840,13 +3667,12 @@
     {
       "id": "thread-commons",
       "name": "Governing a commons",
-      "level": 2,
       "description": "3 entries",
       "metadata": {
         "kind": "group",
         "suit": "Papers & books"
       },
-      "composite_of": [
+      "parts": [
         "paper-ostrom-1990",
         "paper-perolat-2017",
         "paper-carlisle-gruby-2019"
@@ -3859,7 +3685,6 @@
     {
       "id": "paper-ashby-1956",
       "name": "An Introduction to Cybernetics",
-      "level": 1,
       "description": "W. Ross Ashby (1956). book.",
       "metadata": {
         "kind": "book",
@@ -3882,7 +3707,6 @@
     {
       "id": "paper-bateson-1972",
       "name": "Steps to an Ecology of Mind",
-      "level": 1,
       "description": "Gregory Bateson (1972). essay collection.",
       "metadata": {
         "kind": "book",
@@ -3905,7 +3729,6 @@
     {
       "id": "paper-scott-2004",
       "name": "Second-order cybernetics: an historical introduction",
-      "level": 1,
       "description": "Bernard Scott (2004). Kybernetes.",
       "metadata": {
         "kind": "paper",
@@ -3928,13 +3751,12 @@
     {
       "id": "thread-cybernetics",
       "name": "Cybernetics and feedback",
-      "level": 2,
       "description": "3 entries",
       "metadata": {
         "kind": "group",
         "suit": "Papers & books"
       },
-      "composite_of": [
+      "parts": [
         "paper-ashby-1956",
         "paper-bateson-1972",
         "paper-scott-2004"
@@ -3947,7 +3769,6 @@
     {
       "id": "paper-plotnik-2006",
       "name": "Self-recognition in an Asian elephant",
-      "level": 1,
       "description": "Joshua M. Plotnik, Frans B. M. de Waal, Diana Reiss (2006). PNAS.",
       "metadata": {
         "kind": "paper",
@@ -3969,7 +3790,6 @@
     {
       "id": "paper-rajmohan-mohandas-2007",
       "name": "Mirror neuron system",
-      "level": 1,
       "description": "V. Rajmohan, E. Mohandas (2007). Indian Journal of Psychiatry.",
       "metadata": {
         "kind": "paper",
@@ -3991,7 +3811,6 @@
     {
       "id": "paper-bartal-2011",
       "name": "Empathy and Pro-Social Behavior in Rats",
-      "level": 1,
       "description": "Inbal Ben-Ami Bartal, Jean Decety, Peggy Mason (2011). Science.",
       "metadata": {
         "kind": "paper",
@@ -4014,7 +3833,6 @@
     {
       "id": "paper-seyfarth-cheney-2013",
       "name": "Affiliation, empathy, and the origins of theory of mind",
-      "level": 1,
       "description": "Robert M. Seyfarth, Dorothy L. Cheney (2013). PNAS.",
       "metadata": {
         "kind": "paper",
@@ -4037,7 +3855,6 @@
     {
       "id": "paper-bartal-2014",
       "name": "Pro-social behavior in rats is modulated by social experience",
-      "level": 1,
       "description": "Inbal Ben-Ami Bartal, David A. Rodgers, Maria Sol Bernardez Sarria, Jean Decety, Peggy Mason (2014). eLife.",
       "metadata": {
         "kind": "paper",
@@ -4059,7 +3876,6 @@
     {
       "id": "paper-heslin-brown-2021",
       "name": "No preference for prosocial helping behavior in rats with concurrent social interaction opportunities",
-      "level": 1,
       "description": "Kelsey A. Heslin, Michael F. Brown (2021). Learning & Behavior.",
       "metadata": {
         "kind": "paper",
@@ -4081,7 +3897,6 @@
     {
       "id": "paper-murray-2022",
       "name": "Mirror self-recognition in gorillas (Gorilla gorilla gorilla): a review and evaluation of mark test replications and variants",
-      "level": 1,
       "description": "Lindsay E. Murray, James R. Anderson, Gordon G. Gallup (2022). Animal Cognition.",
       "metadata": {
         "kind": "paper",
@@ -4103,13 +3918,12 @@
     {
       "id": "thread-empathy",
       "name": "Empathy and self-recognition in animals",
-      "level": 2,
       "description": "7 entries",
       "metadata": {
         "kind": "group",
         "suit": "Papers & books"
       },
-      "composite_of": [
+      "parts": [
         "paper-plotnik-2006",
         "paper-rajmohan-mohandas-2007",
         "paper-bartal-2011",
@@ -4126,7 +3940,6 @@
     {
       "id": "paper-axelrod-1984",
       "name": "The Evolution of Cooperation",
-      "level": 1,
       "description": "Robert Axelrod (1984). Basic Books.",
       "metadata": {
         "kind": "book",
@@ -4149,7 +3962,6 @@
     {
       "id": "paper-nowak-2006",
       "name": "Five Rules for the Evolution of Cooperation",
-      "level": 1,
       "description": "Martin A. Nowak (2006). Science.",
       "metadata": {
         "kind": "paper",
@@ -4172,7 +3984,6 @@
     {
       "id": "paper-ndousse-2020",
       "name": "Emergent Social Learning via Multi-agent Reinforcement Learning",
-      "level": 1,
       "description": "Kamal Ndousse, Douglas Eck, Sergey Levine, Natasha Jaques (2020). arXiv 2010.00581.",
       "metadata": {
         "kind": "paper",
@@ -4194,7 +4005,6 @@
     {
       "id": "paper-gupta-2025",
       "name": "The Role of Social Learning and Collective Norm Formation in Fostering Cooperation in LLM Multi-Agent Systems",
-      "level": 1,
       "description": "Prateek Gupta, Qiankun Zhong, Hiromu Yakura, Thomas Eisenmann, Iyad Rahwan (2025). arXiv 2510.14401.",
       "metadata": {
         "kind": "paper",
@@ -4216,13 +4026,12 @@
     {
       "id": "thread-cooperation",
       "name": "Cooperation and social learning",
-      "level": 2,
       "description": "4 entries",
       "metadata": {
         "kind": "group",
         "suit": "Papers & books"
       },
-      "composite_of": [
+      "parts": [
         "paper-axelrod-1984",
         "paper-nowak-2006",
         "paper-ndousse-2020",
@@ -4236,7 +4045,6 @@
     {
       "id": "paper-nordhaus-2004",
       "name": "Schumpeterian Profits in the American Economy: Theory and Measurement",
-      "level": 1,
       "description": "William D. Nordhaus (2004). NBER Working Paper 10433.",
       "metadata": {
         "kind": "paper",
@@ -4258,7 +4066,6 @@
     {
       "id": "paper-odlyzko-2010",
       "name": "Collective Hallucinations and Inefficient Markets: The British Railway Mania of the 1840s",
-      "level": 1,
       "description": "Andrew Odlyzko (2010). SSRN.",
       "metadata": {
         "kind": "paper",
@@ -4280,7 +4087,6 @@
     {
       "id": "paper-van-nieuwerburgh-2026",
       "name": "Financing the AI Buildout",
-      "level": 1,
       "description": "Stijn Van Nieuwerburgh (2026). Columbia Business School, draft of March 20 2026.",
       "metadata": {
         "kind": "paper",
@@ -4303,13 +4109,12 @@
     {
       "id": "thread-money",
       "name": "The money: bubbles and who gains",
-      "level": 2,
       "description": "3 entries",
       "metadata": {
         "kind": "group",
         "suit": "Papers & books"
       },
-      "composite_of": [
+      "parts": [
         "paper-nordhaus-2004",
         "paper-odlyzko-2010",
         "paper-van-nieuwerburgh-2026"
@@ -4322,7 +4127,6 @@
     {
       "id": "paper-metr-2026",
       "name": "Brief independent investigation of agents’ behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident",
-      "level": 1,
       "description": "METR (2026). METR, Aug 26 2026.",
       "metadata": {
         "kind": "report",
@@ -4345,7 +4149,6 @@
     {
       "id": "paper-pacing-the-frontier-2026",
       "name": "Pacing the Frontier",
-      "level": 1,
       "description": "employees of frontier AI companies (2026). public statement, launched Jul 2026.",
       "metadata": {
         "kind": "statement",
@@ -4367,13 +4170,12 @@
     {
       "id": "thread-2026",
       "name": "Incidents and statements, 2026",
-      "level": 2,
       "description": "2 entries",
       "metadata": {
         "kind": "group",
         "suit": "Papers & books"
       },
-      "composite_of": [
+      "parts": [
         "paper-metr-2026",
         "paper-pacing-the-frontier-2026"
       ],
@@ -4385,13 +4187,12 @@
     {
       "id": "suit-papers",
       "name": "Papers & books",
-      "level": 3,
       "description": "22 papers, books, reports and statements cited in the lab's plans.",
       "metadata": {
         "kind": "suit",
         "suit": "Papers & books"
       },
-      "composite_of": [
+      "parts": [
         "thread-commons",
         "thread-cybernetics",
         "thread-empathy",
@@ -4408,13 +4209,12 @@
     {
       "id": "inst-aoi",
       "name": "AI Objectives Institute",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "aoi",
+        "source_node_id": "aoi",
         "deck": "Institutions"
       },
       "sections": {
@@ -4425,13 +4225,12 @@
     {
       "id": "inst-cip",
       "name": "Collective Intelligence Project",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "cip",
+        "source_node_id": "cip",
         "deck": "Institutions"
       },
       "sections": {
@@ -4442,13 +4241,12 @@
     {
       "id": "inst-coopai",
       "name": "Cooperative AI Foundation",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "coopai",
+        "source_node_id": "coopai",
         "deck": "Institutions"
       },
       "sections": {
@@ -4459,13 +4257,12 @@
     {
       "id": "inst-mai",
       "name": "Meaning Alignment Institute",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "mai",
+        "source_node_id": "mai",
         "deck": "Institutions"
       },
       "sections": {
@@ -4476,13 +4273,12 @@
     {
       "id": "inst-group-democratic-and-cooperative",
       "name": "Democratic and cooperative alignment",
-      "level": 2,
       "description": "4 institutions",
       "metadata": {
         "kind": "group",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-aoi",
         "inst-cip",
         "inst-coopai",
@@ -4496,13 +4292,12 @@
     {
       "id": "inst-cais",
       "name": "Center for AI Safety (CAIS)",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "cais",
+        "source_node_id": "cais",
         "deck": "Institutions"
       },
       "sections": {
@@ -4513,13 +4308,12 @@
     {
       "id": "inst-fli",
       "name": "Future of Life Institute",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "fli",
+        "source_node_id": "fli",
         "deck": "Institutions"
       },
       "sections": {
@@ -4530,13 +4324,12 @@
     {
       "id": "inst-pai",
       "name": "Partnership on AI",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "pai",
+        "source_node_id": "pai",
         "deck": "Institutions"
       },
       "sections": {
@@ -4547,13 +4340,12 @@
     {
       "id": "inst-group-field-building",
       "name": "Field-building, grants and partnerships",
-      "level": 2,
       "description": "3 institutions",
       "metadata": {
         "kind": "group",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-cais",
         "inst-fli",
         "inst-pai"
@@ -4566,13 +4358,12 @@
     {
       "id": "inst-aifutures",
       "name": "AI Futures Project",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "aifutures",
+        "source_node_id": "aifutures",
         "deck": "Institutions"
       },
       "sections": {
@@ -4583,13 +4374,12 @@
     {
       "id": "inst-epoch",
       "name": "Epoch AI",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "epoch",
+        "source_node_id": "epoch",
         "deck": "Institutions"
       },
       "sections": {
@@ -4600,13 +4390,12 @@
     {
       "id": "inst-group-forecasting-and-data",
       "name": "Forecasting and data",
-      "level": 2,
       "description": "2 institutions",
       "metadata": {
         "kind": "group",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-aifutures",
         "inst-epoch"
       ],
@@ -4618,13 +4407,12 @@
     {
       "id": "inst-cset",
       "name": "Center for Security and Emerging Technology (CSET), Georgetown",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "cset",
+        "source_node_id": "cset",
         "deck": "Institutions"
       },
       "sections": {
@@ -4635,13 +4423,12 @@
     {
       "id": "inst-govai",
       "name": "Centre for the Governance of AI (GovAI)",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "govai",
+        "source_node_id": "govai",
         "deck": "Institutions"
       },
       "sections": {
@@ -4652,13 +4439,12 @@
     {
       "id": "inst-group-governance-and-policy",
       "name": "Governance and policy research",
-      "level": 2,
       "description": "2 institutions",
       "metadata": {
         "kind": "group",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-cset",
         "inst-govai"
       ],
@@ -4670,13 +4456,12 @@
     {
       "id": "inst-caisi",
       "name": "Center for AI Standards and Innovation (CAISI), NIST",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "caisi",
+        "source_node_id": "caisi",
         "deck": "Institutions"
       },
       "sections": {
@@ -4687,13 +4472,12 @@
     {
       "id": "inst-euaioffice",
       "name": "European AI Office",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "euaioffice",
+        "source_node_id": "euaioffice",
         "deck": "Institutions"
       },
       "sections": {
@@ -4704,13 +4488,12 @@
     {
       "id": "inst-ukaisi",
       "name": "UK AI Security Institute (AISI)",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "ukaisi",
+        "source_node_id": "ukaisi",
         "deck": "Institutions"
       },
       "sections": {
@@ -4721,13 +4504,12 @@
     {
       "id": "inst-group-government",
       "name": "Government bodies",
-      "level": 2,
       "description": "3 institutions",
       "metadata": {
         "kind": "group",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-caisi",
         "inst-euaioffice",
         "inst-ukaisi"
@@ -4740,13 +4522,12 @@
     {
       "id": "inst-cht",
       "name": "Center for Humane Technology",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "cht",
+        "source_node_id": "cht",
         "deck": "Institutions"
       },
       "sections": {
@@ -4757,13 +4538,12 @@
     {
       "id": "inst-group-humane-technology",
       "name": "Humane technology",
-      "level": 2,
       "description": "1 institutions",
       "metadata": {
         "kind": "group",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-cht"
       ],
       "sections": {
@@ -4774,13 +4554,12 @@
     {
       "id": "inst-ada",
       "name": "Ada Lovelace Institute",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "ada",
+        "source_node_id": "ada",
         "deck": "Institutions"
       },
       "sections": {
@@ -4791,13 +4570,12 @@
     {
       "id": "inst-ainow",
       "name": "AI Now Institute",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "ainow",
+        "source_node_id": "ainow",
         "deck": "Institutions"
       },
       "sections": {
@@ -4808,13 +4586,12 @@
     {
       "id": "inst-ajl",
       "name": "Algorithmic Justice League",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "ajl",
+        "source_node_id": "ajl",
         "deck": "Institutions"
       },
       "sections": {
@@ -4825,13 +4602,12 @@
     {
       "id": "inst-dair",
       "name": "Distributed AI Research Institute (DAIR)",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "dair",
+        "source_node_id": "dair",
         "deck": "Institutions"
       },
       "sections": {
@@ -4842,13 +4618,12 @@
     {
       "id": "inst-group-public-interest",
       "name": "Public-interest research",
-      "level": 2,
       "description": "4 institutions",
       "metadata": {
         "kind": "group",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-ada",
         "inst-ainow",
         "inst-ajl",
@@ -4862,13 +4637,12 @@
     {
       "id": "inst-arc",
       "name": "Alignment Research Center (ARC)",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "arc",
+        "source_node_id": "arc",
         "deck": "Institutions"
       },
       "sections": {
@@ -4879,13 +4653,12 @@
     {
       "id": "inst-chai",
       "name": "Center for Human-Compatible AI (CHAI), UC Berkeley",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "chai",
+        "source_node_id": "chai",
         "deck": "Institutions"
       },
       "sections": {
@@ -4896,13 +4669,12 @@
     {
       "id": "inst-far",
       "name": "FAR.AI",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "far",
+        "source_node_id": "far",
         "deck": "Institutions"
       },
       "sections": {
@@ -4913,13 +4685,12 @@
     {
       "id": "inst-lawzero",
       "name": "LawZero",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "lawzero",
+        "source_node_id": "lawzero",
         "deck": "Institutions"
       },
       "sections": {
@@ -4930,13 +4701,12 @@
     {
       "id": "inst-miri",
       "name": "Machine Intelligence Research Institute (MIRI)",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "miri",
+        "source_node_id": "miri",
         "deck": "Institutions"
       },
       "sections": {
@@ -4947,13 +4717,12 @@
     {
       "id": "inst-redwood",
       "name": "Redwood Research",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "redwood",
+        "source_node_id": "redwood",
         "deck": "Institutions"
       },
       "sections": {
@@ -4964,13 +4733,12 @@
     {
       "id": "inst-transluce",
       "name": "Transluce",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "transluce",
+        "source_node_id": "transluce",
         "deck": "Institutions"
       },
       "sections": {
@@ -4981,13 +4749,12 @@
     {
       "id": "inst-group-technical-alignment",
       "name": "Technical alignment research",
-      "level": 2,
       "description": "7 institutions",
       "metadata": {
         "kind": "group",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-arc",
         "inst-chai",
         "inst-far",
@@ -5004,13 +4771,12 @@
     {
       "id": "inst-apollo",
       "name": "Apollo Research",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "apollo",
+        "source_node_id": "apollo",
         "deck": "Institutions"
       },
       "sections": {
@@ -5021,13 +4787,12 @@
     {
       "id": "inst-humaneint",
       "name": "Humane Intelligence",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "humaneint",
+        "source_node_id": "humaneint",
         "deck": "Institutions"
       },
       "sections": {
@@ -5038,13 +4803,12 @@
     {
       "id": "inst-metr",
       "name": "METR",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "metr",
+        "source_node_id": "metr",
         "deck": "Institutions"
       },
       "sections": {
@@ -5055,13 +4819,12 @@
     {
       "id": "inst-palisade",
       "name": "Palisade Research",
-      "level": 1,
       "description": "A pointer: this institution's card lives in the Institutions grammar.",
       "metadata": {
         "kind": "pointer",
         "suit": "Institutions",
         "source_deck": "institutions-of-alignment",
-        "source_item_id": "palisade",
+        "source_node_id": "palisade",
         "deck": "Institutions"
       },
       "sections": {
@@ -5072,13 +4835,12 @@
     {
       "id": "inst-group-testing-and-evaluation",
       "name": "Testing and evaluation",
-      "level": 2,
       "description": "4 institutions",
       "metadata": {
         "kind": "group",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-apollo",
         "inst-humaneint",
         "inst-metr",
@@ -5092,13 +4854,12 @@
     {
       "id": "suit-institutions",
       "name": "Institutions",
-      "level": 3,
       "description": "Pointers to the Institutions grammar, where each card links out to the institution's own site.",
       "metadata": {
         "kind": "suit",
         "suit": "Institutions"
       },
-      "composite_of": [
+      "parts": [
         "inst-group-democratic-and-cooperative",
         "inst-group-field-building",
         "inst-group-forecasting-and-data",
@@ -5117,12 +4878,11 @@
     {
       "id": "root-sources",
       "name": "Sources",
-      "level": 4,
       "description": "Podcasts, papers and people behind the words and the games, each described from public pages and dated.",
       "metadata": {
         "kind": "root"
       },
-      "composite_of": [
+      "parts": [
         "suit-podcasts",
         "suit-papers",
         "suit-people",

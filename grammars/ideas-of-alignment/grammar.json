@@ -37,11 +37,10 @@
     "draft"
   ],
   "is_published": true,
-  "items": [
+  "nodes": [
     {
       "id": "arc",
       "name": "ARC / skill-acquisition",
-      "level": 1,
       "description": "Said 5 times in 3 episodes; first heard here in 2024. An idea, Neurosymbolic lane.",
       "metadata": {
         "kind": "term",
@@ -50,7 +49,7 @@
         "count_reliability": "medium",
         "first_heard": "2024",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-dylan-patel",
+        "source_node_id": "person-dylan-patel",
         "deck": "Sources"
       },
       "sections": {
@@ -65,7 +64,6 @@
     {
       "id": "symbolic",
       "name": "Symbolic AI & program synthesis",
-      "level": 1,
       "description": "Said 21 times in 10 episodes; first heard here in 2018. An idea, Neurosymbolic lane.",
       "metadata": {
         "kind": "term",
@@ -74,7 +72,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-francois-chollet",
+        "source_node_id": "person-francois-chollet",
         "deck": "Sources"
       },
       "sections": {
@@ -89,13 +87,12 @@
     {
       "id": "lane-neurosym",
       "name": "Neurosymbolic & program synthesis",
-      "level": 2,
       "description": "Since 1971 · 2 seed terms",
       "metadata": {
         "kind": "lane",
         "lane": "Neurosymbolic & program synthesis"
       },
-      "composite_of": [
+      "parts": [
         "arc",
         "symbolic"
       ],
@@ -110,7 +107,6 @@
     {
       "id": "scaling-laws",
       "name": "Scaling laws",
-      "level": 1,
       "description": "Said 81 times in 22 episodes; first heard here in 2021. An idea, Scaling lane.",
       "metadata": {
         "kind": "term",
@@ -119,7 +115,7 @@
         "count_reliability": "high",
         "first_heard": "2021",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-chris-olah",
+        "source_node_id": "person-chris-olah",
         "deck": "Sources"
       },
       "sections": {
@@ -134,7 +130,6 @@
     {
       "id": "bitter-lesson",
       "name": "The bitter lesson",
-      "level": 1,
       "description": "Said 17 times in 7 episodes; first heard here in 2022. An idea, Scaling lane.",
       "metadata": {
         "kind": "term",
@@ -143,7 +138,7 @@
         "count_reliability": "high",
         "first_heard": "2022",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-richard-sutton",
+        "source_node_id": "person-richard-sutton",
         "deck": "Sources"
       },
       "sections": {
@@ -158,7 +153,6 @@
     {
       "id": "pretraining",
       "name": "Pretraining",
-      "level": 1,
       "description": "Said 168 times in 32 episodes; first heard here in 2020. An idea, Scaling lane.",
       "metadata": {
         "kind": "term",
@@ -167,7 +161,7 @@
         "count_reliability": "high",
         "first_heard": "2020",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-dylan-patel",
+        "source_node_id": "person-dylan-patel",
         "deck": "Sources"
       },
       "sections": {
@@ -182,7 +176,6 @@
     {
       "id": "data-wall",
       "name": "Data wall / synthetic data",
-      "level": 1,
       "description": "Said 43 times in 16 episodes; first heard here in 2022. An idea, Scaling lane.",
       "metadata": {
         "kind": "term",
@@ -191,7 +184,7 @@
         "count_reliability": "high",
         "first_heard": "2022",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-andrej-karpathy",
+        "source_node_id": "person-andrej-karpathy",
         "deck": "Sources"
       },
       "sections": {
@@ -205,7 +198,6 @@
     {
       "id": "compute",
       "name": "Compute (chips, data centres)",
-      "level": 1,
       "description": "Said 1146 times in 68 episodes; first heard here in 2018. An idea, Scaling lane.",
       "metadata": {
         "kind": "term",
@@ -214,7 +206,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-dylan-patel",
+        "source_node_id": "person-dylan-patel",
         "deck": "Sources"
       },
       "sections": {
@@ -229,7 +221,6 @@
     {
       "id": "emergence",
       "name": "Emergent abilities",
-      "level": 1,
       "description": "Said 32 times in 15 episodes; first heard here in 2019. An idea, Scaling lane.",
       "metadata": {
         "kind": "term",
@@ -238,7 +229,7 @@
         "count_reliability": "medium",
         "first_heard": "2019",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-jack-clark",
+        "source_node_id": "person-jack-clark",
         "deck": "Sources"
       },
       "sections": {
@@ -252,7 +243,6 @@
     {
       "id": "jobs",
       "name": "Jobs & labour",
-      "level": 1,
       "description": "Said 67 times in 27 episodes; first heard here in 2022. An outcome, Scaling lane.",
       "metadata": {
         "kind": "term",
@@ -261,7 +251,7 @@
         "count_reliability": "medium",
         "first_heard": "2022",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-tristan-harris",
+        "source_node_id": "person-tristan-harris",
         "deck": "Sources"
       },
       "sections": {
@@ -276,7 +266,6 @@
     {
       "id": "china",
       "name": "China",
-      "level": 1,
       "description": "Said 519 times in 62 episodes; first heard here in 2018. An outcome, Scaling lane.",
       "metadata": {
         "kind": "term",
@@ -285,7 +274,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-dylan-patel",
+        "source_node_id": "person-dylan-patel",
         "deck": "Sources"
       },
       "sections": {
@@ -300,7 +289,6 @@
     {
       "id": "open-source",
       "name": "Open source / open weights",
-      "level": 1,
       "description": "Said 183 times in 37 episodes; first heard here in 2020. An idea, Scaling lane.",
       "metadata": {
         "kind": "term",
@@ -309,7 +297,7 @@
         "count_reliability": "high",
         "first_heard": "2020",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-mark-zuckerberg",
+        "source_node_id": "person-mark-zuckerberg",
         "deck": "Sources"
       },
       "sections": {
@@ -324,13 +312,12 @@
     {
       "id": "lane-scaling",
       "name": "Scaling & pretraining",
-      "level": 2,
       "description": "Since 2017 · 9 seed terms",
       "metadata": {
         "kind": "lane",
         "lane": "Scaling & pretraining"
       },
-      "composite_of": [
+      "parts": [
         "scaling-laws",
         "bitter-lesson",
         "pretraining",
@@ -352,7 +339,6 @@
     {
       "id": "self-play",
       "name": "Self-play",
-      "level": 1,
       "description": "Said 58 times in 18 episodes; first heard here in 2019. An idea, RL lane.",
       "metadata": {
         "kind": "term",
@@ -361,7 +347,7 @@
         "count_reliability": "high",
         "first_heard": "2019",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-noam-brown",
+        "source_node_id": "person-noam-brown",
         "deck": "Sources"
       },
       "sections": {
@@ -376,7 +362,6 @@
     {
       "id": "reasoning-rl",
       "name": "Reasoning models & test-time compute",
-      "level": 1,
       "description": "Said 60 times in 13 episodes; first heard here in 2022. An idea, RL lane.",
       "metadata": {
         "kind": "term",
@@ -385,7 +370,7 @@
         "count_reliability": "high",
         "first_heard": "2022",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-dylan-patel",
+        "source_node_id": "person-dylan-patel",
         "deck": "Sources"
       },
       "sections": {
@@ -400,7 +385,6 @@
     {
       "id": "agents",
       "name": "AI agents",
-      "level": 1,
       "description": "Said 122 times in 39 episodes; first heard here in 2020. An idea, RL lane.",
       "metadata": {
         "kind": "term",
@@ -409,7 +393,7 @@
         "count_reliability": "medium",
         "first_heard": "2020",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-yoshua-bengio",
+        "source_node_id": "person-yoshua-bengio",
         "deck": "Sources"
       },
       "sections": {
@@ -425,13 +409,12 @@
     {
       "id": "lane-rl",
       "name": "Reinforcement learning & self-play",
-      "level": 2,
       "description": "Since 1959 · 3 seed terms",
       "metadata": {
         "kind": "lane",
         "lane": "Reinforcement learning & self-play"
       },
-      "composite_of": [
+      "parts": [
         "self-play",
         "reasoning-rl",
         "agents"
@@ -447,7 +430,6 @@
     {
       "id": "rsi",
       "name": "Recursive self-improvement",
-      "level": 1,
       "description": "Said 67 times in 20 episodes; first heard here in 2022. An idea, Self-improvement lane.",
       "metadata": {
         "kind": "term",
@@ -456,7 +438,7 @@
         "count_reliability": "high",
         "first_heard": "2022",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-toby-ord",
+        "source_node_id": "person-toby-ord",
         "deck": "Sources"
       },
       "sections": {
@@ -470,7 +452,6 @@
     {
       "id": "intelligence-explosion",
       "name": "Intelligence explosion",
-      "level": 1,
       "description": "Said 134 times in 28 episodes; first heard here in 2019. An idea, Self-improvement lane.",
       "metadata": {
         "kind": "term",
@@ -479,7 +460,7 @@
         "count_reliability": "high",
         "first_heard": "2019",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-daniel-kokotajlo",
+        "source_node_id": "person-daniel-kokotajlo",
         "deck": "Sources"
       },
       "sections": {
@@ -494,7 +475,6 @@
     {
       "id": "singularity",
       "name": "The singularity",
-      "level": 1,
       "description": "Said 35 times in 21 episodes; first heard here in 2018. Lore, Self-improvement lane.",
       "metadata": {
         "kind": "term",
@@ -503,7 +483,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-mo-gawdat",
+        "source_node_id": "person-mo-gawdat",
         "deck": "Sources"
       },
       "sections": {
@@ -518,7 +498,6 @@
     {
       "id": "takeoff",
       "name": "Takeoff speed (fast / slow)",
-      "level": 1,
       "description": "Said 29 times in 19 episodes; first heard here in 2018. An outcome, Self-improvement lane.",
       "metadata": {
         "kind": "term",
@@ -527,7 +506,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-paul-christiano",
+        "source_node_id": "person-paul-christiano",
         "deck": "Sources"
       },
       "sections": {
@@ -543,7 +522,6 @@
     {
       "id": "automated-researcher",
       "name": "Automated AI researcher",
-      "level": 1,
       "description": "Said 13 times in 10 episodes; first heard here in 2024. An outcome, Self-improvement lane.",
       "metadata": {
         "kind": "term",
@@ -552,7 +530,7 @@
         "count_reliability": "medium",
         "first_heard": "2024",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-daniel-kokotajlo",
+        "source_node_id": "person-daniel-kokotajlo",
         "deck": "Sources"
       },
       "sections": {
@@ -567,7 +545,6 @@
     {
       "id": "agi",
       "name": "AGI",
-      "level": 1,
       "description": "Said 612 times in 70 episodes; first heard here in 2018. An idea, Self-improvement lane.",
       "metadata": {
         "kind": "term",
@@ -576,7 +553,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-sam-altman",
+        "source_node_id": "person-sam-altman",
         "deck": "Sources"
       },
       "sections": {
@@ -590,7 +567,6 @@
     {
       "id": "superintelligence",
       "name": "Superintelligence",
-      "level": 1,
       "description": "Said 483 times in 62 episodes; first heard here in 2018. An outcome, Self-improvement lane.",
       "metadata": {
         "kind": "term",
@@ -599,7 +575,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-daniel-kokotajlo",
+        "source_node_id": "person-daniel-kokotajlo",
         "deck": "Sources"
       },
       "sections": {
@@ -615,13 +591,12 @@
     {
       "id": "lane-rsi",
       "name": "Recursive self-improvement",
-      "level": 2,
       "description": "Since 1965 · 7 seed terms",
       "metadata": {
         "kind": "lane",
         "lane": "Recursive self-improvement"
       },
-      "composite_of": [
+      "parts": [
         "rsi",
         "intelligence-explosion",
         "singularity",
@@ -641,7 +616,6 @@
     {
       "id": "rlhf",
       "name": "RLHF",
-      "level": 1,
       "description": "Said 77 times in 23 episodes; first heard here in 2021. An idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -650,7 +624,7 @@
         "count_reliability": "high",
         "first_heard": "2021",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-eliezer-yudkowsky",
+        "source_node_id": "person-eliezer-yudkowsky",
         "deck": "Sources"
       },
       "sections": {
@@ -665,7 +639,6 @@
     {
       "id": "chain-of-thought",
       "name": "Chain of thought",
-      "level": 1,
       "description": "Said 74 times in 18 episodes; first heard here in 2022. An idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -674,7 +647,7 @@
         "count_reliability": "high",
         "first_heard": "2022",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-dylan-patel",
+        "source_node_id": "person-dylan-patel",
         "deck": "Sources"
       },
       "sections": {
@@ -689,7 +662,6 @@
     {
       "id": "reward-hacking",
       "name": "Reward hacking",
-      "level": 1,
       "description": "Said 53 times in 14 episodes; first heard here in 2021. An outcome, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -698,7 +670,7 @@
         "count_reliability": "high",
         "first_heard": "2021",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-ryan-greenblatt",
+        "source_node_id": "person-ryan-greenblatt",
         "deck": "Sources"
       },
       "sections": {
@@ -714,7 +686,6 @@
     {
       "id": "alignment",
       "name": "Alignment",
-      "level": 1,
       "description": "Said 661 times in 61 episodes; first heard here in 2018. An idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -723,7 +694,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-paul-christiano",
+        "source_node_id": "person-paul-christiano",
         "deck": "Sources"
       },
       "sections": {
@@ -738,7 +709,6 @@
     {
       "id": "interpretability",
       "name": "Interpretability",
-      "level": 1,
       "description": "Said 181 times in 32 episodes; first heard here in 2018. An idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -747,7 +717,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-chris-olah",
+        "source_node_id": "person-chris-olah",
         "deck": "Sources"
       },
       "sections": {
@@ -762,7 +732,6 @@
     {
       "id": "scalable-oversight",
       "name": "Scalable oversight / superalignment",
-      "level": 1,
       "description": "Said 4 times in 4 episodes; first heard here in 2024. An idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -771,7 +740,7 @@
         "count_reliability": "high",
         "first_heard": "2024",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-daniel-kokotajlo",
+        "source_node_id": "person-daniel-kokotajlo",
         "deck": "Sources"
       },
       "sections": {
@@ -786,7 +755,6 @@
     {
       "id": "control",
       "name": "AI control / the control problem",
-      "level": 1,
       "description": "Said 80 times in 29 episodes; first heard here in 2018. An idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -795,7 +763,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-daniel-kokotajlo",
+        "source_node_id": "person-daniel-kokotajlo",
         "deck": "Sources"
       },
       "sections": {
@@ -811,7 +779,6 @@
     {
       "id": "deception",
       "name": "Deception, scheming, alignment faking",
-      "level": 1,
       "description": "Said 120 times in 37 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -820,7 +787,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-yoshua-bengio",
+        "source_node_id": "person-yoshua-bengio",
         "deck": "Sources"
       },
       "sections": {
@@ -836,7 +803,6 @@
     {
       "id": "power-seeking",
       "name": "Power-seeking & instrumental convergence",
-      "level": 1,
       "description": "Said 46 times in 12 episodes; first heard here in 2019. An outcome, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -845,7 +811,7 @@
         "count_reliability": "high",
         "first_heard": "2019",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-holden-karnofsky",
+        "source_node_id": "person-holden-karnofsky",
         "deck": "Sources"
       },
       "sections": {
@@ -860,7 +826,6 @@
     {
       "id": "existential-risk",
       "name": "Existential risk / extinction",
-      "level": 1,
       "description": "Said 119 times in 37 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -869,7 +834,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-stuart-russell",
+        "source_node_id": "person-stuart-russell",
         "deck": "Sources"
       },
       "sections": {
@@ -885,7 +850,6 @@
     {
       "id": "p-doom",
       "name": "p(doom)",
-      "level": 1,
       "description": "Said 8 times in 5 episodes; first heard here in 2024. An outcome, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -894,7 +858,7 @@
         "count_reliability": "high",
         "first_heard": "2024",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-daniel-kokotajlo",
+        "source_node_id": "person-daniel-kokotajlo",
         "deck": "Sources"
       },
       "sections": {
@@ -908,7 +872,6 @@
     {
       "id": "takeover",
       "name": "AI takeover",
-      "level": 1,
       "description": "Said 236 times in 44 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -917,7 +880,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-ryan-greenblatt",
+        "source_node_id": "person-ryan-greenblatt",
         "deck": "Sources"
       },
       "sections": {
@@ -933,7 +896,6 @@
     {
       "id": "bio-misuse",
       "name": "Misuse: bioweapons & pandemics",
-      "level": 1,
       "description": "Said 154 times in 50 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -942,7 +904,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-sam-harris",
+        "source_node_id": "person-sam-harris",
         "deck": "Sources"
       },
       "sections": {
@@ -958,7 +920,6 @@
     {
       "id": "cyber",
       "name": "Cyberattacks",
-      "level": 1,
       "description": "Said 75 times in 28 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -967,7 +928,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-holden-karnofsky",
+        "source_node_id": "person-holden-karnofsky",
         "deck": "Sources"
       },
       "sections": {
@@ -983,7 +944,6 @@
     {
       "id": "race",
       "name": "The race (arms race, US–China)",
-      "level": 1,
       "description": "Said 129 times in 41 episodes; first heard here in 2018. An outcome, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -992,7 +952,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-daniel-kokotajlo",
+        "source_node_id": "person-daniel-kokotajlo",
         "deck": "Sources"
       },
       "sections": {
@@ -1008,7 +968,6 @@
     {
       "id": "pause",
       "name": "Pause / moratorium / stop",
-      "level": 1,
       "description": "Said 52 times in 16 episodes; first heard here in 2021. A regulatory idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -1017,7 +976,7 @@
         "count_reliability": "medium",
         "first_heard": "2021",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-toby-ord",
+        "source_node_id": "person-toby-ord",
         "deck": "Sources"
       },
       "sections": {
@@ -1032,7 +991,6 @@
     {
       "id": "regulation",
       "name": "Regulation",
-      "level": 1,
       "description": "Said 377 times in 63 episodes; first heard here in 2018. A regulatory idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -1041,7 +999,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-daniel-kokotajlo",
+        "source_node_id": "person-daniel-kokotajlo",
         "deck": "Sources"
       },
       "sections": {
@@ -1055,7 +1013,6 @@
     {
       "id": "compute-governance",
       "name": "Compute governance & export controls",
-      "level": 1,
       "description": "Said 28 times in 10 episodes; first heard here in 2023. A regulatory idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -1064,7 +1021,7 @@
         "count_reliability": "high",
         "first_heard": "2023",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-dylan-patel",
+        "source_node_id": "person-dylan-patel",
         "deck": "Sources"
       },
       "sections": {
@@ -1078,7 +1035,6 @@
     {
       "id": "evals",
       "name": "Evals, red-teaming, safety frameworks",
-      "level": 1,
       "description": "Said 76 times in 23 episodes; first heard here in 2018. A regulatory idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -1087,7 +1043,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-holden-karnofsky",
+        "source_node_id": "person-holden-karnofsky",
         "deck": "Sources"
       },
       "sections": {
@@ -1101,7 +1057,6 @@
     {
       "id": "liability",
       "name": "Liability & licensing",
-      "level": 1,
       "description": "Said 90 times in 42 episodes; first heard here in 2018. A regulatory idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -1110,7 +1065,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-ezra-klein",
+        "source_node_id": "person-ezra-klein",
         "deck": "Sources"
       },
       "sections": {
@@ -1124,7 +1079,6 @@
     {
       "id": "treaty",
       "name": "International treaty / IAEA for AI",
-      "level": 1,
       "description": "Said 21 times in 13 episodes; first heard here in 2018. A regulatory idea, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -1133,7 +1087,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-daniel-kokotajlo",
+        "source_node_id": "person-daniel-kokotajlo",
         "deck": "Sources"
       },
       "sections": {
@@ -1147,7 +1101,6 @@
     {
       "id": "ea-rationalists",
       "name": "Effective altruism & rationalists",
-      "level": 1,
       "description": "Said 64 times in 15 episodes; first heard here in 2018. Lore, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -1156,7 +1109,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-david-chalmers",
+        "source_node_id": "person-david-chalmers",
         "deck": "Sources"
       },
       "sections": {
@@ -1170,7 +1123,6 @@
     {
       "id": "basilisk",
       "name": "Roko's basilisk",
-      "level": 1,
       "description": "Not heard in these episodes. Lore, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -1187,7 +1139,6 @@
     {
       "id": "paperclip",
       "name": "The paperclip maximizer",
-      "level": 1,
       "description": "Said 25 times in 15 episodes; first heard here in 2018. Lore, Alignment & safety lane.",
       "metadata": {
         "kind": "term",
@@ -1196,7 +1147,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-eliezer-yudkowsky",
+        "source_node_id": "person-eliezer-yudkowsky",
         "deck": "Sources"
       },
       "sections": {
@@ -1210,13 +1161,12 @@
     {
       "id": "lane-safety",
       "name": "Alignment & safety",
-      "level": 2,
       "description": "Since 1960 · 24 seed terms",
       "metadata": {
         "kind": "lane",
         "lane": "Alignment & safety"
       },
-      "composite_of": [
+      "parts": [
         "rlhf",
         "chain-of-thought",
         "reward-hacking",
@@ -1253,7 +1203,6 @@
     {
       "id": "open-endedness",
       "name": "Open-endedness",
-      "level": 1,
       "description": "Said 29 times in 21 episodes; first heard here in 2019. An idea, Open-ended lane.",
       "metadata": {
         "kind": "term",
@@ -1262,7 +1211,7 @@
         "count_reliability": "high",
         "first_heard": "2019",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-holden-karnofsky",
+        "source_node_id": "person-holden-karnofsky",
         "deck": "Sources"
       },
       "sections": {
@@ -1277,13 +1226,12 @@
     {
       "id": "lane-openended",
       "name": "Open-endedness & co-improvement",
-      "level": 2,
       "description": "Since 2008 · 1 seed term",
       "metadata": {
         "kind": "lane",
         "lane": "Open-endedness & co-improvement"
       },
-      "composite_of": [
+      "parts": [
         "open-endedness"
       ],
       "sections": {
@@ -1297,7 +1245,6 @@
     {
       "id": "multi-agent",
       "name": "Multi-agent & cooperative AI",
-      "level": 1,
       "description": "Said 32 times in 10 episodes; first heard here in 2020. An idea, Multi-agent lane.",
       "metadata": {
         "kind": "term",
@@ -1306,7 +1253,7 @@
         "count_reliability": "high",
         "first_heard": "2020",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-noam-brown",
+        "source_node_id": "person-noam-brown",
         "deck": "Sources"
       },
       "sections": {
@@ -1322,13 +1269,12 @@
     {
       "id": "lane-multi",
       "name": "Multi-agent & cooperative AI",
-      "level": 2,
       "description": "Since 1980 · 1 seed term",
       "metadata": {
         "kind": "lane",
         "lane": "Multi-agent & cooperative AI"
       },
-      "composite_of": [
+      "parts": [
         "multi-agent"
       ],
       "sections": {
@@ -1342,7 +1288,6 @@
     {
       "id": "world-models",
       "name": "World models",
-      "level": 1,
       "description": "Said 53 times in 18 episodes; first heard here in 2018. An idea, World models lane.",
       "metadata": {
         "kind": "term",
@@ -1351,7 +1296,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-yann-lecun",
+        "source_node_id": "person-yann-lecun",
         "deck": "Sources"
       },
       "sections": {
@@ -1366,13 +1311,12 @@
     {
       "id": "lane-world",
       "name": "World models & embodiment",
-      "level": 2,
       "description": "Since 1986 · 1 seed term",
       "metadata": {
         "kind": "lane",
         "lane": "World models & embodiment"
       },
-      "composite_of": [
+      "parts": [
         "world-models"
       ],
       "sections": {
@@ -1386,7 +1330,6 @@
     {
       "id": "continual-learning",
       "name": "Continual learning",
-      "level": 1,
       "description": "Said 38 times in 14 episodes; first heard here in 2018. An idea, Generalization lane.",
       "metadata": {
         "kind": "term",
@@ -1395,7 +1338,7 @@
         "count_reliability": "high",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-dario-amodei",
+        "source_node_id": "person-dario-amodei",
         "deck": "Sources"
       },
       "sections": {
@@ -1410,7 +1353,6 @@
     {
       "id": "generalization",
       "name": "Generalization",
-      "level": 1,
       "description": "Said 198 times in 53 episodes; first heard here in 2018. An idea, Generalization lane.",
       "metadata": {
         "kind": "term",
@@ -1419,7 +1361,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-francois-chollet",
+        "source_node_id": "person-francois-chollet",
         "deck": "Sources"
       },
       "sections": {
@@ -1434,7 +1376,6 @@
     {
       "id": "value-function",
       "name": "Value functions & emotions",
-      "level": 1,
       "description": "Said 22 times in 7 episodes; first heard here in 2020. An idea, Generalization lane.",
       "metadata": {
         "kind": "term",
@@ -1443,7 +1384,7 @@
         "count_reliability": "high",
         "first_heard": "2020",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-ilya-sutskever",
+        "source_node_id": "person-ilya-sutskever",
         "deck": "Sources"
       },
       "sections": {
@@ -1459,7 +1400,6 @@
     {
       "id": "consciousness",
       "name": "Consciousness (human and machine)",
-      "level": 1,
       "description": "Said 1017 times in 62 episodes; first heard here in 2018. An idea, Generalization lane.",
       "metadata": {
         "kind": "term",
@@ -1468,7 +1408,7 @@
         "count_reliability": "medium",
         "first_heard": "2018",
         "source_deck": "sources-of-alignment",
-        "source_item_id": "person-david-chalmers",
+        "source_node_id": "person-david-chalmers",
         "deck": "Sources"
       },
       "sections": {
@@ -1482,13 +1422,12 @@
     {
       "id": "lane-neuro",
       "name": "Brain-inspired learning, continual learning & generalization",
-      "level": 2,
       "description": "Since 1949 · 4 seed terms",
       "metadata": {
         "kind": "lane",
         "lane": "Brain-inspired learning, continual learning & generalization"
       },
-      "composite_of": [
+      "parts": [
         "continual-learning",
         "generalization",
         "value-function",
@@ -1505,12 +1444,11 @@
     {
       "id": "root-ideas",
       "name": "Ideas in the AI debate",
-      "level": 3,
       "description": "A seed draft: the ideas, the lanes of AI research they belong to, and how often they come up.",
       "metadata": {
         "kind": "root"
       },
-      "composite_of": [
+      "parts": [
         "lane-neurosym",
         "lane-scaling",
         "lane-rl",

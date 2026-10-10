@@ -7,7 +7,7 @@
  *   recursive-eco/apps/flow/src/lib/grammar/document-data-to-grammar-json.ts
  * which is the ONE serializer for "app's current grammar -> repo grammar.json":
  *   file = document_data, verbatim,
- *          minus NON_CONTENT_APP_KEYS (top level) and NON_CONTENT_ITEM_KEYS (per item),
+ *          minus NON_CONTENT_APP_KEYS (top level) and NON_CONTENT_ITEM_KEYS (per node),
  *          plus the two `_recursive_eco_*` back-link pointers,
  *          printed with short primitive arrays inline (the authored repo style).
  * So a future `import-from-github` / sync PR sees a byte-shaped file it already understands.
@@ -71,8 +71,8 @@ function serialize(documentData, documentId) {
   const out = {};
   for (const k of Object.keys(documentData)) {
     if (NON_CONTENT_APP_KEYS.has(k) || NEVER_EXPORT_KEYS.has(k)) continue;
-    if (k === 'items' && Array.isArray(documentData.items)) {
-      out.items = documentData.items.map(it => {
+    if (k === 'nodes' && Array.isArray(documentData.nodes)) {
+      out.nodes = documentData.nodes.map(it => {
         if (!it || typeof it !== 'object' || Array.isArray(it)) return it;
         const o = {};
         for (const ik of Object.keys(it)) if (!NON_CONTENT_ITEM_KEYS.has(ik)) o[ik] = it[ik];

@@ -90,7 +90,7 @@ def build():
                 sec["More from it"] = "\n".join(f"- {ext(a['title'], a['url'])}" for a in r["also"])
             sec["Its own site"] = "- " + ext(domain(r["url"]), r["url"])
             leaf_ids.append(add({
-                "id": r["id"], "name": r["name"], "level": 1, "category": "institution",
+                "id": r["id"], "name": r["name"], "category": "institution",
                 "description": r["what_it_does"],
                 "keywords": [g["name"]],
                 "metadata": {"kind": "institution", "url": r["url"], "domain": domain(r["url"]),
@@ -98,18 +98,18 @@ def build():
                 "sections": sec,
             }))
         group_ids.append(add({
-            "id": g["id"], "name": g["name"], "level": 2,
+            "id": g["id"], "name": g["name"],
             "description": g["about"],
             "metadata": {"kind": "group"},
-            "composite_of": leaf_ids,
+            "parts": leaf_ids,
             "sections": {"What it gathers": f"{g['about']}\n\n{len(leaf_ids)} organisation{'s' if len(leaf_ids) != 1 else ''} here."},
         }))
     n = len(D["institutions"])
     add({
-        "id": "root-institutions", "name": "Institutions", "level": 3,
+        "id": "root-institutions", "name": "Institutions",
         "description": f"{n} organisations working on alignment, AI safety and humane technology, grouped by the kind of work they do.",
         "metadata": {"kind": "root"},
-        "composite_of": group_ids,
+        "parts": group_ids,
         "sections": {
             "What it is": (f"{n} organisations working on alignment, AI safety and humane technology, by quite "
                            "different routes. Each card describes the organisation from its own site and links "
@@ -146,7 +146,7 @@ def grammar(items, n, checked):
     out.update({k: g[k] for k in ("creator_link", "default_view", "provenance")})
     out.update(st)
     out.update({k: g[k] for k in ("description", "tags", "is_published")})
-    out["items"] = items
+    out["nodes"] = items
     return out
 
 

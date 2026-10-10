@@ -25,7 +25,7 @@
     "grammars/ideas-of-alignment/grammar.json",
     "grammars/words-deck/grammar.json"
   ],
-  "_inputs_sha256": "2defb059ee07d7b02c471ae9e6ccea969bba4d67d854a4bbca6f15042f9182a7",
+  "_inputs_sha256": "151ac08de503cae70f673b336416affcad3b0200f8137c1eaff4baafaee82f4f",
   "description": "Every castable card on the site in one pool, as pointers: the Words deck and the Ideas seed map. The Spread Caster draws from it; each card's entry opens from its own deck.",
   "tags": [
     "meta",
@@ -52,18 +52,17 @@
       "cards": 52
     }
   ],
-  "items": [
+  "nodes": [
     {
       "id": "words--alignment",
       "name": "Alignment",
-      "level": 1,
       "keywords": [
         "Alignment",
         "standard"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "alignment",
+        "source_node_id": "alignment",
         "deck": "Words",
         "castable": true
       },
@@ -72,14 +71,13 @@
     {
       "id": "words--human-human-alignment",
       "name": "Human-human alignment",
-      "level": 1,
       "keywords": [
         "Alignment",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "human-human-alignment",
+        "source_node_id": "human-human-alignment",
         "deck": "Words",
         "castable": true
       },
@@ -88,14 +86,13 @@
     {
       "id": "words--human-ai-alignment",
       "name": "Human-AI alignment",
-      "level": 1,
       "keywords": [
         "Alignment",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "human-ai-alignment",
+        "source_node_id": "human-ai-alignment",
         "deck": "Words",
         "castable": true
       },
@@ -104,14 +101,13 @@
     {
       "id": "words--intent",
       "name": "Intent",
-      "level": 1,
       "keywords": [
         "Value",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "intent",
+        "source_node_id": "intent",
         "deck": "Words",
         "castable": true
       },
@@ -120,14 +116,13 @@
     {
       "id": "words--disposition",
       "name": "Disposition",
-      "level": 1,
       "keywords": [
         "Value",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "disposition",
+        "source_node_id": "disposition",
         "deck": "Words",
         "castable": true
       },
@@ -136,14 +131,13 @@
     {
       "id": "words--value-function",
       "name": "Value function",
-      "level": 1,
       "keywords": [
         "Value",
         "standard"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "value-function",
+        "source_node_id": "value-function",
         "deck": "Words",
         "castable": true
       },
@@ -152,14 +146,13 @@
     {
       "id": "words--access",
       "name": "Access",
-      "level": 1,
       "keywords": [
         "Access & channels",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "access",
+        "source_node_id": "access",
         "deck": "Words",
         "castable": true
       },
@@ -168,14 +161,13 @@
     {
       "id": "words--channel",
       "name": "Channel",
-      "level": 1,
       "keywords": [
         "Access & channels",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "channel",
+        "source_node_id": "channel",
         "deck": "Words",
         "castable": true
       },
@@ -184,14 +176,13 @@
     {
       "id": "words--trained-collaboration",
       "name": "Trained collaboration",
-      "level": 1,
       "keywords": [
         "Access & channels",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "trained-collaboration",
+        "source_node_id": "trained-collaboration",
         "deck": "Words",
         "castable": true
       },
@@ -200,14 +191,13 @@
     {
       "id": "words--breach",
       "name": "Breach",
-      "level": 1,
       "keywords": [
         "Access & channels",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "breach",
+        "source_node_id": "breach",
         "deck": "Words",
         "castable": true
       },
@@ -216,14 +206,13 @@
     {
       "id": "words--guardrail-inner",
       "name": "Guardrail, inner",
-      "level": 1,
       "keywords": [
         "Guardrails",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "guardrail-inner",
+        "source_node_id": "guardrail-inner",
         "deck": "Words",
         "castable": true
       },
@@ -232,14 +221,13 @@
     {
       "id": "words--guardrail-outer",
       "name": "Guardrail, outer",
-      "level": 1,
       "keywords": [
         "Guardrails",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "guardrail-outer",
+        "source_node_id": "guardrail-outer",
         "deck": "Words",
         "castable": true
       },
@@ -248,14 +236,13 @@
     {
       "id": "words--presence",
       "name": "Presence",
-      "level": 1,
       "keywords": [
         "Guardrails",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "presence",
+        "source_node_id": "presence",
         "deck": "Words",
         "castable": true
       },
@@ -264,14 +251,13 @@
     {
       "id": "words--reversibility",
       "name": "Reversibility",
-      "level": 1,
       "keywords": [
         "Guardrails",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "reversibility",
+        "source_node_id": "reversibility",
         "deck": "Words",
         "castable": true
       },
@@ -280,14 +266,13 @@
     {
       "id": "words--bad-actor-scenario",
       "name": "Bad-actor scenario",
-      "level": 1,
       "keywords": [
         "Scenarios",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "bad-actor-scenario",
+        "source_node_id": "bad-actor-scenario",
         "deck": "Words",
         "castable": true
       },
@@ -296,14 +281,13 @@
     {
       "id": "words--misaligned-asi-scenario",
       "name": "Misaligned-ASI scenario",
-      "level": 1,
       "keywords": [
         "Scenarios",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "misaligned-asi-scenario",
+        "source_node_id": "misaligned-asi-scenario",
         "deck": "Words",
         "castable": true
       },
@@ -312,14 +296,13 @@
     {
       "id": "words--two-geopolitics",
       "name": "The two geopolitics",
-      "level": 1,
       "keywords": [
         "Scenarios",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "two-geopolitics",
+        "source_node_id": "two-geopolitics",
         "deck": "Words",
         "castable": true
       },
@@ -328,14 +311,13 @@
     {
       "id": "words--what-held",
       "name": "What held",
-      "level": 1,
       "keywords": [
         "Records",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "what-held",
+        "source_node_id": "what-held",
         "deck": "Words",
         "castable": true
       },
@@ -344,14 +326,13 @@
     {
       "id": "words--recorded",
       "name": "Recorded",
-      "level": 1,
       "keywords": [
         "Records",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "recorded",
+        "source_node_id": "recorded",
         "deck": "Words",
         "castable": true
       },
@@ -360,14 +341,13 @@
     {
       "id": "words--staged",
       "name": "Staged",
-      "level": 1,
       "keywords": [
         "Records",
         "ours"
       ],
       "metadata": {
         "source_deck": "words-deck",
-        "source_item_id": "staged",
+        "source_node_id": "staged",
         "deck": "Words",
         "castable": true
       },
@@ -376,13 +356,12 @@
     {
       "id": "deck-words",
       "name": "Words",
-      "level": 2,
       "description": "The twenty working words of the glossary, one card each. 20 cards.",
       "metadata": {
         "kind": "deck",
         "deck_slug": "words-deck"
       },
-      "composite_of": [
+      "parts": [
         "words--alignment",
         "words--human-human-alignment",
         "words--human-ai-alignment",
@@ -409,10 +388,9 @@
     {
       "id": "ideas--arc",
       "name": "ARC / skill-acquisition",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "arc",
+        "source_node_id": "arc",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -421,10 +399,9 @@
     {
       "id": "ideas--symbolic",
       "name": "Symbolic AI & program synthesis",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "symbolic",
+        "source_node_id": "symbolic",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -433,10 +410,9 @@
     {
       "id": "ideas--scaling-laws",
       "name": "Scaling laws",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "scaling-laws",
+        "source_node_id": "scaling-laws",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -445,10 +421,9 @@
     {
       "id": "ideas--bitter-lesson",
       "name": "The bitter lesson",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "bitter-lesson",
+        "source_node_id": "bitter-lesson",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -457,10 +432,9 @@
     {
       "id": "ideas--pretraining",
       "name": "Pretraining",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "pretraining",
+        "source_node_id": "pretraining",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -469,10 +443,9 @@
     {
       "id": "ideas--data-wall",
       "name": "Data wall / synthetic data",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "data-wall",
+        "source_node_id": "data-wall",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -481,10 +454,9 @@
     {
       "id": "ideas--compute",
       "name": "Compute (chips, data centres)",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "compute",
+        "source_node_id": "compute",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -493,10 +465,9 @@
     {
       "id": "ideas--emergence",
       "name": "Emergent abilities",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "emergence",
+        "source_node_id": "emergence",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -505,10 +476,9 @@
     {
       "id": "ideas--jobs",
       "name": "Jobs & labour",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "jobs",
+        "source_node_id": "jobs",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -517,10 +487,9 @@
     {
       "id": "ideas--china",
       "name": "China",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "china",
+        "source_node_id": "china",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -529,10 +498,9 @@
     {
       "id": "ideas--open-source",
       "name": "Open source / open weights",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "open-source",
+        "source_node_id": "open-source",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -541,10 +509,9 @@
     {
       "id": "ideas--self-play",
       "name": "Self-play",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "self-play",
+        "source_node_id": "self-play",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -553,10 +520,9 @@
     {
       "id": "ideas--reasoning-rl",
       "name": "Reasoning models & test-time compute",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "reasoning-rl",
+        "source_node_id": "reasoning-rl",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -565,10 +531,9 @@
     {
       "id": "ideas--agents",
       "name": "AI agents",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "agents",
+        "source_node_id": "agents",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -577,10 +542,9 @@
     {
       "id": "ideas--rsi",
       "name": "Recursive self-improvement",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "rsi",
+        "source_node_id": "rsi",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -589,10 +553,9 @@
     {
       "id": "ideas--intelligence-explosion",
       "name": "Intelligence explosion",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "intelligence-explosion",
+        "source_node_id": "intelligence-explosion",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -601,10 +564,9 @@
     {
       "id": "ideas--singularity",
       "name": "The singularity",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "singularity",
+        "source_node_id": "singularity",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -613,10 +575,9 @@
     {
       "id": "ideas--takeoff",
       "name": "Takeoff speed (fast / slow)",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "takeoff",
+        "source_node_id": "takeoff",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -625,10 +586,9 @@
     {
       "id": "ideas--automated-researcher",
       "name": "Automated AI researcher",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "automated-researcher",
+        "source_node_id": "automated-researcher",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -637,10 +597,9 @@
     {
       "id": "ideas--agi",
       "name": "AGI",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "agi",
+        "source_node_id": "agi",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -649,10 +608,9 @@
     {
       "id": "ideas--superintelligence",
       "name": "Superintelligence",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "superintelligence",
+        "source_node_id": "superintelligence",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -661,10 +619,9 @@
     {
       "id": "ideas--rlhf",
       "name": "RLHF",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "rlhf",
+        "source_node_id": "rlhf",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -673,10 +630,9 @@
     {
       "id": "ideas--chain-of-thought",
       "name": "Chain of thought",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "chain-of-thought",
+        "source_node_id": "chain-of-thought",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -685,10 +641,9 @@
     {
       "id": "ideas--reward-hacking",
       "name": "Reward hacking",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "reward-hacking",
+        "source_node_id": "reward-hacking",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -697,10 +652,9 @@
     {
       "id": "ideas--alignment",
       "name": "Alignment",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "alignment",
+        "source_node_id": "alignment",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -709,10 +663,9 @@
     {
       "id": "ideas--interpretability",
       "name": "Interpretability",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "interpretability",
+        "source_node_id": "interpretability",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -721,10 +674,9 @@
     {
       "id": "ideas--scalable-oversight",
       "name": "Scalable oversight / superalignment",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "scalable-oversight",
+        "source_node_id": "scalable-oversight",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -733,10 +685,9 @@
     {
       "id": "ideas--control",
       "name": "AI control / the control problem",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "control",
+        "source_node_id": "control",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -745,10 +696,9 @@
     {
       "id": "ideas--deception",
       "name": "Deception, scheming, alignment faking",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "deception",
+        "source_node_id": "deception",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -757,10 +707,9 @@
     {
       "id": "ideas--power-seeking",
       "name": "Power-seeking & instrumental convergence",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "power-seeking",
+        "source_node_id": "power-seeking",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -769,10 +718,9 @@
     {
       "id": "ideas--existential-risk",
       "name": "Existential risk / extinction",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "existential-risk",
+        "source_node_id": "existential-risk",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -781,10 +729,9 @@
     {
       "id": "ideas--p-doom",
       "name": "p(doom)",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "p-doom",
+        "source_node_id": "p-doom",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -793,10 +740,9 @@
     {
       "id": "ideas--takeover",
       "name": "AI takeover",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "takeover",
+        "source_node_id": "takeover",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -805,10 +751,9 @@
     {
       "id": "ideas--bio-misuse",
       "name": "Misuse: bioweapons & pandemics",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "bio-misuse",
+        "source_node_id": "bio-misuse",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -817,10 +762,9 @@
     {
       "id": "ideas--cyber",
       "name": "Cyberattacks",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "cyber",
+        "source_node_id": "cyber",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -829,10 +773,9 @@
     {
       "id": "ideas--race",
       "name": "The race (arms race, US–China)",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "race",
+        "source_node_id": "race",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -841,10 +784,9 @@
     {
       "id": "ideas--pause",
       "name": "Pause / moratorium / stop",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "pause",
+        "source_node_id": "pause",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -853,10 +795,9 @@
     {
       "id": "ideas--regulation",
       "name": "Regulation",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "regulation",
+        "source_node_id": "regulation",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -865,10 +806,9 @@
     {
       "id": "ideas--compute-governance",
       "name": "Compute governance & export controls",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "compute-governance",
+        "source_node_id": "compute-governance",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -877,10 +817,9 @@
     {
       "id": "ideas--evals",
       "name": "Evals, red-teaming, safety frameworks",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "evals",
+        "source_node_id": "evals",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -889,10 +828,9 @@
     {
       "id": "ideas--liability",
       "name": "Liability & licensing",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "liability",
+        "source_node_id": "liability",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -901,10 +839,9 @@
     {
       "id": "ideas--treaty",
       "name": "International treaty / IAEA for AI",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "treaty",
+        "source_node_id": "treaty",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -913,10 +850,9 @@
     {
       "id": "ideas--ea-rationalists",
       "name": "Effective altruism & rationalists",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "ea-rationalists",
+        "source_node_id": "ea-rationalists",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -925,10 +861,9 @@
     {
       "id": "ideas--basilisk",
       "name": "Roko's basilisk",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "basilisk",
+        "source_node_id": "basilisk",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -937,10 +872,9 @@
     {
       "id": "ideas--paperclip",
       "name": "The paperclip maximizer",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "paperclip",
+        "source_node_id": "paperclip",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -949,10 +883,9 @@
     {
       "id": "ideas--open-endedness",
       "name": "Open-endedness",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "open-endedness",
+        "source_node_id": "open-endedness",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -961,10 +894,9 @@
     {
       "id": "ideas--multi-agent",
       "name": "Multi-agent & cooperative AI",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "multi-agent",
+        "source_node_id": "multi-agent",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -973,10 +905,9 @@
     {
       "id": "ideas--world-models",
       "name": "World models",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "world-models",
+        "source_node_id": "world-models",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -985,10 +916,9 @@
     {
       "id": "ideas--continual-learning",
       "name": "Continual learning",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "continual-learning",
+        "source_node_id": "continual-learning",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -997,10 +927,9 @@
     {
       "id": "ideas--generalization",
       "name": "Generalization",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "generalization",
+        "source_node_id": "generalization",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -1009,10 +938,9 @@
     {
       "id": "ideas--value-function",
       "name": "Value functions & emotions",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "value-function",
+        "source_node_id": "value-function",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -1021,10 +949,9 @@
     {
       "id": "ideas--consciousness",
       "name": "Consciousness (human and machine)",
-      "level": 1,
       "metadata": {
         "source_deck": "ideas-of-alignment",
-        "source_item_id": "consciousness",
+        "source_node_id": "consciousness",
         "deck": "Ideas (draft)",
         "castable": true
       },
@@ -1033,13 +960,12 @@
     {
       "id": "deck-ideas",
       "name": "Ideas (draft)",
-      "level": 2,
       "description": "The seed terms of the lab's map of the AI debate: interpretation, a draft. 52 cards.",
       "metadata": {
         "kind": "deck",
         "deck_slug": "ideas-of-alignment"
       },
-      "composite_of": [
+      "parts": [
         "ideas--arc",
         "ideas--symbolic",
         "ideas--scaling-laws",
@@ -1098,12 +1024,11 @@
     {
       "id": "root-all-decks",
       "name": "All decks",
-      "level": 3,
       "description": "Every castable card on the site, as pointers to its own deck.",
       "metadata": {
         "kind": "root"
       },
-      "composite_of": [
+      "parts": [
         "deck-words",
         "deck-ideas"
       ],

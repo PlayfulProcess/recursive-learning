@@ -19,7 +19,7 @@ Each term card: the term (name), standard or ours, the definition, the note, the
 (optional `reading`: the project's own use of a standard term, kept apart from its definition), "When you draw it"
 (the term's `draw` question) and the related words, as links that open the related card. The
 related words are links inside a section rather than a new link field: the site keeps one
-cross-grammar link pattern (metadata.source_deck + source_item_id + deck, the "Open in X" pill),
+cross-grammar link pattern (metadata.source_deck + source_node_id + deck, the "Open in X" pill),
 and a pill to a card in the same deck is hidden by the cards viewer, so it could not carry them.
 The deck holds one card per term and nothing else: no group or root items. The glossary's
 sections ride on each card as `metadata.section` (and a keyword), which the explorer offers as a
@@ -177,7 +177,6 @@ def build_grammar(terms_doc, spreads_doc, digest):
         items.append({
             "id": t["id"],
             "name": t["term"],
-            "level": 1,
             "category": "term",
             "sort_order": i,
             "keywords": [sec_title[t["section"]], standing],
@@ -219,7 +218,7 @@ def build_grammar(terms_doc, spreads_doc, digest):
         "description": description,
         "tags": ["words", "glossary", "alignment", "ai", "cards"],
         "is_published": True,
-        "items": items,
+        "nodes": items,
     }
 
 
@@ -273,7 +272,7 @@ def main():
         p = base / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_bytes(dumps(obj).encode("utf-8"))
-    print(f"words-deck: {len(grammar['items'])} cards; spreads: {len(spreads['spreads'])} -> {base.as_posix()}")
+    print(f"words-deck: {len(grammar['nodes'])} cards; spreads: {len(spreads['spreads'])} -> {base.as_posix()}")
 
 
 if __name__ == "__main__":

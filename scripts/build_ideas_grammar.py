@@ -19,7 +19,7 @@ Shape: root-ideas (3) -> lane-<genealogy lane> (2) -> <term id> (1). Term ids ar
 
 Numbers are derived only (no caption text): mentions, episodes, first episode in which a term
 comes up, per-year episodes (scaled by episodes that year, PRIORITIES #12), whose episodes carry it
-most, and co-mentions. Each term's one pill (metadata.source_deck + source_item_id + deck) goes to
+most, and co-mentions. Each term's one pill (metadata.source_deck + source_node_id + deck) goes to
 the person whose episodes carry it most, in Sources; the rest are markdown links to the cards.
 No metadata.url, no metadata.youtube_url, no section named Link or URL.
 Python standard library only.
@@ -183,7 +183,7 @@ def build():
                     "Counted in the episodes where they are a guest. The captions do not say who is speaking, so "
                     "some of these may be the host.\n" + "\n".join(lines))
                 top = t["top_people"][0][0]
-                meta.update({"source_deck": SOURCES, "source_item_id": person_id(top), "deck": "Sources"})
+                meta.update({"source_deck": SOURCES, "source_node_id": person_id(top), "deck": "Sources"})
             if t["alongside"]:
                 sec["Often said alongside"] = "Terms that come up within the same two minutes most often: " + \
                     ", ".join(f"{card(SLUG, b, label.get(b, b))} ({n})" for b, n in t["alongside"]) + "."
@@ -208,7 +208,7 @@ def build():
             sec["How it was counted"] = how
             desc = (f"Said {times(t['mentions'])} in {episodes_word(t['episodes'])}; first heard here in {f['date'][:4]}. "
                     if t["mentions"] else "Not heard in these episodes. ") + f"{LAYER.get(t['layer'], t['layer']).capitalize()}, {l['short'] or l['name']} lane."
-            tids.append(add({"id": t["id"], "name": t["label"], "level": 1, "description": desc,
+            tids.append(add({"id": t["id"], "name": t["label"], "description": desc,
                              "metadata": meta, "sections": sec}))
         lr = LANE_REVIEW.get(l["id"]) or {}
         src = [f"- {ext(s['title'], s['url'])}" for s in list(l["sources"]) + lr.get("sources", []) if ok(s["url"])]
@@ -223,16 +223,16 @@ def build():
         if src:
             lsec["Sources"] = "\n".join(src)
         lane_ids.append(add({
-            "id": "lane-" + l["id"], "name": l["name"], "level": 2,
+            "id": "lane-" + l["id"], "name": l["name"],
             "description": f"Since {int(l['start'])} · {len(tids)} seed term{'s' if len(tids) != 1 else ''}",
             "metadata": {"kind": "lane", "lane": l["name"]},
-            "composite_of": tids, "sections": lsec,
+            "parts": tids, "sections": lsec,
         }))
     add({
-        "id": "root-ideas", "name": "Ideas in the AI debate", "level": 3,
+        "id": "root-ideas", "name": "Ideas in the AI debate",
         "description": "A seed draft: the ideas, the lanes of AI research they belong to, and how often they come up.",
         "metadata": {"kind": "root"},
-        "composite_of": lane_ids,
+        "parts": lane_ids,
         "sections": {
             "What it is": (f"{len(I['terms'])} seed terms from the lab's map of the AI debate, placed in the lanes of its "
                            f"genealogy of AI research. For each: how often it comes up in {n_cap} podcast episodes with "
@@ -280,7 +280,7 @@ def grammar(items):
                         "long episodes weigh more, and recent years have more episodes. Awaiting review."),
         "tags": ["ideas", "alignment", "ai", "genealogy", "draft"],
         "is_published": True,
-        "items": items,
+        "nodes": items,
     }
 
 

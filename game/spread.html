@@ -1000,7 +1000,7 @@ function plain(md){ return String(md || '').replace(/\*\*/g, '').replace(/\[([^\
 function seatCoin(name){ var h = 7; for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) | 0;
   return makeRng(((seed ^ h) | 0) + 0x5bd1e995)() < 0.5; }   // true = reversed
 function buildSeats(g){
-  var chars = (g.items || []).filter(function(it){ return it && SEATS[it.name]; });
+  var chars = (g.nodes || []).filter(function(it){ return it && SEATS[it.name]; });
   if (!chars.length) return;
   deck = g; var row = document.getElementById('seatrow'); row.textContent = '';
   chars.forEach(function(it){
@@ -1069,7 +1069,7 @@ function stepKey(){ return 'walk:step:' + seed; }
 function asymKey(){ return 'walk:asym:' + seed; }
 function tagOf(it){ var k = it.keywords || []; for (var i = 0; i < TAGS.length; i++) if (k.indexOf(TAGS[i]) >= 0) return TAGS[i]; return ''; }
 function buildSteps(g){
-  actions = (g.items || []).filter(function(it){ return it && (it.keywords || []).indexOf('action') >= 0 && !(it.metadata && it.metadata.status === 'parked'); });
+  actions = (g.nodes || []).filter(function(it){ return it && (it.keywords || []).indexOf('action') >= 0 && !(it.metadata && it.metadata.status === 'parked'); });
   if (!actions.length) return;
   var row = document.getElementById('steprow'); row.textContent = '';
   actions.forEach(function(it){

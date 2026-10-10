@@ -114,6 +114,10 @@ Purple (`#9333ea`) stays reserved for links to recursive.eco. The token names st
 
 ## Grammars and the app
 
+- Grammars are **format v2** (Oct 10 2026, recursive-eco `docs/architecture/model-track/FORMAT-V2-NODES.md`):
+  a grammar's array is `nodes`, a node's children are `parts`, links are `ref_grammar_id` /
+  `ref_node_id`, a named pick is `category: "selection"`, and there is no stored `level` (the
+  viewers compute depth from `parts`). No reader accepts the v1 names.
 - Grammars live in `grammars/<slug>/grammar.json`. The app-owned ones (the films, the courses,
   the As-If deck `0489bd30…`) come from `scripts/export-grammars.mjs`; never hand-edit them.
 - **Generated grammars** (`words-deck`, `sources-of-alignment`, `ideas-of-alignment`,
@@ -144,7 +148,7 @@ Purple (`#9333ea`) stays reserved for links to recursive.eco. The token names st
   pointer stubs to the Words deck and the Ideas seed map (curated in `DECKS` there), with `_decks`.
 - The Words emblems drafted by an agent (`grammars/words-deck/emblems/`) are NOT committed and
   NOT wired in: rule 4 counts them as AI images until PlayfulProcess says otherwise.
-- **One cross-link pattern**: `metadata.source_deck` + `metadata.source_item_id` + `metadata.deck`
+- **One cross-link pattern**: `metadata.source_deck` + `metadata.source_node_id` + `metadata.deck`
   renders the "Open in X →" pill and the framed embed (`viewers/reference-resolve.js`). Never add
   another link field; never name a section Link or URL and never set `metadata.youtube_url`
   (cards.html turns both into whole-card redirects); only institutions carry `metadata.url`.

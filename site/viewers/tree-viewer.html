@@ -825,9 +825,9 @@
         }
 
         function computeLevel(item) {
-            if (!item.composite_of || item.composite_of.length === 0) return 1;
+            if (!item.parts || item.parts.length === 0) return 1;
             let max = 0;
-            for (const cid of item.composite_of) {
+            for (const cid of item.parts) {
                 const child = itemMap[cid];
                 if (child) max = Math.max(max, computeLevel(child));
             }
@@ -837,9 +837,9 @@
         /** Get all descendant IDs of an item (recursive) */
         function getDescendantIds(itemId) {
             const item = itemMap[itemId];
-            if (!item || !item.composite_of) return new Set();
+            if (!item || !item.parts) return new Set();
             const ids = new Set();
-            item.composite_of.forEach(cid => {
+            item.parts.forEach(cid => {
                 ids.add(cid);
                 getDescendantIds(cid).forEach(d => ids.add(d));
             });
@@ -852,14 +852,14 @@
         // grammar with no pill-groups is unaffected (absent render_as => unchanged).
         let selectedPills = {}; // groupId -> Set(pillId). OR within a group, AND across groups.
         function getPillGroups() {
-            return allItems.filter(i => i.render_as === 'pill-group' && Array.isArray(i.composite_of) && i.composite_of.length);
+            return allItems.filter(i => i.render_as === 'pill-group' && Array.isArray(i.parts) && i.parts.length);
         }
         function getPillExcludeSet() {
             const s = new Set();
-            getPillGroups().forEach(g => { s.add(g.id); g.composite_of.forEach(id => s.add(id)); });
+            getPillGroups().forEach(g => { s.add(g.id); g.parts.forEach(id => s.add(id)); });
             return s;
         }
-        function isLeafCard(item) { return !!item && (!item.composite_of || item.composite_of.length === 0); }
+        function isLeafCard(item) { return !!item && (!item.parts || item.parts.length === 0); }
         function cardsUnder(itemId) {
             const out = new Set();
             const it = itemMap[itemId];
@@ -990,7 +990,7 @@
             window._treeGrammar = data;
 
             // Extract items (handle different formats)
-            let rawItems = data.items || [];
+            let rawItems = data.nodes || [];
             if (data.emergences) {
                 const existingIds = new Set(rawItems.map(i => i.id));
                 data.emergences.forEach(e => {
@@ -1004,10 +1004,10 @@
                 });
             }
 
-            // Backward compat: convert legacy ref_document_id to grammars[] URL
+            // A reference node's ref_grammar_id becomes a grammars[] URL
             rawItems.forEach(item => {
-                if (!item.grammars && item.ref_document_id) {
-                    item.grammars = [`/play?id=${item.ref_document_id}`];
+                if (!item.grammars && item.ref_grammar_id) {
+                    item.grammars = [`/play?id=${item.ref_grammar_id}`];
                 }
             });
 
@@ -1016,7 +1016,7 @@
                 itemMap[item.id] = item;
             });
 
-            // Compute levels
+            // Compute levels: depth from parts (never a stored level)
             rawItems.forEach(item => {
                 item.level = computeLevel(item);
             });
@@ -1028,7 +1028,7 @@
             await resolveGrammarRefs(allItems);
 
             // Check if there are any composite items
-            const hasComposites = allItems.some(i => i.composite_of && i.composite_of.length > 0);
+            const hasComposites = allItems.some(i => i.parts && i.parts.length > 0);
 
             if (!hasComposites) {
                 document.getElementById('loading-state').classList.add('hidden');
@@ -1115,7 +1115,7 @@
             const m = /^#focus=(.*)$/.exec(location.hash || '');
             if (!m) return [];
             return m[1].split('/').map(x => { try { return decodeURIComponent(x); } catch (_) { return x; } })
-                .filter(id => itemMap[id] && itemMap[id].composite_of && itemMap[id].composite_of.length);
+                .filter(id => itemMap[id] && itemMap[id].parts && itemMap[id].parts.length);
         }
         window.addEventListener('popstate', () => {
             if (!allItems || !allItems.length) return;
@@ -1166,7 +1166,7 @@
             if (!item) return;
 
             // If this item has no children, don't focus — open modal instead
-            if (!item.composite_of || item.composite_of.length === 0) {
+            if (!item.parts || item.parts.length === 0) {
                 openModal(item);
                 return;
             }
@@ -1257,7 +1257,7 @@
             groups.forEach(g => {
                 const sel = selectedPills[g.id] || new Set();
                 html += `<div class="pill-group"><span class="pill-group-label">${escapeHtml(g.name)}</span>`;
-                g.composite_of.forEach(pid => {
+                g.parts.forEach(pid => {
                     const p = itemMap[pid]; if (!p) return;
                     const active = sel.has(pid);
                     html += `<button class="pill-chip${active ? ' active' : ''}" data-group="${escapeHtml(g.id)}" data-pill="${escapeHtml(pid)}">${escapeHtml(p.name)}<span class="pill-count">${cardsUnder(pid).size}</span></button>`;
@@ -1411,7 +1411,7 @@
         }
 
         function createNode(item) {
-            const isComposite = item.composite_of && item.composite_of.length > 0;
+            const isComposite = item.parts && item.parts.length > 0;
 
             const node = document.createElement('div');
             node.className = 'tree-node' + (isComposite ? ' is-composite' : '');
@@ -1507,7 +1507,7 @@
                 parentNodes.forEach(parentEl => {
                     const parentId = parentEl.dataset.itemId;
                     const parentItem = itemMap[parentId];
-                    if (!parentItem || !parentItem.composite_of) return;
+                    if (!parentItem || !parentItem.parts) return;
 
                     const parentVisual = parentEl.querySelector('.node-visual');
                     const parentRect = parentVisual.getBoundingClientRect();
@@ -1517,7 +1517,7 @@
                     // Get color for this parent's connections
                     const color = getParentColor(parentId);
 
-                    parentItem.composite_of.forEach(childId => {
+                    parentItem.parts.forEach(childId => {
                         const childEl = canvas.querySelector(`.tree-level[data-level="${toLevel}"]:not(.collapsed) .tree-node[data-item-id="${childId}"]`);
                         if (!childEl) return;
 
@@ -1553,8 +1553,8 @@
             // Build reverse lookup: child → parents
             const childToParents = {};
             Object.values(itemMap).forEach(item => {
-                if (item.composite_of) {
-                    item.composite_of.forEach(childId => {
+                if (item.parts) {
+                    item.parts.forEach(childId => {
                         if (!childToParents[childId]) childToParents[childId] = [];
                         childToParents[childId].push(item.id);
                     });
@@ -1569,11 +1569,11 @@
 
                     // Collect all connected node IDs
                     const connectedIds = new Set([nodeId]);
-                    // Children (this node is parent, composite_of lists children)
-                    if (item.composite_of) {
-                        item.composite_of.forEach(id => connectedIds.add(id));
+                    // Children (this node is parent, parts lists children)
+                    if (item.parts) {
+                        item.parts.forEach(id => connectedIds.add(id));
                     }
-                    // Parents (other nodes that list this node in composite_of)
+                    // Parents (other nodes that list this node in parts)
                     if (childToParents[nodeId]) {
                         childToParents[nodeId].forEach(id => connectedIds.add(id));
                     }
@@ -1645,21 +1645,21 @@
 
             // Resolved SOURCE card content (repo-local, reference-resolve.js) — additive, never
             // replacing the node's own content above. Meta cards carry metadata.source_deck +
-            // metadata.source_item_id (the repo-native counterpart of the private app's
-            // ref_document_id/ref_item_id pointer). Detection is purely data-driven.
+            // metadata.source_node_id (the repo-native counterpart of the private app's
+            // ref_grammar_id/ref_node_id pointer). Detection is purely data-driven.
             const refMeta = item.metadata || {};
             const refSrcDeck = refMeta.source_deck;
-            const refSrcItem = refMeta.source_item_id;
+            const refSrcItem = refMeta.source_node_id;
             if (refSrcDeck && refSrcItem) {
                 const refDeckLabel = refMeta.deck || refSrcDeck;
                 html += `<div id="modal-ref-panel" class="modal-ref-panel"><div class="modal-section-content">Loading from ${escapeHtml(refDeckLabel)}&hellip;</div></div>`;
             }
 
-            // Components (composite_of)
-            if (item.composite_of && item.composite_of.length > 0) {
+            // Components (parts)
+            if (item.parts && item.parts.length > 0) {
                 html += `<div class="modal-section-title">Composed of</div>`;
                 html += `<div class="modal-components">`;
-                item.composite_of.forEach(cid => {
+                item.parts.forEach(cid => {
                     const child = itemMap[cid];
                     if (child) {
                         html += `<span class="modal-component-chip" onclick="closeModal();setTimeout(()=>openModal(itemMap['${cid}']),100)">${escapeHtml(child.symbol || '')} ${escapeHtml(child.name)}</span>`;
@@ -1673,7 +1673,7 @@
 
             // Parents (which items is this a component of?)
             const parents = allItems.filter(i =>
-                i.composite_of && i.composite_of.includes(item.id)
+                i.parts && i.parts.includes(item.id)
             );
             if (parents.length > 0) {
                 html += `<div class="modal-section-title">Component of</div>`;

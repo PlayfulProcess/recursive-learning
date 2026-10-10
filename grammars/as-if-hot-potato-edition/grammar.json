@@ -8,7 +8,7 @@
     "private-research",
     "community-deck"
   ],
-  "items": [
+  "nodes": [
     {
       "id": "cf90e8f7-8905-4a1f-8e90-7f6e545932bd",
       "name": "How to play — As-If",
@@ -956,7 +956,7 @@
       },
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/8_pointed_star_shapes.svg",
       "sort_order": 38,
-      "composite_of": [
+      "parts": [
         "1505aa7b-a57b-4973-a48e-ea5ef7fd329e",
         "bbb19821-7456-4d66-9867-1c9afae6379b",
         "97ca2851-aa87-4b18-994b-932b55d9dec0"

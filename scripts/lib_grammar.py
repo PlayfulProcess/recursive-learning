@@ -82,9 +82,9 @@ def check_ids(items):
         raise SystemExit(f"duplicate item ids: {dup}")
     ids = seen
     for it in items:
-        for c in it.get("composite_of") or []:
+        for c in it.get("parts") or []:
             if c not in ids:
-                raise SystemExit(f"dangling composite_of {c!r} in {it['id']!r}")
+                raise SystemExit(f"dangling parts {c!r} in {it['id']!r}")
 
 
 def md_text(s):

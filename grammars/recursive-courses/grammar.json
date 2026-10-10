@@ -5,7 +5,7 @@
     "recursive-learning",
     "learning-paths"
   ],
-  "items": [
+  "nodes": [
     {
       "id": "course-learn-recursive-eco",
       "name": "Learn Recursive.eco",
@@ -172,7 +172,7 @@
         "first-tool",
         "foundations"
       ],
-      "composite_of": [
+      "parts": [
         "course-learn-recursive-eco",
         "course-vibe-coding-101",
         "course-create-grammars-with-ai"
@@ -192,7 +192,7 @@
         "audiobooks",
         "no-coding"
       ],
-      "composite_of": [
+      "parts": [
         "course-vibe-coding-101",
         "course-vibe-coding-102"
       ],
@@ -211,7 +211,7 @@
         "github",
         "storytelling"
       ],
-      "composite_of": [
+      "parts": [
         "course-vibe-writing-101",
         "course-vibe-writing-102"
       ],
@@ -231,7 +231,7 @@
         "music",
         "ai-images"
       ],
-      "composite_of": [
+      "parts": [
         "course-create-grammars-with-ai",
         "course-vibe-writing-101",
         "course-short-movies-diy",

@@ -73,7 +73,7 @@
       castings: [], dividers: [], other: [] };
     const bucket = { character: 'characters', hypothesis: 'hypotheses', weather: 'weather', case: 'cases', action: 'actions',
       parked: 'parked', casting: 'castings', divider: 'dividers', other: 'other' };
-    for (const it of (g && g.items) || []) {
+    for (const it of (g && g.nodes) || []) {
       if (!it || !it.id) continue;
       d.byId[it.id] = it;
       const k = kindOf(it);
@@ -242,7 +242,7 @@
     return x.how;
   }
   /* One cast as one grammar item, the shape of the deck's own example casting: the cards in
-     composite_of (ids within the deck), the keywords synthesis + human (a person wrote it), and
+     parts (ids within the deck), the keywords synthesis + human (a person wrote it), and
      sections in the deck's Markdown. rec = what the player did: { shown, forecasts, notes, stepId, turned };
      opts = { date: 'YYYY-MM-DD', author }. */
   function buildCasting(d, c, rec, opts) {
@@ -278,7 +278,7 @@
       name: 'Casting — ' + dateLabel(opts.date) + ': ' + title,
       keywords: ['synthesis', 'human', 'casting'],
       metadata: { kind: 'note', cast_number: c.seed, spread: c.spread },
-      composite_of: cards.map(x => x.item.id),
+      parts: cards.map(x => x.item.id),
       sections,
     };
   }
@@ -298,7 +298,7 @@
       cover_image_url: null,
       tags: ['as-if', 'casting'],
       grammar_type: d.grammar_type || 'tarot',
-      items: copies.concat([casting]),
+      nodes: copies.concat([casting]),
       creator_name: String(opts.author || '').trim(),
       creator_link: '',
       is_published: false,

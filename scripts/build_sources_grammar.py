@@ -23,7 +23,7 @@ Shape (levels as the viewers compute them):
     suit-institutions (3) -> the institutions grammar's groups (2) -> inst-<id> (1)   [optional]
 Every item under a suit carries metadata.suit (the map's `#groupby=suit`).
 
-Cross-links follow the one pattern (metadata.source_deck + source_item_id + deck) and only the
+Cross-links follow the one pattern (metadata.source_deck + source_node_id + deck) and only the
 institution stubs use it: cards.html hides a pill whose source_deck is the grammar being viewed
 (viewers/cards.html, `showSourceRef`), so links inside this grammar (a person's appearances, an
 episode's guests) and to Ideas are markdown links to the card in the viewer instead. No
@@ -175,7 +175,7 @@ def build():
             if e["video_id"]:
                 meta["youtube_video_id"] = e["video_id"]
             ep_ids.append(add({
-                "id": e["id"], "name": e["title"], "level": 1,
+                "id": e["id"], "name": e["title"],
                 "description": f"{s['name']} · {e['date']} · with {gnames}",
                 "metadata": meta,
                 "sections": {
@@ -191,18 +191,18 @@ def build():
             about.append(ext("The show's own page", s["url"]))
         show_ids.append(add({
             "id": _show_id(s["id"]),
-            "name": s["name"], "level": 2,
+            "name": s["name"],
             "description": f"Hosted by {', '.join(name(h) for h in s['hosts'])} · {len(eps)} episodes, {span}",
             "metadata": {"kind": "podcast", "suit": SUIT["podcasts"], "show": s["name"]},
-            "composite_of": ep_ids,
+            "parts": ep_ids,
             "sections": {"The show": "\n\n".join(about)},
         }))
     n_eps, n_app = len(S["episodes"]), sum(len(e["guests"]) for e in S["episodes"])
     suit_podcasts = add({
-        "id": "suit-podcasts", "name": "Podcasts", "level": 3,
+        "id": "suit-podcasts", "name": "Podcasts",
         "description": f"{n_eps} episodes of seven podcasts, with where to listen and the terms that come up.",
         "metadata": {"kind": "suit", "suit": SUIT["podcasts"]},
-        "composite_of": show_ids,
+        "parts": show_ids,
         "sections": {
             "What it is": (f"{n_eps} episodes of seven podcasts ({n_app} appearances) in which people from the lab's "
                            f"who's-who speak about AI. Each card gives the show, the date, the guests, where to listen "
@@ -240,7 +240,7 @@ def build():
         shows_of = sorted({shows[e["show"]]["name"] for e in apps} | {shows[s]["name"] for s in p["hosts"]})
         grp = "hosts" if p["hosts"] else ("guests" if apps else "others")
         groups[grp].append(add({
-            "id": pidd, "name": p["name"], "level": 1,
+            "id": pidd, "name": p["name"],
             "description": p["role"],
             "metadata": {"kind": "person", "suit": SUIT["people"], "show": shows_of},
             "sections": sec,
@@ -255,17 +255,17 @@ def build():
         if not groups[key]:
             continue
         people_groups.append(add({
-            "id": gid, "name": gname, "level": 2,
+            "id": gid, "name": gname,
             "description": f"{len(groups[key])} people",
             "metadata": {"kind": "group", "suit": SUIT["people"]},
-            "composite_of": groups[key],
+            "parts": groups[key],
             "sections": {"Who is here": about},
         }))
     suit_people = add({
-        "id": "suit-people", "name": "People", "level": 3,
+        "id": "suit-people", "name": "People",
         "description": f"{len(S['people'])} people: who appears where, with roles and affiliations.",
         "metadata": {"kind": "suit", "suit": SUIT["people"]},
-        "composite_of": people_groups,
+        "parts": people_groups,
         "sections": {
             "What it is": ("Who appears where: the hosts and guests of the seven shows, and one more person the lab's "
                            "research follows. Each card gives a role in one line, the appearances and the "
@@ -303,7 +303,7 @@ def build():
                 sec["Reading check"] = x["reading_check"]
             sec["Where to read it"] = "\n".join(where)
             ids.append(add({
-                "id": "paper-" + x["id"], "name": x["title"], "level": 1,
+                "id": "paper-" + x["id"], "name": x["title"],
                 "description": f"{authors} ({x['year']}). {x['venue']}.",
                 "metadata": {"kind": x["kind"], "suit": SUIT["papers"], "thread": t["name"], "year": str(x["year"]),
                              "author": authors, "confidence": CONFIDENCE[x["id"]]},
@@ -311,17 +311,17 @@ def build():
             }))
         if ids:
             thread_ids.append(add({
-                "id": t["id"], "name": t["name"], "level": 2,
+                "id": t["id"], "name": t["name"],
                 "description": f"{len(ids)} entries",
                 "metadata": {"kind": "group", "suit": SUIT["papers"]},
-                "composite_of": ids,
+                "parts": ids,
                 "sections": {"What it gathers": t["about"]},
             }))
     suit_papers = add({
-        "id": "suit-papers", "name": "Papers & books", "level": 3,
+        "id": "suit-papers", "name": "Papers & books",
         "description": f"{len(S['papers'])} papers, books, reports and statements cited in the lab's plans.",
         "metadata": {"kind": "suit", "suit": SUIT["papers"]},
-        "composite_of": thread_ids,
+        "parts": thread_ids,
         "sections": {
             "What it is": ("The papers, books, reports and public statements the lab's plans cite, grouped by the "
                            "question they were read for. Each card says who wrote the work and when, what it is, why "
@@ -345,10 +345,10 @@ def build():
               f"(rebuild this grammar after it lands)")
 
     add({
-        "id": "root-sources", "name": "Sources", "level": 4,
+        "id": "root-sources", "name": "Sources",
         "description": "Podcasts, papers and people behind the words and the games, each described from public pages and dated.",
         "metadata": {"kind": "root"},
-        "composite_of": suits,
+        "parts": suits,
         "sections": {
             "What it is": ("The record behind Recursive Eco-Improvement: what was said, where and when. Podcast "
                            "episodes where people in the AI debate speak, the papers and books the lab's plans cite, "
@@ -390,41 +390,41 @@ def _cap(t):
 
 def _institution_stubs(G, add):
     """One pointer stub per institution card in institutions-of-alignment (the card lives there)."""
-    its = G.get("items") or []
+    its = G.get("nodes") or []
     by_id = {i["id"]: i for i in its}
-    leaves = [i for i in its if not i.get("composite_of") and (i.get("metadata") or {}).get("url")]
+    leaves = [i for i in its if not i.get("parts") and (i.get("metadata") or {}).get("url")]
     leaf_ids = {i["id"] for i in leaves}
     deck = re.split(r"\s[—–-]\s", G.get("name") or "Institutions")[0].strip() or "Institutions"
-    groups = [i for i in its if i.get("composite_of") and all(c in leaf_ids for c in i["composite_of"])]
+    groups = [i for i in its if i.get("parts") and all(c in leaf_ids for c in i["parts"])]
     if not groups:
-        groups = [{"id": "all", "name": "Institutions", "composite_of": [i["id"] for i in leaves]}]
+        groups = [{"id": "all", "name": "Institutions", "parts": [i["id"] for i in leaves]}]
 
     def stub(inst):
         return add({
-            "id": "inst-" + inst["id"], "name": inst["name"], "level": 1,
+            "id": "inst-" + inst["id"], "name": inst["name"],
             "description": "A pointer: this institution's card lives in the Institutions grammar.",
             "metadata": {"kind": "pointer", "suit": SUIT["institutions"],
-                         "source_deck": "institutions-of-alignment", "source_item_id": inst["id"], "deck": deck},
+                         "source_deck": "institutions-of-alignment", "source_node_id": inst["id"], "deck": deck},
             "sections": {"Where it lives": ("Its own card, in its own words and with a link to its site, is in the "
                                             "Institutions grammar; it opens below.")},
         })
     gids = []
     for g in groups:
-        kids = [stub(by_id[c]) for c in g["composite_of"] if c in by_id]
+        kids = [stub(by_id[c]) for c in g["parts"] if c in by_id]
         if not kids:
             continue
         gids.append(add({
-            "id": "inst-group-" + g["id"], "name": g["name"], "level": 2,
+            "id": "inst-group-" + g["id"], "name": g["name"],
             "description": f"{len(kids)} institutions",
             "metadata": {"kind": "group", "suit": SUIT["institutions"]},
-            "composite_of": kids,
+            "parts": kids,
             "sections": {"What it gathers": f"Pointers to {len(kids)} cards in the Institutions grammar."},
         }))
     return add({
-        "id": "suit-institutions", "name": "Institutions", "level": 3,
+        "id": "suit-institutions", "name": "Institutions",
         "description": "Pointers to the Institutions grammar, where each card links out to the institution's own site.",
         "metadata": {"kind": "suit", "suit": SUIT["institutions"]},
-        "composite_of": gids,
+        "parts": gids,
         "sections": {"What it is": ("Organisations working on alignment. Each one's card lives once, in the "
                                     "Institutions grammar; these are pointers to it.")},
     })
@@ -458,7 +458,7 @@ def grammar(items, inputs):
                         "from automatic captions, so the speaker is unknown."),
         "tags": ["sources", "podcasts", "papers", "people", "alignment", "ai"],
         "is_published": True,
-        "items": items,
+        "nodes": items,
     }
 
 

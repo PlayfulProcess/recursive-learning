@@ -261,7 +261,7 @@ var HEX = [[1,"The Creative","䷀","乾","111111"],[2,"The Receptive","䷁","坤
 var BY_BITS = {}; HEX.forEach(function(h){ BY_BITS[h[4]] = h; });
 var TEXTS = null;   // number -> {Judgment, Line 1..6}, loaded live
 fetch('https://iching.recursive.eco/grammars/zhouyi-core/grammar.json').then(function(r){ return r.json(); }).then(function(g){
-  TEXTS = {}; g.items.forEach(function(it){ TEXTS[it.metadata.number] = it.sections; });
+  TEXTS = {}; g.nodes.forEach(function(it){ TEXTS[it.metadata.number] = it.sections; });
   if (phase === 'end') renderEnd();
 }).catch(function(){ TEXTS = false; });
 

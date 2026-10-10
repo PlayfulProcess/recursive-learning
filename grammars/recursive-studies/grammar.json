@@ -8,7 +8,7 @@
     "audiobooks",
     "books"
   ],
-  "items": [
+  "nodes": [
     {
       "id": "study-patterns",
       "name": "Patterns",

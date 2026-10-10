@@ -529,7 +529,7 @@ const $ = id => document.getElementById(id);
   catch(e){ $('board').innerHTML = '<div class="empty">Could not load the deck index. Serve the repo so '+META_URL+' is reachable.</div>'; return; }
 
   (meta._decks || []).forEach(d => { deckLabels[d.slug] = d.label; });
-  leaves = (meta.items || []).filter(i => !i.composite_of && i.metadata && i.metadata.source_deck && i.metadata.castable);
+  leaves = (meta.nodes || []).filter(i => !i.parts && i.metadata && i.metadata.source_deck && i.metadata.castable);
   leaves.forEach(c => { (byDeck[c.metadata.source_deck] ||= []).push(c); });
 
   // Deck dropdown — All Decks first, then each deck (>=3 castable) in chronological order.
@@ -1048,7 +1048,7 @@ function cast(){
   positions.forEach((p, i) => { const c = cards[i], m = c.metadata||{};
     p.card = { name:c.name, deck:(m.deck||deckLabels[m.source_deck]||''), arcana:m.arcana||null, number:(m.number??null),
       reversed: Math.random() < revProb, image_url:c.image_url||null,
-      source_deck:m.source_deck||null, source_item_id:m.source_item_id||null,
+      source_deck:m.source_deck||null, source_node_id:m.source_node_id||null,
       // The meta card's OWN content (its "Origin" provenance blurb etc.) — carried through so
       // openCardDetail can render it additively alongside the resolved source deck content.
       keywords:c.keywords||null, sections:c.sections||null }; });
@@ -1537,7 +1537,7 @@ async function openCardDetail(p){ const c=p.card; if(!c) return;
   const _pen='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
   const _play='<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg>';
   $('cdmActions').innerHTML = uuid
-    ? `<a class="eco-chip" href="${FLOW}/create/dashboard/unified/new?forkId=${uuid}${c.source_item_id?'&card='+encodeURIComponent(c.source_item_id):''}" target="_blank" rel="noopener">${_pen} Edit in recursive.eco ↗</a>`
+    ? `<a class="eco-chip" href="${FLOW}/create/dashboard/unified/new?forkId=${uuid}${c.source_node_id?'&card='+encodeURIComponent(c.source_node_id):''}" target="_blank" rel="noopener">${_pen} Edit in recursive.eco ↗</a>`
       + `<a class="eco-chip" href="${FLOW}/g/${uuid}?view=reading" target="_blank" rel="noopener">${_play} Play in recursive.eco ↗</a>`
     : '';
   modal.style.display='flex'; document.body.style.overflow='hidden';
@@ -1552,17 +1552,17 @@ async function openCardDetail(p){ const c=p.card; if(!c) return;
 
   body.innerHTML = ownHtml + `<div id="cdmRefPanel" class="cdm-ref-panel"><div class="cdm-loading">Loading from ${esc(c.deck||'the source deck')}…</div></div>`;
 
-  if (!c.source_deck || !c.source_item_id) {
+  if (!c.source_deck || !c.source_node_id) {
     const panel=$('cdmRefPanel'); if (panel) panel.remove();
     if (!ownKeys.length && !(c.keywords&&c.keywords.length)) body.innerHTML = '<div class="cdm-loading">No additional details available.</div>';
     return;
   }
 
-  const result = await RefResolve.resolveSourceItem(c.source_deck, c.source_item_id, c.deck);
+  const result = await RefResolve.resolveSourceItem(c.source_deck, c.source_node_id, c.deck);
   if (myToken !== openCardToken) return;          // board moved on to a different card meanwhile
   const panel = $('cdmRefPanel'); if (!panel) return;
 
-  const deckUrl = 'cards.html?src=' + encodeURIComponent('../grammars/'+c.source_deck+'/grammar.json') + '&item=' + encodeURIComponent(c.source_item_id);
+  const deckUrl = 'cards.html?src=' + encodeURIComponent('../grammars/'+c.source_deck+'/grammar.json') + '&item=' + encodeURIComponent(c.source_node_id);
   if (result.status === 'error') {
     panel.innerHTML = RefResolve.renderEmbedError(result.deckLabel||c.deck, deckUrl);
     return;

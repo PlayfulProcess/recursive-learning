@@ -746,7 +746,7 @@ async function boot(){
   const srcParam = new URLSearchParams(location.search).get('src');
   records = []; byId = {}; secById = {};
   // record an item's sections under the same prefixed id flatten produces
-  const stash = (g, prefix) => { for (const it of (g.items||[])) secById[(prefix?prefix+':':'')+it.id] = it.sections || {}; };
+  const stash = (g, prefix) => { for (const it of (g.nodes||[])) secById[(prefix?prefix+':':'')+it.id] = it.sections || {}; };
   try{
     if (slugs.length && collection){
       $('#deckbtn').textContent = `Decks ▾ (${slugs.length})`;

@@ -7,7 +7,7 @@
 PORTED in shape from recursive-tarot/scripts/build_meta_grammar.py ("All Decks, Many Lenses"),
 cut down to what this site's viewers read:
   - viewers/caster-studio.html loads it as META_URL and casts from every item that has
-    metadata.source_deck + metadata.castable and no composite_of; its deck menu comes from
+    metadata.source_deck + metadata.castable and no parts; its deck menu comes from
     `_decks` (slug, label, date, era, era_sort) and lists a deck when it has 3 or more cards;
   - viewers/reference-resolve.js knows the aggregator by `_decks` and opens the drawn card's
     full entry from its own deck (the pointer stub carries no content of its own);
@@ -43,7 +43,7 @@ DECKS = {
 
 
 def leaves(g):
-    return [i for i in g.get("items") or [] if not i.get("composite_of")]
+    return [i for i in g.get("nodes") or [] if not i.get("parts")]
 
 
 def build():
@@ -54,28 +54,28 @@ def build():
         g = load_json(rel)
         stub_ids = []
         for it in leaves(g):
-            stub = {"id": f"{key}--{it['id']}", "name": it["name"], "level": 1}
+            stub = {"id": f"{key}--{it['id']}", "name": it["name"]}
             if it.get("keywords"):
                 stub["keywords"] = it["keywords"]
-            stub["metadata"] = {"source_deck": slug, "source_item_id": it["id"], "deck": label, "castable": True}
+            stub["metadata"] = {"source_deck": slug, "source_node_id": it["id"], "deck": label, "castable": True}
             if it.get("image_url"):
                 stub["image_url"] = it["image_url"]
             items.append(stub)
             stub_ids.append(stub["id"])
         deck_ids.append(f"deck-{key}")
         items.append({
-            "id": f"deck-{key}", "name": label, "level": 2,
+            "id": f"deck-{key}", "name": label,
             "description": f"{about} {len(stub_ids)} cards.",
             "metadata": {"kind": "deck", "deck_slug": slug},
-            "composite_of": stub_ids,
+            "parts": stub_ids,
         })
         decks.append({"slug": slug, "label": label, "date": date, "era": era, "era_sort": era_sort,
                       "cards": len(stub_ids)})
     items.append({
-        "id": "root-all-decks", "name": "All decks", "level": 3,
+        "id": "root-all-decks", "name": "All decks",
         "description": "Every castable card on the site, as pointers to its own deck.",
         "metadata": {"kind": "root"},
-        "composite_of": deck_ids,
+        "parts": deck_ids,
         "sections": {"What it is": ("The pool the Spread Caster draws from. Each card here is a pointer: "
                                     "its full entry opens from its own deck.")},
     })
@@ -104,7 +104,7 @@ def grammar(items, decks, inputs):
         "tags": ["meta", "cast", "words", "ideas"],
         "is_published": True,
         "_decks": decks,
-        "items": items,
+        "nodes": items,
     })
     return out
 

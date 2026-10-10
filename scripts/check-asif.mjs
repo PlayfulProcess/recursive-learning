@@ -18,7 +18,7 @@
  *      casting, a case or a parked card
  *   3. the same seed deals the same cast (determinism), and the seeds reach every card in the deck
  *   4. the coin is fair over the trials (45 to 55 percent reversed)
- *   5. a kept cast has the deck's Castings shape: composite_of resolves inside the deck and inside
+ *   5. a kept cast has the deck's Castings shape: parts resolves inside the deck and inside
  *      the downloaded grammar, keywords synthesis + human, "I don't know" recorded as itself, a
  *      forecast outside 0-100 refused, no points, score or stake anywhere
  *   6. the page: links theme.css, loads the engine and shared/nav.js, honours reduced motion,
@@ -50,7 +50,7 @@ for (const p of [DECK, ENGINE, PAGE]) {
 const E = require(join(ROOT, ENGINE));
 const grammar = JSON.parse(read(DECK));
 const d = E.classify(grammar);
-const ids = new Set(grammar.items.map(it => it.id));
+const ids = new Set(grammar.nodes.map(it => it.id));
 
 // ── 1. the deck reads ───────────────────────────────────────────────────
 claim(!!d.rules && !!E.section(d.rules, 'The cast'), 'the deck has a rules item with a "The cast" section');
@@ -140,7 +140,7 @@ claim(threw === 4, 'a seed outside 0..4294967295 is refused');
     stepId: null,
   };
   const item = E.buildCasting(d, c, rec, { date: '2026-09-20', author: '' });
-  claim(item.composite_of.length === E.cardIds(c).length && item.composite_of.every(id => ids.has(id)), 'the casting is composed of the cast: composite_of resolves inside the deck');
+  claim(item.parts.length === E.cardIds(c).length && item.parts.every(id => ids.has(id)), 'the casting is composed of the cast: parts resolves inside the deck');
   claim(['synthesis', 'human'].every(k => item.keywords.includes(k)), 'the casting carries the keywords synthesis and human');
   claim(/I don't know\*\*/.test(item.sections.Forecast) && !/unknown/.test(item.sections.Forecast), '"I don\'t know" is recorded as itself, not as a number');
   claim(/reversed, 70%/.test(item.sections.Forecast), 'a forecast is recorded as a face and a number, 0 to 100');
@@ -158,15 +158,15 @@ claim(threw === 4, 'a seed outside 0..4294967295 is refused');
     (none.sections.Cast.match(/face down/g) || []).length === E.cardIds(c).length,
     'a card the player never turned stays face down in the casting (no step claimed before the step)');
   const ex = E.buildExport(d, c, rec, { date: '2026-09-20', author: 'someone' });
-  const exIds = ex.items.map(x => x.id);
-  const last = ex.items[ex.items.length - 1];
-  claim(new Set(exIds).size === exIds.length && last.composite_of.every(id => exIds.includes(id)),
+  const exIds = ex.nodes.map(x => x.id);
+  const last = ex.nodes[ex.nodes.length - 1];
+  claim(new Set(exIds).size === exIds.length && last.parts.every(id => exIds.includes(id)),
     'the downloaded grammar stands alone: ids unique, the casting resolves inside it');
-  claim(ex.items.slice(0, -1).every(x => JSON.stringify(Object.assign({}, x, { sort_order: 0 })) === JSON.stringify(Object.assign({}, d.byId[x.id], { sort_order: 0 }))),
+  claim(ex.nodes.slice(0, -1).every(x => JSON.stringify(Object.assign({}, x, { sort_order: 0 })) === JSON.stringify(Object.assign({}, d.byId[x.id], { sort_order: 0 }))),
     'the downloaded cards are the deck\'s own, credits and all');
   const STAKE = /\b(points?|scores?|stakes?|staked|bets?|wagers?|winnings?|leaderboard)\b/i;
   const keys = [];
-  (function walk(o) { if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) { keys.push(k); walk(v); } })(Object.assign({}, ex, { items: [last] }));
+  (function walk(o) { if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) { keys.push(k); walk(v); } })(Object.assign({}, ex, { nodes: [last] }));
   claim(!keys.some(k => STAKE.test(k)), 'no points, score or stake in what a cast keeps', keys.filter(k => STAKE.test(k)).join(', '));
   const md = E.buildMarkdown(d, c, rec, { date: '2026-09-20' });
   claim(md.startsWith('# Casting — Sep 20 2026') && /nothing is staked/.test(md), 'the Markdown copy says what it is');

@@ -908,8 +908,8 @@ function onKey(ev) {
 
 async function loadTexts() {
   const g = await getJSON(GRAMMAR);
-  if (!g || !Array.isArray(g.items)) { ui.texts = false; }
-  else { const m = {}; g.items.forEach(it => { if (it && it.metadata && it.sections) m[it.metadata.number] = it.sections; }); ui.texts = m; }
+  if (!g || !Array.isArray(g.nodes)) { ui.texts = false; }
+  else { const m = {}; g.nodes.forEach(it => { if (it && it.metadata && it.sections) m[it.metadata.number] = it.sections; }); ui.texts = m; }
   if (ui.path) renderPanel();
 }
 function firstUnasked() { const j = ui.walk.lines.findIndex(l => l.answer == null); return j < 0 ? 5 : j; }

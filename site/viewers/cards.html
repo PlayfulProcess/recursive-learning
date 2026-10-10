@@ -2416,7 +2416,7 @@
 
         // Group-by chips speak to visitors, so they carry plain names, and the plumbing fields
         // (the cross-link pointer, ids, URLs, dates of a link check) are not offered as groupings.
-        const HIDDEN_GROUP_FIELDS = new Set(['source_deck', 'source_item_id', 'deck', 'youtube_video_id',
+        const HIDDEN_GROUP_FIELDS = new Set(['source_deck', 'source_node_id', 'deck', 'youtube_video_id',
             'url', 'domain', 'checked', 'castable', 'trump_key']);
         const FIELD_LABELS = { level: 'Level', suit: 'Suit', thread: 'Thread', show: 'Show', kind: 'Kind', year: 'Year',
             author: 'Author', guests: 'Guest', keyword: 'Keyword', lane: 'Lane', layer: 'Layer',
@@ -2727,7 +2727,7 @@
                         item._deckSlug = slug;
                         // prefix id to avoid cross-deck collisions
                         item.id = slug + ':' + item.id;
-                        if (item.composite_of) item.composite_of = item.composite_of.map(c => slug + ':' + c);
+                        if (item.parts) item.parts = item.parts.map(c => slug + ':' + c);
                     });
                     return normalized;
                 });
@@ -3017,10 +3017,10 @@
                 metaCategories = [];
             }
 
-            // Check for unified format first (items array with sections)
-            // Support both 'items' and '_unified_items' field names
+            // Check for unified format first (nodes array with sections)
+            // Support both 'nodes' and '_unified_items' field names
             // Also check for 'emergences' array (Schema Commons format for L2 items)
-            let unifiedItems = data.items || data._unified_items || [];
+            let unifiedItems = data.nodes || data._unified_items || [];
             const emergences = data.emergences || [];
 
             // Combine items and emergences, avoiding duplicates
@@ -3073,12 +3073,27 @@
                     });
                 });
 
-                // Calculate levels based on composite_of
+                // Levels: depth computed from parts (a node with no parts is 1; otherwise
+                // 1 + the deepest part). Cycle-safe, memoized per node.
+                const rawById = new Map(unifiedItems.map(n => [n.id, n]));
+                const depthMemo = new Map();
+                const nodeDepth = (node, seen) => {
+                    const parts = node && node.parts;
+                    if (!parts || !parts.length) return 1;
+                    if (depthMemo.has(node.id)) return depthMemo.get(node.id);
+                    seen = seen || new Set();
+                    if (seen.has(node.id)) return 1;
+                    seen.add(node.id);
+                    let d = 1;
+                    for (const id of parts) { const c = rawById.get(id); if (c) d = Math.max(d, 1 + nodeDepth(c, seen)); }
+                    seen.delete(node.id);
+                    depthMemo.set(node.id, d);
+                    return d;
+                };
                 const itemMap = new Map();
                 const normalized = unifiedItems.map((item, index) => {
                     const itemId = item.id || `item-${index}`;
-                    const hasComposite = item.composite_of && item.composite_of.length > 0;
-                    const level = item.level || (hasComposite ? 2 : 1);
+                    const level = nodeDepth(item);
 
                     // Find parent L3 for L2 items
                     let parent_l3 = item.parent_l3 || null;
@@ -3123,7 +3138,7 @@
                         },
                         sections: item.sections || {},
                         // L2/Emergence fields
-                        composite_of: item.composite_of || null,
+                        parts: item.parts || null,
                         level: level,
                         parent_l3: parent_l3,
                         // Lens dispatch (MULTI_LENS_PLAN): an axis can declare its full-view renderer.
@@ -3138,8 +3153,8 @@
                         // Preserve full metadata for Spotify embeds etc.
                         metadata: item.metadata || null,
                         // Connected grammars (linked document IDs)
-                        // Backward compat: convert legacy ref_document_id to grammars[] URL
-                        grammars: item.grammars || (item.ref_document_id ? [`/play?id=${item.ref_document_id}`] : null)
+                        // A reference node's ref_grammar_id becomes a grammars[] URL
+                        grammars: item.grammars || (item.ref_grammar_id ? [`/play?id=${item.ref_grammar_id}`] : null)
                     };
                     itemMap.set(normalizedItem.id, normalizedItem);
                     return normalizedItem;
@@ -3158,12 +3173,12 @@
                             symbol: l3.icon || '<rt-icon name="folder"></rt-icon>',
                             description: l3.sections?.Interpretation || l3.sections?.Description || '',
                             color: null,
-                            children: l3.composite_of || [], // L2 item IDs
+                            children: l3.parts || [], // L2 item IDs
                             // Keep reference to full item for modal display
                             _fullItem: l3
                         }));
 
-                        // Set parent_l3 on L2 items based on L3's composite_of
+                        // Set parent_l3 on L2 items based on L3's parts
                         metaCategories.forEach(mc => {
                             (mc.children || []).forEach(l2Id => {
                                 const l2Item = itemMap.get(l2Id);
@@ -3550,7 +3565,7 @@
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id') || params.get('deckId') || params.get('bookId');
             const githubParamForToggle = params.get('github');
-            const hasComposites = items ? items.some(item => item.composite_of && item.composite_of.length > 0) : false;
+            const hasComposites = items ? items.some(item => item.parts && item.parts.length > 0) : false;
 
             ViewModeDropdown.init(document.getElementById('view-mode-container'), {
                 current: 'cards',
@@ -3617,8 +3632,8 @@
         // sidebar uses as its roots.
         function getRootAxes() {
             const hasParent = new Set();
-            items.forEach(i => (i.composite_of || []).forEach(c => hasParent.add(c)));
-            const composites = items.filter(i => i.composite_of && i.composite_of.length > 0);
+            items.forEach(i => (i.parts || []).forEach(c => hasParent.add(c)));
+            const composites = items.filter(i => i.parts && i.parts.length > 0);
             let roots = composites.filter(i => !hasParent.has(i.id));
             if (!roots.length && composites.length) {
                 const mx = Math.max(...composites.map(c => c.level || 2));
@@ -3713,11 +3728,11 @@
             if (pillAxisId) {
                 // AXIS MODE: the chosen axis's children become named filter pills
                 const axis = items.find(i => i.id === pillAxisId);
-                const children = (axis && axis.composite_of || []).map(id => items.find(i => i.id === id)).filter(Boolean);
+                const children = (axis && axis.parts || []).map(id => items.find(i => i.id === id)).filter(Boolean);
                 children.forEach(ch => {
                     const btn = document.createElement('button');
                     btn.className = 'filter-pill' + (hierarchyFilter && hierarchyFilter.id === ch.id ? ' active' : '');
-                    const n = (ch.composite_of && ch.composite_of.length) ? ` (${ch.composite_of.length})` : '';
+                    const n = (ch.parts && ch.parts.length) ? ` (${ch.parts.length})` : '';
                     btn.textContent = ch.name + n;
                     btn.title = stripMd(axisExplanation(ch)).slice(0, 220) || ch.name;
                     btn.addEventListener('click', () => {
@@ -3775,17 +3790,17 @@
             const hierarchyIndex = document.getElementById('hierarchy-index');
             if (!sidebar || !hierarchyIndex) return;
 
-            // Build parent→children map from composite_of
+            // Build parent→children map from parts
             const childrenOf = new Map(); // parentId → [childItems]
             const hasParent = new Set();
             items.forEach(item => {
-                if (item.composite_of && item.composite_of.length > 0) {
-                    item.composite_of.forEach(childId => hasParent.add(childId));
+                if (item.parts && item.parts.length > 0) {
+                    item.parts.forEach(childId => hasParent.add(childId));
                 }
             });
 
             // Find composite items (any level > 1)
-            const compositeItems = items.filter(i => i.composite_of && i.composite_of.length > 0);
+            const compositeItems = items.filter(i => i.parts && i.parts.length > 0);
             if (compositeItems.length === 0) {
                 sidebar.classList.add('hidden');
                 return;
@@ -3793,7 +3808,7 @@
 
             // Build children map
             compositeItems.forEach(parent => {
-                const children = (parent.composite_of || [])
+                const children = (parent.parts || [])
                     .map(id => items.find(i => i.id === id))
                     .filter(Boolean);
                 childrenOf.set(parent.id, children);
@@ -3827,7 +3842,7 @@
             function collectIds(node) {
                 rendered.add(node.id);
                 (childrenOf.get(node.id) || []).forEach(child => {
-                    if (child.composite_of && child.composite_of.length > 0) collectIds(child);
+                    if (child.parts && child.parts.length > 0) collectIds(child);
                 });
             }
             roots.forEach(collectIds);
@@ -3879,10 +3894,10 @@
 
         function buildSidebarNode(item, depth) {
             const children = items.filter(child =>
-                item.composite_of && item.composite_of.includes(child.id) &&
-                child.composite_of && child.composite_of.length > 0
+                item.parts && item.parts.includes(child.id) &&
+                child.parts && child.parts.length > 0
             );
-            const leafCount = (item.composite_of || []).length;
+            const leafCount = (item.parts || []).length;
             const isExpanded = expandedSections.has(item.id);
             const level = item.level || 2;
 
@@ -3968,7 +3983,7 @@
                     function collectDescendants(itemId) {
                         const item = items.find(i => i.id === itemId);
                         if (!item) return;
-                        (item.composite_of || []).forEach(childId => {
+                        (item.parts || []).forEach(childId => {
                             descendantIds.add(childId);
                             collectDescendants(childId);
                         });
@@ -4092,7 +4107,7 @@
                 const selectionBadge = isSelectionMode ? `<span class="selection-badge">${selectionIndex >= 0 ? selectionIndex + 1 : ''}</span>` : '';
                 const reversedBadge = isSelectionMode && grammarType === 'tarot' ? `<span class="reversed-badge">REV</span>` : '';
                 // Level badge for emergence items (L2, L3, L4, etc.)
-                const itemLevel = item.level || (item.composite_of && item.composite_of.length > 0 ? 2 : 1);
+                const itemLevel = item.level || 1;   // depth computed from parts in normalizeItems (legacy formats: 1)
                 const levelBadge = itemLevel > 1 ? `<span class="l2-badge l${itemLevel}-badge">L${itemLevel}</span>` : '';
                 card.innerHTML = `
                     ${selectionBadge}
@@ -4504,16 +4519,16 @@
             }
 
             // ── Meta-grammar source resolution (repo-local) ──
-            // Meta cards carry metadata.source_deck (the deck's repo slug) + metadata.source_item_id
+            // Meta cards carry metadata.source_deck (the deck's repo slug) + metadata.source_node_id
             // (the card's id within that deck's own grammar.json) — the repo-native counterpart of
-            // the private app's ref_document_id/ref_item_id pointer (see reference-resolve.js
+            // the private app's ref_grammar_id/ref_node_id pointer (see reference-resolve.js
             // header comment). Detection is purely data-driven, never a grammar-type check. When
             // we're not already viewing that deck, offer both a deep-link pill AND (below, after
             // this card's own content) an additive "From <deck>" panel with the resolved source
             // card's keywords/sections, fetched from the repo — no backend needed.
             const srcMeta = item.metadata || {};
             const srcDeck = srcMeta.source_deck;
-            const srcItem = srcMeta.source_item_id;
+            const srcItem = srcMeta.source_node_id;
             const curSrc = new URLSearchParams(window.location.search).get('src') || '';
             const showSourceRef = !!(srcDeck && srcItem) && !curSrc.includes('/' + srcDeck + '/');
             const sourceDeckLabel = srcMeta.deck || srcDeck;
@@ -4725,8 +4740,8 @@
             }
 
             // L2 Components Section - show component items for emergence/L2 items
-            if (item.composite_of && item.composite_of.length > 0 && window._grammarItemMap) {
-                const componentItems = item.composite_of
+            if (item.parts && item.parts.length > 0 && window._grammarItemMap) {
+                const componentItems = item.parts
                     .map(id => window._grammarItemMap.get(id))
                     .filter(Boolean);
 
@@ -4988,7 +5003,7 @@
             let url = flowBaseUrl;
             if (id) {
                 const typeStr = String(grammarType || '').toLowerCase();
-                const items = grammarData && grammarData.items ? grammarData.items : [];
+                const items = grammarData && grammarData.nodes ? grammarData.nodes : [];
                 const looksLikeIching = typeStr.includes('iching') || typeStr.includes('i-ching') || typeStr.includes('hex')
                     || items.some(it => typeof it.number === 'number' && it.number >= 1 && it.number <= 64 && (it.binary || it.king_wen || it.trigram_above));
                 const looksLikeAstro = typeStr.includes('astro') || typeStr.includes('birthchart') || typeStr.includes('birth_chart')
@@ -5140,7 +5155,7 @@
                     type: 'grammar',
                     name: grammarData.name || 'Grammar',
                     description: grammarData.description || '',
-                    items: grammarData.items || grammarData.cards || grammarData.hexagrams || [],
+                    nodes: grammarData.nodes || grammarData.cards || grammarData.hexagrams || [],
                     creatorName: grammarData.creator_name || '',
                     creatorLink: grammarData.creator_link || ''
                 }));

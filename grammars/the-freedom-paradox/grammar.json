@@ -10,11 +10,10 @@
     "commons",
     "wisdom"
   ],
-  "items": [
+  "nodes": [
     {
       "id": "ch01",
       "name": "Chapter 1: The Anthropic Clause",
-      "level": 1,
       "category": "Part I",
       "keywords": ["Part I"],
       "sections": {
@@ -26,7 +25,6 @@
     {
       "id": "ch02",
       "name": "Chapter 2: When Code Could Clone Itself",
-      "level": 1,
       "category": "Part I",
       "keywords": ["Part I"],
       "sections": {
@@ -38,7 +36,6 @@
     {
       "id": "ch03",
       "name": "Chapter 3: Free as in Freedom",
-      "level": 1,
       "category": "Part II",
       "keywords": ["Part II"],
       "sections": {
@@ -50,7 +47,6 @@
     {
       "id": "ch04",
       "name": "Chapter 4: Open as in Business",
-      "level": 1,
       "category": "Part II",
       "keywords": ["Part II"],
       "sections": {
@@ -62,7 +58,6 @@
     {
       "id": "ch05",
       "name": "Chapter 5: The Recursive Public",
-      "level": 1,
       "category": "Part II",
       "keywords": ["Part II"],
       "sections": {
@@ -74,7 +69,6 @@
     {
       "id": "ch06",
       "name": "Chapter 6: The License Wars",
-      "level": 1,
       "category": "Part II",
       "keywords": ["Part II"],
       "sections": {
@@ -86,7 +80,6 @@
     {
       "id": "ch07",
       "name": "Chapter 7: Open Core, Closed Profit",
-      "level": 1,
       "category": "Part III",
       "keywords": ["Part III"],
       "sections": {
@@ -98,7 +91,6 @@
     {
       "id": "ch08",
       "name": "Chapter 8: The Platform Play",
-      "level": 1,
       "category": "Part III",
       "keywords": ["Part III"],
       "sections": {
@@ -110,7 +102,6 @@
     {
       "id": "ch09",
       "name": "Chapter 9: Meta's Confession",
-      "level": 1,
       "category": "Part III",
       "keywords": ["Part III"],
       "sections": {
@@ -122,7 +113,6 @@
     {
       "id": "ch10",
       "name": "Chapter 10: The Safety Argument",
-      "level": 1,
       "category": "Part IV",
       "keywords": ["Part IV"],
       "sections": {
@@ -134,7 +124,6 @@
     {
       "id": "ch11",
       "name": "Chapter 11: Open Behind the Frontier",
-      "level": 1,
       "category": "Part IV",
       "keywords": ["Part IV"],
       "sections": {
@@ -146,7 +135,6 @@
     {
       "id": "ch12",
       "name": "Chapter 12: The Dwarkesh Problem",
-      "level": 1,
       "category": "Part IV",
       "keywords": ["Part IV"],
       "sections": {
@@ -158,7 +146,6 @@
     {
       "id": "ch14",
       "name": "Chapter 14: The Commons That Can Kill",
-      "level": 1,
       "category": "Part V",
       "keywords": ["Part V"],
       "sections": {
@@ -170,7 +157,6 @@
     {
       "id": "ch15",
       "name": "Chapter 15: Gateway Building, Not Gatekeeping",
-      "level": 1,
       "category": "Part V",
       "keywords": ["Part V"],
       "sections": {
@@ -182,7 +168,6 @@
     {
       "id": "ch16",
       "name": "Chapter 16: The Freedom Paradox",
-      "level": 1,
       "category": "Part V",
       "keywords": ["Part V"],
       "sections": {
@@ -194,62 +179,56 @@
     {
       "id": "part-i",
       "name": "Part I: The Break",
-      "level": 2,
       "sections": {
         "Chapters": "Ch1: The Anthropic Clause — Ch2: When Code Could Clone Itself"
       },
       "sort_order": 18,
-      "composite_of": ["ch01", "ch02"],
+      "parts": ["ch01", "ch02"],
       "grammar_type": "custom"
     },
     {
       "id": "part-ii",
       "name": "Part II: The Promise",
-      "level": 2,
       "sections": {
         "Chapters": "Ch3: Free as in Freedom — Ch4: Open as in Business — Ch5: The Recursive Public — Ch6: The License Wars"
       },
       "sort_order": 19,
-      "composite_of": ["ch03", "ch04", "ch05", "ch06"],
+      "parts": ["ch03", "ch04", "ch05", "ch06"],
       "grammar_type": "custom"
     },
     {
       "id": "part-iii",
       "name": "Part III: The Machine",
-      "level": 2,
       "sections": {
         "Chapters": "Ch7: Open Core, Closed Profit — Ch8: The Platform Play — Ch9: Meta's Confession"
       },
       "sort_order": 20,
-      "composite_of": ["ch07", "ch08", "ch09"],
+      "parts": ["ch07", "ch08", "ch09"],
       "grammar_type": "custom"
     },
     {
       "id": "part-iv",
       "name": "Part IV: The Reckoning",
-      "level": 2,
       "sections": {
         "Chapters": "Ch10: The Safety Argument — Ch11: Open Behind the Frontier — Ch12: The Dwarkesh Problem — Ch13: Value Creation, for Whom?"
       },
       "sort_order": 21,
-      "composite_of": ["ch10", "ch11", "ch12", "ch13"],
+      "parts": ["ch10", "ch11", "ch12", "ch13"],
       "grammar_type": "custom"
     },
     {
       "id": "part-v",
       "name": "Part V: The Question",
-      "level": 2,
       "sections": {
         "Chapters": "Ch14: The Commons That Can Kill — Ch15: Gateway Building, Not Gatekeeping — Ch16: The Freedom Paradox"
       },
       "sort_order": 22,
-      "composite_of": ["ch14", "ch15", "ch16"],
+      "parts": ["ch14", "ch15", "ch16"],
       "grammar_type": "custom"
     },
     {
       "id": "ch13",
       "name": "Chapter 13: Value Creation, for Whom?",
-      "level": 1,
       "category": "Part IV",
       "keywords": ["Part IV"],
       "sections": {
@@ -261,7 +240,6 @@
     {
       "id": "epilogue",
       "name": "Epilogue: Return to the Clause",
-      "level": 1,
       "category": "Epilogue",
       "keywords": ["epilogue"],
       "sections": {

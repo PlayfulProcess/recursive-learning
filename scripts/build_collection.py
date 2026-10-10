@@ -93,7 +93,7 @@ def has_generated_images(g):
     """True when the grammar carries a picture made with recursive.eco's image generator: the app
     records one in an item's metadata.image_generation, and serves it from /flow-image-gen/. The
     home gallery marks such a grammar (the About page says so)."""
-    for it in [g] + list(g.get("items") or []):
+    for it in [g] + list(g.get("nodes") or []):
         if (it.get("metadata") or {}).get("image_generation"):
             return True
         if any("/flow-image-gen/" in str(it.get(k) or "") for k in ("image_url", "cover_image_url")):
@@ -125,7 +125,7 @@ def main():
             "branch": branch,
             "is_meta": slug == META,
             "default_preview": g.get("default_preview"),
-            "items": len(g.get("items") or []),
+            "nodes": len(g.get("nodes") or []),
             "blurb": blurb_of(g),
             "path": f"grammars/{slug}/grammar.json",
             "provenance": prov_of[branch],

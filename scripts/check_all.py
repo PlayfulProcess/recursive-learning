@@ -13,8 +13,8 @@ extended for this repo. Python standard library only; node is used for check-lin
 As-If check, as in CI. Exits non-zero on any failure and prints `name=N` counts.
 
 Groups:
-  grammars    every grammars/*/grammar.json parses, has name + items[]; ids unique, names present;
-              composite_of and pills (metadata.source_deck + source_item_id) resolve; generated
+  grammars    every grammars/*/grammar.json parses, has name + nodes[]; ids unique, names present;
+              parts and pills (metadata.source_deck + source_node_id) resolve; generated
               grammars carry their stamps and no whole-card redirect fields
   generated   (--check) each builder runs with --out <temp> and its outputs are diffed byte for byte
   collection  grammars/_collection.json lists every grammar folder, covers present and unique, meta flagged
@@ -117,9 +117,9 @@ def check_grammars():
     for slug, g in g_all.items():
         generated = f"grammars/{slug}/grammar.json" in GENERATED_GRAMMARS
         if not g.get("name"): err("grammars", f"{slug}: missing name")
-        items = g.get("items")
+        items = g.get("nodes")
         if not isinstance(items, list) or not items:
-            err("grammars", f"{slug}: items[] missing or empty"); continue
+            err("grammars", f"{slug}: nodes[] missing or empty"); continue
         ids = [it.get("id") for it in items]
         for k, v in collections.Counter(ids).items():
             if not k: err("grammars", f"{slug}: {v} item(s) without an id")
@@ -128,19 +128,19 @@ def check_grammars():
             if not it.get("name"): err("grammars", f"{slug}: item {it.get('id')!r} has no name")
         idset = set(ids)
         for it in items:
-            for c in it.get("composite_of") or []:
+            for c in it.get("parts") or []:
                 if c not in idset:
-                    dangling += 1; err("grammars", f"{slug}: dangling composite_of {c!r} in {it.get('id')!r}")
+                    dangling += 1; err("grammars", f"{slug}: dangling parts {c!r} in {it.get('id')!r}")
             md = it.get("metadata") or {}
-            sd, si = md.get("source_deck"), md.get("source_item_id")
+            sd, si = md.get("source_deck"), md.get("source_node_id")
             if sd or si:
                 if not (sd and si):
-                    dangling += 1; err("grammars", f"{slug}: half a pill on {it.get('id')!r} (source_deck and source_item_id go together)")
+                    dangling += 1; err("grammars", f"{slug}: half a pill on {it.get('id')!r} (source_deck and source_node_id go together)")
                 elif sd not in g_all:
                     o = owner_of(f"grammars/{sd}/grammar.json")
                     if o: pend(f"grammars/{sd}/grammar.json (pill target from {slug})", o)
                     else: dangling += 1; err("grammars", f"{slug}: pill on {it.get('id')!r} -> unknown grammar {sd!r}")
-                elif si not in {x.get("id") for x in g_all[sd].get("items", [])}:
+                elif si not in {x.get("id") for x in g_all[sd].get("nodes", [])}:
                     dangling += 1; err("grammars", f"{slug}: pill on {it.get('id')!r} -> no item {si!r} in {sd}")
             if generated:
                 for k in (it.get("sections") or {}):
@@ -259,7 +259,7 @@ def check_words(g_all):
         pend("words: glossary `draw` questions, words-deck items, spreads.src.json", "B4 words"); return
     t = load(ROOT / "glossary/terms.json")
     deck = g_all.get("words-deck")
-    deck_ids = {i.get("id") for i in (deck or {}).get("items", [])}
+    deck_ids = {i.get("id") for i in (deck or {}).get("nodes", [])}
     for term in t.get("terms", []):
         q = (term.get("draw") or "").strip()
         if not q: err("words", f"term {term['id']!r} has no `draw` question")

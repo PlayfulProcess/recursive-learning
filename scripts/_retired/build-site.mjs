@@ -68,7 +68,7 @@ for (const [slug, id] of Object.entries(ids)) {
   rows.push({
     slug, id,
     name: g.name || slug,
-    items: Array.isArray(g.items) ? g.items.length : 0,
+    items: Array.isArray(g.nodes) ? g.nodes.length : 0,
     blurb: firstLine(g.description),
     type: g.grammar_type || '',
   });
