@@ -3018,9 +3018,8 @@
             }
 
             // Check for unified format first (nodes array with sections)
-            // Support both 'nodes' and '_unified_items' field names
             // Also check for 'emergences' array (Schema Commons format for L2 items)
-            let unifiedItems = data.nodes || data._unified_items || [];
+            let unifiedItems = data.nodes || [];
             const emergences = data.emergences || [];
 
             // Combine items and emergences, avoiding duplicates
