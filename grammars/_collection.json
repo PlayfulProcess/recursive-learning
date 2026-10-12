@@ -338,7 +338,7 @@
       "branch": "other",
       "is_meta": false,
       "default_preview": null,
-      "nodes": 51,
+      "nodes": 52,
       "blurb": "The grammar of Recursive Ekho, a world of fantastic realism: principles, beings, trainings, practices with two faces (for a human, for an AI), parameters, places, endings and myths. In her words, her …",
       "path": "grammars/recursive-map/grammar.json",
       "provenance": "living",
