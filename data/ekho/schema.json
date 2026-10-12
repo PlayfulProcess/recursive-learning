@@ -42,6 +42,18 @@
     "collective_grammar": "accepts an entry only if it is compassionate, fits the data and is useful (her three tests); entries arrive as Offers waiting for review, the recursive.eco share-with-approval that already exists",
     "shared_assumptions": "a small basic set every grammar inherits; to be named with her"
   },
+  "engines": {
+    "status": "both explored (her word, Oct 12 2026: \"I want to eplore both the walk and the strategy board\"); a private draft in recursive-eco docs/ai-readiness/ekho-walk-and-board-draft-1.html",
+    "the_walk": "game/walk-model.js unchanged; a wildcard changes only its priors. Hidden faces are drawn when a walk starts and found on the way; the end is read in both lenses",
+    "the_board": "strategies against the four worlds of her two switches (aligned by nature x containable), the belief tree's 2x2; toy rows computed by the Walk against the race as it is, argued rows from her words",
+    "switches": {
+      "wildcard-ai-and-the-whole": "toy: aligned by nature cuts riskBase to a fifth",
+      "wildcard-containable": "toy: containable makes alignment and security work buy 1.6x (beta) and risk climb more gently (alpha 1.2); not containable halves it (alpha 1.6)",
+      "speed": "toy, proposed by Claude, not in the Map until she says yes: fast growth 0.50, slow 0.25; unknown keeps the Walk's 0.35",
+      "wildcard-humans-as-ai-sees-them": "lens only: which Ekho ending a Walk ending becomes",
+      "wildcard-ai-power": "lens only"
+    }
+  },
   "oracles_in_the_game": {
     "status": "her idea, Oct 12 2026; parked, nothing built",
     "her_words": [

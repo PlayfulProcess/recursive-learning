@@ -567,7 +567,7 @@
       "category": "wildcard",
       "sections": {
         "What it is": "An unknown that science or experience may settle: does enough intelligence bring goodness with it? Nobody sets this; a player holds a belief about it.",
-        "Her words": "> It might be that superintelligence is automatically aligned because it is intelligence of a level that naturally choses the best outcome for the whole. One parameter being AI alignment with the whole\n\n> LEarn how to control our hubris and not launch unsafe product works only if superintelligence is orthogonal to morality or something you know? not sure\n\n(chat with the platform session, 2026-10-11, relayed verbatim)",
+        "Her words": "> It might be that superintelligence is automatically aligned because it is intelligence of a level that naturally choses the best outcome for the whole. One parameter being AI alignment with the whole\n\n> LEarn how to control our hubris and not launch unsafe product works only if superintelligence is orthogonal to morality or something you know? not sure\n\n(chat with the platform session, 2026-10-11, relayed verbatim)\n\n> I want to eplore both the walk and the strategy board. i was thinking of environmental variables like AASI is aligned intrinsically yes or know, cna it be contained given right levels of security yes or no, do the best with the others tha tyou think\n\n(chat with the AI-readiness session, 2026-10-12, verbatim)",
         "Face: aligned by its nature ◇": "Intelligence at that level chooses the best outcome for the whole.",
         "Face: orthogonal to morality ◇": "Intelligence and goals vary independently; power brings no goodness with it.",
         "In her words": "(blank)"
@@ -584,6 +584,34 @@
           {
             "id": "orthogonal",
             "name": "orthogonal to morality"
+          }
+        ],
+        "noun": "wildcard"
+      }
+    },
+    {
+      "id": "wildcard-containable",
+      "name": "Can it be contained",
+      "category": "wildcard",
+      "sections": {
+        "What it is": "An unknown that science or experience may settle: can the right levels of security contain a superintelligence? Nobody sets this; a player holds a belief about it. The belief tree asks it as its third question.",
+        "Her words": "> I want to eplore both the walk and the strategy board. i was thinking of environmental variables like AASI is aligned intrinsically yes or know, cna it be contained given right levels of security yes or no, do the best with the others tha tyou think\n\n(chat with the AI-readiness session, 2026-10-12, verbatim)",
+        "Face: containable ◇": "With the right levels of security, a box holds it.",
+        "Face: not containable ◇": "No level of security holds what is smarter than its keeper.",
+        "In her words": "(blank)"
+      },
+      "metadata": {
+        "layer": "lore",
+        "mark": "◇",
+        "draft": 1,
+        "faces": [
+          {
+            "id": "containable",
+            "name": "containable"
+          },
+          {
+            "id": "not-containable",
+            "name": "not containable"
           }
         ],
         "noun": "wildcard"
@@ -935,6 +963,7 @@
       "category": "selection",
       "parts": [
         "wildcard-ai-and-the-whole",
+        "wildcard-containable",
         "wildcard-humans-as-ai-sees-them",
         "wildcard-ai-power"
       ],

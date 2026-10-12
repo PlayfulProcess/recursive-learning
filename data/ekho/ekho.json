@@ -3,7 +3,7 @@
   "source": {
     "repo": "recursive-learning",
     "path": "grammars/recursive-map/grammar.json",
-    "commit": "3fb0f7b",
+    "commit": "ac1f739",
     "name": "Recursive Map"
   },
   "lens": "ekho",
@@ -46,6 +46,25 @@
           "id": "orthogonal",
           "name": "orthogonal to morality",
           "text": "Intelligence and goals vary independently; power brings no goodness with it."
+        }
+      ]
+    },
+    {
+      "id": "wildcard-containable",
+      "noun": "wildcard",
+      "name": "Can it be contained",
+      "what": "An unknown that science or experience may settle: can the right levels of security contain a superintelligence? Nobody sets this; a player holds a belief about it. The belief tree asks it as its third question.",
+      "her_words": "I want to eplore both the walk and the strategy board. i was thinking of environmental variables like AASI is aligned intrinsically yes or know, cna it be contained given right levels of security yes or no, do the best with the others tha tyou think",
+      "faces": [
+        {
+          "id": "containable",
+          "name": "containable",
+          "text": "With the right levels of security, a box holds it."
+        },
+        {
+          "id": "not-containable",
+          "name": "not containable",
+          "text": "No level of security holds what is smarter than its keeper."
         }
       ]
     },
