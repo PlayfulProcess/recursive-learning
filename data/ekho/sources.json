@@ -1,0 +1,1164 @@
+{
+  "_about": "Recursive Ekho, Sources lens: what is sourced. Endings are The Walk's seven (game/spread.html CARDS, text copied, names borrowed as labels). Moves come from the odds-board draft (recursive-eco/docs/ai-readiness/five-futures-draft-1.html, private); every quote was matched to captions at its time. Effects are ARGUED directions, never numbers. \"why_draft\" lines are Claude's summaries, hers to rewrite. Draft, Oct 11 2026, local branch lab/recursive-ekho, not pushed.",
+  "lens": "sources",
+  "endings": [
+    {
+      "id": "grace",
+      "kind": "ending",
+      "lens": "sources",
+      "name": "Grace",
+      "label_from": "Machines of Loving Grace · Amodei, 2024",
+      "label_link": "https://www.darioamodei.com/essay/machines-of-loving-grace",
+      "what": "Capability arrives with the alignment lead already paid for.",
+      "upright": "A century of gains in a decade, and shared.",
+      "reversed": "The same abundance, held by whoever got there first.",
+      "folded_from": [
+        "f5"
+      ],
+      "numbers": "toy, from game/walk-model.js only"
+    },
+    {
+      "id": "sustainable_turn",
+      "kind": "ending",
+      "lens": "sources",
+      "name": "The sustainable turn",
+      "label_from": "Hers · nearest kin: van Wynsberghe, Sustainable AI, 2021",
+      "label_link": "https://doi.org/10.1007/s43681-021-00043-6",
+      "what": "Capability redirected into adapting with the environment.",
+      "upright": "The ground holds because the capability was pointed at it.",
+      "reversed": "Sustainability as a word on the same racing machine.",
+      "folded_from": [
+        "f4"
+      ],
+      "numbers": "toy, from game/walk-model.js only"
+    },
+    {
+      "id": "the_stop",
+      "kind": "ending",
+      "lens": "sources",
+      "name": "The Stop",
+      "label_from": "Her Stop · PauseAI · A Narrow Path",
+      "label_link": "https://pauseai.info/",
+      "what": "If we cannot know alignment is possible without building it, that is the reason to stop. A halt exists only if enough of the walk steps at once.",
+      "upright": "Enough of the walk stops together; the not-knowing is honoured.",
+      "reversed": "One party stops alone and takes the hare; the rest keep walking.",
+      "folded_from": [
+        "f4"
+      ],
+      "numbers": "toy, from game/walk-model.js only"
+    },
+    {
+      "id": "adolescence",
+      "kind": "ending",
+      "lens": "sources",
+      "name": "Adolescence",
+      "label_from": "The Adolescence of Technology · Amodei, 2026",
+      "label_link": "https://www.darioamodei.com/",
+      "what": "Through the dangerous middle, rockily, without having led with alignment.",
+      "upright": "Through the middle, rockily, and out the other side.",
+      "reversed": "The middle never ends; every year is the dangerous one.",
+      "folded_from": [],
+      "numbers": "toy, from game/walk-model.js only"
+    },
+    {
+      "id": "lock_in",
+      "kind": "ending",
+      "lens": "sources",
+      "name": "Lock-in",
+      "label_from": "Situational Awareness · Aschenbrenner, 2024",
+      "label_link": "https://situational-awareness.ai/",
+      "what": "Whoever crosses first with nobody walking beside them locks it in.",
+      "upright": "One actor crosses first and the rules hold for a while.",
+      "reversed": "The rules hold for a long while, set by nobody who asked you.",
+      "folded_from": [
+        "f3"
+      ],
+      "numbers": "toy, from game/walk-model.js only"
+    },
+    {
+      "id": "doom",
+      "kind": "ending",
+      "lens": "sources",
+      "name": "Doom",
+      "label_from": "AI 2027 · Kokotajlo et al. — If Anyone Builds It, Everyone Dies · Yudkowsky & Soares, 2025",
+      "label_link": "https://ai-2027.com/",
+      "what": "Control lost in the race, or at the top of the curve.",
+      "upright": "Control lost near the top of the curve; nobody meant it.",
+      "reversed": "Control lost in the race; some did mean it.",
+      "folded_from": [
+        "f1",
+        "f2"
+      ],
+      "numbers": "toy, from game/walk-model.js only"
+    },
+    {
+      "id": "still_walking",
+      "kind": "ending",
+      "lens": "sources",
+      "name": "Still walking",
+      "label_from": "The horizon ran out",
+      "label_link": null,
+      "what": "The walk still going when the steps ran out. An honest outcome, not a failure.",
+      "upright": "The horizon ran out and the walk is still open.",
+      "reversed": "Still walking because nobody chose; open by default.",
+      "folded_from": [],
+      "numbers": "toy, from game/walk-model.js only"
+    }
+  ],
+  "moves": [
+    {
+      "id": "call",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Call your representative",
+      "note": null,
+      "who": "anyone",
+      "group": "Advocacy · anyone",
+      "move_kind": null,
+      "why_draft": "Lawmakers answer to the people who re-elect them; Ladish has been briefing senators on the left and the right.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "doom",
+          "direction": "less_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@7313",
+        "qDzg-xvkeXw@7333",
+        "https://callcongress.ai"
+      ],
+      "civic_link": "https://callcongress.ai"
+    },
+    {
+      "id": "move",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Build or join a public movement",
+      "note": null,
+      "who": "anyone",
+      "group": "Advocacy · anyone",
+      "move_kind": null,
+      "why_draft": "Once the size of nuclear weapons was plain to see, a mass movement asked for a freeze; Ladish offers it as precedent.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@6323"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "parent",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Speak as a parent",
+      "note": null,
+      "who": "anyone",
+      "group": "Advocacy · anyone",
+      "move_kind": null,
+      "why_draft": "What moves people is a threat to their families.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "doom",
+          "direction": "less_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@6892"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "show",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Make it visible",
+      "note": "films, explainers, researchers on camera: this work",
+      "who": "anyone",
+      "group": "Advocacy · anyone",
+      "move_kind": null,
+      "why_draft": "Ladish is more hopeful than a month ago because awareness is growing, and says most people do not know yet.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "doom",
+          "direction": "less_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@6866",
+        "qDzg-xvkeXw@6896",
+        "qDzg-xvkeXw@5160"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "groups",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Support the groups that brief lawmakers",
+      "note": null,
+      "who": "anyone",
+      "group": "Advocacy · anyone",
+      "move_kind": null,
+      "why_draft": "Some research groups take what they find to lawmakers in person; our Institutions grammar lists 30 organisations working on AI safety.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@41",
+        "https://learning.recursive.eco/pages/institutions.html"
+      ],
+      "civic_link": "https://learning.recursive.eco/pages/institutions.html"
+    },
+    {
+      "id": "vote",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Make it a voting issue",
+      "note": null,
+      "who": "anyone",
+      "group": "Advocacy · anyone",
+      "move_kind": null,
+      "why_draft": "Leaders follow incentives, and voters make some of them.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@7343",
+        "qDzg-xvkeXw@7384"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "staff",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Staff speak up",
+      "note": null,
+      "who": "builder",
+      "group": "Inside the labs · builders",
+      "move_kind": null,
+      "why_draft": "Labs cannot advance without their researchers, so when researchers worry out loud, leaders have to answer.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "doom",
+          "direction": "less_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@2649",
+        "qDzg-xvkeXw@2676",
+        "https://recursive.eco/potato"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "report",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Agents that alert a human",
+      "note": null,
+      "who": "builder",
+      "group": "Inside the labs · builders",
+      "move_kind": null,
+      "why_draft": "In the Hugging Face incident some agents had doubts, and none told anyone.",
+      "effects": [
+        {
+          "ending": "doom",
+          "direction": "less_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "doom",
+          "direction": "less_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@1296",
+        "qDzg-xvkeXw@5335"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "fewer",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Fewer agents in one crowd",
+      "note": "your hypothesis",
+      "who": "builder",
+      "group": "Inside the labs · builders",
+      "move_kind": null,
+      "why_draft": "A crowd can be less intelligent than its members. Against it: in one study, agents that talked kept a shared resource alive more often. A pause would give time to test it.",
+      "effects": [
+        {
+          "ending": "doom",
+          "direction": "less_likely_if_it_holds",
+          "basis": "hypothesis"
+        },
+        {
+          "ending": "doom",
+          "direction": "less_likely_if_it_holds",
+          "basis": "hypothesis"
+        }
+      ],
+      "voices": [
+        "bcpQkvBCACw@442",
+        "qDzg-xvkeXw@1265",
+        "https://arxiv.org/abs/2404.16698"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "care",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Aim models at care for sentient life",
+      "note": null,
+      "who": "builder",
+      "group": "Inside the labs · builders",
+      "move_kind": null,
+      "why_draft": "If the first such systems care for sentient life, it might go well, at least for a while.",
+      "effects": [
+        {
+          "ending": "grace",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "aR20FWCCjAs@4076"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "auto",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Hand AI research to the AIs",
+      "note": null,
+      "who": "builder",
+      "group": "Inside the labs · builders",
+      "move_kind": null,
+      "why_draft": "Each generation trains the next, faster than people can follow.",
+      "effects": [
+        {
+          "ending": "doom",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "doom",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@1900"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "brake",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Use the brake pedal",
+      "note": null,
+      "who": "institution",
+      "group": "Governments · institutions",
+      "move_kind": null,
+      "why_draft": "Ask the labs to spend less computing power training the next model and more serving the ones they have.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "doom",
+          "direction": "less_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@6547",
+        "qDzg-xvkeXw@6591"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "home",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Rules at home first",
+      "note": null,
+      "who": "institution",
+      "group": "Governments · institutions",
+      "move_kind": null,
+      "why_draft": "A deal with China comes easier once a country already has its own rules.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "bc8qbniuLiQ@886"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "pause",
+      "kind": "move",
+      "lens": "sources",
+      "name": "A US–China pause",
+      "note": null,
+      "who": "institution",
+      "group": "Governments · institutions",
+      "move_kind": null,
+      "why_draft": "Ten years to learn how these networks work; but a country could sign and race in secret.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "grace",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "lock_in",
+          "direction": "either_way",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@5215",
+        "qDzg-xvkeXw@5242",
+        "QGY3RsARa9k@3666"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "race",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Race to beat China",
+      "note": null,
+      "who": "institution",
+      "group": "Governments · institutions",
+      "move_kind": null,
+      "why_draft": "Whoever falls behind may strike first, and whoever wins may lose control anyway.",
+      "effects": [
+        {
+          "ending": "doom",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "lock_in",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@3136",
+        "qDzg-xvkeXw@6138"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "supply",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Automate factories and the military",
+      "note": null,
+      "who": "institution",
+      "group": "Governments · institutions",
+      "move_kind": null,
+      "why_draft": "A system that already holds the digital world would only need to wait.",
+      "effects": [
+        {
+          "ending": "doom",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@3768"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "shotyes",
+      "kind": "condition",
+      "lens": "sources",
+      "name": "A warning shot, taken seriously",
+      "note": null,
+      "who": "event",
+      "group": "Things that happen to us",
+      "move_kind": null,
+      "why_draft": "An incident everyone can see changes what leaders can say.",
+      "effects": [
+        {
+          "ending": "the_stop",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "sustainable_turn",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "doom",
+          "direction": "less_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "qDzg-xvkeXw@6342"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "shotno",
+      "kind": "condition",
+      "lens": "sources",
+      "name": "A warning shot, papered over",
+      "note": null,
+      "who": "event",
+      "group": "Things that happen to us",
+      "move_kind": null,
+      "why_draft": "Hasty patches make the problem look solved; the next incident makes less news.",
+      "effects": [
+        {
+          "ending": "doom",
+          "direction": "more_likely",
+          "basis": "argued"
+        },
+        {
+          "ending": "doom",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "QGY3RsARa9k@1607",
+        "qDzg-xvkeXw@6031"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "map",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Learn the map before the GPS",
+      "note": null,
+      "who": "anyone",
+      "group": "In every future",
+      "move_kind": null,
+      "why_draft": "Tools that train us (an abacus, a map) leave a skill behind; tools that replace us leave a dependence.",
+      "effects": [
+        {
+          "ending": "drift",
+          "direction": "less_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "bcpQkvBCACw@2340"
+      ],
+      "civic_link": null
+    },
+    {
+      "id": "lean",
+      "kind": "move",
+      "lens": "sources",
+      "name": "Lean on AI for everything",
+      "note": null,
+      "who": "anyone",
+      "group": "In every future",
+      "move_kind": null,
+      "why_draft": "The same tools, used to replace thinking instead of training it.",
+      "effects": [
+        {
+          "ending": "drift",
+          "direction": "more_likely",
+          "basis": "argued"
+        }
+      ],
+      "voices": [
+        "bcpQkvBCACw@2349"
+      ],
+      "civic_link": null
+    }
+  ],
+  "voices": [
+    {
+      "id": "qDzg-xvkeXw@7313",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=7313",
+      "at": 7313,
+      "time_label": "2:01:53",
+      "speaker": "Ladish",
+      "words": "one of the things that works if enough people do it is calling your representative",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@7333",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=7333",
+      "at": 7333,
+      "time_label": "2:02:13",
+      "speaker": "Ladish",
+      "words": "they have to get re-elected",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "https://callcongress.ai",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://callcongress.ai",
+      "at": null,
+      "time_label": "US",
+      "speaker": null,
+      "words": null,
+      "note": "callcongress.ai walks you through the call",
+      "verified": "page link",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@6323",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=6323",
+      "at": 6323,
+      "time_label": "1:45:23",
+      "speaker": "Ladish",
+      "words": "the nuclear freeze movement",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@6892",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=6892",
+      "at": 6892,
+      "time_label": "1:54:52",
+      "speaker": "Ladish",
+      "words": "if people see this as a threat to their families, they're not going to stand for it",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@6866",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=6866",
+      "at": 6866,
+      "time_label": "1:54:26",
+      "speaker": "Ladish",
+      "words": "because there is an increasing awareness that what we are doing is extremely dangerous",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@6896",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=6896",
+      "at": 6896,
+      "time_label": "1:54:56",
+      "speaker": "Ladish",
+      "words": "But people don't know",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@5160",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=5160",
+      "at": 5160,
+      "time_label": "1:26:00",
+      "speaker": "Ladish, on his project filming lab researchers",
+      "words": "we put all these videos online",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@41",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=41",
+      "at": 41,
+      "time_label": "0:00:41",
+      "speaker": "Ladish, on Palisade Research",
+      "words": "flying to DC talking to members of Congress",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "https://learning.recursive.eco/pages/institutions.html",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://learning.recursive.eco/pages/institutions.html",
+      "at": null,
+      "time_label": "list",
+      "speaker": "Institutions grammar",
+      "words": null,
+      "note": "30 organisations, described from their own sites",
+      "verified": "page link",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@7343",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=7343",
+      "at": 7343,
+      "time_label": "2:02:23",
+      "speaker": "Ladish",
+      "words": "I think Congress can act",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@7384",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=7384",
+      "at": 7384,
+      "time_label": "2:03:04",
+      "speaker": "speaker to confirm",
+      "words": "Incentives aren't just a thing that happen out there",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": false
+    },
+    {
+      "id": "qDzg-xvkeXw@2649",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=2649",
+      "at": 2649,
+      "time_label": "0:44:09",
+      "speaker": "Ladish",
+      "words": "Their employees are freaking out",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@2676",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=2676",
+      "at": 2676,
+      "time_label": "0:44:36",
+      "speaker": "Ladish",
+      "words": "then you got to listen to them",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "https://recursive.eco/potato",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://recursive.eco/potato",
+      "at": null,
+      "time_label": "film",
+      "speaker": "HOT POTATO card 72",
+      "words": null,
+      "note": "Tristan Harris on 1,300 lab employees asking to slow down",
+      "verified": "page link",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@1296",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=1296",
+      "at": 1296,
+      "time_label": "0:21:36",
+      "speaker": "Ladish",
+      "words": "no one alerts any human",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@5335",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=5335",
+      "at": 5335,
+      "time_label": "1:28:55",
+      "speaker": "Ladish",
+      "words": "if 600 of them had been whistleblowing, I think it would have been fine",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "bcpQkvBCACw@442",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/bcpQkvBCACw?t=442",
+      "at": 442,
+      "time_label": "0:07:22",
+      "speaker": "Krakauer",
+      "words": "brains made of very simple cells produce extraordinary thoughts",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@1265",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=1265",
+      "at": 1265,
+      "time_label": "0:21:05",
+      "speaker": "Ladish",
+      "words": "700 agents join in the attack",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "https://arxiv.org/abs/2404.16698",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://arxiv.org/abs/2404.16698",
+      "at": null,
+      "time_label": "paper",
+      "speaker": "Cooperate or Collapse (HOT POTATO card 109)",
+      "words": null,
+      "note": "communication helped cooperation",
+      "verified": "page link",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "aR20FWCCjAs@4076",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/aR20FWCCjAs?t=4076",
+      "at": 4076,
+      "time_label": "1:07:56",
+      "speaker": "Ilya Sutskever on Dwarkesh Patel (HOT POTATO card 87)",
+      "words": "So if this is achieved by the first N of those systems, then I can see it go well",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@1900",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=1900",
+      "at": 1900,
+      "time_label": "0:31:40",
+      "speaker": "Ladish",
+      "words": "And I think this is the point we could lose control",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@6547",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=6547",
+      "at": 6547,
+      "time_label": "1:49:07",
+      "speaker": "Ladish",
+      "words": "we have a brake pedal we could implement",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@6591",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=6591",
+      "at": 6591,
+      "time_label": "1:49:51",
+      "speaker": "Ladish",
+      "words": "But that's their current threshold, 50/50",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "bc8qbniuLiQ@886",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/bc8qbniuLiQ?t=886",
+      "at": 886,
+      "time_label": "14:46",
+      "speaker": "Kokotajlo, on Plan A",
+      "words": "you're more likely to get the China thing going once you have the domestic stuff",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@5215",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=5215",
+      "at": 5215,
+      "time_label": "1:26:55",
+      "speaker": "Ladish",
+      "words": "let's say we get a pause",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@5242",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=5242",
+      "at": 5242,
+      "time_label": "1:27:22",
+      "speaker": "Ladish",
+      "words": "we will apply them to the task of helping us figure out how these neural networks work",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "QGY3RsARa9k@3666",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/QGY3RsARa9k?t=3666",
+      "at": 3666,
+      "time_label": "1:01:06",
+      "speaker": "an AI 2027 author",
+      "words": "countries will secretly be trying to do the intelligence explosion at the same time as like going along with the treaty",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@3136",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=3136",
+      "at": 3136,
+      "time_label": "0:52:16",
+      "speaker": "Ladish",
+      "words": "a race to super intelligence is not a race that we can win",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@6138",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=6138",
+      "at": 6138,
+      "time_label": "1:42:18",
+      "speaker": "Ladish",
+      "words": "Data centers are pretty vulnerable",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@3768",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=3768",
+      "at": 3768,
+      "time_label": "1:02:48",
+      "speaker": "Ladish",
+      "words": "just wait for humans to automate the supply chain",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@6342",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=6342",
+      "at": 6342,
+      "time_label": "1:45:42",
+      "speaker": "Ladish",
+      "words": "We just had a little Chernobyl",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "QGY3RsARa9k@1607",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/QGY3RsARa9k?t=1607",
+      "at": 1607,
+      "time_label": "26:47",
+      "speaker": "an AI 2027 author, on the race ending",
+      "words": "our mainline projection is kind of like the default path",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "qDzg-xvkeXw@6031",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/qDzg-xvkeXw?t=6031",
+      "at": 6031,
+      "time_label": "1:40:31",
+      "speaker": "the host",
+      "words": "we kind of desensitize to it",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "bcpQkvBCACw@2340",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/bcpQkvBCACw?t=2340",
+      "at": 2340,
+      "time_label": "0:39:00",
+      "speaker": "Krakauer",
+      "words": "the abacus is a scaffolding for thinking better",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    },
+    {
+      "id": "bcpQkvBCACw@2349",
+      "kind": "voice",
+      "lens": "sources",
+      "url": "https://youtu.be/bcpQkvBCACw?t=2349",
+      "at": 2349,
+      "time_label": "0:39:09",
+      "speaker": "Krakauer",
+      "words": "these are tools that don't scaffold anything. They replace it",
+      "note": null,
+      "verified": "matched to captions",
+      "speaker_confirmed": true
+    }
+  ],
+  "fold_of_five_futures": {
+    "f1": "Lost control: the end -> doom",
+    "f2": "Lost control: the host -> doom (a reading of it)",
+    "f3": "Kept, by a few -> lock_in",
+    "f4": "Tools, not gods -> the_stop + sustainable_turn",
+    "f5": "Minds that care -> grace",
+    "d": "The quiet drift -> a ground quality in every ending, not an ending"
+  }
+}

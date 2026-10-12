@@ -29,5 +29,6 @@
   },
   "maintainers": ["pp@playfulprocess.com"],
   "default_branch": "main",
-  "_source_of_truth_note": "`source_of_truth` is a property of the CHANNEL DOCUMENT in recursive.eco (`document_data.source_of_truth = 'repo'`), not of this file — the importer does not copy it from the manifest today. Declared here as intent; see docs/CHANNELS.md for the three steps that make it true."
+  "source_of_truth": "repo",
+  "_source_of_truth_note": "Oct 11 2026 (her decision: every grammar is repo-first here, recursive.eco is the editor): `source_of_truth: \"repo\"` above is carried onto the repository by the GitHub import (recursive-eco /api/repository/import-from-github), which makes this repo canonical: app edits come back as pull requests. Only the exact string \"repo\" is read; removing it does not undo an earlier import. See docs/CHANNELS.md for the other two steps (import, install the GitHub App)."
 }

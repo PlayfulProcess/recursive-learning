@@ -1,0 +1,79 @@
+{
+  "_about": "Recursive Ekho: one schema for both lenses. Drafted Oct 11 2026 by the AI-readiness session, for the Recursive Gospels session to amend. Every node is a recursive.eco node (format v2) when it becomes a grammar; this file names the kinds and fields. Scaffolding (data/ is not published by the site). Nothing here is her final word.",
+  "world": {
+    "name": "Recursive Ekho",
+    "grammar": "Recursive Map",
+    "her_words": [
+      "The grammar of this world is called Recursive Map. It is my attempt to get oriented in this crazy world, given the unimaginable changes we will most likely face. I will recursively choose my grounds on how to have my moral compass and values, so that I can keep making this life worth living in any scenario",
+      "I want people to find a cohesive system to remain hopeful in any circumstance through this world, practices and mythology."
+    ],
+    "her_words_source": "chat in the Recursive Gospels session, Oct 11 2026, as recorded in recursive-gospels/CLAUDE.md, tidied for spelling"
+  },
+  "lenses": {
+    "sources": "What is sourced: voices matched to captions or pages, endings whose names are borrowed labels, moves whose effects are ARGUED by a voice. No numbers about the world.",
+    "ekho": "Her lore, marked as lore on every node. It may borrow from Sources and says where (source_lens + source_id). Death in the game ends an episode, not the player."
+  },
+  "relations": {
+    "given": "Every chance belongs to an ending GIVEN a path of moves. Two kinds of effect: 'toy' (numbers inside a game that says so) and 'argued' (a direction with a voice behind it).",
+    "together": "Some moves count only when enough players make them (The Walk's coordination bar 0.60; 'Stopping needs company')."
+  },
+  "kinds": {
+    "ending": { "status": "agreed", "is": "where a walk could end; a basin, not a prophecy", "fields": ["id", "name", "what", "upright", "reversed", "label_from", "label_link", "placeholder"] },
+    "move": { "status": "agreed", "is": "what someone can do, who can do it, whether it needs company", "fields": ["id", "name", "who", "move_kind", "needs_company", "effects[{ending, direction, basis}]", "voices[]", "civic_link", "faces{human, ai}"] },
+    "condition": { "status": "agreed", "is": "a move nobody chooses: something that happens to us", "fields": ["same as move"] },
+    "voice": { "status": "agreed", "is": "who says so, at a time anyone can check; related to, never obeyed. In Ekho, a being is a voice inside the fiction.", "fields": ["id", "speaker", "words", "url", "at", "verified", "speaker_confirmed"] },
+    "word": { "status": "agreed", "is": "what we call it, one meaning each; lives in glossary/terms.json", "fields": ["term_id"] },
+    "step": { "status": "agreed", "is": "what I do now, private by default; in Ekho a place is where a step stands", "fields": ["kept in the reader's browser or as a recursive.eco mark, never in this repo"] },
+    "principle": { "status": "proposed by the Gospels session, for her", "is": "a ground: an axiom the world rests on ('intelligence is pattern', 'we are made as we make'); her word 'grounds'", "fields": ["id", "name", "her_words", "in_her_words"] },
+    "story": { "status": "proposed by the Gospels session, for her (the Recursive Map calls it 'myth'; one word to pick with her)", "is": "a myth: an emergence whose parts are steps and endings; seeded by The Walk's 'ending as fiction' box", "fields": ["id", "name", "parts[]", "in_her_words"] },
+    "dial": { "status": "proposed by the Gospels session (the Recursive Map's 'parameter' category), for her", "is": "a quantity the players move by playing, unlike a wildcard, which nobody can set; today only relationality", "fields": ["id", "name", "what"] },
+    "wildcard": { "status": "proposed from her Oct 11 message (below)", "is": "something science or experience might find that changes which endings are reachable and which strategies are adaptive. It has two or more faces and nobody knows yet which holds: The Fork's coin, the belief tree's questions, her four Ekho sliders read as unknowns, P3 'Name what is not known'.", "example": "superintelligence is orthogonal to morality / it is not", "fields": ["id", "name", "faces[]", "voices[]", "her_words", "made_by"] }
+  },
+  "creation": {
+    "her_words": [
+      "Eventually I would like for people to be able to 1) create their own outcomes and select amongst existing ones, 2) create wildcards of what science or experience might find in the world, 3) create strategies that might be adaptive at some or any point of the journey.",
+      "For instance, learning how to die and wisdom serves us in any scenario. Learn how to control our hubris and not launch unsafe products works only if superintelligence is orthogonal to morality or something, you know? Not sure.",
+      "the world and the collective grammar will only accept things that are compassionate, fit the data and are useful; but maybe people can create their own grammars and it will render in the game"
+    ],
+    "her_words_source": "chat in the AI-readiness session, Oct 11 2026, tidied for spelling",
+    "three_creations": { "outcome": "an ending, made or chosen", "wildcard": "a discovery that may come (kind above)", "strategy": "a move with adaptive_when" },
+    "adaptive_when": { "any": "robust: adaptive whichever face a wildcard shows (her example: learning how to die, wisdom)", "if": "conditional: adaptive only under one face of a wildcard (her example, which she marked 'not sure': controlling hubris and not launching unsafe products, if superintelligence is orthogonal to morality)" },
+    "personal_grammar": "anyone can make their own grammar of outcomes, wildcards and strategies; it renders in the game for them",
+    "collective_grammar": "accepts an entry only if it is compassionate, fits the data and is useful (her three tests); entries arrive as Offers waiting for review, the recursive.eco share-with-approval that already exists",
+    "shared_assumptions": "a small basic set every grammar inherits; to be named with her"
+  },
+  "engines": {
+    "status": "both explored (her word, Oct 12 2026: \"I want to explore both the Walk and the strategy board\"); a private draft in recursive-eco docs/ai-readiness/ekho-walk-and-board-draft-1.html",
+    "the_walk": "game/walk-model.js unchanged; a wildcard changes only its priors. Hidden faces are drawn when a walk starts and found on the way; the end is read in both lenses",
+    "the_board": "strategies against the four worlds of her two switches (aligned by nature x containable), the belief tree's 2x2; toy rows computed by the Walk against the race as it is, argued rows from her words",
+    "switches": {
+      "wildcard-ai-and-the-whole": "toy: aligned by nature cuts riskBase to a fifth",
+      "wildcard-containable": "toy: containable makes alignment and security work buy 1.6x (beta) and risk climb more gently (alpha 1.2); not containable halves it (alpha 1.6)",
+      "speed": "toy, proposed by Claude, not in the Map until she says yes: fast growth 0.50, slow 0.25; unknown keeps the Walk's 0.35",
+      "wildcard-humans-as-ai-sees-them": "lens only: which Ekho ending a Walk ending becomes",
+      "wildcard-ai-power": "lens only"
+    }
+  },
+  "oracles_in_the_game": {
+    "status": "her idea, Oct 12 2026; parked, nothing built",
+    "her_words": [
+      "It would be funny if characters can cast our oracles in the game, especially something like Human Design, and try to choose actions based on that, as a way that 4D communicates with them, but it can be red team, lol.",
+      "Like, the only real test of oracles is if they can really help in situations like the ones we are going to face. Maybe we can cast the Dhammapada if the moment is to face death or things like that, or people can choose to link a grammar to be tested in certain nodes."
+    ],
+    "her_words_source": "chat in the AI-readiness session, Oct 12 2026, tidied for spelling",
+    "character_casts": "a being casts one of the recursive.eco oracles at a choice and picks its move from the draw; marked red team, a test of the oracle, not advice to the player",
+    "linked_grammar": "a node (a moment such as facing death) can link a grammar to cast there, e.g. the Dhammapada; the link is the one cross-link pattern (metadata.source_deck + source_node_id + deck)",
+    "the_test": "an oracle earns its place if it helps in moments like the ones we may face; the game is where that is tried",
+    "uses": "the recursive.eco cast tool draws; the game never invents a card"
+  },
+  "move_kinds": {
+    "_note": "One list for both lenses. Her trainings first; The Walk's action kinds mapped where they line up; 'unmapped' left visible.",
+    "goodwill": { "her_words": "an attitude towards always wanting to do things that would directionally be beneficial for the whole, not only from our vantage point", "walk_kind": "gift" },
+    "processing": { "her_words": "make sure we are able to compost the shadow in us so it can be expressed in adaptive forms towards others", "walk_kind": "slack (unsure: slack is easing a hold, processing is composting; her call)" },
+    "creative_work": { "her_words": "One of the winning strategies is creative endeavours", "walk_kind": "unmapped" },
+    "take": { "her_words": null, "walk_kind": "take", "note": "the extractive move" },
+    "ratchet": { "her_words": null, "walk_kind": "ratchet", "note": "The Walk's kind with no training yet: locking a step in so it cannot slip back; unmapped in Ekho" }
+  },
+  "effect_directions": ["more_likely", "less_likely", "either_way", "less_likely_if_it_holds"],
+  "effect_basis": ["argued", "hypothesis", "toy"]
+}

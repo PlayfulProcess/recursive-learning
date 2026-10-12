@@ -71,6 +71,14 @@
       ]
     },
     {
+      "id": "other",
+      "name": "Other",
+      "provenance": "living",
+      "deck_slugs": [
+        "recursive-map"
+      ]
+    },
+    {
       "id": "record",
       "name": "Record — sources and institutions, dated",
       "provenance": "record",
@@ -321,6 +329,20 @@
       "path": "grammars/the-freedom-paradox/grammar.json",
       "provenance": "living",
       "cover_image_url": "/grammars/_covers/the-freedom-paradox.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "recursive-map",
+      "name": "Recursive Map",
+      "type": "custom",
+      "branch": "other",
+      "is_meta": false,
+      "default_preview": null,
+      "nodes": 52,
+      "blurb": "The grammar of Recursive Ekho, a world of fantastic realism: principles, beings, trainings, practices with two faces (for a human, for an AI), parameters, places, endings and myths. In her words, her …",
+      "path": "grammars/recursive-map/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/recursive-map.svg",
       "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
     },
     {
