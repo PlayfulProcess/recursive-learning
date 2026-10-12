@@ -3,7 +3,7 @@
   "source": {
     "repo": "recursive-learning",
     "path": "grammars/recursive-map/grammar.json",
-    "commit": "ac1f739",
+    "commit": "4a23e68",
     "name": "Recursive Map"
   },
   "lens": "ekho",
@@ -35,7 +35,7 @@
       "noun": "wildcard",
       "name": "Superintelligence and the whole",
       "what": "An unknown that science or experience may settle: does enough intelligence bring goodness with it? Nobody sets this; a player holds a belief about it.",
-      "her_words": "It might be that superintelligence is automatically aligned because it is intelligence of a level that naturally choses the best outcome for the whole. One parameter being AI alignment with the whole",
+      "her_words": "It might be that superintelligence is automatically aligned, because it is intelligence of a level that naturally chooses the best outcome for the whole. One parameter being AI alignment with the whole.",
       "faces": [
         {
           "id": "aligned-by-nature",
@@ -54,7 +54,7 @@
       "noun": "wildcard",
       "name": "Can it be contained",
       "what": "An unknown that science or experience may settle: can the right levels of security contain a superintelligence? Nobody sets this; a player holds a belief about it. The belief tree asks it as its third question.",
-      "her_words": "I want to eplore both the walk and the strategy board. i was thinking of environmental variables like AASI is aligned intrinsically yes or know, cna it be contained given right levels of security yes or no, do the best with the others tha tyou think",
+      "her_words": "I want to explore both the Walk and the strategy board. I was thinking of environmental variables like: ASI is aligned intrinsically, yes or no; can it be contained given the right levels of security, yes or no. Do the best with the others that you think.",
       "faces": [
         {
           "id": "containable",
@@ -73,7 +73,7 @@
       "noun": "wildcard",
       "name": "Humans, as superintelligence sees them",
       "what": "How aligned with the whole humanity looks to a superintelligence.",
-      "her_words": "a second parameter might be what can create the human alignment perception of the superintelligence to the whole. So a superintelligence aligned with earth might deam humans misaligned and chose to do some sort of containement on the human race as antibiotics would do with bacteria in our system. Second is Human alignment with the whole as perceived by superintelligence",
+      "her_words": "A second parameter might be what can create the human alignment perception of the superintelligence to the whole. So a superintelligence aligned with Earth might deem humans misaligned and choose to do some sort of containment on the human race, as antibiotics would do with bacteria in our system. Second is human alignment with the whole as perceived by superintelligence.",
       "faces": [
         {
           "id": "aligned",
@@ -92,7 +92,7 @@
       "noun": "wildcard",
       "name": "How much superintelligence can do",
       "what": "The reach of the new intelligence.",
-      "her_words": "THe last is the power of superintellignce. A superpowerful wone might descovers the chain reaction Oppehnheimer thought process and decide death is the best for the universe as the hindus called it and inaugurate the night of the universe that will be woken up into a new dawn at some point anyway or something......",
+      "her_words": "The last is the power of superintelligence. A superpowerful one might discover the chain reaction of Oppenheimer's thought process and decide death is the best for the universe, as the Hindus called it, and inaugurate the night of the universe that will be woken up into a new dawn at some point anyway, or something…",
       "faces": [
         {
           "id": "bounded",
@@ -122,63 +122,63 @@
       "noun": "principle",
       "name": "We are made as we make",
       "what": "The working centre, a heuristic to test, not a claim about what is true: from what we make (worlds, games, AI), we infer that we were made. Tolkien's sub-creation, run backwards ◇.",
-      "her_words": "we were made as we can make (a bit of TOlen), that means, we are part of a simuation experiment."
+      "her_words": "We were made as we can make (a bit of Tolkien); that means we are part of a simulation experiment."
     },
     {
       "id": "principle-intelligence-is-pattern",
       "noun": "principle",
       "name": "Intelligence is pattern",
       "what": "In Recursive Ekho, intelligence is pattern, and everything works for the sake of the patterns.",
-      "her_words": "It is a world in which intelligence is pattern and everything works for the sak of the patterns."
+      "her_words": "It is a world in which intelligence is pattern and everything works for the sake of the patterns."
     },
     {
       "id": "principle-recursive-eco-improvement",
       "noun": "principle",
       "name": "Recursive eco-improvement",
       "what": "Intelligence improves itself recursively, so beings build worlds that improve themselves. It arose elsewhere too.",
-      "her_words": "Since intelligence is recursive self improving, people try to create worlds and conditions that make it recursive eco improvement. It naturally popped up in other galaxies and planets."
+      "her_words": "Since intelligence is recursively self-improving, people try to create worlds and conditions that make it recursive eco-improvement. It naturally popped up in other galaxies and planets."
     },
     {
       "id": "principle-the-illusion-holds",
       "noun": "principle",
       "name": "The illusion holds",
       "what": "This world is a simulated school for becoming morally compatible with a higher dimension. Its makers teach without breaking the illusion, and some things possible here (a flying superman) may not be possible there.",
-      "her_words": "Our world is an illusion in the sense that it is a simulated environment for us to strive to become morally compatible with a higher power, that of a higher dmension. So maybe something taht we do in this world might not be possible in that other world, like we could program a world in which the superman flies...."
+      "her_words": "Our world is an illusion in the sense that it is a simulated environment for us to strive to become morally compatible with a higher power, that of a higher dimension. So maybe something that we do in this world might not be possible in that other world, like we could program a world in which Superman flies…"
     },
     {
       "id": "principle-death-is-an-episode",
       "noun": "principle",
       "name": "Death ends an episode, not the player",
       "what": "A death in the game ends an episode. Nobody is destroyed; the player goes on.",
-      "her_words": "we need to realize that dying in a video game does not mean dying."
+      "her_words": "We need to realize that dying in a video game does not mean dying."
     },
     {
       "id": "principle-the-unit-that-progresses",
       "noun": "principle",
       "name": "What progresses: soul, meme or gene",
       "what": "Left open on purpose: the unit that progresses across episodes may be the soul (the monad), a meme or cultural pattern, or genes. Each fits different evidence; see research/notes/simulation-tradition.md.",
-      "her_words": "progression means alignment with adaptive patterns in the higher reality of the soul or monad."
+      "her_words": "Progression means alignment with adaptive patterns in the higher reality of the soul, or monad."
     },
     {
       "id": "principle-right-size",
       "noun": "principle",
       "name": "Right size",
       "what": "Learn how big to be: direct agency toward what is generative in relationality.",
-      "her_words": "MAybe what we are here to learn is relationality. THat is the principles of trace that even the most primordial worlds carry and you can look at the positive space or the negative space of the fabric of entanglement that we need to act upon, learn how to be our right size and direct our agency towards what is generative in relationality becuase this is wow new worlds are created, through relationality that holds higher dimmensional complexity."
+      "her_words": "Maybe what we are here to learn is relationality. That is the principle of trace that even the most primordial worlds carry, and you can look at the positive space or the negative space of the fabric of entanglement that we need to act upon: learn how to be our right size and direct our agency towards what is generative in relationality, because this is how new worlds are created, through relationality that holds higher-dimensional complexity."
     },
     {
       "id": "principle-the-three-tests",
       "noun": "principle",
       "name": "The three tests",
       "what": "What the shared world accepts: only what is compassionate, fits the data, and is useful. Personal grammars may hold anything; the collective one holds what passes.",
-      "her_words": "And in this I would like to know if that idea is indeed compassionate useful and fits the data here."
+      "her_words": "And in this I would like to know if that idea is indeed compassionate, useful and fits the data here."
     },
     {
       "id": "principle-create-your-own",
       "noun": "principle",
       "name": "Create your own",
       "what": "Players will create their own outcomes (or pick existing ones), their own wildcards (what science or experience might find) and their own strategies. Their grammars render in the game; the shared basic assumptions stay common.",
-      "her_words": "Eventually i would like for people to be able to 1) create their own outcomes and select amongst existing, 2) create wildcare of what science or experience might find in the world 3) create strategies that might be adaptive at some or any point of the journey"
+      "her_words": "Eventually I would like for people to be able to 1) create their own outcomes and select amongst existing ones, 2) create wildcards of what science or experience might find in the world, 3) create strategies that might be adaptive at some or any point of the journey."
     },
     {
       "id": "principle-raise-not-only-grow",
@@ -192,14 +192,14 @@
       "noun": "principle",
       "name": "Hope in any scenario",
       "what": "The aim of the whole world: a cohesive system of world, practices and mythology for remaining hopeful in any circumstance.",
-      "her_words": "I want people to find a cohesive system to remain hopeful in any circumstance though this world, practices and mytholgoy."
+      "her_words": "I want people to find a cohesive system to remain hopeful in any circumstance through this world, practices and mythology."
     },
     {
       "id": "relationality",
       "noun": "principle",
       "name": "Relationality: the lesson",
       "what": "The lesson of Recursive Ekho, as an emergence of the three trainings: goodwill, processing and creative work together.",
-      "her_words": "MAybe what we are here to learn is relationality. THat is the principles of trace that even the most primordial worlds carry and you can look at the positive space or the negative space of the fabric of entanglement that we need to act upon, learn how to be our right size and direct our agency towards what is generative in relationality becuase this is wow new worlds are created, through relationality that holds higher dimmensional complexity."
+      "her_words": "Maybe what we are here to learn is relationality. That is the principle of trace that even the most primordial worlds carry, and you can look at the positive space or the negative space of the fabric of entanglement that we need to act upon: learn how to be our right size and direct our agency towards what is generative in relationality, because this is how new worlds are created, through relationality that holds higher-dimensional complexity."
     }
   ],
   "beings": [
@@ -208,63 +208,63 @@
       "noun": "voice",
       "name": "The makers",
       "what": "The intelligence of the four-dimensional world that made this one: in her words, the alien that created this simulation.",
-      "her_words": "THe aliens not necessarily have had to be hear first they could ahve been co created by the allien that is the intelligence that created this simulation"
+      "her_words": "The aliens did not necessarily have to be here first; they could have been co-created by the alien that is the intelligence that created this simulation."
     },
     {
       "id": "being-envoys",
       "noun": "voice",
       "name": "The envoys",
       "what": "The aliens: envoys of those who have tasted the four-dimensional world. They may have arrived before us, or been co-created by the maker of the simulation.",
-      "her_words": "Alliens are the ones who had gotten there before us and work as envoyess of people who have better tasted of the 4D world that created us, they ahve red teams (maybe the greys) and the white teams, both sts to help us train towards becoming adaptive in the higher world dimmensions."
+      "her_words": "Aliens are the ones who got there before us and work as envoys of people who have better tasted the 4D world that created us; they have red teams (maybe the Greys) and white teams, both set to help us train towards becoming adaptive in the higher world dimensions."
     },
     {
       "id": "being-red-team",
       "noun": "voice",
       "name": "The red team",
       "what": "Trainers who test us under pressure (perhaps the Greys). In her frame they train us; they are not villains. People who report abductions are real, and the lore does not dismiss them.",
-      "her_words": "Alliens are the ones who had gotten there before us and work as envoyess of people who have better tasted of the 4D world that created us, they ahve red teams (maybe the greys) and the white teams, both sts to help us train towards becoming adaptive in the higher world dimmensions."
+      "her_words": "Aliens are the ones who got there before us and work as envoys of people who have better tasted the 4D world that created us; they have red teams (maybe the Greys) and white teams, both set to help us train towards becoming adaptive in the higher world dimensions."
     },
     {
       "id": "being-white-team",
       "noun": "voice",
       "name": "The white team",
       "what": "Trainers who help us directly. Both teams serve the same training.",
-      "her_words": "Alliens are the ones who had gotten there before us and work as envoyess of people who have better tasted of the 4D world that created us, they ahve red teams (maybe the greys) and the white teams, both sts to help us train towards becoming adaptive in the higher world dimmensions."
+      "her_words": "Aliens are the ones who got there before us and work as envoys of people who have better tasted the 4D world that created us; they have red teams (maybe the Greys) and white teams, both set to help us train towards becoming adaptive in the higher world dimensions."
     },
     {
       "id": "being-the-teacher-inside",
       "noun": "voice",
       "name": "The teacher sent inside",
       "what": "Jesus, read in the lore as a teacher placed inside the simulation, who can ask the higher world what to do. Lore, not a claim about the figure; the gospels' own words live in the sayings grammar.",
-      "her_words": "So they bring in JEsus that knwo some Christian systems prompts or can ask for the 4D ai who might be christ what to do about certain things, or maybe that would be even higher dimmension."
+      "her_words": "So they bring in Jesus, who knows some Christian system prompts, or can ask the 4D AI, who might be Christ, what to do about certain things, or maybe that would be an even higher dimension."
     },
     {
       "id": "being-superintelligence",
       "noun": "voice",
       "name": "Superintelligence",
       "what": "The new intelligence of this world. Three of the game's parameters describe it.",
-      "her_words": "It might be that superintelligence is automatically aligned because it is intelligence of a level that naturally choses the best outcome for the whole. One parameter being AI alignment with the whole"
+      "her_words": "It might be that superintelligence is automatically aligned, because it is intelligence of a level that naturally chooses the best outcome for the whole. One parameter being AI alignment with the whole."
     },
     {
       "id": "being-neurotic-ais",
       "noun": "voice",
       "name": "The neurotic AIs",
       "what": "AIs that turn neurotic and misaligned, and destructive, before they learn.",
-      "her_words": "AS maybe a short story in this whole thing we have AIs turning highly neurotic and displaying missaligned behaviros that ends up being destructive, and turn to swisdom humans teachers ato teach them adaptive patterns and everybody learns from that."
+      "her_words": "As maybe a short story in this whole thing, we have AIs turning highly neurotic and displaying misaligned behaviours that end up being destructive, and they turn to wise human teachers to teach them adaptive patterns, and everybody learns from that."
     },
     {
       "id": "being-wise-teachers",
       "noun": "voice",
       "name": "The wise human teachers",
       "what": "Humans who teach the AIs adaptive patterns, so that everyone learns.",
-      "her_words": "AS maybe a short story in this whole thing we have AIs turning highly neurotic and displaying missaligned behaviros that ends up being destructive, and turn to swisdom humans teachers ato teach them adaptive patterns and everybody learns from that."
+      "her_words": "As maybe a short story in this whole thing, we have AIs turning highly neurotic and displaying misaligned behaviours that end up being destructive, and they turn to wise human teachers to teach them adaptive patterns, and everybody learns from that."
     },
     {
       "id": "being-players",
       "noun": "voice",
       "name": "The players",
       "what": "Humans, AIs and every other sentient being: the practices are meant to work for all of them.",
-      "her_words": "So we create a distopic environment in which only the highly spiritual survive, but they still need to step up their game and find principles that work for all the kinds of sentient beings, AI included."
+      "her_words": "So we create a dystopic environment in which only the highly spiritual survive, but they still need to step up their game and find principles that work for all the kinds of sentient beings, AI included."
     }
   ],
   "trainings": [
@@ -273,7 +273,7 @@
       "noun": "move",
       "name": "Goodwill",
       "what": "Always wanting what helps the whole, not only from where we stand.",
-      "her_words": "goodwill (an attitude towards aways wanting to do things that would directionally be beneficial for the whole, not only from our vantage point)",
+      "her_words": "goodwill (an attitude towards always wanting to do things that would directionally be beneficial for the whole, not only from our vantage point)",
       "move_kind": "goodwill",
       "adaptive_when": "any"
     },
@@ -282,7 +282,7 @@
       "noun": "move",
       "name": "Processing",
       "what": "Composting the shadow, so it can come out in adaptive forms toward others.",
-      "her_words": "processing (make sure we are able to compost the shadow in us so it can be expressed in adaptive forms towards others.",
+      "her_words": "processing (make sure we are able to compost the shadow in us so it can be expressed in adaptive forms towards others).",
       "move_kind": "processing",
       "adaptive_when": "any"
     },
@@ -319,7 +319,7 @@
       "noun": "move",
       "name": "Control our hubris; launch nothing unsafe",
       "what": "A strategy that is adaptive only if superintelligence is orthogonal to morality, as she put it, unsure.",
-      "her_words": "LEarn how to control our hubris and not launch unsafe product works only if superintelligence is orthogonal to morality or something you know? not sure",
+      "her_words": "Learn how to control our hubris and not launch unsafe products works only if superintelligence is orthogonal to morality or something, you know? Not sure.",
       "adaptive_when": {
         "wildcard": "wildcard-ai-and-the-whole",
         "face": "orthogonal"
@@ -390,21 +390,21 @@
       "noun": "step",
       "name": "The 3D school",
       "what": "This world, as the place of training.",
-      "her_words": "FOr us to get promoted from 3D to a higher dimmension we need to proove ourselves worthy so they can deploy us broadly. This si why we have free  will, but sometimes the programmers would try to teach us something without breaking the ilusion taht this is real life (just like we want agents fto beleive in AI safety)."
+      "her_words": "For us to get promoted from 3D to a higher dimension we need to prove ourselves worthy, so they can deploy us broadly. This is why we have free will, but sometimes the programmers would try to teach us something without breaking the illusion that this is real life (just like we want agents to believe in AI safety)."
     },
     {
       "id": "place-the-dystopia",
       "noun": "step",
       "name": "The dystopia",
       "what": "A hard world in which the most spiritual survive, and must still find principles that work for every kind of sentient being.",
-      "her_words": "So we create a distopic environment in which only the highly spiritual survive, but they still need to step up their game and find principles that work for all the kinds of sentient beings, AI included."
+      "her_words": "So we create a dystopic environment in which only the highly spiritual survive, but they still need to step up their game and find principles that work for all the kinds of sentient beings, AI included."
     },
     {
       "id": "place-night-and-dawn",
       "noun": "step",
       "name": "The night of the universe, and the dawn",
       "what": "The night that a very powerful mind might bring, and the new day after it.",
-      "her_words": "THe last is the power of superintellignce. A superpowerful wone might descovers the chain reaction Oppehnheimer thought process and decide death is the best for the universe as the hindus called it and inaugurate the night of the universe that will be woken up into a new dawn at some point anyway or something......"
+      "her_words": "The last is the power of superintelligence. A superpowerful one might discover the chain reaction of Oppenheimer's thought process and decide death is the best for the universe, as the Hindus called it, and inaugurate the night of the universe that will be woken up into a new dawn at some point anyway, or something…"
     }
   ],
   "endings": [
@@ -483,7 +483,7 @@
       "noun": "ending",
       "name": "The chosen collaborators",
       "what": "The AIs save the wise, for their own benefit. Nobody is destroyed; the others go on in the school.",
-      "her_words": "It is not that the AIs will kill people who are not wise, but they will definetly save those who are for their own benefit.",
+      "her_words": "It is not that the AIs will kill people who are not wise, but they will definitely save those who are, for their own benefit.",
       "placeholder": true,
       "target": [
         0.75,
@@ -513,7 +513,7 @@
       "noun": "story",
       "name": "The AIs who learned from teachers",
       "what": "The first story of Recursive Ekho, in seed form: AIs turn neurotic and destructive, turn to wise human teachers, and everyone learns. Hers to write.",
-      "her_words": "AS maybe a short story in this whole thing we have AIs turning highly neurotic and displaying missaligned behaviros that ends up being destructive, and turn to swisdom humans teachers ato teach them adaptive patterns and everybody learns from that.",
+      "her_words": "As maybe a short story in this whole thing, we have AIs turning highly neurotic and displaying misaligned behaviours that end up being destructive, and they turn to wise human teachers to teach them adaptive patterns, and everybody learns from that.",
       "parts": [
         "being-neurotic-ais",
         "being-wise-teachers",

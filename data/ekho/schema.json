@@ -4,10 +4,10 @@
     "name": "Recursive Ekho",
     "grammar": "Recursive Map",
     "her_words": [
-      "THe rammar of this world is called recursive map, it is my attempt to get oriented in this crazy world given unimaginable changes we will most likely fave. I will recursively chos emy grounds on how to have my moral compass and values so that I can keep making this life worth living in any scenario",
-      "I want people to find a cohesive system to remain hopeful in any circumstance though this world, practices and mytholgoy."
+      "The grammar of this world is called Recursive Map. It is my attempt to get oriented in this crazy world, given the unimaginable changes we will most likely face. I will recursively choose my grounds on how to have my moral compass and values, so that I can keep making this life worth living in any scenario",
+      "I want people to find a cohesive system to remain hopeful in any circumstance through this world, practices and mythology."
     ],
-    "her_words_source": "chat in the Recursive Gospels session, Oct 11 2026, as recorded verbatim in recursive-gospels/CLAUDE.md"
+    "her_words_source": "chat in the Recursive Gospels session, Oct 11 2026, as recorded in recursive-gospels/CLAUDE.md, tidied for spelling"
   },
   "lenses": {
     "sources": "What is sourced: voices matched to captions or pages, endings whose names are borrowed labels, moves whose effects are ARGUED by a voice. No numbers about the world.",
@@ -31,11 +31,11 @@
   },
   "creation": {
     "her_words": [
-      "Eventually i would like for people to be able to 1) create their own outcomes and select amongst existing, 2) create wildcare of what science or experience might find in the world 3) create strategies that might be adaptive at some or any point of the journey",
-      "For instance, learning how to die and wisdom serves us in any scenario. LEarn how to control our hubris and not launch unsafe product works only if superintelligence is orthogonal to morality or something you know? not sure",
-      "the world and the collective grammar will only accept things that are compassionate, fits the data and are useful, but amybe people can create their own grammars and it will render in the game"
+      "Eventually I would like for people to be able to 1) create their own outcomes and select amongst existing ones, 2) create wildcards of what science or experience might find in the world, 3) create strategies that might be adaptive at some or any point of the journey.",
+      "For instance, learning how to die and wisdom serves us in any scenario. Learn how to control our hubris and not launch unsafe products works only if superintelligence is orthogonal to morality or something, you know? Not sure.",
+      "the world and the collective grammar will only accept things that are compassionate, fit the data and are useful; but maybe people can create their own grammars and it will render in the game"
     ],
-    "her_words_source": "chat in the AI-readiness session, Oct 11 2026, verbatim",
+    "her_words_source": "chat in the AI-readiness session, Oct 11 2026, tidied for spelling",
     "three_creations": { "outcome": "an ending, made or chosen", "wildcard": "a discovery that may come (kind above)", "strategy": "a move with adaptive_when" },
     "adaptive_when": { "any": "robust: adaptive whichever face a wildcard shows (her example: learning how to die, wisdom)", "if": "conditional: adaptive only under one face of a wildcard (her example, which she marked 'not sure': controlling hubris and not launching unsafe products, if superintelligence is orthogonal to morality)" },
     "personal_grammar": "anyone can make their own grammar of outcomes, wildcards and strategies; it renders in the game for them",
@@ -43,7 +43,7 @@
     "shared_assumptions": "a small basic set every grammar inherits; to be named with her"
   },
   "engines": {
-    "status": "both explored (her word, Oct 12 2026: \"I want to eplore both the walk and the strategy board\"); a private draft in recursive-eco docs/ai-readiness/ekho-walk-and-board-draft-1.html",
+    "status": "both explored (her word, Oct 12 2026: \"I want to explore both the Walk and the strategy board\"); a private draft in recursive-eco docs/ai-readiness/ekho-walk-and-board-draft-1.html",
     "the_walk": "game/walk-model.js unchanged; a wildcard changes only its priors. Hidden faces are drawn when a walk starts and found on the way; the end is read in both lenses",
     "the_board": "strategies against the four worlds of her two switches (aligned by nature x containable), the belief tree's 2x2; toy rows computed by the Walk against the race as it is, argued rows from her words",
     "switches": {
@@ -57,10 +57,10 @@
   "oracles_in_the_game": {
     "status": "her idea, Oct 12 2026; parked, nothing built",
     "her_words": [
-      "It would nbe funny if characters can cast our oracles in the game, especially something like human design and try to chose actions based on that, as a way that 4D communicates with them, but it can be red team lol",
-      "Like the only real test of oracles is if they can really help insituations like the ones we are going to face. Maybe we can cast the dhamappada if the moment is to face death or things like that, or people can chose to link a grammar to be tested in certain nodes"
+      "It would be funny if characters can cast our oracles in the game, especially something like Human Design, and try to choose actions based on that, as a way that 4D communicates with them, but it can be red team, lol.",
+      "Like, the only real test of oracles is if they can really help in situations like the ones we are going to face. Maybe we can cast the Dhammapada if the moment is to face death or things like that, or people can choose to link a grammar to be tested in certain nodes."
     ],
-    "her_words_source": "chat in the AI-readiness session, Oct 12 2026, verbatim",
+    "her_words_source": "chat in the AI-readiness session, Oct 12 2026, tidied for spelling",
     "character_casts": "a being casts one of the recursive.eco oracles at a choice and picks its move from the draw; marked red team, a test of the oracle, not advice to the player",
     "linked_grammar": "a node (a moment such as facing death) can link a grammar to cast there, e.g. the Dhammapada; the link is the one cross-link pattern (metadata.source_deck + source_node_id + deck)",
     "the_test": "an oracle earns its place if it helps in moments like the ones we may face; the game is where that is tried",
@@ -68,7 +68,7 @@
   },
   "move_kinds": {
     "_note": "One list for both lenses. Her trainings first; The Walk's action kinds mapped where they line up; 'unmapped' left visible.",
-    "goodwill": { "her_words": "an attitude towards aways wanting to do things that would directionally be beneficial for the whole, not only from our vantage point", "walk_kind": "gift" },
+    "goodwill": { "her_words": "an attitude towards always wanting to do things that would directionally be beneficial for the whole, not only from our vantage point", "walk_kind": "gift" },
     "processing": { "her_words": "make sure we are able to compost the shadow in us so it can be expressed in adaptive forms towards others", "walk_kind": "slack (unsure: slack is easing a hold, processing is composting; her call)" },
     "creative_work": { "her_words": "One of the winning strategies is creative endeavours", "walk_kind": "unmapped" },
     "take": { "her_words": null, "walk_kind": "take", "note": "the extractive move" },
