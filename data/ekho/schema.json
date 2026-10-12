@@ -1,5 +1,5 @@
 {
-  "_about": "Recursive Ekho: one schema for both lenses. Drafted Oct 11 2026 by the AI-readiness session, for the Recursive Gospels session to amend. Every node is a recursive.eco node (format v2) when it becomes a grammar; this file names the kinds and fields. Local branch lab/recursive-ekho, not pushed. Nothing here is her final word.",
+  "_about": "Recursive Ekho: one schema for both lenses. Drafted Oct 11 2026 by the AI-readiness session, for the Recursive Gospels session to amend. Every node is a recursive.eco node (format v2) when it becomes a grammar; this file names the kinds and fields. Scaffolding (data/ is not published by the site). Nothing here is her final word.",
   "world": {
     "name": "Recursive Ekho",
     "grammar": "Recursive Map",
@@ -41,6 +41,18 @@
     "personal_grammar": "anyone can make their own grammar of outcomes, wildcards and strategies; it renders in the game for them",
     "collective_grammar": "accepts an entry only if it is compassionate, fits the data and is useful (her three tests); entries arrive as Offers waiting for review, the recursive.eco share-with-approval that already exists",
     "shared_assumptions": "a small basic set every grammar inherits; to be named with her"
+  },
+  "oracles_in_the_game": {
+    "status": "her idea, Oct 12 2026; parked, nothing built",
+    "her_words": [
+      "It would nbe funny if characters can cast our oracles in the game, especially something like human design and try to chose actions based on that, as a way that 4D communicates with them, but it can be red team lol",
+      "Like the only real test of oracles is if they can really help insituations like the ones we are going to face. Maybe we can cast the dhamappada if the moment is to face death or things like that, or people can chose to link a grammar to be tested in certain nodes"
+    ],
+    "her_words_source": "chat in the AI-readiness session, Oct 12 2026, verbatim",
+    "character_casts": "a being casts one of the recursive.eco oracles at a choice and picks its move from the draw; marked red team, a test of the oracle, not advice to the player",
+    "linked_grammar": "a node (a moment such as facing death) can link a grammar to cast there, e.g. the Dhammapada; the link is the one cross-link pattern (metadata.source_deck + source_node_id + deck)",
+    "the_test": "an oracle earns its place if it helps in moments like the ones we may face; the game is where that is tried",
+    "uses": "the recursive.eco cast tool draws; the game never invents a card"
   },
   "move_kinds": {
     "_note": "One list for both lenses. Her trainings first; The Walk's action kinds mapped where they line up; 'unmapped' left visible.",
