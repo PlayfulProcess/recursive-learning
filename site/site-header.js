@@ -87,6 +87,7 @@
     [PFX + 'game/lines.html',          'Changing Lines'],
     [PFX + 'game/tree-board/index.html', 'The Tree'],
     [PFX + 'game/landlords-game/index.html', 'The Landlord’s Game'],
+    [PFX + 'game/ekho/index.html',     'Recursive Ekho'],
     [PFX + 'pages/play.html',          'All games →'],
   ];
   // [key, label, href, cssClass, external?] — tarot's TOOLS slot. Institutions sits where tarot

@@ -65,6 +65,10 @@
   /* The Landlord's Game board (game/landlords-game/): one hue per kind of space, the paper of the board */
   --lg-lot:#3f8f5a; --lg-necessity:#3b6fb6; --lg-luxury:#7a4fa0; --lg-franchise:#d9a520; --lg-railroad:#2a2a2a;
   --lg-legacy:#b5651d; --lg-corner:#e7dcc2; --lg-board:#f4ecd8;
+  /* Recursive Ekho board (game/ekho/): the seven hollows, the water and the sand of the board */
+  --ek-sand:#e6dcc6; --ek-sand-dk:#d6c7a8; --ek-water:#cfe1ee; --ek-water-dk:#7fa8c6; --ek-line-soft:#e6e0d4;
+  --ek-grace:#1f9e74; --ek-turn:#3b78c2; --ek-thestop:#8a52c4; --ek-adol:#c98a1e; --ek-lockin:#6f5fb0;
+  --ek-doom:#c4513d; --ek-walking:#98a0ad; --ek-cond:#7fa8c6; --ek-move:#177d56;
 
   /* —— shadows —— */
   --shadow-card:0 14px 30px -20px rgba(60,45,20,.55);

@@ -73,7 +73,10 @@
         blurb: 'A cooperative board game: place the people on the belief tree before the race runs out.' },
       { name: 'The Landlord’s Game', href: 'game/landlords-game/index.html', tag: 'new and rough',
         blurb: 'Lizzie Magie’s board game of 1904, both rule sets: the landlord’s way, and Prosperity, which the table wins or loses together.',
-        notes: 'https://github.com/PlayfulProcess/recursive-learning/blob/main/game/landlords-game/README.md' }
+        notes: 'https://github.com/PlayfulProcess/recursive-learning/blob/main/game/landlords-game/README.md' },
+      { name: 'Recursive Ekho', href: 'game/ekho/index.html', tag: 'new and rough',
+        blurb: 'A board game of seven hollows of beads, a rising tide and a veiled world: your moves shift the odds, and at the Crossing one bead is drawn.',
+        notes: 'https://github.com/PlayfulProcess/recursive-learning/blob/main/game/ekho/README.md' }
     ]
   };
 
