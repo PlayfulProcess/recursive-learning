@@ -7,13 +7,14 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import * as B from '../game/tree-board/board-engine.js';
-import { leafFor } from '../explainers/belief-tree/tree-render.js';
+import { leafFor, LEAF_LABEL } from '../explainers/belief-tree/tree-render.js';
 import { kindFrom, drawValue, isFirm } from '../game/fork/fork-engine.js';
 
 const here = p => fileURLToPath(new URL(p, import.meta.url));
 const json = p => JSON.parse(readFileSync(here(p), 'utf8'));
 const PEOPLE = json('../explainers/belief-tree/people.json');
 const EVIDENCE = json('../game/tree-board/evidence.json');
+const TRAJECTORIES = json('../game/tree-board/trajectories.json');
 
 // ── fixtures: small synthetic people, independent of the real (and changing) people.json ────────
 function person(slug, over) {
@@ -323,4 +324,126 @@ test('every dealable real person builds into a playable character', () => {
     assert.equal(ch.pos, 'gate');
     assert.ok(['yes', 'no', 'conditional', 'unclear', 'not-addressed', 'unknown'].includes(ch.raw.gate), p.slug);
   }
+});
+
+// ── the grid: all 4 cells reachable, and every one is exactly leafFor's mapping ───────────────────
+// The matrix board (game/shared/matrix-board.js) draws its 4 cells from leafFor(alignment, containment)
+// directly, with LEAF_LABEL for their titles. This locks that mapping down from the test side too, so
+// the two can never quietly disagree about which cell a (alignment, containment) pair names.
+test('the grid: every (alignment, containment) pair names exactly one of the 4 cells, matching LEAF_LABEL', () => {
+  const expected = {
+    'yes,yes': 'proceed', 'yes,no': 'regulate', 'no,yes': 'contain', 'no,no': 'shutdown',
+  };
+  for (const alignment of ['yes', 'no']) {
+    for (const containment of ['yes', 'no']) {
+      const leaf = leafFor({ alignment, containment });
+      assert.equal(leaf, expected[`${alignment},${containment}`]);
+      assert.ok(LEAF_LABEL[leaf], `LEAF_LABEL has a title for "${leaf}"`);
+      assert.ok(B.LEAVES.includes(leaf));
+    }
+  }
+  // and only those 4 — no fifth cell, no pair left unmapped
+  assert.deepEqual(new Set(B.LEAVES), new Set(Object.values(expected)));
+});
+
+// ── trajectories.json: dated, sourced, sorted, and every quote real ────────────────────────────────
+test('trajectories.json: every entry is dated, sourced, and every quote_id resolves to a real, checked quote', () => {
+  const peopleBySlug = new Map(PEOPLE.map(p => [p.slug, p]));
+  const slugs = Object.keys(TRAJECTORIES).filter(k => !k.startsWith('_'));
+  assert.ok(slugs.length >= 2, 'at least a couple of real trajectories');
+  for (const slug of slugs) {
+    const person = peopleBySlug.get(slug);
+    assert.ok(person, `trajectories.json has a real person for "${slug}"`);
+    const points = TRAJECTORIES[slug];
+    assert.ok(Array.isArray(points) && points.length >= 2, `${slug}: a trail needs at least two dated points`);
+    for (const p of points) {
+      assert.ok(p.date, `${slug}: every point has a date`);
+      assert.ok(p.note || p.quote_id || p.quote, `${slug}: every point says something`);
+      assert.ok(p.source_label, `${slug}: every point names its source`);
+      if (p.url) assert.match(p.url, /^https:\/\//, `${slug}: source url is public`);
+      if (p.quote_id) {
+        const q = (person.quotes || []).find(x => x.id === p.quote_id);
+        assert.ok(q, `${slug}: quote_id "${p.quote_id}" exists in people.json`);
+        assert.ok(['captions', 'published text'].includes(q.checked_against),
+          `${slug}: quote_id "${p.quote_id}" was already checked (captions or published text), not new/unverified`);
+      }
+      if (p.cell) assert.ok(B.LEAVES.includes(p.cell), `${slug}: cell "${p.cell}" is a real leaf`);
+    }
+    // dates sort ascending (ISO strings sort lexically) and the last point is the one marked "now"
+    const dates = points.map(p => p.date);
+    assert.deepEqual(dates, [...dates].sort(), `${slug}: dated positions are stored in order`);
+    assert.ok(points[points.length - 1].now, `${slug}: the last dated point is marked "now"`);
+  }
+});
+
+// ── casting ANY card ──────────────────────────────────────────────────────────────────────────────
+test('castCard draws from the SAME seeded RNG as the rest of the game (deterministic in tests), and never removes the card until it is played', () => {
+  let g = fresh([PLAIN_A, PLAIN_B], 2, 11);
+  const before = g.deck.slice();
+  const r1 = B.castCard(g);
+  assert.ok(before.includes(r1.cardId));
+  assert.deepEqual(r1.state.deck, before, 'drawing does not remove the card from the deck');
+  // same seed, same drawN so far -> same draw, exactly like the coin/yarrow cast's own determinism
+  const expectedIdx = Math.min(before.length - 1, Math.floor(drawValue(g.seed, g.drawN) * before.length));
+  assert.equal(r1.cardId, before[expectedIdx]);
+  // drawing again from the advanced state gives a (deterministically) different draw slot
+  const r2 = B.castCard(r1.state);
+  assert.equal(r2.state.drawN, r1.state.drawN + 1);
+});
+
+test('castCard refuses once the deck is empty', () => {
+  let g = fresh([PLAIN_A, PLAIN_B], 2, 1);
+  g = { ...g, deck: [] };
+  const r = B.castCard(g);
+  assert.match(r.error, /No evidence left/);
+});
+
+// ── cast multiple people: a group cast checks each target separately ───────────────────────────────
+test('groupTargets finds positions with more than one character; playEvidenceGroup checks each one and spends one turn', () => {
+  // two plain characters both start at the gate together: a group is available immediately
+  let g = fresh([PLAIN_A, PLAIN_B, PLAIN_WITH_TOMOVE], 3, 1);
+  const groups = B.groupTargets(g);
+  const gateGroup = groups.find(x => x.pos === 'gate');
+  assert.ok(gateGroup, 'everyone starts at the gate together');
+  assert.equal(gateGroup.slugs.length, 3);
+
+  const before = g.turnIndex;
+  const card = { id: 'grp-test', node: 'gate', push: 'no', text: 'x' };
+  const r = B.playEvidenceGroup({ ...g, deck: [...g.deck, 'grp-test'] }, [card], 'grp-test', 'gate');
+  assert.equal(r.ok, true);
+  assert.equal(r.results.length, 3, 'each character in the group was checked separately');
+  assert.notEqual(r.state.turnIndex, before, 'a group cast spends exactly one turn, not one per target');
+  assert.ok(!r.state.deck.includes('grp-test'));
+  for (const res of r.results) {
+    const ch = r.state.characters.find(c => c.slug === res.slug);
+    if (res.applied) assert.equal(ch.resolved.gate, 'no');
+  }
+});
+
+test('playEvidenceGroup: some targets can be refused while others move, and the log says why for each', () => {
+  // plain-tm's gate is a plain 'yes' with no to_move entry for gate at all, so a gate-node card can
+  // never legally flip it (gate never decides a leaf) — it stays refused even though open-all (whose
+  // gate is still open) accepts the very same card.
+  let g = fresh([OPEN_ALL, PLAIN_WITH_TOMOVE], 2, 1);
+  const card = { id: 'grp-test-2', node: 'gate', push: 'no', text: 'x' };
+  const r = B.playEvidenceGroup({ ...g, deck: [...g.deck, 'grp-test-2'] }, [card], 'grp-test-2', 'gate');
+  assert.equal(r.ok, true);
+  const openResult = r.results.find(x => x.slug === 'open-all');
+  const tmResult = r.results.find(x => x.slug === 'plain-tm');
+  assert.equal(openResult.applied, true);
+  assert.equal(tmResult.applied, false);
+  assert.ok(tmResult.reason);
+  assert.ok(r.state.log.some(l => l.includes('unmoved') && l.includes('plain-tm')));
+});
+
+test('playEvidenceGroup refuses a card not in the deck, or an empty position, without spending a turn', () => {
+  let g = fresh([PLAIN_A, PLAIN_B], 2, 1);
+  const before = g.turnIndex;
+  const missing = B.playEvidenceGroup(g, EVIDENCE, 'not-a-real-card', 'gate');
+  assert.equal(missing.ok, false);
+  assert.equal(missing.state.turnIndex, before);
+  const card = EVIDENCE.find(c => c.node === 'gate');
+  const nobodyThere = B.playEvidenceGroup(g, EVIDENCE, card.id, 'proceed');
+  assert.equal(nobodyThere.ok, false);
+  assert.match(nobodyThere.reason, /No one is there/);
 });

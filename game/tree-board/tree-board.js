@@ -1,12 +1,22 @@
-// The Tree: the DOM layer. Imports the shared belief-tree renderer (explainers/belief-tree/
-// tree-render.js — never edited here) for the drawing and loadPeople(), The Fork's engine only for
-// its cast-result event pattern (drawThenEnd, below, ported from game/fork/fork-ui.js's own), and
-// this game's own pure rules from board-engine.js. Tokens are this page's own: small badges placed
-// over the shared SVG with nodeRect(), which the renderer exports exactly so a page can do this.
-import { renderTree, loadPeople, nodeRect } from '../../explainers/belief-tree/tree-render.js';
+// The Tree: the DOM layer. Draws the board as a grid, not a repeated diagram, via the shared
+// game/shared/matrix-board.js (which itself only ever imports leafFor/LEAF_LABEL/ANSWER_WORD/NODES
+// from the Film's shared renderer, explainers/belief-tree/tree-render.js — never edited here, and
+// never rendered as an SVG on this page any more). Crossing a node (gate/alignment/containment)
+// still goes through the same action buttons and board-engine.js rules as before; the new pieces
+// here are: casting ANY card at random (not only a chosen one), casting at a whole group, and
+// drawing each dealt person's trajectory trail from game/tree-board/trajectories.json.
+import { loadPeople, NODES } from '../../explainers/belief-tree/tree-render.js';
 import * as B from './board-engine.js';
+import * as PS from '../shared/play-shell.js';
+import { renderBoard, chipColor } from '../shared/matrix-board.js';
 
-const SAFETY = 2200;   // ms: a hidden tab's requestAnimationFrame may never fire castend
+const FLASH_MS = 1100;
+
+const NODE_SUB = (() => {
+  const m = {};
+  (NODES || []).forEach(n => { m[n.id] = n.sub; });
+  return m;
+})();
 
 const els = {
   setup: document.getElementById('setup'),
@@ -14,130 +24,248 @@ const els = {
   dealBtn: document.getElementById('dealBtn'),
   game: document.getElementById('game'),
   end: document.getElementById('end'),
-  treeWrap: document.getElementById('treeWrap'),
-  tree: document.getElementById('tree'),
-  tokens: document.getElementById('tokens'),
-  race: document.getElementById('race'),
+  boardWrap: document.getElementById('boardWrap'),
+  board: document.getElementById('board'),
   raceLabel: document.getElementById('raceLabel'),
-  turnPanel: document.getElementById('turnPanel'),
   turnTitle: document.getElementById('turnTitle'),
+  psWhy: document.getElementById('psWhy'),
+  handChipBtn: document.getElementById('handChipBtn'),
   card: document.getElementById('card'),
   actions: document.getElementById('actions'),
   evidencePanel: document.getElementById('evidencePanel'),
-  splitPanel: document.getElementById('splitPanel'),
+  drawerEvidence: document.getElementById('drawerEvidence'),
+  drawerCard: document.getElementById('drawerCard'),
+  drawerCast: document.getElementById('drawerCast'),
+  castPanel: document.getElementById('castPanel'),
   log: document.getElementById('log'),
   endBody: document.getElementById('endBody'),
   again: document.getElementById('againBtn'),
 };
 
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
 let PEOPLE = [];
+let OUTSIDE_PEOPLE = [];
 let peopleBySlug = new Map();
 let EVIDENCE = [];
+let TRAJECTORIES = {};
 let game = null;
-let peopleForChips = [];   // the original person records for whoever is currently dealt
-let casting = null;        // { node, method, result } | null — shown on the next render only
-
-function esc(s) {
-  return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-}
+let flashNode = null, flashValue = null, flashTimer = null;
+let showTrails = true;
+let openDot = null;          // { slug, idx, anchor:{left,top} }
+let gameDots = new Map();    // slug -> [{ date:'in this game', note, sourceLabel, url, game_move:true }]
+let pendingCastCardId = null;
+let castPhase = null;        // 'reveal' | 'targets' | null
 
 async function boot() {
-  const [evidenceRes, people] = await Promise.all([
+  const [evidenceRes, people, trajectoriesRes] = await Promise.all([
     fetch(new URL('evidence.json', import.meta.url)).then(r => r.json()),
     loadPeople(),
+    fetch(new URL('trajectories.json', import.meta.url)).then(r => r.json()),
   ]);
   EVIDENCE = evidenceRes;
   PEOPLE = people;
+  TRAJECTORIES = trajectoriesRes;
+  OUTSIDE_PEOPLE = people.filter(p => p && p.stated_leaf === 'outside');
   peopleBySlug = new Map(people.map(p => [p.slug, p]));
   els.dealBtn.addEventListener('click', deal);
   els.again.addEventListener('click', () => {
     els.end.hidden = true; els.game.hidden = true; els.setup.hidden = false;
+    PS.exitPlayMode();
   });
-  els.tree.addEventListener('belieftree:select', e => {
-    const node = e.detail && e.detail.node;
-    if (node && game && !game.ended && B.allLeafed(game) && B.activeSplitNodes(game).includes(node)) doNameSplit(node);
+  setupPlayShell();
+}
+
+// ── the play-screen shell: topbar, the utility icon row, drawers, reduced motion ────────────────
+function setupPlayShell() {
+  PS.mountTopbar(document.getElementById('psTopbar'), { title: 'The Tree', backHref: '../index.html', markSrc: '../../spiral.svg' });
+  document.querySelectorAll('.ps-close').forEach(b => { b.innerHTML = PS.icon('close', 16); });
+
+  document.getElementById('drawerRulesBody').innerHTML =
+    document.getElementById('rulesDetails').innerHTML.replace(/<summary[^>]*>.*?<\/summary>/s, '');
+
+  const utility = document.getElementById('psUtility');
+  const rulesBtn = PS.iconButton({ iconName: 'rules', label: 'Rules', tip: 'How to play' });
+  const logBtn = PS.iconButton({ iconName: 'log', label: 'Log', tip: 'Full log' });
+  const trailsBtn = PS.iconButton({ iconName: 'eye', label: 'Trails', tip: 'Show or hide trails' });
+  trailsBtn.setAttribute('aria-pressed', 'true');
+  trailsBtn.addEventListener('click', () => {
+    showTrails = !showTrails;
+    trailsBtn.setAttribute('aria-pressed', String(showTrails));
+    renderBoardView();
   });
-  window.addEventListener('resize', () => positionTokens());
-  if (window.ResizeObserver) new ResizeObserver(() => positionTokens()).observe(els.treeWrap);
+  const settingsBtn = PS.iconButton({ iconName: 'settings', label: 'Settings', tip: 'Settings' });
+  [rulesBtn, logBtn, trailsBtn, settingsBtn].forEach(b => utility.appendChild(b));
+
+  PS.wireDrawer(rulesBtn, document.getElementById('drawerRules'));
+  PS.wireDrawer(logBtn, document.getElementById('drawerLog'));
+  PS.wireDrawer(settingsBtn, document.getElementById('drawerSettings'));
+  els.drawerCard.querySelectorAll('[data-ps-close]').forEach(b => b.addEventListener('click', () => PS.closeOverlay(els.drawerCard)));
+  els.drawerCard.addEventListener('click', e => { if (e.target === els.drawerCard) PS.closeOverlay(els.drawerCard); });
+  const closeEvidence = () => { pickedCard = null; PS.closeOverlay(els.drawerEvidence); };
+  els.drawerEvidence.querySelectorAll('[data-ps-close]').forEach(b => b.addEventListener('click', closeEvidence));
+  els.drawerEvidence.addEventListener('click', e => { if (e.target === els.drawerEvidence) closeEvidence(); });
+  const closeCast = () => { pendingCastCardId = null; castPhase = null; PS.closeOverlay(els.drawerCast); };
+  els.drawerCast.querySelectorAll('[data-ps-close]').forEach(b => b.addEventListener('click', closeCast));
+  els.drawerCast.addEventListener('click', e => { if (e.target === els.drawerCast) closeCast(); });
+  els.handChipBtn.addEventListener('click', () => {
+    const active = game && activeCharacter();
+    if (!active) return;
+    openCardFor(active.slug);
+  });
+  els.psWhy.addEventListener('click', () => PS.openOverlay(document.getElementById('drawerLog'), els.psWhy));
+
+  document.getElementById('newGameBtn2').addEventListener('click', () => location.reload());
+
+  // A resize re-measures the stage for the compact (is-compact) breakpoint above, and also
+  // invalidates any open trail dot's popover, which is anchored to a snapshot of its own on-screen
+  // position taken at click time (see wireBoardEvents) — closing it here keeps the one-screen rule
+  // true across every resize, not just the layout the popover happened to open in.
+  window.addEventListener('resize', () => {
+    if (!game) return;
+    openDot = null;
+    renderBoardView();
+  });
+
+  const reduced = PS.getStoredReducedMotion();
+  document.getElementById('reducedMotionToggle').checked = reduced;
+  PS.setReducedMotion(reduced);
+  document.getElementById('reducedMotionToggle').addEventListener('change', e => PS.setReducedMotion(e.target.checked));
 }
 
 function deal() {
   const n = Math.max(2, Math.min(5, Number(els.playerCount.value) || 3));
   game = B.newGame({ people: PEOPLE, playerCount: n, evidence: EVIDENCE });
-  peopleForChips = game.characters.map(c => peopleBySlug.get(c.slug)).filter(Boolean);
-  casting = null;
+  gameDots = new Map();
+  showTrails = true;
+  openDot = null;
   els.setup.hidden = true; els.end.hidden = true; els.game.hidden = false;
+  PS.enterPlayMode();
   render();
 }
 
 // ── rendering ─────────────────────────────────────────────────────────────────────────────────
 function activeCharacter() { return game.characters[game.turnIndex]; }
 
+// A grid has no visual ambiguity the way the linear tree diagram did (two people short of a leaf
+// used to overlap on the same drawn node): every finished (alignment, containment) pair already
+// names exactly one cell. So whenever everyone has reached a leaf, name every remaining split
+// immediately and silently — board-engine.js's own win rule (unchanged, and still covered by
+// tests/tree-board.test.mjs) is satisfied by the grid's own layout, with no "name the split" panel
+// needed to do it a second time.
+function autoNameSplits() {
+  if (!game || game.ended) return;
+  if (!B.allLeafed(game)) return;
+  for (const node of B.activeSplitNodes(game)) {
+    if (!game.namedSplits.includes(node)) game = B.nameSplit(game, node).state;
+  }
+}
+
 function render() {
   if (!game) return;
-  renderTreeAndTokens();
-  renderRace();
+  autoNameSplits();
+  renderBoardView();
   renderLog();
-  if (game.ended) { els.turnPanel.hidden = true; els.splitPanel.hidden = true; renderEnd(); return; }
-  els.turnPanel.hidden = false;
+  if (game.ended) { els.actions.hidden = true; renderEnd(); return; }
+  els.actions.hidden = false;
   renderTurn();
-  renderSplitPanel();
 }
 
-function renderTreeAndTokens() {
-  const active = activeCharacter();
-  const answers = { gate: active.resolved.gate, alignment: active.resolved.alignment, containment: active.resolved.containment, race: 'yes' };
-  const openNow = [];
-  const field = B.fieldForPos(active.pos);
-  if (field && active.resolved[field] == null && !B.isPlainAnswer(active.raw[field])) {
-    openNow.push(field === 'alignment' ? 'alignment' : field === 'gate' ? 'gate'
-      : (active.resolved.alignment === 'yes' ? 'containment-if-aligned' : 'containment-if-not'));
-  }
-  renderTree(els.tree, {
-    step: null, answers, open: openNow, focus: active.slug,
-    people: peopleForChips, casting, theme: 'auto',
-  }, { animate: true });
-  positionTokens();
+function trailPointsFor(slug) {
+  const person = peopleBySlug.get(slug);
+  const real = (TRAJECTORIES[slug] || []).map(p => ({
+    date: p.date,
+    note: p.note,
+    quoteText: p.quote_id && person ? (person.quotes || []).find(q => q.id === p.quote_id)?.text : (p.quote && p.quote.text),
+    url: p.url,
+    sourceLabel: p.source_label,
+    now: !!p.now,
+    game_move: false,
+  }));
+  const game_ = (gameDots.get(slug) || []).map(d => ({ ...d, now: true, game_move: true }));
+  // real trail's own "now" stops being the last dot once the game has moved the character further.
+  if (game_.length) real.forEach(p => { p.now = false; });
+  return [...real, ...game_];
 }
 
-const TOKEN_COLORS = ['#5b7fc0', '#3f7a5c', '#c0473b', '#8a5fb0', '#c8932f'];
-function positionTokens() {
+function renderBoardView() {
   if (!game) return;
-  const wrapRect = els.treeWrap.getBoundingClientRect();
-  els.tokens.textContent = '';
-  const byNode = new Map();
+  const active = activeCharacter();
+  const byPos = new Map();
   game.characters.forEach((c, i) => {
-    const list = byNode.get(c.pos) || []; list.push({ c, i }); byNode.set(c.pos, list);
+    const list = byPos.get(c.pos) || []; list.push({ person: c, colorIndex: i }); byPos.set(c.pos, list);
   });
-  for (const [node, list] of byNode) {
-    const r = nodeRect(els.tree, node);
-    if (!r) continue;
-    list.forEach((entry, k) => {
-      const badge = document.createElement('span');
-      badge.className = 'token' + (entry.c === activeCharacter() ? ' is-active' : '');
-      badge.textContent = (entry.c.short || entry.c.name).slice(0, 2).toUpperCase();
-      badge.title = entry.c.name;
-      badge.style.background = TOKEN_COLORS[entry.i % TOKEN_COLORS.length];
-      const left = r.left - wrapRect.left + 4 + k * 20;
-      const top = r.top - wrapRect.top + 4;
-      badge.style.left = left + 'px';
-      badge.style.top = top + 'px';
-      els.tokens.appendChild(badge);
-    });
+  const focusSlug = active ? active.slug : null;
+  const trailPeople = [];
+  if (focusSlug) {
+    const person = peopleBySlug.get(focusSlug) || {};
+    const points = trailPointsFor(focusSlug);
+    if (points.length) trailPeople.push({ person: { slug: focusSlug, name: person.name || active.name, short: active.short }, points });
   }
+  let openDotView = null;
+  if (openDot) {
+    const points = trailPointsFor(openDot.slug);
+    const p = points[openDot.idx];
+    if (p) openDotView = { ...p, anchor: openDot.anchor };
+  }
+  const wrapH = els.boardWrap.getBoundingClientRect().height;
+  renderBoard(els.board, {
+    theme: 'auto',
+    compact: wrapH > 0 && wrapH < 460,
+    gateSub: NODE_SUB.gate,
+    alignQ: NODE_SUB.alignment,
+    containQ: NODE_SUB['containment-if-aligned'],
+    active,
+    activeSlug: focusSlug,
+    byPos,
+    showTrails,
+    trailPeople,
+    openDot: openDotView,
+    outside: OUTSIDE_PEOPLE.map(p => ({ name: p.name, role: p.role })),
+    race: game.race,
+    raceLimit: game.raceLimit,
+    flashNode, flashValue,
+  });
+  wireBoardEvents();
 }
 
-function renderRace() {
-  els.race.textContent = '';
-  for (let i = 0; i < game.raceLimit; i++) {
-    const pip = document.createElement('span');
-    pip.className = 'pip' + (i < game.race ? ' is-filled' : '');
-    els.race.appendChild(pip);
-  }
+function wireBoardEvents() {
+  els.board.querySelectorAll('.mb-chip').forEach(b => {
+    b.addEventListener('click', () => openCardFor(b.getAttribute('data-slug')));
+  });
+  els.board.querySelectorAll('.mb-dot').forEach(b => {
+    b.addEventListener('click', () => {
+      const slug = b.getAttribute('data-slug');
+      const idx = Number(b.getAttribute('data-idx'));
+      if (openDot && openDot.slug === slug && openDot.idx === idx) { openDot = null; renderBoardView(); return; }
+      const wrapRect = els.boardWrap.getBoundingClientRect();
+      const r = b.getBoundingClientRect();
+      // Clamped to the board's own box (never past its right/bottom edge) so the popover can never
+      // push the PAGE taller or wider than the viewport — the one-screen rule holds even here.
+      const left = Math.min(Math.max(4, r.left - wrapRect.left - 40), Math.max(4, wrapRect.width - 284));
+      const top = Math.min(r.bottom - wrapRect.top + 6, Math.max(4, wrapRect.height - 130));
+      openDot = { slug, idx, anchor: { left, top } };
+      renderBoardView();
+    });
+  });
+  const closeBtn = els.board.querySelector('[data-dot-close]');
+  if (closeBtn) closeBtn.addEventListener('click', () => { openDot = null; renderBoardView(); });
+}
+
+function openCardFor(slug) {
+  const ch = game.characters.find(c => c.slug === slug);
+  if (!ch) return;
+  document.getElementById('drawerCardTitle').textContent = ch.name;
+  renderCharacterCard(ch);
+  PS.openOverlay(els.drawerCard, document.activeElement);
+}
+
+function renderRaceLabel() {
   els.raceLabel.textContent = `The race: ${game.race}/${game.raceLimit}`;
 }
 
 function renderLog() {
+  renderRaceLabel();
   els.log.textContent = '';
   const recent = game.log.slice(-8).reverse();
   for (const line of recent) {
@@ -145,6 +273,7 @@ function renderLog() {
     li.textContent = line;
     els.log.appendChild(li);
   }
+  els.psWhy.textContent = game.log.length ? game.log[game.log.length - 1] : 'Nothing has happened yet.';
 }
 
 function answerRow(label, raw) {
@@ -172,27 +301,44 @@ function renderCharacterCard(character) {
 
 function renderTurn() {
   const active = activeCharacter();
-  renderCharacterCard(active);
+  els.handChipBtn.textContent = active.short || active.name;
   const field = B.fieldForPos(active.pos);
   els.turnTitle.textContent = field
     ? `${active.name}'s turn — crossing ${field}`
     : `${active.name}'s turn — already at ${B.leafName(active.pos)}`;
   els.actions.innerHTML = '';
   els.actions.appendChild(moveButtons(active, field));
-  els.actions.appendChild(button('Play evidence …', () => renderEvidencePanel(true), game.deck.length === 0));
-  els.actions.appendChild(button('Pass', () => { const r = B.pass(game); game = r.state; casting = null; render(); }));
-  renderEvidencePanel(false);
+  els.actions.appendChild(button('Play evidence …', openEvidenceDrawer, game.deck.length === 0,
+    'No evidence left in the deck.'));
+  els.actions.appendChild(button('Cast a card', castCardFlow, game.deck.length === 0,
+    'No evidence left in the deck.'));
+  els.actions.appendChild(button('Pass', () => { const r = B.pass(game); game = r.state; render(); }));
 }
 
-function button(label, onClick, disabled) {
+function openEvidenceDrawer() {
+  PS.openOverlay(els.drawerEvidence, document.activeElement);
+  renderEvidencePanel();
+}
+
+// A disabled action still explains why on tap (aria-disabled, not the disabled attribute — a
+// natively-disabled button never receives a click, and phones have no hover for a title tooltip).
+function button(label, onClick, disabled, reason) {
   const b = document.createElement('button');
-  b.textContent = label; b.disabled = !!disabled; b.addEventListener('click', onClick);
+  b.textContent = label;
+  if (disabled) {
+    b.classList.add('is-disabled');
+    b.setAttribute('aria-disabled', 'true');
+    if (reason) b.title = reason;
+    b.addEventListener('click', () => { if (reason) flash(reason); });
+  } else {
+    b.addEventListener('click', onClick);
+  }
   return b;
 }
 
 function moveButtons(active, field) {
   const wrap = document.createElement('div'); wrap.className = 'move-actions';
-  if (!field) { wrap.innerHTML = `<p class="hint">${esc(active.short)} has reached a leaf. Play evidence, or pass.</p>`; return wrap; }
+  if (!field) { wrap.innerHTML = `<p class="hint">${esc(active.short)} has reached a leaf. Play evidence, cast a card, or pass.</p>`; return wrap; }
   const alreadySet = active.resolved[field] != null;
   const raw = active.raw[field];
   if (alreadySet || B.isPlainAnswer(raw)) {
@@ -210,24 +356,19 @@ function moveButtons(active, field) {
 function doMove(slug, method) {
   const r = B.attemptMove(game, slug, method);
   if (r.error) { flash(r.error); return; }
+  const ch = r.state.characters.find(c => c.slug === slug);
+  const field = B.fieldForPos(game.characters.find(c => c.slug === slug).pos);
   game = r.state;
-  if (r.casting) { casting = r.casting; showCast(r.casting, () => { casting = null; render(); }); render(); }
-  else { casting = null; render(); }
+  if (field) flashCrossing(field, ch.resolved[field]);
+  render();
 }
 
-// Draw with the cast showing, then wait for the renderer's own castend (or a safety timeout) before
-// clearing it — ported from game/fork/fork-ui.js's drawThenEnd, so the coin/yarrow/"?" animation the
-// Film's module plays gets to finish instead of being cut off by the next render.
-function showCast(cst, cb) {
-  let finished = false;
-  const onEnd = ev => {
-    if (finished) return;
-    if (ev && ev.detail && ev.detail.node !== cst.node) return;
-    finished = true; clearTimeout(safety); els.tree.removeEventListener('belieftree:castend', onEnd);
-    cb();
-  };
-  els.tree.addEventListener('belieftree:castend', onEnd);
-  const safety = setTimeout(onEnd, SAFETY);
+function flashCrossing(field, value) {
+  flashNode = field === 'alignment' ? 'alignment' : field === 'containment' ? (value === 'yes' ? 'containment-if-aligned' : 'containment-if-not') : null;
+  flashValue = value;
+  if (flashTimer) clearTimeout(flashTimer);
+  const dur = document.body.classList.contains('ps-reduced-motion') ? 0 : FLASH_MS;
+  flashTimer = setTimeout(() => { flashNode = null; flashValue = null; renderBoardView(); }, dur || 0);
 }
 
 function flash(message) {
@@ -235,12 +376,9 @@ function flash(message) {
   setTimeout(() => { if (game && !game.ended) render(); }, 1600);
 }
 
-// ── evidence ──────────────────────────────────────────────────────────────────────────────────
-let evidenceOpen = false, pickedCard = null;
-function renderEvidencePanel(toggle) {
-  if (toggle) evidenceOpen = !evidenceOpen;
-  els.evidencePanel.hidden = !evidenceOpen;
-  if (!evidenceOpen) { pickedCard = null; return; }
+// ── evidence: choosing a card from the open drawer ("Play evidence …") ───────────────────────────
+let pickedCard = null;
+function renderEvidencePanel() {
   els.evidencePanel.innerHTML = '';
   const list = document.createElement('div'); list.className = 'evidence-list';
   for (const card of EVIDENCE) {
@@ -249,13 +387,20 @@ function renderEvidencePanel(toggle) {
     item.className = 'evidence-card' + (pickedCard === card.id ? ' is-picked' : '');
     item.innerHTML = `<span class="tag">${esc(card.node)} → ${esc(card.push)}</span><span class="txt">${esc(card.text)}</span>` +
       (card.source ? `<a class="src" href="${esc(card.source.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(card.source.label)}</a>` : '');
-    item.addEventListener('click', () => { pickedCard = card.id; renderEvidencePanel(false); renderEvidenceTargets(card); });
+    item.addEventListener('click', () => { pickedCard = card.id; renderEvidencePanel(); renderEvidenceTargets(card); });
     list.appendChild(item);
   }
   els.evidencePanel.appendChild(list);
   const targets = document.createElement('div'); targets.id = 'evidenceTargets';
   els.evidencePanel.appendChild(targets);
   if (pickedCard) renderEvidenceTargets(EVIDENCE.find(c => c.id === pickedCard));
+}
+
+function noteGameDot(ch, card) {
+  if (!card.source) return;
+  const list = gameDots.get(ch.slug) || [];
+  list.push({ date: 'in this game', note: `${card.text}`, sourceLabel: card.source.label, url: card.source.url });
+  gameDots.set(ch.slug, list);
 }
 
 function renderEvidenceTargets(card) {
@@ -272,7 +417,10 @@ function renderEvidenceTargets(card) {
     b.addEventListener('click', () => {
       const r = B.playEvidence(game, EVIDENCE, card.id, ch.slug);
       if (!r.ok) { showRefusal(r.reason); return; }
-      game = r.state; casting = null; pickedCard = null; evidenceOpen = false; render();
+      if (r.state.characters.find(c => c.slug === ch.slug).resolved[card.node] === card.push) noteGameDot(ch, card);
+      game = r.state; pickedCard = null;
+      PS.closeOverlay(els.drawerEvidence);
+      render();
     });
     row.appendChild(b);
   }
@@ -286,45 +434,102 @@ function showRefusal(reason) {
   if (box) box.textContent = 'Refused: ' + reason;
 }
 
-// ── splits ────────────────────────────────────────────────────────────────────────────────────
-function renderSplitPanel() {
-  if (!B.allLeafed(game)) { els.splitPanel.hidden = true; return; }
-  const need = B.activeSplitNodes(game).filter(n => !game.namedSplits.includes(n));
-  els.splitPanel.hidden = false;
-  if (!need.length) {
-    els.splitPanel.innerHTML = `<p class="hint">${game.namedSplits.length ? 'Every split is named.' : 'Everyone stands on one shared leaf.'}</p>`;
-    return;
-  }
-  els.splitPanel.innerHTML = `<p class="hint">Everyone has reached a leaf, but not the same one. Tap a lit node above, or a button below, to name where the paths split — the table needs every split named to win.</p>`;
-  const row = document.createElement('div'); row.className = 'split-buttons';
-  for (const node of need) {
-    row.appendChild(button(`Name the split at "${node.replace(/-/g, ' ')}"`, () => doNameSplit(node)));
-  }
-  els.splitPanel.appendChild(row);
-  const compare = document.createElement('div'); compare.className = 'split-compare';
-  for (const node of game.namedSplits) {
-    const field = node === 'alignment' ? 'alignment' : 'containment';
-    const here = game.characters.filter(c => B.LEAVES.includes(c.pos));
-    const seen = new Set();
-    for (const c of here) {
-      const key = c.resolved[field];
-      if (seen.has(key)) continue; seen.add(key);
-      const p = document.createElement('p');
-      p.innerHTML = `<b>${esc(c.short)}</b> at "${esc(node.replace(/-/g, ' '))}": ${esc(B.wordFor(c.resolved[field]))} — ${esc(c.basis[field] || 'no stated basis')}`;
-      compare.appendChild(p);
-    }
-  }
-  els.splitPanel.appendChild(compare);
+// ── casting ANY card at random ("Cast a card"), at one person or a whole group ───────────────────
+function castCardFlow() {
+  const r = B.castCard(game);
+  if (r.error) { flash(r.error); return; }
+  game = r.state;   // advances the seeded draw counter deterministically; the deck itself is untouched
+  pendingCastCardId = r.cardId;
+  castPhase = 'reveal';
+  PS.openOverlay(els.drawerCast, document.activeElement);
+  renderCastDrawer();
+  const dur = document.body.classList.contains('ps-reduced-motion') ? 0 : 650;
+  setTimeout(() => {
+    if (pendingCastCardId == null) return;   // cancelled mid-reveal
+    castPhase = 'targets';
+    renderCastDrawer();
+  }, dur);
 }
 
-function doNameSplit(node) {
-  const r = B.nameSplit(game, node);
-  game = r.state;
-  render();
+function renderCastDrawer() {
+  const card = EVIDENCE.find(c => c.id === pendingCastCardId);
+  if (!card) { els.castPanel.innerHTML = ''; return; }
+  if (castPhase === 'reveal') {
+    els.castPanel.innerHTML = `<div class="mb-cast-reveal"><div class="mb-cast-card">
+        <div class="mb-cast-tag">${esc(card.node)} → ${esc(card.push)}</div>
+        <p>${esc(card.text)}</p>
+      </div></div>`;
+    return;
+  }
+  const groups = B.groupTargets(game);
+  els.castPanel.innerHTML = `
+    <div class="mb-cast-reveal"><div class="mb-cast-card" style="transform:none;animation:none">
+      <div class="mb-cast-tag">${esc(card.node)} → ${esc(card.push)}</div>
+      <p>${esc(card.text)}</p>
+      ${card.source ? `<a href="${esc(card.source.url)}" target="_blank" rel="noopener">${esc(card.source.label)}</a>` : ''}
+    </div></div>
+    <p class="hint">Aim it at one character, or a whole group.</p>
+    <div class="mb-cast-targets" id="castSingleTargets"></div>
+    ${groups.length ? '<p class="hint">Or cast at everyone sharing a spot:</p><div class="mb-group-targets" id="castGroupTargets"></div>' : ''}
+    <ul class="mb-cast-log" id="castResultLog"></ul>
+  `;
+  const singleBox = document.getElementById('castSingleTargets');
+  for (const ch of game.characters) {
+    const legality = B.evidenceLegality(card, ch);
+    const b = document.createElement('button');
+    b.textContent = ch.short;
+    b.className = legality.legal ? 'ok' : 'no';
+    b.title = legality.reason;
+    b.addEventListener('click', () => {
+      const r = B.playEvidence(game, EVIDENCE, card.id, ch.slug);
+      if (!r.ok) { logCastResult([{ short: ch.short, applied: false, reason: r.reason }]); return; }
+      if (r.state.characters.find(c => c.slug === ch.slug).resolved[card.node] === card.push) noteGameDot(ch, card);
+      game = r.state;
+      logCastResult([{ short: ch.short, applied: true, reason: null }]);
+      pendingCastCardId = null; castPhase = null;
+      setTimeout(() => { PS.closeOverlay(els.drawerCast); render(); }, 550);
+    });
+    singleBox.appendChild(b);
+  }
+  const groupBox = document.getElementById('castGroupTargets');
+  if (groupBox) {
+    for (const g of groups) {
+      const b = document.createElement('button');
+      const label = B.LEAVES.includes(g.pos) ? B.leafName(g.pos) : g.pos.replace(/-/g, ' ');
+      b.textContent = `${label} (${g.slugs.length})`;
+      b.addEventListener('click', () => {
+        const targeted = g.slugs.map(s => game.characters.find(c => c.slug === s));
+        const r = B.playEvidenceGroup(game, EVIDENCE, card.id, g.pos);
+        if (!r.ok) { logCastResult([{ short: label, applied: false, reason: r.reason }]); return; }
+        for (const res of r.results) {
+          if (res.applied) { const ch = targeted.find(c => c.slug === res.slug); if (ch) noteGameDot(ch, card); }
+        }
+        game = r.state;
+        logCastResult(r.results);
+        pendingCastCardId = null; castPhase = null;
+        setTimeout(() => { PS.closeOverlay(els.drawerCast); render(); }, 900);
+      });
+      groupBox.appendChild(b);
+    }
+  }
+}
+
+function logCastResult(results) {
+  const box = document.getElementById('castResultLog');
+  if (!box) return;
+  for (const r of results) {
+    const li = document.createElement('li');
+    li.className = r.applied ? 'moved' : 'stayed';
+    li.textContent = r.applied ? `${r.short}: moved.` : `${r.short}: unmoved — ${r.reason}`;
+    box.appendChild(li);
+  }
 }
 
 // ── end ───────────────────────────────────────────────────────────────────────────────────────
 function renderEnd() {
+  els.game.hidden = true;
+  PS.closeAllOverlays();
+  PS.exitPlayMode();
   els.end.hidden = false;
   const rows = game.characters.map(c =>
     `<li><b>${esc(c.name)}</b>: ${esc(B.leafName(c.pos))}</li>`).join('');
