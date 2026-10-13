@@ -5428,6 +5428,8 @@
   "is_published": true,
   "cover_image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/flow-image-gen/1789441769224-0wyzhjvkhyd.png",
   "kiosk_pause_sec": 0,
-  "_recursive_eco_url": "https://flow.recursive.eco/g/a5a39d3a-5d93-45c9-9347-f844cfbe830e?view=reading",
-  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=a5a39d3a-5d93-45c9-9347-f844cfbe830e"
+  "_recursive_eco_url": "https://recursive.eco/g/a5a39d3a-5d93-45c9-9347-f844cfbe830e?view=reading",
+  "_recursive_eco_edit_url": "https://recursive.eco/create/dashboard/unified/new?id=a5a39d3a-5d93-45c9-9347-f844cfbe830e",
+  "forked_from": "162eadff-00fc-4c01-87f7-ec1d2d37f438",
+  "focus_pause_sec": 0
 }
