@@ -152,6 +152,7 @@
   "is_published": true,
   "cover_image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammars/1779747934573-rpcqlrt3qvk.jpg",
   "open_to_community": true,
-  "_recursive_eco_url": "https://flow.recursive.eco/g/602bc57a-d0a4-4db0-9b8c-3309488b566b?view=reading",
-  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=602bc57a-d0a4-4db0-9b8c-3309488b566b"
+  "_recursive_eco_url": "https://recursive.eco/g/602bc57a-d0a4-4db0-9b8c-3309488b566b?view=reading",
+  "_recursive_eco_edit_url": "https://recursive.eco/create/dashboard/unified/new?id=602bc57a-d0a4-4db0-9b8c-3309488b566b",
+  "license": "CC-BY-NC-4.0"
 }
