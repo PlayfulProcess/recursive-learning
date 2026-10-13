@@ -24,7 +24,8 @@
         "duration": 30,
         "item_type": "link"
       },
-      "sort_order": 0
+      "sort_order": 0,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-vibe-coding-101",
@@ -43,7 +44,8 @@
         "duration": 60,
         "item_type": "link"
       },
-      "sort_order": 1
+      "sort_order": 1,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-vibe-coding-102",
@@ -63,7 +65,8 @@
         "duration": 120,
         "item_type": "link"
       },
-      "sort_order": 2
+      "sort_order": 2,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-create-grammars-with-ai",
@@ -83,7 +86,8 @@
         "duration": 60,
         "item_type": "link"
       },
-      "sort_order": 3
+      "sort_order": 3,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-vibe-writing-101",
@@ -102,7 +106,8 @@
         "duration": 180,
         "item_type": "link"
       },
-      "sort_order": 4
+      "sort_order": 4,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-vibe-writing-102",
@@ -122,7 +127,8 @@
         "duration": 120,
         "item_type": "link"
       },
-      "sort_order": 5
+      "sort_order": 5,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-short-movies-diy",
@@ -142,7 +148,8 @@
         "duration": 60,
         "item_type": "link"
       },
-      "sort_order": 6
+      "sort_order": 6,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-meaningful-songs-for-family",
@@ -161,7 +168,8 @@
         "duration": 90,
         "item_type": "link"
       },
-      "sort_order": 7
+      "sort_order": 7,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-path-getting-started",
@@ -181,7 +189,8 @@
         "Description": "Three courses to start. End with your first published grammar."
       },
       "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779389047291-3xdu2qh3sjy.png",
-      "sort_order": 8
+      "sort_order": 8,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-path-vibe-coding",
@@ -200,7 +209,8 @@
         "Description": "From zero coding experience to publishing audiobooks."
       },
       "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779389055367-3smx694gzsm.png",
-      "sort_order": 9
+      "sort_order": 9,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-path-vibe-writing",
@@ -219,7 +229,8 @@
         "Description": "From personal stories to published open-source books."
       },
       "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779389065492-1w0rfrylfuc.png",
-      "sort_order": 10
+      "sort_order": 10,
+      "grammar_type": "sequence"
     },
     {
       "id": "course-path-creative-ai",
@@ -241,7 +252,8 @@
         "Description": "Four creative projects, each producing something you can share."
       },
       "image_url": "https://pub-71ebbc217e6247ecacb85126a6616699.r2.dev/grammar-image-gen/1779389074343-m5dvgvh8x6.png",
-      "sort_order": 11
+      "sort_order": 11,
+      "grammar_type": "sequence"
     }
   ],
   "description": "The eight free courses on this platform — each one a direct link to the course-viewer. The four learning paths sit at L2 as emergence items that bundle related courses together; click a path to see its courses, click a course to start it.",
@@ -252,6 +264,7 @@
   "is_published": true,
   "cover_image_url": "https://recursive.eco/public/recursive-logo-1756153260128.png",
   "open_to_community": false,
-  "_recursive_eco_url": "https://flow.recursive.eco/g/f255d479-27a4-427c-a3d4-6ca28eaeb8ea?view=reading",
-  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=f255d479-27a4-427c-a3d4-6ca28eaeb8ea"
+  "_recursive_eco_url": "https://recursive.eco/g/f255d479-27a4-427c-a3d4-6ca28eaeb8ea?view=reading",
+  "_recursive_eco_edit_url": "https://recursive.eco/create/dashboard/unified/new?id=f255d479-27a4-427c-a3d4-6ca28eaeb8ea",
+  "license": "CC-BY-NC-4.0"
 }
