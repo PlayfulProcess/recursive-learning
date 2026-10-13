@@ -53,13 +53,13 @@ colour and content changed). [`CLAUDE.md`](CLAUDE.md) has the rules for working 
 
 ```
 site/                     published at / : the tarot shell
-  index.html              the home page: doors to Words, Sources, Ideas, Games, Institutions; the
-                          games strip; the grammar gallery (from grammars/_collection.json)
+  index.html              the home page: the loop, the six rooms, the games strip; the grammar
+                          gallery (from grammars/_collection.json)
   site-header.js          the one site map (every menu); site-footer.js; theme.css (the one colour
                           source, light only); style.css; icons.js; spiral.svg (her mark)
   viewers/                cards, explorer, tree-viewer, caster-studio (the Spread Caster), with
                           spreads.json (GENERATED) and voices.json
-  pages/                  about, play (the games hub), institutions (tarot's Shop slot)
+  pages/                  about, play (the games hub), institutions (tarot's Shop slot), take-part
   map/                    the Sources hub
 game/                     the games, hand-written: as-if.html (As-If, cast from the As-If deck) ·
                           spread.html / scroll.html / walk.html (The Walk) · lines.html (Changing
@@ -89,12 +89,18 @@ bash scripts/assemble-site.sh _site && python -m http.server -d _site 8000
 
 ### The sections
 
+The home page leads with the loop (a person, a platform, a civilisation and the eco, the home,
+each learning from feedback inside the next), and the header's tabs are six rooms: **Method**,
+**Words**, **Record**, **Play**, **Futures** and **Take part**. The sections below sit inside them;
+none moved.
+
 | Section | Where | Built from |
 |---|---|---|
 | **Words** | `/glossary/`, the Words deck in the viewers, the Spread Caster | `glossary/terms.json` + `glossary/spreads.src.json`: one source for the page, the deck and the spreads |
 | **Sources** | `/map/` (the hub), the Sources grammar | `research/lab-export/sources.json`: podcast episodes, people, papers and books, plus one pointer per institution |
 | **Ideas** | the Ideas grammar (tree, cards, explorer) | `research/lab-export/ideas.json` + `research/crosswalk.json`: the seed terms of the lab's map, a draft, kept apart from the record |
 | **Games** | `/pages/play.html`, `/game/` | hand-written pages; the list of games is `SITE.games` in `shared/nav.js` |
+| **Take part** | `/pages/take-part.html` | hand-written: six route cards (civic, comment periods, standards, research participation, open source, learning and local groups), each with its ways in, the time it takes and an odds mark naming its voice |
 | **Institutions** | `/pages/institutions.html` (where tarot has its Shop), the Institutions grammar | `research/institutions/institutions.json`: thirty organisations, each described from its own site, each card linking out to it |
 
 Nothing in Sources or Institutions is ranked, and listing is not endorsement. People and

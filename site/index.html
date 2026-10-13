@@ -33,7 +33,20 @@
   .lede strong{color:var(--ink)}
   .lede .wip{display:block;margin-top:10px;font-family:var(--sans);font-size:12.5px;color:var(--mut)}
 
-  /* the doors in (five: they wrap to two rows on a tablet, one column on a phone) */
+  /* THE LOOP (Oct 13 2026): four nested loops, a person inside a platform inside a civilisation
+     inside the eco. Colours come from theme.css tokens only. */
+  .loopwrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:28px;align-items:center;margin:22px 0 0}
+  .loopfig{margin:0}
+  .loopfig svg{display:block;width:100%;height:auto;max-width:300px;margin:0 auto}
+  .loopfig .ring{fill:none;stroke:var(--gold);stroke-width:1.6}
+  .loopfig .ring.eco{fill:var(--chip);stroke-dasharray:5 4}
+  .loopfig .arrow{fill:var(--gold)}
+  .loopfig text{font-family:var(--sans);font-size:11.5px;letter-spacing:.06em;fill:var(--ink-soft);text-anchor:middle}
+  .loopfig text.big{font-size:12.5px;fill:var(--ink);font-weight:600}
+  .loopfig figcaption{font-family:var(--sans);font-size:12px;color:var(--mut);text-align:center;margin-top:8px}
+  @media(max-width:720px){ .loopwrap{grid-template-columns:1fr} }
+
+  /* the six rooms (they wrap to two or three rows on a tablet, one column on a phone) */
   .ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(196px,100%),1fr));gap:16px;margin:34px 0 8px}
   .way{display:block;background:var(--surface);border:1px solid var(--line-soft);border-radius:10px;
     overflow:hidden;text-decoration:none;color:var(--ink);transition:transform .15s,border-color .15s,box-shadow .15s}
@@ -44,6 +57,8 @@
   .way .lbl rt-icon{width:16px;height:16px}
   .way h3{font-family:var(--serif-display);font-weight:600;font-size:22px;margin:0 0 6px;color:var(--ink)}
   .way p{font-family:var(--serif-body);font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0}
+  #rooms .ways{grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));margin-top:0}
+  .way .grp{font-family:var(--sans);font-size:11.5px;color:var(--mut);margin-top:9px}
 
   /* section heads (tarot's .gallery h2 / .sub / .glabel) */
   .band{margin:56px auto 0;max-width:1120px}
@@ -107,9 +122,45 @@
     <div class="htext">
       <h1>Recursive <span class="gold">Eco-Improvement</span></h1>
       <p class="subtitle">explorations in adaptive alignment</p>
-      <!-- The two opening sentences are PlayfulProcess's own, in her order (Oct 2 2026). Don't reword them. -->
-      <p class="lede"><strong>If we cannot know alignment is possible without building it, that unknowability
-        is itself the reason to stop.</strong> A place to try to be a good actor in all of this, even not
+      <!-- THE LOOP LEADS (her answer, Oct 13 2026: "The loop. We can even name the recursiveness."
+           and "there is something beyond civilisation that might be the eco": the home, the
+           environment, not only sustainability). Draft wording for her edit. -->
+      <div class="loopwrap" id="loop">
+        <div>
+          <p class="lede"><strong>One loop, at four sizes.</strong> Try something, take in the feedback, and
+            adapt <em>with</em> the ground you stand on, not only on top of it. A person learns this way.
+            So does a platform like recursive.eco, and, more slowly, so does a civilisation. Each loop sits
+            inside a larger one, and the largest is the <strong>eco</strong>: the home, the environment that
+            holds the rest. That nesting is the <em>recursive</em> in the name.</p>
+          <p class="lede">AI is the metaphor that makes the loop easy to see: a model learns from feedback
+            too, and it can learn to game the feedback instead of the task. Any of these loops may fail the
+            same way, when it improves itself without improving with its ground.</p>
+        </div>
+        <figure class="loopfig" aria-labelledby="loopcap">
+          <svg viewBox="0 0 300 300" role="img" aria-labelledby="looptitle">
+            <title id="looptitle">Four nested loops: a person, inside a platform, inside a civilisation, inside the eco, the home</title>
+            <circle class="ring eco" cx="150" cy="150" r="140"/>
+            <circle class="ring" cx="150" cy="158" r="104"/>
+            <circle class="ring" cx="150" cy="166" r="68"/>
+            <circle class="ring" cx="150" cy="174" r="34"/>
+            <!-- one arrowhead on each ring, at its right side, pointing down: each loop turns -->
+            <path class="arrow" d="M285 146h10l-5 9z"/>
+            <path class="arrow" d="M249 154h10l-5 9z"/>
+            <path class="arrow" d="M213 162h10l-5 9z"/>
+            <path class="arrow" d="M179 170h10l-5 9z"/>
+            <text class="big" x="150" y="37">the eco · home</text>
+            <text x="150" y="81">a civilisation</text>
+            <text x="150" y="125">a platform</text>
+            <text x="150" y="178">a person</text>
+          </svg>
+          <figcaption id="loopcap">try &rarr; feedback &rarr; adapt with the ground, at each size</figcaption>
+        </figure>
+      </div>
+      <!-- The stance line is PlayfulProcess's (Oct 2 2026), reworded by her on Oct 13 2026: "I would frame
+           it more as: it is irresponsible to continue." Was: "...that unknowability is itself the reason
+           to stop." The second sentence is unchanged. -->
+      <p class="lede"><strong>If we cannot know alignment is possible without building it, it is
+        irresponsible to continue.</strong> A place to try to be a good actor in all of this, even not
         knowing if it will matter.</p>
       <p class="lede">The bad-actor problem and the alignment problem ask for opposite remedies: one pulls
         countries apart, the other pulls them together. These pages try things about AI safety and ethics
@@ -120,44 +171,62 @@
     </div>
   </section>
 
-  <!-- THE DOORS: the header's tabs, in the same order (Words, Sources, Ideas, Games, Institutions) -->
+  <!-- THE SIX ROOMS (Oct 13 2026): the header's tabs, in the same order, entered in any order. Each
+       says which groups of grammars/repository.json it holds (the app's groups are unchanged). -->
+  <section class="band" id="rooms" aria-labelledby="rooms-h">
+  <h2 id="rooms-h">Six rooms</h2>
+  <p class="sub">Entered in any order</p>
   <div class="ways">
+    <a class="way" href="pages/about.html#loop-here">
+      <div class="bd">
+        <div class="lbl"><rt-icon name="loop"></rt-icon> How this place learns</div>
+        <h3>Method</h3>
+        <p>The loop applied to this site: what was tried, what the feedback said, and what was left behind. With the courses and the longer studies.</p>
+        <p class="grp">Courses · Studies</p>
+      </div>
+    </a>
     <a class="way" href="glossary/">
       <div class="bd">
         <div class="lbl"><rt-icon name="book"></rt-icon> Read · the words</div>
         <h3>Words</h3>
-        <p>Twenty terms the film and the games lean on, one idea each. Read them as a glossary, or draw them as cards.</p>
+        <p>Twenty terms, one idea each, as a glossary, as cards or in a spread. Ideas, a seed map of the AI debate, sits here as a draft lens.</p>
+        <p class="grp">Words · Ideas</p>
       </div>
     </a>
     <a class="way" href="map/">
       <div class="bd">
-        <div class="lbl"><rt-icon name="folder"></rt-icon> Check · the record</div>
-        <h3>Sources</h3>
+        <div class="lbl"><rt-icon name="folder"></rt-icon> Check · dated</div>
+        <h3>Record</h3>
         <p>Podcasts, papers and books, and the people in them, each described from its own pages and dated. Listing is not endorsement.</p>
-      </div>
-    </a>
-    <a class="way" href="viewers/tree-viewer.html?src=../grammars/ideas-of-alignment/grammar.json">
-      <div class="bd">
-        <div class="lbl"><rt-icon name="tree"></rt-icon> Interpret · a draft</div>
-        <h3>Ideas</h3>
-        <p>A seed map of the AI debate: the terms that come up, where they came from, and how often they are said. Kept apart from the record.</p>
+        <p class="grp">Record</p>
       </div>
     </a>
     <a class="way" href="pages/play.html">
       <div class="bd">
         <div class="lbl"><rt-icon name="play"></rt-icon> Play · the practice</div>
-        <h3>Games</h3>
-        <p>Small games where a probability becomes a step you take. Nothing is staked; the reveal is earned.</p>
+        <h3>Play</h3>
+        <p>The Walk, Changing Lines, the Landlord’s Game and the rest: small games where a probability becomes a step you take.</p>
+        <p class="grp">Games</p>
       </div>
     </a>
-    <a class="way" href="pages/institutions.html">
+    <a class="way" href="#futures">
       <div class="bd">
-        <div class="lbl"><rt-icon name="link"></rt-icon> Visit · who works on this</div>
-        <h3>Institutions</h3>
-        <p>Thirty organisations working on alignment, AI safety and humane technology, each with a link to its own site. Not ranked.</p>
+        <div class="lbl"><rt-icon name="futures"></rt-icon> Odds, not paths</div>
+        <h3>Futures</h3>
+        <p>The film and the explainers: futures as states that actions make more or less likely, rather than one road.</p>
+        <p class="grp">Films</p>
+      </div>
+    </a>
+    <a class="way" href="pages/take-part.html">
+      <div class="bd">
+        <div class="lbl"><rt-icon name="door"></rt-icon> Routes out, not a call</div>
+        <h3>Take part</h3>
+        <p>Six kinds of route into the world, each with the time it takes and how its effect is argued, and thirty institutions. “Not today” is a legal move.</p>
+        <p class="grp">Record’s institutions, and routes</p>
       </div>
     </a>
   </div>
+  </section>
 
   <!-- WATCH · MAP · TEST · PLAY (Oct 2 2026): the hub of her AI safety and ethics work. TEST waits
        for public versions of the Ethics research page and the evals register (both are drafts in the
@@ -200,7 +269,7 @@
     <p class="sub">What we are studying now, open for correction</p>
     <p class="note">These pages are working drafts. We check their numbers and quotes against their
       sources as we go, and their framing is still moving. Tell us what we got wrong.</p>
-    <p class="glabel">Recordings and explainers</p>
+    <p class="glabel" id="futures">Futures · recordings and explainers</p>
     <div class="viewgrid">
       <a class="vcard" href="explainers/rational-to-continue/"><div class="vb"><div class="vt">Rational to Continue</div>
         <p class="vd">Seven small games where players can be right to keep racing and still leave the world worse off, with the people who face them in their own words.</p>

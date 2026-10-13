@@ -45,6 +45,13 @@
     'crown':    '<path d="M3 18h18M4.5 18l-1.3-9 5.3 4L12 5.5l3.5 7.5 5.3-4-1.3 9"/>',
     'device':   '<rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M10.5 18.5h3"/>',
     'printer':  '<path d="M6.5 9.5V3.5h11v6"/><rect x="3.5" y="9.5" width="17" height="7" rx="2"/><path d="M6.5 16v4.5h11V16z"/>',
+    /* ── the rooms and the odds marks (Oct 13 2026) ── */
+    'loop':     '<path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M18 2.8v3.6h-3.6"/>',                                                                  /* Method: try, feedback, adapt */
+    'door':     '<path d="M5 21V4.5L14 3v18"/><path d="M14 5h5v16M3 21h18"/><circle cx="11.2" cy="12.5" r=".9" fill="currentColor" stroke="none"/>',  /* Take part */
+    'futures':  '<path d="M3 20h18"/><path d="M12 20V9"/><path d="M12 13l-6-6M12 11l6-5"/><circle cx="5.5" cy="6.5" r="1.6"/><circle cx="18.5" cy="5.5" r="1.6"/>',  /* Futures: states, not paths */
+    'odds-up':  '<path d="M12 5l7.5 13h-15z" fill="currentColor"/>',                                                                                 /* argued to raise good odds */
+    'odds-both':'<path d="M12 3.5l7 8.5-7 8.5-7-8.5z"/>',                                                                                           /* argued both ways */
+    'odds-hyp': '<path d="M12 5l7.5 13h-15z" stroke-dasharray="2.4 2.2"/>',                                                                          /* a hypothesis here */
     'github':   '<path fill="currentColor" stroke="none" d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.7.4-1.3.7-1.5-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C16.5 5 17.5 5.3 17.5 5.3c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/>'
   };
 

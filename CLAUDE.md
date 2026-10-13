@@ -65,11 +65,22 @@ resolve in the assembled layout. Check at 1280 and 375 px.
 
 ## The header is the one site map
 
-`site/site-header.js` (tarot's shadow-DOM header, dropdown code unchanged) holds every menu:
-Home, Words, Sources (`/map/`), Ideas, Games (`/pages/play.html`), Institutions (tarot's Shop
-slot) and GitHub. Its prefix is root-relative (`PFX = '/'`): tarot's depth formula reads
-`/glossary/` as the root. `active` keys: `home`, `words`, `sources`, `ideas`, `play`,
-`institutions`; on `/viewers/*` the tab follows the grammar in `?src=`.
+`site/site-header.js` (tarot's shadow-DOM header, dropdown code unchanged) holds every menu.
+Since Oct 13 2026 the tabs are **the six rooms** (`ROOMS`), entered in any order: Method (About,
+the courses and studies), Words (with Ideas as a draft lens), Record (`/map/`), Play
+(`/pages/play.html`), Futures (the explainers, `/#futures`) and Take part (`/pages/take-part.html`
+and the Institutions), then GitHub. No page moved; a room is a menu. The rooms map onto the
+groups in `grammars/repository.json` (Method: Courses, Studies; Words: Words, Ideas; Record:
+Record; Play: Games; Futures: Films, Other; Take part: Record's institutions), whose names are
+unchanged. Its prefix is root-relative (`PFX = '/'`): tarot's depth formula reads `/glossary/` as
+the root. `active` keys: `home`, `method`, `words`, `sources`, `ideas`, `play`, `futures`,
+`takepart`, `institutions` (each lights one room); on `/viewers/*` the tab follows the grammar in
+`?src=`.
+
+**Take part** (`site/pages/take-part.html`) is hand-written: six route cards in the Institutions
+card shape, each with "Ways in", the time it takes and an odds mark (`odds-up`, `odds-both`,
+`odds-hyp` in `site/icons.js`) naming its voice. No numbers, no counters, no sign-ups, no
+outreach; "not today" is a legal move. Re-check every URL with curl before changing a card.
 
 `shared/nav.js` contract:
 - **browser**: inserts "Skip to content" (first Tab stop, lands on `#main`), `<site-header>` with
@@ -81,7 +92,7 @@ slot) and GitHub. Its prefix is root-relative (`PFX = '/'`): tarot's depth formu
   header's Games menu must agree with it, and `check_all` asserts that), plus `header(o)`,
   `footer()` and `CSS`, which now emit the tarot tags. There is no `SITE.sections` any more.
 
-The home page's anchors `#main`, `#games` and `#grammars` are load-bearing (game pages, the
+The home page's anchors `#main`, `#games`, `#grammars`, `#loop`, `#rooms` and `#futures` are load-bearing (game pages, the
 glossary and 404 link into them).
 
 ## Left out in v1, as stubs
