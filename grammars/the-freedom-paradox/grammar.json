@@ -260,6 +260,8 @@
   "grammar_type": "custom",
   "is_published": true,
   "default_preview": "study",
-  "_recursive_eco_url": "https://flow.recursive.eco/g/b00c0001-0000-4000-8000-000000000001?view=reading",
-  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=b00c0001-0000-4000-8000-000000000001"
+  "_recursive_eco_url": "https://recursive.eco/g/b00c0001-0000-4000-8000-000000000001?view=reading",
+  "_recursive_eco_edit_url": "https://recursive.eco/create/dashboard/unified/new?id=b00c0001-0000-4000-8000-000000000001",
+  "license": "CC-BY-NC-4.0",
+  "default_view": "play"
 }
