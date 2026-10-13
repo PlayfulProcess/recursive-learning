@@ -2501,6 +2501,9 @@
   "is_published": true,
   "cover_image_url": "",
   "kiosk_pause_sec": 0,
-  "_recursive_eco_url": "https://flow.recursive.eco/g/1cf86c7d-18c3-47e7-8d1a-c152032630f8?view=reading",
-  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=1cf86c7d-18c3-47e7-8d1a-c152032630f8"
+  "_recursive_eco_url": "https://recursive.eco/g/1cf86c7d-18c3-47e7-8d1a-c152032630f8?view=reading",
+  "_recursive_eco_edit_url": "https://recursive.eco/create/dashboard/unified/new?id=1cf86c7d-18c3-47e7-8d1a-c152032630f8",
+  "license": "CC-BY-NC-4.0",
+  "rights_note": "Interview and talk passages belong to their speakers; quoted here for commentary, with source and time, and not relicensed.",
+  "focus_pause_sec": 0
 }
