@@ -12,6 +12,7 @@
   ],
   "default_view": "course",
   "grammar_type": "course",
-  "_recursive_eco_url": "https://flow.recursive.eco/g/2f78e910-25e9-4667-aea8-8e30bf327a88?view=reading",
-  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=2f78e910-25e9-4667-aea8-8e30bf327a88"
+  "_recursive_eco_url": "https://recursive.eco/g/2f78e910-25e9-4667-aea8-8e30bf327a88?view=reading",
+  "_recursive_eco_edit_url": "https://recursive.eco/create/dashboard/unified/new?id=2f78e910-25e9-4667-aea8-8e30bf327a88",
+  "license": "CC-BY-NC-4.0"
 }
