@@ -967,6 +967,7 @@
   "grammar_type": "tarot",
   "is_published": true,
   "cover_image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Tiger_and_Magpie%2C_72x59.4_cm%2C_priviate_collection%2C_Japan.jpg",
-  "_recursive_eco_url": "https://flow.recursive.eco/g/0489bd30-d71d-4b7b-82b2-662bcbef25b0?view=reading",
-  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=0489bd30-d71d-4b7b-82b2-662bcbef25b0"
+  "_recursive_eco_url": "https://recursive.eco/g/0489bd30-d71d-4b7b-82b2-662bcbef25b0?view=reading",
+  "_recursive_eco_edit_url": "https://recursive.eco/create/dashboard/unified/new?id=0489bd30-d71d-4b7b-82b2-662bcbef25b0",
+  "license": "CC-BY-NC-4.0"
 }
