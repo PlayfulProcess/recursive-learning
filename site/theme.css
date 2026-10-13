@@ -62,6 +62,9 @@
   --a:#d2674a; --b:#5f9a82; --c:#5b7fc0;     /* order A/B/C — darkened a touch for light bg */
   --good:#3f7a5c; --win:#3f7a5c; --us:#3f7a5c;
   --bad:#c0473b; --lose:#c0473b; --later:#6d4ab6;
+  /* The Landlord's Game board (game/landlords-game/): one hue per kind of space, the paper of the board */
+  --lg-lot:#3f8f5a; --lg-necessity:#3b6fb6; --lg-luxury:#7a4fa0; --lg-franchise:#d9a520; --lg-railroad:#2a2a2a;
+  --lg-legacy:#b5651d; --lg-corner:#e7dcc2; --lg-board:#f4ecd8;
 
   /* —— shadows —— */
   --shadow-card:0 14px 30px -20px rgba(60,45,20,.55);

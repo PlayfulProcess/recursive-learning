@@ -33,7 +33,8 @@
       "name": "Games — the decks the games deal",
       "provenance": "living",
       "deck_slugs": [
-        "as-if-hot-potato-edition"
+        "as-if-hot-potato-edition",
+        "landlords-game-live-again"
       ]
     },
     {
@@ -141,6 +142,20 @@
       "provenance": "living",
       "cover_image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Tiger_and_Magpie%2C_72x59.4_cm%2C_priviate_collection%2C_Japan.jpg",
       "cover_credit": "the grammar's own cover, a public-domain work on Wikimedia Commons"
+    },
+    {
+      "slug": "landlords-game-live-again",
+      "name": "The Landlord's Game, live again",
+      "type": "custom",
+      "branch": "games",
+      "is_meta": false,
+      "default_preview": null,
+      "nodes": 44,
+      "blurb": "A practice: Lizzie Magie's game of 1904 (public domain), rebuilt as data with both of her rule sets, the landlord's way and Prosperity. Board layout, names and amounts are ours.",
+      "path": "grammars/landlords-game-live-again/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "/grammars/_covers/landlords-game-live-again.svg",
+      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
     },
     {
       "slug": "hot-potato-the-chosen-alien-invasion",

@@ -1,0 +1,657 @@
+{
+  "name": "The Landlord's Game, live again",
+  "slug": "landlords-game-live-again",
+  "description": "A practice: Lizzie Magie's game of 1904 (public domain), rebuilt as data with both of her rule sets, the landlord's way and Prosperity. Board layout, names and amounts are ours.",
+  "grammar_type": "custom",
+  "license": "CC-BY-SA-4.0",
+  "rights_note": "The game itself is public domain (US patents 748,626 of 1904 and 1,509,312 of 1924). These words, names and numbers: PlayfulProcess, CC BY-SA 4.0.",
+  "creator_name": "PlayfulProcess",
+  "is_published": true,
+  "tags": [
+    "game",
+    "board game",
+    "Lizzie Magie",
+    "public domain",
+    "Prosperity",
+    "single tax"
+  ],
+  "nodes": [
+    {
+      "id": "space-00",
+      "name": "Mother Earth",
+      "category": "corner",
+      "sections": {
+        "What it is": "Start. Each time you pass, the land pays wages: $100."
+      },
+      "metadata": {
+        "board_index": 0
+      }
+    },
+    {
+      "id": "space-01",
+      "name": "Hollow Road",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 1 of 22, price $60.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 1,
+        "price": 60,
+        "board_index": 1
+      }
+    },
+    {
+      "id": "space-02",
+      "name": "Bread",
+      "category": "necessity",
+      "sections": {
+        "What it is": "An absolute necessity.",
+        "The landlord's way": "Pay $20 to the Public Treasury, which keeps it.",
+        "Prosperity": "Pay $20 to the Public Treasury, which shares it out."
+      },
+      "metadata": {
+        "board_index": 2
+      }
+    },
+    {
+      "id": "space-03",
+      "name": "Mill Street",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 2 of 22, price $60.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 2,
+        "price": 60,
+        "board_index": 3
+      }
+    },
+    {
+      "id": "space-04",
+      "name": "Brook Lane",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 3 of 22, price $80.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 3,
+        "price": 80,
+        "board_index": 4
+      }
+    },
+    {
+      "id": "space-05",
+      "name": "Southern R.R.",
+      "category": "railroad",
+      "sections": {
+        "What it is": "A railroad. Price $200.",
+        "The landlord's way": "Buy it; others pay $25 for each railroad you own.",
+        "Prosperity": "Public: a $10 fare to the Treasury."
+      },
+      "metadata": {
+        "price": 200,
+        "board_index": 5
+      }
+    },
+    {
+      "id": "space-06",
+      "name": "Orchard Row",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 4 of 22, price $100.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 4,
+        "price": 100,
+        "board_index": 6
+      }
+    },
+    {
+      "id": "space-07",
+      "name": "Silks",
+      "category": "luxury",
+      "sections": {
+        "What it is": "A luxury.",
+        "The landlord's way": "Buy a $50 ticket worth $60 at the end, or lose your next turn.",
+        "Prosperity": "Pay $50 into the Treasury (no ticket: only cash counts), or lose your next turn."
+      },
+      "metadata": {
+        "board_index": 7
+      }
+    },
+    {
+      "id": "space-08",
+      "name": "Market Street",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 5 of 22, price $100.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 5,
+        "price": 100,
+        "board_index": 8
+      }
+    },
+    {
+      "id": "space-09",
+      "name": "Chapel Hill",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 6 of 22, price $120.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 6,
+        "price": 120,
+        "board_index": 9
+      }
+    },
+    {
+      "id": "space-10",
+      "name": "Jail",
+      "category": "corner",
+      "sections": {
+        "What it is": "Just looking in, unless you were sent."
+      },
+      "metadata": {
+        "board_index": 10
+      }
+    },
+    {
+      "id": "space-11",
+      "name": "Elm Avenue",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 7 of 22, price $140.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 7,
+        "price": 140,
+        "board_index": 11
+      }
+    },
+    {
+      "id": "space-12",
+      "name": "Water Works",
+      "category": "franchise",
+      "sections": {
+        "What it is": "A franchise (a public utility). Price $150.",
+        "The landlord's way": "Buy it; others pay four times their roll.",
+        "Prosperity": "Public: a $10 fee to the Treasury."
+      },
+      "metadata": {
+        "price": 150,
+        "board_index": 12
+      }
+    },
+    {
+      "id": "space-13",
+      "name": "Harbor Road",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 8 of 22, price $140.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 8,
+        "price": 140,
+        "board_index": 13
+      }
+    },
+    {
+      "id": "space-14",
+      "name": "Wheat Field",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 9 of 22, price $160.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 9,
+        "price": 160,
+        "board_index": 14
+      }
+    },
+    {
+      "id": "space-15",
+      "name": "Western R.R.",
+      "category": "railroad",
+      "sections": {
+        "What it is": "A railroad. Price $200.",
+        "The landlord's way": "Buy it; others pay $25 for each railroad you own.",
+        "Prosperity": "Public: a $10 fare to the Treasury."
+      },
+      "metadata": {
+        "price": 200,
+        "board_index": 15
+      }
+    },
+    {
+      "id": "space-16",
+      "name": "Quarry Lane",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 10 of 22, price $180.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 10,
+        "price": 180,
+        "board_index": 16
+      }
+    },
+    {
+      "id": "space-17",
+      "name": "Coal",
+      "category": "necessity",
+      "sections": {
+        "What it is": "An absolute necessity.",
+        "The landlord's way": "Pay $20 to the Public Treasury, which keeps it.",
+        "Prosperity": "Pay $20 to the Public Treasury, which shares it out."
+      },
+      "metadata": {
+        "board_index": 17
+      }
+    },
+    {
+      "id": "space-18",
+      "name": "Granite Way",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 11 of 22, price $180.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 11,
+        "price": 180,
+        "board_index": 18
+      }
+    },
+    {
+      "id": "space-19",
+      "name": "Bank Street",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 12 of 22, price $200.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 12,
+        "price": 200,
+        "board_index": 19
+      }
+    },
+    {
+      "id": "space-20",
+      "name": "Public Park",
+      "category": "corner",
+      "sections": {
+        "What it is": "Rest. Nobody owns it; nobody pays."
+      },
+      "metadata": {
+        "board_index": 20
+      }
+    },
+    {
+      "id": "space-21",
+      "name": "Theatre Row",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 13 of 22, price $220.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 13,
+        "price": 220,
+        "board_index": 21
+      }
+    },
+    {
+      "id": "space-22",
+      "name": "Jewels",
+      "category": "luxury",
+      "sections": {
+        "What it is": "A luxury.",
+        "The landlord's way": "Buy a $50 ticket worth $60 at the end, or lose your next turn.",
+        "Prosperity": "Pay $50 into the Treasury (no ticket: only cash counts), or lose your next turn."
+      },
+      "metadata": {
+        "board_index": 22
+      }
+    },
+    {
+      "id": "space-23",
+      "name": "Garden Square",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 14 of 22, price $220.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 14,
+        "price": 220,
+        "board_index": 23
+      }
+    },
+    {
+      "id": "space-24",
+      "name": "College Walk",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 15 of 22, price $240.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 15,
+        "price": 240,
+        "board_index": 24
+      }
+    },
+    {
+      "id": "space-25",
+      "name": "Northern R.R.",
+      "category": "railroad",
+      "sections": {
+        "What it is": "A railroad. Price $200.",
+        "The landlord's way": "Buy it; others pay $25 for each railroad you own.",
+        "Prosperity": "Public: a $10 fare to the Treasury."
+      },
+      "metadata": {
+        "price": 200,
+        "board_index": 25
+      }
+    },
+    {
+      "id": "space-26",
+      "name": "Union Square",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 16 of 22, price $260.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 16,
+        "price": 260,
+        "board_index": 26
+      }
+    },
+    {
+      "id": "space-27",
+      "name": "Capitol Hill",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 17 of 22, price $260.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 17,
+        "price": 260,
+        "board_index": 27
+      }
+    },
+    {
+      "id": "space-28",
+      "name": "Lighting Co.",
+      "category": "franchise",
+      "sections": {
+        "What it is": "A franchise (a public utility). Price $150.",
+        "The landlord's way": "Buy it; others pay four times their roll.",
+        "Prosperity": "Public: a $10 fee to the Treasury."
+      },
+      "metadata": {
+        "price": 150,
+        "board_index": 28
+      }
+    },
+    {
+      "id": "space-29",
+      "name": "Exchange Place",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 18 of 22, price $280.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 18,
+        "price": 280,
+        "board_index": 29
+      }
+    },
+    {
+      "id": "space-30",
+      "name": "No Trespassing",
+      "category": "corner",
+      "sections": {
+        "What it is": "The landlord's estate. Go to Jail."
+      },
+      "metadata": {
+        "board_index": 30
+      }
+    },
+    {
+      "id": "space-31",
+      "name": "Park Avenue",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 19 of 22, price $300.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 19,
+        "price": 300,
+        "board_index": 31
+      }
+    },
+    {
+      "id": "space-32",
+      "name": "Broadway",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 20 of 22, price $300.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 20,
+        "price": 300,
+        "board_index": 32
+      }
+    },
+    {
+      "id": "space-33",
+      "name": "Legacy",
+      "category": "legacy",
+      "sections": {
+        "What it is": "A legacy.",
+        "The landlord's way": "Receive $100.",
+        "Prosperity": "The same."
+      },
+      "metadata": {
+        "board_index": 33
+      }
+    },
+    {
+      "id": "space-34",
+      "name": "Fifth Avenue",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 21 of 22, price $320.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 21,
+        "price": 320,
+        "board_index": 34
+      }
+    },
+    {
+      "id": "space-35",
+      "name": "Eastern R.R.",
+      "category": "railroad",
+      "sections": {
+        "What it is": "A railroad. Price $200.",
+        "The landlord's way": "Buy it; others pay $25 for each railroad you own.",
+        "Prosperity": "Public: a $10 fare to the Treasury."
+      },
+      "metadata": {
+        "price": 200,
+        "board_index": 35
+      }
+    },
+    {
+      "id": "space-36",
+      "name": "Clothing",
+      "category": "necessity",
+      "sections": {
+        "What it is": "An absolute necessity.",
+        "The landlord's way": "Pay $20 to the Public Treasury, which keeps it.",
+        "Prosperity": "Pay $20 to the Public Treasury, which shares it out."
+      },
+      "metadata": {
+        "board_index": 36
+      }
+    },
+    {
+      "id": "space-37",
+      "name": "Wall Street",
+      "category": "lot",
+      "sections": {
+        "What it is": "Land in use. Buy it if it is free; the price goes into the Public Treasury. Lot 22 of 22, price $350.",
+        "The landlord's way": "Landing pays rent to the owner (30% of the price); three lots on one side double it.",
+        "Prosperity": "Landing pays ground rent into the Public Treasury; buying it gives every other player $10."
+      },
+      "metadata": {
+        "lot": 22,
+        "price": 350,
+        "board_index": 37
+      }
+    },
+    {
+      "id": "space-38",
+      "name": "Motor-car",
+      "category": "luxury",
+      "sections": {
+        "What it is": "A luxury.",
+        "The landlord's way": "Buy a $50 ticket worth $60 at the end, or lose your next turn.",
+        "Prosperity": "Pay $50 into the Treasury (no ticket: only cash counts), or lose your next turn."
+      },
+      "metadata": {
+        "board_index": 38
+      }
+    },
+    {
+      "id": "space-39",
+      "name": "Poorhouse",
+      "category": "poorhouse",
+      "sections": {
+        "What it is": "Where a player who cannot pay goes to wait."
+      },
+      "metadata": {
+        "board_index": 39
+      }
+    },
+    {
+      "id": "rules-landlord",
+      "name": "The landlord's way",
+      "category": "rules",
+      "sections": {
+        "Rules": "The player with the least money goes first. Roll two dice and move; passing or landing on Mother Earth pays $100 wages and counts a lap. Buy free lots, railroads and franchises, paying the price into the Public Treasury; others pay you when they land. Three lots on a side double their rent. Necessities cost $20 to the Public Treasury. Luxuries: a $50 ticket worth $60 at the end, or lose a turn. No Trespassing sends you to Jail: each turn roll; doubles free you, otherwise pay $50 and move or stay; the third roll without doubles pays. Short of cash, sell land of your choice back to the bank at half price; short of that, the Poorhouse, and you are out. When every player still in has been round five times, or one player is left, the richest wins: cash, land at its price and $60 a ticket.",
+        "Source": "After US patent 748,626 (Magie, 1904), public domain: the price paid into the Public Treasury, the $60 luxury ticket, Jail by doubles or a $50 fine, and the end at the fifth pass of Mother Earth are hers. Choosing what to sell is from the 1924 patent. Amounts and names are ours."
+      }
+    },
+    {
+      "id": "rules-prosperity",
+      "name": "Prosperity",
+      "category": "rules",
+      "sections": {
+        "Rules": "Same board, dice, wages and Jail; the price of a lot goes into the Public Treasury. Ground rent goes to the Public Treasury too (the single tax). A luxury is $50 into the Treasury, with no ticket. Railroads and franchises are public ($10 fare). A new lot in use gives every other player $10. Passing Mother Earth, the Treasury pays half its balance to all players equally. The Poorhouse is a waiting room: your land goes back to the bank, you still share in the payouts, and you leave from Mother Earth with $50. Everyone wins together when the player who started with the least has doubled it and holds at least as much as anyone, while nobody holds less than they started with: the poorest rises to the top, and nobody falls. With equal starts every player must double (the harder table). If every player has been round five times first, the table loses: talk about why.",
+        "Source": "The poorest player's doubling is the win as reported by Ketcham (Harper's, 2012) and Pilon (The Monopolists, 2015); 'as much as anyone' and 'nobody below their start' are ours (October 2026), so the table can lose. Magie's revision is US patent 1,509,312 (1924), published 1932 as The Landlord's Game and Prosperity. Amounts are ours."
+      }
+    },
+    {
+      "id": "story",
+      "name": "Lizzie Magie's game",
+      "category": "story",
+      "sections": {
+        "Story": "Patent applied for in 1903, granted January 5, 1904. Published by Georgists in 1906; Parker Brothers declined it in 1909. Revised and patented in 1924; published in 1932 with Prosperity. Darrow sold Monopoly to Parker Brothers in 1935; that year Magie sold them her patent for $500. She disputed his claim in 1936 and died in 1948.",
+        "The question": "After one game each way: which felt more exciting, and why?"
+      }
+    },
+    {
+      "id": "board",
+      "name": "The board, in order",
+      "category": "selection",
+      "parts": [
+        "space-00",
+        "space-01",
+        "space-02",
+        "space-03",
+        "space-04",
+        "space-05",
+        "space-06",
+        "space-07",
+        "space-08",
+        "space-09",
+        "space-10",
+        "space-11",
+        "space-12",
+        "space-13",
+        "space-14",
+        "space-15",
+        "space-16",
+        "space-17",
+        "space-18",
+        "space-19",
+        "space-20",
+        "space-21",
+        "space-22",
+        "space-23",
+        "space-24",
+        "space-25",
+        "space-26",
+        "space-27",
+        "space-28",
+        "space-29",
+        "space-30",
+        "space-31",
+        "space-32",
+        "space-33",
+        "space-34",
+        "space-35",
+        "space-36",
+        "space-37",
+        "space-38",
+        "space-39"
+      ],
+      "metadata": {
+        "slug": "board"
+      }
+    }
+  ]
+}

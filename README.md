@@ -64,7 +64,8 @@ site/                     published at / : the tarot shell
 game/                     the games, hand-written: as-if.html (As-If, cast from the As-If deck) ·
                           spread.html / scroll.html / walk.html (The Walk) · lines.html (Changing
                           Lines) · potato-others.html / potato.html (Hot Potato) · index.html (the
-                          first As-If) · DESIGN-*.md
+                          first As-If) · tree-board/ (The Tree) · landlords-game/ (The Landlord's
+                          Game, live again: the page, the rules as code, print-and-play) · DESIGN-*.md
 glossary/                 terms.json (the words, the one source) · spreads.src.json (the spreads) ·
                           index.html (GENERATED)
 grammars/                 every grammar as <slug>/grammar.json, plus _collection.json and
