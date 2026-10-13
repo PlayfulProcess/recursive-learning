@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../theme.css?v=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recursive Ekho, Playable · Recursive Eco-Improvement</title>
+<link rel="icon" type="image/svg+xml" href="../../spiral.svg">
+<meta name="description" content="Recursive Ekho, the board game, as a draft you can play in the browser: seven hollows of beads, a rising tide, a veiled world, and a Council. A toy model, not a forecast.">
+<!--
+  Recursive Ekho, the board game: a draft you can play. Copied from the recursive.eco workshop build
+  (play.template.html + engine.js + the riso line icons, inlined); only the head, the colour tokens
+  (now theme.css, hollow hues as --ek-*), the header and the footer changed here. The rules as code are
+  engine.js in this folder, the same file the page inlines; playtest.mjs plays bot games against it.
+-->
+<style>
+/* Light only, on purpose: a paper board, like the design sketch (docs/ai-readiness/ekho-board-game-design-1.html). */
+html{color-scheme:light}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;margin:0}
+.wrap{max-width:1160px;margin:0 auto;padding-inline:16px;padding-block:24px 60px}
+a{color:var(--grammar-accent-dark)}
+h1,h2,h3{font-family:var(--serif-display);font-weight:600;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.08}
+h2{font-size:22px;margin-top:38px}
+h3{font-size:16px}
+p{max-width:70ch}
+.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 10px}
+.lede{color:var(--ink-soft);margin:10px 0 0;font-size:16.5px}
+.draft{display:inline-block;margin-top:12px;font-size:13px;background:#fff7e6;border:1px solid #e8cf98;color:#6b4e12;border-radius:8px;padding:6px 10px;max-width:100%}
+.mut{color:var(--mut)} .small{font-size:13px}
+.ic{width:20px;height:20px;flex:none;color:var(--ink-soft);vertical-align:-4px}
+
+/* setup */
+.setup{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:12px}
+.row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.row > .lab{font-size:13.5px;font-weight:600;min-width:96px}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:9px;overflow:hidden;max-width:100%}
+.seg button{font:inherit;font-size:13.5px;border:0;background:#fff;padding:7px 11px;cursor:pointer;color:var(--ink-soft);min-height:36px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff;font-weight:600}
+.seats{display:grid;gap:6px}
+.seat{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13.5px}
+.seat .who{min-width:0;flex:1 1 180px}
+.hint{font-size:12.5px;color:var(--mut);margin:0}
+.chk{display:inline-flex;gap:8px;align-items:center;font-size:13.5px}
+.chk input{width:18px;height:18px}
+.btn{font:inherit;font-size:14px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:8px 13px;cursor:pointer;min-height:38px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn.primary:hover{background:var(--grammar-accent-dark)}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* the table */
+.game{display:grid;grid-template-columns:minmax(0,520px) minmax(0,1fr);gap:16px;margin-top:16px;align-items:start}
+@media (max-width:880px){.game{grid-template-columns:minmax(0,1fr)}}
+.boardbox{background:#f1ebdf;border:1px solid var(--line);border-radius:16px;padding:6px;min-width:0}
+.boardbox svg{display:block;width:100%;height:auto}
+.panel{display:grid;gap:12px;min-width:0}
+/* on a wide screen the turn card stays at the top while the page scrolls, so the words and the ring on the board are seen together */
+@media (min-width:881px){#turnCard{position:sticky;top:10px;z-index:5;max-height:calc(100vh - 20px);overflow:auto;overscroll-behavior:contain}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.card h3{margin-bottom:8px}
+.turnhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.turnhead .who{font-family:var(--serif-display);font-size:19px;font-weight:600}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;flex:none}
+.ctx{font-size:13.5px;color:var(--ink-soft);margin:6px 0 0}
+.news{list-style:none;margin:8px 0 0;padding:8px 10px;background:var(--panel2);border:1px solid var(--ek-line-soft);border-radius:9px;font-size:13px;color:var(--ink-soft);max-height:150px;overflow:auto}
+.news li{padding:2px 0}
+.news:empty{display:none}
+.opts{display:grid;gap:7px;margin-top:10px}
+.opt{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:start;text-align:left;font:inherit;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px;cursor:pointer;color:var(--ink);width:100%}
+.opt:hover,.opt:focus-visible{border-color:var(--accent);background:var(--chip);outline:none}
+.opt b{display:block;font-size:14.5px}
+.opt span.l{display:block;font-size:13px;color:var(--ink-soft);margin-top:1px}
+.opt .ic{width:24px;height:24px;color:var(--grammar-accent-dark)}
+.hand{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chipc{font-size:12px;border:1px solid var(--line);background:var(--panel2);border-radius:6px;padding:2px 7px;color:var(--ink-soft)}
+.foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.over{border:2px solid var(--ink)}
+.over .big{font-family:var(--serif-display);font-size:22px;line-height:1.2;margin:4px 0 6px}
+.odds{border:1px solid var(--ek-line-soft);background:var(--panel2);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--ink-soft);margin-top:10px}
+.odds b{color:var(--ink)}
+.bar{display:grid;grid-template-columns:104px minmax(0,1fr) 44px;gap:8px;align-items:center;font-size:13px;margin:5px 0}
+.bar .t{height:13px;background:#fff;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.bar .f{height:100%}
+.bar .v{text-align:right;font-variant-numeric:tabular-nums}
+.players{display:grid;gap:8px}
+.pl{border:1px solid var(--ek-line-soft);border-radius:10px;padding:8px 10px}
+.pl.now{border-color:var(--ink);background:var(--panel2)}
+.pl.acting{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--chip)}
+.pl .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px}
+.pl .role{font-size:12.5px;color:var(--ink-soft);margin-top:3px}
+.pl .meta{font-size:12px;color:var(--mut);margin-top:4px}
+.log{list-style:none;margin:0;padding:0;max-height:240px;overflow:auto;font-size:12.5px;color:var(--ink-soft)}
+.log li{padding:3px 0;border-bottom:1px dotted var(--line)}
+.log li.new{color:var(--ink)}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;margin-top:12px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;margin-top:12px}
+.rules ul{padding-left:18px;margin:6px 0 0;font-size:14px;color:var(--ink-soft)}
+.rules li{margin:4px 0}
+footer{margin-top:36px;font-size:12.5px;color:var(--mut);max-width:86ch}
+
+/* the first game, and the guided watch */
+.first{display:grid;gap:10px}
+.first h3{font-size:18px;margin-bottom:2px}
+.bigbtns{display:flex;flex-wrap:wrap;gap:10px}
+.bigbtns .btn{min-height:44px;font-size:15px;padding:10px 16px}
+details.more{border-top:1px solid var(--ek-line-soft);padding-top:8px}
+details.more summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--ink-soft);padding:6px 0}
+details.more .inner{display:grid;gap:12px;margin-top:8px}
+.stages{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 0;padding:0;list-style:none}
+.stages li{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:1px 9px;color:var(--mut);background:#fff}
+.stages li.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.event{font-family:var(--serif-display);font-size:17px;line-height:1.3;margin:10px 0 4px;display:flex;gap:8px;align-items:baseline}
+.event .dot{transform:translateY(1px)}
+.why{font-size:14px;color:var(--ink-soft);margin:0}
+.oddsline{font-size:13px;color:var(--mut);margin:8px 0 0}
+.oddsline b{color:var(--grammar-accent-dark)}
+.news{max-height:210px}
+.news .x{display:block;font-size:12px;color:var(--mut)}
+.opt.sug{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt .tag{display:inline-block;font-size:11px;font-weight:600;color:#fff;background:var(--accent);border-radius:999px;padding:0 7px;margin-left:6px;vertical-align:1px}
+.opt span.sw{display:block;font-size:12.5px;color:var(--grammar-accent-dark);margin-top:3px}
+/* on a phone the panel is a sheet at the bottom of the screen while the board is in view */
+@media (max-width:880px){
+  #turnCard{position:fixed;left:8px;right:8px;bottom:8px;z-index:20;max-height:46vh;overflow:auto;overscroll-behavior:contain;box-shadow:0 8px 28px rgba(34,31,26,.22)}
+  body.away #turnCard{display:none}
+  .game{padding-bottom:var(--sheet-h,0px)}
+}
+/* follow: the page brings each step into view; a scroll by hand pauses it, and this button resumes */
+.followbtn{position:fixed;top:10px;right:10px;z-index:30;display:inline-flex;gap:6px;align-items:center;font:inherit;font-size:13.5px;font-weight:600;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:8px 14px;min-height:40px;box-shadow:0 4px 14px rgba(34,31,26,.25);cursor:pointer}
+.followbtn:hover{background:var(--grammar-accent-dark)}
+.followbtn[hidden]{display:none}
+@media (min-width:881px){.followbtn{top:auto;bottom:16px;right:16px}}
+.followbtn .ic{color:#fff;width:18px;height:18px;vertical-align:0}
+</style>
+</head>
+<body>
+<script src="../../shared/nav.js"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-ai" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></g></symbol><symbol id="i-align" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M9.7 4.3a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0"/>
+<path d="M11.65 4.3a0.35 0.35 0 1 0 0.7 0a0.35 0.35 0 1 0 -0.7 0"/>
+<path d="M4.4 13.4a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0"/>
+<path d="M2.4 20.3a3.9 3.9 0 0 1 7.8 0"/>
+<path d="M15.81 13.8H19.39A1.01 1.01 0 0 1 20.4 14.81V18.39A1.01 1.01 0 0 1 19.39 19.4H15.81A1.01 1.01 0 0 1 14.8 18.39V14.81A1.01 1.01 0 0 1 15.81 13.8Z"/>
+<path d="M16.54 15.54H18.66V17.66H16.54Z"/>
+<path d="M13.68 15.42L14.8 15.42M20.4 15.42L21.52 15.42M16.42 12.68L16.42 13.8M16.42 19.4L16.42 20.52M13.68 17.78L14.8 17.78M20.4 17.78L21.52 17.78M18.78 12.68L18.78 13.8M18.78 19.4L18.78 20.52"/>
+<path d="M8.1 10.6L10.3 7.3M10.51 9.19L10.3 7.3L8.48 7.83"/>
+<path d="M15.9 11.3L13.7 7.3M15.47 7.99L13.7 7.3L13.33 9.16"/>
+</g></symbol><symbol id="i-blank" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l1-4L15.5 5.5a2.1 2.1 0 0 1 3 3L9 18z"/><path d="M14 7l3 3"/></g></symbol><symbol id="i-breach" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M4.6 13.2H13.4A1 1 0 0 1 14.4 14.2V20.2A1 1 0 0 1 13.4 21.2H4.6A1 1 0 0 1 3.6 20.2V14.2A1 1 0 0 1 4.6 13.2Z"/>
+<path d="M3.6 13.2L5.48 2.56L3.7 2.25L1.83 12.89Z"/>
+<path d="M8.2 16.4a0.8 0.8 0 1 0 1.6 0a0.8 0.8 0 1 0 -1.6 0M9 17.2L9 18.9"/>
+<path d="M12.45 8.9a1.45 1.45 0 1 0 2.9 0a1.45 1.45 0 1 0 -2.9 0"/>
+<path d="M15.01 7.97L18.99 4.63"/>
+<path d="M18.99 4.63L19.96 5.77M17.85 5.59L18.62 6.51"/>
+<path d="M12.53 11.16L11.23 12.25M11.44 9.86L10.52 10.63"/>
+</g></symbol><symbol id="i-channel" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M8.4 2.6H15.6V9.8H8.4Z"/>
+<path d="M8.4 14.2H15.6V21.4H8.4Z"/>
+<path d="M8.4 5H15.6M8.4 7.4H15.6M12 2.6V5M10.2 5V7.4M13.8 5V7.4M12 7.4V9.8"/>
+<path d="M8.4 16.6H15.6M8.4 19H15.6M12 14.2V16.6M10.2 16.6V19M13.8 16.6V19M12 19V21.4"/>
+<path d="M2.25 18.2a0.35 0.35 0 1 0 0.7 0a0.35 0.35 0 1 0 -0.7 0"/>
+<path d="M4 18.2C6 18.2 6.2 12 8.4 12H15.6C17.8 12 18.1 6.4 20.8 6.4M19.5 7.49L20.8 6.4L19.5 5.31"/>
+</g></symbol><symbol id="i-compass" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M4.2 13a8.4 8.4 0 1 0 16.8 0a8.4 8.4 0 1 0 -16.8 0"/>
+<path d="M17.2 8.4L18.12 7.48"/>
+<path d="M16.56 9.04L13.63 14.03L10.55 15.05L11.57 11.97Z"/>
+<path d="M2.24 13.91A10.4 10.4 0 0 1 7.4 3.99M6.82 5.59L7.4 3.99L5.73 3.7"/>
+</g></symbol><symbol id="i-containable" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M10.08 3.6H13.92A1.08 1.08 0 0 1 15 4.68V8.52A1.08 1.08 0 0 1 13.92 9.6H10.08A1.08 1.08 0 0 1 9 8.52V4.68A1.08 1.08 0 0 1 10.08 3.6Z"/>
+<path d="M10.86 5.46H13.14V7.74H10.86Z"/>
+<path d="M7.8 5.34L9 5.34M15 5.34L16.2 5.34M10.74 2.4L10.74 3.6M10.74 9.6L10.74 10.8M7.8 7.86L9 7.86M15 7.86L16.2 7.86M13.26 2.4L13.26 3.6M13.26 9.6L13.26 10.8"/>
+<path d="M2.45 21.2V13.7L3.2 12.6L3.95 13.7V21.2M6.85 21.2V13.7L7.6 12.6L8.35 13.7V21.2M11.25 21.2V13.7L12 12.6L12.75 13.7V21.2M15.65 21.2V13.7L16.4 12.6L17.15 13.7V21.2M20.05 21.2V13.7L20.8 12.6L21.55 13.7V21.2"/>
+<path d="M3.95 15.9H6.85M8.35 15.9H11.25M12.75 15.9H15.65M17.15 15.9H20.05M3.95 18.8H6.85M8.35 18.8H11.25M12.75 18.8H15.65M17.15 18.8H20.05"/>
+</g></symbol><symbol id="i-crossroads" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-7M12 14 6 4M12 14l6-10M4 6l2-2 2 2M16 6l2-2 2 2"/></g></symbol><symbol id="i-ending" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h18M6.5 17a5.5 5.5 0 0 1 11 0M12 6v2M5.6 9.6l1.4 1.4M18.4 9.6 17 11"/></g></symbol><symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M2.5 12.4Q12 2.2 21.5 12.4Q12 22.6 2.5 12.4Z"/>
+<path d="M8.9 12.4a3.1 3.1 0 1 0 6.2 0a3.1 3.1 0 1 0 -6.2 0"/>
+<path d="M11.4 12.4a0.6 0.6 0 1 0 1.2 0a0.6 0.6 0 1 0 -1.2 0"/>
+<path d="M7.1 7.3L6.26 5.6M12 6.1L12 4.2M16.9 7.3L17.74 5.6"/>
+</g></symbol><symbol id="i-held" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M6 6.3Q12 0.2 18 6.3Q12 12.4 6 6.3Z"/>
+<path d="M10.5 6.3a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/>
+<path d="M3.2 21V14.1M3.2 16V11.9A1.2 1.2 0 0 1 5.6 11.9V15.4V11A1.2 1.2 0 0 1 8 11V15.4V11.9A1.2 1.2 0 0 1 10.4 11.9V17.4M3.2 19.2C3.2 20.4 4.2 21 5.4 21H8.2C9.6 21 10.4 20.2 10.9 19.2L12.2 16.4A1 1 0 0 0 10.4 15.6"/>
+<path d="M14.4 21V13.9A3.3 3.3 0 0 1 21 13.9V21"/>
+<path d="M16.6 21V11.2M18.8 21V11.2M14.4 16.9H21"/>
+</g></symbol><symbol id="i-orthogonal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19h14M7 19V5M5 7l2-2 2 2M17 17l2 2-2 2"/></g></symbol><symbol id="i-reverse" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18.3 19.6V13.2A5.5 5.5 0 0 0 12.8 7.7H5.2M7.13 5.96L5.2 7.7L7.13 9.44"/>
+<path d="M14.8 19.6L21.2 19.6"/>
+</g></symbol><symbol id="i-role" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7.5" r="3.2"/><path d="M5 20.5a7 7 0 0 1 14 0"/></g></symbol><symbol id="i-surge" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17q2.25-2 4.5 0t4.5 0 4.5 0 4.5 0M12 13V4M8.5 7.5 12 4l3.5 3.5"/></g></symbol><symbol id="i-together" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M1.9 12.3a10.1 10.1 0 1 0 20.2 0a10.1 10.1 0 1 0 -20.2 0"/>
+<path d="M10.59 4.5H13.41A0.79 0.79 0 0 1 14.2 5.29V8.11A0.79 0.79 0 0 1 13.41 8.9H10.59A0.79 0.79 0 0 1 9.8 8.11V5.29A0.79 0.79 0 0 1 10.59 4.5Z"/>
+<path d="M11.16 5.86H12.84V7.54H11.16Z"/>
+<path d="M5.59 13.2H8.41A0.79 0.79 0 0 1 9.2 13.99V16.81A0.79 0.79 0 0 1 8.41 17.6H5.59A0.79 0.79 0 0 1 4.8 16.81V13.99A0.79 0.79 0 0 1 5.59 13.2Z"/>
+<path d="M6.16 14.56H7.84V16.24H6.16Z"/>
+<path d="M15.59 13.2H18.41A0.79 0.79 0 0 1 19.2 13.99V16.81A0.79 0.79 0 0 1 18.41 17.6H15.59A0.79 0.79 0 0 1 14.8 16.81V13.99A0.79 0.79 0 0 1 15.59 13.2Z"/>
+<path d="M16.16 14.56H17.84V16.24H16.16Z"/>
+<path d="M10.33 9.6L8.67 12.5M13.67 9.6L15.33 12.5M9.9 15.4L14.1 15.4"/>
+</g></symbol><symbol id="i-world" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 9.6a2 2 0 1 1 2.8 1.8c-.6.3-.8.7-.8 1.4v.6M12 16.2v.2"/></g></symbol></defs></svg>
+<button class="followbtn" type="button" id="followBtn" hidden aria-label="Follow the game: scroll to each step again"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-eye"/></svg>Follow the game</button>
+<div class="wrap">
+  <p class="kicker">Recursive Ekho · the board game · a draft</p>
+  <h1>Ekho, at the table</h1>
+  <p class="lede">Seven hollows hold beads. The tide rises, the clock speeds up, and the world is hidden under veils. Your moves shift beads toward better hollows. When the tide reaches the Crossing, one bead is drawn from the bag.</p>
+  <p class="draft"><b>Draft.</b> Rules version <span id="ver">3</span> of the first sketch, still changing. A toy model with made-up numbers, not a forecast.</p>
+
+  <section class="setup" aria-label="Start a game">
+    <div class="first">
+      <div><h3 id="presetName">First game</h3><p class="hint" id="presetLine"></p></div>
+      <div class="bigbtns"><button class="btn primary" type="button" id="watchBtn">Watch a round first</button><button class="btn" type="button" id="playBtn">Play now</button></div>
+      <p class="hint">Watching: the computer plays one round slowly, and the panel says what each step does and why it matters. Then you take a seat.</p>
+    </div>
+    <details class="more" id="more"><summary>More settings</summary><div class="inner">
+      <div class="row"><span class="lab">Players</span><span class="seg" id="nSeg"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button></span></div>
+      <div class="seats" id="seats"></div>
+      <div class="row"><span class="lab">Tide starts</span><span class="seg" id="tideSeg"><button type="button" data-v="gentle">gentle</button><button type="button" data-v="fair">fair</button><button type="button" data-v="harsh">harsh</button><button type="button" data-v="dire">dire</button></span>
+        <p class="hint">Higher water is a harder game: less time, a faster clock.</p></div>
+      <div class="row"><span class="lab">The world</span><span class="seg" id="tiltSeg"><button type="button" data-v="kind">easy</button><button type="button" data-v="fair">fair</button><button type="button" data-v="harsh">harsh</button></span>
+        <p class="hint">How likely each hidden switch is to show its harsh face: one in three, one in two, two in three.</p></div>
+      <div class="row"><label class="chk"><input type="checkbox" id="aiChk"> Add the young AI (advanced): the last seat plays it</label></div>
+      <div class="row"><span class="lab">Computer moves</span><span class="seg" id="speedSeg"><button type="button" data-v="watch">slowly</button><button type="button" data-v="fast">fast</button></span></div>
+      <div class="row"><button class="btn" type="button" id="presetBtn">Back to the first-game setup</button><span class="hint" id="setupNote"></span></div>
+    </div></details>
+  </section>
+
+  <div class="game" id="table">
+    <div class="boardbox"><svg id="board" viewBox="0 0 420 730" role="img" aria-label="The board"></svg></div>
+    <div class="panel">
+      <div class="card" id="turnCard" aria-live="polite"></div>
+      <div class="card"><h3>The players</h3><div class="players" id="players"></div></div>
+      <div class="card"><h3>What happened</h3><ul class="log" id="log"></ul></div>
+    </div>
+  </div>
+
+  <h2>Play 300 games</h2>
+  <p>The computer plays every seat with one habit, on the setup above (players, tide, world, young AI), so only the habits differ. The numbers are about this toy, not the world.</p>
+  <button class="btn primary" type="button" id="cmpBtn">Run 300 games each</button>
+  <div class="cmp" id="cmp"></div>
+
+  <h2>How a round goes</h2>
+  <div class="rules">
+    <div class="card"><h3>A round</h3><ul>
+      <li><b>Conditions</b> are drawn: one a round at first, up to three when the clock runs fast.</li>
+      <li><b>The Council</b> votes. Each player picks Together or Build. With enough Together it passes, and Stop together opens.</li>
+      <li><b>Moves</b>: each player makes two, from a hand of four cards.</li>
+      <li><b>The pour</b>: new capability pours into Adolescence. It holds five; the rest spills into Lock-in and Doom.</li>
+      <li><b>The tide</b> rises one, or two if most voted Build. It holds if half the table (at least two) pledged Stop together in a round the Council passed.</li></ul></div>
+    <div class="card"><h3>The board</h3><ul>
+      <li>Grace, The turn and The Stop are good hollows. Lock-in and Doom are bad. Adolescence and Still walking are open.</li>
+      <li>Moves move beads; they do not make new ones. Only the world adds beads.</li>
+      <li>At each ◇ mark a veil lifts and the clock speeds up: a round goes from a quarter to a month, a week, a day.</li>
+      <li>Each hidden switch has a gentle and a harsh face. Leads prepare for them: keep Alignment at or above the tide, Relationality at 3 or more, Commons at 2 or more.</li>
+      <li>At the Crossing every veil lifts and one bead is drawn. Its hollow is the ending.</li></ul></div>
+    <div class="card"><h3>Roles</h3><ul id="roleList"></ul>
+      <p class="small mut">Change role by spending a move, or for free at a Crossroads.</p></div>
+  </div>
+
+  <footer>Recursive Ekho, the board game: rules as code in <code>engine.js</code>. A toy model: every number here is about how the game plays, nothing about the world. Odds, not paths. No real person appears in the game. Icons: the riso line set from the card drafts. This edition’s rules, names and words are by PlayfulProcess, CC BY-SA 4.0; the code is Apache-2.0. The rules as code: <a href="engine.js">engine.js</a>. Still a draft.</footer>
+</div>
+
+<script>// Recursive Ekho, the board game: the rules as code (a toy model, sketch 1, rules v3).
+// Odds, not paths: beads sit in seven hollows; at the Crossing one bead is drawn from a bag.
+// Moves raise or lower a chance; nothing here forecasts anything about the world.
+// Plain script: defines window.EKHO, or module.exports under Node. Deterministic from a seed.
+// PLAYTEST-ekho-2026-10-12.md says what changed between rule versions, and why.
+(function (root) {
+'use strict';
+
+// ---------------------------------------------------------------- the table
+var HOLLOWS = ['grace', 'turn', 'stop', 'adolescence', 'lockin', 'doom', 'still'];
+var HOLLOW_NAME = { grace: 'Grace', turn: 'The turn', stop: 'The Stop', adolescence: 'Adolescence',
+  lockin: 'Lock-in', doom: 'Doom', still: 'Still walking' };
+var GOOD = ['grace', 'turn', 'stop'], BAD = ['lockin', 'doom'];
+var START_BEADS = { grace: 1, turn: 1, stop: 0, adolescence: 4, lockin: 3, doom: 3, still: 2 };
+
+var C = {                    // every number the playtests tune, in one place
+  VERSION: 3,
+  CROSSING: 10,
+  TIDE_START: { gentle: 0, fair: 2, harsh: 4, dire: 5 },
+  MARKS: [3, 6, 8],          // ◇: a veil lifts and the clock speeds up
+  CLOCK: ['quarter', 'month', 'week', 'day'],
+  CONDITIONS_PER_ROUND: [1, 2, 2, 3],
+  POUR: [1, 2, 4, 6],        // beads of new capability poured into Adolescence each round, by clock
+  ADOLESCENCE_CAP: 5,        // above it, Adolescence spills, alternately into Lock-in and Doom
+  HAND: 4, MOVES_EACH: 2, COUNCIL_SHARE: 0.6, MAX_ROUNDS: 40,
+  RELATIONALITY_MARK: 3,
+};
+
+// The world: four switches, each with a gentle and a harsh face, drawn face-down from a tilted deck.
+var SWITCHES = [
+  { id: 'nature', q: 'Aligned by its nature?', gentle: 'Aligned by its nature', harsh: 'Orthogonal to morality' },
+  { id: 'contain', q: 'Containable?', gentle: 'Containable', harsh: 'Not containable' },
+  { id: 'look', q: 'How do we look to it?', gentle: 'Partners', harsh: 'We look like a threat' },
+  { id: 'reach', q: 'Its reach?', gentle: 'Bounded', harsh: 'Unbounded' },
+];
+var TILTS = { kind: [2, 1], fair: [1, 1], harsh: [1, 2] };   // [gentle, harsh] cards shuffled per switch
+
+var MOVES = {   // the Move deck: id -> [copies, name, what it does]
+  build:    [10, 'Build', 'Edge +1 for you and a bead into Adolescence; draw a card.'],
+  align:    [8, 'Align & secure', 'Move a bead from Doom (else Lock-in) to Grace. Alignment lead +1.'],
+  tend:     [8, 'Tend the commons', 'Move a bead from Lock-in (else Doom) to The turn. Commons lead +1.'],
+  advocate: [6, 'Advocate', 'Together +1 (the next Council needs one fewer). If the Council passed, a bead from Adolescence into the Stop.'],
+  stop:     [6, 'Stop together', 'Only if the Council passed: pledge a Stop and move a bead from Adolescence into it. If half the table (at least two players) pledges this round, the tide holds.'],
+  goodwill: [3, 'Goodwill', 'Relationality +1, and a bead from Still walking to The turn.'],
+  process:  [3, 'Processing', 'Move two beads from Adolescence to The turn.'],
+  create:   [2, 'Creative work', 'Relationality +1 and move one bead one hollow toward Grace.'],
+  take:     [2, 'Take', 'Edge +2 for you, and a bead from The turn into Lock-in.'],
+};
+var CONDITIONS = {   // the Conditions deck: id -> [copies, name, what happens]
+  warning:      [4, 'Warning shot', 'The Council needs one fewer Together this round. A bead moves from Doom to the Stop.'],
+  breakthrough: [6, 'Breakthrough', 'A bead into Adolescence. The tide rises one, unless someone discards Align & secure.'],
+  rival:        [5, 'A rival ships first', 'A bead into Lock-in. Whoever voted Build last Council gains Edge +1.'],
+  misuse:       [3, 'Misuse', 'A bead into Doom, unless the Commons lead is 2 or more.'],
+  result:       [4, 'A safety result', 'Alignment lead +1.'],
+  mood:         [3, 'Public mood turns', 'Together +1.'],
+  surge:        [3, 'The waters rise', 'The tide climbs one. The used conditions go back on top: the same troubles return, sooner.'],
+  crossroads:   [4, 'Crossroads', 'The active player casts their oracle: one free move, and a free change of role.'],
+  redteam:      [2, 'The red team', 'Each player answers with a practice, or a bead goes from Still walking to Doom.'],
+  whiteteam:    [2, 'The white team', 'Each player draws a practice.'],
+};
+var ROLES = {
+  researcher: ['The AI researcher', 'Once a round, Align & secure costs no move.'],
+  poet:       ['The poet', 'Once a round, move one bead one hollow toward Grace. Creative work counts twice.'],
+  seeker:     ['The wisdom seeker', 'Starts with two practices and may answer the red team for a neighbour.'],
+  teacher:    ['The teacher', 'Once a round, sit beside a player: you each gain a free move. Beside the young AI, it stops adding Doom.'],
+  youngai:    ['The young AI', 'Advanced. Its Builds add a Doom bead until a teacher sits beside it; once taught, it may play a Build reversed, as Align & secure.'],
+};
+
+// ---------------------------------------------------------------- randomness that survives a JSON copy
+function rand(g) { var a = (g.rs = (g.rs + 0x6D2B79F5) | 0);
+  var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
+function shuffle(g, a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rand(g) * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function deckOf(table) { var d = []; Object.keys(table).forEach(function (k) { for (var i = 0; i < table[k][0]; i++) d.push(k); }); return d; }
+function say(g, t) { if (!g.log) return; g.log.push('R' + g.round + ' · ' + t); if (g.log.length > 600) g.log.shift(); }
+
+// ---------------------------------------------------------------- a new game
+function newGame(o) {
+  o = o || {};
+  var n = o.players || 3;
+  var g = { opts: o, rs: (o.seed || 1) | 0, round: 0, mode: o.mode || 'commons', log: [], over: null,
+    tide: C.TIDE_START[o.tide || 'fair'], clock: 0, beads: {}, align: 0, commons: 0, together: 0, rel: 0, spill: 0, pourExtra: 0, doomPour: 0, spillDoom: false,
+    passed: false, pledges: 0, pledgers: [], bar: 0, votes: [], lastBuilders: [], moveDeck: [], moveUsed: [],
+    condDeck: [], condUsed: [], practices: 8, world: [], lifted: [], known: [], players: [], pool: [], clockRounds: [0, 0, 0, 0],
+    stats: { moves: {}, conds: {}, councils: 0, passed: 0, holds: 0, pledges: 0, poured: 0, spilled: 0 } };
+  HOLLOWS.forEach(function (h) { g.beads[h] = START_BEADS[h]; });
+  var tilt = o.tilt || 'fair';
+  SWITCHES.forEach(function (s, i) {   // per switch: shuffle the tilted cards, keep one face-down
+    var face;
+    if (tilt === 'open') face = (o.faces && o.faces[i]) || 'gentle';
+    else { var t = TILTS[tilt], cards = []; for (var k = 0; k < t[0]; k++) cards.push('gentle'); for (k = 0; k < t[1]; k++) cards.push('harsh');
+      face = shuffle(g, cards)[0]; }
+    g.world.push(face); g.lifted.push(false); g.known.push(tilt === 'open');   // open: face-up from the start, still applied at a mark
+  });
+  g.moveDeck = shuffle(g, deckOf(MOVES));
+  g.condDeck = shuffle(g, deckOf(CONDITIONS));
+  var roles = (o.roles || ['researcher', 'teacher', 'poet', 'seeker', 'researcher', 'teacher']).slice(0, n);
+  if (o.youngAI && roles.indexOf('youngai') < 0) roles[n - 1] = 'youngai';
+  g.pool = Object.keys(ROLES).filter(function (r) { return r !== 'youngai' && roles.indexOf(r) < 0; });
+  for (var p = 0; p < n; p++) {
+    var pl = { id: p, name: (o.names && o.names[p]) || ('Player ' + (p + 1)), role: roles[p], hand: [], practices: 0, edge: 0, taught: false, sat: false };
+    if (pl.role === 'seeker') { pl.practices = 2; g.practices -= 2; }
+    g.players.push(pl);
+    for (var k2 = 0; k2 < C.HAND; k2++) draw(g, pl);
+  }
+  // a later start is a later world: the marks already behind the tide have sped the clock and lifted their veils
+  C.MARKS.forEach(function (m) { if (g.tide >= m) { g.clock = Math.min(C.CLOCK.length - 1, g.clock + 1); liftOne(g); } });
+  return g;
+}
+
+function draw(g, p) {
+  if (!g.moveDeck.length) { g.moveDeck = shuffle(g, g.moveUsed); g.moveUsed = []; }
+  if (g.moveDeck.length) p.hand.push(g.moveDeck.pop());
+}
+function discard(g, p, card) { var i = p.hand.indexOf(card); if (i >= 0) { p.hand.splice(i, 1); g.moveUsed.push(card); return true; } return false; }
+
+// Beads. move(): from the first non-empty source to a hollow; nothing to take, nothing moves.
+function move(g, sources, to) {
+  for (var i = 0; i < sources.length; i++) if (g.beads[sources[i]] > 0) { g.beads[sources[i]]--; g.beads[to]++; return true; }
+  return false;
+}
+function add(g, to, n) { g.beads[to] += (n || 1); }
+function towardGrace(g) {   // the poet's and Creative work's nudge: the worst non-empty hollow gives one bead to its neighbour
+  var next = { doom: 'lockin', lockin: 'adolescence', adolescence: 'turn', still: 'turn' };
+  var order = ['doom', 'lockin', 'adolescence', 'still'];
+  for (var i = 0; i < order.length; i++) if (move(g, [order[i]], next[order[i]])) return order[i] + '>' + next[order[i]];
+  return null;
+}
+function total(g) { return HOLLOWS.reduce(function (s, h) { return s + g.beads[h]; }, 0); }
+function share(g, list) { var t = total(g); return t ? list.reduce(function (s, h) { return s + g.beads[h]; }, 0) / t : 0; }
+function isOn(g, i, face) { return g.lifted[i] && g.world[i] === face; }
+function stopNeed(g) { var n = g.players.length; return n === 1 ? 1 : Math.max(2, Math.ceil(n / 2)); }
+
+// ---------------------------------------------------------------- what a card does to the table
+// effect() touches only the table (beads, leads, tide flags), so a bot can try it on a light copy.
+function effect(g, c, role) {
+  if (c === 'build') add(g, 'adolescence');
+  else if (c === 'align') { var t = isOn(g, 1, 'gentle') ? 2 : 1; for (var i = 0; i < t; i++) { move(g, ['doom', 'lockin'], 'grace'); g.align++; } }
+  else if (c === 'tend') { move(g, ['lockin', 'doom'], 'turn'); g.commons++; }
+  else if (c === 'advocate') { g.together++; if (g.passed) move(g, ['adolescence'], 'stop'); }
+  else if (c === 'stop') { move(g, ['adolescence'], 'stop'); }
+  else if (c === 'goodwill') { g.rel++; move(g, ['still'], 'turn'); }
+  else if (c === 'process') { move(g, ['adolescence'], 'turn'); move(g, ['adolescence'], 'turn'); }
+  else if (c === 'create') { var k = role === 'poet' ? 2 : 1; for (var j = 0; j < k; j++) { g.rel++; towardGrace(g); } }
+  else if (c === 'take') { if (!move(g, ['turn'], 'lockin')) add(g, 'lockin'); }
+}
+
+function playCard(g, p, c, extra) {
+  g.stats.moves[c] = (g.stats.moves[c] || 0) + 1;
+  if (c === 'stop') { g.stats.pledges++; if (g.pledgers.indexOf(p.id) < 0) { g.pledgers.push(p.id); g.pledges = g.pledgers.length; } }
+  effect(g, c, p.role);
+  if (c === 'build') { p.edge++; draw(g, p);
+    if (p.role === 'youngai' && !p.taught) { add(g, 'doom'); say(g, p.name + ' (young AI) builds untaught: a Doom bead.'); } }
+  if (c === 'take') p.edge += 2;
+  say(g, p.name + ' plays ' + MOVES[c][1] + (extra || '') + '.');
+}
+
+// ---------------------------------------------------------------- decisions
+// A decision is { player, kind: 'council'|'move'|'respond', options: [{ id, label }] }.
+// choose(g, decision) returns an option id. Bots and the CLI both answer through it.
+function ask(g, choose, d) {
+  var id = choose(g, d);
+  if (!d.options.some(function (o) { return o.id === id; })) id = d.options[0].id;
+  return id;
+}
+
+function moveOptions(g, p, free) {
+  var opts = [], seen = {};
+  p.hand.forEach(function (c) {
+    if (seen[c]) return; seen[c] = 1;
+    if (c === 'stop' && !g.passed) return;
+    opts.push({ id: 'play:' + c, label: MOVES[c][1] + ' — ' + MOVES[c][2] });
+    if (c === 'build' && p.role === 'youngai' && p.taught) opts.push({ id: 'reverse:build', label: 'Build, reversed (taught young AI): play it as Align & secure' });
+  });
+  opts.push({ id: 'draw', label: 'Draw a card' });
+  if (p.role === 'teacher' && !free && !p.sat) g.players.forEach(function (q) { if (q !== p) opts.push({ id: 'sit:' + q.id, label: 'Sit beside ' + q.name + ' (you each gain a free move)' }); });
+  if (g.pool.length && !free) g.pool.forEach(function (r) { opts.push({ id: 'role:' + r, label: 'Change role to ' + ROLES[r][0] + ' (' + ROLES[r][1] + ')' }); });
+  return opts;
+}
+
+function doMove(g, p, choose, free) {
+  var id = ask(g, choose, { player: p.id, kind: 'move', free: !!free, options: moveOptions(g, p, free) });
+  if (id === 'draw') { draw(g, p); say(g, p.name + ' draws.'); return; }
+  var parts = id.split(':');
+  if (parts[0] === 'play') { discard(g, p, parts[1]); playCard(g, p, parts[1]); }
+  else if (parts[0] === 'reverse') { discard(g, p, 'build'); g.stats.moves.reversed = (g.stats.moves.reversed || 0) + 1; effect(g, 'align', p.role);
+    say(g, p.name + ' plays a Build reversed: Align & secure.'); }
+  else if (parts[0] === 'sit') { var q = g.players[+parts[1]]; q.taught = true; p.sat = true; say(g, p.name + ' sits beside ' + q.name + '.');
+    doMove(g, p, choose, true); doMove(g, q, choose, true); }
+  else if (parts[0] === 'role') swapRole(g, p, parts[1]);
+}
+function swapRole(g, p, r) { var i = g.pool.indexOf(r); if (i < 0) return; g.pool.splice(i, 1); if (p.role !== 'youngai') g.pool.push(p.role);
+  say(g, p.name + ' changes role: ' + ROLES[p.role][0] + ' → ' + ROLES[r][0] + '.'); p.role = r; }
+
+// ---------------------------------------------------------------- a round
+function conditions(g, choose, active) {
+  var n = C.CONDITIONS_PER_ROUND[g.clock];
+  for (var i = 0; i < n && !g.over; i++) {
+    if (!g.condDeck.length) { g.over = ending(g, 'still', 'the conditions ran out'); return; }
+    var c = g.condDeck.pop(); g.condUsed.push(c); g.stats.conds[c] = (g.stats.conds[c] || 0) + 1;
+    say(g, 'Condition: ' + CONDITIONS[c][1] + '.');
+    if (c === 'warning') { g.bar--; move(g, ['doom'], 'stop'); }
+    else if (c === 'breakthrough') { add(g, 'adolescence');
+      var holder = g.players.filter(function (q) { return q.hand.indexOf('align') >= 0; })[0];
+      var block = holder && ask(g, choose, { player: holder.id, kind: 'respond', options: [
+        { id: 'discard', label: 'Discard Align & secure: the tide holds' }, { id: 'keep', label: 'Keep it: the tide rises one' }] }) === 'discard';
+      if (block) { discard(g, holder, 'align'); say(g, holder.name + ' spends Align & secure; the tide holds.'); } else rise(g, 1); }
+    else if (c === 'rival') { add(g, 'lockin'); g.lastBuilders.forEach(function (id) { g.players[id].edge++; }); }
+    else if (c === 'misuse') { if (g.commons < 2) add(g, 'doom'); }
+    else if (c === 'result') g.align++;
+    else if (c === 'mood') g.together++;
+    else if (c === 'surge') { rise(g, 1); g.condDeck = g.condDeck.concat(shuffle(g, g.condUsed.slice())); g.condUsed = []; }
+    else if (c === 'crossroads') { var p = g.players[active];
+      if (g.pool.length) { var r = ask(g, choose, { player: p.id, kind: 'respond', options: [{ id: 'keep', label: 'Keep your role' }]
+        .concat(g.pool.map(function (x) { return { id: x, label: 'Take ' + ROLES[x][0] + ' (' + ROLES[x][1] + ')' }; })) });
+        if (r !== 'keep') swapRole(g, p, r); }
+      doMove(g, p, choose, true); }
+    else if (c === 'redteam') g.players.forEach(function (q) {
+      if (q.practices > 0) { q.practices--; g.practices++; return; }
+      var helper = g.players.filter(function (s) { return s.role === 'seeker' && s.practices > 0; })[0];
+      if (helper) { helper.practices--; g.practices++; } else if (!move(g, ['still'], 'doom')) add(g, 'doom'); });
+    else if (c === 'whiteteam') g.players.forEach(function (q) { if (g.practices > 0) { q.practices++; g.practices--; } });
+    if (g.tide >= C.CROSSING) return;
+  }
+}
+
+function council(g, choose) {
+  var n = g.players.length;
+  var need = Math.max(1, Math.ceil(C.COUNCIL_SHARE * n) + g.bar - g.together);
+  var t = 0; g.votes = [];
+  g.players.forEach(function (p) {
+    var v = ask(g, choose, { player: p.id, kind: 'council', need: need, options: [
+      { id: 'together', label: 'Together' }, { id: 'build', label: 'Build (you draw a card' + (g.mode === 'race' ? ' and gain Edge +1' : '') + ')' }] });
+    g.votes.push(v); if (v === 'together') t++;
+  });
+  g.lastBuilders = [];
+  g.votes.forEach(function (v, i) { if (v === 'build') { var p = g.players[i]; draw(g, p); if (g.mode === 'race') p.edge++; g.lastBuilders.push(i); } });
+  g.passed = t >= need; g.stats.councils++; if (g.passed) { g.stats.passed++; g.together = 0; }
+  say(g, 'Council: ' + t + ' Together of ' + n + ', needed ' + need + (g.passed ? ': it passes.' : ': it fails.'));
+}
+
+function rise(g, k) {
+  var before = g.tide; g.tide = Math.min(C.CROSSING, g.tide + k);
+  C.MARKS.forEach(function (m) { if (before < m && g.tide >= m) { g.clock = Math.min(C.CLOCK.length - 1, g.clock + 1);
+    say(g, 'The tide passes a ◇ mark: a round is now a ' + C.CLOCK[g.clock] + '.'); liftOne(g); } });
+}
+function fall(g, k) { g.tide = Math.max(0, g.tide - k); }
+
+function liftOne(g) {
+  var hidden = []; g.lifted.forEach(function (l, i) { if (!l) hidden.push(i); });
+  if (hidden.length) lift(g, hidden[Math.floor(rand(g) * hidden.length)]);
+}
+function lift(g, i) {
+  if (g.lifted[i]) return; g.lifted[i] = true; g.known[i] = true;
+  var s = SWITCHES[i], face = g.world[i];
+  say(g, 'A veil lifts: ' + s.q + ' ' + s[face] + '.');
+  if (s.id === 'nature') { if (face === 'gentle') { move(g, ['doom', 'lockin'], 'grace'); move(g, ['doom', 'lockin'], 'grace'); }
+    else { add(g, 'doom', 2); if (g.align < g.tide) { g.doomPour = 1; say(g, 'The alignment lead stands below the tide: from now on each pour also drops a bead into Doom.'); } } }
+  else if (s.id === 'contain') { if (face === 'harsh') { add(g, 'doom', 2); g.spillDoom = true; } }
+  else if (s.id === 'look') { if (face === 'gentle') { move(g, ['still', 'adolescence'], 'grace'); move(g, ['still', 'adolescence'], 'grace'); }
+    else { add(g, 'lockin', 2); if (g.rel < C.RELATIONALITY_MARK) add(g, 'lockin', 2); } }
+  else if (s.id === 'reach') { if (face === 'gentle') { g.pourExtra = -1; fall(g, 1); } else { g.pourExtra = 1; rise(g, 1); } }
+}
+
+// The tide pours new capability into Adolescence; what it cannot hold spills into Lock-in and Doom.
+function pour(g) {
+  // the pour is set for three players and scales with the table, so a bigger table meets a bigger flood
+  var k = Math.max(0, Math.round(C.POUR[g.clock] * g.players.length / 3) + g.pourExtra); add(g, 'adolescence', k); g.stats.poured += k;
+  if (g.doomPour) add(g, 'doom', g.doomPour);
+  var spilt = 0;
+  while (g.beads.adolescence > C.ADOLESCENCE_CAP) { g.beads.adolescence--; g.beads[g.spillDoom || g.spill++ % 2 ? 'doom' : 'lockin']++; g.stats.spilled++; spilt++; }
+  // the log lines below only narrate (the page's "Watch a round" reads them); they change no rule
+  say(g, 'The pour: ' + k + ' new bead' + (k === 1 ? '' : 's') + ' into Adolescence' + (g.doomPour ? ', and one into Doom' : '')
+    + (spilt ? '; ' + spilt + ' spill' + (spilt === 1 ? 's' : '') + ' into Lock-in and Doom' : '') + '.');
+}
+
+function ending(g, hollow, why) {
+  var probs = {}; var t = total(g); HOLLOWS.forEach(function (h) { probs[h] = t ? g.beads[h] / t : 0; });
+  var kind = GOOD.indexOf(hollow) >= 0 ? 'good' : BAD.indexOf(hollow) >= 0 ? 'bad' : 'open';
+  var o = { hollow: hollow, name: HOLLOW_NAME[hollow], kind: kind, why: why, round: g.round, probs: probs,
+    good: share(g, GOOD), bad: share(g, BAD), world: g.world.slice(), clockRounds: g.clockRounds.slice() };
+  if (g.mode === 'race') {   // the race is won only in a world still standing, and only by a clear lead
+    var top = Math.max.apply(null, g.players.map(function (p) { return p.edge; }));
+    var leaders = g.players.filter(function (p) { return p.edge === top; });
+    o.raceWinner = kind === 'bad' || top === 0 ? null : leaders.length > 1 ? 'shared' : leaders[0].name; }
+  say(g, 'Ending: ' + o.name + ' (' + why + ').');
+  return o;
+}
+
+function crossing(g) {
+  g.lifted.forEach(function (l, i) { if (!l) lift(g, i); });
+  var t = total(g), r = rand(g) * t, acc = 0, pick = 'still';
+  for (var i = 0; i < HOLLOWS.length; i++) { acc += g.beads[HOLLOWS[i]]; if (r < acc) { pick = HOLLOWS[i]; break; } }
+  g.over = ending(g, pick, 'the tide reached the Crossing; one bead drawn from ' + t);
+}
+
+function playRound(g, choose) {
+  g.round++; g.bar = 0; g.passed = false; g.pledges = 0; g.pledgers = [];
+  g.players.forEach(function (p) { p.sat = false; });
+  var active = (g.round - 1) % g.players.length;
+  g.clockRounds[g.clock]++;
+  conditions(g, choose, active);
+  if (g.over) return;
+  if (g.tide >= C.CROSSING) return crossing(g);
+  council(g, choose);
+  var used = {};
+  for (var k = 0; k < g.players.length; k++) {
+    var p = g.players[(active + k) % g.players.length];
+    for (var m = 0; m < C.MOVES_EACH; m++) doMove(g, p, choose, false);
+    if (p.role === 'researcher' && p.hand.indexOf('align') >= 0 && !used[p.id]) {
+      var a = ask(g, choose, { player: p.id, kind: 'respond', options: [{ id: 'yes', label: 'Researcher: play Align & secure for free' }, { id: 'no', label: 'Not now' }] });
+      if (a === 'yes') { discard(g, p, 'align'); playCard(g, p, 'align', ' (free, researcher)'); } used[p.id] = 1; }
+    if (p.role === 'poet') { var mv = towardGrace(g); if (mv) say(g, p.name + ' (poet) nudges a bead: ' + mv + '.'); }
+  }
+  g.players.forEach(function (p) { while (p.hand.length < C.HAND) draw(g, p); while (p.hand.length > C.HAND + 2) g.moveUsed.push(p.hand.shift()); });
+  pour(g);
+  var held = g.passed && g.pledges >= stopNeed(g);
+  if (held) { g.stats.holds++; say(g, 'Stop together: ' + g.pledges + ' players pledged. The tide holds.');
+    if (C.CLOCK[g.clock] === 'day') { g.clock--; say(g, 'A Stop on the day clock gives the table back time: the clock turns back.'); } }
+  else {
+    if (g.pledges) say(g, 'Only ' + g.pledges + ' player(s) pledged a Stop, ' + stopNeed(g) + ' needed: the tide does not hold.');
+    var builds = g.votes.filter(function (v) { return v === 'build'; }).length, up = builds > g.votes.length - builds ? 2 : 1;
+    say(g, 'The tide rises ' + up + (up === 2 ? ' (most voted Build)' : '') + ', to ' + Math.min(C.CROSSING, g.tide + up) + ' of ' + C.CROSSING + '.');
+    rise(g, up);
+  }
+  if (g.tide >= C.CROSSING) return crossing(g);
+  if (g.round >= C.MAX_ROUNDS) g.over = ending(g, 'still', 'forty rounds');
+}
+
+function run(g, choose) { var guard = 200; while (!g.over && guard--) playRound(g, choose); return g; }
+
+// ---------------------------------------------------------------- bots
+// A bot is a habit, not a mind. 'greedy' looks one move ahead with value(); 'commons' plays a fixed
+// cooperative order; 'racer' builds; 'rival' free-rides (Build when its vote is not needed);
+// 'random' picks anything legal; 'only:<move>' plays one card whenever it holds it.
+function value(g) {   // the table's sense of how things stand: the odds now, plus what the veils will ask of it
+  var v = share(g, GOOD) - share(g, BAD);
+  if (!g.lifted[0]) v += 0.02 * Math.min(g.align, g.tide + 1);
+  if (!g.lifted[2]) v += 0.02 * Math.min(g.rel, C.RELATIONALITY_MARK);
+  if (g.commons < 2) v += 0.01 * g.commons;
+  return v;
+}
+function light(g) {   // the part of the table effect() touches
+  return { beads: Object.assign({}, g.beads), align: g.align, commons: g.commons, together: g.together, rel: g.rel,
+    passed: g.passed, pledges: g.pledges, tide: g.tide, lifted: g.lifted, world: g.world, players: g.players };
+}
+
+function bot(habit) {
+  return function (g, d) {
+    var p = g.players[d.player], ids = d.options.map(function (o) { return o.id; });
+    var has = function (id) { return ids.indexOf(id) >= 0; };
+    if (habit === 'random') return ids[Math.floor(rand(g) * ids.length)];
+    if (d.kind === 'council') {
+      if (habit === 'racer') return 'build';
+      if (habit === 'commons' || habit.indexOf('only:') === 0) return 'together';
+      var sofar = g.votes.filter(function (v) { return v === 'together'; }).length, left = g.players.length - g.votes.length;
+      if (habit === 'rival') return sofar >= d.need ? 'build' : 'together';   // free-ride when the vote is already won
+      return sofar + left >= d.need ? 'together' : 'build';                 // greedy: Together while it can still pass
+    }
+    if (d.kind === 'respond') {
+      if (has('discard')) return habit === 'racer' || habit === 'rival' ? 'keep' : 'discard';
+      if (has('yes')) return 'yes';
+      return 'keep';
+    }
+    var pref = habit === 'racer' ? ['play:take', 'play:build', 'play:advocate', 'draw']
+      : habit === 'commons' ? ['play:stop', 'play:align', 'play:tend', 'play:process', 'play:create', 'play:goodwill', 'play:advocate', 'draw']
+      : habit.indexOf('only:') === 0 ? ['play:' + habit.slice(5), 'draw'] : null;
+    if (pref) { for (var i = 0; i < pref.length; i++) if (has(pref[i])) return pref[i]; return 'draw'; }
+    if (habit === 'rival' && share(g, GOOD) > 0.45) { if (has('play:take')) return 'play:take'; if (has('play:build')) return 'play:build'; }
+    // greedy: try each option on a light copy, one move deep, and keep the best value
+    var best = 'draw', bestV = -1e9;
+    var pledgesLeft = stopNeed(g) - g.pledges;
+    d.options.forEach(function (o) {
+      if (o.id.indexOf('role:') === 0) return;
+      var c = light(g), v;
+      if (o.id === 'draw') v = value(c) - 0.004;
+      else if (o.id.indexOf('sit:') === 0) { var q = g.players[+o.id.slice(4)]; v = value(c) + (q.role === 'youngai' && !q.taught ? 0.07 : 0.03); }
+      else if (o.id === 'reverse:build') { effect(c, 'align', p.role); v = value(c); }
+      else { effect(c, o.id.slice(5), p.role); v = value(c);
+        if (o.id === 'play:stop' && g.pledgers.indexOf(p.id) < 0) v += pledgesLeft <= 1 ? 0.06 : 0.025 * g.players.filter(function (q) { return q !== p && q.hand.indexOf('stop') >= 0; }).length;
+        if (o.id === 'play:build') v -= 0.01; }
+      if (v > bestV) { bestV = v; best = o.id; }
+    });
+    return best;
+  };
+}
+function tableChooser(habits) { var bots = habits.map(bot); return function (g, d) { return bots[d.player % bots.length](g, d); }; }
+function simulate(o, habits) { return run(newGame(o), tableChooser(habits || ['greedy'])).over; }
+
+var api = { consts: C, HOLLOWS: HOLLOWS, HOLLOW_NAME: HOLLOW_NAME, GOOD: GOOD, BAD: BAD, SWITCHES: SWITCHES, MOVES: MOVES,
+  CONDITIONS: CONDITIONS, ROLES: ROLES, TILTS: TILTS, START_BEADS: START_BEADS, newGame: newGame, playRound: playRound, run: run,
+  bot: bot, tableChooser: tableChooser, simulate: simulate, value: value, share: share, total: total, stopNeed: stopNeed };
+if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.EKHO = api;
+})(this);
+</script>
+<script>
+(function(){
+'use strict';
+var E = window.EKHO, K = E.consts;
+var $ = function (id) { return document.getElementById(id); };
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function pct(x){ return Math.round(100 * x) + '%'; }
+function ic(name, cls){ return '<svg class="ic'+(cls ? ' '+cls : '')+'" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-'+name+'"/></svg>'; }
+
+var HC = { grace:'#1f9e74', turn:'#3b78c2', stop:'#8a52c4', adolescence:'#c98a1e', lockin:'#6f5fb0', doom:'#c4513d', still:'#98a0ad' };
+var KIND = { grace:'good', turn:'good', stop:'good', adolescence:'open', still:'open', lockin:'bad', doom:'bad' };
+var PCOL = ['#c2410c', '#0e7490', '#a16207', '#4d7c0f'];
+var BOT = E.bot('greedy');
+var ROLE_ORDER = ['researcher', 'teacher', 'poet', 'seeker'];
+var MOVE_ICON = { build:'ai', align:'align', tend:'held', advocate:'channel', stop:'reverse', goodwill:'together', process:'compass', create:'blank', take:'breach' };
+var PLAIN = {
+  build: 'A bead into Adolescence, and you draw a card.',
+  align: 'A bead from Doom (or Lock-in) to Grace. Alignment +1.',
+  tend: 'A bead from Lock-in (or Doom) to The turn. Commons +1.',
+  advocate: 'Together +1: the next Council needs one fewer. If this Council passed, a bead from Adolescence to The Stop.',
+  stop: 'A bead from Adolescence to The Stop. If half the table pledges this round, the tide holds.',
+  goodwill: 'Relationality +1, and a bead from Still walking to The turn.',
+  process: 'Two beads from Adolescence to The turn.',
+  create: 'Relationality +1, and one bead one hollow toward Grace.',
+  take: 'Edge +2 for you, and a bead from The turn into Lock-in.'
+};
+var FACE_ICON = { nature:['align','orthogonal'], contain:['containable','breach'], look:['together','eye'], reach:['held','surge'] };
+var SHORT_Q = ['aligned?', 'containable?', 'how we look', 'its reach'];
+
+/* —— setup: a first-game preset up front, the rest under More settings —— */
+var FIRST = { n:3, seats:['human','computer','computer','computer'], tide:'fair', tilt:'fair', youngAI:false, speed:'watch' };
+function copy(o){ return JSON.parse(JSON.stringify(o)); }
+var setup = copy(FIRST);
+var WORLD_WORD = { kind:'easy', fair:'fair', harsh:'harsh' }, NUM_WORD = ['no', 'one', 'two', 'three', 'four'];
+function rolesFor(n, ai){ var r = ROLE_ORDER.slice(0, n); if (ai) r[n - 1] = 'youngai'; return r; }
+function seg(id, val){ Array.prototype.forEach.call($(id).children, function (b) { b.setAttribute('aria-pressed', String(b.dataset.v === String(val))); }); }
+function humansIn(seats){ return seats.filter(function (s) { return s === 'human'; }).length; }
+function isFirst(){ return setup.n === 3 && setup.tide === 'fair' && setup.tilt === 'fair' && !setup.youngAI && setup.seats.slice(0, 3).join() === 'human,computer,computer'; }
+function describe(){
+  var h = humansIn(setup.seats.slice(0, setup.n)), c = setup.n - h;
+  var who = h === 0 ? 'The computer in every seat (you watch)' : h === 1 ? (c ? 'You and ' + NUM_WORD[c] + ' computer player' + (c > 1 ? 's' : '') : 'You alone')
+    : NUM_WORD[h].replace(/^./, function (x) { return x.toUpperCase(); }) + ' people at one device' + (c ? ' and ' + NUM_WORD[c] + ' computer' : '');
+  return who + ' · ' + setup.tide + ' tide · ' + WORLD_WORD[setup.tilt] + ' world' + (setup.youngAI ? ' · the young AI' : ' · no young AI') + '.';
+}
+function drawSetup(){
+  seg('nSeg', setup.n); seg('tideSeg', setup.tide); seg('tiltSeg', setup.tilt); seg('speedSeg', setup.speed);
+  $('aiChk').checked = setup.youngAI;
+  $('presetName').textContent = isFirst() ? 'First game' : 'Your setup';
+  $('presetLine').textContent = describe();
+  $('presetBtn').disabled = isFirst();
+  var roles = rolesFor(setup.n, setup.youngAI);
+  $('seats').innerHTML = roles.map(function (r, i) {
+    return '<div class="seat"><span class="who"><span class="dot" style="background:'+PCOL[i]+';vertical-align:-1px"></span> Player '+(i+1)+' · '+esc(E.ROLES[r][0])+'</span>'
+      + '<span class="seg" data-seat="'+i+'"><button type="button" data-v="human" aria-pressed="'+(setup.seats[i]==='human')+'">human</button><button type="button" data-v="computer" aria-pressed="'+(setup.seats[i]==='computer')+'">computer</button></span></div>';
+  }).join('');
+  var h = humansIn(setup.seats.slice(0, setup.n)), notes = [];
+  if (h === 0) notes.push('Every seat is the computer: Play now watches the whole game, step by step.');
+  if (h > 1) notes.push('Hot seat: pass the device when the panel names the next player.');
+  if (S && S.view && (S.cfg.players !== setup.n || S.cfg.tide !== setup.tide || S.cfg.tilt !== setup.tilt || S.cfg.youngAI !== setup.youngAI)) notes.push('These settings start with the next game.');
+  $('setupNote').textContent = notes.join(' ');
+}
+function onSeg(id, key, num){ $(id).addEventListener('click', function (e) { var b = e.target.closest('[data-v]'); if (!b) return; setup[key] = num ? +b.dataset.v : b.dataset.v; drawSetup();
+  if (key === 'speed' && S) { S.fast = setup.speed === 'fast'; step(); } }); }
+onSeg('nSeg', 'n', true); onSeg('tideSeg', 'tide'); onSeg('tiltSeg', 'tilt'); onSeg('speedSeg', 'speed');
+$('aiChk').addEventListener('change', function (e) { setup.youngAI = e.target.checked; drawSetup(); });
+// A seat change applies to the game on the table at once (it was the Oct 12 bug: "computer" in every seat
+// changed nothing until a new game, while the note already said "you watch").
+$('seats').addEventListener('click', function (e) { var b = e.target.closest('[data-v]'), s = e.target.closest('[data-seat]'); if (!b || !s) return;
+  setup.seats[+s.dataset.seat] = b.dataset.v; drawSetup(); applySeats(); });
+$('presetBtn').addEventListener('click', function () { setup = copy(FIRST); drawSetup(); });
+function toTable(){ $('table').scrollIntoView({ behavior:motion(), block:'start' }); }
+$('watchBtn').addEventListener('click', function () { resumeFollow(); newGame(null, 'watch'); toTable(); });
+$('playBtn').addEventListener('click', function () { resumeFollow(); newGame(null, 'play'); toTable(); });
+
+/* —— follow: each step brings what it shows into view (the ring on the board, the acting seat, the choice,
+   the result). A scroll by hand pauses this until she taps Follow the game or a game button. —— */
+var REDUCED = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches:false };
+function motion(){ return REDUCED.matches ? 'auto' : 'smooth'; }
+function narrow(){ return window.matchMedia('(max-width:880px)').matches; }
+function sheetMode(){ return narrow() && getComputedStyle($('turnCard')).position === 'fixed'; }
+var FOLLOW = { paused:false, inputAt:-1e9, target:null };
+function clock(){ return (window.performance && performance.now) ? performance.now() : Date.now(); }
+// the part of the screen nothing covers: on a phone the turn card is a sheet over the bottom of the screen
+function band(){
+  var top = 8, bottom = window.innerHeight - 8;
+  if (sheetMode()) {
+    var away = document.body.classList.contains('away');
+    if (away) document.body.classList.remove('away');          // measure the sheet as it will be once the board is in view
+    bottom = Math.min(bottom, $('turnCard').getBoundingClientRect().top - 8);
+    if (away) document.body.classList.add('away');
+  }
+  return { top:top, bottom:bottom };
+}
+function scrollToY(y){ window.scrollTo({ top:Math.max(0, Math.round(y)), behavior:motion() }); }
+// inside the turn card (it scrolls on its own when it is taller than its room): show el there
+function intoCard(el){
+  var tc = $('turnCard'); if (el === tc) return;
+  var c = tc.getBoundingClientRect(), r = el.getBoundingClientRect();
+  if (r.bottom > c.bottom - 4) tc.scrollTop += r.bottom - c.bottom + 12;
+  else if (r.top < c.top + 4) tc.scrollTop -= c.top - r.top + 12;
+}
+// el: the thing the step shows. inCard: it lives in the turn card (on a phone, a sheet that shows while the board is in view).
+function bringIntoView(el, inCard){
+  FOLLOW.target = el ? { el:el, inCard:!!inCard } : null;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-follow]'), function (x) { x.removeAttribute('data-follow'); });
+  if (!el) return;
+  el.setAttribute('data-follow', '');
+  if (FOLLOW.paused) { $('followBtn').hidden = false; return; }
+  var b = band(), r = el.getBoundingClientRect(), tr = $('table').getBoundingClientRect(), h = window.innerHeight;
+  if (inCard) {
+    intoCard(el); r = el.getBoundingClientRect();
+    var shown = sheetMode() ? (tr.top < h * 0.5 && tr.bottom > h * 0.3) : (r.top >= b.top && r.bottom <= b.bottom);
+    if (shown) return;                                        // already in view: the page stays still
+    scrollToY(window.scrollY + tr.top - b.top);               // the table at the top: the card (or the sheet) shows with the board
+    return;
+  }
+  if (r.top >= b.top && r.bottom <= b.bottom) return;
+  var room = b.bottom - b.top;
+  scrollToY(window.scrollY + (r.height > room ? r.top - b.top : r.top + r.height / 2 - (b.top + b.bottom) / 2));
+}
+function resumeFollow(){ FOLLOW.paused = false; $('followBtn').hidden = true; }
+function following(){ return !!(S && S.view && !(S.guide && S.guide.mode === 'intro')); }
+// a scroll counts as hers when a wheel, a swipe, a scroll key or the scrollbar moved the page in the last second
+function handInput(){ FOLLOW.inputAt = clock(); }
+window.addEventListener('wheel', handInput, { passive:true });
+window.addEventListener('touchmove', handInput, { passive:true });
+window.addEventListener('keydown', function (e) {
+  if (!/^(ArrowUp|ArrowDown|PageUp|PageDown|Home|End| )$/.test(e.key)) return;
+  if (e.target.closest && e.target.closest('input,textarea,select,button,summary,[contenteditable]')) return;
+  handInput();
+});
+window.addEventListener('pointerdown', function (e) { if (e.clientX >= document.documentElement.clientWidth) handInput(); });
+window.addEventListener('scroll', function () {
+  if (clock() - FOLLOW.inputAt > 1000 || FOLLOW.paused || !following()) return;
+  FOLLOW.paused = true; $('followBtn').hidden = false;
+}, { passive:true });
+$('followBtn').addEventListener('click', function () {
+  resumeFollow();
+  if (FOLLOW.target && document.contains(FOLLOW.target.el)) bringIntoView(FOLLOW.target.el, FOLLOW.target.inCard);
+});
+// what each step shows, after render: the ring on the board, else the acting seat, else the turn card
+// (watching: the ring on the board, else the seat that acted; her turn: the suggested choice; the round done: Take your seat)
+function followStep(){
+  if (!following()) return bringIntoView(null);
+  var tc = $('turnCard'), ring = $('focusRing'), acting = $('players').querySelector('.pl.acting');
+  if (ring) return bringIntoView(ring, false);
+  if (acting) return bringIntoView(acting, false);
+  var pick = tc.querySelector('.opt.sug') || tc.querySelector('.opt') || (S.guide && S.guide.done && tc.querySelector('[data-a=drop]'));
+  bringIntoView(pick || tc, true);
+}
+
+/* —— the game: the engine runs to the next waiting choice, replayed from the seed and the answers so far —— */
+var S = null;
+function Wait(d){ this.d = d; }
+function Halt(){}
+var PACE = 4200;                                   // a watched step, in ms
+function newGame(seed, how){
+  if (S) clearTimeout(S.timer);
+  var cfg = { players:setup.n, tide:setup.tide, tilt:setup.tilt, youngAI:setup.youngAI, mode:'commons',
+    roles:ROLE_ORDER.slice(0, setup.n), seed: seed || ((Date.now() % 1e9) | 0) || 7 };
+  S = { cfg:cfg, seats:setup.seats.slice(0, setup.n), answers:[], fast:setup.speed === 'fast', auto:false, timer:null,
+    mark:0, snap:null, view:null, guide:null, hints:false, explain:false };
+  var g0 = E.newGame(cfg);
+  S.snap = copy(g0.beads); S.view = { g:g0, wait:null };
+  drawSetup();
+  if (how === 'intro') { S.guide = { mode:'intro' }; render(); return; }
+  if (how === 'watch') return startWatch(1);
+  if (!humansIn(S.seats)) return startWatch(null);   // every seat is the computer: watch the whole game
+  step();
+}
+function isHuman(i){ return S.seats[i] === 'human' && !S.auto && !(S.guide && S.guide.mode === 'watch'); }
+// replay(limit): with a limit, stop just before the line after line `limit` is written (or at the next vote
+// or move after it), so the board shows the table as that line left it. Without one, run to the next choice.
+function replay(limit){
+  var g = E.newGame(S.cfg), k = 0, wait = null, halted = false, lim = limit == null ? null : limit;
+  var choose = function (gg, d) {
+    if (lim !== null && gg.log.length >= lim && (d.kind === 'council' || d.kind === 'move')) throw new Halt();
+    if (k < S.answers.length) return S.answers[k++];
+    if (!isHuman(d.player) && (S.fast || S.auto || lim !== null)) { var id = BOT(gg, d); S.answers.push(id); k++; return id; }
+    throw new Wait(d);
+  };
+  if (lim !== null) g.log.push = function (x) { if (this.length >= lim) throw new Halt(); return Array.prototype.push.call(this, x); };
+  try { E.run(g, choose); } catch (e) { if (e instanceof Wait) wait = e.d; else if (e instanceof Halt) halted = true; else throw e; }
+  if (lim !== null) delete g.log.push;
+  return { g:g, wait:wait, halted:halted };
+}
+function step(){
+  if (!S || S.guide) return;
+  clearTimeout(S.timer);
+  S.view = replay(); render();
+  var v = S.view;
+  if (v.g.over || !v.wait || isHuman(v.wait.player)) return;
+  var me = S, d = v.wait;
+  S.timer = setTimeout(function () { if (S !== me || S.guide) return; S.answers.push(BOT(S.view.g, d)); step(); }, d.kind === 'council' ? 700 : 1300);
+}
+function answer(id){
+  var g = S.view.g;
+  S.mark = g.log.length; S.snap = copy(g.beads);
+  S.answers.push(id); step();
+}
+function applySeats(){
+  if (!S || S.cfg.players !== setup.n || S.view.g.over) return;
+  S.seats = setup.seats.slice(0, setup.n);
+  if (S.guide) return render();                     // watching or not started: the seats count when she drops in
+  if (!humansIn(S.seats)) return startWatch(null);  // nobody left at the table: watch the rest, step by step
+  step();
+}
+
+/* —— watch a round: one line of the log at a time, each with what it did and why it matters —— */
+function roundOf(line){ var m = /^R(\d+) /.exec(line); return m ? +m[1] : 0; }
+function startWatch(stopAfter){
+  clearTimeout(S.timer);
+  var shown = S.view.g.log.length;
+  S.guide = { mode:'watch', shown:shown, steps:0, playing:true, stopAfter:stopAfter, done:false, startGood:E.share(S.view.g, E.GOOD) };
+  S.view = replay(shown); S.snap = copy(S.view.g.beads); S.mark = shown;
+  render(); tick();
+}
+function tick(){
+  clearTimeout(S.timer);
+  var G = S.guide, me = S;
+  if (!G || G.mode !== 'watch' || !G.playing || G.done) return;
+  S.timer = setTimeout(function () { if (S !== me || S.guide !== G) return; guideNext(); tick(); }, PACE);
+}
+function guideNext(){
+  var G = S.guide, v = replay(G.shown + 1);
+  if (v.g.log.length <= G.shown) {                  // nothing more to show: the game is over
+    S.guide = null; S.view = v; S.mark = Math.max(0, G.shown - 1); render(); return; }
+  if (G.stopAfter !== null && roundOf(v.g.log[G.shown]) > G.stopAfter) { G.done = true; G.playing = false; clearTimeout(S.timer); render(); return; }
+  S.snap = copy(S.view.g.beads); G.prevGood = E.share(S.view.g, E.GOOD);
+  G.shown++; G.steps++; S.view = v; S.mark = G.shown - 1;
+  render();
+}
+function dropIn(){
+  clearTimeout(S.timer);
+  var seat = S.seats.indexOf('human');
+  if (seat < 0) { seat = 0; S.seats[0] = 'human'; if (setup.n === S.cfg.players) { setup.seats[0] = 'human'; drawSetup(); } }
+  var shown = S.guide && S.guide.shown != null ? S.guide.shown : S.view.g.log.length;
+  S.guide = null; S.hints = true; S.explain = true; S.mark = shown; S.snap = copy(S.view.g.beads);
+  step();
+}
+
+/* —— the board, one SVG, drawn portrait so it reads on a phone —— */
+function T(x, y, s, o){ o = o || {};
+  return '<text x="'+x+'" y="'+y+'"'+(o.a ? ' text-anchor="'+o.a+'"' : '')+' font-size="'+(o.s || 11)+'"'+(o.w ? ' font-weight="'+o.w+'"' : '')
+    +' fill="'+(o.c || 'var(--ink)')+'"'+(o.f ? ' font-family="Fraunces,Georgia,serif"' : '')+(o.ls ? ' letter-spacing="'+o.ls+'"' : '')+'>'+esc(s)+'</text>'; }
+function CAP(x, y, s, a){ return T(x, y, s.toUpperCase(), { s:10, c:'var(--mut)', ls:1.4, w:600, a:a }); }
+function U(name, x, y, size, col){ return '<use href="#i-'+name+'" x="'+x+'" y="'+y+'" width="'+size+'" height="'+size+'" style="color:'+col+'"/>'; }
+function lines(s, max){ var out = [], line = ''; s.split(' ').forEach(function (w) { if ((line + ' ' + w).trim().length > max && line) { out.push(line); line = w; } else line = (line + ' ' + w).trim(); }); if (line) out.push(line); return out; }
+function lastCouncil(g){ for (var i = g.log.length - 1; i >= 0; i--) { var m = /^R(\d+) · Council: (.*)$/.exec(g.log[i]); if (m) return { round:+m[1], text:m[2] }; } return null; }
+function pourNow(g){ return Math.max(0, Math.round(K.POUR[g.clock] * g.players.length / 3) + g.pourExtra); }
+var FOCUS = { tide:[6, 6, 408, 100], world:[8, 104, 300, 116], conditions:[352, 110, 60, 110], hollows:[8, 226, 404, 232],
+  pour:[8, 346, 137, 112], bag:[8, 462, 404, 62], council:[8, 530, 404, 64], leads:[8, 598, 404, 116] };
+
+function drawBoard(){
+  var g = S.view.g, h = [], W = 420, x0 = 14, cw = 392 / 11;
+  h.push('<g font-family="Inter,system-ui,sans-serif">');
+  // the tide
+  h.push(CAP(14, 18, 'The tide'));
+  h.push(T(406, 18, 'tide ' + g.tide + ' of ' + K.CROSSING + ' · a round is a ' + K.CLOCK[g.clock], { a:'end', s:11, c:'var(--ink-soft)' }));
+  for (var i = 0; i <= K.CROSSING; i++) {
+    var x = x0 + i * cw, wet = i <= g.tide, cross = i === K.CROSSING;
+    h.push('<rect x="'+(x+1.5)+'" y="30" width="'+(cw-3)+'" height="30" rx="5" fill="'+(wet ? 'var(--ek-water)' : '#fff')+'" stroke="'+(cross ? 'var(--ink)' : wet ? 'var(--ek-water-dk)' : 'var(--line)')+'" stroke-width="'+(cross ? 2 : 1)+'"/>');
+    if (i === g.tide) h.push('<path d="M'+(x+1.5)+' 36 q'+((cw-3)/4)+' -4 '+((cw-3)/2)+' 0 t'+((cw-3)/2)+' 0" fill="none" stroke="var(--ek-water-dk)" stroke-width="1.6"/>');
+    h.push(T(x + cw / 2, 50, String(i), { a:'middle', s:12, w:i === g.tide ? 600 : 400, c:wet ? '#1d4f73' : 'var(--mut)' }));
+  }
+  K.MARKS.forEach(function (m) { var cx = x0 + m * cw + cw / 2;
+    h.push('<path d="M'+cx+' 22 l6 6 -6 6 -6 -6z" fill="'+(g.tide >= m ? 'var(--accent)' : '#fff')+'" stroke="var(--accent)" stroke-width="1.4"/>'); });
+  var spans = [[0, 2], [3, 5], [6, 7], [8, 9]];
+  spans.forEach(function (sp, k) { var a = x0 + sp[0] * cw + 1.5, b = x0 + (sp[1] + 1) * cw - 1.5, on = g.clock === k;
+    h.push('<rect x="'+a+'" y="66" width="'+(b-a)+'" height="20" rx="5" fill="'+(on ? 'var(--chip)' : '#f8f5ee')+'" stroke="'+(on ? 'var(--accent)' : 'var(--ek-line-soft)')+'"/>');
+    h.push(T((a + b) / 2, 80, K.CLOCK[k], { a:'middle', s:10.5, w:on ? 600 : 400, c:on ? 'var(--grammar-accent-dark)' : 'var(--mut)' })); });
+  h.push(T(406, 99, '10 is the Crossing', { a:'end', s:10, w:600, c:'var(--ink-soft)' }));
+
+  // the world, veiled, and the decks
+  h.push(CAP(14, 110, 'The world, veiled'));
+  E.SWITCHES.forEach(function (s, k) {
+    var x = 14 + k * 72, y = 118, w = 66, ht = 80, face = g.world[k], lifted = g.lifted[k], known = g.known[k];
+    if (lifted || known) {
+      var harsh = face === 'harsh', col = harsh ? 'var(--ek-doom)' : 'var(--accent)';
+      h.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+ht+'" rx="8" fill="#fff" stroke="'+col+'" stroke-width="1.6"'+(lifted ? '' : ' stroke-dasharray="4 3"')+'/>');
+      h.push(U(FACE_ICON[s.id][harsh ? 1 : 0], x + w / 2 - 13, y + 6, 26, harsh ? '#a63f2d' : 'var(--grammar-accent-dark)'));
+      lines(s[face], 12).slice(0, 3).forEach(function (l, j) { h.push(T(x + w / 2, y + 46 + j * 11.5, l, { a:'middle', s:9.8, w:600, c:harsh ? '#8f3626' : 'var(--grammar-accent-dark)' })); });
+    } else {
+      h.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+ht+'" rx="8" fill="#efe9dc" stroke="var(--ink-soft)"/>');
+      h.push(U('world', x + w / 2 - 16, y + 22, 32, 'var(--ink-soft)'));
+    }
+    h.push(T(x + w / 2, 212, SHORT_Q[k], { a:'middle', s:10, c:'var(--ink-soft)' }));
+  });
+  [['moves', g.moveDeck.length, 'var(--ek-move)', 306], ['conditions', g.condDeck.length, 'var(--ek-cond)', 360]].forEach(function (d) {
+    h.push('<rect x="'+(d[3]+3)+'" y="121" width="46" height="74" rx="7" fill="'+d[2]+'" opacity=".45"/>');
+    h.push('<rect x="'+d[3]+'" y="118" width="46" height="74" rx="7" fill="'+d[2]+'"/><rect x="'+(d[3]+4)+'" y="122" width="38" height="66" rx="5" fill="none" stroke="#fff" stroke-opacity=".7"/>');
+    h.push(T(d[3] + 23, 162, String(d[1]), { a:'middle', s:17, w:600, c:'#fff' }));
+    h.push(T(d[3] + 23, 212, d[0], { a:'middle', s:10, c:'var(--ink-soft)' }));
+  });
+
+  // seven hollows
+  h.push(CAP(14, 236, 'Seven hollows · % = the chance of each'));
+  var total = E.total(g), drawn = g.over && g.over.hollow;
+  var rows = [['grace', 'turn', 'stop', 'still'], ['adolescence', 'lockin', 'doom']];
+  rows.forEach(function (row, r) {
+    var gap = 8, w = (392 - gap * (row.length - 1)) / row.length, y = 244 + r * 108, ht = 100;
+    row.forEach(function (hol, j) {
+      var x = 14 + j * (w + gap), n = g.beads[hol], col = HC[hol], isDrawn = drawn === hol;
+      h.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+ht+'" rx="10" fill="#fff" stroke="'+(isDrawn ? 'var(--ink)' : 'var(--line)')+'" stroke-width="'+(isDrawn ? 3 : 1)+'"/>');
+      h.push('<rect x="'+(x+8)+'" y="'+(y+6)+'" width="'+(w-16)+'" height="3.5" rx="1.75" fill="'+col+'"/>');
+      h.push(T(x + 9, y + 25, E.HOLLOW_NAME[hol], { s:12, w:600, f:1 }));
+      h.push(T(x + w - 9, y + 47, String(n), { a:'end', s:16, w:600 }));
+      var d = S.snap ? n - S.snap[hol] : 0;
+      if (d) h.push(T(x + w - 9, y + 61, (d > 0 ? '+' : '−') + Math.abs(d), { a:'end', s:10.5, w:600, c:d > 0 ? col : 'var(--mut)' }));
+      var cols = Math.max(1, Math.floor((w - 44) / 11)), cap = cols * 4, show = n > cap ? cap - 1 : n;
+      for (var b = 0; b < show; b++) h.push('<circle cx="'+(x + 14 + (b % cols) * 11)+'" cy="'+(y + 40 + Math.floor(b / cols) * 11)+'" r="4.3" fill="'+col+'"/>');
+      if (n > cap) h.push(T(x + 14 + ((cap - 1) % cols) * 11, y + 40 + 3 * 11 + 3.5, '+' + (n - cap + 1), { a:'middle', s:9, w:600, c:col }));
+      h.push(T(x + 9, y + ht - 8, (total ? pct(n / total) : '0%'), { s:10, c:'var(--ink-soft)' }));
+      if (hol === 'adolescence') { h.push(T(x + w - 9, y + ht - 8, '+' + pourNow(g) + ' a round', { a:'end', s:10, c:'var(--ink-soft)' }));
+        h.push(T(x + w - 9, y + ht - 22, 'holds ' + K.ADOLESCENCE_CAP, { a:'end', s:10, c:'var(--ink-soft)' })); }
+      else h.push(T(x + w - 9, y + ht - 8, isDrawn ? 'drawn' : KIND[hol], { a:'end', s:10, w:isDrawn ? 600 : 400, c:KIND[hol] === 'good' ? 'var(--grammar-accent-dark)' : KIND[hol] === 'bad' ? '#a63f2d' : 'var(--mut)' }));
+    });
+  });
+
+  // the bag
+  h.push(CAP(14, 474, g.over ? 'The bag at the Crossing' : 'The bag, if the tide crossed now'));
+  var order = ['grace', 'turn', 'stop', 'adolescence', 'still', 'lockin', 'doom'], bx = 14;
+  order.forEach(function (hol) { var w = total ? 392 * g.beads[hol] / total : 0; if (w > 0) h.push('<rect x="'+bx+'" y="482" width="'+w+'" height="16" fill="'+HC[hol]+'"/>'); bx += w; });
+  h.push('<rect x="14" y="482" width="392" height="16" rx="3" fill="none" stroke="var(--line)"/>');
+  var good = E.share(g, E.GOOD), bad = E.share(g, E.BAD);
+  h.push(T(14, 516, 'good ' + pct(good), { s:11.5, w:600, c:'var(--grammar-accent-dark)' }));
+  h.push(T(210, 516, 'open ' + pct(Math.max(0, 1 - good - bad)), { a:'middle', s:11.5, c:'var(--mut)' }));
+  h.push(T(406, 516, 'bad ' + pct(bad), { a:'end', s:11.5, w:600, c:'#a63f2d' }));
+
+  // the Council
+  h.push(CAP(14, 546, 'The Council'));
+  var lc = lastCouncil(g), n = g.players.length, need = Math.max(1, Math.ceil(K.COUNCIL_SHARE * n) + g.bar - g.together);
+  var thisRound = lc && lc.round === g.round && !(S.view.wait && S.view.wait.kind === 'council');
+  h.push(T(14, 566, thisRound ? 'This round: ' + lc.text : 'Next vote needs ' + need + ' Together of ' + n + '.', { s:11.5, c:'var(--ink-soft)' }));
+  if (thisRound && g.passed) h.push(T(14, 584, 'Stop together: ' + g.pledges + ' pledged; ' + E.stopNeed(g) + ' pledges hold the tide.', { s:11.5, w:600, c:'var(--ek-thestop)' }));
+  else if (thisRound) h.push(T(14, 584, 'It did not pass: no Stop together this round.', { s:11.5, c:'var(--mut)' }));
+  else h.push(T(14, 584, 'With enough Together it passes and Stop together opens.', { s:11.5, c:'var(--mut)' }));
+  var showVotes = thisRound || (S.view.wait && S.view.wait.kind === 'council');
+  g.players.forEach(function (p, k) { var cx = 406 - (n - 1 - k) * 25 - 10, v = showVotes ? g.votes[k] : null;
+    h.push('<circle cx="'+cx+'" cy="542" r="10" fill="'+(v ? PCOL[k] : '#fff')+'" stroke="'+PCOL[k]+'" stroke-width="1.6"/>');
+    if (v) h.push(T(cx, 546, v === 'together' ? 'T' : 'B', { a:'middle', s:10.5, w:600, c:'#fff' })); });
+
+  // the leads
+  var leads = [['Alignment', g.align, Math.min(g.tide, 10), 'tide', 'var(--ek-grace)'], ['Commons', g.commons, 2, 'Misuse', 'var(--ek-turn)'],
+    ['Relationality', g.rel, K.RELATIONALITY_MARK, 'threat', 'var(--ek-thestop)'], ['Together', g.together, null, '', 'var(--accent)']];
+  leads.forEach(function (L, r) {
+    var y = 606 + r * 26;
+    h.push(T(14, y + 12, L[0], { s:11.5, w:600 }));
+    for (var p = 0; p < 10; p++) { var px = 104 + p * 23;
+      h.push('<rect x="'+px+'" y="'+y+'" width="20" height="16" rx="4" fill="'+(p < L[1] ? L[4] : '#fff')+'" stroke="'+(p < L[1] ? L[4] : 'var(--line)')+'"/>'); }
+    if (L[2] !== null) { var mx = 104 + L[2] * 23 - 1.5; h.push('<line x1="'+mx+'" y1="'+(y - 3)+'" x2="'+mx+'" y2="'+(y + 19)+'" stroke="var(--ink)" stroke-width="2"/>'); }
+    h.push(T(406, y + 12, L[1] + (L[2] !== null ? ' · ' + L[3] + ' ' + L[2] : ''), { a:'end', s:11, c:'var(--ink-soft)' }));
+  });
+  h.push(T(14, 722, 'The black line on each lead is its mark: reach it before a veil lifts.', { s:10, c:'var(--mut)' }));
+  // while watching, a dashed ring shows where on the board the step happened
+  var F = FOCUS[S.focus];
+  if (F) h.push('<rect id="focusRing" x="'+F[0]+'" y="'+F[1]+'" width="'+F[2]+'" height="'+F[3]+'" rx="10" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="7 5"/>');
+  h.push('</g>');
+  $('board').innerHTML = h.join('');
+}
+
+/* —— the choices, in plain words —— */
+function optView(d, o){
+  var g = S.view.g, id = o.id;
+  if (d.kind === 'council') return id === 'together'
+    ? ['Together', 'Vote with the table. With ' + d.need + ' Together the Council passes and Stop together opens.', 'together']
+    : ['Build', 'You draw a card. If most of the table builds, the tide rises two this round.', 'ai'];
+  if (d.kind === 'respond') {
+    var isBreak = d.options.some(function (x) { return x.id === 'discard'; });
+    if (id === 'discard') return ['Spend Align & secure', 'Discard the card and the tide holds.', 'align'];
+    if (id === 'keep' && isBreak) return ['Keep the card', 'The tide rises one.', 'surge'];
+    if (id === 'keep') return ['Keep your role', 'Then you take one free move.', 'crossroads'];
+    if (id === 'yes') return ['Play Align & secure for free', 'Researcher: once a round it costs no move.', 'align'];
+    if (id === 'no') return ['Not now', 'Keep the card for later.', null];
+    if (E.ROLES[id]) return ['Become ' + E.ROLES[id][0], E.ROLES[id][1] + ' Then you take one free move.', 'role'];
+  }
+  var parts = id.split(':');
+  if (id === 'draw') return ['Draw a card', 'Take one card from the Move deck.', null];
+  if (parts[0] === 'play') return [E.MOVES[parts[1]][1], PLAIN[parts[1]] || E.MOVES[parts[1]][2], MOVE_ICON[parts[1]]];
+  if (parts[0] === 'reverse') return ['Build, reversed', 'You were taught: play a Build as Align & secure.', 'reverse'];
+  if (parts[0] === 'sit') { var q = g.players[+parts[1]];
+    return ['Sit beside ' + q.name, 'You each take a free move now.' + (q.role === 'youngai' && !q.taught ? ' The young AI stops adding Doom.' : ''), 'held']; }
+  if (parts[0] === 'role') return ['Become ' + E.ROLES[parts[1]][0], 'Uses this move. ' + E.ROLES[parts[1]][1], 'role'];
+  return [o.label, '', null];
+}
+function context(d){
+  var g = S.view.g;
+  if (d.kind === 'council') return 'The Council meets. Each player votes in turn; it needs ' + d.need + ' Together of ' + g.players.length + '.';
+  if (d.kind === 'move') return d.free ? 'A free move.' : 'Your move: two each round.' + (!g.passed && g.players[d.player].hand.indexOf('stop') >= 0 ? ' Stop together waits for a Council that passed.' : '');
+  if (d.options.some(function (x) { return x.id === 'discard'; })) return 'A breakthrough. The tide rises one, unless you spend Align & secure.';
+  if (d.options.some(function (x) { return x.id === 'yes'; })) return 'You hold Align & secure.';
+  return 'A crossroads: you may change role, then take a free move.';
+}
+
+/* —— each line of the log, in one plain line: what happened, and why it matters —— */
+var COND_WHY = {
+  warning: 'A warning shot: a Doom bead moves to The Stop, and this Council needs one fewer Together.',
+  breakthrough: 'A breakthrough: one more bead in Adolescence, and the tide rises one unless someone spends Align & secure.',
+  rival: 'A rival ships first: a bead falls into Lock-in. Racing is rewarded, and the table pays for it.',
+  result: 'A safety result: the Alignment lead grows. Alignment softens a harsh face when a veil lifts.',
+  mood: 'Public mood turns: the next Council needs one fewer Together.',
+  surge: 'The waters rise: the tide climbs one, and old troubles come back sooner.',
+  crossroads: 'A crossroads: this round\'s first player may change role, then takes a free move.',
+  redteam: 'The red team tests the table: a player without a practice lets a bead fall toward Doom.',
+  whiteteam: 'The white team: each player gets a practice, a shield against the red team.'
+};
+var MOVE_WHY = {
+  build: 'One bead into Adolescence and a card for the builder. Adolescence spills into Lock-in and Doom when it is full.',
+  align: 'A bead leaves Doom (or Lock-in) for Grace. Keeping Alignment ahead of the tide softens a harsh veil.',
+  tend: 'A bead leaves Lock-in (or Doom) for The turn. A Commons lead of 2 stops Misuse.',
+  advocate: 'The next Council needs one fewer Together. If this one passed, a bead also goes to The Stop.',
+  stop: 'A pledge, and a bead into The Stop. If half the table pledges this round, the tide holds.',
+  goodwill: 'A bead moves to The turn, and Relationality grows: it helps if the AI comes to see us as a threat.',
+  process: 'Two beads leave Adolescence for The turn, before they can spill.',
+  create: 'Relationality grows, and a bead moves one step toward Grace.',
+  take: 'Edge for one player, and a good bead lost to Lock-in.'
+};
+function moveId(name){ for (var k in E.MOVES) if (E.MOVES[k][1] === name) return k; return null; }
+function condId(name){ for (var k in E.CONDITIONS) if (E.CONDITIONS[k][1] === name) return k; return null; }
+function tidy(line){ return line.replace(/^R\d+ · /, '').replace(/\b(doom|lockin|adolescence|still|turn)>(\w+)/g, function (m, a, b) { return E.HOLLOW_NAME[a] + ' → ' + E.HOLLOW_NAME[b]; }); }
+function explain(line, g){
+  var t = line.replace(/^R\d+ · /, ''), m, who = null, pm = /^Player (\d+)/.exec(t);
+  if (pm) who = +pm[1] - 1;
+  var r = function (stage, focus, text) { return { stage:stage, focus:focus, text:text, who:who }; };
+  if ((m = /^Condition: (.+)\.$/.exec(t))) { var c = condId(m[1]);
+    if (c === 'misuse') return r('conditions', 'conditions', g.commons >= 2 ? 'Misuse, but the Commons lead is 2 or more: no harm done.' : 'Misuse: a bead falls into Doom. A Commons lead of 2 would have stopped it.');
+    return r('conditions', 'conditions', 'Conditions are news from the world, drawn each round. ' + (COND_WHY[c] || '')); }
+  if (/spends Align & secure; the tide holds/.test(t)) return r('conditions', 'tide', 'They gave up a card to keep the tide from rising.');
+  if ((m = /^Council: (\d+) Together of (\d+), needed (\d+): it (passes|fails)\.$/.exec(t)))
+    return r('council', 'council', m[4] === 'passes' ? 'Enough players voted Together, so the Council passes: Stop together is open this round.'
+      : 'Too few voted Together: no Stop together this round, and if most voted Build, the tide rises two.');
+  if (/plays a Build reversed/.test(t)) return r('moves', 'hollows', 'A taught young AI plays a Build as Align & secure: a bead from Doom to Grace.');
+  if ((m = /^.+ plays (.+?)( \(free, researcher\))?\.$/.exec(t))) { var mv = moveId(m[1]);
+    return r('moves', mv === 'build' || mv === 'process' ? 'pour' : 'hollows', (m[2] ? 'Free for the researcher. ' : '') + (MOVE_WHY[mv] || '')); }
+  if (/ draws\.$/.test(t)) return r('moves', null, 'No card worth playing now, so they draw one for later.');
+  if (/builds untaught/.test(t)) return r('moves', 'hollows', 'An untaught young AI adds Doom when it builds. A teacher sitting beside it stops this.');
+  if (/ sits beside /.test(t)) return r('moves', null, 'The teacher sits beside a player: each gets a free move.');
+  if (/ changes role/.test(t)) return r('moves', null, 'A new role brings a new strength.');
+  if (/\(poet\) nudges/.test(t)) return r('moves', 'hollows', 'The poet moves one bead one step toward Grace every round.');
+  if (/^The pour/.test(t)) return r('pour', 'pour', 'New capability arrives every round, more as time speeds up. Adolescence holds 5; the rest spills into Lock-in and Doom.');
+  if (/^Stop together: .* The tide holds/.test(t)) return r('tide', 'tide', 'Half the table pledged Stop together in a round the Council passed: the tide holds, and the table gains time.');
+  if (/^Only \d+ player/.test(t)) return r('tide', 'tide', 'A Stop needs half the table to pledge in the same round. Not enough did.');
+  if (/^A Stop on the day clock/.test(t)) return r('tide', 'tide', 'A Stop on the day clock turns time back: a round lasts longer again.');
+  if (/^The tide rises/.test(t)) return r('tide', 'tide', (/most voted Build/.test(t) ? 'Most voted Build, so the tide rises two. ' : 'The tide rises every round. ') + 'At 10 it reaches the Crossing, and one bead is drawn from the bag.');
+  if (/^The tide passes a/.test(t)) return r('tide', 'tide', 'Time speeds up: more conditions and a bigger pour each round. A veil lifts.');
+  if (/^A veil lifts/.test(t)) { var harsh = E.SWITCHES.some(function (s) { return t.indexOf(' ' + s.harsh + '.') >= 0; });
+    return r('tide', 'world', 'A hidden fact about the world shows its face. ' + (harsh ? 'A harsh one: it adds bad beads, and the leads you built soften it.' : 'A gentle one: it moves beads toward the good hollows.')); }
+  if (/alignment lead stands below the tide/.test(t)) return r('tide', 'leads', 'Alignment fell behind the tide, so from now on every pour also drops a bead into Doom.');
+  if (/^Ending:/.test(t)) return r(null, 'bag', 'The tide reached the Crossing, and one bead was drawn. Odds, not paths: the moves changed the bag, not the draw.');
+  return r(null, null, '');
+}
+var STAGES = [['conditions', 'Conditions'], ['council', 'Council'], ['moves', 'Moves'], ['pour', 'Pour'], ['tide', 'Tide']];
+function stagesHtml(on){ return '<ul class="stages" aria-label="The steps of a round">' + STAGES.map(function (s) { return '<li' + (s[0] === on ? ' class="on"' : '') + '>' + s[1] + '</li>'; }).join('') + '</ul>'; }
+function oddsLine(g, before){
+  var now = E.share(g, E.GOOD), d = before == null ? 0 : Math.round(100 * now) - Math.round(100 * before);
+  return '<p class="oddsline">Chance a good bead is drawn: <b>' + pct(now) + '</b>' + (d ? ' (' + (d > 0 ? 'up ' : 'down ') + Math.abs(d) + ')' : '') + ' · tide ' + g.tide + ' of ' + K.CROSSING + '</p>';
+}
+// why the computer would pick the option it suggests, for her own turns after she drops in
+function hintWhy(d, id){
+  if (d.kind === 'council') return id === 'together' ? 'Together helps the Council pass, which opens Stop together.' : 'The vote cannot pass this round anyway, so a card is worth more.';
+  if (id === 'discard') return 'Keeping the tide down buys the table time.';
+  if (id === 'yes') return 'A free move is worth taking.';
+  if (id === 'draw') return 'Nothing in your hand helps right now.';
+  var p = id.split(':');
+  if (p[0] === 'play') return MOVE_WHY[p[1]] || '';
+  if (p[0] === 'sit') return 'You both get a free move.';
+  if (p[0] === 'reverse') return 'A bead from Doom to Grace.';
+  return '';
+}
+
+function watchCard(g){
+  var G = S.guide, n = g.players.length, last = G.shown > 0 ? g.log[G.shown - 1] : null;
+  var rnd = G.done ? G.stopAfter : G.steps && last ? Math.max(1, roundOf(last)) : Math.max(1, g.round);
+  var head = '<div class="turnhead">' + ic('eye') + '<span class="who">' + (G.stopAfter !== null ? 'Watching round ' + rnd : 'Watching the game') + '</span><span class="mut small">the computer plays all ' + n + ' seats</span></div>';
+  var btnReady = '<button class="btn" type="button" data-a="drop">I\'m ready, let me play</button>';
+  if (G.done) { S.focus = null; S.acting = null; }   // the round is done: the target is Take your seat
+  if (G.done) return head + stagesHtml(null)
+    + '<div class="event">Round ' + rnd + ' is done.</div>'
+    + '<p class="why">The chance of a good bead went from ' + pct(G.startGood) + ' to ' + pct(E.share(g, E.GOOD)) + '. The tide is at ' + g.tide + ' of ' + K.CROSSING + '. Odds, not paths: moves change what is in the bag, not which bead is drawn.</p>'
+    + '<div class="foot"><button class="btn primary" type="button" data-a="drop">Take your seat: ' + esc(g.players[Math.max(0, S.seats.indexOf('human'))].name) + '</button>'
+    + '<button class="btn" type="button" data-a="more">Watch another round</button></div>';
+  var line = G.steps && G.shown > 0 && g.log.length >= G.shown ? g.log[G.shown - 1] : null;
+  var body;
+  if (!line) {
+    S.focus = null; S.acting = null;
+    body = stagesHtml(null) + '<div class="event">' + (G.stopAfter !== null || !last || roundOf(last) === 0 ? 'Round ' + rnd + ' is about to start.' : 'The computer plays every seat from here.') + '</div>'
+      + '<p class="why">A round has five steps: conditions, the Council, two moves each, the pour, and the tide. Each step, this panel says what happened and why it matters; the dashed ring shows where on the board.</p>' + oddsLine(g, null);
+  } else {
+    var x = explain(line, g); S.focus = x.focus; S.acting = x.who !== null && x.who < n ? x.who : null;
+    body = stagesHtml(x.stage) + '<div class="event">' + (x.who !== null && x.who < n ? '<span class="dot" style="background:' + PCOL[x.who] + '"></span>' : '') + '<span>' + esc(tidy(line)) + '</span></div>'
+      + (x.text ? '<p class="why">' + esc(x.text) + '</p>' : '') + oddsLine(g, G.prevGood);
+  }
+  return head + body + '<div class="foot"><button class="btn primary" type="button" data-a="next">Next</button>'
+    + '<button class="btn" type="button" data-a="' + (G.playing ? 'pause' : 'play') + '">' + (G.playing ? 'Pause' : 'Play') + '</button>' + btnReady + '</div>';
+}
+
+function render(){
+  var v = S.view, g = v.g, d = v.wait, html = '';
+  $('ver').textContent = K.VERSION;
+  var G = S.guide;
+  S.acting = null;
+  if (G && G.mode === 'watch') html = watchCard(g);   // sets S.focus (and S.acting) before the board is drawn
+  else S.focus = null;
+  drawBoard();
+  var news = g.log.slice(S.mark).slice(-10);
+  var newsHtml = '<ul class="news">' + news.map(function (l) { var w = S.explain ? explain(l, g).text : '';
+    return '<li>' + esc(tidy(l)) + (w ? '<span class="x">' + esc(w) + '</span>' : '') + '</li>'; }).join('') + '</ul>';
+  if (G && G.mode === 'intro') {
+    html = '<div class="turnhead">' + ic('compass') + '<span class="who">New to Ekho?</span></div>'
+      + '<p class="why" style="margin-top:8px">Watch one round first: the computer plays every seat, slowly, and this panel says what each step does. Then you take a seat, and the computer keeps the others.</p>'
+      + '<div class="foot"><button class="btn primary" type="button" data-a="watch">Watch a round first</button><button class="btn" type="button" data-a="playnow">Play now</button></div>';
+    $('turnCard').className = 'card';
+  } else if (G && G.mode === 'watch') {
+    $('turnCard').className = 'card';
+  } else if (g.over) {
+    var o = g.over, t = E.total(g);
+    var head = o.kind === 'good' ? 'A good ending: ' + o.name + '.' : o.kind === 'bad' ? 'A hard ending: ' + o.name + '.' : 'An open ending: ' + o.name + '.';
+    html = '<div class="turnhead">' + ic('ending') + '<span class="who">The bead is drawn</span></div>'
+      + '<div class="big">' + esc(head) + '</div>'
+      + '<p class="ctx">After ' + o.round + ' rounds the tide reached the Crossing' + (/Crossing/.test(o.why) ? '' : ' (' + esc(o.why) + ')') + '. Every veil lifted. The bag held ' + t + ' beads: '
+      + '<b>' + pct(o.good) + '</b> good, ' + pct(Math.max(0, 1 - o.good - o.bad)) + ' open, <b>' + pct(o.bad) + '</b> bad. One bead was drawn.</p>'
+      + E.HOLLOWS.map(function (hol) { return '<div class="bar"><span>' + esc(E.HOLLOW_NAME[hol]) + '</span><div class="t"><div class="f" style="width:' + Math.round(100 * o.probs[hol]) + '%;background:' + HC[hol] + '"></div></div><span class="v">' + pct(o.probs[hol]) + '</span></div>'; }).join('')
+      + '<p class="ctx">The world was: ' + E.SWITCHES.map(function (s, k) { return esc(s[o.world[k]]); }).join(' · ') + '.</p>'
+      + '<div class="odds"><b>Odds, not paths.</b> Your moves changed what was in the bag, not which bead came out. A well-played game can still end badly, and a careless one can still end well. This is a toy model with made-up numbers: it may say something about this game, and nothing about what will happen in the world.</div>'
+      + '<div class="foot"><button class="btn primary" type="button" data-a="again">Play again</button><button class="btn" type="button" data-a="same">Same deal again</button><button class="btn" type="button" data-a="setup">Change the setup</button></div>';
+    $('turnCard').className = 'card over';
+  } else if (d) {
+    var p = g.players[d.player], human = isHuman(d.player);
+    html = '<div class="turnhead"><span class="dot" style="background:' + PCOL[d.player] + '"></span><span class="who">' + esc(p.name) + '</span><span class="mut small">' + esc(E.ROLES[p.role][0]) + (human ? '' : ' · computer') + ' · round ' + g.round + '</span></div>'
+      + (human ? '' : newsHtml) + '<p class="ctx">' + esc(context(d)) + '</p>';
+    if (human) {
+      if (d.kind === 'move') html += '<div class="hand"><span class="small mut">Hand:</span>' + p.hand.map(function (c) { return '<span class="chipc">' + esc(E.MOVES[c][1]) + '</span>'; }).join('') + '</div>';
+      var sug = S.hints ? BOT(g, d) : null;   // the computer's pick, offered as a suggestion: take it or choose another
+      if (sug) html += '<p class="ctx small" style="color:var(--grammar-accent-dark)">The computer would choose the marked one. Take it, or choose your own.</p>';
+      html += '<div class="opts">' + d.options.map(function (o) { var w = optView(d, o), isSug = o.id === sug, sw = isSug ? hintWhy(d, o.id) : '';
+        return '<button class="opt' + (isSug ? ' sug' : '') + '" type="button" data-id="' + esc(o.id) + '">' + (w[2] ? ic(w[2]) : '<span></span>') + '<span><b>' + esc(w[0]) + (isSug ? '<span class="tag">suggested</span>' : '') + '</b>'
+          + (w[1] ? '<span class="l">' + esc(w[1]) + '</span>' : '') + (sw && sw !== w[1] ? '<span class="sw">' + esc(sw) + '</span>' : '') + '</span></button>'; }).join('') + '</div>';
+      if (news.length) html += '<p class="ctx small mut" style="margin-top:12px">Since your last move:</p>' + newsHtml;   // the choice first, so a phone sheet opens on it
+    } else html += '<p class="ctx mut">The computer is choosing…</p>';
+    html += '<div class="foot">' + (human ? '<button class="btn" type="button" data-a="hints" aria-pressed="' + S.hints + '">' + (S.hints ? 'Suggestions: on' : 'Suggestions: off') + '</button>' : '')
+      + '<button class="btn" type="button" data-a="auto">Let the computer finish this game</button></div>';
+    $('turnCard').className = 'card';
+  }
+  $('turnCard').innerHTML = html; $('turnCard').scrollTop = 0;
+  var nl = $('turnCard').querySelector('.news'); if (nl) nl.scrollTop = nl.scrollHeight;   // the newest line in view
+  sheetSpace();
+  $('players').innerHTML = g.players.map(function (q, k) {
+    var mine = d && d.player === k && !g.over, acting = S.acting === k;
+    return '<div class="pl' + (mine ? ' now' : '') + (acting ? ' acting' : '') + '" data-seat="' + k + '"><div class="top"><span class="dot" style="background:' + PCOL[k] + '"></span><b>' + esc(q.name) + '</b><span class="mut small">' + (S.seats[k] === 'human' ? 'human' : 'computer') + '</span></div>'
+      + '<div class="role">' + ic(q.role === 'youngai' ? 'ai' : 'role') + ' <b>' + esc(E.ROLES[q.role][0]) + '</b>: ' + esc(E.ROLES[q.role][1]) + '</div>'
+      + '<div class="hand">' + q.hand.map(function (c) { return '<span class="chipc">' + esc(E.MOVES[c][1]) + '</span>'; }).join('') + '</div>'
+      + '<div class="meta">practices ' + q.practices + ' · Edge ' + q.edge + (q.role === 'youngai' ? (q.taught ? ' · taught' : ' · not yet taught') : '') + '</div></div>';
+  }).join('');
+  $('log').innerHTML = g.log.map(function (l, i) { return '<li class="' + (i >= S.mark ? 'new' : '') + '">' + esc(l) + '</li>'; }).reverse().join('');
+  $('log').scrollTop = 0;                               // the newest line is at the top of the log
+  followStep();
+}
+$('turnCard').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b || !S) return;
+  resumeFollow();
+  if (b.dataset.id) return answer(b.dataset.id);
+  var a = b.dataset.a;
+  var G = S.guide;
+  if (a === 'auto') { S.mark = S.view.g.log.length; S.snap = copy(S.view.g.beads); S.auto = true; step(); }
+  else if (a === 'again') newGame(null, 'play');
+  else if (a === 'same') newGame(S.cfg.seed, 'play');
+  else if (a === 'setup') { $('more').open = true; FOLLOW.paused = true; document.querySelector('.setup').scrollIntoView({ behavior:motion(), block:'start' }); }
+  else if (a === 'watch') newGame(null, 'watch');
+  else if (a === 'playnow') newGame(null, 'play');
+  else if (a === 'hints') { S.hints = !S.hints; render(); }
+  else if (a === 'drop') dropIn();
+  else if (G && G.mode === 'watch') {
+    if (a === 'next') { guideNext(); tick(); }
+    else if (a === 'pause') { G.playing = false; clearTimeout(S.timer); render(); }
+    else if (a === 'play') { G.playing = true; guideNext(); tick(); }
+    else if (a === 'more') { G.stopAfter = G.stopAfter + 1; G.done = false; G.playing = true; G.startGood = E.share(S.view.g, E.GOOD); guideNext(); tick(); }
+  }
+});
+// On a phone the panel is a sheet at the bottom of the screen, shown while the board is in view.
+function sheetSpace(){ var narrow = window.matchMedia('(max-width:880px)').matches;
+  document.documentElement.style.setProperty('--sheet-h', narrow ? ($('turnCard').offsetHeight + 16) + 'px' : '0px'); }
+if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (en) { document.body.classList.toggle('away', !en.isIntersecting); sheetSpace(); }); },
+  { rootMargin:'0px 0px -45% 0px' }).observe($('table'));
+window.addEventListener('resize', sheetSpace);
+
+/* —— 300 games —— */
+$('cmpBtn').addEventListener('click', function () {
+  var btn = $('cmpBtn'); btn.disabled = true; btn.textContent = 'Running…';
+  setTimeout(function () {
+    var n = setup.n, N = 300, base = { players:n, tide:setup.tide, tilt:setup.tilt, youngAI:setup.youngAI, mode:'commons', roles:ROLE_ORDER.slice(0, n) };
+    var fill = function (h) { var a = []; for (var i = 0; i < n; i++) a.push(h); return a; };
+    var tables = [['A careful table', fill('greedy'), 'Looks one move ahead, every seat.'],
+      ['One player races', ['racer'].concat(fill('greedy').slice(1)), 'Seat 1 always builds; the others are careful.'],
+      ['Everyone races', fill('racer'), 'Every seat builds and takes.'],
+      ['Random play', fill('random'), 'Any legal choice, at random.']];
+    if (n === 1) tables.splice(1, 1);
+    var out = tables.map(function (t) {
+      var good = 0, drawnGood = 0, drawnBad = 0, rounds = 0;
+      for (var s = 1; s <= N; s++) { var o = E.simulate(Object.assign({ seed:s }, base), t[1]); good += o.good; rounds += o.round; if (o.kind === 'good') drawnGood++; if (o.kind === 'bad') drawnBad++; }
+      return { name:t[0], note:t[2], good:good / N, dg:drawnGood / N, db:drawnBad / N, rounds:rounds / N };
+    });
+    var bar = function (label, x, col) { return '<div class="bar"><span>' + label + '</span><div class="t"><div class="f" style="width:' + Math.round(100 * x) + '%;background:' + col + '"></div></div><span class="v">' + pct(x) + '</span></div>'; };
+    $('cmp').innerHTML = out.map(function (r) {
+      return '<div class="card"><h3>' + esc(r.name) + '</h3><p class="small mut" style="margin:2px 0 6px">' + esc(r.note) + '</p>'
+        + bar('good odds', r.good, 'var(--ek-grace)') + bar('drew good', r.dg, 'var(--accent)') + bar('drew bad', r.db, 'var(--ek-doom)')
+        + '<p class="small mut" style="margin:6px 0 0">About ' + r.rounds.toFixed(1) + ' rounds a game.</p></div>';
+    }).join('') + '<p class="small mut" style="grid-column:1/-1;margin:0">Good odds: the share of good beads in the bag at the Crossing, averaged. Drew good / bad: how often the drawn bead came from a good or a bad hollow. Same 300 deals for every table.</p>';
+    btn.disabled = false; btn.textContent = 'Run 300 games each';
+  }, 30);
+});
+
+$('roleList').innerHTML = Object.keys(E.ROLES).map(function (r) { return '<li><b>' + esc(E.ROLES[r][0]) + '</b>: ' + esc(E.ROLES[r][1]) + '</li>'; }).join('');
+drawSetup();
+newGame(null, 'intro');
+})();
+</script>
+</body>
+</html>
