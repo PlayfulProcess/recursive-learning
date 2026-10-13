@@ -54,6 +54,7 @@ BRANCH_OF = {
     "words-deck": "words",
     "ideas-of-alignment": "ideas",
     "as-if-hot-potato-edition": "games",
+    "landlords-game-live-again": "games",
     "hot-potato-the-chosen-alien-invasion": "films",
     "the-chosen-alien-invasion": "films",
     "the-chosen-alien-invasion-v2": "films",
