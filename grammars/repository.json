@@ -1,0 +1,179 @@
+{
+  "format": "recursive-eco/repository",
+  "version": 1,
+  "name": "Recursive Learning",
+  "members": [
+    {
+      "slug": "as-if-hot-potato-edition"
+    },
+    {
+      "slug": "hot-potato-the-chosen-alien-invasion"
+    },
+    {
+      "slug": "kpop-demon-hunters"
+    },
+    {
+      "slug": "the-chosen-alien-invasion"
+    },
+    {
+      "slug": "the-chosen-alien-invasion-star-wars-primitives"
+    },
+    {
+      "slug": "the-chosen-alien-invasion-v2"
+    },
+    {
+      "slug": "create-grammars-with-ai"
+    },
+    {
+      "slug": "create-magic-stories-for-your-kids-with-ai"
+    },
+    {
+      "slug": "recursive-courses"
+    },
+    {
+      "slug": "vibe-coding-101-tools-and-process"
+    },
+    {
+      "slug": "vibe-coding-102-audiobook-with-claude-code"
+    },
+    {
+      "slug": "vibe-coding-with-claude-journaling-tools"
+    },
+    {
+      "slug": "recursive-studies"
+    },
+    {
+      "slug": "the-freedom-paradox"
+    },
+    {
+      "id": "c0c00001-0000-4000-8000-000000c0c001",
+      "name": "Courses"
+    },
+    {
+      "slug": "ideas-of-alignment"
+    },
+    {
+      "slug": "institutions-of-alignment"
+    },
+    {
+      "slug": "recursive-map"
+    },
+    {
+      "slug": "sources-of-alignment"
+    },
+    {
+      "slug": "words-deck"
+    }
+  ],
+  "repositories": [
+    {
+      "slug": "words",
+      "name": "Words — the glossary as cards",
+      "members": [
+        {
+          "slug": "words-deck"
+        }
+      ]
+    },
+    {
+      "slug": "ideas",
+      "name": "Ideas — a seed map of the AI debate, a draft",
+      "members": [
+        {
+          "slug": "ideas-of-alignment"
+        }
+      ]
+    },
+    {
+      "slug": "games",
+      "name": "Games — the decks the games deal",
+      "members": [
+        {
+          "slug": "as-if-hot-potato-edition"
+        }
+      ]
+    },
+    {
+      "slug": "films",
+      "name": "Films — sequences cut from public footage",
+      "members": [
+        {
+          "slug": "hot-potato-the-chosen-alien-invasion"
+        },
+        {
+          "slug": "kpop-demon-hunters"
+        },
+        {
+          "slug": "the-chosen-alien-invasion"
+        },
+        {
+          "slug": "the-chosen-alien-invasion-star-wars-primitives"
+        },
+        {
+          "slug": "the-chosen-alien-invasion-v2"
+        }
+      ]
+    },
+    {
+      "slug": "courses",
+      "name": "Courses — how the tools are made and used",
+      "members": [
+        {
+          "slug": "create-grammars-with-ai"
+        },
+        {
+          "slug": "create-magic-stories-for-your-kids-with-ai"
+        },
+        {
+          "slug": "recursive-courses"
+        },
+        {
+          "slug": "vibe-coding-101-tools-and-process"
+        },
+        {
+          "slug": "vibe-coding-102-audiobook-with-claude-code"
+        },
+        {
+          "slug": "vibe-coding-with-claude-journaling-tools"
+        },
+        {
+          "id": "c0c00001-0000-4000-8000-000000c0c001",
+          "name": "Courses"
+        }
+      ]
+    },
+    {
+      "slug": "studies",
+      "name": "Studies — longer readings",
+      "members": [
+        {
+          "slug": "recursive-studies"
+        },
+        {
+          "slug": "the-freedom-paradox"
+        }
+      ]
+    },
+    {
+      "slug": "other",
+      "name": "Other",
+      "members": [
+        {
+          "slug": "recursive-map"
+        }
+      ]
+    },
+    {
+      "slug": "record",
+      "name": "Record — sources and institutions, dated",
+      "members": [
+        {
+          "slug": "institutions-of-alignment"
+        },
+        {
+          "slug": "sources-of-alignment"
+        }
+      ]
+    }
+  ]
+}

@@ -2648,10 +2648,12 @@
   "description": "Great KPop Demon Hunters video worth watching together, in one place: dance covers from crews around the world, prop and costume builds to try at home, fan films and musician covers, the real Korean hair, dress and legends behind the movie, a seven-question trivia round, and EJAE's own rough demos paired with the finished songs. No merch, no unboxings, no sales pitches — just fans making things because they love the songs, and the people who actually made it. A pause-and-talk card from the Movie Companion is tucked into the fan-films section. Watch with Papai. (Fan-made videos linked to their creators on YouTube; all credit to the makers.)",
   "creator_link": "https://lifeisprocess.substack.com/",
   "creator_name": "PlayfulProcess",
-  "default_view": "cards",
+  "default_view": "playlist",
   "grammar_type": "sequence",
   "is_published": true,
   "cover_image_url": "https://i.ytimg.com/vi/Glk9piFNBWI/hqdefault.jpg",
-  "_recursive_eco_url": "https://flow.recursive.eco/g/3f7543af-d5e1-42d0-bc52-c3736d270dce?view=reading",
-  "_recursive_eco_edit_url": "https://flow.recursive.eco/create/dashboard/unified/new?id=3f7543af-d5e1-42d0-bc52-c3736d270dce"
+  "_recursive_eco_url": "https://recursive.eco/g/3f7543af-d5e1-42d0-bc52-c3736d270dce?view=reading",
+  "_recursive_eco_edit_url": "https://recursive.eco/create/dashboard/unified/new?id=3f7543af-d5e1-42d0-bc52-c3736d270dce",
+  "license": "CC-BY-NC-4.0",
+  "rights_note": "Videos, podcasts, their descriptions and thumbnails belong to their owners; linked or embedded here, not relicensed."
 }
