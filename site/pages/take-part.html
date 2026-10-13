@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../theme.css?v=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Take part · Recursive Eco-Improvement</title>
+<meta name="description" content="Six kinds of route from reading into the world: civic, comment periods, standards, research participation, open source, learning and local groups. Each with the time it takes and how its effect on the odds is argued, without numbers. Not today is a legal move.">
+<meta property="og:title" content="Take part · Recursive Eco-Improvement">
+<meta property="og:description" content="Routes into the world, each described from its own pages, with the time it takes and how its effect is argued. No counters, no sign-ups. Listing is not endorsement.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://learning.recursive.eco/pages/take-part.html">
+<link rel="icon" type="image/svg+xml" href="../spiral.svg">
+<!-- TAKE PART (Oct 13 2026, the strategy draft's sixth room). DRAFT for PlayfulProcess's edit.
+     Existing first: each route is an Institutions card (pages/institutions.html's .prod shape) with a
+     "Ways in" list, plus an odds mark and the time it takes. No new kind, no builder: the six cards are
+     written here by hand. Rules the page keeps:
+       - each avenue is described from its own pages; every URL answered 200 to curl on Oct 13 2026
+         (congress.gov, ansi.org and w3.org/community refused the check and were left out);
+       - odds marks: filled triangle = argued to raise good odds, diamond = argued both ways,
+         dashed triangle = a hypothesis here. Each names its voice. No numbers;
+       - no counters, no sign-ups, no email capture, no outreach; "not today" is a legal move;
+       - routes span the spectrum; listing is not endorsement. -->
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);color-scheme:light;
+    font-family:Inter,system-ui,-apple-system,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 26px 80px}
+  .kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:14px 0 4px;
+    display:flex;align-items:center;gap:8px}
+  h1{font-size:26px;margin:.1em 0 .2em}
+  .lede{color:var(--muted);font-size:15px;line-height:1.6;max-width:74ch;margin:.3em 0}
+  .lede strong{color:var(--ink)}
+  .lede a,.note a,.voice a,.ways a{color:var(--accent)}
+
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:18px 0 4px;padding:10px 14px;background:var(--surface);
+    border:1px solid var(--line);border-radius:10px;font-size:13px;color:var(--ink-soft)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .mark{color:var(--accent);display:inline-flex}
+
+  .cats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}
+  .cats a{font-size:12.5px;padding:5px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--line);
+    color:var(--ink-soft);text-decoration:none;max-width:100%}
+  .cats a:hover{border-color:var(--accent);color:var(--accent)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:18px;margin-top:22px}
+  .prod{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;
+    scroll-margin-top:8px}
+  .prod:target{border-color:var(--accent);box-shadow:0 0 0 2px var(--chip)}
+  .prod .body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:9px;flex:1}
+  .prod h2{font-size:18px;margin:0;line-height:1.3}
+  .prod .meta{font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:5px 8px}
+  .badge{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--grammar-accent-dark)}
+  .prod .line{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+  .voice{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:0;padding:8px 10px;background:var(--paper);
+    border:1px solid var(--line);border-radius:8px}
+  .voice .mark{vertical-align:-2px;margin-right:4px}
+  .voice b{color:var(--ink)}
+  .ways h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:2px 0 4px;font-weight:700}
+  .ways ul{margin:0;padding-left:1.1em}
+  .ways li{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:.3em 0}
+  .ways li a{font-weight:600}
+  .ways .dom{color:var(--faint);font-size:12px}
+  .nottoday{font-size:12.5px;color:var(--muted);margin:auto 0 0;padding-top:6px;border-top:1px dashed var(--line)}
+  .vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+  .inst{margin-top:34px;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+  .inst h2{font-size:20px;margin:0 0 4px}
+  .inst p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:.3em 0}
+  .inst a{color:var(--accent);font-weight:600}
+  .note{margin-top:24px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    font-size:13px;color:var(--muted);line-height:1.6}
+  .note b{color:var(--ink)}
+  @media(max-width:640px){ .wrap{padding:18px 16px 60px} }
+</style>
+</head>
+<body>
+<script src="../site-header.js?v=1"></script>
+<site-header active="takepart"></site-header>
+
+<main class="wrap" id="main">
+  <p class="kicker"><rt-icon name="door"></rt-icon> Take part · routes, not a call</p>
+  <h1>Take part</h1>
+  <p class="lede">Six kinds of route from reading into the world. Each card describes its ways in from their
+    own pages, says roughly what it takes (an hour, an evening, a season), and marks how its effect on the
+    odds is argued, and by whom. <strong>No numbers</strong>: a route can make a future more or less likely,
+    and nothing here says by how much.</p>
+  <p class="lede">The routes span the spectrum: present harms and catastrophic risk, pausing and careful
+    building. Listing is not endorsement. Nothing on this page counts you, signs you up or asks for an
+    address, and <strong>&ldquo;not today&rdquo; is a legal move</strong>.</p>
+
+  <div class="legend" aria-label="What the odds marks mean">
+    <span><span class="mark"><rt-icon name="odds-up" size="16"></rt-icon></span> argued to raise good odds</span>
+    <span><span class="mark"><rt-icon name="odds-both" size="16"></rt-icon></span> argued both ways</span>
+    <span><span class="mark"><rt-icon name="odds-hyp" size="16"></rt-icon></span> a hypothesis here, not yet argued by a source</span>
+  </div>
+
+  <nav class="cats" aria-label="The six routes">
+    <a href="#civic">Civic</a><a href="#comment-periods">Comment periods</a><a href="#standards">Standards</a>
+    <a href="#research">Research participation</a><a href="#open-source">Open source</a><a href="#learning">Learning and local groups</a>
+  </nav>
+
+  <div class="grid">
+
+    <article class="prod" id="civic">
+      <div class="body">
+        <h2>Civic</h2>
+        <div class="meta"><span>Time it takes: about an hour (a call or a letter)</span></div>
+        <p class="line">Telling the people who represent you what you want them to do about AI, by phone, by
+          letter, or at a public meeting of your city or county.</p>
+        <p class="voice"><span class="mark"><rt-icon name="odds-up" size="15"></rt-icon></span><b>Argued to raise good odds.</b>
+          Jeffrey Ladish (Palisade Research) names calling your representative among the things that work if
+          enough people do it, on <a href="https://www.youtube.com/watch?v=qDzg-xvkeXw&amp;t=7313s" target="_blank" rel="noopener">The Diary of a CEO, at 2:01:53</a><span class="vh"> (opens YouTube in a new tab)</span>.</p>
+        <div class="ways"><h3>Ways in</h3><ul>
+          <li><a href="https://www.usa.gov/elected-officials" target="_blank" rel="noopener">Contact your elected officials</a> <span class="dom">usa.gov</span>:
+            contact details for your members of Congress, the president, and state and local officials.</li>
+          <li><a href="https://callcongress.ai/" target="_blank" rel="noopener">callcongress.ai</a> <span class="dom">callcongress.ai</span>:
+            asks representatives for action on the extreme risks from superintelligent AI; it walks you through the call.</li>
+          <li>Public comment at a city council or county board meeting: most publish an agenda with a time for it.</li>
+        </ul></div>
+        <p class="nottoday">Not today is fine. The links will still be here.</p>
+      </div>
+    </article>
+
+    <article class="prod" id="comment-periods">
+      <div class="body">
+        <h2>Comment periods</h2>
+        <div class="meta"><span>Time it takes: an evening (read a notice, write a comment)</span></div>
+        <p class="line">Governments publish proposed rules and requests for information and take written
+          comments for a set time, AI rules among them.</p>
+        <p class="voice"><span class="mark"><rt-icon name="odds-hyp" size="15"></rt-icon></span><b>A hypothesis here.</b>
+          That a reasoned comment on an AI rule goes into the record and can nudge what the rule says. No source
+          on this site argues it yet; the portals below describe how comments are taken.</p>
+        <div class="ways"><h3>Ways in</h3><ul>
+          <li><a href="https://www.federalregister.gov/documents/search?conditions%5Bterm%5D=artificial+intelligence" target="_blank" rel="noopener">The Federal Register, searched for AI</a> <span class="dom">federalregister.gov</span>:
+            the daily publication of rules, proposed rules and notices of US federal agencies.</li>
+          <li><a href="https://www.regulations.gov/" target="_blank" rel="noopener">Regulations.gov</a> <span class="dom">regulations.gov</span>:
+            where US agencies take comments on open dockets.</li>
+          <li><a href="https://have-your-say.ec.europa.eu/index_en" target="_blank" rel="noopener">Have your say</a> <span class="dom">ec.europa.eu</span>:
+            the European Commission&rsquo;s space to give views on policy in the making.</li>
+          <li><a href="https://www.gov.uk/search/policy-papers-and-consultations" target="_blank" rel="noopener">Policy papers and consultations</a> <span class="dom">gov.uk</span>:
+            the UK government&rsquo;s open consultations.</li>
+        </ul></div>
+        <p class="nottoday">Not today is fine. Comment periods come round again.</p>
+      </div>
+    </article>
+
+    <article class="prod" id="standards">
+      <div class="body">
+        <h2>Standards</h2>
+        <div class="meta"><span>Time it takes: a season (working groups meet over months)</span></div>
+        <p class="line">The documents that say what &ldquo;tested&rdquo;, &ldquo;managed&rdquo; or &ldquo;safe enough&rdquo;
+          means are drafted in committees, and several take comments from the public.</p>
+        <p class="voice"><span class="mark"><rt-icon name="odds-hyp" size="15"></rt-icon></span><b>A hypothesis here.</b>
+          That standards shape what labs and buyers check before release. NIST describes its AI Risk Management
+          Framework as made in an open process, with several drafts put out for public comment.</p>
+        <div class="ways"><h3>Ways in</h3><ul>
+          <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">AI Risk Management Framework</a> <span class="dom">nist.gov</span>:
+            NIST&rsquo;s framework and its drafts; new drafts are announced there for comment.</li>
+          <li><a href="https://standards.ieee.org/" target="_blank" rel="noopener">IEEE Standards Association</a> <span class="dom">standards.ieee.org</span>:
+            a consensus-building body whose working groups are open to individuals.</li>
+          <li><a href="https://www.iso.org/committee/6794475.html" target="_blank" rel="noopener">ISO/IEC JTC 1/SC 42</a> <span class="dom">iso.org</span>:
+            the international committee for AI standards; people take part through their country&rsquo;s national standards body.</li>
+        </ul></div>
+        <p class="nottoday">Not today is fine. A season is a lot to give.</p>
+      </div>
+    </article>
+
+    <article class="prod" id="research">
+      <div class="body">
+        <h2>Research participation</h2>
+        <div class="meta"><span>Time it takes: an hour to a season</span></div>
+        <p class="line">Lending your eyes to research: reporting what goes wrong with AI, testing models for
+          bias, taking part in public dialogues, and, since the eco is the home too, recording the living world.</p>
+        <p class="voice"><span class="mark"><rt-icon name="odds-up" size="15"></rt-icon></span><b>Argued to raise good odds.</b>
+          The <a href="https://incidentdatabase.ai/" target="_blank" rel="noopener">AI Incident Database</a> collects documented
+          failures so that people can mitigate or avoid repeated bad outcomes, in its own description.</p>
+        <div class="ways"><h3>Ways in</h3><ul>
+          <li><a href="https://incidentdatabase.ai/apps/submit/" target="_blank" rel="noopener">Submit an incident</a> <span class="dom">incidentdatabase.ai</span>:
+            report a real-world AI failure; it asks for reports even when you are unsure.</li>
+          <li><a href="https://humane-intelligence.org/" target="_blank" rel="noopener">Humane Intelligence</a> <span class="dom">humane-intelligence.org</span>:
+            a nonprofit that designs evaluations of AI systems, including bias bounties run as open data-science challenges.</li>
+          <li><a href="https://globaldialogues.ai/" target="_blank" rel="noopener">Global Dialogues</a> <span class="dom">globaldialogues.ai</span>:
+            the Collective Intelligence Project&rsquo;s rounds of views from many countries on how AI affects people&rsquo;s lives; you can submit a question or read the results.</li>
+          <li><a href="https://www.inaturalist.org/" target="_blank" rel="noopener">iNaturalist</a> <span class="dom">inaturalist.org</span> and
+            <a href="https://www.zooniverse.org/" target="_blank" rel="noopener">Zooniverse</a> <span class="dom">zooniverse.org</span>:
+            citizen science, recording plants and animals or helping with people-powered research.</li>
+        </ul></div>
+        <p class="nottoday">Not today is fine. Noticing counts as a start.</p>
+      </div>
+    </article>
+
+    <article class="prod" id="open-source">
+      <div class="body">
+        <h2>Open source</h2>
+        <div class="meta"><span>Time it takes: an evening to a season</span></div>
+        <p class="line">Contributing to the open tools people use to test and look inside models. Code is one
+          way; documentation, translations and careful bug reports count too.</p>
+        <p class="voice"><span class="mark"><rt-icon name="odds-both" size="15"></rt-icon></span><b>Argued both ways.</b>
+          Openness helps more people check the systems, and it also hands the tools to anyone.
+          <a href="../viewers/cards.html?src=../grammars/the-freedom-paradox/grammar.json">The Freedom Paradox</a>, a grammar on this site,
+          holds both sides.</p>
+        <div class="ways"><h3>Ways in</h3><ul>
+          <li><a href="https://inspect.aisi.org.uk/" target="_blank" rel="noopener">Inspect</a> <span class="dom">inspect.aisi.org.uk</span>:
+            the UK AI Security Institute&rsquo;s open-source framework for evaluating language models.</li>
+          <li><a href="https://github.com/TransformerLensOrg/TransformerLens" target="_blank" rel="noopener">TransformerLens</a> <span class="dom">github.com</span>:
+            a library for looking inside language models.</li>
+          <li><a href="https://www.neuronpedia.org/" target="_blank" rel="noopener">Neuronpedia</a> <span class="dom">neuronpedia.org</span>:
+            an open-source interpretability platform.</li>
+          <li><a href="https://github.com/EleutherAI/lm-evaluation-harness" target="_blank" rel="noopener">LM Evaluation Harness</a> <span class="dom">github.com</span>:
+            EleutherAI&rsquo;s framework for testing language models on many tasks.</li>
+          <li><a href="https://github.com/PlayfulProcess/recursive-learning/issues" target="_blank" rel="noopener">This site&rsquo;s own issues</a> <span class="dom">github.com</span>:
+            a correction to a word, a source or a card is a contribution.</li>
+        </ul></div>
+        <p class="nottoday">Not today is fine. Reading the code is already a way in.</p>
+      </div>
+    </article>
+
+    <article class="prod" id="learning">
+      <div class="body">
+        <h2>Learning and local groups</h2>
+        <div class="meta"><span>Time it takes: a season (a course, or a group that meets)</span></div>
+        <p class="line">Learning with other people, in a course or a group near you, from AI safety to the
+          older question of who holds the ground: co-operatives and community land trusts.</p>
+        <p class="voice"><span class="mark"><rt-icon name="odds-up" size="15"></rt-icon></span><b>Argued to raise good odds.</b>
+          Ladish offers the nuclear freeze movement as a precedent for a public movement on AI, on
+          <a href="https://www.youtube.com/watch?v=qDzg-xvkeXw&amp;t=6323s" target="_blank" rel="noopener">The Diary of a CEO, at 1:45:23</a><span class="vh"> (opens YouTube in a new tab)</span>.</p>
+        <div class="ways"><h3>Ways in</h3><ul>
+          <li><a href="https://bluedot.org/" target="_blank" rel="noopener">BlueDot Impact</a> <span class="dom">bluedot.org</span>:
+            free online courses on AI and its trajectory.</li>
+          <li><a href="https://www.arena.education/" target="_blank" rel="noopener">ARENA</a> <span class="dom">arena.education</span>:
+            training in the skills for technical AI safety work.</li>
+          <li><a href="https://www.aisafety.com/communities" target="_blank" rel="noopener">AI safety communities</a> <span class="dom">aisafety.com</span>:
+            groups that meet online and in person.</li>
+          <li><a href="https://pauseai.info/communities" target="_blank" rel="noopener">PauseAI communities</a> <span class="dom">pauseai.info</span>:
+            a map of PauseAI groups, people and events.</li>
+          <li><a href="https://www.ica.coop/en" target="_blank" rel="noopener">International Cooperative Alliance</a> <span class="dom">ica.coop</span> and
+            <a href="https://groundedsolutions.org/" target="_blank" rel="noopener">Grounded Solutions Network</a> <span class="dom">groundedsolutions.org</span>
+            (community land trusts): <a href="../game/landlords-game/index.html">the Landlord&rsquo;s Game</a>&rsquo;s own question, who holds the ground.</li>
+          <li>School and parent groups: the people already around you.</li>
+        </ul></div>
+        <p class="nottoday">Not today is fine. Reading this was learning too.</p>
+      </div>
+    </article>
+
+  </div>
+
+  <section class="inst" aria-labelledby="inst-h">
+    <h2 id="inst-h">Who works on this</h2>
+    <p>Thirty organisations working on alignment, AI safety and humane technology, each described from its
+      own site and linked to it, not ranked: <a href="institutions.html">the Institutions</a>.</p>
+  </section>
+
+  <div class="note">
+    <b>How this page is made.</b> A draft, open to correction. Each way in is described from its own pages;
+    every link answered on 13 October 2026, and a few sites that refused an automated check were left out
+    for now. An odds mark names who argues it; a dashed mark is this site&rsquo;s hypothesis, waiting for a
+    source. To add a route or question a mark, open
+    <a href="https://github.com/PlayfulProcess/recursive-learning/issues/new?title=Take%20part%3A%20" target="_blank" rel="noopener">an issue</a><span class="vh"> (opens GitHub in a new tab)</span>.
+    See <a href="about.html#method">About &amp; method</a>.
+  </div>
+</main>
+
+<script src="../site-footer.js?v=1"></script>
+<site-footer></site-footer>
+</body>
+</html>

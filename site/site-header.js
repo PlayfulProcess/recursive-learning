@@ -5,7 +5,8 @@
  *
  * Usage:  <script src="/site-header.js"></script>
  *         <site-header active="words"></site-header>
- * `active` is one of: home, words, sources, ideas, play, institutions. On a viewer page
+ * `active` is one of: home, method, words, sources, ideas, play, futures, takepart, institutions
+ * (each lights one of the six rooms: see ROOMS below). On a viewer page
  * (/viewers/...) the tab is always derived from the grammar in ?src=, so the viewers keep
  * their tarot `active` values unedited. Hand-written pages that load ../shared/nav.js get
  * this header through that shim (see the top of shared/nav.js).
@@ -52,9 +53,17 @@
   const IDEAS = '../grammars/ideas-of-alignment/grammar.json';
   const INSTITUTIONS = '../grammars/institutions-of-alignment/grammar.json';
   // [href, label, external?] — each pill links to its hub; the dropdown lists the rest.
-  const HOME_MENU = [
-    [PFX,                         'Home'],
-    [PFX + 'pages/about.html',    'About &amp; method'],
+  // THE SIX ROOMS (Oct 13 2026, the strategy draft's cross-section): Method, Words, Record, Play,
+  // Futures, Take part, entered in any order. Every page keeps its address; a room is a menu.
+  // The rooms map onto the groups in grammars/repository.json (the app's groups are unchanged):
+  //   Method <- Courses, Studies · Words <- Words, Ideas · Record <- Record · Play <- Games
+  //   Futures <- Films, Other (the Ekho map, once she approves it) · Take part <- Record's institutions
+  const METHOD_MENU = [
+    [PFX + '#loop',                       'The loop, at four sizes'],
+    [PFX + 'pages/about.html',            'About &amp; method'],
+    [PFX + 'pages/about.html#loop-here',  'How this place learns'],
+    [PFX + 'viewers/cards.html?src=../grammars/recursive-courses/grammar.json', 'Courses'],
+    [PFX + 'viewers/cards.html?src=../grammars/recursive-studies/grammar.json', 'Studies'],
   ];
   const WORDS_MENU = [
     [PFX + 'glossary/',                                                     'The glossary'],
@@ -64,20 +73,18 @@
     [PFX + 'viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=what-held',           'Cast: What held'],
     [PFX + 'viewers/caster-studio.html?src=../grammars/words-deck/grammar.json&spread=single',              'A single draw'],
     [PFX + 'viewers/explorer.html?src=' + WORDS,                            'Explore the words'],
+    // Ideas, a draft lens on the words (kept apart from the record)
+    [PFX + 'viewers/tree-viewer.html?src=' + IDEAS,                         'Ideas, a draft: by lane'],
+    [PFX + 'viewers/cards.html?src=' + IDEAS,                               'Ideas, a draft: as cards'],
+    [PFX + 'viewers/explorer.html?src=' + IDEAS,                            'Ideas, a draft: explore'],
+    [PFX + 'viewers/caster-studio.html?src=../grammars/ideas-of-alignment/grammar.json&spread=single', 'Ideas, a draft: draw one'],
   ];
   const SOURCES_MENU = [
     [PFX + 'map/',                                                          'All sources'],
     [PFX + 'viewers/cards.html?src=' + SOURCES + '&item=suit-podcasts#groupby=suit', 'Podcasts'],
     [PFX + 'viewers/cards.html?src=' + SOURCES + '&item=suit-papers#groupby=suit',   'Papers &amp; books'],
     [PFX + 'viewers/cards.html?src=' + SOURCES + '&item=suit-people#groupby=suit',   'People'],
-    [PFX + 'pages/institutions.html',                                       'Institutions'],
     [PFX + 'viewers/tree-viewer.html?src=' + SOURCES,                       'Tree of sources'],
-  ];
-  const IDEAS_MENU = [
-    [PFX + 'viewers/cards.html?src=' + IDEAS,                               'Ideas as cards'],
-    [PFX + 'viewers/tree-viewer.html?src=' + IDEAS,                         'Ideas by lane'],
-    [PFX + 'viewers/explorer.html?src=' + IDEAS,                            'Explore the ideas'],
-    [PFX + 'viewers/caster-studio.html?src=../grammars/ideas-of-alignment/grammar.json&spread=single', 'Draw one idea'],
   ];
   const PLAY_MENU = [
     [PFX + 'game/as-if.html',          'As-If'],
@@ -89,14 +96,41 @@
     [PFX + 'game/landlords-game/index.html', 'The Landlord’s Game'],
     [PFX + 'pages/play.html',          'All games →'],
   ];
-  // [key, label, href, cssClass, external?] — tarot's TOOLS slot. Institutions sits where tarot
-  // has Shop: pages/institutions.html (tarot's shop.html layout), where each card links out to an
-  // institution's own site. It reads the INSTITUTIONS grammar; the cards view is linked from it.
+  const FUTURES_MENU = [
+    [PFX + '#futures',                                  'Futures as states, not paths'],
+    [PFX + 'explainers/rational-to-continue/',          'Rational to Continue'],
+    [PFX + 'explainers/concern-spectrum/',              'The spectrum of concern'],
+    [PFX + 'explainers/greenblatt-scenario/',           'A takeover scenario'],
+    [PFX + 'explainers/belief-tree/',                   'The belief tree'],
+    [PFX + 'explainers/curves-and-odds/',               'Curves and odds'],
+    [PFX + 'explainers/risk-and-uncertainty/',          'Risk or uncertainty?'],
+    [PFX + 'explainers/model-affect/',                  'Does the model feel anything?'],
+  ];
+  const TAKE_PART_MENU = [
+    [PFX + 'pages/take-part.html',                      'Six routes'],
+    [PFX + 'pages/take-part.html#civic',                'Civic'],
+    [PFX + 'pages/take-part.html#comment-periods',      'Comment periods'],
+    [PFX + 'pages/take-part.html#standards',            'Standards'],
+    [PFX + 'pages/take-part.html#research',             'Research participation'],
+    [PFX + 'pages/take-part.html#open-source',          'Open source'],
+    [PFX + 'pages/take-part.html#learning',             'Learning and local groups'],
+    [PFX + 'pages/institutions.html',                   'Institutions'],
+  ];
+  // [href, label, the `active` keys that light this tab, its menu]
+  const ROOMS = [
+    [PFX + 'pages/about.html',            'Method',    ['home', 'method'],        METHOD_MENU],
+    [PFX + 'glossary/',                   'Words',     ['words', 'ideas'],        WORDS_MENU],
+    [PFX + 'map/',                        'Record',    ['sources'],               SOURCES_MENU],
+    [PFX + 'pages/play.html',             'Play',      ['play'],                  PLAY_MENU],
+    [PFX + '#futures',                    'Futures',   ['futures'],               FUTURES_MENU],
+    [PFX + 'pages/take-part.html',        'Take part', ['takepart', 'institutions'], TAKE_PART_MENU],
+  ];
+  // [key, label, href, cssClass, external?] — tarot's TOOLS slot. Institutions moved into the
+  // Take part room (Oct 13 2026); the page keeps its address, pages/institutions.html.
   const TOOLS = [
-    ['institutions', 'Institutions', PFX + 'pages/institutions.html', 't-shop'],
     ['github', 'GitHub ↗',  'https://github.com/PlayfulProcess/recursive-learning', 't-github', true],
   ];
-  const KEYS = ['home', 'words', 'sources', 'ideas', 'play', 'institutions'];
+  const KEYS = ['home', 'method', 'words', 'sources', 'ideas', 'play', 'futures', 'takepart', 'institutions'];
 
   function autoActive() {
     const p = location.pathname, q = decodeURIComponent(location.search);
@@ -238,36 +272,12 @@
           </span>
           <span class="spacer"></span>
           <nav aria-label="Site sections">
-            <span class="dd">
-              <a class="tab dd-btn${active === 'home' ? ' active' : ''}" href="${PFX}" aria-haspopup="true" aria-expanded="false" aria-label="Home menu">Home</a>
+            ${ROOMS.map(([href, label, keys, menu]) => `<span class="dd">
+              <a class="tab dd-btn${keys.includes(active) ? ' active' : ''}" href="${href}" aria-haspopup="true" aria-expanded="false" aria-label="${label} menu">${label}</a>
               <span class="dd-menu">
-                ${HOME_MENU.map(([href, label]) => `<a href="${href}">${label}</a>`).join('')}
+                ${menu.map(([h, l]) => `<a href="${h}">${l}</a>`).join('')}
               </span>
-            </span>
-            <span class="dd">
-              <a class="tab dd-btn${active === 'words' ? ' active' : ''}" href="${PFX}glossary/" aria-haspopup="true" aria-expanded="false" aria-label="Words menu">Words</a>
-              <span class="dd-menu">
-                ${WORDS_MENU.map(([href, label]) => `<a href="${href}">${label}</a>`).join('')}
-              </span>
-            </span>
-            <span class="dd">
-              <a class="tab dd-btn${active === 'sources' ? ' active' : ''}" href="${PFX}map/" aria-haspopup="true" aria-expanded="false" aria-label="Sources menu">Sources</a>
-              <span class="dd-menu">
-                ${SOURCES_MENU.map(([href, label]) => `<a href="${href}">${label}</a>`).join('')}
-              </span>
-            </span>
-            <span class="dd">
-              <a class="tab dd-btn${active === 'ideas' ? ' active' : ''}" href="${PFX}viewers/tree-viewer.html?src=${IDEAS}" aria-haspopup="true" aria-expanded="false" aria-label="Ideas menu">Ideas</a>
-              <span class="dd-menu">
-                ${IDEAS_MENU.map(([href, label]) => `<a href="${href}">${label}</a>`).join('')}
-              </span>
-            </span>
-            <span class="dd">
-              <a class="tab t-caster dd-btn${active === 'play' ? ' active' : ''}" href="${PFX}pages/play.html" aria-haspopup="true" aria-expanded="false" aria-label="Games menu">Games</a>
-              <span class="dd-menu">
-                ${PLAY_MENU.map(([href, label, ext]) => `<a href="${href}"${ext ? ' target="_blank" rel="noopener"' : ''}>${label}</a>`).join('')}
-              </span>
-            </span>
+            </span>`).join('')}
             ${TOOLS.map(tab).join('')}
             <recursive-auth></recursive-auth>
           </nav>

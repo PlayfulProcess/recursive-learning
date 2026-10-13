@@ -62,3 +62,8 @@
 /grammars/vibe-coding-102-audiobook-with-claude-code/grammar.json
 /grammars/vibe-coding-with-claude-journaling-tools/grammar.json
 /shared/nav.js
+/#loop
+/#rooms
+/#futures
+/pages/take-part.html
+/pages/about.html#loop-here
