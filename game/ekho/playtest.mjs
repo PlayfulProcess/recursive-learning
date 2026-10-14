@@ -90,13 +90,14 @@ function batch(o0, habits, games, seed0 = 1) {
 function summary(rs) {
   const drawnGood = rs.filter((r) => r.kind === 'good').length / rs.length;
   const drawnBad = rs.filter((r) => r.kind === 'bad').length / rs.length;
-  const still = rs.filter((r) => /Still walking|forty|ran out/.test(r.why)).length / rs.length;
+  const still = rs.filter((r) => r.hollow === 'still').length / rs.length;   // every Still walking ending: drawn at the Crossing, or the game outlasted the deck or forty rounds
   return { good: mean(rs.map((r) => r.good)), bad: mean(rs.map((r) => r.bad)), drawnGood, drawnBad, still,
     rounds: mean(rs.map((r) => r.rounds)), holds: mean(rs.map((r) => r.stats.holds)), pledges: mean(rs.map((r) => r.stats.pledges)), spilled: mean(rs.map((r) => r.stats.spilled)),
-    pass: mean(rs.map((r) => r.stats.passed / Math.max(1, r.stats.councils))) };
+    pass: mean(rs.map((r) => r.stats.passed / Math.max(1, r.stats.councils))),
+    failSome: rs.filter((r) => r.stats.passed < r.stats.councils).length / rs.length };
 }
 const line = (label, s) => `${label.padEnd(26)} good odds ${pct(s.good).padStart(6)}  bad odds ${pct(s.bad).padStart(6)}  ` +
-  `drawn good ${pct(s.drawnGood).padStart(6)}  rounds ${s.rounds.toFixed(1).padStart(4)}  holds ${s.holds.toFixed(2)}  spilled ${s.spilled.toFixed(1)}  council passes ${pct(s.pass)}  still ${pct(s.still)}`;
+  `drawn good ${pct(s.drawnGood).padStart(6)}  rounds ${s.rounds.toFixed(1).padStart(4)}  holds ${s.holds.toFixed(2)}  spilled ${s.spilled.toFixed(1)}  council passes ${pct(s.pass)} (a game with a failed one ${pct(s.failSome)})  still ${pct(s.still)}`;
 const habitsFlag = () => (flags.habits ? String(flags.habits).split(',') : Array(num('players', 3)).fill('greedy'));
 
 if (cmd === 'new') {

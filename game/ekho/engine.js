@@ -1,4 +1,4 @@
-// Recursive Ekho, the board game: the rules as code (a toy model, sketch 1, rules v3).
+// Recursive Ekho, the board game: the rules as code (a toy model, sketch 1, rules v4).
 // Odds, not paths: beads sit in seven hollows; at the Crossing one bead is drawn from a bag.
 // Moves raise or lower a chance; nothing here forecasts anything about the world.
 // Plain script: defines window.EKHO, or module.exports under Node. Deterministic from a seed.
@@ -11,10 +11,10 @@ var HOLLOWS = ['grace', 'turn', 'stop', 'adolescence', 'lockin', 'doom', 'still'
 var HOLLOW_NAME = { grace: 'Grace', turn: 'The turn', stop: 'The Stop', adolescence: 'Adolescence',
   lockin: 'Lock-in', doom: 'Doom', still: 'Still walking' };
 var GOOD = ['grace', 'turn', 'stop'], BAD = ['lockin', 'doom'];
-var START_BEADS = { grace: 1, turn: 1, stop: 0, adolescence: 4, lockin: 3, doom: 3, still: 2 };
+var START_BEADS = { grace: 1, turn: 1, stop: 0, adolescence: 4, lockin: 3, doom: 3, still: 6 };   // v4: Still walking 2 -> 6, so Goodwill and the red team do not empty it every game
 
 var C = {                    // every number the playtests tune, in one place
-  VERSION: 3,
+  VERSION: 4,
   CROSSING: 10,
   TIDE_START: { gentle: 0, fair: 2, harsh: 4, dire: 5 },
   MARKS: [3, 6, 8],          // ◇: a veil lifts and the clock speeds up
@@ -22,7 +22,9 @@ var C = {                    // every number the playtests tune, in one place
   CONDITIONS_PER_ROUND: [1, 2, 2, 3],
   POUR: [1, 2, 4, 6],        // beads of new capability poured into Adolescence each round, by clock
   ADOLESCENCE_CAP: 5,        // above it, Adolescence spills, alternately into Lock-in and Doom
-  HAND: 4, MOVES_EACH: 2, COUNCIL_SHARE: 0.6, MAX_ROUNDS: 40,
+  HAND: 4, MOVES_EACH: 2, MAX_ROUNDS: 40,
+  COUNCIL_SHARE: 1.2,        // v4 (was 0.6): the Council needs one more Together than the table has seats (1-4 players),
+                             // so it passes only when Advocate, Public mood or a Warning shot made up the difference
   RELATIONALITY_MARK: 3,
 };
 
@@ -224,9 +226,14 @@ function conditions(g, choose, active) {
   }
 }
 
+// The Together a Council needs: a share of the table, less the Together banked and this round's warnings.
+function councilNeed(g) { return Math.max(1, Math.ceil(C.COUNCIL_SHARE * g.players.length) + g.bar - g.together); }
+// How many of those the table's own votes cannot cover: they come from Advocate, Public mood or a Warning shot.
+function councilShort(g) { return Math.max(0, Math.ceil(C.COUNCIL_SHARE * g.players.length) - g.players.length); }
+
 function council(g, choose) {
   var n = g.players.length;
-  var need = Math.max(1, Math.ceil(C.COUNCIL_SHARE * n) + g.bar - g.together);
+  var need = councilNeed(g);
   var t = 0; g.votes = [];
   g.players.forEach(function (p) {
     var v = ask(g, choose, { player: p.id, kind: 'council', need: need, options: [
@@ -338,6 +345,7 @@ function value(g) {   // the table's sense of how things stand: the odds now, pl
   if (!g.lifted[0]) v += 0.02 * Math.min(g.align, g.tide + 1);
   if (!g.lifted[2]) v += 0.02 * Math.min(g.rel, C.RELATIONALITY_MARK);
   if (g.commons < 2) v += 0.01 * g.commons;
+  v += 0.02 * Math.min(g.together, councilShort(g));   // Together the next Council will need beyond the table's own votes
   return v;
 }
 function light(g) {   // the part of the table effect() touches
@@ -355,7 +363,9 @@ function bot(habit) {
       if (habit === 'commons' || habit.indexOf('only:') === 0) return 'together';
       var sofar = g.votes.filter(function (v) { return v === 'together'; }).length, left = g.players.length - g.votes.length;
       if (habit === 'rival') return sofar >= d.need ? 'build' : 'together';   // free-ride when the vote is already won
-      return sofar + left >= d.need ? 'together' : 'build';                 // greedy: Together while it can still pass
+      if (sofar + left >= d.need) return 'together';                        // greedy: Together while it can still pass
+      var builds = g.votes.length - sofar;                                  // a lost vote: Build draws a card, unless
+      return builds + 1 > g.players.length - builds - 1 ? 'together' : 'build';   // it makes Build the majority (tide +2)
     }
     if (d.kind === 'respond') {
       if (has('discard')) return habit === 'racer' || habit === 'rival' ? 'keep' : 'discard';
@@ -389,6 +399,7 @@ function simulate(o, habits) { return run(newGame(o), tableChooser(habits || ['g
 
 var api = { consts: C, HOLLOWS: HOLLOWS, HOLLOW_NAME: HOLLOW_NAME, GOOD: GOOD, BAD: BAD, SWITCHES: SWITCHES, MOVES: MOVES,
   CONDITIONS: CONDITIONS, ROLES: ROLES, TILTS: TILTS, START_BEADS: START_BEADS, newGame: newGame, playRound: playRound, run: run,
-  bot: bot, tableChooser: tableChooser, simulate: simulate, value: value, share: share, total: total, stopNeed: stopNeed };
+  bot: bot, tableChooser: tableChooser, simulate: simulate, value: value, share: share, total: total, stopNeed: stopNeed,
+  councilNeed: councilNeed, councilShort: councilShort };
 if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.EKHO = api;
 })(this);
