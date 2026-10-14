@@ -9,8 +9,11 @@ made-up numbers, about how the game plays and nothing about the world. No real p
 | File | What |
 |---|---|
 | `index.html` | the page (the rules and the line icons are inlined) |
-| `engine.js` | the rules as code, deterministic from a seed (rules version 3) |
+| `engine.js` | the rules as code, deterministic from a seed (rules version 4) |
 | `playtest.mjs` | bot games, balance grids and hand play from the command line: `node playtest.mjs sim --games 1000` |
+| `../../tests/ekho-engine.test.mjs` | `node --test tests/*.test.mjs`: determinism, a Council that passes and fails, every ending reachable, balance in a band; also that `index.html` inlines `engine.js` byte for byte |
+
+`index.html` carries a copy of `engine.js` inline; after changing the engine, copy it in again (the test fails until you do). `index.html?seed=N` deals the first game from seed N.
 
 These were made in recursive.eco's workshop and copied here; the page's head, colours (the hollow
 hues are `--ek-*` in `site/theme.css`), header and footer were changed to fit this site.
