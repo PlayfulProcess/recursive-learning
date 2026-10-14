@@ -33,8 +33,10 @@ is public too.
 8. **Run `python scripts/check_all.py` before every push**; after touching data or a builder, run
    it with `--check`. Before the first push of anything under `research/`, run
    `python scripts/check_all.py --only privacy`: pushing a branch publishes it.
-9. **Never merge.** Prepare the PR and wait; PlayfulProcess merges. Decisions go to the queue in
-   `GitHub/PRIORITIES.md`.
+9. **Merge once checks pass** (her rule, Oct 13 2026: "Realistically I will not review PRs").
+   Open a PR, wait for its checks, then merge with a normal merge commit so she can test live.
+   Never merge a diff that would publish copyrighted text or private material (this repo is
+   public). Decisions go to the queue in `GitHub/PRIORITIES.md`.
 10. Write scripts and commit messages with the Write tool (heredocs break on apostrophes). LF only
     (`.gitattributes`; the app compares grammar bytes).
 
