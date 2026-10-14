@@ -25,6 +25,8 @@ The script refuses anything still private — it reads with the anonymous key, w
 | ML 101 — how the machines are made (after AI 101) | `b6742232-57a0-4e3b-aec7-afd403e6fa45` | 25 | Course, unfinished. |
 | AI 101 — Build a Very Smart Chat | `98ff0d88-7b99-4765-91db-e4c84ecaf025` | 6 | Course, unfinished. |
 | Readings: How can we approach studying ai for education? | `c8f69a3a-322e-47fb-9814-a342f57d6005` | 4 | A saved reading, not a published work. |
+| What is the Earth School? — playlist draft 1 | `163482d8-a8fc-4091-8725-7c677014d467` | 63 | AI and mysticism: a watch-list draft on the planetary transition, cut from public footage. Draft. |
+| Two Disclosure Days — draft 1 | `cc534340-9583-4987-a773-cb59acd861ec` | 74 | AI and mysticism: the clips the Earth School playlist reuses. Draft. |
 
 Two duplicate private copies of *Vibe Coding 101 — Tools & Process* (`e7b54a6f-…`,
 `d0119f59-…`) are deliberately left out of this table: the public original is already exported.
