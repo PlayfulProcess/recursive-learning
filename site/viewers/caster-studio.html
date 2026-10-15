@@ -396,6 +396,7 @@
     <button type="button" id="addPos" class="ghost">+ Add position</button>
     <button type="button" id="saveAsNew" class="ghost" style="display:none">Save as new</button>
     <button type="button" id="updateSpread" style="display:none" title="Changes apply only in this browser tab — this is a static site with no save API. Export the spread (or Contribute it on GitHub) to keep it.">Update spread</button>
+    <button type="button" id="saveToEco" class="ghost" style="display:none" title="Save this spread to recursive.eco as one of your castings (Private). Opens recursive.eco in a new tab; a casting with the same name is updated.">Save to recursive.eco ↗</button>
     <button type="button" class="iconbtn" id="helpToggle" title="Show tips" aria-label="Show tips" aria-expanded="false" aria-controls="helperPanel">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
     </button>
@@ -602,6 +603,7 @@ const $ = id => document.getElementById(id);
   $('importFile').addEventListener('change', onImport);
   $('updateSpread').addEventListener('click', updateSpreadGeometry);
   $('saveAsNew').addEventListener('click', saveAsNewSpread);
+  $('saveToEco').addEventListener('click', saveSpreadToEco);
   // The spread NAME is a first-class, always-visible field: typing in it renames the working spread
   // everywhere it is written (contract, export filename, cast JSON, the dropdown's Custom entry).
   $('spreadName').addEventListener('input', e => { spreadName = e.target.value; labelCustomOption(); syncJson(); });
@@ -917,9 +919,10 @@ function isBuiltinPreset(){ return curSpreadId !== 'custom' && !!spreadsById[cur
 // built-in presets and hid for the user's own custom spreads — the exact opposite of what's useful.)
 function updateSaveAffordances(){
   const has = positions.length > 0;
-  const us = $('updateSpread'), sn = $('saveAsNew');
+  const us = $('updateSpread'), sn = $('saveAsNew'), se = $('saveToEco');
   if (us) us.style.display = (has && !isBuiltinPreset()) ? 'inline-flex' : 'none';
   if (sn) sn.style.display = has ? 'inline-flex' : 'none';
+  if (se) se.style.display = has ? 'inline-flex' : 'none';
 }
 
 function renderBoard(){
@@ -1273,6 +1276,9 @@ function slugify(s){ return (s||'spread').toLowerCase().replace(/[^a-z0-9]+/g,'-
 // sendToEco() helpers. It never reliably landed the spread in My Spreads, and the icon language now
 // follows the Create editor, which retired the paper plane. Spreads still travel both ways: the
 // assistant hands them in (?spread= / the eco-spread postMessage) and Export writes the contract.)
+// (Oct 15 2026 — back as a plain "Save to recursive.eco" button, saveSpreadToEco() below: the same
+// ?importSpread= hand-over, which recursive.eco now saves as a casting grammar through its one grammar
+// save instead of the profile list that lost it.)
 
 // Persist a drag-rearranged layout. Export / Send / Save-reading already read the LIVE positions
 // (so they always carry the current x/y) — these two just make "keep my arrangement" explicit.
@@ -1297,6 +1303,19 @@ function updateSpreadGeometry(){
   // server-side. Only the in-memory working spread (and this tab's session) changes.
   flash($('updateSpread'), 'Updated in this tab (export to keep)');
 }
+// Save to recursive.eco — the spread becomes one of her CASTINGS there: a casting grammar, Private,
+// written through recursive.eco's one grammar save (Oct 15 2026; it no longer goes through
+// /api/spreads or the profile's old "My Spreads" list). This static site has no session token, so
+// it hands the contract over in the address, recursive.eco's `?importSpread=` link, in a new tab:
+// recursive.eco saves it (a casting with the same name is updated in place, never duplicated) and
+// opens it in its Tarot tab. Same strict writer as Export: the contract, plus its description.
+function saveSpreadToEco(){
+  if(!positions.length){ alert('Add at least one position first.'); return; }
+  const url = FLOW + '/?importSpread=' + b64urlEncode(JSON.stringify(buildSpreadObj()));
+  window.open(url, '_blank', 'noopener');
+  flash($('saveToEco'), 'Opened recursive.eco: it saves this as one of your castings');
+}
+
 // Save as new — turn the current arrangement into a fresh named custom spread. The name goes into
 // the visible #spreadName field, so Export / Cast / Contribute all pick it up from there.
 function saveAsNewSpread(){
@@ -1377,29 +1396,21 @@ async function onImport(e){ const f=e.target.files&&e.target.files[0]; if(!f) re
   } catch(err){ alert('Could not import this file — expected a spread or reading exported here.\n\n'+err.message); }
   e.target.value=''; }
 
-// ── My spreads — pull the signed-in user's saved spreads from recursive.eco ──
-// The flow app exposes an authed, CORS-enabled read endpoint (credentials cookie identifies the
-// user). Primary: GET /api/spreads. Fallback on 404 (or if the primary isn't reachable): GET
-// /api/preferences, whose JSON carries the same spreads[] (as { preferences: { spreads:[…] } }).
-// Signed-out / 401 / error / timeout → we add NOTHING: the dropdown stays exactly as it is today.
+// ── My spreads — the signed-in user's castings on recursive.eco ──
+// Her spreads ARE casting grammars there (one casting store, Oct 15 2026). recursive.eco's
+// GET /api/preferences (credentialed CORS for the *.recursive.eco family, read-only) lists them as
+// { preferences: { spreads:[…] } }, each the spread contract plus its grammar's id. /api/spreads is
+// not used any more (recursive.eco retires it once this page stops calling it).
+// Signed-out (an empty list) / error / timeout → we add NOTHING: the dropdown stays as it is.
 async function fetchMySpreadsJson(){
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), 6000);
   const opts = { credentials:'include', signal:ctl.signal, headers:{ 'Accept':'application/json' } };
   try {
-    // Primary — the dedicated spreads endpoint.
-    try {
-      const r = await fetch(FLOW + '/api/spreads', opts);
-      if (r.ok) return await r.json();
-      if (r.status !== 404) return null;   // 401 signed-out / 5xx → stay silent, don't leak via prefs
-    } catch(_){ /* not deployed yet / no CORS / offline → try the fallback */ }
-    // Fallback — preferences carries the same spreads[].
-    try {
-      const r2 = await fetch(FLOW + '/api/preferences', opts);
-      if (r2.ok) return await r2.json();
-    } catch(_){}
-    return null;
-  } finally { clearTimeout(timer); }
+    const r = await fetch(FLOW + '/api/preferences', opts);
+    return r.ok ? await r.json() : null;
+  } catch(_){ return null; }
+  finally { clearTimeout(timer); }
 }
 
 // Tolerant extraction — accept an array of contracts, { spreads:[…] }, the preferences envelope
@@ -1463,10 +1474,11 @@ function showModelHint(html){
   $('modelHintText').innerHTML = html;
   $('modelHint').classList.add('on');
 }
-// Only /api/spreads is CORS-enabled for the *.recursive.eco family, so that's our signed-in probe
-// (401 = guest). /api/preferences — which is what actually carries modelQuality — is NOT reachable
-// cross-origin today; we still try it for signed-in users so this hint sharpens by itself if flow
-// ever opens it up, and stay silent rather than guess when it can't be read.
+// GET /api/preferences (credentialed CORS for the *.recursive.eco family) carries modelQuality.
+// It answers a signed-out visitor with the defaults too, so this page cannot tell a guest from a
+// person who never chose a model: it says something only when the saved choice is a light model,
+// and stays silent rather than guess otherwise. (It used to probe /api/spreads for a 401; that
+// route is retired, Oct 15 2026.)
 async function checkAssistantModel(){
   const x = $('modelHintX');
   if (x) x.addEventListener('click', () => { $('modelHint').classList.remove('on');
@@ -1476,16 +1488,6 @@ async function checkAssistantModel(){
     try { return await fetch(FLOW + path, { credentials:'include', signal:ctl.signal, headers:{ 'Accept':'application/json' } }); }
     catch(_){ return null; } finally { clearTimeout(t); }
   };
-  const probe = await get('/api/spreads');
-  if (!probe) return;                                   // offline / blocked → say nothing at all
-  if (probe.status === 401 || probe.status === 403) {
-    // Signed-out chats are forced onto the lightweight model by the flow route.
-    showModelHint('You are not signed in to recursive.eco, so the assistant answers on the '
-      + '<strong>lightweight model</strong>. Designing a spread is a reasoning task and the light model does it '
-      + 'poorly — <a href="' + FLOW + '/" target="_blank" rel="noopener">sign in</a> before asking it to build one.');
-    return;
-  }
-  if (!probe.ok) return;
   const r = await get('/api/preferences');
   if (!r || !r.ok) return;                              // can't read the preference → don't guess
   let data; try { data = await r.json(); } catch(_){ return; }
