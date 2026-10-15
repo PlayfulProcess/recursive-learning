@@ -9,6 +9,8 @@
     {
       "id": "course-learn-recursive-eco",
       "name": "Learn Recursive.eco",
+      "node_type": "reference",
+      "ref_grammar_id": "4fd7470c-9068-4229-8185-a532ab968fa9",
       "keywords": [
         "orientation",
         "platform-tour",
@@ -30,6 +32,8 @@
     {
       "id": "course-vibe-coding-101",
       "name": "Vibe Coding 101",
+      "node_type": "reference",
+      "ref_grammar_id": "0a79720e-9d5a-4f91-bff9-8a9318da79bd",
       "keywords": [
         "claude-artifacts",
         "no-coding",
@@ -71,6 +75,8 @@
     {
       "id": "course-create-grammars-with-ai",
       "name": "Create Grammars with AI",
+      "node_type": "reference",
+      "ref_grammar_id": "fe2c3b4e-06f8-4f36-9035-eca044179e90",
       "keywords": [
         "notebooklm",
         "claude-code",
@@ -256,7 +262,7 @@
       "grammar_type": "sequence"
     }
   ],
-  "description": "The eight free courses on this platform — each one a direct link to the course-viewer. The four learning paths sit at L2 as emergence items that bundle related courses together; click a path to see its courses, click a course to start it.",
+  "description": "The eight free courses on this platform — the three on the Getting Started Path are links that read through in Play. The four learning paths sit at L2 as emergence items that bundle related courses together; click a path to see its courses, click a course to start it.",
   "creator_link": "https://lifeisprocess.substack.com/",
   "creator_name": "PlayfulProcess",
   "default_view": "cards",
