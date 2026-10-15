@@ -270,7 +270,7 @@
       "is_meta": false,
       "default_preview": null,
       "nodes": 12,
-      "blurb": "The eight free courses on this platform — each one a direct link to the course-viewer. The four learning paths sit at L2 as emergence items that bundle related courses together; click a path to see it…",
+      "blurb": "The eight free courses on this platform — the three on the Getting Started Path are links that read through in Play. The four learning paths sit at L2 as emergence items that bundle related courses to…",
       "path": "grammars/recursive-courses/grammar.json",
       "provenance": "living",
       "cover_image_url": "/grammars/_covers/recursive-courses.svg",
