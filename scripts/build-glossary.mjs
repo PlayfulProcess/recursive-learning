@@ -123,6 +123,8 @@ const html = `<!DOCTYPE html>
 <meta property="og:description" content="${esc(g.description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${esc(g.url)}">
+<meta property="og:site_name" content="Recursive Eco-Improvement">
+<link rel="canonical" href="${esc(g.url)}">
 <link rel="icon" type="image/svg+xml" href="../spiral.svg">
 <link rel="stylesheet" href="../style.css?v=1">
 <link rel="alternate" type="application/json" href="terms.json">

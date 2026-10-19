@@ -86,6 +86,10 @@ jobs:
       - name: Check the whole site (check_all)
         run: python3 scripts/check_all.py --site _site --check
 
+      # sitemap.xml, robots.txt and every public page's title, description and canonical are current.
+      - name: Check the sitemap and page heads
+        run: python3 scripts/build_sitemap.py --check
+
       - uses: actions/configure-pages@v5
         if: github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v3
