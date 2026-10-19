@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Walk — as a story · Recursive Learning</title>
+<title>The Walk — as a story · Recursive Eco-Improvement</title>
 <meta name="description" content="The Walk read down a page: one year per section, a rail of numbers that follows you, a choice at the end of every year whose consequence appears below it. A teaching instrument, not a forecast.">
 <!--
   The Walk as a scrolling story. Same model as walk.html and spread.html (walk-model.js), same
@@ -441,7 +441,7 @@ function drawEnding(){ var box = document.getElementById('ending'); if (!state.e
   setTimeout(function(){ box.scrollIntoView({ behavior:'smooth', block:'start' }); }, 400); }
 
 // credits
-(function(){ var c = document.getElementById('credits'); c.appendChild(document.createTextNode('The art on the cards: ' + ENDPOINTS.map(function(k){ return CARDS[k].credit; }).join(' · ') + '. PlayfulProcess · Recursive Learning · ')); var a = el('a', null, 'the same walk as a table'); a.href = 'spread.html'; c.appendChild(a); })();
+(function(){ var c = document.getElementById('credits'); c.appendChild(document.createTextNode('The art on the cards: ' + ENDPOINTS.map(function(k){ return CARDS[k].credit; }).join(' · ') + '. PlayfulProcess · Recursive Eco-Improvement · ')); var a = el('a', null, 'the same walk as a table'); a.href = 'spread.html'; c.appendChild(a); })();
 
 // ── go ────────────────────────────────────────────────────────────────────────────────────
 if (!/^#v1/.test(location.hash)){ var lastH = store('walk:last-hash'); if (lastH && /^#v1/.test(lastH)){ try { history.replaceState(null, '', location.pathname + location.search + lastH); } catch (e) {} } }

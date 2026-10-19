@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Playtest harness for "The Landlord's Game, live again" (engine.js). No npm installs.
 //
-//   node playtest.mjs new  --file game.json [--mode landlord|prosperity] [--players 3] [--seed 7]
+//   node playtest.mjs new  --file game.json [--mode landlord|prosperity] [--players 3] [--seed 7]   (--bots counts seats from 0: --bots 1,2 = Ben, Cleo)
 //                          [--equal | --starts 200,350,500] [--bots 1,2] [--ask-forced] [--answers 1,2,1]
 //   node playtest.mjs show --file game.json        state + the choice waiting, as numbered options
 //   node playtest.mjs act 1 --file game.json       answer the choice (1 = yes / pay, 2 = no / pass)

@@ -1,7 +1,11 @@
 # The games
 
-Two standalone rounds live here. `index.html` is **As-If**; `walk.html` is **The Walk**. Neither has a framework, a CDN or a build step; the only requests are the spread's card art. Both
-work from GitHub Pages and from a file opened straight off disk.
+This file covers two of the games here: **The Walk** (`spread.html`, `scroll.html`, `walk.html`,
+with Hot Potato and Changing Lines on the same model) and **As-If** (`as-if.html`; `index.html` is
+its first edition). The Landlord's Game (`landlords-game/`) and Recursive Ekho (`ekho/`) have their
+own READMEs; The Tree is `tree-board/` and The Fork is `fork/`. The one list of games the site
+shows is `SITE.games` in `../shared/nav.js`. None of them has a framework, a CDN or a build step;
+the only requests are card art. They work from GitHub Pages and from a file opened straight off disk.
 
 ---
 
