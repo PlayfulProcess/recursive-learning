@@ -255,7 +255,7 @@ details.more .inner{display:grid;gap:12px;margin-top:8px}
       <li><b>The tide</b> rises one, or two if most voted Build. It holds if half the table (at least two) pledged Stop together in a round the Council passed.</li></ul></div>
     <div class="card"><h3>The board</h3><ul>
       <li>Grace, The turn and The Stop are good hollows. Lock-in and Doom are bad. Adolescence and Still walking are open.</li>
-      <li>Moves move beads; they do not make new ones. Only the world adds beads.</li>
+      <li>Most moves move beads. Build adds one to Adolescence, and Take adds one to Lock-in when The turn is empty; the world adds the rest.</li>
       <li>At each ◇ mark a veil lifts and the clock speeds up: a round goes from a quarter to a month, a week, a day.</li>
       <li>Each hidden switch has a gentle and a harsh face. Leads prepare for them: keep Alignment at or above the tide, Relationality at 3 or more, Commons at 2 or more.</li>
       <li>At the Crossing every veil lifts and one bead is drawn. Its hollow is the ending.</li></ul></div>
@@ -1062,7 +1062,7 @@ function optView(d, o){
 }
 function context(d){
   var g = S.view.g;
-  if (d.kind === 'council') return 'The Council meets. Each player votes in turn; it needs ' + d.need + ' Together of ' + g.players.length + '.';
+  if (d.kind === 'council') return 'The Council meets. Each player votes in turn; it needs ' + d.need + ' Together of ' + g.players.length + '.' + (d.need > g.players.length ? ' That is more than the table has votes: Advocate, Public mood or a Warning shot make up the rest.' : '');
   if (d.kind === 'move') return d.free ? 'A free move.' : 'Your move: two each round.' + (!g.passed && g.players[d.player].hand.indexOf('stop') >= 0 ? ' Stop together waits for a Council that passed.' : '');
   if (d.options.some(function (x) { return x.id === 'discard'; })) return 'A breakthrough. The tide rises one, unless you spend Align & secure.';
   if (d.options.some(function (x) { return x.id === 'yes'; })) return 'You hold Align & secure.';

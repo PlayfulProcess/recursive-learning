@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Walk — conditional probability as a game · Recursive Learning</title>
+<title>The Walk — conditional probability as a game · Recursive Eco-Improvement</title>
 <!--
   The Walk — one static dark page: no framework, no CDN, no build step, no network request.
   Same shape as index.html (the As-If round) in this folder, so it works from file:// and from
@@ -612,7 +612,7 @@ function writeChanged(res, p){
     });
     if (best && Math.abs(best.d) >= 0.01){
       main = SHORT[best.k] + (best.d < 0 ? ' fell from ' : ' rose from ') + pc(best.from) +
-             ' to ' + pc(best.to) + ' because ' + lastNote + '.';
+             ' to ' + pc(best.to) + '. In this step, ' + lastNote.replace(/ this step$/, '') + '.';
     } else main = 'Almost nothing moved: ' + lastNote + '.';
   } else main = 'Step taken — ' + lastNote + '.';
   box.appendChild(document.createTextNode(main));
