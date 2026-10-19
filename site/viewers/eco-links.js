@@ -1,9 +1,9 @@
 /* Recursive.eco per-deck links — shared across viewers.
  * Reads the hardcoded slug -> deckId map (grammars/_eco_ids.json) and builds three
  * links for any deck that's in the map:
- *   <rt-icon name="oracle"></rt-icon> Cast  → https://flow.recursive.eco/g/<id>?view=reading          (open the deck for a reading)
- *   <rt-icon name="eye"></rt-icon> View  → https://recursive.eco/pages/grammar-viewer.html?type=<type>&id=<id>[&item=<n>]
- *   <rt-icon name="pencil"></rt-icon> Edit  → https://flow.recursive.eco/create/dashboard/unified/new?forkId=<id>
+ *   <rt-icon name="oracle"></rt-icon> Cast  → https://recursive.eco/process?cast=<id>          (Cast, with this deck chosen)
+ *   <rt-icon name="eye"></rt-icon> View  → https://recursive.eco/play?id=<id>               (Play, the reader)
+ *   <rt-icon name="pencil"></rt-icon> Edit  → https://recursive.eco/play?id=<id>&edit=1        (Play with the pencil: the owner edits; others propose edits or make a copy)
  * Links only RESOLVE for visitors once that deck is is_public on recursive.eco —
  * but they're shown regardless (stable UUIDs), so they light up as decks publish.
  *
@@ -33,13 +33,11 @@
     opts = opts || {};
     const id = deckId(slug);
     if (!id) return null;
-    const type = opts.type || 'custom';
-    const item = (opts.item != null && opts.item !== '') ? ('&item=' + encodeURIComponent(opts.item)) : '';
     return {
       id,
-      cast: 'https://flow.recursive.eco/g/' + id + '?view=reading',
-      view: 'https://recursive.eco/pages/grammar-viewer.html?type=' + encodeURIComponent(type) + '&id=' + id + item,
-      edit: 'https://flow.recursive.eco/create/dashboard/unified/new?forkId=' + id,
+      cast: 'https://recursive.eco/process?cast=' + id,
+      view: 'https://recursive.eco/play?id=' + id,
+      edit: 'https://recursive.eco/play?id=' + id + '&edit=1',
     };
   }
 
