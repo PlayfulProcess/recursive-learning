@@ -54,7 +54,7 @@
         '<div class="msg" id="rtf-msg"></div>'+
         '<div class="links"><a href="https://recursive.eco" target="_blank" rel="noopener">recursive.eco ↗</a> · '+
         '<a href="'+PFX+'pages/about.html">About &amp; method</a> · '+
-        '<a href="https://flow.recursive.eco/library/channels/recursive-learning" target="_blank" rel="noopener">the collection ↗</a> · '+
+        '<a href="https://recursive.eco/explore?repository=recursive-learning" target="_blank" rel="noopener">the collection ↗</a> · '+
         '<a href="https://github.com/PlayfulProcess/recursive-learning" target="_blank" rel="noopener">the repo</a> · '+
         '<a href="'+PFX+'pages/about.html#licences">code Apache-2.0, content CC BY-SA 4.0</a></div>'+
         '</div>';

@@ -191,8 +191,8 @@ write("viewers/reference-resolve.js", t)
 
 # eco-links.js
 t = std("viewers/eco-links.js")
-t = must(t, " *   ✏️ Edit  → https://flow.recursive.eco/create/dashboard/unified/new?forkId=<id>",
-            " *   <rt-icon name=\"pencil\"></rt-icon> Edit  → https://flow.recursive.eco/create/dashboard/unified/new?forkId=<id>")
+t = must(t, " *   ✏️ Edit  → https://recursive.eco/play?id=<id>&edit=1",
+            " *   <rt-icon name=\"pencil\"></rt-icon> Edit  → https://recursive.eco/play?id=<id>&edit=1")
 t = must(t, "a('eco-edit', u.edit, '✏️ Edit')", "a('eco-edit', u.edit, '<rt-icon name=\"pencil\"></rt-icon> Edit')")
 t = must(t, "const PFX = '../'.repeat(Math.max(0, _segs.length - 1));   // path back to repo root, depth-aware",
             "// Root-relative: the site is served at the root of learning.recursive.eco, and the depth formula\n"
@@ -470,7 +470,7 @@ t = must(t, "'<p>The work so far of <strong>one solo developer</strong> — pass
 t = must(t, "'<div class=\"links\"><a href=\"https://recursive.eco\" target=\"_blank\" rel=\"noopener\">recursive.eco ↗</a> · '+\n        '<a href=\"'+base+'pages/about.html\">About</a> · '+\n        '<a href=\"https://github.com/PlayfulProcess/recursive-learning\" target=\"_blank\" rel=\"noopener\">the repo</a> · CC-BY-SA-4.0</div>'+",
             "'<div class=\"links\"><a href=\"https://recursive.eco\" target=\"_blank\" rel=\"noopener\">recursive.eco ↗</a> · '+\n"
             "        '<a href=\"'+PFX+'pages/about.html\">About &amp; method</a> · '+\n"
-            "        '<a href=\"https://flow.recursive.eco/library/channels/recursive-learning\" target=\"_blank\" rel=\"noopener\">the channel ↗</a> · '+\n"
+            "        '<a href=\"https://recursive.eco/explore?repository=recursive-learning\" target=\"_blank\" rel=\"noopener\">the channel ↗</a> · '+\n"
             "        '<a href=\"https://github.com/PlayfulProcess/recursive-learning\" target=\"_blank\" rel=\"noopener\">the repo</a> · '+\n"
             "        '<a href=\"'+PFX+'pages/about.html#licences\">code Apache-2.0, content CC BY-SA 4.0</a></div>'+")
 t = must(t, "subscribed_from:'recursive-tarot'", "subscribed_from:'recursive-learning'")
