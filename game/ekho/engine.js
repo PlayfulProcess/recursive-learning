@@ -1,4 +1,4 @@
-// Recursive Ekho, the board game: the rules as code (a toy model, sketch 1, rules v4).
+// Recursive Ekho, the board game: the rules as code (a toy model, sketch 1, rules v5).
 // Odds, not paths: beads sit in seven hollows; at the Crossing one bead is drawn from a bag.
 // Moves raise or lower a chance; nothing here forecasts anything about the world.
 // Plain script: defines window.EKHO, or module.exports under Node. Deterministic from a seed.
@@ -14,7 +14,7 @@ var GOOD = ['grace', 'turn', 'stop'], BAD = ['lockin', 'doom'];
 var START_BEADS = { grace: 1, turn: 1, stop: 0, adolescence: 4, lockin: 3, doom: 3, still: 6 };   // v4: Still walking 2 -> 6, so Goodwill and the red team do not empty it every game
 
 var C = {                    // every number the playtests tune, in one place
-  VERSION: 4,
+  VERSION: 5,
   CROSSING: 10,
   TIDE_START: { gentle: 0, fair: 2, harsh: 4, dire: 5 },
   MARKS: [3, 6, 8],          // ◇: a veil lifts and the clock speeds up
@@ -55,7 +55,7 @@ var CONDITIONS = {   // the Conditions deck: id -> [copies, name, what happens]
   misuse:       [3, 'Misuse', 'A bead into Doom, unless the Commons lead is 2 or more.'],
   result:       [4, 'A safety result', 'Alignment lead +1.'],
   mood:         [3, 'Public mood turns', 'Together +1.'],
-  surge:        [3, 'The waters rise', 'The tide climbs one. The used conditions go back on top: the same troubles return, sooner.'],
+  surge:        [3, 'The waters rise', 'The tide climbs one. The used conditions go back on top, the same troubles returning sooner; this card goes under the deck.'],
   crossroads:   [4, 'Crossroads', 'The active player casts their oracle: one free move, and a free change of role.'],
   redteam:      [2, 'The red team', 'Each player answers with a practice, or a bead goes from Still walking to Doom.'],
   whiteteam:    [2, 'The white team', 'Each player draws a practice.'],
@@ -83,7 +83,7 @@ function newGame(o) {
   var g = { opts: o, rs: (o.seed || 1) | 0, round: 0, mode: o.mode || 'commons', log: [], over: null,
     tide: C.TIDE_START[o.tide || 'fair'], clock: 0, beads: {}, align: 0, commons: 0, together: 0, rel: 0, spill: 0, pourExtra: 0, doomPour: 0, spillDoom: false,
     passed: false, pledges: 0, pledgers: [], bar: 0, votes: [], lastBuilders: [], moveDeck: [], moveUsed: [],
-    condDeck: [], condUsed: [], practices: 8, world: [], lifted: [], known: [], players: [], pool: [], clockRounds: [0, 0, 0, 0],
+    condDeck: [], condUsed: [], marks: [], practices: 8, world: [], lifted: [], known: [], players: [], pool: [], clockRounds: [0, 0, 0, 0],
     stats: { moves: {}, conds: {}, councils: 0, passed: 0, holds: 0, pledges: 0, poured: 0, spilled: 0 } };
   HOLLOWS.forEach(function (h) { g.beads[h] = START_BEADS[h]; });
   var tilt = o.tilt || 'fair';
@@ -106,7 +106,7 @@ function newGame(o) {
     for (var k2 = 0; k2 < C.HAND; k2++) draw(g, pl);
   }
   // a later start is a later world: the marks already behind the tide have sped the clock and lifted their veils
-  C.MARKS.forEach(function (m) { if (g.tide >= m) { g.clock = Math.min(C.CLOCK.length - 1, g.clock + 1); liftOne(g); } });
+  C.MARKS.forEach(function (m) { if (g.tide >= m) { g.marks.push(m); g.clock = Math.min(C.CLOCK.length - 1, g.clock + 1); liftOne(g); } });
   return g;
 }
 
@@ -211,7 +211,9 @@ function conditions(g, choose, active) {
     else if (c === 'misuse') { if (g.commons < 2) add(g, 'doom'); }
     else if (c === 'result') g.align++;
     else if (c === 'mood') g.together++;
-    else if (c === 'surge') { rise(g, 1); g.condDeck = g.condDeck.concat(shuffle(g, g.condUsed.slice())); g.condUsed = []; }
+    else if (c === 'surge') {   // v5: the used conditions go back on top, but the surge itself goes under the deck, so it cannot return at once
+      rise(g, 1); g.condUsed.pop();
+      g.condDeck = [c].concat(g.condDeck, shuffle(g, g.condUsed.slice())); g.condUsed = []; }
     else if (c === 'crossroads') { var p = g.players[active];
       if (g.pool.length) { var r = ask(g, choose, { player: p.id, kind: 'respond', options: [{ id: 'keep', label: 'Keep your role' }]
         .concat(g.pool.map(function (x) { return { id: x, label: 'Take ' + ROLES[x][0] + ' (' + ROLES[x][1] + ')' }; })) });
@@ -246,9 +248,10 @@ function council(g, choose) {
   say(g, 'Council: ' + t + ' Together of ' + n + ', needed ' + need + (g.passed ? ': it passes.' : ': it fails.'));
 }
 
+// v5: a ◇ mark counts once. When Bounded drops the tide below a mark it has passed, rising past it again lifts no second veil.
 function rise(g, k) {
   var before = g.tide; g.tide = Math.min(C.CROSSING, g.tide + k);
-  C.MARKS.forEach(function (m) { if (before < m && g.tide >= m) { g.clock = Math.min(C.CLOCK.length - 1, g.clock + 1);
+  C.MARKS.forEach(function (m) { if (before < m && g.tide >= m && g.marks.indexOf(m) < 0) { g.marks.push(m); g.clock = Math.min(C.CLOCK.length - 1, g.clock + 1);
     say(g, 'The tide passes a ◇ mark: a round is now a ' + C.CLOCK[g.clock] + '.'); liftOne(g); } });
 }
 function fall(g, k) { g.tide = Math.max(0, g.tide - k); }
@@ -266,7 +269,7 @@ function lift(g, i) {
   else if (s.id === 'contain') { if (face === 'harsh') { add(g, 'doom', 2); g.spillDoom = true; } }
   else if (s.id === 'look') { if (face === 'gentle') { move(g, ['still', 'adolescence'], 'grace'); move(g, ['still', 'adolescence'], 'grace'); }
     else { add(g, 'lockin', 2); if (g.rel < C.RELATIONALITY_MARK) add(g, 'lockin', 2); } }
-  else if (s.id === 'reach') { if (face === 'gentle') { g.pourExtra = -1; fall(g, 1); } else { g.pourExtra = 1; rise(g, 1); } }
+  else if (s.id === 'reach' && !g.crossed) { if (face === 'gentle') { g.pourExtra = -1; fall(g, 1); } else { g.pourExtra = 1; rise(g, 1); } }   // at the Crossing the tide stays where it is
 }
 
 // The tide pours new capability into Adolescence; what it cannot hold spills into Lock-in and Doom.
@@ -295,6 +298,7 @@ function ending(g, hollow, why) {
 }
 
 function crossing(g) {
+  g.crossed = true;
   g.lifted.forEach(function (l, i) { if (!l) lift(g, i); });
   var t = total(g), r = rand(g) * t, acc = 0, pick = 'still';
   for (var i = 0; i < HOLLOWS.length; i++) { acc += g.beads[HOLLOWS[i]]; if (r < acc) { pick = HOLLOWS[i]; break; } }

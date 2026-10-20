@@ -29,15 +29,15 @@ const drawn = (gs, hollow) => gs.filter((g) => g.over.hollow === hollow).length 
 const GREEDY = batch(BASE, table('greedy'), 600);
 const RANDOM = batch(BASE, table('random'), 600);
 
-test('rules version 4, and the page shows the engine it inlines', () => {
-  assert.equal(E.consts.VERSION, 4);
+test('rules version 5, and the page shows the engine it inlines', () => {
+  assert.equal(E.consts.VERSION, 5);
   const html = readFileSync(here('../game/ekho/index.html'), 'utf8');
   const eng = readFileSync(here('../game/ekho/engine.js'), 'utf8');
   const start = html.indexOf('<script>// Recursive Ekho, the board game: the rules as code');
   assert.ok(start > 0, 'the inline engine block is in index.html');
   const inline = html.slice(start + '<script>'.length, html.indexOf('</script>', start));
   assert.equal(inline, eng, 'index.html carries engine.js byte for byte (copy it in after every engine change)');
-  assert.match(html, /Rules version <span id="ver">4<\/span>/);
+  assert.match(html, /Rules version <span id="ver">5<\/span>/);
 });
 
 test('deterministic from a seed: the same deal plays the same game', () => {
@@ -78,6 +78,18 @@ test('every ending can be drawn, Still walking included', () => {
   assert.ok(stillRandom > 0.02 && stillRandom < 0.15, `random table draws Still walking ${stillRandom}`);
   // Still walking is reachable by a human, too: a table of other habits (one racer, the rest careful)
   assert.ok(batch(BASE, ['racer', 'greedy', 'greedy'], 400).some((g) => g.over.hollow === 'still'));
+});
+
+test('v5: the waters rise cannot feed itself, a mark counts once, and the Crossing ending shows the full tide', () => {
+  let repeats = 0;
+  for (const g of GREEDY.concat(RANDOM)) {
+    const conds = g.log.filter((l) => / · Condition: /.test(l)).map((l) => /waters rise/.test(l));
+    if (conds.some((c, i) => c && conds[i + 1])) repeats++;
+    assert.ok(g.log.filter((l) => /passes a ◇ mark/.test(l)).length <= E.consts.MARKS.length, 'each mark passes once');
+    assert.ok(g.marks.length <= E.consts.MARKS.length);
+    if (/Crossing/.test(g.over.why)) assert.equal(g.tide, E.consts.CROSSING, 'a Crossing ending shows the tide at the Crossing');
+  }
+  assert.ok(repeats / 1200 < 0.03, `two surges in a row in ${repeats} of 1200 games`);
 });
 
 test('balance stays in a band', () => {
