@@ -79,6 +79,7 @@
     [PFX + 'pages/about.html#loop-here',  'How this place learns'],
     [PFX + 'viewers/cards.html?src=../grammars/recursive-courses/grammar.json', 'Courses'],
     [PFX + 'viewers/cards.html?src=../grammars/recursive-studies/grammar.json', 'Studies'],
+    [PFX + 'archive/',                    'Archive: build your own'],
   ];
   const WORDS_MENU = [
     [PFX + 'glossary/',                                                     'The glossary'],

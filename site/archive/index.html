@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Archive · Recursive Learning</title>
+<meta name="description" content="The older ways this site drew its grammars, kept working, with where each now lives in recursive.eco Play, and a guide to building your own page in your own repo.">
+<link rel="canonical" href="https://learning.recursive.eco/archive/">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body { margin: 0; background: var(--bg, #f4f1ea); color: var(--ink, #2b2620); font-family: var(--sans, system-ui, sans-serif); }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 16px 56px; }
+  h1 { font-family: var(--serif-display, Georgia, serif); font-weight: 500; font-size: clamp(28px, 4vw, 40px); margin: 8px 0 6px; }
+  .lede { font-size: 17px; line-height: 1.6; max-width: 70ch; color: var(--ink, #2b2620); }
+  .muted { color: var(--muted, #6b6457); }
+  .fmt { display: grid; grid-template-columns: minmax(0, 380px) 1fr; gap: 22px; align-items: start; background: var(--card, #fff); border: 1px solid var(--line, #ddd5c6); border-radius: 12px; padding: 16px; margin: 18px 0; }
+  .fmt .shot img { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line, #ddd5c6); display: block; }
+  .fmt h2 { margin: 2px 0 6px; font-family: var(--serif-display, Georgia, serif); font-weight: 500; font-size: 24px; }
+  .fmt p { line-height: 1.55; margin: 6px 0; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px !important; }
+  .btn { display: inline-block; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--accent, #177d56); color: var(--accent, #177d56); text-decoration: none; font-size: 14px; }
+  .btn.play { background: var(--accent, #177d56); color: #fff; }
+  .files { font-size: 13px; color: var(--muted, #6b6457); overflow-wrap: anywhere; }
+  .files a { color: inherit; }
+  .stays { background: var(--paper, #faf7f0); border-left: 3px solid var(--accent, #177d56); padding: 10px 14px; border-radius: 6px; line-height: 1.55; }
+  .guide { margin-top: 36px; }
+  .guide > h2 { font-family: var(--serif-display, Georgia, serif); font-weight: 500; font-size: 30px; margin-bottom: 4px; }
+  .steps { list-style: none; padding: 0; margin: 14px 0 0; }
+  .steps li { display: flex; gap: 14px; margin: 0 0 18px; }
+  .steps .n { flex: 0 0 34px; height: 34px; border-radius: 50%; background: var(--accent, #177d56); color: #fff; display: grid; place-items: center; font-weight: 600; }
+  .steps h3 { margin: 4px 0 4px; font-size: 18px; }
+  .steps p { margin: 0; line-height: 1.6; overflow-wrap: anywhere; }
+  code { font-size: 0.92em; background: var(--paper, #faf7f0); padding: 0 3px; border-radius: 3px; }
+  .revert { margin-top: 30px; font-size: 14px; }
+  @media (max-width: 720px) { .fmt { grid-template-columns: 1fr; } }
+</style>
+<meta property="og:title" content="Archive · Recursive Learning">
+<meta property="og:description" content="The older ways this site drew its grammars, kept working, with where each now lives in recursive.eco Play, and a guide to building your own page in your own repo.">
+<meta property="og:url" content="https://learning.recursive.eco/archive/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Recursive Eco-Improvement">
+</head>
+<body>
+<script src="../site-header.js"></script>
+<site-header active="archive"></site-header>
+<main>
+  <p class="muted" style="margin:0">Archive</p>
+  <h1>The older views, still working</h1>
+  <p class="lede">Most reading now happens in <a href="https://recursive.eco/play" target="_blank" rel="noopener">recursive.eco Play</a>, which draws every grammar as Cards, Tree, Continuous or a Playlist. The pages this site used for the same job live here, unchanged, so you can still open them, copy them, or build your own.</p>
+  <p class="stays">Nothing has moved here. This site’s Cards and Tree pages read Words, Sources and Ideas, which have no recursive.eco id yet, so they stay where they are; they move to the archive (the way the tarot site’s did) once those grammars open in Play. The games, the explainers, the glossary, the Sources map, the Spread Caster and the Explorer stay in any case: Play has no view that does what they do.</p>
+  
+    <article class="fmt">
+      <a class="shot" href="../viewers/cards.html?src=../grammars/words-deck/grammar.json"><img src="img/learning-cards.jpg" alt="The Cards page" loading="lazy" width="760" height="475"></a>
+      <div class="body">
+        <h2>Cards</h2>
+        <p>Any grammar here as a grid of cards with a detail pop-up: a copy of the tarot site’s Cards page. It stays at its address, because it is how this site reads Words, Sources and Ideas, which are not in recursive.eco yet. The grammars that are open there in Play:</p>
+        <p class="links"><a class="btn" href="../viewers/cards.html?src=../grammars/words-deck/grammar.json">Open it</a> <a class="btn play" href="https://recursive.eco/play?id=1cf86c7d-18c3-47e7-8d1a-c152032630f8&pane=cards" target="_blank" rel="noopener">Now in Play: The Chosen Alien Invasion in Cards ↗</a></p>
+      </div>
+    </article>
+    <article class="fmt">
+      <a class="shot" href="../viewers/tree-viewer.html?src=../grammars/sources-of-alignment/grammar.json"><img src="img/learning-tree.jpg" alt="The Tree page" loading="lazy" width="760" height="475"></a>
+      <div class="body">
+        <h2>Tree</h2>
+        <p>A grammar drawn as a tree, its items at the base and the groups they compose above them. It stays too: it draws the Tree of sources and Ideas by lane.</p>
+        <p class="links"><a class="btn" href="../viewers/tree-viewer.html?src=../grammars/sources-of-alignment/grammar.json">Open it</a> <a class="btn play" href="https://recursive.eco/play?id=1cf86c7d-18c3-47e7-8d1a-c152032630f8&pane=tree" target="_blank" rel="noopener">Now in Play: The Chosen Alien Invasion in Tree ↗</a></p>
+      </div>
+    </article>
+  
+    <section class="guide" id="build-your-own">
+      <h2>Build your own</h2>
+      <p class="lede">Every page above is one HTML file that reads a <code>grammar.json</code> in the browser. No server, no build step. You can copy one into your own repo, change how it draws, and still have your grammars open in recursive.eco.</p>
+      <ol class="steps">
+        <li><span class="n">1</span><div><h3>How a page reads a grammar</h3>
+          <p>The page takes the grammar’s path in its address, <code>?src=../grammars/&lt;slug&gt;/grammar.json</code>, fetches that file and draws its <code>nodes</code>: each node has a <code>name</code>, an <code>image_url</code> and <code>sections</code> (named texts). The format is written down at <a href="https://recursive.eco/docs/grammar-format.html" target="_blank" rel="noopener">recursive.eco/docs/grammar-format.html</a>. The smallest page that does it is <a href="https://github.com/PlayfulProcess/recursive-tarot/blob/main/archive/deck.html" target="_blank" rel="noopener"><code>deck.html</code></a> + <a href="https://github.com/PlayfulProcess/recursive-tarot/blob/main/loader.js" target="_blank" rel="noopener"><code>loader.js</code></a> in the tarot repo (about 80 lines, no libraries).</p></div></li>
+        <li><span class="n">2</span><div><h3>Copy it into your own repo</h3>
+          <p>Make a GitHub repo with your grammars at <code>grammars/&lt;slug&gt;/grammar.json</code>. Copy the page (<a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/site/viewers/cards.html" target="_blank" rel="noopener"><code>site/viewers/cards.html</code></a>) and the helpers it loads (<code>site/viewers/grammar-loader.js</code>), and if you like the look, <code>site/theme.css</code> and the header. Keep the page one folder below the root, as here, so its <code>../</code> paths still land. Add an empty <code>.nojekyll</code> file (without it GitHub Pages hides every file whose name starts with <code>_</code>), then turn Pages on: <em>Settings → Pages → Deploy from a branch → main, / (root)</em>. Your page is at <code>https://&lt;you&gt;.github.io/&lt;repo&gt;/archive/cards.html?src=../grammars/&lt;slug&gt;/grammar.json</code>. Change the drawing code as much as you like: the grammar stays the same file.</p></div></li>
+        <li><span class="n">3</span><div><h3>Link your repo to recursive.eco</h3>
+          <p>Add a <code>recursive-eco.json</code> at the root of your repo (this site’s <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/recursive-eco.json" target="_blank" rel="noopener">recursive-eco.json</a> is a working example: a name, a slug, and where the grammars are). In recursive.eco, open <a href="https://recursive.eco/explore?whose=mine" target="_blank" rel="noopener">Create</a> → <em>Import</em> → <em>Link a GitHub repo</em>, paste your repo’s address, install the <a href="https://github.com/apps/recursive-eco" target="_blank" rel="noopener">recursive.eco GitHub app</a> on that repo, then tap <em>Import them</em>. Each grammar gets an id; write the slug → id pairs in a file like this site’s <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/grammars/_eco_ids.json" target="_blank" rel="noopener"><code>grammars/_eco_ids.json</code></a>, and your page can offer “Open in Play”: <code>https://recursive.eco/play?id=&lt;id&gt;</code>.</p></div></li>
+      </ol>
+    </section>
+  <p class="revert muted">To put an archived page back where it was, see <a href="https://github.com/PlayfulProcess/recursive-learning/blob/main/site/archive/REVERT.md" target="_blank" rel="noopener">archive/REVERT.md</a>.</p>
+</main>
+<script src="../site-footer.js"></script>
+<site-footer base="../"></site-footer>
+
+</body>
+</html>
