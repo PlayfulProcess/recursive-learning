@@ -63,6 +63,9 @@ So the rhyme holds between two constructs. That is fine for a heuristic; it is t
 
 ## Next
 
+The rhyme beyond the digital (polarization, populism, corruption, trust, deglobalization, sorting,
+security) continues in `NOTES-roman-rhyme-wider.md`.
+
 Open in translation: CTh 5.17.1 (Pharr's English translation of the Theodosian Code, 1952, is
 in copyright ◇; cite and paraphrase), Salvian book 5 (Sanford's English translation, 1930, on
 CCEL: https://www.ccel.org/ccel/s/salvian/govt.html, status to check). Then fill the table with one
