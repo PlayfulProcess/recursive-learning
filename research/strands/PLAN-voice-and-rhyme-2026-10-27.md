@@ -22,9 +22,13 @@ The seed: we may be living a transition that rhymes with the end of the Western 
 the slow move into what is called feudalism. The strand asks how the rhyme could hold, where it
 breaks, and what it suggests to watch for.
 
-## Strand 3, to run separately: new religions around AI and UFOs
+## Strand 3: religions, and the value of life and death (`NOTES-value-of-life-and-death.md`)
 
-PlayfulProcess, Oct 27 2026: how the new UFO religions, and the groups said to worship AI in
+PlayfulProcess, Oct 27 2026: the research turns toward religion now, kept in this repo. The seed
+question is the value of life and the value of death, for people and for AI. The voice record is
+paused; `breaks-board.html` stays as a reference file only.
+
+Also in this strand: how the new UFO religions, and the groups said to worship AI in
 San Francisco, could relate to this. Not started. A first pass would be: what exists (named
 groups and their own pages, dated), what scholars of new religious movements say about them,
 and where it touches the other strands (the Roman rhyme's "keepers of meaning" row; who gains
