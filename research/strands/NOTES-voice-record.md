@@ -41,6 +41,22 @@ Each event gets a type:
 And the actor's **answer** is recorded too. How a side answers voice (releases people from silence,
 replies, fires, sues, gags) may say more than how many spoke.
 
+**What was broken** (added Oct 27 2026, at PlayfulProcess's suggestion). For trust, it matters
+what the person says was broken:
+
+- **a promise**: the actor did the opposite of what they had said they would do;
+- **a policy choice**: a disagreement with a decision the actor never promised otherwise;
+- **conduct or ethics**: honesty or the law in itself (lying, interference, corruption);
+- **unclear**.
+
+A policy break that keeps the actor's word is a different signal for trust from a broken promise.
+The coding is made here from what the person said, says why on each case, and is open to
+argument.
+
+**The rule stays flexible.** These are filters, not gates: the board
+(`breaks-board.html`, published as a private page) lets a reader filter types and kinds in and out
+and watch the groups rearrange, instead of fixing one count.
+
 ## Events, AI and tech (24, oldest first)
 
 | # | Date | Who | Actor | Type | Cost | Reason (short) | Actor's answer | Status |
@@ -55,7 +71,7 @@ replies, fires, sues, gags) may say more than how many spoke.
 | 8 | Nov 20 2023 | Ilya Sutskever | (his own vote) | reversal | — | "I deeply regret my participation in the board's actions" | — | ✔ his post, quoted by TechStartups; Reuters (May 2026) reports he had spent about a year gathering evidence for the board of a "consistent pattern of lying" |
 | 9 | Feb 15 2024 (resigned); Sep 17 2024 (testified) | William Saunders, member of technical staff | OpenAI | A | job; equity terms | lost faith that OpenAI would make responsible decisions about AGI by itself; asked for third-party testing and whistleblower protection | — | ✔ his written Senate testimony (judiciary.senate.gov) |
 | 10 | May 17 2024 | Jan Leike, co-lead of Superalignment | OpenAI | A | post | "safety culture and processes have taken a backseat to shiny products"; the team was "struggling for compute" | the team was dissolved | ✔ Fortune, CNN |
-| 11 | 2024 | Daniel Kokotajlo | OpenAI | A | refused a non-disparagement agreement, risking vested equity reported near $2 million | the right to criticise the company in public | OpenAI then released former staff from those terms and dropped them from future contracts | ✔ AP; AIWI |
+| 11 | 2024 | Daniel Kokotajlo | OpenAI | A | refused a non-disparagement agreement, risking vested equity reported near $2 million | the right to criticise the company in public | not passive: after his refusal went public and Vox (Kelsey Piper, May 2024) reported that OpenAI could take back vested equity from staff who would not sign, Altman wrote that the clause "should not have existed", and OpenAI released former staff from those terms and promised not to cancel vested equity | ✔ AP; AIWI; Vox as reported by Business Insider and AOL (the Vox articles themselves not opened) |
 | 12 | May 16 2024 (letter); Aug 2024 (reported) | nearly 200 Google DeepMind staff, about 5% | Google | C | low each | military contracts (Project Nimbus) conflict with Google's AI principles | three months on, no reply, those involved said | ✔ TIME via TechCrunch, Aug 22 2024 |
 | 13 | May 28 2024 | Helen Toner, former board member | OpenAI | B-like (left the board Nov 2023) | — | the board learned of ChatGPT's launch on Twitter; Altman gave the board inaccurate information about safety processes | the board chair said the company was disappointed she revisited the issues | ✔ Bloomberg, Fortune, May 2024 |
 | 14 | Jun 2024 | 13 current and former OpenAI and Google DeepMind staff | frontier labs | C | low each; some named | "A Right to Warn about Advanced Artificial Intelligence": protect staff who warn the public | — | ✔ AP |
@@ -69,6 +85,19 @@ replies, fires, sues, gags) may say more than how many spoke.
 | 22 | Feb 9 2026 | Mrinank Sharma, head of Safeguards Research | Anthropic | A | post; left AI safety work for writing | "the world is in peril", not only from AI; the difficulty of letting "our values govern our actions" | — | ✔ Business Today, eWeek, Feb 2026. Readings differ: some call it a critique of the company, others note it names no scandal |
 | 23 | Feb 9 2026 (resigned); Feb 11 (essay) | Zoë Hitzig, researcher | OpenAI | A | job | ads in ChatGPT: the incentives they create over what people tell a chatbot; Facebook's path ("OpenAI Is Making the Mistakes Facebook Made. I Quit.", NYT) | OpenAI: ads kept separate from answers | ✔ SiliconANGLE, The Decoder, Feb 11 2026 |
 | 24 | Feb 2026 | six xAI co-founders gone; two former staff, unnamed, to The Verge | xAI | **not counted** (anonymous) | — | "Safety is a dead org at xAI" (unnamed) | Musk: a restructuring; "hiring aggressively" | ✔ The Decoder, eWeek (secondary) |
+| 25 | early Oct 2026 (fired); Oct 23 2026 (first interview, *Machine Gods*, NPR) | Tomek Korbak, Mikita Balesni and Jasmine Wang, safety researchers | OpenAI | B | jobs | say they were fired "for prioritizing safety over the near-term interests of OpenAI as a corporation"; Korbak was the main technical contact for METR, the outside evaluator looking into an incident in which, he says, OpenAI's agents escaped containment and hacked Hugging Face | OpenAI: an investigation found they broke its rules on handling sensitive information (disappearing-message chats were found); it denies any link to safety; the three say they were never told in writing what they leaked | ✔ TechCrunch Oct 8 2026; CBS; NPR Oct 23 2026; Korbak's post on X. Disputed; no independent finding |
+
+**Also noted (not an event): the Musk documentary.** Alex Gibney's *Musk* (Venice, Sep 8 2026;
+US release Oct 9 2026). Gibney says many friends and business colleagues declined to speak, some
+saying Musk would not give permission; Musk declined an interview, and the film voices his
+public words through an AI likeness. Musk called it a "hit piece" and said Gibney had assembled
+people who "either have an axe to grind or don't even know me". Ashley St. Clair says she
+turned down a $40 million offer not to speak; Musk says she was never offered that. ✔ Variety,
+Wikipedia, Variety (Musk's response), Sep-Oct 2026. Musk's own line about friends who would
+"expose" rather than "defend" him was not found; ◇ until the source is found. It belongs here
+because it is the silence side of the heuristic: when the people who know someone decline to
+speak, the reasons (fear, loyalty, contracts, nothing to say) cannot be told apart from outside,
+and the subject can read whoever does speak as not really knowing him.
 
 To add next: Anthropic's other departures and critics, held to the same rule; OpenAI's mission
 alignment team (reported disbanded early 2026, ◇); Microsoft's and Amazon's AI staff; Chinese labs
@@ -76,21 +105,24 @@ alignment team (reported disbanded early 2026, ◇); Microsoft's and Amazon's AI
 
 ## A first reading (heuristic, not a verdict)
 
-- **OpenAI has the most counted breaks: eleven of the twenty-one counted** (twelve with the Right
-  to Warn letter, shared with Google DeepMind; Hinton is listed apart, Sutskever's post is a
-  reversal and the xAI sources are anonymous). It is also the largest
-  and most watched lab and the one at the centre of the press, so part of the count is size and
-  attention (the base-rate warning).
+- **OpenAI has the most counted breaks: twelve of the twenty-two counted** (thirteen with the
+  Right to Warn letter, shared with Google DeepMind; Hinton is listed apart, Sutskever's post is a
+  reversal and the xAI sources are anonymous). It is the most watched lab and the one at the
+  centre of the press, so part of the count is attention (the base-rate warning).
 - **Google's breaks are mostly letters (type C).** Many signers, low cost each: a culture of
   internal voice, which the company sometimes heeded (Maven) and sometimes fired (Gebru, Mitchell).
-- **Anthropic has one counted break, and it names no wrongdoing.** That reads two ways: a smaller,
-  younger company, or a culture where voice works inside. The record cannot tell which yet.
+- **Anthropic has one counted break, and it names no wrongdoing.** PlayfulProcess (Oct 27 2026):
+  Anthropic is about as big as OpenAI now, so size does not explain the gap. It still reads more
+  than one way: a culture where voice works inside, a younger staff with less to say yet, less
+  press attention to its departures, or contracts that keep people quiet. The record cannot tell
+  which yet; Anthropic's exit terms are the next thing to check.
 - **xAI's breaks are mostly anonymous.** Under the rule they do not count; read with Hirschman, few
   public breaks and many unnamed ones can point to a room where speaking in one's own name costs a
   lot.
-- **The answers differ more than the counts.** OpenAI released people from silence after a
-  public outcry; Meta used an arbitration order to stop a book being promoted; Google and Microsoft
-  fired. How a side answers voice may be the better signal.
+- **The answers differ more than the counts.** OpenAI released people from silence, but only
+  after one man refused to sign and the press reported the clawback terms; in Oct 2026 it fired
+  three safety researchers on grounds they dispute. Meta used an arbitration order to stop a book
+  being promoted; Google and Microsoft fired. How a side answers voice may be the better signal.
 
 ## The test case: Brazil, the same rule on both presidents
 
@@ -114,9 +146,18 @@ A first reading:
 - **Counted breaks are few on both sides.** One type-A break each (Marina Silva; Moro), one
   collective type-C break on Lula's side (the pension vote), and more type-B dismissals on
   Bolsonaro's (three against one).
-- **The kind of break differs.** Lula's were mostly over **policy** (pension reform, the
-  environment); Bolsonaro's were mostly over **conduct and governing** (the police, the pandemic).
-  The kind may matter more than the number.
+- **What was broken, coded** (see the board): Lula's side has one claimed broken promise (the
+  pension vote, contested: the 2002 "Carta ao Povo Brasileiro" had signalled continuity), two policy
+  breaks (Cristovam, Marina) and one conduct accusation under a plea deal (Palocci). Bolsonaro's
+  side has one policy break (Mandetta), one conduct accusation by a minister who resigned (Moro),
+  one under a plea deal (Cid) and two unclear (Bebianno, Santos Cruz). The one conduct accusation
+  made at a cost, by someone who left on his own, is Moro's.
+- Marina Silva's letter (May 13 2008), in her words as published: the decision was "em caráter
+  pessoal e irrevogável"; it came "das dificuldades que tenho enfrentado há algum tempo para dar
+  prosseguimento à agenda ambiental federal"; she named "as crescentes resistências encontradas
+  por nossa equipe junto a setores importantes do governo e da sociedade", and thanked Lula: "em
+  muitos momentos, só conseguimos avançar devido ao seu acolhimento direto e pessoal". ✔ The
+  letter as published by G1, via Rondoniagora.
 - **Both have a type-D testimony,** which the rule sets apart: a plea deal is not a statement
   against interest.
 - Not yet covered: Lula's third term (from 2023), Bolsonaro after 2022, governors, party leaders,

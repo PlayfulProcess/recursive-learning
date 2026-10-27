@@ -1,0 +1,323 @@
+<title>Breaks Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a sorting board. Each break is one card; grouping and filters move the cards between columns. */
+:root {
+  --bg: #f4f1ea; --surface: #fbfaf6; --ink: #1f2420; --mut: #5d655f; --line: #d9d4c7;
+  --accent: #177d56; --accent-soft: #e9f5ef;
+  --promise: #9a520c; --policy: #2c5c97; --conduct: #a3283a; --unclear: #6d716e;
+  --promise-soft: #f6eadb; --policy-soft: #e3ebf5; --conduct-soft: #f5e1e4; --unclear-soft: #ebebe8;
+  --f-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --f-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #161a18; --surface: #1e2320; --ink: #e8ebe6; --mut: #a2aaa4; --line: #343b37;
+  --accent: #5fc79b; --accent-soft: #1d3329;
+  --promise: #e3a15e; --policy: #8db4e6; --conduct: #ec8795; --unclear: #a9adaa;
+  --promise-soft: #3a2a19; --policy-soft: #1d2a3b; --conduct-soft: #3b1f25; --unclear-soft: #2a2d2b;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #161a18; --surface: #1e2320; --ink: #e8ebe6; --mut: #a2aaa4; --line: #343b37;
+  --accent: #5fc79b; --accent-soft: #1d3329;
+  --promise: #e3a15e; --policy: #8db4e6; --conduct: #ec8795; --unclear: #a9adaa;
+  --promise-soft: #3a2a19; --policy-soft: #1d2a3b; --conduct-soft: #3b1f25; --unclear-soft: #2a2d2b;
+  color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5 }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+header h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(2rem, 5vw, 2.9rem); line-height: 1.05; margin: 0 0 8px; text-wrap: balance }
+header p { margin: 0; max-width: 64ch; color: var(--mut) }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px }
+
+.controls { display: grid; gap: 14px; margin: 26px 0 18px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.row > .lab { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); min-width: 9.5em }
+button.pill { font: inherit; font-size: 14px; border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 5px 12px; border-radius: 999px; cursor: pointer; display: inline-flex; gap: 7px; align-items: center }
+button.pill:hover { border-color: var(--accent) }
+button.pill[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--ink) }
+button.pill.off { opacity: .45; text-decoration: line-through }
+button:focus-visible, .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.sw { width: 12px; height: 12px; border-radius: 3px; flex: none }
+.sw.promise { background: var(--promise) } .sw.policy { background: var(--policy) } .sw.conduct { background: var(--conduct) } .sw.unclear { background: var(--unclear) }
+.edge { width: 18px; height: 12px; border: 2px solid var(--ink); border-radius: 3px; flex: none }
+.edge.B { border-style: dashed } .edge.C { border-style: double; border-width: 4px } .edge.D { border-color: var(--mut); border-style: dotted }
+
+.board { display: grid; gap: 14px; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); align-items: start }
+@media (max-width: 760px) { .board { grid-template-columns: minmax(0, 1fr) } .row > .lab { min-width: 100% } }
+.col { min-width: 0; background: color-mix(in srgb, var(--surface) 60%, transparent); border: 1px solid var(--line); border-radius: 10px; padding: 12px }
+.col h2 { font-family: var(--f-display); font-weight: 400; font-size: 1.55rem; margin: 0 }
+.col .tally { font-family: var(--f-mono); font-size: 12px; color: var(--mut); margin: 2px 0 10px; font-variant-numeric: tabular-nums }
+.col .cards { display: grid; gap: 8px; min-height: 40px }
+.col .empty { font-size: 13px; color: var(--mut); font-style: italic }
+
+.card { position: relative; text-align: left; font: inherit; color: var(--ink); width: 100%; cursor: pointer;
+  background: var(--soft); border: 2px solid var(--hue); border-radius: 8px; padding: 9px 11px 10px 12px; display: grid; gap: 2px }
+.card.B { border-style: dashed } .card.C { border-style: double; border-width: 4px; padding: 7px 9px 8px 10px }
+.card.D { border-style: dotted; background: transparent; color: var(--mut) }
+.card.promise { --hue: var(--promise); --soft: var(--promise-soft) } .card.policy { --hue: var(--policy); --soft: var(--policy-soft) }
+.card.conduct { --hue: var(--conduct); --soft: var(--conduct-soft) } .card.unclear { --hue: var(--unclear); --soft: var(--unclear-soft) }
+.card .top { display: flex; justify-content: space-between; gap: 8px; font-family: var(--f-mono); font-size: 11.5px; color: var(--mut); font-variant-numeric: tabular-nums }
+.card .who { font-weight: 600; font-size: 15px; line-height: 1.25 }
+.card .what { font-size: 13.5px; color: var(--mut); line-height: 1.35 }
+.card[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--accent-soft) }
+.tag { font-family: var(--f-mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--hue) }
+
+.detail { margin-top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: grid; gap: 12px }
+.detail h3 { font-family: var(--f-display); font-weight: 400; font-size: 1.7rem; margin: 0; line-height: 1.1 }
+.detail .meta { font-family: var(--f-mono); font-size: 12px; color: var(--mut) }
+.detail dl { display: grid; grid-template-columns: 11em minmax(0, 1fr); gap: 6px 14px; margin: 0 }
+.detail dt { font-family: var(--f-mono); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--mut); padding-top: 2px }
+.detail dd { margin: 0; min-width: 0 }
+@media (max-width: 560px) { .detail dl { grid-template-columns: minmax(0, 1fr) } .detail dd { margin-bottom: 6px } }
+blockquote { margin: 0; padding: 10px 14px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 6px 6px 0 }
+blockquote p { margin: 0 0 6px; font-family: var(--f-display); font-size: 1.2rem; line-height: 1.3 }
+blockquote .gloss { font-family: var(--f-body); font-size: 13.5px; color: var(--mut); margin: 0 0 10px }
+blockquote .gloss:last-child { margin-bottom: 0 }
+.hint { color: var(--mut); font-size: 13.5px }
+.notes { margin-top: 26px; max-width: 72ch; color: var(--mut); font-size: 14px; display: grid; gap: 8px }
+.notes h2 { font-family: var(--f-display); font-weight: 400; font-size: 1.4rem; color: var(--ink); margin: 8px 0 0 }
+.notes p { margin: 0 }
+@media (prefers-reduced-motion: reduce) { .card { transition: none !important } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Voice record · test case · Brazil</div>
+    <h1>Who broke with the president, and over what</h1>
+    <p>Each card is one public break by someone who was inside a government: Lula's first two terms (2003–2010) and Bolsonaro's term (2019–2022), plus each side's plea-deal testimony. Colour says what the person said was broken. The edge says how the break happened. Group and filter to move the cards; tap one to read it.</p>
+  </header>
+
+  <section class="controls" aria-label="Arrange the board">
+    <div class="row" role="group" aria-label="Group by">
+      <span class="lab">Group by</span>
+      <button class="pill" id="g-side" data-group="side">President</button>
+      <button class="pill" id="g-broken" data-group="broken">What was broken</button>
+      <button class="pill" id="g-type" data-group="type">How it happened</button>
+      <button class="pill" id="g-none" data-group="none">One line, by date</button>
+    </div>
+    <div class="row" role="group" aria-label="What was broken">
+      <span class="lab">What was broken</span>
+      <button class="pill" id="f-promise" data-filter="broken" data-value="promise"><span class="sw promise"></span>A promise</button>
+      <button class="pill" id="f-policy" data-filter="broken" data-value="policy"><span class="sw policy"></span>A policy choice</button>
+      <button class="pill" id="f-conduct" data-filter="broken" data-value="conduct"><span class="sw conduct"></span>Conduct or ethics</button>
+      <button class="pill" id="f-unclear" data-filter="broken" data-value="unclear"><span class="sw unclear"></span>Unclear</button>
+    </div>
+    <div class="row" role="group" aria-label="How it happened">
+      <span class="lab">How it happened</span>
+      <button class="pill" id="f-A" data-filter="type" data-value="A"><span class="edge A"></span>Left and said why</button>
+      <button class="pill" id="f-B" data-filter="type" data-value="B"><span class="edge B"></span>Pushed out, then spoke</button>
+      <button class="pill" id="f-C" data-filter="type" data-value="C"><span class="edge C"></span>Spoke from inside</button>
+      <button class="pill" id="f-D" data-filter="type" data-value="D"><span class="edge D"></span>Plea-deal testimony</button>
+    </div>
+  </section>
+
+  <div class="board" id="board" aria-live="polite"></div>
+
+  <section class="detail" id="detail" aria-live="polite">
+    <p class="hint">Tap a card to read what was said, what it cost, how the president answered, and where it was checked.</p>
+  </section>
+
+  <section class="notes">
+    <h2>How to read it</h2>
+    <p><strong>What was broken.</strong> A <em>promise</em> means the person said the president did the opposite of what he had said he would do. A <em>policy choice</em> is a disagreement with a decision he never promised otherwise. <em>Conduct or ethics</em> is about honesty or the law in itself. The colour is the coding made here, from what the person said. Each card says why it was coded that way, and several are open to argument.</p>
+    <p><strong>How it happened.</strong> Leaving and saying why costs the most and is the strongest signal. Being pushed out first weakens it, since grievance is possible. Speaking from inside, by vote or letter, spreads the cost. Plea-deal testimony earns the speaker leniency, so it is shown but is not a statement against interest.</p>
+    <p><strong>What this is not.</strong> A score, or a verdict on either president. It covers federal ministers and party members only, and not Lula's third term or Bolsonaro after 2022. Marks: ✔ checked on Oct 27 2026 (the source is named), ◇ not yet checked.</p>
+  </section>
+</div>
+
+<script>
+const SIDES = { lula: "Lula · 2003–2010", bolsonaro: "Bolsonaro · 2019–2022" };
+const BROKEN = { promise: "A promise", policy: "A policy choice", conduct: "Conduct or ethics", unclear: "Unclear" };
+const TYPES = { A: "Left and said why", B: "Pushed out, then spoke", C: "Spoke from inside", D: "Plea-deal testimony" };
+
+const EVENTS = [
+  { id: "heloisa", side: "lula", date: "2003-12", shown: "Dec 2003", type: "C", broken: "promise",
+    who: "Heloísa Helena and three deputies", role: "PT senator, with deputies Luciana Genro, Babá and João Fontes",
+    what: "Voted against the government's pension reform",
+    cost: "Expelled from the PT by its national leadership, 55 votes to 27",
+    answer: "Expelled. They went on to found the PSOL in 2004.",
+    why: "They called the reform neoliberal and said it went against what the PT had stood for, so this is coded as a claimed broken promise. Lula's 2002 \"Carta ao Povo Brasileiro\" had already signalled continuity in economic policy, which weakens that claim (◇ on pensions specifically).",
+    status: "✔ Congresso em Foco; Movimento. Sources give the date as Dec 14 or Oct 2003." },
+  { id: "cristovam", side: "lula", date: "2004-01-23", shown: "Jan 23 2004", type: "B", broken: "policy",
+    who: "Cristovam Buarque", role: "Minister of Education",
+    what: "Dismissed by phone while abroad; later said the social agenda had stopped being a priority",
+    cost: "His ministry",
+    answer: "Tarso Genro was named the same day. Cristovam called the manner of it a lack of consideration; in 2022 he said he held no grudge.",
+    why: "A disagreement over priorities in education and illiteracy, not a claim that a promise or the law was broken.",
+    status: "✔ Agência Brasil, Jan 23 2004; Congresso em Foco. The date he left the PT ◇." },
+  { id: "marina", side: "lula", date: "2008-05-13", shown: "May 13 2008", type: "A", broken: "policy",
+    who: "Marina Silva", role: "Minister of the Environment",
+    what: "Resigned by letter, announcing rather than asking",
+    cost: "Her ministry. She left the PT in 2009 (◇).",
+    answer: "Lula accepted. The presidency, not Marina, released the letter; Estadão reported Lula was irritated that she announced her decision instead of asking.",
+    quote: [
+      ["…em caráter pessoal e irrevogável…", "…as a personal and irrevocable decision…"],
+      ["Essa decisão decorre das dificuldades que tenho enfrentado há algum tempo para dar prosseguimento à agenda ambiental federal.", "This decision comes from the difficulties I have faced for some time in carrying the federal environmental agenda forward."],
+      ["…as crescentes resistências encontradas por nossa equipe junto a setores importantes do governo e da sociedade.", "…the growing resistance our team met from important parts of the government and of society. (She wrote that Lula was a witness to it.)"],
+      ["…em muitos momentos, só conseguimos avançar devido ao seu acolhimento direto e pessoal.", "…at many moments, we only moved forward because of your direct and personal support."]
+    ],
+    why: "She named resistance to the environmental agenda inside the government and in society, and thanked Lula for his personal support. A policy break; she did not accuse him of breaking a promise or of misconduct.",
+    status: "✔ The letter as published by G1, via Rondoniagora; JCNET/Estadão; Senado clipping. English glosses made here." },
+  { id: "palocci", side: "lula", date: "2017-09-06", shown: "Sep 6 2017", type: "D", broken: "conduct",
+    who: "Antonio Palocci", role: "Former finance minister and chief of staff",
+    what: "Told Judge Moro of a \"pacto de sangue\" (a blood pact) with Odebrecht",
+    cost: "None he bore: the testimony came with a plea deal",
+    answer: "Lula denied it and said Palocci lied to win the deal's benefits. Folha found contradictions in the amounts and dates across his statements.",
+    why: "An accusation of corruption, made under a plea deal, so it is not counted as a statement against interest.",
+    status: "✔ Carta Capital, JB, Poder360. No final ruling on these claims found." },
+  { id: "bebianno", side: "bolsonaro", date: "2019-02-18", shown: "Feb 18 2019", type: "B", broken: "unclear",
+    who: "Gustavo Bebianno", role: "Secretary-General of the Presidency",
+    what: "Dismissed after a crisis over the party's candidacies and friction with the president's son Carlos; later a critic",
+    cost: "His ministry",
+    answer: "Announced by the presidential spokesman. Gen. Floriano Peixoto replaced him.",
+    why: "The candidacy crisis touched him too, so what he said afterwards reads as both grievance and testimony.",
+    status: "✔ Poder360; Tribuna PR. His later statements not yet opened ◇." },
+  { id: "santoscruz", side: "bolsonaro", date: "2019-06-13", shown: "Jun 13 2019", type: "B", broken: "unclear",
+    who: "Gen. Carlos Alberto dos Santos Cruz", role: "Secretary of Government",
+    what: "Dismissed for \"lack of political-ideological alignment\" (O Globo, as cited)",
+    cost: "His ministry",
+    answer: "Gen. Luiz Eduardo Ramos replaced him.",
+    why: "What he said after leaving has not been checked yet, so the card stays unclear.",
+    status: "✔ The dismissal (Tribuna de Jundiaí, Monitor Mercantil). Later criticism ◇." },
+  { id: "mandetta", side: "bolsonaro", date: "2020-04-16", shown: "Apr 16 2020", type: "B", broken: "policy",
+    who: "Luiz Henrique Mandetta", role: "Minister of Health",
+    what: "Dismissed after clashes over social distancing and chloroquine",
+    cost: "His ministry, early in the pandemic",
+    answer: "Nelson Teich replaced him and left within a month. In 2021 Mandetta told the Senate Covid inquiry he had seen a draft at the presidency to add Covid to chloroquine's label.",
+    why: "Coded as policy, the pandemic response. The label episode leans toward conduct.",
+    status: "✔ Correio; Congresso em Foco; IstoÉ." },
+  { id: "moro", side: "bolsonaro", date: "2020-04-24", shown: "Apr 24 2020", type: "A", broken: "conduct",
+    who: "Sergio Moro", role: "Minister of Justice",
+    what: "Resigned in a televised statement and accused the president of interfering in the Federal Police",
+    cost: "His ministry",
+    answer: "Bolsonaro called the accusations baseless and said Moro acted out of ego. The prosecutor-general asked the Supreme Court to open an inquiry.",
+    said: "He said the president wanted a police chief he could call to ask for information and \"intelligence reports\" (reported).",
+    why: "An accusation of interference in a police force, so conduct. ◇ He may also have said he had been promised a free hand, which would add a broken promise.",
+    status: "✔ Global News; CBC; Latino Rebels, Apr 2020." },
+  { id: "cid", side: "bolsonaro", date: "2023-09-09", shown: "Sep 9 2023", type: "D", broken: "conduct",
+    who: "Lt. Col. Mauro Cid", role: "Former aide-de-camp",
+    what: "Plea deal with the Federal Police approved by Justice Alexandre de Moraes",
+    cost: "None he bore: the deal brought provisional release",
+    answer: "The prosecutor-general's office objected to police-led plea deals; the court kept the deal in 2024 after Cid clarified omissions the police had pointed out.",
+    why: "Testimony under a plea deal across several inquiries, the Saudi jewels among them. Not counted as a statement against interest.",
+    status: "✔ A Gazeta; O Povo; Congresso em Foco." }
+];
+
+const state = { group: "side", off: { broken: new Set(), type: new Set() }, open: null };
+try { const g = localStorage.getItem("bb-group"); if (g) state.group = g; } catch (e) {}
+
+const board = document.getElementById("board");
+const detail = document.getElementById("detail");
+const cards = new Map();
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+for (const e of EVENTS) {
+  const b = document.createElement("button");
+  b.className = `card ${e.type} ${e.broken}`;
+  b.id = "card-" + e.id;
+  b.setAttribute("aria-expanded", "false");
+  b.innerHTML = `<span class="top"><span>${esc(e.shown)}</span><span class="tag">${esc(BROKEN[e.broken])}</span></span>
+    <span class="who">${esc(e.who)}</span><span class="what">${esc(e.what)}</span>`;
+  b.addEventListener("click", () => { state.open = state.open === e.id ? null : e.id; showDetail(); });
+  cards.set(e.id, b);
+}
+
+function groups() {
+  if (state.group === "side") return Object.entries(SIDES);
+  if (state.group === "broken") return Object.entries(BROKEN);
+  if (state.group === "type") return Object.entries(TYPES);
+  return [["all", "All breaks, oldest first"]];
+}
+function keyOf(e) { return state.group === "none" ? "all" : e[state.group]; }
+function visible(e) { return !state.off.broken.has(e.broken) && !state.off.type.has(e.type); }
+
+function tally(list) {
+  const n = { A: 0, B: 0, C: 0, D: 0 };
+  list.forEach(e => n[e.type]++);
+  const parts = [];
+  if (n.A) parts.push(`${n.A} left`); if (n.B) parts.push(`${n.B} pushed out`);
+  if (n.C) parts.push(`${n.C} from inside`); if (n.D) parts.push(`${n.D} plea deal`);
+  return parts.length ? parts.join(" · ") : "nothing under these filters";
+}
+
+function render() {
+  const first = new Map();
+  cards.forEach((el, id) => { if (el.isConnected) first.set(id, el.getBoundingClientRect()); });
+
+  const gs = groups();
+  board.style.setProperty("--cols", Math.min(gs.length, 4));
+  board.innerHTML = "";
+  for (const [k, label] of gs) {
+    const list = EVENTS.filter(e => keyOf(e) === k && visible(e)).sort((a, b) => a.date.localeCompare(b.date));
+    const col = document.createElement("section");
+    col.className = "col";
+    col.innerHTML = `<h2>${esc(label)}</h2><div class="tally">${esc(tally(list))}</div>`;
+    const body = document.createElement("div");
+    body.className = "cards";
+    if (!list.length) body.innerHTML = `<span class="empty">None</span>`;
+    list.forEach(e => body.appendChild(cards.get(e.id)));
+    col.appendChild(body);
+    board.appendChild(col);
+  }
+
+  document.querySelectorAll("[data-group]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.group === state.group)));
+  document.querySelectorAll("[data-filter]").forEach(b => {
+    const on = !state.off[b.dataset.filter].has(b.dataset.value);
+    b.setAttribute("aria-pressed", String(on)); b.classList.toggle("off", !on);
+  });
+
+  if (reduce) return;
+  cards.forEach((el, id) => {
+    if (!el.isConnected) return;
+    const a = first.get(id), z = el.getBoundingClientRect();
+    el.style.transition = "none";
+    if (a) { el.style.transform = `translate(${a.left - z.left}px, ${a.top - z.top}px)`; }
+    else { el.style.transform = "scale(.96)"; el.style.opacity = "0.2"; }
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.style.transition = "transform 420ms cubic-bezier(.2,.7,.2,1), opacity 300ms";
+      el.style.transform = ""; el.style.opacity = "";
+    }));
+  });
+}
+
+function showDetail() {
+  cards.forEach((el, id) => el.setAttribute("aria-expanded", String(id === state.open)));
+  const e = EVENTS.find(x => x.id === state.open);
+  if (!e) { detail.innerHTML = `<p class="hint">Tap a card to read what was said, what it cost, how the president answered, and where it was checked.</p>`; return; }
+  const q = e.quote ? `<blockquote>${e.quote.map(([pt, en]) => `<p lang="pt">${esc(pt)}</p><p class="gloss">${esc(en)}</p>`).join("")}</blockquote>` : "";
+  detail.innerHTML = `
+    <div class="meta">${esc(e.shown)} · ${esc(SIDES[e.side])}</div>
+    <h3>${esc(e.who)}</h3>
+    <div class="meta">${esc(e.role)}</div>
+    ${q}
+    <dl>
+      <dt>What happened</dt><dd>${esc(e.what)}${e.said ? ". " + esc(e.said) : ""}</dd>
+      <dt>What was broken</dt><dd><strong>${esc(BROKEN[e.broken])}.</strong> ${esc(e.why)}</dd>
+      <dt>How it happened</dt><dd>${esc(TYPES[e.type])}</dd>
+      <dt>What it cost</dt><dd>${esc(e.cost)}</dd>
+      <dt>The answer</dt><dd>${esc(e.answer)}</dd>
+      <dt>Checked</dt><dd>${esc(e.status)}</dd>
+    </dl>`;
+}
+
+document.querySelectorAll("[data-group]").forEach(b => b.addEventListener("click", () => {
+  state.group = b.dataset.group;
+  try { localStorage.setItem("bb-group", state.group); } catch (e) {}
+  render();
+}));
+document.querySelectorAll("[data-filter]").forEach(b => b.addEventListener("click", () => {
+  const s = state.off[b.dataset.filter];
+  s.has(b.dataset.value) ? s.delete(b.dataset.value) : s.add(b.dataset.value);
+  render();
+}));
+
+render();
+showDetail();
+</script>

@@ -22,6 +22,15 @@ The seed: we may be living a transition that rhymes with the end of the Western 
 the slow move into what is called feudalism. The strand asks how the rhyme could hold, where it
 breaks, and what it suggests to watch for.
 
+## Strand 3, to run separately: new religions around AI and UFOs
+
+PlayfulProcess, Oct 27 2026: how the new UFO religions, and the groups said to worship AI in
+San Francisco, could relate to this. Not started. A first pass would be: what exists (named
+groups and their own pages, dated), what scholars of new religious movements say about them,
+and where it touches the other strands (the Roman rhyme's "keepers of meaning" row; who gains
+trust and authority when institutions lose it). People and groups described from their own
+pages, no labels such as "cult" unless quoting someone, and never naming private people.
+
 ## Where they meet
 
 Feudal custom had a word for a public, formal break: *diffidatio*, the renunciation of fealty that
