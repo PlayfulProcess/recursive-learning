@@ -11,8 +11,10 @@ word: not a repeat, a likeness of shape that helps notice things.
 - **"Feudalism" is a contested construct.** Elizabeth A. R. Brown, "The Tyranny of a Construct:
   Feudalism and Historians of Medieval Europe", *American Historical Review* 79:4 (Oct 1974),
   1063-1088, argued the term has too many definitions and never existed uniformly. Susan Reynolds,
-  *Fiefs and Vassals* (1994), pressed further. ✔ Brown, from the AHR issue page and summaries, Oct
-  27 2026; Reynolds ◇.
+  *Fiefs and Vassals: The Medieval Evidence Reinterpreted* (Oxford, 1994), pressed further: the
+  fief and vassalage as usually taught rest on a misreading of the sources, built by later
+  lawyers. ✔ Brown, from the AHR issue page and summaries; Reynolds, OUP page and the Speculum
+  review (Cheyette), Oct 27 2026.
 - **"The fall" is argued over too.** Peter Brown, *The World of Late Antiquity* (1971), framed a
   slow transformation; Bryan Ward-Perkins, *The Fall of Rome and the End of Civilization* (2005),
   and Peter Heather, *The Fall of the Roman Empire* (2005), argued it was a real and violent end in
@@ -22,8 +24,10 @@ word: not a repeat, a likeness of shape that helps notice things.
   (2023): cloud capital, platforms as fiefs, "cloud rent", users as "cloud serfs". Evgeny Morozov,
   "Critique of Techno-Feudal Reason", *New Left Review* 133 (2022): it is still capitalism, and the
   feudal vocabulary is shared from the left to the neo-reactionary right; Cédric Durand replied in
-  NLR 136. ✔ from the NLR pages and reviews, Oct 27 2026. Jodi Dean and Joel Kotkin also use the
-  frame ◇.
+  NLR 136. ✔ from the NLR pages and reviews, Oct 27 2026. From the left and the right in the same
+  year: Jodi Dean, "Neofeudalism: The End of Capitalism?" (*Los Angeles Review of Books*, May
+  2020), and Joel Kotkin, *The Coming of Neo-Feudalism* (Encounter, 2020); Dean cites Kotkin.
+  ✔ HWS news pages, Quillette review, CounterPunch, Oct 27 2026.
 
 So the rhyme holds between two constructs. That is fine for a heuristic; it is the reason to say
 "rhyme" and not "repeat".
@@ -33,12 +37,12 @@ So the rhyme holds between two constructs. That is fine for a heuristic; it is t
 | Then (roughly 3rd to 9th century, West) | Candidate rhyme now | Where it breaks | Status (then) |
 |---|---|---|---|
 | A central state that taxes and protects, then struggles to do both | states that cannot regulate, tax or keep pace with firms bigger than many states | today's states still tax, wage war and hold the courts | ◇ |
-| **Patrocinium**: small farmers put themselves and their land under a powerful patron to escape tax collectors and danger | developers, writers and small firms building on one platform or one model provider for reach and protection | entry and exit are far easier; no one is chained | ◇ Salvian, *De gubernatione Dei* book 5, is the usual source; a study of patronage in Salvian (SEDICI, UNLP) found, the passage not yet opened |
+| **Patrocinium**: small farmers put themselves and their land under a powerful patron to escape tax collectors and danger | developers, writers and small firms building on one platform or one model provider for reach and protection | entry and exit are far easier; no one is chained | ◇ the passage. Salvian, *De gubernatione Dei* (after 439), book 5 is the usual source; its contents list it as "the oppression of the poor by the powerful throughout the Roman Empire" (Sanford's translation, 1930). The passage itself not yet opened: CCEL and tertullian.org were unreachable from the research machine on Oct 27 2026. A study of patronage in Salvian exists (SEDICI, UNLP) |
 | **The colonate**: Constantine's law of 332 (Theodosian Code 5.17.1) bound tenant farmers to their place of origin; a harbourer returned them and paid the tax owed | lock-in: data, identity, audiences and tools that cannot be carried away; terms of service as the law of the estate | lock-in is economic, not legal; portability laws exist (the EU's) | ✔ the law's content from secondary sources (Sirks, *The Colonate in the Roman Empire*, Cambridge 2024; Britannica), Oct 27 2026; scholars differ on whom it covered |
 | Land as the source of power | compute, chips, energy and data centres as the land; the frontier labs and the clouds as the great estates | compute is built, not given; it loses value fast | — |
 | **Commendation and vassalage**: protection and land in return for service and loyalty | startups taking compute credits and investment from the big clouds in return for exclusivity; nations "aligning" with a compute bloc | contracts, not oaths; but loyalty clauses and non-disparagement terms rhyme (see the voice record) | ◇ |
 | Private armies and private justice on the estates | private security, content moderation and dispute rules run by platforms | public courts still sit above them | ◇ |
-| **Monasteries** keeping the books through the break | archives, open-source models, open data, libraries; the Internet Archive | ◇ the monastery story itself is debated | ◇ |
+| **Monasteries** keeping the books through the break: Cassiodorus founded Vivarium in Calabria around 554, where monks copied Greek and Latin books, and his *Institutiones* set rules for copying | archives, open-source models, open data, libraries; the Internet Archive, which lost *Hachette v. Internet Archive* on appeal (Sep 4 2024) over lending scanned books | how deliberate Cassiodorus's "salvage" was is debated, and Vivarium seems not to have outlived him long | ✔ Vivarium: Encyclopedia.com, historyofinformation.com; Hachette: Wikipedia, Authors Alliance, Oct 27 2026 |
 | **Diffidatio**: the formal renunciation of fealty that made resistance legitimate | public breaks from inside the labs (the voice record) | — | ✔ Cambridge chapter abstract; Merriam-Webster, Oct 27 2026 |
 
 ## How the rhyme could hold (the heuristic)
@@ -66,10 +70,11 @@ So the rhyme holds between two constructs. That is fine for a heuristic; it is t
 The rhyme beyond the digital (polarization, populism, corruption, trust, deglobalization, sorting,
 security) continues in `NOTES-roman-rhyme-wider.md`.
 
-Open in translation: CTh 5.17.1 (Pharr's English translation of the Theodosian Code, 1952, is
-in copyright ◇; cite and paraphrase), Salvian book 5 (Sanford's English translation, 1930, on
-CCEL: https://www.ccel.org/ccel/s/salvian/govt.html, status to check). Then fill the table with one
-dated modern case per row.
+Open in translation: CTh 5.17.1 (Clyde Pharr's English translation of the Theodosian Code,
+Princeton, 1952; whether its copyright was renewed is not checked, so treat it as in copyright:
+cite and paraphrase), Salvian book 5 (Eva M. Sanford's translation, Columbia, 1930; CCEL notes its
+copyright was not renewed, so it is public domain in the USA: https://www.ccel.org/ccel/s/salvian/govt.html;
+its status in Brazil not checked). Then fill the table with one dated modern case per row.
 
 ## Sources opened Oct 27 2026
 
@@ -82,3 +87,13 @@ dated modern case per row.
 - https://resolve-he.cambridge.org/core/books/colonate-in-the-roman-empire/colonate-between-theodosius-code-and-diocletian-and-the-third-century-438293268249/D50F8AFEE15ACE52DDF61A8D6C745930
 - https://sedici.unlp.edu.ar/handle/10915/171165
 - https://www.cambridge.org/core/books/treason-and-masculinity-in-medieval-england/tyranny-revenge-and-manly-honour-13978/FC21FC5E68EDDBD5E62A637BA9ABFBC2
+- https://academic.oup.com/book/47420/chapter/422386497
+- https://faculty.umb.edu/gary_zabel/Courses/Phil%20281b/Philosophy%20of%20Magic/Dante.%20etc/Philosophers/End/bluedot/reviews.html
+- https://www.hws.edu/news/current/dean-on-what-comes-after-capitalism.aspx
+- https://quillette.com/2020/06/11/the-coming-of-neo-feudalism-a-review
+- https://www.counterpunch.org/2020/05/29/does-neo-feudalism-define-our-current-epoch/
+- https://ccel.org/ccel/salvian/govt.i.html
+- https://www.encyclopedia.com/science/dictionaries-thesauruses-pictures-and-press-releases/cassiodorus-senator-flavius-magnus-aurelius
+- https://historyofinformation.com/detail.php?id=167
+- https://en.wikipedia.org/wiki/Hachette_v._Internet_Archive
+- https://www.authorsalliance.org/2024/09/05/hachette-v-internet-archive-update-second-circuit-court-of-appeals-rules-against-internet-archive/

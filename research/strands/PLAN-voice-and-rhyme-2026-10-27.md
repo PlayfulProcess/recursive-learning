@@ -34,8 +34,8 @@ work could hold both: a timeline of the new lords, with the breaks marked on it.
 | # | Step | Session | Status |
 |---|---|---|---|
 | 1 | Seed notes for both strands, sources checked by web search where marked | this one | done |
-| 2 | Voice record: about 25 events, each from the speaker's own words (post, letter, filing) | next | open |
-| 3 | Roman rhyme: read the primary anchors (CTh 5.17.1, Salvian book 5) in a translation; fill the rhyme table | next | open |
+| 2 | Voice record: about 25 events, each from the speaker's own words (post, letter, filing) | Oct 27 night | 24 events and 9 Brazil events, under a counting rule written first; mostly from news reports, the speakers' own texts still to open |
+| 3 | Roman rhyme: read the primary anchors (CTh 5.17.1, Salvian book 5) in a translation; fill the rhyme table | Oct 27 night | the table widened (`NOTES-roman-rhyme-wider.md`) and most ◇ checked; Salvian's passage still unopened (the hosts were unreachable) |
 | 4 | She picks a form: Record (a grammar of events), Play (the insider game), or Futures (a film) | hers | open |
 | 5 | Build the one she picks, on an assembled site, checked at 1280 and 375 | after 4 | open |
 
