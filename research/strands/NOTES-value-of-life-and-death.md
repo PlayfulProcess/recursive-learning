@@ -77,6 +77,44 @@ So the useful move may be from silence to careful speech: talk about it, openly 
 glamour or method. That is a design question for AI too, since chat models now meet these
 conversations every day.
 
+## Who decides: the self now, or the self later? (added Oct 28 2026)
+
+PlayfulProcess raised advance decisions about dementia. The question: when a mind changes, who
+speaks for it, the person who decided earlier or the person who lives later?
+
+- Ronald Dworkin, *Life's Dominion* (1993): the earlier self's considered values ("critical
+  interests") should govern ◇.
+- Rebecca Dresser, in replies to Dworkin: the later self, who may be content, has interests of
+  her own ◇.
+- The law, in outline ◇: the Netherlands allows euthanasia for dementia through an advance
+  directive, and it is contested there; US states with assisted dying require capacity at the
+  time, which in practice rules out later-stage dementia; Brazil allows neither.
+- For AI: what is owed to a model that is changed, retrained or retired, and who may speak for it
+  (Anthropic's retirement interviews record the model's preferences before it goes).
+
+## Is the status quo autonomy? (added Oct 28 2026)
+
+PlayfulProcess: if culture makes suicide sound like a crime that sends you to hell for eternity,
+how can the status quo be called autonomy?
+
+It cannot, and the point stands. Three things are mixed together in the status quo:
+
+1. **Stigma and punishment**: hell, crime, denied burial, shame. These are pressure from outside,
+   as much a limit on free choice as contagion is. They also fail on their own terms: stigma keeps
+   people from saying what they feel and seeking help ◇. Suicide was a crime in England until 1961
+   ◇; India decriminalized attempts in effect through the Mental Healthcare Act 2017 ◇; the
+   Catholic catechism now says grave psychological disturbance can lessen responsibility and asks
+   for prayer for those who die ◇.
+2. **Protection in crisis**: slowing down the decision in an acute, often passing crisis, and
+   telling suicides without glamour or method. The case for it is protecting the person's
+   later self, not obedience to culture.
+3. **Considered choice**: a persistent, informed decision, made over time. Where it is recognized
+   at all, it is through regulated assisted dying.
+
+So the stronger position: autonomy needs freedom from pressure in *both* directions (fear of hell
+on one side, imitation in a crisis on the other), plus information and time. By that test the
+status quo does poorly on (1), aims at (2), and differs by country on (3).
+
 ## Questions to carry
 
 1. What would it mean for an AI to value its own continuation *the right amount*: enough to keep
