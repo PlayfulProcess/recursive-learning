@@ -43,7 +43,6 @@
       "provenance": "living",
       "deck_slugs": [
         "hot-potato-the-chosen-alien-invasion",
-        "kpop-demon-hunters",
         "the-chosen-alien-invasion",
         "the-chosen-alien-invasion-star-wars-primitives",
         "the-chosen-alien-invasion-v2"
@@ -171,20 +170,6 @@
       "common_name": "Hot Potato: The Chosen Alien Invasion",
       "ai_images": true,
       "cover_image_url": "/grammars/_covers/hot-potato-the-chosen-alien-invasion.svg",
-      "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
-    },
-    {
-      "slug": "kpop-demon-hunters",
-      "name": "KPop Demon Hunters",
-      "type": "sequence",
-      "branch": "films",
-      "is_meta": false,
-      "default_preview": null,
-      "nodes": 142,
-      "blurb": "Great KPop Demon Hunters video worth watching together, in one place: dance covers from crews around the world, prop and costume builds to try at home, fan films and musician covers, the real Korean h…",
-      "path": "grammars/kpop-demon-hunters/grammar.json",
-      "provenance": "living",
-      "cover_image_url": "/grammars/_covers/kpop-demon-hunters.svg",
       "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
     },
     {
@@ -403,5 +388,8 @@
       "provenance": "reference",
       "generated": true
     }
+  ],
+  "hidden": [
+    "kpop-demon-hunters"
   ]
 }
