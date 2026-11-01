@@ -71,10 +71,9 @@ resolve in the assembled layout. Check at 1280 and 375 px.
 Since Oct 13 2026 the tabs are **the six rooms** (`ROOMS`), entered in any order: Method (About,
 the courses and studies), Words (with Ideas as a draft lens), Record (`/map/`), Play
 (`/pages/play.html`), Futures (the explainers, `/#futures`) and Take part (`/pages/take-part.html`
-and the Institutions), then GitHub. No page moved; a room is a menu. The rooms map onto the
-groups in `grammars/repository.json` (Method: Courses, Studies; Words: Words, Ideas; Record:
-Record; Play: Games; Futures: Films, Other; Take part: Record's institutions), whose names are
-unchanged. Its prefix is root-relative (`PFX = '/'`): tarot's depth formula reads `/glossary/` as
+and the Institutions), then GitHub. No page moved; a room is a menu. The app shows
+`grammars/repository.json` as three groups since Nov 1 2026 (her word: Courses, Studies,
+Grammars; KPop Demon Hunters out); the rooms are the site's own menus. Its prefix is root-relative (`PFX = '/'`): tarot's depth formula reads `/glossary/` as
 the root. `active` keys: `home`, `method`, `words`, `sources`, `ideas`, `play`, `futures`,
 `takepart`, `institutions` (each lights one room); on `/viewers/*` the tab follows the grammar in
 `?src=`.

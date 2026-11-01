@@ -218,7 +218,7 @@ def check_collection(g_all):
         pend("grammars/_collection.json", GENERATED["grammars/_collection.json"][1]); return
     c = load(p)
     entries = c.get("grammars") or []
-    listed = {e.get("slug") for e in entries}
+    listed = {e.get("slug") for e in entries} | set(c.get("hidden") or [])
     folders = {q.parent.name for q in GR.glob("*/grammar.json")}
     for s in sorted(folders - listed): err("collection", f"grammar folder {s!r} is not in _collection.json")
     for s in sorted(listed - folders): err("collection", f"_collection.json lists {s!r}, which has no grammars/{s}/grammar.json")

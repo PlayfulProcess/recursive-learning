@@ -70,9 +70,8 @@
   // [href, label, external?] — each pill links to its hub; the dropdown lists the rest.
   // THE SIX ROOMS (Oct 13 2026, the strategy draft's cross-section): Method, Words, Record, Play,
   // Futures, Take part, entered in any order. Every page keeps its address; a room is a menu.
-  // The rooms map onto the groups in grammars/repository.json (the app's groups are unchanged):
-  //   Method <- Courses, Studies · Words <- Words, Ideas · Record <- Record · Play <- Games
-  //   Futures <- Films, Other (the Ekho map, once she approves it) · Take part <- Record's institutions
+  // The app shows grammars/repository.json as three groups since Nov 1 2026 (Courses, Studies,
+  // Grammars); the rooms are the site's own menus and did not change with it.
   const METHOD_MENU = [
     [PFX + '#loop',                       'The loop, at four sizes'],
     [PFX + 'pages/about.html',            'About &amp; method'],

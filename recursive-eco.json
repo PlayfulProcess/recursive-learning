@@ -7,12 +7,12 @@
     "type": "repo",
     "icon": "🔁",
     "gradient": "from-slate-50 to-emerald-100 dark:from-slate-950 dark:to-emerald-950",
-    "description": "Recursive eco-improvement: the film, the game, and the grammars about AI and how we learn with it — one channel, bound to its GitHub repo.",
+    "description": "Courses to learn the tools, studies to read slowly, and grammars to play: films, games and the examples the courses build.",
     "landing_url": null,
     "hero": {
       "title": "Recursive Learning",
       "subtitle": "We're here to do recursive eco-improvement — and to test that hypothesis at the sizes we actually work at.",
-      "body_md": "Recursive self-improvement can fail in several ways, because a thing that improves itself still has to adapt with its environment, or adapt the environment. This channel is where that hypothesis gets tested small: films assembled out of other people's footage, courses that teach the tools, and grammars that hold the questions rather than the answers.\n\nEverything here is a grammar — a sequence you can open, star, fork, and correct. Open one, star it, and it lands on your own channel."
+      "body_md": "Recursive self-improvement can fail in several ways, because a thing that improves itself still has to adapt with its environment, or adapt the environment. This repository is where that hypothesis gets tested small: films assembled out of other people's footage, courses that teach the tools, and grammars that hold the questions rather than the answers.\n\nEverything here is a grammar you can open, star, copy and correct. Star one and it lands in your Starred."
     }
   },
   "grammars": {

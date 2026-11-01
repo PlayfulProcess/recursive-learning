@@ -59,7 +59,6 @@ BRANCH_OF = {
     "the-chosen-alien-invasion": "films",
     "the-chosen-alien-invasion-v2": "films",
     "the-chosen-alien-invasion-star-wars-primitives": "films",
-    "kpop-demon-hunters": "films",
     "create-grammars-with-ai": "courses",
     "create-magic-stories-for-your-kids-with-ai": "courses",
     "vibe-coding-101-tools-and-process": "courses",
@@ -72,6 +71,9 @@ BRANCH_OF = {
     "institutions-of-alignment": "record",
     META: "meta",
 }
+# Grammar folders kept in the repo (the app still syncs them) but left out of the gallery and the
+# deck switcher. KPop Demon Hunters: her word, Nov 1 2026, "take out kpop demon hunters".
+HIDDEN = {"kpop-demon-hunters"}
 # A short name where the grammar's own name does not tell two grammars apart (the home gallery,
 # the cards viewer's deck switcher and the line cover all use it).
 COMMON_NAME = {
@@ -117,6 +119,8 @@ def main():
     entries, covers = [], {}
     for path in sorted(glob.glob(str(ROOT / "grammars" / "*" / "grammar.json"))):
         slug = os.path.basename(os.path.dirname(path))
+        if slug in HIDDEN:
+            continue
         g = json.loads(Path(path).read_text(encoding="utf-8"))
         branch = BRANCH_OF.get(slug, "other")
         e = {
@@ -168,6 +172,7 @@ def main():
                       "deck_slugs": [e["slug"] for e in entries if e["branch"] == bid]}
                      for bid, bname, prov in BRANCHES if any(e["branch"] == bid for e in entries)],
         "grammars": entries,
+        "hidden": sorted(HIDDEN),
     }
     write_bytes(a.out, OUT_REL, json_bytes(collection))
     for slug, svg in covers.items():
