@@ -46,6 +46,7 @@ BRANCHES = [
     ("films",   "Films — sequences cut from public footage",           "living"),
     ("courses", "Courses — how the tools are made and used",           "living"),
     ("studies", "Studies — longer readings",                           "living"),
+    ("contact", "2027 — contact with non-human intelligence, a draft",  "living"),
     ("other",   "Other",                                               "living"),
     ("record",  "Record — sources and institutions, dated",            "record"),
     ("meta",    "The castable pool",                                   "reference"),
@@ -55,6 +56,7 @@ BRANCH_OF = {
     "ideas-of-alignment": "ideas",
     "as-if-hot-potato-edition": "games",
     "landlords-game-live-again": "games",
+    "contact-2027": "contact",
     "hot-potato-the-chosen-alien-invasion": "films",
     "the-chosen-alien-invasion": "films",
     "the-chosen-alien-invasion-v2": "films",
@@ -84,7 +86,7 @@ COMMON_NAME = {
 }
 # Kicker line on a line cover (short; set in capitals).
 KICKER = {"words": "Words", "ideas": "Ideas · draft", "games": "Game deck", "films": "Film",
-          "courses": "Course", "studies": "Study", "other": "Grammar", "record": "Record", "meta": "All decks"}
+          "courses": "Course", "studies": "Study", "contact": "2027 · draft", "other": "Grammar", "record": "Record", "meta": "All decks"}
 COMMONS = re.compile(r"^https://(upload|commons)\.wikimedia\.org/", re.I)
 
 

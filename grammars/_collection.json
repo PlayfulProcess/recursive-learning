@@ -71,6 +71,14 @@
       ]
     },
     {
+      "id": "contact",
+      "name": "2027 — contact with non-human intelligence, a draft",
+      "provenance": "living",
+      "deck_slugs": [
+        "contact-2027"
+      ]
+    },
+    {
       "id": "other",
       "name": "Other",
       "provenance": "living",
@@ -330,6 +338,20 @@
       "provenance": "living",
       "cover_image_url": "/grammars/_covers/the-freedom-paradox.svg",
       "cover_credit": "a plain line cover (her spiral and the name), built by scripts/build_collection.py"
+    },
+    {
+      "slug": "contact-2027",
+      "name": "2027 — Contact, a draft deck",
+      "type": "tarot",
+      "branch": "contact",
+      "is_meta": false,
+      "default_preview": null,
+      "nodes": 23,
+      "blurb": "Twenty-two cards on contact with non-human intelligence: the claimed extraterrestrial kind (from the plurality of worlds through Kardec, Theosophy, the 1950s contactees, the Law of One, Bashar and Chi…",
+      "path": "grammars/contact-2027/grammar.json",
+      "provenance": "living",
+      "cover_image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/FlammarionWoodcut.jpg?width=480",
+      "cover_credit": "the grammar's own cover, a public-domain work on Wikimedia Commons"
     },
     {
       "slug": "recursive-map",
