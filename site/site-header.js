@@ -5,7 +5,7 @@
  *
  * Usage:  <script src="/site-header.js"></script>
  *         <site-header active="words"></site-header>
- * `active` is one of: home, method, words, sources, ideas, play, futures, takepart, institutions
+ * `active` is one of: home, method, words, sources, ideas, play, futures, contact, takepart, institutions
  * (each lights one of the six rooms: see ROOMS below). On a viewer page
  * (/viewers/...) the tab is always derived from the grammar in ?src=, so the viewers keep
  * their tarot `active` values unedited. Hand-written pages that load ../shared/nav.js get
@@ -122,6 +122,16 @@
     [PFX + 'explainers/risk-and-uncertainty/',          'Risk or uncertainty?'],
     [PFX + 'explainers/model-affect/',                  'Does the model feel anything?'],
   ];
+  // 2027 (Nov 27 2026, a draft): contact with non-human intelligence, the claimed extraterrestrial
+  // kind and the AI kind, as one deck (grammars/contact-2027) and its page (/2027/).
+  const CONTACT = '../grammars/contact-2027/grammar.json';
+  const CONTACT_MENU = [
+    [PFX + '2027/',                                     'The 2027 page'],
+    [PFX + 'viewers/cards.html?src=' + CONTACT,         'The deck, as cards'],
+    [PFX + 'viewers/explorer.html?src=' + CONTACT,      'Explore the deck'],
+    [PFX + '2027/#dates',                               'Dates as data'],
+    [PFX + '2027/#ai',                                  'The AI side'],
+  ];
   const TAKE_PART_MENU = [
     [PFX + 'pages/take-part.html',                      'Six routes'],
     [PFX + 'pages/take-part.html#civic',                'Civic'],
@@ -139,6 +149,7 @@
     [PFX + 'map/',                        'Record',    ['sources'],               SOURCES_MENU],
     [PFX + 'pages/play.html',             'Play',      ['play'],                  PLAY_MENU],
     [PFX + '#futures',                    'Futures',   ['futures'],               FUTURES_MENU],
+    [PFX + '2027/',                       '2027',      ['contact'],               CONTACT_MENU],
     [PFX + 'pages/take-part.html',        'Take part', ['takepart', 'institutions'], TAKE_PART_MENU],
   ];
   // [key, label, href, cssClass, external?] — tarot's TOOLS slot. Institutions moved into the
@@ -146,14 +157,16 @@
   const TOOLS = [
     ['github', 'GitHub ↗',  'https://github.com/PlayfulProcess/recursive-learning', 't-github', true],
   ];
-  const KEYS = ['home', 'method', 'words', 'sources', 'ideas', 'play', 'futures', 'takepart', 'institutions'];
+  const KEYS = ['home', 'method', 'words', 'sources', 'ideas', 'play', 'futures', 'contact', 'takepart', 'institutions'];
 
   function autoActive() {
     const p = location.pathname, q = decodeURIComponent(location.search);
     if (p.startsWith('/glossary/')) return 'words';
     if (p.startsWith('/map/')) return 'sources';
+    if (p.startsWith('/2027/')) return 'contact';
     if (p.startsWith('/game/') || /\/pages\/play\.html$/.test(p)) return 'play';
     if (/\/viewers\//.test(p)) {
+      if (q.includes('contact-2027')) return 'contact';
       if (q.includes('institutions-of-alignment')) return 'institutions';
       if (q.includes('sources-of-alignment')) return 'sources';
       if (q.includes('ideas-of-alignment')) return 'ideas';

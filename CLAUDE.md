@@ -45,6 +45,7 @@ is public too.
 | Folder | Published at | What |
 |---|---|---|
 | `site/` | `/` | the tarot shell: `index.html` (home), `404.html`, `theme.css`, `style.css`, `site-header.js`, `site-footer.js`, `icons.js`, `viewers/` (cards, explorer, tree, caster), `pages/` (about, play, institutions), `map/` (the Sources hub) |
+| `2027/` | `/2027/` | the 2027 section (Nov 27 2026, a draft): one hand-written page in the shape of `pages/take-part.html`, listing the deck `grammars/contact-2027/` (contact with non-human intelligence, extraterrestrial and AI; each card rated green/yellow/red by evidence). Sources in `research/2027/BRIEF.md`, the survey in `research/2027/INVENTORY.md`. If a card changes in the deck, change its line on the page. |
 | `game/` | `/game/` | the games (hand-written pages; the dark ones load `shared/nav.js`) |
 | `glossary/` | `/glossary/` | `terms.json` (the one source of the words) and the generated `index.html` |
 | `grammars/` | `/grammars/` | every grammar (`<slug>/grammar.json`), `_collection.json`, `_eco_ids.json` |
@@ -77,6 +78,10 @@ Grammars; KPop Demon Hunters out); the rooms are the site's own menus. Its prefi
 the root. `active` keys: `home`, `method`, `words`, `sources`, `ideas`, `play`, `futures`,
 `takepart`, `institutions` (each lights one room); on `/viewers/*` the tab follows the grammar in
 `?src=`.
+
+**2027** (Nov 27 2026) is a seventh tab between Futures and Take part, `active` key `contact`
+(lit on `/2027/` and on any viewer whose `?src=` names `contact-2027`). Its deck is not in the
+caster's pool (`all-decks`), so the menu has no "Draw one card" yet.
 
 **Take part** (`site/pages/take-part.html`) is hand-written: six route cards in the Institutions
 card shape, each with "Ways in", the time it takes and an odds mark (`odds-up`, `odds-both`,

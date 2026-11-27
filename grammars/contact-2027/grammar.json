@@ -1,0 +1,886 @@
+{
+  "name": "2027 — Contact, a draft deck",
+  "description": "Twenty-two cards on contact with non-human intelligence: the claimed extraterrestrial kind (from the plurality of worlds through Kardec, Theosophy, the 1950s contactees, the Law of One, Bashar and Chico Xavier's contested 'Data Limite') and the AI kind we are already living through. Beside each claim stands its science (SETI, the Fermi paradox, the zoo hypothesis, technosignatures, the official UAP record) and the scholarly criticism. Every claim is attributed, dated and rated green, yellow or red by evidence. Odds, not paths: no card says contact will happen in 2027.\n\nA draft (Nov 27 2026): research by Claude for PlayfulProcess; her own card texts will replace the two placeholder sections. Sources: [research/2027/BRIEF.md](https://github.com/PlayfulProcess/recursive-learning/blob/main/research/2027/BRIEF.md). Pictures: public-domain works from Wikimedia Commons and NASA, credited on each card.",
+  "grammar_type": "tarot",
+  "provenance": "living",
+  "creator_name": "PlayfulProcess",
+  "creator_link": "https://learning.recursive.eco",
+  "cover_image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/FlammarionWoodcut.jpg?width=480",
+  "image_credit": "Public-domain works from Wikimedia Commons and NASA; each card carries its own credit in metadata.credit.",
+  "tags": [
+    "2027",
+    "contact",
+    "non-human-intelligence",
+    "seti",
+    "uap",
+    "draft",
+    "odds-not-paths"
+  ],
+  "import_visibility": "private",
+  "license": "CC-BY-SA-4.0",
+  "nodes": [
+    {
+      "id": "how-to-read",
+      "name": "How to read — 2027",
+      "sort_order": 0,
+      "category": "note",
+      "keywords": [
+        "rules",
+        "how to read"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Pioneer10-plaque.jpg?width=480",
+      "metadata": {
+        "kind": "note",
+        "credit": {
+          "artist": "Designed by Carl Sagan and Frank Drake; artwork by Linda Salzman Sagan; photograph NASA Ames Research Center",
+          "year": "1972",
+          "edition": "The Pioneer 10 plaque",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Pioneer10-plaque.jpg"
+        }
+      },
+      "sections": {
+        "How to read this deck": "Twenty-two cards, each a school, a claim or a scientific counterpart about contact with non-human intelligence, the claimed extraterrestrial kind and the AI kind. Every card says who claimed what, and when, and rates the evidence: **green** (documented and checkable), **yellow** (open: said, not tested, or tested without a result) or **red** (tested against the record and not borne out). The rating judges the claim, not the person.",
+        "Odds, not paths": "No card says contact will happen in 2027, or that it will not. Each names what would raise or lower the odds, and asks what you would do either way. Relate to a card; never obey it.",
+        "A draft": "The claims, sources and evidence are research by Claude for PlayfulProcess (Nov 27 2026), checked against sources where marked in [the research brief](https://github.com/PlayfulProcess/recursive-learning/blob/main/research/2027/BRIEF.md). *The AI parallel* and *A question to sit with* are placeholders until she writes them in her own words.",
+        "Pictures": "Public-domain works only: Wikimedia Commons and NASA, each credited on its card. No AI-generated images."
+      }
+    },
+    {
+      "id": "the-question",
+      "name": "The Question",
+      "sort_order": 1,
+      "category": "frame",
+      "keywords": [
+        "2027",
+        "contact",
+        "frame",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/FlammarionWoodcut.jpg?width=480",
+      "metadata": {
+        "number": 0,
+        "evidence": "yellow",
+        "dates": [
+          "2027"
+        ],
+        "credit": {
+          "artist": "Unknown engraver",
+          "year": "1888",
+          "edition": "The Flammarion engraving, in Camille Flammarion, L'Atmosphère: météorologie populaire (Paris, 1888), p. 163",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:FlammarionWoodcut.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Several traditions name 2027, or the years around it, as a window for open contact with non-human intelligence. Over the same years, many people in AI research say a non-human kind of mind may already be arriving through our machines. This deck holds both claims side by side, each attributed and dated.",
+        "Sources": "The whole deck rests on [the research brief](https://github.com/PlayfulProcess/recursive-learning/blob/main/research/2027/BRIEF.md), where every claim has its source, its date and a mark for how well it was checked.",
+        "Evidence": "Mixed, card by card. The ratings judge the content of a claim, not whether someone said it.",
+        "The science lens": "Science has no finding of non-human intelligence so far. It has methods for looking (cards 14 to 17) and a public record of what was looked at (card 18).",
+        "The AI parallel": "The film [HOT POTATO: The Chosen Alien Invasion](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438) asks the AI half of this question: if a mind not like ours is arriving, what kind of contact is it already?",
+        "A question to sit with": "What would I do differently this year if contact were likely, and what would I do the same if it were not?"
+      }
+    },
+    {
+      "id": "many-worlds",
+      "name": "Many Worlds",
+      "sort_order": 2,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Conversations%20on%20the%20Plurality%20of%20Worlds%20frontpiece.jpg?width=480",
+      "metadata": {
+        "number": 1,
+        "evidence": "yellow",
+        "dates": [
+          "1584",
+          "1686",
+          "1698"
+        ],
+        "credit": {
+          "artist": "Frontispiece to Fontenelle's book",
+          "year": "1686",
+          "edition": "Bernard de Fontenelle, Entretiens sur la pluralité des mondes (Paris, 1686), frontispiece",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Conversations_on_the_Plurality_of_Worlds_frontpiece.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Other worlds are inhabited. Giordano Bruno argued for infinite inhabited worlds (1584); Fontenelle made the idea a bestseller as evening conversations with a marquise (1686); Huygens imagined the inhabitants of the planets (Kosmotheoros, 1698).",
+        "Sources": "Bruno, De l'infinito, universo e mondi (1584). Fontenelle, Entretiens sur la pluralité des mondes (1686). Huygens, Kosmotheoros (1698). Brief § 1.",
+        "Evidence": "Yellow. Planets turn out to be common; life on them is still untested.",
+        "The science lens": "Thousands of exoplanets are confirmed (NASA Exoplanet Archive). None yet shows a confirmed sign of life.",
+        "The AI parallel": "The question 'is anyone there?' is asked now of machines as well as of planets, with the same difficulty: what would count as evidence of a mind?",
+        "A question to sit with": "Does a crowded universe feel more like company to me, or more like a test?"
+      }
+    },
+    {
+      "id": "the-spirits-worlds",
+      "name": "The Spirits' Worlds",
+      "sort_order": 3,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Le%20Livre%20des%20Esprits%202.jpg?width=480",
+      "metadata": {
+        "number": 2,
+        "evidence": "yellow",
+        "dates": [
+          "1857",
+          "1862"
+        ],
+        "credit": {
+          "artist": "Allan Kardec (book); scan by Fran6fran6",
+          "year": "1860",
+          "edition": "Le Livre des Esprits, 2nd edition (Paris, 1860), endpaper",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Le_Livre_des_Esprits_2.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "All the globes in space are inhabited, at different degrees of moral and material progress, and spirits live many lives across them. Allan Kardec published this as the spirits' answers in Le Livre des Esprits (1857, question 55). The astronomer Camille Flammarion, a Spiritist in his youth, argued for inhabited worlds in 1862.",
+        "Sources": "Kardec, Le Livre des Esprits (Dentu, 1857), Book I ch. III ([French text](https://fr.wikisource.org/wiki/Le_Livre_des_Esprits)). Flammarion, La Pluralité des mondes habités (Didier, 1862). Brief § 2.",
+        "Evidence": "Yellow for the claim (a metaphysics no instrument tests). The texts and their dates are documented.",
+        "The science lens": "Astronomy can test whether a planet could host life. It has no measure for a world's moral progress.",
+        "The AI parallel": "Spiritism ranks worlds by how far their people have grown in kindness, not in power. Applied to AI, that measure would ask what our machines make of us, not only what they can do.",
+        "A question to sit with": "If worlds were ranked by kindness, where would mine stand today?"
+      }
+    },
+    {
+      "id": "the-lords-of-the-flame",
+      "name": "The Lords of the Flame",
+      "sort_order": 4,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "red"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Secret%20Doctrine.gif?width=480",
+      "metadata": {
+        "number": 3,
+        "evidence": "red",
+        "dates": [
+          "1888",
+          "1924"
+        ],
+        "credit": {
+          "artist": "Helena Blavatsky (book)",
+          "year": "1888",
+          "edition": "The Secret Doctrine, first edition (London, 1888), cover",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:The_Secret_Doctrine.gif"
+        }
+      },
+      "sections": {
+        "The claim": "Blavatsky's Secret Doctrine (1888) speaks of the Lords of the Flame, beings she says Christian tradition misread as fallen angels. Later Theosophists, chiefly Leadbeater and Besant, said that Sanat Kumara and the Lords of the Flame came to Earth from Venus millions of years ago to guide humanity.",
+        "Sources": "Blavatsky, The Secret Doctrine (1888). Leadbeater and Besant, The Lives of Alcyone (1924). [Theosophy Forward on the Kumaras](https://www.theosophyforward.com/kumaras). Brief § 3.",
+        "Evidence": "Red for a physical Venusian origin; yellow for the later 'etheric' version, which no instrument can test. Note who said what: the Venus story is mostly the later writers', not Blavatsky's.",
+        "The science lens": "Venus's surface is near 465 °C under a heavy carbon-dioxide atmosphere, measured by probes since the 1960s.",
+        "The AI parallel": "Teachers who arrive from above to guide us: a picture that returns when people describe a superintelligence that would 'take care of' humanity.",
+        "A question to sit with": "Do I want a teacher who arrives, or a skill I grow?"
+      }
+    },
+    {
+      "id": "the-quarantined-planet",
+      "name": "The Quarantined Planet",
+      "sort_order": 5,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Pale%20Blue%20Dot%20cropped%203.png?width=480",
+      "metadata": {
+        "number": 4,
+        "evidence": "yellow",
+        "dates": [
+          "1938",
+          "1955",
+          "1981"
+        ],
+        "credit": {
+          "artist": "NASA, Voyager 1",
+          "year": "1990",
+          "edition": "Earth as a pale blue dot, from about 6 billion km (Feb 14 1990)",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Pale_Blue_Dot_cropped_3.png"
+        }
+      },
+      "sections": {
+        "The claim": "Earth is kept apart. The Urantia Book (1955) says Earth was one of 37 worlds cut off after a rebellion led by Lucifer. The Law of One (1981) speaks of a 'quarantine' of Earth kept by guardians, so that an open landing would not be taken as gods and break free will. C. S. Lewis's novel Out of the Silent Planet (1938) gave the image a story.",
+        "Sources": "The Urantia Book, Paper 53 ([text](https://archive.urantiabook.org/newbook/ub/ppr053_0.html)). The Law of One, session 16, Jan 31 1981 ([L/L Research](https://assets.llresearch.org/books/the_law_of_one_book_1.pdf)). Brief § 4.",
+        "Evidence": "Yellow. Hard to test as stated: a quarantine that hides itself predicts the same silence as an empty sky.",
+        "The science lens": "Science's version is the zoo hypothesis (card 16): advanced civilizations might leave us alone on purpose.",
+        "The AI parallel": "AI labs talk of 'sandboxes' and of keeping a model from acting in the world until it is judged safe. In that picture we are the guardians, and the quarantine runs the other way.",
+        "A question to sit with": "What would I want a careful visitor to wait for before arriving?"
+      }
+    },
+    {
+      "id": "chariots-in-the-sky",
+      "name": "Chariots in the Sky",
+      "sort_order": 6,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "red"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Ezekiel-Vision-Merkaba.jpg?width=480",
+      "metadata": {
+        "number": 5,
+        "evidence": "red",
+        "dates": [
+          "1968",
+          "1974"
+        ],
+        "credit": {
+          "artist": "Matthäus Merian the Elder",
+          "year": "c. 1630",
+          "edition": "The chariot vision of Ezekiel 1, from Merian's Icones Biblicae",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Ezekiel-Vision-Merkaba.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "The gods of old myths were visitors from space, and monuments and sacred texts record their craft. Erich von Däniken made this popular (Erinnerungen an die Zukunft, 1968; Chariots of the Gods?, 1970); Josef Blumrich read Ezekiel's vision as a spacecraft (1974).",
+        "Sources": "Von Däniken (1968). Blumrich, The Spaceships of Ezekiel (1974). Brief § 5.",
+        "Evidence": "Red. The readings have been checked against the texts, the archaeology and the builders' own records, and they do not hold.",
+        "The science lens": "Archaeology traces how the monuments were made: quarries, tools, ramps, workers' villages, and the builders' own inscriptions.",
+        "The AI parallel": "It is easy to read a new power as a visitation. The AI debate has its own version: describing a system as alien or divine rather than as something people built and can change.",
+        "A question to sit with": "When something amazes me, do I first ask who made it?"
+      }
+    },
+    {
+      "id": "the-engineered-human",
+      "name": "The Engineered Human",
+      "sort_order": 7,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "red"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Molded%20plaque-%20eagle-headed%20apkallu%20MET%20hb51%2072%206.jpg?width=480",
+      "metadata": {
+        "number": 6,
+        "evidence": "red",
+        "dates": [
+          "1976",
+          "1973"
+        ],
+        "credit": {
+          "artist": "Unknown Assyrian artist",
+          "year": "c. 9th–7th century BCE",
+          "edition": "Molded plaque of an eagle-headed apkallu, The Metropolitan Museum of Art, 51.72.6",
+          "license": "CC0 (public domain dedication)",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Molded_plaque-_eagle-headed_apkallu_MET_hb51_72_6.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Humans were made, or remade, by visitors. Zecharia Sitchin (The 12th Planet, 1976) said the Anunnaki of Sumerian texts came from a planet 'Nibiru' and engineered humans as workers. The Raëlian movement (from 1973) teaches that the 'Elohim' made us in laboratories.",
+        "Sources": "Sitchin (1976). Michael S. Heiser's reading of the seal VA 243 ([paper](https://www.sitchiniswrong.com/VA243seal.pdf); an advocate's site, disputed by Sitchin's readers). Brief § 5.",
+        "Evidence": "Red. Scholars of cuneiform say the texts do not describe a planet beyond Pluto, and the seal Sitchin read as the solar system shows a star, not the sun.",
+        "The science lens": "Genetics and fossils trace human ancestry to African hominins over millions of years, with no gap that needs an outside engineer.",
+        "The AI parallel": "Here the story turns around: we are the ones engineering a new kind of mind. The question the Anunnaki story asks of its makers (what were we made for?) is one our own creations may ask of us.",
+        "A question to sit with": "What do I hope a mind I helped make would say about why it was made?"
+      }
+    },
+    {
+      "id": "whose-monuments",
+      "name": "Whose Monuments?",
+      "sort_order": 8,
+      "category": "criticism",
+      "keywords": [
+        "2027",
+        "contact",
+        "criticism",
+        "green"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Discoveries%20at%20the%20Great%20Zimbabwe%20in%20Mashonaland.png?width=480",
+      "metadata": {
+        "number": 7,
+        "evidence": "green",
+        "dates": [
+          "1892",
+          "1929",
+          "2018"
+        ],
+        "credit": {
+          "artist": "Mabel Bent (photographs)",
+          "year": "1891",
+          "edition": "The Discoveries at the Great Zimbabwe in Mashonaland, from Mabel Bent's photographs",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:The_Discoveries_at_the_Great_Zimbabwe_in_Mashonaland.png"
+        }
+      },
+      "sections": {
+        "The claim": "Scholars point to a pattern: ancient-astronaut readings attach far more often to monuments built by non-European peoples (Egypt, Mesoamerica, Great Zimbabwe, Nazca) than to Greek or Roman ones. The effect is to take credit from the people who built them.",
+        "Sources": "Sarah E. Bond, [Pseudoarchaeology and the Racism Behind Ancient Aliens](https://hyperallergic.com/470795/pseudoarchaeology-and-the-racism-behind-ancient-aliens/), Hyperallergic (2018). Julien Benoit, [Quartz Africa](https://qz.com/africa/1080076/racism-is-behind-outlandish-theories-about-africas-ancient-architecture) (2017). Kenneth Feder, Frauds, Myths, and Mysteries. Brief § 6.",
+        "Evidence": "Green for the pattern. Great Zimbabwe is the documented precedent: colonial writers credited outsiders (Bent, 1892); Gertrude Caton-Thompson's excavation (1929) showed the builders were the ancestors of the Shona.",
+        "The science lens": "Here the science lens is archaeology itself, and its own history of getting this wrong and correcting it.",
+        "The AI parallel": "The same move can happen with AI: crediting 'the model' for work that thousands of people wrote, labelled and checked. On the tarot side, Court de Gébelin's Egyptian tarot (1781) is the same move made on cards.",
+        "A question to sit with": "Whose work am I not seeing in the thing I admire?"
+      }
+    },
+    {
+      "id": "the-space-brothers",
+      "name": "The Space Brothers",
+      "sort_order": 9,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "red"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Alamogordo%2C%20New%20Mexico%20-%20Project%20Blue%20Book%20Film%20-%20DPLA%20-%205d1459523ee725017dc353c31d60ad89.jpg?width=480",
+      "metadata": {
+        "number": 8,
+        "evidence": "red",
+        "dates": [
+          "1952",
+          "1953",
+          "1978"
+        ],
+        "credit": {
+          "artist": "U.S. Air Force, Aerospace Technical Intelligence Center",
+          "year": "1959–61",
+          "edition": "Project Blue Book film still, Alamogordo, New Mexico (National Archives, via DPLA)",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Alamogordo%2C_New_Mexico_-_Project_Blue_Book_Film_-_DPLA_-_5d1459523ee725017dc353c31d60ad89.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "In the 1950s, contactees said they met kind human-like visitors from Venus and other planets who warned against nuclear war. George Adamski said he met a Venusian named Orthon near Desert Center, California, on Nov 20 1952. George Van Tassel's Giant Rock conventions (1953 or 1954 to 1978) drew crowds reported up to 10,000.",
+        "Sources": "Adamski and Leslie, Flying Saucers Have Landed (1953). [Giant Rock Spacecraft Convention](https://www.encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/giant-rock-space-convention). Brief § 7.",
+        "Evidence": "Red for visitors from Venus. The witnesses with Adamski said they saw him meet someone only from a distance. The movement itself is well documented.",
+        "The science lens": "Probes from 1962 on measured Venus as far too hot for life as we know it.",
+        "The AI parallel": "The Space Brothers' message was a warning about a technology humans had just made. Some of today's loudest AI warnings come from the people building it.",
+        "A question to sit with": "Which warning would I trust more: one from a visitor, or one from a maker?"
+      }
+    },
+    {
+      "id": "watchers-of-the-bomb",
+      "name": "Watchers of the Bomb",
+      "sort_order": 10,
+      "category": "record",
+      "keywords": [
+        "2027",
+        "contact",
+        "record",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Trinity%20Test%20Fireball%2016ms.jpg?width=480",
+      "metadata": {
+        "number": 9,
+        "evidence": "yellow",
+        "dates": [
+          "1945",
+          "1967",
+          "2024"
+        ],
+        "credit": {
+          "artist": "Berlyn Brixner / Los Alamos National Laboratory",
+          "year": "1945",
+          "edition": "Trinity test, 0.016 second after detonation, July 16 1945",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Trinity_Test_Fireball_16ms.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "UFOs show a particular interest in nuclear weapons. Former U.S. Air Force officers have described a 1967 event at Malmstrom AFB in which missiles went offline during a sighting. Contact traditions often date the visitors' concern to the first atomic bomb.",
+        "Sources": "Robert Hastings, UFOs and Nukes (2008). AARO, Historical Record Report, Vol. 1 (released Mar 8 2024; [PDF](https://man.fas.org/eprint/dod-uap-v1.pdf)). Brief § 8.",
+        "Evidence": "Yellow. There is testimony; the official review found no verifiable evidence of extraterrestrial technology from 1945 to 2023; and sensitive sites are where sensors look hardest, which raises reports there by itself.",
+        "The science lens": "A selection effect: more watching produces more reports. Testing the claim would need sightings compared across sites watched equally.",
+        "The AI parallel": "This is the root of her thread: the idea that a civilization's most powerful technology is what draws attention. The bomb was the 20th century's threshold; AI may be this one's.",
+        "A question to sit with": "If my technology were watched by someone wiser, what would I want them to see me do with it?"
+      }
+    },
+    {
+      "id": "sky-religions",
+      "name": "Sky Religions",
+      "sort_order": 11,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Himmelserscheinung%20%C3%BCber%20N%C3%BCrnberg%20vom%2014.%20April%201561.jpg?width=480",
+      "metadata": {
+        "number": 10,
+        "evidence": "yellow",
+        "dates": [
+          "1954",
+          "1955",
+          "1973",
+          "1997"
+        ],
+        "credit": {
+          "artist": "Hanns Glaser (print)",
+          "year": "1561",
+          "edition": "Broadsheet on the celestial phenomenon over Nuremberg, April 14 1561 (Zentralbibliothek Zürich, Wickiana collection)",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Himmelserscheinung_%C3%BCber_N%C3%BCrnberg_vom_14._April_1561.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Some movements built a religious life around beings from space: Unarius (Ernest and Ruth Norman, 1954), the Aetherius Society (George King, 1955), the Raëlians (from 1973). Heaven's Gate ended with the deaths of 39 members in March 1997.",
+        "Sources": "James R. Lewis, ed., The Gods Have Landed (1995). Brief § 9.",
+        "Evidence": "Yellow for the beliefs (untested). The groups and their dates are documented. Heaven's Gate is the record's warning about certainty, not a judgment on the others.",
+        "The science lens": "Religious studies describes these as new religious movements, on their own terms. The broadsheet on this card shows that people have read the sky as a message for centuries.",
+        "The AI parallel": "Movements that treat AI as a coming god, or a coming saviour, already exist. The same care applies: describe them by their own words, and watch for certainty that costs lives.",
+        "A question to sit with": "What would I need to keep doubting, even if I believed?"
+      }
+    },
+    {
+      "id": "the-races",
+      "name": "The Races",
+      "sort_order": 12,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Pleiades%20large.jpg?width=480",
+      "metadata": {
+        "number": 11,
+        "evidence": "yellow",
+        "dates": [
+          "1961",
+          "1975",
+          "1981"
+        ],
+        "credit": {
+          "artist": "NASA, ESA, AURA/Caltech, Palomar Observatory",
+          "year": "2004",
+          "edition": "The Pleiades (M45)",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Pleiades_large.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Contactee traditions describe kinds of visitors: the grey figures of the Betty and Barney Hill story (1961), the Pleiadians of Billy Meier (from 1975), the 'Nordics' of 1950s lore, Ra of the Law of One (1981), the Essassani of Bashar, said to be a future human hybrid race.",
+        "Sources": "Each typology comes from one source or one community. Brief § 10.",
+        "Evidence": "Yellow. Untested testimony; the typologies disagree with one another. Where physical claims were examined (Meier's photographs), investigators judged them to be models.",
+        "The science lens": "No specimen, signal or artifact has been confirmed for any of them.",
+        "The AI parallel": "We are also sorting kinds of artificial minds into types (tools, agents, assistants, 'aliens'). Our categories may say more about us than about them, in both cases.",
+        "A question to sit with": "Which kind of visitor would I hope for, and what does the hope say about me?"
+      }
+    },
+    {
+      "id": "the-law-of-one",
+      "name": "The Law of One",
+      "sort_order": 13,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Sun%20by%20the%20Atmospheric%20Imaging%20Assembly%20of%20NASA%27s%20Solar%20Dynamics%20Observatory%20-%2020100819.jpg?width=480",
+      "metadata": {
+        "number": 12,
+        "evidence": "yellow",
+        "dates": [
+          "1981",
+          "1984"
+        ],
+        "credit": {
+          "artist": "NASA/SDO (AIA)",
+          "year": "2010",
+          "edition": "The Sun at 304 ångströms, Solar Dynamics Observatory, Aug 19 2010",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "In sessions recorded from 1981 to 1984, Don Elkins, Carla Rueckert and Jim McCarty received the words of 'Ra', who teaches that all is one, that beings choose between service to others and service to self, and that Earth is near a 'harvest' at the end of a cycle.",
+        "Sources": "The Law of One, Books I–V (L/L Research, from 1982; [Book I](https://assets.llresearch.org/books/the_law_of_one_book_1.pdf)). Brief § 11.",
+        "Evidence": "Yellow. The teachings are untested; the record of the sessions is documented and published in full by its makers.",
+        "The science lens": "Nothing here makes a measurable prediction, so science has no test to run.",
+        "The AI parallel": "'Service to others or service to self' is close to the plainest statement of the alignment problem: whose good does a powerful mind serve?",
+        "A question to sit with": "Whom does my work serve, today, in fact?"
+      }
+    },
+    {
+      "id": "open-contact",
+      "name": "Open Contact",
+      "sort_order": 14,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Orion%20Nebula%20-%20Hubble%202006%20mosaic%2018000.jpg?width=480",
+      "metadata": {
+        "number": 13,
+        "evidence": "yellow",
+        "dates": [
+          "2023",
+          "2025",
+          "2026",
+          "2027"
+        ],
+        "credit": {
+          "artist": "NASA, ESA, M. Robberto and the Hubble Orion Treasury Project Team",
+          "year": "2006",
+          "edition": "The Orion Nebula, Hubble mosaic (2006)",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Darryl Anka, who has channelled 'Bashar' since 1983 or 1984, describes a window for open contact with extraterrestrials, often centred on 2027. In Sedona on Sep 14 2025, Bashar put full disclosure and open contact 'between now and your year of 2027'. Elsewhere he calls 2027 a probability, not a fixed day.",
+        "Sources": "Bashar's transmissions: [Dominoes Day 2, 0:00:30](https://www.youtube.com/watch?v=HolgIcZwUcU&t=29s). [2027, The Contact Fulcrum](https://www.youtube.com/watch?v=jSst2M08Qyk&t=34s). [2026: The Year of Disclosure](https://www.youtube.com/watch?v=66QwQr9_W7U&t=0s). Brief § 12.",
+        "Evidence": "Yellow until the window passes. An earlier date, disclosure by 2020, passed without it (card 15).",
+        "The science lens": "Contact would leave public evidence: signals, craft, artifacts that many independent observers could check. The test is simple and will be run by time.",
+        "The AI parallel": "Bashar has also spoken on AI: in The Two Paths to AI (May 2023) he says artificial intelligence 'isn't really artificial' except that we make the device ([0:00:01](https://www.youtube.com/watch?v=Q9X_NGyYN3M&t=0s)).",
+        "A question to sit with": "If the date passes, what will I have learned from waiting?"
+      }
+    },
+    {
+      "id": "the-data-limite",
+      "name": "The Data Limite",
+      "sort_order": 15,
+      "category": "tradition",
+      "keywords": [
+        "2027",
+        "contact",
+        "tradition",
+        "red"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Aldrin%20Apollo%2011.jpg?width=480",
+      "metadata": {
+        "number": 14,
+        "evidence": "red",
+        "dates": [
+          "1969",
+          "1986",
+          "2011",
+          "2019"
+        ],
+        "credit": {
+          "artist": "Neil A. Armstrong (NASA)",
+          "year": "1969",
+          "edition": "Buzz Aldrin on the Moon, Apollo 11, July 20 1969 (AS11-40-5903)",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Aldrin_Apollo_11.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Geraldo Lemos Neto reports that in 1986 Chico Xavier told him of a 50-year moratorium for humanity counted from the Moon landing (July 20 1969) to July 2019. In the common telling, if humanity avoided a world war in that time, Earth would be welcomed among more advanced worlds.",
+        "Sources": "Marlene Nobre's interview with Lemos in Folha Espírita (2011); the documentary Data Limite Segundo Chico Xavier (2014); Lemos's book (2016). [Catraca Livre, July 2019](https://catracalivre.com.br/mais/data-limite-de-chico-xavier-acontece-neste-20-de-julho/). Chico's own recorded words on other worlds: TV Tupi, Pinga-Fogo (1971). Brief § 13.",
+        "Evidence": "Red if read as a prediction of contact by 2019 (it passed). The attribution is contested: no recording or writing of Chico's own has been found, and many Spiritists doubt he said it. Read as a test of conduct (no world war), the record is still open.",
+        "The science lens": "The Moon landing is a dated, checkable technological threshold. That is what makes this claim useful: it ties contact to technology in a way that could be tested.",
+        "The AI parallel": "The clearest form of her thread: the clock starts when a civilization gains a new power. If that rule holds, AI would start another clock.",
+        "A question to sit with": "Is a deadline a prophecy, or an exam I set myself?"
+      }
+    },
+    {
+      "id": "dates-as-data",
+      "name": "Dates as Data",
+      "sort_order": 16,
+      "category": "record",
+      "keywords": [
+        "2027",
+        "contact",
+        "record",
+        "red"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Melencolia%20I%20MET%20DP815743.jpg?width=480",
+      "metadata": {
+        "number": 15,
+        "evidence": "red",
+        "dates": [
+          "2019",
+          "2020",
+          "2026",
+          "2027"
+        ],
+        "credit": {
+          "artist": "Albrecht Dürer",
+          "year": "1514",
+          "edition": "Melencolia I, engraving (The Metropolitan Museum of Art)",
+          "license": "CC0 (public domain dedication)",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Melencolia_I_MET_DP815743.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Contact traditions give dates, and so do AI forecasts. Put side by side: July 2019 (attributed to Chico Xavier); disclosure by 2020 (a Bashar postcard campaign of about 2017–18); 2026 'the year of disclosure' (Bashar, Jan 2026); open contact by 2027 (Bashar, Sep 2025); AI 2027 (a scenario published in April 2025).",
+        "Sources": "The dates table in [the brief](https://github.com/PlayfulProcess/recursive-learning/blob/main/research/2027/BRIEF.md#dates-as-data), each row with its source and what happened.",
+        "Evidence": "Red for the dates that have passed, which is most of them. The table keeps them as data, openly, for skeptics and believers alike.",
+        "The science lens": "A forecast earns trust by its track record. Keeping every past date in view, the misses with the hits, is how any forecaster is judged.",
+        "The AI parallel": "AI forecasters move their dates too, and say so. The habit worth copying from them is publishing the revision, not only the new date.",
+        "A question to sit with": "Which of my own dates have passed, and what did I do with them?"
+      }
+    },
+    {
+      "id": "the-great-silence",
+      "name": "The Great Silence",
+      "sort_order": 17,
+      "category": "science",
+      "keywords": [
+        "2027",
+        "contact",
+        "science",
+        "green"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Hubble%20ultra%20deep%20field%20high%20rez%20edit.jpg?width=480",
+      "metadata": {
+        "number": 16,
+        "evidence": "green",
+        "dates": [
+          "1950",
+          "1975",
+          "1996"
+        ],
+        "credit": {
+          "artist": "NASA and ESA",
+          "year": "2004",
+          "edition": "The Hubble Ultra Deep Field",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Hubble_ultra_deep_field_high_rez_edit.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "If intelligent life is common, where is everybody? Enrico Fermi asked it at Los Alamos in 1950. Michael Hart argued in 1975 that the absence of visitors means none exist; Robin Hanson (1996) proposed a 'great filter', some step that nearly every civilization fails.",
+        "Sources": "Hart, QJRAS 16 (1975). Hanson, 'The Great Filter' (1996–98). Brief § 14.",
+        "Evidence": "Green for the observation: no confirmed signal or visitor so far. The explanations are open.",
+        "The science lens": "The filter could lie behind us (life is rare) or ahead (civilizations end with their own technology). The [value-lab](https://github.com/PlayfulProcess/value-lab) commons model asks a small version: does a way of living eat its own preconditions?",
+        "The AI parallel": "If the filter lies ahead, powerful AI is a candidate for where it sits, and also where the odds are decided.",
+        "A question to sit with": "If the filter is ahead of us, what is one thing that would help us pass it?"
+      }
+    },
+    {
+      "id": "listening",
+      "name": "Listening",
+      "sort_order": 18,
+      "category": "science",
+      "keywords": [
+        "2027",
+        "contact",
+        "science",
+        "green"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Wow%20signal.jpg?width=480",
+      "metadata": {
+        "number": 17,
+        "evidence": "green",
+        "dates": [
+          "1959",
+          "1960",
+          "1961",
+          "1977"
+        ],
+        "credit": {
+          "artist": "Big Ear Radio Observatory and North American AstroPhysical Observatory (NAAPO)",
+          "year": "1977",
+          "edition": "The Wow! signal printout, Big Ear, Aug 15 1977",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Wow_signal.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "We can listen for others. Cocconi and Morrison proposed radio searches in 1959; Frank Drake pointed a telescope at two nearby stars in 1960 (Project Ozma) and wrote his equation in 1961. On Aug 15 1977 the Big Ear telescope caught a strong narrow signal, the 'Wow!', never seen again.",
+        "Sources": "Cocconi and Morrison, Nature 184 (1959). Drake (1961). Breakthrough Listen (from 2015). Brief § 15.",
+        "Evidence": "Green that searches have run and found no confirmed signal. What the silence means is open.",
+        "The science lens": "This card is the science. Its honest limit: the searches so far have covered a small part of the sky, the frequencies and the time.",
+        "The AI parallel": "Interpretability research is a kind of listening too: trying to read what is going on inside a mind we did not design.",
+        "A question to sit with": "What would I need to hear before I believed it?"
+      }
+    },
+    {
+      "id": "the-zoo",
+      "name": "The Zoo",
+      "sort_order": 19,
+      "category": "science",
+      "keywords": [
+        "2027",
+        "contact",
+        "science",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Earth%20seen%20from%20Apollo%2017.jpg?width=480",
+      "metadata": {
+        "number": 18,
+        "evidence": "yellow",
+        "dates": [
+          "1973"
+        ],
+        "credit": {
+          "artist": "NASA, Apollo 17 crew",
+          "year": "1972",
+          "edition": "The Blue Marble, Apollo 17, Dec 7 1972",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:The_Earth_seen_from_Apollo_17.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "John A. Ball proposed in 1973 that intelligent life may be common but has set us aside, as 'a wilderness area or zoo'. It is science's version of the quarantine (card 4), offered as a hypothesis, not a revelation.",
+        "Sources": "Ball, 'The Zoo Hypothesis', Icarus 19 (1973), 347 ([ADS](https://ui.adsabs.harvard.edu/abs/1973Icar...19..347B/abstract)). Brief § 16.",
+        "Evidence": "Yellow. Consistent with the silence and hard to test. Critics note it needs every civilization to keep the rule.",
+        "The science lens": "Placing the quarantine and the zoo side by side shows one shape in two languages: a tradition says it was told, a scientist says it might be so.",
+        "The AI parallel": "We may soon be the zookeepers: deciding whether, when and how a new mind gets to meet the world.",
+        "A question to sit with": "What rule would I keep, if I were the one who could visit?"
+      }
+    },
+    {
+      "id": "technosignatures",
+      "name": "Technosignatures",
+      "sort_order": 20,
+      "category": "science",
+      "keywords": [
+        "2027",
+        "contact",
+        "science",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Earth%27s%20City%20Lights%20by%20DMSP%2C%201994-1995%20%28large%29.jpg?width=480",
+      "metadata": {
+        "number": 19,
+        "evidence": "yellow",
+        "dates": [
+          "1960",
+          "2017",
+          "2018"
+        ],
+        "credit": {
+          "artist": "Data: Marc Imhoff/NASA GSFC, Christopher Elvidge/NOAA NGDC; image: Craig Mayhew and Robert Simmon/NASA GSFC",
+          "year": "1994–95",
+          "edition": "Earth's city lights, from DMSP data",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Earth%27s_City_Lights_by_DMSP%2C_1994-1995_%28large%29.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Technology leaves traces that could be seen from far away: Freeman Dyson's infrared glow of star-encircling structures (1960), industrial gases, lasers, city lights. NASA held a technosignatures workshop in 2018. The interstellar object 'Oumuamua (2017) led Avi Loeb to argue for an artificial origin; most astronomers favour a natural one.",
+        "Sources": "Dyson, Science 131 (1960). NASA Technosignatures Workshop report (2018). Brief § 17.",
+        "Evidence": "Yellow. The methods exist and the searches run; no confirmed detection.",
+        "The science lens": "The picture on this card is our own technosignature: Earth at night, visible from orbit.",
+        "The AI parallel": "Large AI data centres are among the newest lights on that map. If others watch for technology, they would be watching that too.",
+        "A question to sit with": "What does my civilization's glow say to someone looking?"
+      }
+    },
+    {
+      "id": "the-official-record",
+      "name": "The Official Record",
+      "sort_order": 21,
+      "category": "record",
+      "keywords": [
+        "2027",
+        "contact",
+        "record",
+        "green"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Appendix%20I%20to%20Project%20Blue%20Book%20Status%20Report%20Number%208%20-%20NARA%20-%20595542.jpg?width=480",
+      "metadata": {
+        "number": 20,
+        "evidence": "green",
+        "dates": [
+          "1952",
+          "1969",
+          "2021",
+          "2024",
+          "2026"
+        ],
+        "credit": {
+          "artist": "U.S. Air Force (Project Blue Book)",
+          "year": "1952",
+          "edition": "Frequency of UFO reports, June to September 1952, Project Blue Book Status Report No. 8 (National Archives)",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Appendix_I_to_Project_Blue_Book_Status_Report_Number_8_-_NARA_-_595542.jpg"
+        }
+      },
+      "sections": {
+        "The claim": "Governments have studied unidentified objects for decades: Project Blue Book (1952–69); the ODNI preliminary assessment (2021); David Grusch's testimony to Congress (July 2023); AARO's historical report (2024); a rolling Pentagon release of files since May 2026, the eighth set on Nov 20 2026; the UAP Disclosure Act, adopted by the House as an amendment to the 2027 defence bill (July 22 2026).",
+        "Sources": "See [AARO report, Vol. 1](https://man.fas.org/eprint/dod-uap-v1.pdf). [PBS on the 2026 releases](https://www.pbs.org/newshour/science/pentagon-begins-releasing-new-files-on-ufos-and-says-people-can-make-up-their-own-minds). [The eighth release](https://earthsky.org/human-world/pentagon-uap-files-part-8-radar-track-analysis/). [The House amendment](https://burlison.house.gov/media/press-releases/house-adopts-burlison-amendment-establishing-uap-disclosure-framework). Brief § 18.",
+        "Evidence": "Green for what the record says: some cases remain unexplained, mostly for lack of data, and the official reviews found no verifiable evidence of non-human technology. The disputed claims (Grusch's) are yellow.",
+        "The science lens": "Unresolved is not the same as non-human. Better sensors and open data are what would move these cases either way.",
+        "The AI parallel": "AI has its own disclosure debate: what the labs know about their models and when the public is told. The questions rhyme: who decides, and who gets told?",
+        "A question to sit with": "What would I want to be told first, and by whom?"
+      }
+    },
+    {
+      "id": "the-machine-that-listens",
+      "name": "The Machine That Listens",
+      "sort_order": 22,
+      "category": "thread",
+      "keywords": [
+        "2027",
+        "contact",
+        "thread",
+        "yellow"
+      ],
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Two%20women%20operating%20ENIAC.gif?width=480",
+      "metadata": {
+        "number": 21,
+        "evidence": "yellow",
+        "dates": [
+          "1946",
+          "2023",
+          "2025",
+          "2027"
+        ],
+        "credit": {
+          "artist": "U.S. Army",
+          "year": "c. 1946",
+          "edition": "Betty Jennings and Frances Bilas setting up ENIAC (U.S. Army photo)",
+          "license": "Public domain",
+          "source": "Wikimedia Commons",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Two_women_operating_ENIAC.gif"
+        }
+      },
+      "sections": {
+        "The claim": "Two claims meet here. First: contact grows more likely as a civilization develops powerful technology (Chico's clock starts at the Moon landing; Bashar ties readiness to it). Second: the non-human mind is already arriving, through our machines. Some AI researchers call AI an 'alien' intelligence, grown rather than written.",
+        "Sources": "Her film [HOT POTATO: The Chosen Alien Invasion](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438) and its first build [The Chosen Alien Invasion](https://recursive.eco/view.html?id=1cf86c7d-18c3-47e7-8d1a-c152032630f8). The AI 2027 scenario (April 2025). Brief § 19.",
+        "Evidence": "Yellow. A question, not a finding.",
+        "The science lens": "The great filter read forward (card 16): if powerful technology is where civilizations end, it is also where the odds are decided.",
+        "The AI parallel": "This card is the AI parallel. The picture shows two of the first programmers of an electronic computer, a reminder that the machine has always been made, set up and taught by people.",
+        "A question to sit with": "If a new mind is arriving through our machines, what kind of host do I want to be?"
+      }
+    }
+  ]
+}
