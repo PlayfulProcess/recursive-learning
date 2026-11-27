@@ -25,7 +25,7 @@ HOST = "https://learning.recursive.eco"
 SITE_NAME = "Recursive Eco-Improvement"
 PUBLISH_ROOT = "site"       # folder whose contents are served at / ("" = the repo root)
 # (repo folder, path in the site) for folders published beside the root; "" root handled by PUBLISH_ROOT
-EXTRA_FOLDERS = [("game","game"),("glossary","glossary"),("explainers","explainers")]
+EXTRA_FOLDERS = [("game","game"),("glossary","glossary"),("explainers","explainers"),("2027","2027")]
 # pages that draw their text from a grammar: description = the start of that grammar's own description
 GRAMMAR_DESC = {}
 EXCLUDE = re.compile(r"(^|/)404\.html$|^viewers/|spread-builder\.html$")
