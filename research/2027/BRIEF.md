@@ -201,26 +201,48 @@ case is Chico Xavier's "Data Limite" (§ 6).
 
 ## 13. Chico Xavier and the "Data Limite"
 
-- **What he is documented saying.** In the TV Tupi programme *Pinga-Fogo* (São Paulo, July 1971),
-  viewers' questions about the form of life on other planets were put to Chico; answers in that
-  programme point to Kardec and to the spirit Emmanuel's book *O Consolador* ✔
-  ([transcript booklet](https://cdn.cursoespirita.com/wp-content/uploads/Pinga-Fogo-Chico-Xavier.pdf);
-  [UEL thesis on the broadcast, 2012](https://sites.uel.br/ndph/wp-content/uploads/2022/08/O-MEDIUM-E-A-MIDIA-REPERCUSSOES-DA-PARTICIPACAO-DE-CHICO-XAVIER-NO-PROGRAMA-PINGA-FOGO-EM-1971.pdf)).
-- **What is attributed to him.** Geraldo Lemos Neto reports that in 1986 Chico told him of a
-  50-year "moratorium" for humanity, counted from the Moon landing (Jul 20 1969) to July 2019 ✔. In
-  the common telling, if humanity avoided a world war in that time, Earth would be welcomed among
-  more advanced worlds, with open contact among the readings ○ (the condition's exact wording was
-  not checked against Lemos's own text). The account spread through Marlene Nobre's interview in
-  *Folha Espírita* (2011), the documentary *Data Limite Segundo Chico Xavier* (2014) and Lemos's
-  book of the same name (2016) ✔
-  ([Catraca Livre, Jul 2019](https://catracalivre.com.br/mais/data-limite-de-chico-xavier-acontece-neste-20-de-julho/);
-  [Mais Goiás](https://www.maisgoias.com.br/brasil/data-limite-a-suposta-profecia-de-chico-xavier-para-o-dia-20-de-julho/)).
-- **Contested.** Many Spiritists doubt Chico said it; one writer notes he never speaks of a "data
-  limite" in *Pinga-Fogo* ✔ (same sources). No recording or writing of his own has been found ◆.
-- **Her thread.** This is the clearest statement of "contact grows more likely with powerful
-  technology": the clock starts at a technological threshold, the Moon landing.
-- **Rating red** for contact by 2019 if read as a prediction (it passed); **◆** for the attribution.
-  Read as a test of conduct (no world war), the record so far is open yellow.
+Updated Nov 28 2026 from the transcript of the programme itself.
+
+- **What he said on television (documented).** TV Tupi, *Pinga-Fogo*, the night of **July 28
+  1971**, while Apollo 15 was on its way to the Moon. A question sent by a TV Globo journalist: do
+  Chico's spirit teachers believe that people of our civilization could still make contact with
+  civilizations of other planets? Chico's answer, in paraphrase: if we do not enter a war of
+  extermination in the next 50 years, we can expect great achievements of science starting from the
+  Moon; there, glass cities could serve scientists as bases for observing the galaxy; then perhaps
+  we would make contact with other communities of our galaxy, and the warlike period of human
+  history would end, because we would understand ourselves as one universal family; all this in a
+  future "perhaps nearer than far", if we earn it ✔. Source: *Pinga Fogo con Chico Xavier*, Spanish
+  translation by Luis Eduardo Rincón Gómez (Barrancabermeja, 2009), p. 48
+  ([PDF](https://cdn.cursoespirita.com/wp-content/uploads/Pinga-Fogo-Chico-Xavier.pdf)); the answer
+  on video, [16Je0NN1g3E](https://www.youtube.com/watch?v=16Je0NN1g3E) (YouTube's automatic captions
+  of the 1971 audio are unusable, so the Portuguese wording was not checked against the tape ◆).
+- **In the same programme.** Asked about the Age of Aquarius, he said humanity stands at the
+  threshold of an extraordinary era if it solves its problems without a war of extermination, and
+  that automation would relieve people of the hardest work, freeing them for the education of the
+  mind; the third millennium "promises wonders" (p. 26) ✔. Asked why in 1935 he had published that
+  Mars was inhabited when probes found it a desert, he answered that life extends into other
+  dimensions and that science must wait to understand them, citing Kardec's questions 56–57 (p. 50) ✔.
+  On extraterrestrial life in general he relayed Emmanuel's view that certainty about it, gained too
+  early, can unsettle a person's task on Earth (p. 27) ✔.
+- **What was attributed to him later.** Geraldo Lemos Neto reports that in 1986 Chico told him
+  that at the Moon landing (July 20 1969) the higher powers of the solar system, worried by nuclear
+  arms, granted humanity 50 years, to July 20 2019, to avoid a third world war; if it did, Earth
+  would enter a new age, including contact with other civilizations ✔ (documentary *Data Limite
+  Segundo Chico Xavier*, 2014, [16:05–19:20](https://www.youtube.com/watch?v=4JxukHvGVzE&t=965s), in
+  Lemos's words). The account spread through Marlene Nobre's interview in *Folha Espírita* (2011),
+  that documentary and Lemos's book (2016) ✔.
+- **How the two meet.** At 17:41 the documentary plays the 1971 televised line ("if we do not
+  enter a war of extermination in the next 50 years...") as support for the 1969–2019 account ✔.
+  So the 50-year condition is Chico's, on tape; the 1969 start, the meeting of the heavenly powers,
+  the word "extension" and the date July 20 2019 rest on Lemos's report of a private conversation ◆.
+  Counted from the broadcast, the 50 years ran to July 2021.
+- **Her thread.** This is the clearest documented statement of "contact grows more likely with
+  powerful technology": asked during a Moon mission, Chico ties contact to science from the Moon and
+  to peace, in that order.
+- **Rating yellow** for the 1971 words (a condition, not a date: no war of extermination has come;
+  neither have the Moon cities or contact). **Red** for July 2019 as a deadline (it passed).
+  **Red** for inhabited physical Mars (1935); his 1971 reply moved the claim to other dimensions,
+  which no instrument tests.
 
 ## 14. The great silence (the Fermi paradox, the great filter)
 
@@ -299,8 +321,9 @@ Each source's own dates, beside what happened. Updated Nov 27 2026.
 
 | Date given | Who, where | What was said (paraphrase) | What happened |
 |---|---|---|---|
-| Jul 2019 | Attributed to Chico Xavier by Geraldo Lemos Neto (report of 1986; public 2011) | End of a 50-year moratorium from the Moon landing | Passed; no open contact. The attribution is contested. |
+| Jul 2019 | Geraldo Lemos Neto's account of a 1986 conversation with Chico Xavier (public 2011; documentary 2014) | End of a 50-year extension counted from the Moon landing (Jul 20 1969) | Passed; no open contact. The 1969 start rests on this account. |
 | 2020 | Bashar, session of about 2017–18 (postcard campaign) ◆ | UFO disclosure by 2020 | Passed; ODNI's 2021 report found no evidence of extraterrestrial cause |
+| 2021 | Chico Xavier, TV Tupi *Pinga-Fogo*, Jul 28 1971 | No war of extermination in the next 50 years, then science from the Moon and perhaps contact | A condition, not a date. No war of extermination; no Moon cities or contact yet. |
 | 2026 | Bashar, Jan 24 2026 | "The year of disclosure" | Rolling Pentagon releases since May 2026; eight sets by Nov 20, none showing non-human craft; Disclosure Act in conference |
 | by 2027 | Bashar, Sedona, Sep 14 2025 | Full disclosure and open contact "between now and" 2027 | Open |
 | 2027 | *AI 2027* scenario (Apr 2025) | A possible intelligence explosion | Open; the authors later moved their median dates later ○ |
@@ -308,5 +331,5 @@ Each source's own dates, beside what happened. Updated Nov 27 2026.
 ## Not verified (to do)
 
 - The exact Urantia passage using "quarantine"; the Adamski nuclear warning in his own book; the
-  2020 postcard campaign's primary page; the 2025–2033 window; Chico's own words in *Pinga-Fogo*
-  (her Chrome transcript panel); the Disclosure Act's conference outcome; *AI 2027* date revisions.
+  2020 postcard campaign's primary page; the 2025–2033 window; the Portuguese wording of Chico's 1971 answer against the tape
+  (YouTube's captions of the 1971 audio are unusable); the Disclosure Act's conference outcome; *AI 2027* date revisions.
