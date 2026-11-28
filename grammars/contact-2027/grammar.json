@@ -583,17 +583,18 @@
         "2027",
         "contact",
         "tradition",
-        "red"
+        "yellow"
       ],
       "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Aldrin%20Apollo%2011.jpg?width=480",
       "metadata": {
         "number": 14,
-        "evidence": "red",
+        "evidence": "yellow",
         "dates": [
-          "1969",
+          "1971",
           "1986",
           "2011",
-          "2019"
+          "2019",
+          "2021"
         ],
         "credit": {
           "artist": "Neil A. Armstrong (NASA)",
@@ -605,11 +606,11 @@
         }
       },
       "sections": {
-        "The claim": "Geraldo Lemos Neto reports that in 1986 Chico Xavier told him of a 50-year moratorium for humanity counted from the Moon landing (July 20 1969) to July 2019. In the common telling, if humanity avoided a world war in that time, Earth would be welcomed among more advanced worlds.",
-        "Sources": "Marlene Nobre's interview with Lemos in Folha Espírita (2011); the documentary Data Limite Segundo Chico Xavier (2014); Lemos's book (2016). [Catraca Livre, July 2019](https://catracalivre.com.br/mais/data-limite-de-chico-xavier-acontece-neste-20-de-julho/). Chico's own recorded words on other worlds: TV Tupi, Pinga-Fogo (1971). Brief § 13.",
-        "Evidence": "Red if read as a prediction of contact by 2019 (it passed). The attribution is contested: no recording or writing of Chico's own has been found, and many Spiritists doubt he said it. Read as a test of conduct (no world war), the record is still open.",
-        "The science lens": "The Moon landing is a dated, checkable technological threshold. That is what makes this claim useful: it ties contact to technology in a way that could be tested.",
-        "The AI parallel": "The clearest form of her thread: the clock starts when a civilization gains a new power. If that rule holds, AI would start another clock.",
+        "The claim": "On the night of July 28 1971, live on TV Tupi's Pinga-Fogo, while Apollo 15 was on its way to the Moon, a journalist asked whether people of our civilization could make contact with civilizations on other planets. Chico Xavier answered with a condition: if we do not enter a war of extermination in the next 50 years, we can expect great achievements of science starting from the Moon, glass cities there to observe the galaxy, and then, perhaps, contact with other communities of our galaxy, which would end the warlike period of human history. Fifteen years later, by Geraldo Lemos Neto's account of a 1986 conversation, the same 50 years became an extension granted to humanity, counted from the Moon landing of July 20 1969 to July 20 2019.",
+        "Sources": "The programme of July 28 1971, as transcribed in Pinga Fogo con Chico Xavier (Spanish translation by Luis Eduardo Rincón Gómez, 2009), p. 48 ([PDF](https://cdn.cursoespirita.com/wp-content/uploads/Pinga-Fogo-Chico-Xavier.pdf)); the answer on video ([1971 clip](https://www.youtube.com/watch?v=16Je0NN1g3E)). The later account: the documentary Data Limite Segundo Chico Xavier (2014), from [17:28](https://www.youtube.com/watch?v=4JxukHvGVzE&t=1048s), which plays the 1971 line as support; Marlene Nobre's interview with Lemos in Folha Espírita (2011); Lemos's book (2016). Brief § 13.",
+        "Evidence": "Yellow for what Chico said on television: a condition, not a deadline. Counted from 1971 it ran to 2021; no war of extermination came, and neither did the Moon cities or contact. Red for the 2019 deadline in the later telling: it passed. What separates the two is documented: the 1969 start, the 'extension' and the meeting of heavenly powers rest on Lemos's account of a private conversation; the 50-year condition is on tape.",
+        "The science lens": "The Moon landing is a dated, checkable technological threshold, and Chico's own answer ties contact to science and to peace, in that order. The parts that could be checked (no world war; science working from the Moon) are the parts a forecast should be judged on.",
+        "The AI parallel": "In the same programme Chico said that, if peace held, automation would relieve humanity of its hardest work and free it to educate the mind (transcription, p. 26). The clearest form of her thread: a new power starts a clock, and what the clock measures is conduct.",
         "A question to sit with": "Is a deadline a prophecy, or an exam I set myself?"
       }
     },
@@ -644,7 +645,7 @@
         }
       },
       "sections": {
-        "The claim": "Contact traditions give dates, and so do AI forecasts. Put side by side: July 2019 (attributed to Chico Xavier); disclosure by 2020 (a Bashar postcard campaign of about 2017–18); 2026 'the year of disclosure' (Bashar, Jan 2026); open contact by 2027 (Bashar, Sep 2025); AI 2027 (a scenario published in April 2025).",
+        "The claim": "Contact traditions give dates, and so do AI forecasts. Put side by side: 2021 (Chico Xavier on television in 1971: no war of extermination in the next 50 years, then science from the Moon and perhaps contact); July 2019 (the same 50 years counted from 1969 in a later account); disclosure by 2020 (a Bashar postcard campaign of about 2017–18); 2026 'the year of disclosure' (Bashar, Jan 2026); open contact by 2027 (Bashar, Sep 2025); AI 2027 (a scenario published in April 2025).",
         "Sources": "The dates table in [the brief](https://github.com/PlayfulProcess/recursive-learning/blob/main/research/2027/BRIEF.md#dates-as-data), each row with its source and what happened.",
         "Evidence": "Red for the dates that have passed, which is most of them. The table keeps them as data, openly, for skeptics and believers alike.",
         "The science lens": "A forecast earns trust by its track record. Keeping every past date in view, the misses with the hits, is how any forecaster is judged.",
@@ -874,7 +875,7 @@
         }
       },
       "sections": {
-        "The claim": "Two claims meet here. First: contact grows more likely as a civilization develops powerful technology (Chico's clock starts at the Moon landing; Bashar ties readiness to it). Second: the non-human mind is already arriving, through our machines. Some AI researchers call AI an 'alien' intelligence, grown rather than written.",
+        "The claim": "Two claims meet here. First: contact grows more likely as a civilization develops powerful technology (Chico Xavier in 1971 tied contact to peace and to science from the Moon; Bashar ties readiness to it). Second: the non-human mind is already arriving, through our machines. Some AI researchers call AI an 'alien' intelligence, grown rather than written.",
         "Sources": "Her film [HOT POTATO: The Chosen Alien Invasion](https://recursive.eco/view.html?id=162eadff-00fc-4c01-87f7-ec1d2d37f438) and its first build [The Chosen Alien Invasion](https://recursive.eco/view.html?id=1cf86c7d-18c3-47e7-8d1a-c152032630f8). The AI 2027 scenario (April 2025). Brief § 19.",
         "Evidence": "Yellow. A question, not a finding.",
         "The science lens": "The great filter read forward (card 16): if powerful technology is where civilizations end, it is also where the odds are decided.",
